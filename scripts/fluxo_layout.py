@@ -21,43 +21,86 @@ ABERTURA, FECHAMENTO = 8, 17
 PERFIL = [.08, .13, .15, .14, .12, .11, .10, .09, .08]  # chegadas por hora
 AREA_PESSOA = 1.0        # m2 por pessoa em fila serpenteada com balizadores
 FOLGA_BAIA = 0.6         # m de balizador entre baias vizinhas
-LARG_MIN_BAIA = 2.6      # m — largura minima para modulo mesa+urna e sigilo
+
+# Modulo da MRV, medido a partir do mobiliario real: mesa dos mesarios de
+# 1,60 x 0,70 m ao lado da mesa redonda da urna, de 0,90 m de diametro, mais a
+# estrutura que fecha o fundo e as laterais. A urna fica girada 90 graus em
+# relacao a mesa, com a tela voltada para o painel lateral do modulo — ou seja,
+# perpendicular tanto a fila quanto ao corredor de retorno.
+MOD_LARGURA, MOD_PROFUND = 2.80, 1.90
+LARG_MIN_BAIA = MOD_LARGURA + 0.40   # modulo + balizador
+
+# Recuo minimo entre qualquer secao e uma saida de emergencia.
+RECUO_EMERGENCIA = 3.0
 
 # ------------------------------------------------------- geometria do salao
 HALL_W, HALL_H = 50.3, 44.4
 RECORTE = (0.0, 0.0, 7.8, 7.0)      # canto sudoeste suprimido do salao
 
+# As duas portas de carga da parede sul (medidas nas quinas assinaladas na
+# planta revisada do RDS) tem 3,6 m de vao e ficam nas extremidades da fachada.
+PORTA_CARGA_O = (7.83, 11.45)
+PORTA_CARGA_L = (45.12, 48.75)
+
 PORTAS = {
-    "sul":   [("2.7", 17.22, 18.47), ("2.5/2.6", 19.10, 25.03),
-              ("2.4", 25.32, 31.25), ("2.2/2.3", 31.54, 37.47),
-              ("2.1", 38.09, 39.36)],
+    "sul":   [("carga oeste", *PORTA_CARGA_O), ("2.7", 17.22, 18.47),
+              ("2.5/2.6", 19.10, 25.03), ("2.4", 25.32, 31.25),
+              ("2.2/2.3", 31.54, 37.47), ("2.1", 38.09, 39.36),
+              ("carga leste", *PORTA_CARGA_L)],
     "norte": [("2.13", 7.41, 9.44), ("2.14/2.15", 20.66, 24.22)],
     "leste": [("2.22/2.23", 2.95, 6.01), ("2.20/2.21", 14.80, 17.87),
               ("2.18/2.19", 26.66, 29.72), ("2.16/2.17", 38.51, 41.57)],
     "oeste": [("2.10/2.11 (WC)", 19.36, 22.43), ("acesso Hall 1", 36.80, 38.50)],
 }
-ENTRADA_A, ENTRADA_B, SAIDA = (22.07, 0.0), (34.51, 0.0), (28.29, 0.0)
-ESPINHA = dict(x0=25.32, x1=31.25, y0=0.0, y1=12.0)   # canal de saida balizado
+ENTRADA_A = (sum(PORTA_CARGA_O) / 2, 0.0)    # porta de carga oeste
+ENTRADA_B = (sum(PORTA_CARGA_L) / 2, 0.0)    # porta de carga leste
+SAIDA = (28.29, 0.0)                          # baia central 2.4
+ESPINHA = dict(x0=26.0, x1=31.0, y0=0.0, y1=44.4)   # canal de saida, sul-norte
+
+# Faixas leste-oeste do salao, do sul para o norte (y inicial, y final, uso).
+# A soma fecha os 44,4 m de profundidade util.
+FAIXAS = [
+    (0.0,  4.7,  "avental sul e corredor de distribuicao 3"),
+    (4.7,  8.2,  "baias da fileira 3"),
+    (8.2, 10.1,  "fileira 3 — modulos"),
+    (10.1, 12.6, "retorno 3"),
+    (12.6, 16.1, "corredor de distribuicao 2"),
+    (16.1, 19.6, "baias da fileira 2"),
+    (19.6, 21.5, "fileira 2 — modulos"),
+    (21.5, 24.0, "retorno 2"),
+    (24.0, 27.5, "corredor de distribuicao 1"),
+    (27.5, 39.5, "baias da fileira 1"),
+    (39.5, 41.4, "fileira 1 — modulos"),
+    (41.4, 44.4, "retorno 1 (faixa livre da parede norte)"),
+]
+AVENIDA_O = (3.0, 6.0)     # avenida de entrada da zona A, sentido sul-norte
+AVENIDA_L = (45.0, 47.5)   # avenida de entrada da zona B
 
 # profundidade maxima de baia de fila por parede (m)
-# profundidade maxima da baia de fila, por parede (m). Os tetos garantem que
-# as baias de paredes vizinhas nao se sobreponham nos cantos do salao.
-PROF_MAX = {"norte": 12.0, "oeste": 8.0, "leste": 8.0, "sul": 4.0}
-
-# Trechos de parede livres de porta corta-fogo, em ordem de percurso: comeca
-# junto a Entrada A, contorna o salao por oeste/norte/leste e termina junto a
-# Entrada B. (id, parede, coord fixa, de, ate, n_slots, zona)
-TRECHOS = [
-    ("SO", "sul",    0.0, 16.60,  8.00, 3, "A"),
-    ("OB", "oeste",  0.0,  8.00, 18.76, 4, "A"),
-    ("OA", "oeste",  0.0, 23.03, 42.90, 6, "A"),
-    ("NM", "norte", 44.4, 14.00, 20.06, 2, "A"),
-    ("NL", "norte", 44.4, 24.82, 48.80, 4, "B"),
-    ("LM", "leste", 50.3, 26.06, 18.47, 3, "B"),
-    ("LB", "leste", 50.3, 14.20,  6.61, 3, "B"),
-    ("SL", "sul",    0.0, 48.80, 39.96, 3, "B"),
+# As 28 posicoes ficam em ilhas, nao contra as paredes: com o recuo de 3 m das
+# saidas de emergencia e o modulo real de 2,80 m, so 11 posicoes caberiam no
+# perimetro (a parede leste some por inteiro — todo trecho livre entre as
+# saidas 2.16 a 2.23 tem 2,79 m). O sigilo do voto vem da estrutura que fecha o
+# fundo e os lados da urna, nao da parede, entao a ilha e legitima.
+#
+# Tres fileiras leste-oeste, todas com os modulos de frente para o sul: o
+# eleitor chega pelo corredor de distribuicao ao sul, entra na baia da sua
+# urna, vota e sai pelo fundo do modulo no corredor de retorno ao norte. Cada
+# fileira e partida ao meio pela espinha de saida, o que separa as duas zonas.
+#
+# (id, y da face sul do modulo, x inicial, x final, profundidade da baia,
+#  n_slots, zona)
+FILEIRAS = [
+    ("F1c", 39.5,  3.0, 19.5, 12.0, 3, "A"),   # setor reforcado
+    ("F1A", 39.5, 19.5, 26.0, 12.0, 2, "A"),
+    ("F1B", 39.5, 31.0, 45.0, 12.0, 4, "B"),
+    ("F2A", 19.6,  6.0, 26.0,  3.5, 6, "A"),
+    ("F2B", 19.6, 31.0, 45.0,  3.5, 4, "B"),
+    # a fileira 3 comeca em x = 7,8: abaixo de y = 7 o salao tem o canto
+    # sudoeste recortado, e a baia nao pode invadi-lo
+    ("F3A",  8.2,  7.8, 26.0,  3.5, 5, "A"),
+    ("F3B",  8.2, 31.0, 45.0,  3.5, 4, "B"),
 ]
-NORMAL = {"sul": (0, 1), "norte": (0, -1), "oeste": (1, 0), "leste": (-1, 0)}
 ENTRADA_ZONA = {"A": ENTRADA_A, "B": ENTRADA_B}
 
 
@@ -102,23 +145,20 @@ def simula_fila(esperado, seg_por_voto=SEG_POR_VOTO, passo=5):
 
 
 def constroi_slots():
-    """Expande os trechos em 28 posicoes, cada uma com o comprimento de parede
-    disponivel e a distancia ate a porta da sua zona."""
+    """Expande as fileiras em 28 posicoes. Cada posicao guarda o centro do
+    modulo, a largura de fileira que lhe cabe, a profundidade disponivel para a
+    baia de fila e a distancia ate a porta da sua zona."""
     slots = []
-    for tid, parede, fixa, de, ate, n, zona in TRECHOS:
-        comp = abs(ate - de) / n
-        sinal = 1 if ate > de else -1
+    for fid, y, x0, x1, prof, n, zona in FILEIRAS:
+        larg = (x1 - x0) / n
         for i in range(n):
-            t = de + sinal * (i + 0.5) * comp
-            x, y = (t, fixa) if parede in ("sul", "norte") else (fixa, t)
+            x = x0 + (i + 0.5) * larg
             ex, ey = ENTRADA_ZONA[zona]
             slots.append({
-                "trecho": tid, "parede": parede, "zona": zona,
-                "normal": NORMAL[parede],
-                "x": round(x, 2), "y": round(y, 2),
-                "eixo_de": de + sinal * i * comp, "eixo_ate": de + sinal * (i + 1) * comp,
-                "larg_disponivel": round(comp, 2),
-                "prof_max": PROF_MAX[parede],
+                "fileira": fid, "zona": zona,
+                "x": round(x, 2), "y": y,
+                "larg_disponivel": round(larg, 2),
+                "prof_max": prof,
                 "dist_entrada": round(math.hypot(x - ex, y - ey), 1),
             })
     return slots
@@ -150,9 +190,9 @@ def aloca(urnas, slots):
 
     # 1) urnas criticas -> trecho NL, unico com largura para baias profundas
     criticas = sorted([u for u in urnas
-                       if largura_exigida(u["fila_pico"], PROF_MAX["norte"]) > 4.0],
+                       if u["fila_pico"] >= 40],
                       key=lambda u: -u["esperado"])
-    nl = [s for s in por_zona["B"] if s["trecho"] == "NL"]
+    nl = [s for s in por_zona["A"] if s["fileira"] == "F1c"]
     assert len(criticas) <= len(nl), (
         f"{len(criticas)} urnas criticas para {len(nl)} posicoes largas")
     fixo = {u["urna"]: s for u, s in
@@ -165,13 +205,18 @@ def aloca(urnas, slots):
     zonas = {"A": [], "B": []}
     total = {z: sum(u["esperado"] for u in criticas if fixo[u["urna"]]["zona"] == z)
              for z in "AB"}
+    alvo = sum(u["esperado"] for u in urnas) / 2
     for u in sorted([u for u in urnas if u["urna"] not in fixo],
                     key=lambda u: -u["esperado"]):
         cand = [z for z in "AB" if len(zonas[z]) < len(livres[z])
                 and teto[z] >= u["fila_pico"]]
         if not cand:
             cand = [z for z in "AB" if len(zonas[z]) < len(livres[z])]
-        z = min(cand, key=lambda z: (total[z], z))
+        # a zona escolhida e a que tem maior deficit por vaga restante: como as
+        # duas zonas tem numeros diferentes de posicoes, distribuir pelo total
+        # corrente favoreceria a zona maior e desequilibraria o resultado
+        z = max(cand, key=lambda z: ((alvo - total[z])
+                                     / (len(livres[z]) - len(zonas[z])), z))
         zonas[z].append(u)
         total[z] += u["esperado"]
 
@@ -184,11 +229,12 @@ def aloca(urnas, slots):
 
 
 def monta(u, slot):
+    """Dimensiona a baia de fila da urna dentro da largura que lhe cabe."""
     prof_max = slot["prof_max"]
     larg = min(largura_exigida(u["fila_pico"], prof_max), slot["larg_disponivel"])
     util = max(larg - FOLGA_BAIA, 1.0)
-    area = max(u["fila_pico"], 6) * AREA_PESSOA
-    prof = max(3.0, min(area / util, prof_max))
+    area = max(u["fila_pico"], 4) * AREA_PESSOA
+    prof = max(2.5, min(area / util, prof_max))
     cap = int(util * prof / AREA_PESSOA)
     return {**u, **slot,
             "baia_largura": round(larg, 2),
@@ -233,12 +279,20 @@ def main():
         "hall": dict(largura_m=HALL_W, profundidade_m=HALL_H, area_bruta_m2=2238,
                      recorte_sudoeste=RECORTE),
         "portas": PORTAS,
+        "faixas": FAIXAS,
+        "fileiras": FILEIRAS,
+        "avenidas": {"oeste": AVENIDA_O, "leste": AVENIDA_L},
+        "modulo": {"largura_m": MOD_LARGURA, "profundidade_m": MOD_PROFUND,
+                   "mesa_mesarios_m": [1.60, 0.70], "mesa_urna_diametro_m": 0.90},
+        "recuo_emergencia_m": RECUO_EMERGENCIA,
         "papeis_portas": {
-            "2.5/2.6": "ENTRADA A — frente oeste (baia de 5,93 m)",
-            "2.2/2.3": "ENTRADA B — frente leste (baia de 5,93 m)",
-            "2.4":     "SAIDA UNICA — baia central recuada (5,93 m)",
-            "2.7":     "Entrada prioritaria da zona A (1,25 m)",
-            "2.1":     "Entrada prioritaria da zona B (1,27 m)",
+            "carga oeste": "ENTRADA A — porta de carga oeste (3,62 m)",
+            "carga leste": "ENTRADA B — porta de carga leste (3,63 m)",
+            "2.4":     "SAIDA principal — baia central (5,93 m)",
+            "2.5/2.6": "Saida de reforco no pico; fora disso, emergencia",
+            "2.2/2.3": "Saida de reforco no pico; fora disso, emergencia",
+            "2.7":     "Somente emergencia",
+            "2.1":     "Somente emergencia",
         },
         "espinha_saida": ESPINHA,
         "totais": dict(
@@ -271,10 +325,10 @@ def main():
     print(f"balizador de unifila estimado: {t['balizador_estimado_m']} m "
           f"(orcado: 200 m)")
     print(f"baias insuficientes: {t['baias_insuficientes'] or 'nenhuma'}")
-    print(f"\n{'zn':>2} {'trecho':>6} {'urna':>6} {'classe':>8} {'apt':>5} {'esp':>5} "
+    print(f"\n{'zn':>2} {'fila':>6} {'urna':>6} {'classe':>8} {'apt':>5} {'esp':>5} "
           f"{'fila':>4} {'dist':>5} {'baia (l x p)':>13} {'cap':>4} {'mes':>3} {'fecha':>5}")
     for m in mrvs:
-        print(f"{m['zona']:>2} {m['trecho']:>6} {m['urna']:>6} {m['classe']:>8} "
+        print(f"{m['zona']:>2} {m['fileira']:>6} {m['urna']:>6} {m['classe']:>8} "
               f"{m['aptos']:>5} {m['esperado']:>5} {m['fila_pico']:>4} "
               f"{m['dist_entrada']:>5} {m['baia_largura']:>5.1f} x{m['baia_profundidade']:>5.1f} "
               f"{m['baia_capacidade']:>4} {m['mesarios']:>3} {m['encerramento']:>5.1f}")

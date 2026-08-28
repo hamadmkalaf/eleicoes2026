@@ -6,6 +6,8 @@ sys.path.insert(0, os.path.join(RAIZ, "scripts"))
 import fluxo_layout as FL
 
 CLASSE = {"leve": "leve", "media": "média", "alta": "alta", "critica": "crítica"}
+FILEIRA = {"F1c": "1 · reforçado", "F1A": "1", "F1B": "1",
+           "F2A": "2", "F2B": "2", "F3A": "3", "F3B": "3"}
 
 
 def sensibilidade(urnas):
@@ -44,7 +46,7 @@ def tabela(mrvs):
         sec = " + ".join(str(s) for s in m["secoes"])
         orig = m["origem_interior"] or "—"
         ls.append(f'''<tr>
-<td class="z z{m["zona"]}">{m["zona"]}</td><td>{m["parede"]}</td>
+<td class="z z{m["zona"]}">{m["zona"]}</td><td class="mono peq">{FILEIRA[m["fileira"]]}</td>
 <td class="mono b">{m["urna"]}</td><td class="mono peq">{sec}</td>
 <td class="mono">{m["aptos"]}</td><td class="mono">{orig}</td>
 <td class="mono b">{m["esperado"]}</td><td class="mono">{m["fila_pico"] or "—"}</td>

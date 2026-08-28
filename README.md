@@ -92,8 +92,9 @@ totais ordenados e o critério de gargalo fica a cargo de quem analisa.
 
 `scripts/fluxo_layout.py` pega as 28 urnas apuradas acima, estima o
 comparecimento por urna, simula a fila de cada uma ao longo das 9 horas de
-votação e aloca cada urna a uma posição física no perímetro do Hall 2.
-`scripts/planta_svg.py` desenha o resultado em escala.
+votação e aloca cada urna a uma posição física no salão.
+`scripts/planta_svg.py` desenha o resultado em escala e `scripts/gera_plano.py`
+monta a peça de leitura a partir de `scripts/plano_template.html`.
 
 ```bash
 cd scripts
@@ -102,16 +103,13 @@ python3 planta_svg.py     # gera saidas/planta_fluxo.svg
 python3 gera_plano.py     # gera saidas/plano_fluxo.html
 ```
 
-`gera_plano.py` monta a peça de leitura — `saidas/plano_fluxo.html` — a partir
-de `scripts/plano_template.html`, embutindo a planta e a tabela das 28 urnas.
-
 A geometria do salão foi medida do PDF oficial do RDS
-(`RDS_Hall_2_Floorplan_(1).pdf`, página 2). A escala de 8,69 pt/m foi aferida
-contra a ficha técnica impressa no próprio PDF — 50,2 m × 44,5 m, 2.238 m² —,
-que confere com as dimensões usadas nas simulações anteriores. Daí saem as
-cinco portas da parede sul (três vãos de 5,93 m e duas folhas de 1,25 m) e as
-onze saídas de emergência das outras três paredes, que precisam ficar
-desobstruídas e por isso recortam o perímetro disponível para as mesas.
+(`RDS_Hall_2_Floorplan_(1).pdf`, página 2) e da versão revisada com as duas
+portas de carga assinaladas. A escala de 8,69 pt/m foi aferida contra a ficha
+técnica impressa no próprio PDF — 50,2 m × 44,5 m, 2.238 m². Daí saem as sete
+aberturas utilizáveis da parede sul (duas portas de carga de ~3,6 m nas
+extremidades, três vãos de 5,93 m no meio e duas folhas de ~1,25 m) e as
+dezesseis saídas de emergência das outras três paredes.
 
 ### Premissas
 
@@ -121,6 +119,8 @@ desobstruídas e por isso recortam o perímetro disponível para as mesas.
 | Comparecimento, residentes no interior | 50% | taxa observada em 2022 |
 | Tempo por eleitor (ponto de projeto) | 55 s | escolhido; ver sensibilidade |
 | Perfil de chegada (8h–17h) | 8/13/15/14/12/11/10/9/8 % | pico de meio de manhã |
+| Módulo da MRV | 2,80 × 1,90 m | mesa de 1,60 × 0,70 m + mesa redonda de Ø 0,90 m + estrutura de sigilo |
+| Recuo das saídas de emergência | 3,0 m | nenhuma seção dentro dessa faixa |
 | Área por pessoa em fila | 1,0 m² | fila serpenteada com balizadores |
 
 ### Resultados
@@ -134,24 +134,30 @@ desobstruídas e por isso recortam o perímetro disponível para as mesas.
   **33 pessoas a 45 s/eleitor** para **241 a 55 s**, **436 a 60 s** e **2.165 a
   90 s**. O layout é dimensionado para 55 s e reserva piso livre para absorver
   o cenário de 60 s.
-- As 28 posições ficam contra as paredes, com a carga crescendo conforme a
-  distância até a porta da zona, de modo que nenhum eleitor de urna leve
-  caminhe por trás da fila de uma urna pesada.
+- **Urnas contra a parede não cabem.** Com o recuo de 3 m das saídas de
+  emergência e o módulo real de 2,80 m, o perímetro comporta 11 posições das
+  28 — a parede leste some por inteiro, porque cada trecho livre entre as
+  saídas 2.16 a 2.23 mede 2,79 m. Como o sigilo vem da estrutura que fecha o
+  fundo e os lados da urna, e não da parede, as 28 posições vão para ilhas.
 
 ### Desenho proposto
 
-- **Duas frentes de entrada** pelos vãos largos 2.5/2.6 (zona A, oeste) e
-  2.2/2.3 (zona B, leste), **saída única** pelo vão central 2.4 e as duas
-  folhas estreitas 2.7 e 2.1 como **entradas prioritárias**, uma por zona. As
-  dezesseis folhas restantes (2.8 a 2.23) ficam só como saída de emergência.
-- Avenidas de entrada e corredores de retorno correm em faixas paralelas e
-  adjacentes, sem se cruzarem; encontram-se apenas na espinha central de saída.
-- As três urnas críticas ficam agrupadas num setor próprio no trecho mais fundo
-  da parede norte, com quatro mesários cada.
-- Dois blocos de piso livre no miolo do salão absorvem a expansão das filas se
-  o atendimento cair de 55 s para 60 s por eleitor.
+- **Duas frentes de entrada pelas portas de carga**, nas extremidades da
+  fachada sul e a 37 m uma da outra; **saída pela baia central 2.4**, com
+  2.5/2.6 e 2.2/2.3 de reforço no pico; 2.7 e 2.1 só como emergência. A fachada
+  passa a ler-se em três blocos contíguos: entra na ponta oeste, sai pelo meio,
+  entra na ponta leste.
+- **Três fileiras de ilhas**, todas com os módulos voltados para o sul. O
+  eleitor entra na baia pelo corredor de distribuição, vota e sai pelo fundo do
+  módulo no corredor de retorno, que corre para a espinha central. Corredores
+  de entrada e de retorno se alternam em faixas paralelas e nunca se cruzam.
+- A tela da urna aponta para o painel lateral do módulo — perpendicular tanto
+  à fila quanto ao retorno.
+- A carga cresce da fileira 3 (junto às portas) para a fileira 1 (ao fundo);
+  as três urnas críticas ficam agrupadas num setor reforçado de 16,5 × 12 m no
+  canto noroeste, com quatro mesários cada.
 
-Duas consequências de custo: as baias sozinhas pedem cerca de **432 m de
-balizador**, contra os 200 m orçados na alínea (d) do telegrama, e a divisão
-de eleitores entre as duas frentes fica em **52/48**, não meio a meio, porque
-a parede leste é recortada por quatro pares de saídas de emergência.
+Três consequências de custo: as baias sozinhas pedem cerca de **477 m de
+balizador**, contra os 200 m orçados na alínea (d) do telegrama; a alimentação
+elétrica das urnas passa a ser em ilha, não pela parede; e a divisão de
+eleitores entre as duas frentes fica em **52/48**.

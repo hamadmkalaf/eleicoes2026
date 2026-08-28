@@ -1,0 +1,778 @@
+<title>Fluxo do Posto de Dublin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  --papel:#f6f4ef; --folha:#fffdf8; --tinta:#17202b; --meio:#59616d;
+  --fraco:#8a919b; --regua:#ddd7cb; --regua2:#eae5da;
+  --entrada:#1f6fb2; --saida:#b26a12; --emerg:#16867f; --alerta:#b23b2e;
+  --grade:#e9ecef; --grade2:#b2bcc8; --grade3:#75808e; --grade4:#3b4552;
+  --marca:rgba(31,111,178,.09);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --papel:#111519; --folha:#191e24; --tinta:#e7ebef; --meio:#a3abb5;
+  --fraco:#78818c; --regua:#2c333b; --regua2:#232a31;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a;
+  --grade:#2a3138; --grade2:#4a545f; --grade3:#7b8692; --grade4:#aab3bd;
+  --marca:rgba(99,166,224,.12);
+}}
+:root[data-theme="dark"]{
+  --papel:#111519; --folha:#191e24; --tinta:#e7ebef; --meio:#a3abb5;
+  --fraco:#78818c; --regua:#2c333b; --regua2:#232a31;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a;
+  --grade:#2a3138; --grade2:#4a545f; --grade3:#7b8692; --grade4:#aab3bd;
+  --marca:rgba(99,166,224,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.folha{max-width:1140px; margin:0 auto; padding:0 28px 96px}
+.prosa{max-width:70ch}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+  text-wrap:balance; margin:0; font-weight:700; letter-spacing:-.008em}
+h1{font-size:clamp(2rem,4.4vw,3.05rem); line-height:1.08}
+h2{font-size:clamp(1.45rem,2.5vw,1.95rem); line-height:1.18}
+h3{font-size:1.06rem; font-weight:600; line-height:1.3}
+p{margin:0 0 1.05em}
+a{color:var(--entrada)}
+strong{font-weight:600}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+.b{font-weight:600}
+.peq{font-size:.86em}
+
+/* ---- cabecalho ---- */
+header{padding:76px 0 0}
+.olho{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 20px}
+.chamada{font-family:"Source Serif 4",Georgia,serif; font-size:clamp(1.1rem,2vw,1.32rem);
+  line-height:1.5; color:var(--meio); max-width:60ch; margin:22px 0 0}
+.faixa{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
+  gap:1px; background:var(--regua); border:1px solid var(--regua);
+  margin:44px 0 0}
+.faixa div{background:var(--papel); padding:15px 16px}
+.faixa dt{font-size:.72rem; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--meio); margin:0 0 5px}
+.faixa dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.42rem;
+  font-weight:500; font-variant-numeric:tabular-nums; line-height:1.15}
+.faixa dd small{display:block; font-family:"IBM Plex Sans",sans-serif;
+  font-size:.74rem; font-weight:400; color:var(--fraco); letter-spacing:0;
+  margin-top:3px}
+
+section{margin:72px 0 0}
+.rotulo{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 10px;
+  padding-bottom:9px; border-bottom:1px solid var(--regua)}
+section > h2{margin-bottom:18px}
+
+/* ---- as tres respostas ---- */
+.respostas{display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(268px,1fr));
+  margin-top:26px}
+.resposta{background:var(--folha); border:1px solid var(--regua); padding:22px 22px 24px;
+  display:flex; flex-direction:column; gap:11px}
+.resposta .pergunta{font-size:.83rem; color:var(--meio); line-height:1.45}
+.resposta .num{font-family:"IBM Plex Mono",monospace; font-size:.72rem;
+  color:var(--entrada); letter-spacing:.1em}
+.resposta .curta{font-family:"Source Serif 4",Georgia,serif; font-size:1.24rem;
+  font-weight:700; line-height:1.26}
+.resposta p{margin:0; font-size:.93rem; color:var(--meio)}
+
+/* ---- grafico ---- */
+figure{margin:30px 0 0}
+figcaption{font-size:.84rem; color:var(--meio); margin-top:14px; max-width:74ch}
+.grafico{background:var(--folha); border:1px solid var(--regua); padding:22px 24px 18px}
+.linha{display:grid; grid-template-columns:44px 1fr 42px; align-items:center;
+  gap:11px; padding:1.5px 0; position:relative; outline:none}
+.linha .cod{font-family:"IBM Plex Mono",monospace; font-size:.76rem; color:var(--meio);
+  text-align:right; font-variant-numeric:tabular-nums}
+.linha .trilho{height:13px; background:var(--regua2)}
+.linha .barra{display:block; height:100%; background:var(--grade3);
+  border-radius:0 3px 3px 0}
+.linha.destaque .barra{background:var(--alerta)}
+.linha.destaque .cod,.linha.destaque .val{color:var(--tinta); font-weight:600}
+.linha .val{font-family:"IBM Plex Mono",monospace; font-size:.76rem;
+  font-variant-numeric:tabular-nums; color:var(--meio)}
+.linha .dica{position:absolute; left:56px; bottom:100%; z-index:5; opacity:0;
+  pointer-events:none; background:var(--tinta); color:var(--papel);
+  font-family:"IBM Plex Mono",monospace; font-size:.72rem; line-height:1.45;
+  padding:5px 9px; max-width:min(360px,66vw); transition:opacity .12s}
+.linha:hover .dica,.linha:focus .dica{opacity:1}
+.linha:focus .trilho{outline:2px solid var(--entrada); outline-offset:2px}
+.degrau{display:flex; align-items:center; gap:10px; margin:9px 0 3px;
+  font-size:.76rem; color:var(--alerta); font-weight:600}
+.degrau::before,.degrau::after{content:""; flex:1; height:1px; background:var(--alerta);
+  opacity:.4}
+
+/* ---- planta ---- */
+.prancha{background:#fbfaf7; border:1px solid var(--regua); padding:8px;
+  overflow-x:auto}
+.prancha svg{display:block; min-width:760px}
+
+/* ---- tabelas ---- */
+.rolagem{overflow-x:auto; border:1px solid var(--regua); background:var(--folha)}
+table{border-collapse:collapse; width:100%; font-size:.855rem}
+th,td{text-align:left; padding:8px 11px; border-bottom:1px solid var(--regua2);
+  white-space:nowrap}
+thead th{position:sticky; top:0; background:var(--folha); font-size:.71rem;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--meio);
+  font-weight:500; border-bottom:1px solid var(--regua)}
+tbody tr:last-child td{border-bottom:none}
+td.mono{font-variant-numeric:tabular-nums;
+  font-family:"IBM Plex Mono",ui-monospace,monospace}
+td.z{font-family:"IBM Plex Mono",monospace; font-weight:600; text-align:center;
+  width:34px}
+td.zA{color:var(--entrada)} td.zB{color:var(--saida)}
+tr.proj td{background:var(--marca); font-weight:600}
+.tag{display:inline-block; font-size:.7rem; letter-spacing:.05em; padding:2px 7px;
+  border:1px solid currentColor; color:var(--meio)}
+.tleve{opacity:.6} .tmedia{opacity:.8}
+.talta{color:var(--tinta)} .tcritica{color:var(--alerta); font-weight:600}
+.compacta{max-width:660px}
+.compacta th,.compacta td{white-space:normal}
+
+/* ---- portas ---- */
+.portas{background:var(--folha); border:1px solid var(--regua); padding:22px 24px}
+.portas svg{display:block; width:100%; height:auto}
+
+/* ---- listas ---- */
+ol.passos{counter-reset:p; list-style:none; padding:0; margin:24px 0 0;
+  display:grid; gap:14px}
+ol.passos li{counter-increment:p; display:grid; grid-template-columns:30px 1fr;
+  gap:14px; align-items:start}
+ol.passos li::before{content:counter(p); font-family:"IBM Plex Mono",monospace;
+  font-size:.78rem; color:var(--entrada); border:1px solid var(--regua);
+  width:30px; height:30px; display:grid; place-items:center; margin-top:1px}
+ul.marcas{list-style:none; padding:0; margin:20px 0 0; display:grid; gap:12px}
+ul.marcas li{padding-left:20px; position:relative; color:var(--meio)}
+ul.marcas li::before{content:""; position:absolute; left:0; top:.62em; width:8px;
+  height:1px; background:var(--fraco)}
+ul.marcas li strong{color:var(--tinta)}
+
+.nota{border-left:2px solid var(--saida); padding:2px 0 2px 20px; margin:26px 0 0;
+  color:var(--meio); font-size:.95rem}
+.nota strong{color:var(--tinta)}
+
+footer{margin:84px 0 0; padding-top:22px; border-top:1px solid var(--regua);
+  font-size:.82rem; color:var(--fraco)}
+footer p{margin:0 0 .5em; max-width:74ch}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:640px){ .folha{padding:0 18px 64px} header{padding-top:48px} }
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro · RDS Ballsbridge, Hall 2</p>
+  <h1>Como o eleitor atravessa o Hall&nbsp;2</h1>
+  <p class="chamada">Desenho de fluxo para as 28 mesas receptoras do posto de Dublin: por onde se entra, por onde se sai, e onde cada urna fica no salão. A geometria vem da planta oficial do RDS; a carga de cada urna, do cadastro do TSE.</p>
+  <dl class="faixa">
+    <div><dt>Eleitores aptos</dt><dd>16.794<small>51 seções em 28 urnas</small></dd></div>
+    <div><dt>Comparecimento esperado</dt><dd>11.418<small>74% Dublin · 50% interior</small></dd></div>
+    <div><dt>Frentes de entrada</dt><dd>2<small>+ 2 portas prioritárias</small></dd></div>
+    <div><dt>Saída</dt><dd>1<small>baia central 2.4</small></dd></div>
+    <div><dt>Urnas críticas</dt><dd>3<small>586 a 590 eleitores</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <p class="rotulo">As três respostas</p>
+  <h2>Duas frentes, uma saída, carga crescente</h2>
+  <div class="respostas">
+    <div class="resposta">
+      <span class="num">Pergunta 1</span>
+      <span class="pergunta">Como distribuir as 28 MRVs pelo salão?</span>
+      <span class="curta">Contra as paredes, com a carga crescendo conforme a distância até a porta.</span>
+      <p>As urnas leves ficam junto às portas; as pesadas, nas paredes mais afastadas, onde há piso para a fila crescer. Assim nenhum eleitor de urna leve caminha por trás da fila de uma urna pesada.</p>
+    </div>
+    <div class="resposta">
+      <span class="num">Pergunta 2</span>
+      <span class="pergunta">Duas ou três entradas?</span>
+      <span class="curta">Duas — e o gargalo que preocupa não se resolve com uma terceira porta.</span>
+      <p>A vazão não é limitada pela porta, e sim pela triagem. Triagem se multiplica em raias na fila externa, não em portas. Uma terceira entrada obrigaria a saída a sair da baia central, que é o que torna o fluxo legível.</p>
+    </div>
+    <div class="resposta">
+      <span class="num">Pergunta 3</span>
+      <span class="pergunta">Quais das cinco portas para entrada e saída?</span>
+      <span class="curta">Entra pelas laterais 2.5/2.6 e 2.2/2.3; sai pela central 2.4.</span>
+      <p>As duas folhas estreitas — 2.7 e 2.1 — viram entradas prioritárias, uma por zona. A saída fica no meio, e as filas de entrada correm rentes à fachada, perpendiculares a ela.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="rotulo">Antes do desenho</p>
+  <h2>Não são quatro MRVs problemáticas — são três, e por outro motivo</h2>
+  <div class="prosa">
+  <p>O ponto de partida da conversa era “4 MRVs com cerca de 600 eleitores”. Os dados do cadastro dizem outra coisa, e a diferença muda o desenho.</p>
+  <p><strong>São três urnas de 586 a 590 comparecentes</strong> — 3313, 3322 e 3315, as únicas que somam <em>duas seções inteiras de Dublin</em>. Depois delas há um degrau nítido: as oito seguintes ficam entre 466 e 492, e as dezessete restantes abaixo de 435. Desenhar para quatro focos de 600 subdimensiona os três verdadeiros e ignora os oito intermediários.</p>
+  <p>E os oito intermediários são um problema de natureza diferente. Cada um deles é uma seção de Dublin somada a um condado inteiro do interior — Cork, Galway, Limerick, Westmeath. São <strong>4.213 eleitores que moram fora de Dublin</strong> e vão ter de viajar para votar. Quem viaja chega em grupo: caronas, ônibus, famílias. A média horária dessas urnas é modesta; a chegada é em rajada. Elas precisam de piso de fila desproporcional ao seu número, e é por isso que também vão para as paredes fundas.</p>
+  </div>
+  <figure>
+    <div class="grafico">
+      <div class="linha destaque" tabindex="0" aria-label="3313 · 797 aptos · 590 esperados · fila de pico 57"><span class="cod">3313</span><span class="trilho"><span class="barra" style="width:100.0%"></span></span><span class="val">590</span><span class="dica" role="tooltip">3313 · 797 aptos · 590 esperados · fila de pico 57</span></div>
+<div class="linha destaque" tabindex="0" aria-label="3322 · 794 aptos · 588 esperados · fila de pico 56"><span class="cod">3322</span><span class="trilho"><span class="barra" style="width:99.7%"></span></span><span class="val">588</span><span class="dica" role="tooltip">3322 · 794 aptos · 588 esperados · fila de pico 56</span></div>
+<div class="linha destaque" tabindex="0" aria-label="3315 · 792 aptos · 586 esperados · fila de pico 55"><span class="cod">3315</span><span class="trilho"><span class="barra" style="width:99.3%"></span></span><span class="val">586</span><span class="dica" role="tooltip">3315 · 792 aptos · 586 esperados · fila de pico 55</span></div>
+<div class="linha" tabindex="0" aria-label="3142 · 793 aptos · 492 esperados · fila de pico 12"><span class="cod">3142</span><span class="trilho"><span class="barra" style="width:83.4%"></span></span><span class="val">492</span><span class="dica" role="tooltip">3142 · 793 aptos · 492 esperados · fila de pico 12</span></div>
+<div class="linha" tabindex="0" aria-label="3161 · 791 aptos · 491 esperados · fila de pico 12"><span class="cod">3161</span><span class="trilho"><span class="barra" style="width:83.2%"></span></span><span class="val">491</span><span class="dica" role="tooltip">3161 · 791 aptos · 491 esperados · fila de pico 12</span></div>
+<div class="linha" tabindex="0" aria-label="3245 · 781 aptos · 486 esperados · fila de pico 11"><span class="cod">3245</span><span class="trilho"><span class="barra" style="width:82.4%"></span></span><span class="val">486</span><span class="dica" role="tooltip">3245 · 781 aptos · 486 esperados · fila de pico 11</span></div>
+<div class="linha" tabindex="0" aria-label="3302 · 771 aptos · 481 esperados · fila de pico 9"><span class="cod">3302</span><span class="trilho"><span class="barra" style="width:81.5%"></span></span><span class="val">481</span><span class="dica" role="tooltip">3302 · 771 aptos · 481 esperados · fila de pico 9</span></div>
+<div class="linha" tabindex="0" aria-label="3305 · 767 aptos · 479 esperados · fila de pico 9"><span class="cod">3305</span><span class="trilho"><span class="barra" style="width:81.2%"></span></span><span class="val">479</span><span class="dica" role="tooltip">3305 · 767 aptos · 479 esperados · fila de pico 9</span></div>
+<div class="linha" tabindex="0" aria-label="3306 · 766 aptos · 478 esperados · fila de pico 8"><span class="cod">3306</span><span class="trilho"><span class="barra" style="width:81.0%"></span></span><span class="val">478</span><span class="dica" role="tooltip">3306 · 766 aptos · 478 esperados · fila de pico 8</span></div>
+<div class="linha" tabindex="0" aria-label="3108 · 756 aptos · 474 esperados · fila de pico 7"><span class="cod">3108</span><span class="trilho"><span class="barra" style="width:80.3%"></span></span><span class="val">474</span><span class="dica" role="tooltip">3108 · 756 aptos · 474 esperados · fila de pico 7</span></div>
+<div class="linha" tabindex="0" aria-label="3311 · 630 aptos · 466 esperados · fila de pico 5"><span class="cod">3311</span><span class="trilho"><span class="barra" style="width:79.0%"></span></span><span class="val">466</span><span class="dica" role="tooltip">3311 · 630 aptos · 466 esperados · fila de pico 5</span></div>
+<div class="linha" tabindex="0" aria-label="3179 · 676 aptos · 434 esperados · fila de pico 0"><span class="cod">3179</span><span class="trilho"><span class="barra" style="width:73.6%"></span></span><span class="val">434</span><span class="dica" role="tooltip">3179 · 676 aptos · 434 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3309 · 615 aptos · 403 esperados · fila de pico 0"><span class="cod">3309</span><span class="trilho"><span class="barra" style="width:68.3%"></span></span><span class="val">403</span><span class="dica" role="tooltip">3309 · 615 aptos · 403 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3229 · 606 aptos · 399 esperados · fila de pico 0"><span class="cod">3229</span><span class="trilho"><span class="barra" style="width:67.6%"></span></span><span class="val">399</span><span class="dica" role="tooltip">3229 · 606 aptos · 399 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="511 · 582 aptos · 387 esperados · fila de pico 0"><span class="cod">511</span><span class="trilho"><span class="barra" style="width:65.6%"></span></span><span class="val">387</span><span class="dica" role="tooltip">511 · 582 aptos · 387 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3216 · 571 aptos · 381 esperados · fila de pico 0"><span class="cod">3216</span><span class="trilho"><span class="barra" style="width:64.6%"></span></span><span class="val">381</span><span class="dica" role="tooltip">3216 · 571 aptos · 381 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="517 · 513 aptos · 352 esperados · fila de pico 0"><span class="cod">517</span><span class="trilho"><span class="barra" style="width:59.7%"></span></span><span class="val">352</span><span class="dica" role="tooltip">517 · 513 aptos · 352 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="513 · 502 aptos · 347 esperados · fila de pico 0"><span class="cod">513</span><span class="trilho"><span class="barra" style="width:58.8%"></span></span><span class="val">347</span><span class="dica" role="tooltip">513 · 502 aptos · 347 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="512 · 476 aptos · 334 esperados · fila de pico 0"><span class="cod">512</span><span class="trilho"><span class="barra" style="width:56.6%"></span></span><span class="val">334</span><span class="dica" role="tooltip">512 · 476 aptos · 334 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="1160 · 473 aptos · 332 esperados · fila de pico 0"><span class="cod">1160</span><span class="trilho"><span class="barra" style="width:56.3%"></span></span><span class="val">332</span><span class="dica" role="tooltip">1160 · 473 aptos · 332 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="1352 · 462 aptos · 327 esperados · fila de pico 0"><span class="cod">1352</span><span class="trilho"><span class="barra" style="width:55.4%"></span></span><span class="val">327</span><span class="dica" role="tooltip">1352 · 462 aptos · 327 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3054 · 454 aptos · 323 esperados · fila de pico 0"><span class="cod">3054</span><span class="trilho"><span class="barra" style="width:54.7%"></span></span><span class="val">323</span><span class="dica" role="tooltip">3054 · 454 aptos · 323 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3078 · 429 aptos · 310 esperados · fila de pico 0"><span class="cod">3078</span><span class="trilho"><span class="barra" style="width:52.5%"></span></span><span class="val">310</span><span class="dica" role="tooltip">3078 · 429 aptos · 310 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3862 · 400 aptos · 296 esperados · fila de pico 0"><span class="cod">3862</span><span class="trilho"><span class="barra" style="width:50.2%"></span></span><span class="val">296</span><span class="dica" role="tooltip">3862 · 400 aptos · 296 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3688 · 400 aptos · 296 esperados · fila de pico 0"><span class="cod">3688</span><span class="trilho"><span class="barra" style="width:50.2%"></span></span><span class="val">296</span><span class="dica" role="tooltip">3688 · 400 aptos · 296 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3832 · 400 aptos · 296 esperados · fila de pico 0"><span class="cod">3832</span><span class="trilho"><span class="barra" style="width:50.2%"></span></span><span class="val">296</span><span class="dica" role="tooltip">3832 · 400 aptos · 296 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3308 · 399 aptos · 295 esperados · fila de pico 0"><span class="cod">3308</span><span class="trilho"><span class="barra" style="width:50.0%"></span></span><span class="val">295</span><span class="dica" role="tooltip">3308 · 399 aptos · 295 esperados · fila de pico 0</span></div>
+<div class="linha" tabindex="0" aria-label="3442 · 398 aptos · 295 esperados · fila de pico 0"><span class="cod">3442</span><span class="trilho"><span class="barra" style="width:50.0%"></span></span><span class="val">295</span><span class="dica" role="tooltip">3442 · 398 aptos · 295 esperados · fila de pico 0</span></div>
+    </div>
+    <figcaption>Comparecimento esperado por urna, das 28 do posto. As três em vermelho são as que somam duas seções de Dublin; o degrau logo abaixo delas é o que separa o problema real dos casos administráveis. Passe o cursor sobre uma linha para os números; a tabela completa está mais abaixo.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">Pergunta 2</p>
+  <h2>Por que duas frentes, e não três</h2>
+  <div class="prosa">
+  <p>A parede sul do Hall 2 tem cinco portas, e elas não são iguais: três vãos largos de 5,93 m no meio, contíguos entre si, e duas folhas estreitas de cerca de 1,25 m nas pontas. Todas as cinco cabem em 22 metros de uma fachada de 50. Essa geometria é o que decide a questão.</p>
+  </div>
+  <ul class="marcas">
+    <li><strong>A porta não é o gargalo.</strong> Um vão de 5,93 m passa mais de cem pessoas por minuto. No pico da manhã o posto inteiro recebe cerca de <strong>29 pessoas por minuto</strong> — 14,3 por frente com duas frentes. Nenhuma porta chega perto de saturar.</li>
+    <li><strong>O gargalo é a triagem</strong> — dizer a cada eleitor qual é a sua urna e conferir o documento. Isso se paraleliza acrescentando raias à fila <em>externa</em>, onde o espaço é barato, não acrescentando portas ao prédio. Uma terceira porta não compra vazão de triagem.</li>
+    <li><strong>Uma terceira entrada custaria a saída central.</strong> Os três vãos largos são vizinhos: usar os três para entrar obriga a saída a migrar para uma folha de 1,25 m ou para outra parede. A saída no meio é justamente o que torna o fluxo legível — “entra pelos lados, sai pelo meio”.</li>
+    <li><strong>Três frentes não melhoram a separação de filas.</strong> O risco de o eleitor de uma urna calma ficar preso atrás da fila de uma urna cheia é resolvido pela triagem prévia e pela baia individual de cada urna, não pelo número de portas.</li>
+    <li><strong>Cada frente cobra o seu preço:</strong> campo de fila externo, equipe de triagem, jogo de banners, supervisão. Duas frentes já dão <strong>5.893</strong> (52%) e <strong>5.525</strong> (48%) eleitores — carga equilibrada em nove horas.</li>
+  </ul>
+  <div class="nota"><strong>A exceção que vale checar.</strong> Se as saídas da parede leste (2.16 a 2.23) derem para área externa utilizável pelo público, aí sim três entradas passa a ser estritamente melhor: os três vãos largos viram entrada e a saída inteira migra para a parede leste, eliminando qualquer convivência entre quem entra e quem sai na fachada sul. Não dá para saber isso pela planta — é uma pergunta de cinco minutos ao RDS, e é a que tem maior retorno.</div>
+</section>
+
+<section>
+  <p class="rotulo">Pergunta 3</p>
+  <h2>O papel de cada uma das cinco portas</h2>
+  <div class="portas">
+    <svg viewBox="0 0 900 142" role="img" aria-label="Posição e papel das cinco portas da parede sul do Hall 2">
+      <line x1="20" y1="46" x2="880" y2="46" stroke="var(--tinta)" stroke-width="3"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--meio)">
+        <text x="20" y="34">oeste</text><text x="880" y="34" text-anchor="end">leste</text>
+      </g>
+      <!-- vãos em escala: parede útil de 7,8 m a 50,3 m sobre 860 px -->
+      <g stroke-width="9" stroke-linecap="butt">
+        <line x1="210" y1="46" x2="235" y2="46" stroke="var(--entrada)" opacity=".5"/>
+        <line x1="248" y1="46" x2="368" y2="46" stroke="var(--entrada)"/>
+        <line x1="374" y1="46" x2="494" y2="46" stroke="var(--saida)"/>
+        <line x1="500" y1="46" x2="619" y2="46" stroke="var(--entrada)"/>
+        <line x1="632" y1="46" x2="657" y2="46" stroke="var(--entrada)" opacity=".5"/>
+      </g>
+      <g stroke="var(--regua)" stroke-width="1">
+        <line x1="222" y1="53" x2="222" y2="100"/><line x1="644" y1="53" x2="644" y2="100"/>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="12" text-anchor="middle"
+         font-weight="600" fill="var(--tinta)">
+        <text x="308" y="70">ENTRADA A</text>
+        <text x="434" y="70">SAÍDA</text>
+        <text x="559" y="70">ENTRADA B</text>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" text-anchor="middle" fill="var(--meio)">
+        <text x="222" y="116">entrada prioritária A</text>
+        <text x="644" y="116">entrada prioritária B</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="10" text-anchor="middle" fill="var(--fraco)">
+        <text x="308" y="86">2.5/2.6 · 5,93 m</text>
+        <text x="434" y="86">2.4 · 5,93 m</text>
+        <text x="559" y="86">2.2/2.3 · 5,93 m</text>
+        <text x="222" y="132">2.7 · 1,25 m</text>
+        <text x="644" y="132">2.1 · 1,27 m</text>
+      </g>
+    </svg>
+  </div>
+  <div class="prosa">
+    <p style="margin-top:26px">Fora da parede sul, as dezesseis folhas restantes — 2.8 a 2.23, distribuídas pelas paredes norte, leste e oeste — permanecem exclusivamente como saídas de emergência, desobstruídas o dia inteiro.</p>
+    <p>A lógica externa é a que evita confusão: <strong>as filas de entrada correm rentes à fachada</strong>, a de A vindo do oeste e a de B vindo do leste, e viram para dentro só nos últimos metros. <strong>A saída sai a prumo</strong>, perpendicular ao prédio, em corredor balizado de uns quinze metros antes de dispersar. Quem entra anda paralelo à parede; quem sai anda contra ela. Nenhum eleitor precisa ler um banner para saber que está na fila errada.</p>
+    <p>As duas folhas estreitas viram <strong>entradas prioritárias</strong> — pessoas com deficiência, idosos, gestantes, lactantes — uma em cada zona, coladas na entrada geral respectiva, para que a preferência legal não dependa de furar fila.</p>
+  </div>
+</section>
+
+<section>
+  <p class="rotulo">Pergunta 1</p>
+  <h2>A planta</h2>
+  <figure>
+    <div class="prancha"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 882 932" style="width:100%;height:auto" role="img" aria-label="Planta de fluxo do Hall 2 do RDS com as 28 mesas receptoras de votos">
+<rect x="0" y="0" width="882.5" height="932.0" fill="#fbfaf7"/>
+<rect x="64.0" y="76.0" width="379.8" height="666.0" fill="#1f6fb2" opacity=".05"/>
+<rect x="532.8" y="76.0" width="285.8" height="666.0" fill="#b26a12" opacity=".045"/>
+<rect x="64.0" y="637.0" width="117.0" height="105.0" fill="#fbfaf7"/>
+<polygon points="181.0,742.0 818.5,742.0 818.5,76.0 64.0,76.0 64.0,637.0 181.0,637.0" fill="none" stroke="#1c2733" stroke-width="3.4"/>
+<rect x="304.0" y="337.0" width="129.0" height="225.0" fill="none" stroke="#8a97a6" stroke-width="1.2" stroke-dasharray="7 5"/>
+<text x="368.5" y="361.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle">RESERVA A</text>
+<text x="368.5" y="379.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">piso livre p/ 60 s</text>
+<rect x="542.5" y="337.0" width="43.5" height="225.0" fill="none" stroke="#8a97a6" stroke-width="1.2" stroke-dasharray="7 5"/>
+<text x="564.2" y="361.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle">RESERVA B</text>
+<text x="564.2" y="379.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">piso livre p/ 60 s</text>
+<polyline points="488.5,262.0 488.5,719.5" fill="none" stroke="#b26a12" stroke-width="88.5" stroke-linejoin="round" stroke-linecap="round" opacity=".17"/><polygon points="488.5,497.9 491.2,487.5 485.8,487.5" fill="#b26a12"/>
+<rect x="443.8" y="562.0" width="88.9" height="180.0" fill="none" stroke="#b26a12" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="488.5" y="442.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle" transform="rotate(-90 488.5 442.0)">ESPINHA DE SAÍDA</text>
+<polyline points="395.1,719.5 395.1,689.5 319.0,694.0 223.0,629.5 223.0,232.0 236.5,127.0" fill="none" stroke="#1f6fb2" stroke-width="45.0" stroke-linejoin="round" stroke-linecap="round" opacity=".16"/><polygon points="395.1,697.4 392.4,707.7 397.7,707.7" fill="#1f6fb2"/><polygon points="349.9,692.2 360.4,694.3 360.1,688.9" fill="#1f6fb2"/><polygon points="265.1,657.8 272.2,665.8 275.2,661.3" fill="#1f6fb2"/><polygon points="223.0,423.6 220.3,434.0 225.7,434.0" fill="#1f6fb2"/><polygon points="230.7,172.4 226.7,182.3 232.0,183.0" fill="#1f6fb2"/>
+<polyline points="268.0,127.0 265.0,277.0 265.0,562.0 334.0,607.0 448.0,607.0" fill="none" stroke="#b26a12" stroke-width="39.0" stroke-linejoin="round" stroke-linecap="round" opacity=".14"/><polygon points="266.4,209.1 269.3,198.8 263.9,198.7" fill="#b26a12"/><polygon points="265.0,426.6 267.7,416.3 262.3,416.3" fill="#b26a12"/><polygon points="305.5,588.4 298.3,580.5 295.3,585.0" fill="#b26a12"/><polygon points="398.1,607.0 387.8,604.3 387.8,609.7" fill="#b26a12"/>
+<polyline points="581.6,719.5 581.6,689.5 649.0,694.0 667.0,629.5 667.0,352.0 641.5,295.0 499.0,295.0" fill="none" stroke="#1f6fb2" stroke-width="45.0" stroke-linejoin="round" stroke-linecap="round" opacity=".16"/><polygon points="581.6,697.4 579.0,707.7 584.3,707.7" fill="#1f6fb2"/><polygon points="622.4,692.2 612.3,688.8 611.9,694.2" fill="#1f6fb2"/><polygon points="659.9,654.9 654.5,664.1 659.7,665.6" fill="#1f6fb2"/><polygon points="667.0,483.6 664.3,494.0 669.7,494.0" fill="#1f6fb2"/><polygon points="651.3,317.0 653.1,327.5 658.0,325.3" fill="#1f6fb2"/><polygon points="563.1,295.0 573.5,297.7 573.5,292.3" fill="#1f6fb2"/>
+<polyline points="499.0,259.0 626.5,259.0 613.0,322.0 613.0,562.0 559.0,607.0 533.5,607.0" fill="none" stroke="#b26a12" stroke-width="39.0" stroke-linejoin="round" stroke-linecap="round" opacity=".14"/><polygon points="569.9,259.0 559.5,256.3 559.5,261.7" fill="#b26a12"/><polygon points="618.3,297.5 623.1,287.9 617.8,286.8" fill="#b26a12"/><polygon points="613.0,449.1 615.7,438.8 610.3,438.8" fill="#b26a12"/><polygon points="580.5,589.1 590.2,584.5 586.7,580.4" fill="#b26a12"/><polygon points="539.1,607.0 549.5,609.7 549.5,604.3" fill="#b26a12"/>
+<text x="223.0" y="412.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle" transform="rotate(-90 223.0 412.0)">AVENIDA A</text>
+<text x="265.0" y="412.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle" transform="rotate(-90 265.0 412.0)">RETORNO A</text>
+<text x="667.0" y="472.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle" transform="rotate(-90 667.0 472.0)">AVENIDA B</text>
+<text x="613.0" y="472.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle" transform="rotate(-90 613.0 472.0)">RETORNO B</text>
+<rect x="272.0" y="679.0" width="39.0" height="45.0" fill="#e9ecef" opacity=".85" stroke="#e9ecef" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="276.6" y="724.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 291.6 701.5)"><text x="291.6" y="699.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3308</text><text x="291.6" y="709.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">295</text></g>
+<rect x="229.0" y="679.0" width="39.0" height="45.0" fill="#e9ecef" opacity=".85" stroke="#e9ecef" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="233.5" y="724.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 248.5 701.5)"><text x="248.5" y="699.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3442</text><text x="248.5" y="709.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">295</text></g>
+<rect x="185.9" y="679.0" width="39.0" height="45.0" fill="#e9ecef" opacity=".85" stroke="#e9ecef" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="190.4" y="724.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 205.4 701.5)"><text x="205.4" y="699.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3862</text><text x="205.4" y="709.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">296</text></g>
+<rect x="82.0" y="582.2" width="45.0" height="39.0" fill="#e9ecef" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="586.8" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="104.5" y="599.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3078</text><text x="104.5" y="609.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">310</text></g>
+<rect x="82.0" y="541.9" width="45.0" height="39.0" fill="#e9ecef" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="546.4" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="104.5" y="559.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">1352</text><text x="104.5" y="569.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">327</text></g>
+<rect x="82.0" y="501.5" width="45.0" height="39.0" fill="#e9ecef" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="506.0" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="104.5" y="519.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">512</text><text x="104.5" y="529.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">334</text></g>
+<rect x="82.0" y="461.3" width="45.0" height="39.0" fill="#e9ecef" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="465.8" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="104.5" y="478.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">517</text><text x="104.5" y="488.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">352</text></g>
+<rect x="82.0" y="352.1" width="45.0" height="39.0" fill="#b2bcc8" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="356.6" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="104.5" y="369.6" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">511</text><text x="104.5" y="379.6" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">387</text></g>
+<rect x="82.0" y="302.5" width="45.0" height="39.0" fill="#b2bcc8" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="307.0" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="104.5" y="320.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3309</text><text x="104.5" y="330.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">403</text></g>
+<rect x="82.0" y="252.8" width="45.0" height="39.0" fill="#75808e" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="257.3" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="104.5" y="270.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3311</text><text x="104.5" y="280.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">466</text></g>
+<rect x="82.0" y="203.2" width="60.0" height="39.0" fill="#75808e" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="207.7" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="112.0" y="220.7" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3306</text><text x="112.0" y="230.7" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">478</text></g>
+<rect x="82.0" y="153.6" width="67.5" height="39.0" fill="#75808e" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="158.0" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="115.8" y="171.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3302</text><text x="115.8" y="181.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">481</text></g>
+<rect x="322.6" y="94.0" width="39.0" height="82.5" fill="#75808e" opacity=".85" stroke="#75808e" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="327.1" y="76.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 342.1 135.3)"><text x="342.1" y="133.3" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3245</text><text x="342.1" y="143.3" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">486</text></g>
+<rect x="277.3" y="94.0" width="39.0" height="90.0" fill="#75808e" opacity=".85" stroke="#75808e" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="281.8" y="76.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 296.8 139.0)"><text x="296.8" y="137.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3161</text><text x="296.8" y="147.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">491</text></g>
+<rect x="82.0" y="103.9" width="90.0" height="39.0" fill="#75808e" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="64.0" y="108.4" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="127.0" y="121.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3142</text><text x="127.0" y="131.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">492</text></g>
+<rect x="666.0" y="679.0" width="39.0" height="45.0" fill="#e9ecef" opacity=".85" stroke="#e9ecef" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="670.5" y="724.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 685.5 701.5)"><text x="685.5" y="699.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3688</text><text x="685.5" y="709.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">296</text></g>
+<rect x="710.2" y="679.0" width="39.0" height="45.0" fill="#e9ecef" opacity=".85" stroke="#e9ecef" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="714.7" y="724.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 729.7 701.5)"><text x="729.7" y="699.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3832</text><text x="729.7" y="709.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">296</text></g>
+<rect x="754.5" y="679.0" width="39.0" height="45.0" fill="#e9ecef" opacity=".85" stroke="#e9ecef" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="758.9" y="724.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 773.9 701.5)"><text x="773.9" y="699.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3054</text><text x="773.9" y="709.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">323</text></g>
+<rect x="754.0" y="604.8" width="46.5" height="38.0" fill="#e9ecef" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="800.5" y="608.8" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="777.2" y="621.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">1160</text><text x="777.2" y="631.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">332</text></g>
+<rect x="754.0" y="567.0" width="46.5" height="38.0" fill="#e9ecef" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="800.5" y="571.0" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="777.2" y="584.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">513</text><text x="777.2" y="594.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">347</text></g>
+<rect x="754.0" y="529.1" width="46.5" height="37.9" fill="#b2bcc8" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="800.5" y="533.0" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="777.2" y="546.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3216</text><text x="777.2" y="556.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">381</text></g>
+<rect x="754.0" y="427.1" width="46.5" height="37.9" fill="#b2bcc8" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="800.5" y="431.0" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="777.2" y="444.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3229</text><text x="777.2" y="454.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">399</text></g>
+<rect x="754.0" y="389.0" width="46.5" height="38.0" fill="#b2bcc8" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="800.5" y="392.9" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="777.2" y="405.9" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1f2c3c" text-anchor="middle">3179</text><text x="777.2" y="415.9" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">434</text></g>
+<rect x="746.5" y="351.2" width="54.0" height="38.0" fill="#75808e" opacity=".85" stroke="#6b7480" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="800.5" y="355.1" width="18.0" height="30.0" fill="#0f1620"/>
+<g><text x="773.5" y="368.1" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3108</text><text x="773.5" y="378.1" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">474</text></g>
+<rect x="531.0" y="94.0" width="80.2" height="180.0" fill="#3b4552" opacity=".85" stroke="#3b4552" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="556.2" y="76.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 571.2 184.0)"><text x="571.2" y="182.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3313</text><text x="571.2" y="192.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">590</text></g>
+<rect x="621.6" y="94.0" width="79.0" height="180.0" fill="#3b4552" opacity=".85" stroke="#3b4552" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="646.2" y="76.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 661.2 184.0)"><text x="661.2" y="182.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3322</text><text x="661.2" y="192.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">588</text></g>
+<rect x="442.4" y="94.0" width="77.7" height="180.0" fill="#3b4552" opacity=".85" stroke="#3b4552" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="466.3" y="76.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 481.3 184.0)"><text x="481.3" y="182.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3315</text><text x="481.3" y="192.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">586</text></g>
+<rect x="731.5" y="94.0" width="39.0" height="67.5" fill="#75808e" opacity=".85" stroke="#75808e" stroke-width="1.2" stroke-dasharray="4 3"/>
+<rect x="736.0" y="76.0" width="30.0" height="18.0" fill="#0f1620"/>
+<g transform="rotate(-90 751.0 127.8)"><text x="751.0" y="125.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#f4f6f8" text-anchor="middle">3305</text><text x="751.0" y="135.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#c8d0d8" text-anchor="middle">479</text></g>
+<rect x="430.0" y="76.0" width="267.0" height="192.0" fill="none" stroke="#b23b2e" stroke-width="1.6" stroke-dasharray="8 4"/>
+<text x="563.5" y="58.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle">SETOR REFORÇADO — 3 urnas Dublin+Dublin, fila de pico ~57 cada, 4 mesários</text>
+<line x1="175.2" y1="76.0" x2="205.6" y2="76.0" stroke="#16867f" stroke-width="6"/>
+<line x1="373.9" y1="76.0" x2="427.3" y2="76.0" stroke="#16867f" stroke-width="6"/>
+<line x1="818.5" y1="697.7" x2="818.5" y2="651.9" stroke="#16867f" stroke-width="6"/>
+<line x1="818.5" y1="520.0" x2="818.5" y2="473.9" stroke="#16867f" stroke-width="6"/>
+<line x1="818.5" y1="342.1" x2="818.5" y2="296.2" stroke="#16867f" stroke-width="6"/>
+<line x1="818.5" y1="164.4" x2="818.5" y2="118.4" stroke="#16867f" stroke-width="6"/>
+<line x1="64.0" y1="451.6" x2="64.0" y2="405.5" stroke="#16867f" stroke-width="6"/>
+<line x1="64.0" y1="190.0" x2="64.0" y2="164.5" stroke="#16867f" stroke-width="6"/>
+<line x1="322.3" y1="742.0" x2="341.0" y2="742.0" stroke="#5b93c9" stroke-width="7.5"/>
+<text x="331.7" y="764.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#243244" text-anchor="middle">prior. A</text>
+<text x="331.7" y="775.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">porta 2.7</text>
+<line x1="350.5" y1="742.0" x2="439.5" y2="742.0" stroke="#1f6fb2" stroke-width="7.5"/>
+<text x="395.0" y="764.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#243244" text-anchor="middle">ENTRADA A</text>
+<text x="395.0" y="775.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">porta 2.5/2.6</text>
+<line x1="443.8" y1="742.0" x2="532.8" y2="742.0" stroke="#b26a12" stroke-width="7.5"/>
+<text x="488.3" y="764.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#243244" text-anchor="middle">SAÍDA</text>
+<text x="488.3" y="775.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">porta 2.4</text>
+<line x1="537.1" y1="742.0" x2="626.0" y2="742.0" stroke="#1f6fb2" stroke-width="7.5"/>
+<text x="581.6" y="764.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#243244" text-anchor="middle">ENTRADA B</text>
+<text x="581.6" y="775.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">porta 2.2/2.3</text>
+<line x1="635.4" y1="742.0" x2="654.4" y2="742.0" stroke="#5b93c9" stroke-width="7.5"/>
+<text x="644.9" y="764.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#243244" text-anchor="middle">prior. B</text>
+<text x="644.9" y="775.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">porta 2.1</text>
+<text x="154.0" y="434.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".42" text-anchor="middle">ZONA A</text>
+<text x="611.5" y="652.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".42" text-anchor="middle">ZONA B</text>
+<text x="64" y="26" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="16" font-weight="700" fill="#1f2c3c">RDS Ballsbridge, Hall 2 — planta de fluxo do 1º turno (04/10/2026)</text>
+<text x="64" y="44" font-family="ui-sans-serif.system-ui.'Segoe UI'.Helvetica.Arial.sans-serif" font-size="8" fill="#5c6c80">50.2 × 44.5 m · 2.238 m² · 28 MRVs · 11.418 eleitores esperados · 2 entradas + 1 saída · baias dimensionadas para 55 s por eleitor</text>
+<line x1="64.0" y1="761.5" x2="214.0" y2="761.5" stroke="#243244" stroke-width="2"/>
+<text x="139.0" y="756.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">10 m</text>
+<rect x="64" y="822.0" width="11" height="11" fill="#0f1620" opacity="1" stroke="#0f1620"/>
+<text x="80" y="831.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">mesa receptora + urna (MRV)</text>
+<rect x="231.1" y="822.0" width="11" height="11" fill="#e9ecef" opacity="0.4" stroke="#e9ecef"/>
+<text x="247.1" y="831.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">baia de fila — carga leve</text>
+<rect x="387.6" y="822.0" width="11" height="11" fill="#b2bcc8" opacity="0.4" stroke="#b2bcc8"/>
+<text x="403.6" y="831.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">carga média</text>
+<rect x="469.90000000000003" y="822.0" width="11" height="11" fill="#75808e" opacity="1" stroke="#75808e"/>
+<text x="485.90000000000003" y="831.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">carga alta</text>
+<rect x="64" y="842.0" width="11" height="11" fill="#3b4552" opacity="1" stroke="#3b4552"/>
+<text x="80" y="851.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">carga crítica</text>
+<rect x="156.89999999999998" y="842.0" width="11" height="11" fill="#1f6fb2" opacity="0.4" stroke="#1f6fb2"/>
+<text x="172.89999999999998" y="851.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">avenida de entrada</text>
+<rect x="276.29999999999995" y="842.0" width="11" height="11" fill="#b26a12" opacity="0.4" stroke="#b26a12"/>
+<text x="292.29999999999995" y="851.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">fluxo de saída</text>
+<rect x="374.49999999999994" y="842.0" width="11" height="11" fill="#16867f" opacity="1" stroke="#16867f"/>
+<text x="390.49999999999994" y="851.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">saída de emergência — manter livre</text>
+<text x="64" y="876.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80">Em cada baia: código da urna (acima) e eleitores esperados (abaixo). A carga cresce com a distância até a porta, de modo que nenhum eleitor de urna leve caminhe por trás da fila de uma urna pesada.</text>
+</svg></div>
+    <figcaption>Planta em escala, medida do PDF oficial do RDS. As avenidas de entrada (azul) e os retornos (âmbar) correm em faixas paralelas e adjacentes, sem se cruzarem em ponto algum; encontram-se apenas na espinha central, que desemboca na porta 2.4. Cada baia de fila está desenhada no tamanho que a simulação exige para aquela urna.</figcaption>
+  </figure>
+  <ol class="passos">
+    <li><div><h3>Triagem na fila externa</h3><p>O eleitor chega à fila da sua frente já sabendo a urna — por consulta prévia, sinalização ou conferência de documento na rua. Sai da rua com um destino, não com uma dúvida.</p></div></li>
+    <li><div><h3>Entrada e avenida</h3><p>Passa pelo vão largo da sua zona e entra na avenida, um corredor de sentido único que corre por dentro das bocas das baias, do sul para o norte.</p></div></li>
+    <li><div><h3>Baia individual</h3><p>Entra na baia da sua urna, balizada e identificada. A fila dela não encosta na fila de nenhuma outra e não atravessa a avenida.</p></div></li>
+    <li><div><h3>Mesa e urna</h3><p>Vota no fundo da baia, com a urna contra a parede — que é onde estão os pontos elétricos previstos no orçamento do eletricista.</p></div></li>
+    <li><div><h3>Retorno e espinha</h3><p>Sai pelo corredor de retorno, paralelo à avenida e em sentido contrário, até a espinha central, e da espinha direto para a porta 2.4.</p></div></li>
+  </ol>
+  <div class="prosa">
+    <p style="margin-top:34px">O <strong>gradiente de carga</strong> é o que responde ao critério de não deixar eleitor de urna calma parado atrás de eleitor de urna cheia. As doze urnas leves ficam nos trechos de parede junto às portas, com baias rasas de três metros; as oito de carga alta e as três críticas ficam nas paredes mais distantes, onde há piso para uma fila serpenteada de doze metros de profundidade. Como a carga só cresce com a distância, o eleitor de urna leve <em>nunca</em> chega a passar pelo campo de fila de uma urna pesada — ele já parou muito antes.</p>
+    <p>Pelo mesmo raciocínio as três urnas críticas ficam <strong>juntas</strong>, e não espalhadas. Intercalá-las com urnas leves obrigaria os eleitores das leves a caminhar entre dois aglomerados densos. Agrupadas num setor próprio, no trecho mais fundo da parede norte, elas ocupam um campo de fila contínuo que só serve a elas — com quatro mesários cada, sendo um deles dedicado à conferência de documentos ainda dentro da fila, que é o modo de encurtar o atendimento sem mexer no espaço.</p>
+  </div>
+</section>
+
+<section>
+  <p class="rotulo">O que realmente decide</p>
+  <h2>Tudo depende do tempo de atendimento</h2>
+  <div class="prosa">
+    <p>A simulação hora a hora mostra que o salão não é o problema — o relógio é. Entre 45 e 90 segundos por eleitor, a fila de pico somada nas 28 urnas varia por um fator de sessenta e cinco.</p>
+  </div>
+  <div class="rolagem compacta" style="margin-top:26px">
+    <table>
+      <thead><tr>
+        <th>Tempo por eleitor</th><th>Fila de pico somada</th><th>Maior fila</th>
+        <th>Urnas com fila &gt; 10</th><th>Última a fechar</th>
+      </tr></thead>
+      <tbody><tr><td class="mono b">45 s</td><td class="mono">33</td><td class="mono">12</td><td class="mono">2</td><td class="mono">17h00</td></tr>
+<tr><td class="mono b">50 s</td><td class="mono">100</td><td class="mono">32</td><td class="mono">3</td><td class="mono">17h00</td></tr>
+<tr class=proj><td class="mono b">55 s</td><td class="mono">241</td><td class="mono">57</td><td class="mono">6</td><td class="mono">17h20</td></tr>
+<tr><td class="mono b">60 s</td><td class="mono">436</td><td class="mono">84</td><td class="mono">11</td><td class="mono">18h05</td></tr>
+<tr><td class="mono b">70 s</td><td class="mono">929</td><td class="mono">136</td><td class="mono">14</td><td class="mono">19h35</td></tr>
+<tr><td class="mono b">90 s</td><td class="mono">2.165</td><td class="mono">230</td><td class="mono">23</td><td class="mono">22h45</td></tr></tbody>
+    </table>
+  </div>
+  <div class="prosa">
+    <p style="margin-top:26px">As baias desenhadas na planta são dimensionadas para <strong>55 segundos</strong> — o ponto em que a fila de pico somada é de 241 pessoas e as três urnas críticas chegam a 57 cada. É um ponto de projeto deliberadamente conservador: a 45 s o posto praticamente não forma fila (33 pessoas no total) e tudo fecha às 17h em ponto.</p>
+    <p>Se o atendimento derrapar para 60 s, a fila de pico somada vai a 436 — <strong>195 pessoas a mais do que as baias comportam</strong>. Para isso a planta reserva dois blocos de piso livre no miolo do salão, um por zona, adjacentes aos corredores: as baias das urnas pesadas se estendem para dentro deles sem invadir avenida, retorno nem espinha. A 90 s por eleitor nada disso salva o posto — a fila somada passa de 2.165 pessoas e a última urna fecharia perto das 23h. <strong>O método de identificação do eleitor é, portanto, uma decisão de layout tanto quanto de procedimento.</strong></p>
+  </div>
+</section>
+
+<section>
+  <p class="rotulo">Consequências</p>
+  <h2>O que este desenho cobra</h2>
+  <ul class="marcas">
+    <li><strong>Balizadores: cerca de 432 m, contra os 200 m orçados.</strong> As 28 baias sozinhas pedem 432 metros, sem contar os campos de fila externos das duas frentes. As 100 unidades da alínea (d) do telegrama cobrem menos da metade do necessário — vale rever antes de fechar a contratação.</li>
+    <li><strong>Mesários: 87 no salão.</strong> Três por mesa, quatro nas três urnas críticas, sendo o quarto dedicado à conferência de documentos dentro da fila.</li>
+    <li><strong>Equipes de triagem desiguais.</strong> A zona A recebe 5.893 eleitores e a B, 5.525 — divisão de 52/48 que decorre da geometria, já que a parede leste é recortada por quatro pares de saídas de emergência. Dimensionar as duas frentes por essa proporção, não meio a meio.</li>
+    <li><strong>Dezesseis folhas de emergência permanentemente livres.</strong> As saídas 2.8 a 2.23 recortam o perímetro de parede disponível e são o motivo de as 28 posições ficarem em dez trechos descontínuos em vez de uma fita contínua. Nenhuma baia, banner ou cabo pode invadi-las.</li>
+    <li><strong>Acesso aos banheiros.</strong> Os sanitários ficam fora do salão, pelas portas 2.10/2.11, na parede oeste — dentro da zona A. Eleitor da zona B que precise do banheiro atravessa o miolo do salão. A espinha só é balizada até doze metros da porta justamente para deixar essa travessia livre acima disso.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="rotulo">Todas as posições</p>
+  <h2>As 28 MRVs</h2>
+  <div class="rolagem" style="margin-top:24px; max-height:620px; overflow-y:auto">
+    <table>
+      <thead><tr>
+        <th>Zona</th><th>Parede</th><th>Urna</th><th>Seções</th><th>Aptos</th>
+        <th>Origem interior</th><th>Esperados</th><th>Fila de pico</th>
+        <th>Baia (m)</th><th>Mesários</th><th>Carga</th>
+      </tr></thead>
+      <tbody><tr>
+<td class="z zA">A</td><td>sul</td>
+<td class="mono b">3308</td><td class="mono peq">3308</td>
+<td class="mono">399</td><td class="mono">—</td>
+<td class="mono b">295</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>sul</td>
+<td class="mono b">3442</td><td class="mono peq">3442</td>
+<td class="mono">398</td><td class="mono">—</td>
+<td class="mono b">295</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>sul</td>
+<td class="mono b">3862</td><td class="mono peq">3862</td>
+<td class="mono">400</td><td class="mono">—</td>
+<td class="mono b">296</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">3078</td><td class="mono peq">3078 + 2847</td>
+<td class="mono">429</td><td class="mono">Leitrim</td>
+<td class="mono b">310</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">1352</td><td class="mono peq">1352 + 522</td>
+<td class="mono">462</td><td class="mono">Donegal</td>
+<td class="mono b">327</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">512</td><td class="mono peq">512 + 2855</td>
+<td class="mono">476</td><td class="mono">Longford</td>
+<td class="mono b">334</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">517</td><td class="mono peq">517 + 1292</td>
+<td class="mono">513</td><td class="mono">Cavan</td>
+<td class="mono b">352</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">511</td><td class="mono peq">511 + 1100</td>
+<td class="mono">582</td><td class="mono">Roscommon</td>
+<td class="mono b">387</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tmedia">média</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">3309</td><td class="mono peq">3309 + 1314</td>
+<td class="mono">615</td><td class="mono">Waterford</td>
+<td class="mono b">403</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tmedia">média</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">3311</td><td class="mono peq">3311 + 3913</td>
+<td class="mono">630</td><td class="mono">—</td>
+<td class="mono b">466</td><td class="mono">5</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag talta">alta</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">3306</td><td class="mono peq">3306 + 518</td>
+<td class="mono">766</td><td class="mono">Outros Locais Da Irlanda</td>
+<td class="mono b">478</td><td class="mono">8</td>
+<td class="mono peq">2.6 × 4.0</td>
+<td class="mono">3</td>
+<td><span class="tag talta">alta</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">3302</td><td class="mono peq">3302 + 3181</td>
+<td class="mono">771</td><td class="mono">Outros Locais Da Irlanda</td>
+<td class="mono b">481</td><td class="mono">9</td>
+<td class="mono peq">2.6 × 4.5</td>
+<td class="mono">3</td>
+<td><span class="tag talta">alta</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>norte</td>
+<td class="mono b">3245</td><td class="mono peq">3245 + 519</td>
+<td class="mono">781</td><td class="mono">Cork</td>
+<td class="mono b">486</td><td class="mono">11</td>
+<td class="mono peq">2.6 × 5.5</td>
+<td class="mono">3</td>
+<td><span class="tag talta">alta</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>norte</td>
+<td class="mono b">3161</td><td class="mono peq">3161 + 3307</td>
+<td class="mono">791</td><td class="mono">Cork</td>
+<td class="mono b">491</td><td class="mono">12</td>
+<td class="mono peq">2.6 × 6.0</td>
+<td class="mono">3</td>
+<td><span class="tag talta">alta</span></td></tr>
+<tr>
+<td class="z zA">A</td><td>oeste</td>
+<td class="mono b">3142</td><td class="mono peq">3142 + 1278</td>
+<td class="mono">793</td><td class="mono">Limerick</td>
+<td class="mono b">492</td><td class="mono">12</td>
+<td class="mono peq">2.6 × 6.0</td>
+<td class="mono">3</td>
+<td><span class="tag talta">alta</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>sul</td>
+<td class="mono b">3688</td><td class="mono peq">3688</td>
+<td class="mono">400</td><td class="mono">—</td>
+<td class="mono b">296</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>sul</td>
+<td class="mono b">3832</td><td class="mono peq">3832</td>
+<td class="mono">400</td><td class="mono">—</td>
+<td class="mono b">296</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>sul</td>
+<td class="mono b">3054</td><td class="mono peq">3054 + 1099</td>
+<td class="mono">454</td><td class="mono">Kerry</td>
+<td class="mono b">323</td><td class="mono">—</td>
+<td class="mono peq">2.6 × 3.0</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>leste</td>
+<td class="mono b">1160</td><td class="mono peq">1160 + 3845</td>
+<td class="mono">473</td><td class="mono">Limerick</td>
+<td class="mono b">332</td><td class="mono">—</td>
+<td class="mono peq">2.5 × 3.1</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>leste</td>
+<td class="mono b">513</td><td class="mono peq">513 + 1105</td>
+<td class="mono">502</td><td class="mono">Mayo</td>
+<td class="mono b">347</td><td class="mono">—</td>
+<td class="mono peq">2.5 × 3.1</td>
+<td class="mono">3</td>
+<td><span class="tag tleve">leve</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>leste</td>
+<td class="mono b">3216</td><td class="mono peq">3216 + 527</td>
+<td class="mono">571</td><td class="mono">Clare</td>
+<td class="mono b">381</td><td class="mono">—</td>
+<td class="mono peq">2.5 × 3.1</td>
+<td class="mono">3</td>
+<td><span class="tag tmedia">média</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>leste</td>
+<td class="mono b">3229</td><td class="mono peq">3229 + 3821</td>
+<td class="mono">606</td><td class="mono">Cork</td>
+<td class="mono b">399</td><td class="mono">—</td>
+<td class="mono peq">2.5 × 3.1</td>
+<td class="mono">3</td>
+<td><span class="tag tmedia">média</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>leste</td>
+<td class="mono b">3179</td><td class="mono peq">3179 + 530</td>
+<td class="mono">676</td><td class="mono">Westmeath</td>
+<td class="mono b">434</td><td class="mono">—</td>
+<td class="mono peq">2.5 × 3.1</td>
+<td class="mono">3</td>
+<td><span class="tag tmedia">média</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>leste</td>
+<td class="mono b">3108</td><td class="mono peq">3108 + 3422</td>
+<td class="mono">756</td><td class="mono">Galway</td>
+<td class="mono b">474</td><td class="mono">7</td>
+<td class="mono peq">2.5 × 3.6</td>
+<td class="mono">3</td>
+<td><span class="tag talta">alta</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>norte</td>
+<td class="mono b">3313</td><td class="mono peq">3313 + 3889</td>
+<td class="mono">797</td><td class="mono">—</td>
+<td class="mono b">590</td><td class="mono">57</td>
+<td class="mono peq">5.3 × 12.0</td>
+<td class="mono">4</td>
+<td><span class="tag tcritica">crítica</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>norte</td>
+<td class="mono b">3322</td><td class="mono peq">3322 + 3752</td>
+<td class="mono">794</td><td class="mono">—</td>
+<td class="mono b">588</td><td class="mono">56</td>
+<td class="mono peq">5.3 × 12.0</td>
+<td class="mono">4</td>
+<td><span class="tag tcritica">crítica</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>norte</td>
+<td class="mono b">3315</td><td class="mono peq">3315 + 3778</td>
+<td class="mono">792</td><td class="mono">—</td>
+<td class="mono b">586</td><td class="mono">55</td>
+<td class="mono peq">5.2 × 12.0</td>
+<td class="mono">4</td>
+<td><span class="tag tcritica">crítica</span></td></tr>
+<tr>
+<td class="z zB">B</td><td>norte</td>
+<td class="mono b">3305</td><td class="mono peq">3305 + 521</td>
+<td class="mono">767</td><td class="mono">Galway</td>
+<td class="mono b">479</td><td class="mono">9</td>
+<td class="mono peq">2.6 × 4.5</td>
+<td class="mono">3</td>
+<td><span class="tag talta">alta</span></td></tr></tbody>
+    </table>
+  </div>
+  <figcaption>Ordenadas por zona e por distância até a porta da zona — que é a ordem em que o eleitor as encontra ao caminhar. Fila de pico e baia calculadas para 55 s por eleitor. 12 urnas de carga leve, 5 média, 8 alta, 3 crítica.</figcaption>
+</section>
+
+<section>
+  <p class="rotulo">Antes de fechar</p>
+  <h2>Cinco verificações</h2>
+  <ol class="passos">
+    <li><div><h3>As saídas da parede leste dão para onde?</h3><p>Se derem para área externa utilizável pelo público, a configuração de três entradas com saída pela leste passa a ser melhor que esta. É a pergunta de maior retorno da lista.</p></div></li>
+    <li><div><h3>Qual será o método de identificação do eleitor?</h3><p>Biométrico, eletrônico ou caderno físico. É o que põe o posto em 45, 55 ou 90 segundos por eleitor — e, portanto, o que decide se as baias desenhadas bastam.</p></div></li>
+    <li><div><h3>O módulo de 2,0 m por seção confere?</h3><p>Mesa de três mesários mais urna, com a urna atrás da mesa. Toda a geometria de perímetro depende dessa medida; convém aferi-la contra o equipamento real antes de fechar a planta.</p></div></li>
+    <li><div><h3>A triagem será humana ou por sinalização?</h3><p>Se depender de conferência verbal de documento na entrada, a etapa vira gargalo não paralelizável e o número de raias externas precisa ser dimensionado explicitamente.</p></div></li>
+    <li><div><h3>O Cartório Eleitoral valida o setor reforçado?</h3><p>As três urnas críticas com quatro mesários e conferência antecipada dentro da fila é uma variação de procedimento, não de layout. Vale confirmar antes de formalizar.</p></div></li>
+  </ol>
+</section>
+
+<footer>
+  <p>Geometria medida da planta oficial do RDS (Hall 2, pavimento térreo), com escala aferida contra a ficha técnica do próprio documento: 50,2 × 44,5 m, 2.238 m². Comparecimento estimado a partir do cadastro do TSE das 51 seções da Irlanda, com as taxas observadas em 2022 — 74% para residentes em Dublin, 50% para residentes no interior. Fila simulada em passos de cinco minutos sobre um perfil de chegada com pico de meio de manhã.</p>
+  <p>Os números de comparecimento são estimativas, não previsões; o perfil de chegada é uma premissa de projeto e deve ser revisto se houver dado observado do posto de Dublin em 2022.</p>
+</footer>
+</div>

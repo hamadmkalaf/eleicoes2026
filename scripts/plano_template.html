@@ -1,0 +1,368 @@
+<title>Fluxo do Posto de Dublin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  --papel:#f6f4ef; --folha:#fffdf8; --tinta:#17202b; --meio:#59616d;
+  --fraco:#8a919b; --regua:#ddd7cb; --regua2:#eae5da;
+  --entrada:#1f6fb2; --saida:#b26a12; --emerg:#16867f; --alerta:#b23b2e;
+  --grade:#e9ecef; --grade2:#b2bcc8; --grade3:#75808e; --grade4:#3b4552;
+  --marca:rgba(31,111,178,.09);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --papel:#111519; --folha:#191e24; --tinta:#e7ebef; --meio:#a3abb5;
+  --fraco:#78818c; --regua:#2c333b; --regua2:#232a31;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a;
+  --grade:#2a3138; --grade2:#4a545f; --grade3:#7b8692; --grade4:#aab3bd;
+  --marca:rgba(99,166,224,.12);
+}}
+:root[data-theme="dark"]{
+  --papel:#111519; --folha:#191e24; --tinta:#e7ebef; --meio:#a3abb5;
+  --fraco:#78818c; --regua:#2c333b; --regua2:#232a31;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a;
+  --grade:#2a3138; --grade2:#4a545f; --grade3:#7b8692; --grade4:#aab3bd;
+  --marca:rgba(99,166,224,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.folha{max-width:1140px; margin:0 auto; padding:0 28px 96px}
+.prosa{max-width:70ch}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+  text-wrap:balance; margin:0; font-weight:700; letter-spacing:-.008em}
+h1{font-size:clamp(2rem,4.4vw,3.05rem); line-height:1.08}
+h2{font-size:clamp(1.45rem,2.5vw,1.95rem); line-height:1.18}
+h3{font-size:1.06rem; font-weight:600; line-height:1.3}
+p{margin:0 0 1.05em}
+a{color:var(--entrada)}
+strong{font-weight:600}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+.b{font-weight:600}
+.peq{font-size:.86em}
+
+/* ---- cabecalho ---- */
+header{padding:76px 0 0}
+.olho{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 20px}
+.chamada{font-family:"Source Serif 4",Georgia,serif; font-size:clamp(1.1rem,2vw,1.32rem);
+  line-height:1.5; color:var(--meio); max-width:60ch; margin:22px 0 0}
+.faixa{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
+  gap:1px; background:var(--regua); border:1px solid var(--regua);
+  margin:44px 0 0}
+.faixa div{background:var(--papel); padding:15px 16px}
+.faixa dt{font-size:.72rem; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--meio); margin:0 0 5px}
+.faixa dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.42rem;
+  font-weight:500; font-variant-numeric:tabular-nums; line-height:1.15}
+.faixa dd small{display:block; font-family:"IBM Plex Sans",sans-serif;
+  font-size:.74rem; font-weight:400; color:var(--fraco); letter-spacing:0;
+  margin-top:3px}
+
+section{margin:72px 0 0}
+.rotulo{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 10px;
+  padding-bottom:9px; border-bottom:1px solid var(--regua)}
+section > h2{margin-bottom:18px}
+
+/* ---- as tres respostas ---- */
+.respostas{display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(268px,1fr));
+  margin-top:26px}
+.resposta{background:var(--folha); border:1px solid var(--regua); padding:22px 22px 24px;
+  display:flex; flex-direction:column; gap:11px}
+.resposta .pergunta{font-size:.83rem; color:var(--meio); line-height:1.45}
+.resposta .num{font-family:"IBM Plex Mono",monospace; font-size:.72rem;
+  color:var(--entrada); letter-spacing:.1em}
+.resposta .curta{font-family:"Source Serif 4",Georgia,serif; font-size:1.24rem;
+  font-weight:700; line-height:1.26}
+.resposta p{margin:0; font-size:.93rem; color:var(--meio)}
+
+/* ---- grafico ---- */
+figure{margin:30px 0 0}
+figcaption{font-size:.84rem; color:var(--meio); margin-top:14px; max-width:74ch}
+.grafico{background:var(--folha); border:1px solid var(--regua); padding:22px 24px 18px}
+.linha{display:grid; grid-template-columns:44px 1fr 42px; align-items:center;
+  gap:11px; padding:1.5px 0; position:relative; outline:none}
+.linha .cod{font-family:"IBM Plex Mono",monospace; font-size:.76rem; color:var(--meio);
+  text-align:right; font-variant-numeric:tabular-nums}
+.linha .trilho{height:13px; background:var(--regua2)}
+.linha .barra{display:block; height:100%; background:var(--grade3);
+  border-radius:0 3px 3px 0}
+.linha.destaque .barra{background:var(--alerta)}
+.linha.destaque .cod,.linha.destaque .val{color:var(--tinta); font-weight:600}
+.linha .val{font-family:"IBM Plex Mono",monospace; font-size:.76rem;
+  font-variant-numeric:tabular-nums; color:var(--meio)}
+.linha .dica{position:absolute; left:56px; bottom:100%; z-index:5; opacity:0;
+  pointer-events:none; background:var(--tinta); color:var(--papel);
+  font-family:"IBM Plex Mono",monospace; font-size:.72rem; line-height:1.45;
+  padding:5px 9px; max-width:min(360px,66vw); transition:opacity .12s}
+.linha:hover .dica,.linha:focus .dica{opacity:1}
+.linha:focus .trilho{outline:2px solid var(--entrada); outline-offset:2px}
+.degrau{display:flex; align-items:center; gap:10px; margin:9px 0 3px;
+  font-size:.76rem; color:var(--alerta); font-weight:600}
+.degrau::before,.degrau::after{content:""; flex:1; height:1px; background:var(--alerta);
+  opacity:.4}
+
+/* ---- planta ---- */
+.prancha{background:#fbfaf7; border:1px solid var(--regua); padding:8px;
+  overflow-x:auto}
+.prancha svg{display:block; min-width:760px}
+
+/* ---- tabelas ---- */
+.rolagem{overflow-x:auto; border:1px solid var(--regua); background:var(--folha)}
+table{border-collapse:collapse; width:100%; font-size:.855rem}
+th,td{text-align:left; padding:8px 11px; border-bottom:1px solid var(--regua2);
+  white-space:nowrap}
+thead th{position:sticky; top:0; background:var(--folha); font-size:.71rem;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--meio);
+  font-weight:500; border-bottom:1px solid var(--regua)}
+tbody tr:last-child td{border-bottom:none}
+td.mono{font-variant-numeric:tabular-nums;
+  font-family:"IBM Plex Mono",ui-monospace,monospace}
+td.z{font-family:"IBM Plex Mono",monospace; font-weight:600; text-align:center;
+  width:34px}
+td.zA{color:var(--entrada)} td.zB{color:var(--saida)}
+tr.proj td{background:var(--marca); font-weight:600}
+.tag{display:inline-block; font-size:.7rem; letter-spacing:.05em; padding:2px 7px;
+  border:1px solid currentColor; color:var(--meio)}
+.tleve{opacity:.6} .tmedia{opacity:.8}
+.talta{color:var(--tinta)} .tcritica{color:var(--alerta); font-weight:600}
+.compacta{max-width:660px}
+.compacta th,.compacta td{white-space:normal}
+
+/* ---- portas ---- */
+.portas{background:var(--folha); border:1px solid var(--regua); padding:22px 24px}
+.portas svg{display:block; width:100%; height:auto}
+
+/* ---- listas ---- */
+ol.passos{counter-reset:p; list-style:none; padding:0; margin:24px 0 0;
+  display:grid; gap:14px}
+ol.passos li{counter-increment:p; display:grid; grid-template-columns:30px 1fr;
+  gap:14px; align-items:start}
+ol.passos li::before{content:counter(p); font-family:"IBM Plex Mono",monospace;
+  font-size:.78rem; color:var(--entrada); border:1px solid var(--regua);
+  width:30px; height:30px; display:grid; place-items:center; margin-top:1px}
+ul.marcas{list-style:none; padding:0; margin:20px 0 0; display:grid; gap:12px}
+ul.marcas li{padding-left:20px; position:relative; color:var(--meio)}
+ul.marcas li::before{content:""; position:absolute; left:0; top:.62em; width:8px;
+  height:1px; background:var(--fraco)}
+ul.marcas li strong{color:var(--tinta)}
+
+.nota{border-left:2px solid var(--saida); padding:2px 0 2px 20px; margin:26px 0 0;
+  color:var(--meio); font-size:.95rem}
+.nota strong{color:var(--tinta)}
+
+footer{margin:84px 0 0; padding-top:22px; border-top:1px solid var(--regua);
+  font-size:.82rem; color:var(--fraco)}
+footer p{margin:0 0 .5em; max-width:74ch}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:640px){ .folha{padding:0 18px 64px} header{padding-top:48px} }
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro · RDS Ballsbridge, Hall 2</p>
+  <h1>Como o eleitor atravessa o Hall&nbsp;2</h1>
+  <p class="chamada">Desenho de fluxo para as 28 mesas receptoras do posto de Dublin: por onde se entra, por onde se sai, e onde cada urna fica no salão. A geometria vem da planta oficial do RDS; a carga de cada urna, do cadastro do TSE.</p>
+  <dl class="faixa">
+    <div><dt>Eleitores aptos</dt><dd>@@aptos@@<small>51 seções em 28 urnas</small></dd></div>
+    <div><dt>Comparecimento esperado</dt><dd>@@esperado@@<small>74% Dublin · 50% interior</small></dd></div>
+    <div><dt>Frentes de entrada</dt><dd>2<small>+ 2 portas prioritárias</small></dd></div>
+    <div><dt>Saída</dt><dd>1<small>baia central 2.4</small></dd></div>
+    <div><dt>Urnas críticas</dt><dd>3<small>586 a 590 eleitores</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <p class="rotulo">As três respostas</p>
+  <h2>Duas frentes, uma saída, carga crescente</h2>
+  <div class="respostas">
+    <div class="resposta">
+      <span class="num">Pergunta 1</span>
+      <span class="pergunta">Como distribuir as 28 MRVs pelo salão?</span>
+      <span class="curta">Contra as paredes, com a carga crescendo conforme a distância até a porta.</span>
+      <p>As urnas leves ficam junto às portas; as pesadas, nas paredes mais afastadas, onde há piso para a fila crescer. Assim nenhum eleitor de urna leve caminha por trás da fila de uma urna pesada.</p>
+    </div>
+    <div class="resposta">
+      <span class="num">Pergunta 2</span>
+      <span class="pergunta">Duas ou três entradas?</span>
+      <span class="curta">Duas — e o gargalo que preocupa não se resolve com uma terceira porta.</span>
+      <p>A vazão não é limitada pela porta, e sim pela triagem. Triagem se multiplica em raias na fila externa, não em portas. Uma terceira entrada obrigaria a saída a sair da baia central, que é o que torna o fluxo legível.</p>
+    </div>
+    <div class="resposta">
+      <span class="num">Pergunta 3</span>
+      <span class="pergunta">Quais das cinco portas para entrada e saída?</span>
+      <span class="curta">Entra pelas laterais 2.5/2.6 e 2.2/2.3; sai pela central 2.4.</span>
+      <p>As duas folhas estreitas — 2.7 e 2.1 — viram entradas prioritárias, uma por zona. A saída fica no meio, e as filas de entrada correm rentes à fachada, perpendiculares a ela.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="rotulo">Antes do desenho</p>
+  <h2>Não são quatro MRVs problemáticas — são três, e por outro motivo</h2>
+  <div class="prosa">
+  <p>O ponto de partida da conversa era “4 MRVs com cerca de 600 eleitores”. Os dados do cadastro dizem outra coisa, e a diferença muda o desenho.</p>
+  <p><strong>São três urnas de 586 a 590 comparecentes</strong> — 3313, 3322 e 3315, as únicas que somam <em>duas seções inteiras de Dublin</em>. Depois delas há um degrau nítido: as oito seguintes ficam entre 466 e 492, e as dezessete restantes abaixo de 435. Desenhar para quatro focos de 600 subdimensiona os três verdadeiros e ignora os oito intermediários.</p>
+  <p>E os oito intermediários são um problema de natureza diferente. Cada um deles é uma seção de Dublin somada a um condado inteiro do interior — Cork, Galway, Limerick, Westmeath. São <strong>@@interior@@ eleitores que moram fora de Dublin</strong> e vão ter de viajar para votar. Quem viaja chega em grupo: caronas, ônibus, famílias. A média horária dessas urnas é modesta; a chegada é em rajada. Elas precisam de piso de fila desproporcional ao seu número, e é por isso que também vão para as paredes fundas.</p>
+  </div>
+  <figure>
+    <div class="grafico">
+      @@barras@@
+    </div>
+    <figcaption>Comparecimento esperado por urna, das 28 do posto. As três em vermelho são as que somam duas seções de Dublin; o degrau logo abaixo delas é o que separa o problema real dos casos administráveis. Passe o cursor sobre uma linha para os números; a tabela completa está mais abaixo.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">Pergunta 2</p>
+  <h2>Por que duas frentes, e não três</h2>
+  <div class="prosa">
+  <p>A parede sul do Hall 2 tem cinco portas, e elas não são iguais: três vãos largos de 5,93 m no meio, contíguos entre si, e duas folhas estreitas de cerca de 1,25 m nas pontas. Todas as cinco cabem em 22 metros de uma fachada de 50. Essa geometria é o que decide a questão.</p>
+  </div>
+  <ul class="marcas">
+    <li><strong>A porta não é o gargalo.</strong> Um vão de 5,93 m passa mais de cem pessoas por minuto. No pico da manhã o posto inteiro recebe cerca de <strong>@@pico_min@@ pessoas por minuto</strong> — @@pico_zona@@ por frente com duas frentes. Nenhuma porta chega perto de saturar.</li>
+    <li><strong>O gargalo é a triagem</strong> — dizer a cada eleitor qual é a sua urna e conferir o documento. Isso se paraleliza acrescentando raias à fila <em>externa</em>, onde o espaço é barato, não acrescentando portas ao prédio. Uma terceira porta não compra vazão de triagem.</li>
+    <li><strong>Uma terceira entrada custaria a saída central.</strong> Os três vãos largos são vizinhos: usar os três para entrar obriga a saída a migrar para uma folha de 1,25 m ou para outra parede. A saída no meio é justamente o que torna o fluxo legível — “entra pelos lados, sai pelo meio”.</li>
+    <li><strong>Três frentes não melhoram a separação de filas.</strong> O risco de o eleitor de uma urna calma ficar preso atrás da fila de uma urna cheia é resolvido pela triagem prévia e pela baia individual de cada urna, não pelo número de portas.</li>
+    <li><strong>Cada frente cobra o seu preço:</strong> campo de fila externo, equipe de triagem, jogo de banners, supervisão. Duas frentes já dão <strong>@@zA@@</strong> (@@pctA@@%) e <strong>@@zB@@</strong> (@@pctB@@%) eleitores — carga equilibrada em nove horas.</li>
+  </ul>
+  <div class="nota"><strong>A exceção que vale checar.</strong> Se as saídas da parede leste (2.16 a 2.23) derem para área externa utilizável pelo público, aí sim três entradas passa a ser estritamente melhor: os três vãos largos viram entrada e a saída inteira migra para a parede leste, eliminando qualquer convivência entre quem entra e quem sai na fachada sul. Não dá para saber isso pela planta — é uma pergunta de cinco minutos ao RDS, e é a que tem maior retorno.</div>
+</section>
+
+<section>
+  <p class="rotulo">Pergunta 3</p>
+  <h2>O papel de cada uma das cinco portas</h2>
+  <div class="portas">
+    <svg viewBox="0 0 900 142" role="img" aria-label="Posição e papel das cinco portas da parede sul do Hall 2">
+      <line x1="20" y1="46" x2="880" y2="46" stroke="var(--tinta)" stroke-width="3"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--meio)">
+        <text x="20" y="34">oeste</text><text x="880" y="34" text-anchor="end">leste</text>
+      </g>
+      <!-- vãos em escala: parede útil de 7,8 m a 50,3 m sobre 860 px -->
+      <g stroke-width="9" stroke-linecap="butt">
+        <line x1="210" y1="46" x2="235" y2="46" stroke="var(--entrada)" opacity=".5"/>
+        <line x1="248" y1="46" x2="368" y2="46" stroke="var(--entrada)"/>
+        <line x1="374" y1="46" x2="494" y2="46" stroke="var(--saida)"/>
+        <line x1="500" y1="46" x2="619" y2="46" stroke="var(--entrada)"/>
+        <line x1="632" y1="46" x2="657" y2="46" stroke="var(--entrada)" opacity=".5"/>
+      </g>
+      <g stroke="var(--regua)" stroke-width="1">
+        <line x1="222" y1="53" x2="222" y2="100"/><line x1="644" y1="53" x2="644" y2="100"/>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="12" text-anchor="middle"
+         font-weight="600" fill="var(--tinta)">
+        <text x="308" y="70">ENTRADA A</text>
+        <text x="434" y="70">SAÍDA</text>
+        <text x="559" y="70">ENTRADA B</text>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" text-anchor="middle" fill="var(--meio)">
+        <text x="222" y="116">entrada prioritária A</text>
+        <text x="644" y="116">entrada prioritária B</text>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="10" text-anchor="middle" fill="var(--fraco)">
+        <text x="308" y="86">2.5/2.6 · 5,93 m</text>
+        <text x="434" y="86">2.4 · 5,93 m</text>
+        <text x="559" y="86">2.2/2.3 · 5,93 m</text>
+        <text x="222" y="132">2.7 · 1,25 m</text>
+        <text x="644" y="132">2.1 · 1,27 m</text>
+      </g>
+    </svg>
+  </div>
+  <div class="prosa">
+    <p style="margin-top:26px">Fora da parede sul, as dezesseis folhas restantes — 2.8 a 2.23, distribuídas pelas paredes norte, leste e oeste — permanecem exclusivamente como saídas de emergência, desobstruídas o dia inteiro.</p>
+    <p>A lógica externa é a que evita confusão: <strong>as filas de entrada correm rentes à fachada</strong>, a de A vindo do oeste e a de B vindo do leste, e viram para dentro só nos últimos metros. <strong>A saída sai a prumo</strong>, perpendicular ao prédio, em corredor balizado de uns quinze metros antes de dispersar. Quem entra anda paralelo à parede; quem sai anda contra ela. Nenhum eleitor precisa ler um banner para saber que está na fila errada.</p>
+    <p>As duas folhas estreitas viram <strong>entradas prioritárias</strong> — pessoas com deficiência, idosos, gestantes, lactantes — uma em cada zona, coladas na entrada geral respectiva, para que a preferência legal não dependa de furar fila.</p>
+  </div>
+</section>
+
+<section>
+  <p class="rotulo">Pergunta 1</p>
+  <h2>A planta</h2>
+  <figure>
+    <div class="prancha">@@svg@@</div>
+    <figcaption>Planta em escala, medida do PDF oficial do RDS. As avenidas de entrada (azul) e os retornos (âmbar) correm em faixas paralelas e adjacentes, sem se cruzarem em ponto algum; encontram-se apenas na espinha central, que desemboca na porta 2.4. Cada baia de fila está desenhada no tamanho que a simulação exige para aquela urna.</figcaption>
+  </figure>
+  <ol class="passos">
+    <li><div><h3>Triagem na fila externa</h3><p>O eleitor chega à fila da sua frente já sabendo a urna — por consulta prévia, sinalização ou conferência de documento na rua. Sai da rua com um destino, não com uma dúvida.</p></div></li>
+    <li><div><h3>Entrada e avenida</h3><p>Passa pelo vão largo da sua zona e entra na avenida, um corredor de sentido único que corre por dentro das bocas das baias, do sul para o norte.</p></div></li>
+    <li><div><h3>Baia individual</h3><p>Entra na baia da sua urna, balizada e identificada. A fila dela não encosta na fila de nenhuma outra e não atravessa a avenida.</p></div></li>
+    <li><div><h3>Mesa e urna</h3><p>Vota no fundo da baia, com a urna contra a parede — que é onde estão os pontos elétricos previstos no orçamento do eletricista.</p></div></li>
+    <li><div><h3>Retorno e espinha</h3><p>Sai pelo corredor de retorno, paralelo à avenida e em sentido contrário, até a espinha central, e da espinha direto para a porta 2.4.</p></div></li>
+  </ol>
+  <div class="prosa">
+    <p style="margin-top:34px">O <strong>gradiente de carga</strong> é o que responde ao critério de não deixar eleitor de urna calma parado atrás de eleitor de urna cheia. As doze urnas leves ficam nos trechos de parede junto às portas, com baias rasas de três metros; as oito de carga alta e as três críticas ficam nas paredes mais distantes, onde há piso para uma fila serpenteada de doze metros de profundidade. Como a carga só cresce com a distância, o eleitor de urna leve <em>nunca</em> chega a passar pelo campo de fila de uma urna pesada — ele já parou muito antes.</p>
+    <p>Pelo mesmo raciocínio as três urnas críticas ficam <strong>juntas</strong>, e não espalhadas. Intercalá-las com urnas leves obrigaria os eleitores das leves a caminhar entre dois aglomerados densos. Agrupadas num setor próprio, no trecho mais fundo da parede norte, elas ocupam um campo de fila contínuo que só serve a elas — com quatro mesários cada, sendo um deles dedicado à conferência de documentos ainda dentro da fila, que é o modo de encurtar o atendimento sem mexer no espaço.</p>
+  </div>
+</section>
+
+<section>
+  <p class="rotulo">O que realmente decide</p>
+  <h2>Tudo depende do tempo de atendimento</h2>
+  <div class="prosa">
+    <p>A simulação hora a hora mostra que o salão não é o problema — o relógio é. Entre 45 e 90 segundos por eleitor, a fila de pico somada nas 28 urnas varia por um fator de sessenta e cinco.</p>
+  </div>
+  <div class="rolagem compacta" style="margin-top:26px">
+    <table>
+      <thead><tr>
+        <th>Tempo por eleitor</th><th>Fila de pico somada</th><th>Maior fila</th>
+        <th>Urnas com fila &gt; 10</th><th>Última a fechar</th>
+      </tr></thead>
+      <tbody>@@sens@@</tbody>
+    </table>
+  </div>
+  <div class="prosa">
+    <p style="margin-top:26px">As baias desenhadas na planta são dimensionadas para <strong>55 segundos</strong> — o ponto em que a fila de pico somada é de @@f55@@ pessoas e as três urnas críticas chegam a 57 cada. É um ponto de projeto deliberadamente conservador: a 45 s o posto praticamente não forma fila (@@f45@@ pessoas no total) e tudo fecha às 17h em ponto.</p>
+    <p>Se o atendimento derrapar para 60 s, a fila de pico somada vai a @@f60@@ — <strong>@@reserva@@ pessoas a mais do que as baias comportam</strong>. Para isso a planta reserva dois blocos de piso livre no miolo do salão, um por zona, adjacentes aos corredores: as baias das urnas pesadas se estendem para dentro deles sem invadir avenida, retorno nem espinha. A 90 s por eleitor nada disso salva o posto — a fila somada passa de @@f90@@ pessoas e a última urna fecharia perto das 23h. <strong>O método de identificação do eleitor é, portanto, uma decisão de layout tanto quanto de procedimento.</strong></p>
+  </div>
+</section>
+
+<section>
+  <p class="rotulo">Consequências</p>
+  <h2>O que este desenho cobra</h2>
+  <ul class="marcas">
+    <li><strong>Balizadores: cerca de @@baliza@@ m, contra os 200 m orçados.</strong> As 28 baias sozinhas pedem @@baliza@@ metros, sem contar os campos de fila externos das duas frentes. As 100 unidades da alínea (d) do telegrama cobrem menos da metade do necessário — vale rever antes de fechar a contratação.</li>
+    <li><strong>Mesários: @@mesarios@@ no salão.</strong> Três por mesa, quatro nas três urnas críticas, sendo o quarto dedicado à conferência de documentos dentro da fila.</li>
+    <li><strong>Equipes de triagem desiguais.</strong> A zona A recebe @@zA@@ eleitores e a B, @@zB@@ — divisão de @@pctA@@/@@pctB@@ que decorre da geometria, já que a parede leste é recortada por quatro pares de saídas de emergência. Dimensionar as duas frentes por essa proporção, não meio a meio.</li>
+    <li><strong>Dezesseis folhas de emergência permanentemente livres.</strong> As saídas 2.8 a 2.23 recortam o perímetro de parede disponível e são o motivo de as 28 posições ficarem em dez trechos descontínuos em vez de uma fita contínua. Nenhuma baia, banner ou cabo pode invadi-las.</li>
+    <li><strong>Acesso aos banheiros.</strong> Os sanitários ficam fora do salão, pelas portas 2.10/2.11, na parede oeste — dentro da zona A. Eleitor da zona B que precise do banheiro atravessa o miolo do salão. A espinha só é balizada até doze metros da porta justamente para deixar essa travessia livre acima disso.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="rotulo">Todas as posições</p>
+  <h2>As 28 MRVs</h2>
+  <div class="rolagem" style="margin-top:24px; max-height:620px; overflow-y:auto">
+    <table>
+      <thead><tr>
+        <th>Zona</th><th>Parede</th><th>Urna</th><th>Seções</th><th>Aptos</th>
+        <th>Origem interior</th><th>Esperados</th><th>Fila de pico</th>
+        <th>Baia (m)</th><th>Mesários</th><th>Carga</th>
+      </tr></thead>
+      <tbody>@@tabela@@</tbody>
+    </table>
+  </div>
+  <figcaption>Ordenadas por zona e por distância até a porta da zona — que é a ordem em que o eleitor as encontra ao caminhar. Fila de pico e baia calculadas para 55 s por eleitor. @@nleve@@ urnas de carga leve, @@nmedia@@ média, @@nalta@@ alta, @@ncrit@@ crítica.</figcaption>
+</section>
+
+<section>
+  <p class="rotulo">Antes de fechar</p>
+  <h2>Cinco verificações</h2>
+  <ol class="passos">
+    <li><div><h3>As saídas da parede leste dão para onde?</h3><p>Se derem para área externa utilizável pelo público, a configuração de três entradas com saída pela leste passa a ser melhor que esta. É a pergunta de maior retorno da lista.</p></div></li>
+    <li><div><h3>Qual será o método de identificação do eleitor?</h3><p>Biométrico, eletrônico ou caderno físico. É o que põe o posto em 45, 55 ou 90 segundos por eleitor — e, portanto, o que decide se as baias desenhadas bastam.</p></div></li>
+    <li><div><h3>O módulo de 2,0 m por seção confere?</h3><p>Mesa de três mesários mais urna, com a urna atrás da mesa. Toda a geometria de perímetro depende dessa medida; convém aferi-la contra o equipamento real antes de fechar a planta.</p></div></li>
+    <li><div><h3>A triagem será humana ou por sinalização?</h3><p>Se depender de conferência verbal de documento na entrada, a etapa vira gargalo não paralelizável e o número de raias externas precisa ser dimensionado explicitamente.</p></div></li>
+    <li><div><h3>O Cartório Eleitoral valida o setor reforçado?</h3><p>As três urnas críticas com quatro mesários e conferência antecipada dentro da fila é uma variação de procedimento, não de layout. Vale confirmar antes de formalizar.</p></div></li>
+  </ol>
+</section>
+
+<footer>
+  <p>Geometria medida da planta oficial do RDS (Hall 2, pavimento térreo), com escala aferida contra a ficha técnica do próprio documento: 50,2 × 44,5 m, 2.238 m². Comparecimento estimado a partir do cadastro do TSE das 51 seções da Irlanda, com as taxas observadas em 2022 — 74% para residentes em Dublin, 50% para residentes no interior. Fila simulada em passos de cinco minutos sobre um perfil de chegada com pico de meio de manhã.</p>
+  <p>Os números de comparecimento são estimativas, não previsões; o perfil de chegada é uma premissa de projeto e deve ser revisto se houver dado observado do posto de Dublin em 2022.</p>
+</footer>
+</div>

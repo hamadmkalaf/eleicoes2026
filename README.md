@@ -99,7 +99,11 @@ votação e aloca cada urna a uma posição física no perímetro do Hall 2.
 cd scripts
 python3 fluxo_layout.py   # gera saidas/fluxo_dados.json
 python3 planta_svg.py     # gera saidas/planta_fluxo.svg
+python3 gera_plano.py     # gera saidas/plano_fluxo.html
 ```
+
+`gera_plano.py` monta a peça de leitura — `saidas/plano_fluxo.html` — a partir
+de `scripts/plano_template.html`, embutindo a planta e a tabela das 28 urnas.
 
 A geometria do salão foi medida do PDF oficial do RDS
 (`RDS_Hall_2_Floorplan_(1).pdf`, página 2). A escala de 8,69 pt/m foi aferida
@@ -133,3 +137,21 @@ desobstruídas e por isso recortam o perímetro disponível para as mesas.
 - As 28 posições ficam contra as paredes, com a carga crescendo conforme a
   distância até a porta da zona, de modo que nenhum eleitor de urna leve
   caminhe por trás da fila de uma urna pesada.
+
+### Desenho proposto
+
+- **Duas frentes de entrada** pelos vãos largos 2.5/2.6 (zona A, oeste) e
+  2.2/2.3 (zona B, leste), **saída única** pelo vão central 2.4 e as duas
+  folhas estreitas 2.7 e 2.1 como **entradas prioritárias**, uma por zona. As
+  dezesseis folhas restantes (2.8 a 2.23) ficam só como saída de emergência.
+- Avenidas de entrada e corredores de retorno correm em faixas paralelas e
+  adjacentes, sem se cruzarem; encontram-se apenas na espinha central de saída.
+- As três urnas críticas ficam agrupadas num setor próprio no trecho mais fundo
+  da parede norte, com quatro mesários cada.
+- Dois blocos de piso livre no miolo do salão absorvem a expansão das filas se
+  o atendimento cair de 55 s para 60 s por eleitor.
+
+Duas consequências de custo: as baias sozinhas pedem cerca de **432 m de
+balizador**, contra os 200 m orçados na alínea (d) do telegrama, e a divisão
+de eleitores entre as duas frentes fica em **52/48**, não meio a meio, porque
+a parede leste é recortada por quatro pares de saídas de emergência.

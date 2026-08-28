@@ -11,8 +11,11 @@ S = 15.0                              # px por metro
 ML, MR, MT, MB = 64, 64, 76, 190      # margens em px
 W, H = 50.3, 44.4                     # dimensoes uteis do salao, em metros
 
-AZUL, AMBAR, VERDE = "#2d6fb0", "#b8761c", "#2f8a5b"
-COR = {"leve": "#a9c9e2", "media": "#6a9bc6", "alta": "#e2a33c", "critica": "#c8493c"}
+# Paleta validada com o verificador de paletas (separacao CVD e visao normal).
+# Fluxos: tres matizes categoricos (entrada / saida / emergencia).
+# Baias: rampa sequencial neutra, do claro ao escuro conforme a carga da urna.
+AZUL, AMBAR, VERDE, VERM = "#1f6fb2", "#b26a12", "#16867f", "#b23b2e"
+COR = {"leve": "#e9ecef", "media": "#b2bcc8", "alta": "#75808e", "critica": "#3b4552"}
 FONTE = ('font-family="ui-sans-serif,system-ui,\'Segoe UI\',Helvetica,Arial,'
          'sans-serif"')
 EST = {
@@ -23,6 +26,8 @@ EST = {
     "prt":  f'{FONTE} font-size="9.5" font-weight="700" fill="#243244"',
     "zona": f'{FONTE} font-size="12" font-weight="700" fill="#243244" opacity=".42"',
     "via":  f'{FONTE} font-size="8.5" font-weight="700" fill="#243244" opacity=".75"',
+    "urna_claro": f'{FONTE} font-size="10" font-weight="700" fill="#f4f6f8"',
+    "sub_claro":  f'{FONTE} font-size="8" fill="#c8d0d8"',
 }
 
 
@@ -50,14 +55,16 @@ def txt(x, y, t, est="lbl", anchor="middle", rot=0, dy=0):
             f'text-anchor="{anchor}"{tr}>{esc(t)}</text>')
 
 
-def par(x, y, cima, baixo, rot=0):
+def par(x, y, cima, baixo, rot=0, claro=False):
     """Codigo da urna e comparecimento esperado, empilhados; girados quando a
     baia e estreita e profunda."""
     a, b = px(x, y)
     tr = f' transform="rotate({rot} {a:.1f} {b:.1f})"' if rot else ""
-    return (f'<g{tr}><text x="{a:.1f}" y="{b - 2:.1f}" {EST["urna"]} '
+    e1 = EST["urna_claro"] if claro else EST["urna"]
+    e2 = EST["sub_claro"] if claro else EST["sub"]
+    return (f'<g{tr}><text x="{a:.1f}" y="{b - 2:.1f}" {e1} '
             f'text-anchor="middle">{esc(cima)}</text>'
-            f'<text x="{a:.1f}" y="{b + 8:.1f}" {EST["sub"]} '
+            f'<text x="{a:.1f}" y="{b + 8:.1f}" {e2} '
             f'text-anchor="middle">{esc(baixo)}</text></g>')
 
 
@@ -141,20 +148,23 @@ def main():
         if ny:
             ym = y + ny * 1.2
             o.append(rect(x - lw / 2, min(ym, ym + ny * dp), x + lw / 2,
-                          max(ym, ym + ny * dp), fill=c, opacity=".2", stroke=c,
+                          max(ym, ym + ny * dp), fill=c, opacity=".85", stroke=c,
                           stroke_width="1.2", stroke_dasharray="4 3"))
-            o.append(rect(x - 1.0, min(y, ym), x + 1.0, max(y, ym), fill="#33465c"))
-            o.append(par(x, ym + ny * dp / 2, m["urna"], m["esperado"], -90))
+            o.append(rect(x - 1.0, min(y, ym), x + 1.0, max(y, ym), fill="#0f1620"))
+            o.append(par(x, ym + ny * dp / 2, m["urna"], m["esperado"], -90,
+                         m["classe"] in ("alta", "critica")))
         else:
             xm = x + nx * 1.2
             o.append(rect(min(xm, xm + nx * dp), y - lw / 2,
-                          max(xm, xm + nx * dp), y + lw / 2, fill=c, opacity=".2",
-                          stroke=c, stroke_width="1.2", stroke_dasharray="4 3"))
-            o.append(rect(min(x, xm), y - 1.0, max(x, xm), y + 1.0, fill="#33465c"))
-            o.append(par(xm + nx * dp / 2, y, m["urna"], m["esperado"]))
+                          max(xm, xm + nx * dp), y + lw / 2, fill=c,
+                          opacity=".85", stroke="#6b7480", stroke_width="1",
+                          stroke_dasharray="4 3"))
+            o.append(rect(min(x, xm), y - 1.0, max(x, xm), y + 1.0, fill="#0f1620"))
+            o.append(par(xm + nx * dp / 2, y, m["urna"], m["esperado"], 0,
+                         m["classe"] in ("alta", "critica")))
 
     # ---------- setor reforcado
-    o.append(rect(24.4, 31.6, 42.2, 44.4, fill="none", stroke=COR["critica"],
+    o.append(rect(24.4, 31.6, 42.2, 44.4, fill="none", stroke=VERM,
                   stroke_width="1.6", stroke_dasharray="8 4"))
     o.append(txt(33.3, 45.6, "SETOR REFORÇADO — 3 urnas Dublin+Dublin, "
                  "fila de pico ~57 cada, 4 mesários", "via"))
@@ -207,11 +217,11 @@ def main():
 
     ly, cx = MT + H * S + 88, ML
     for i, (c, lab, cheio) in enumerate([
-            ("#33465c", "mesa receptora + urna (MRV)", True),
+            ("#0f1620", "mesa receptora + urna (MRV)", True),
             (COR["leve"], "baia de fila — carga leve", False),
             (COR["media"], "carga média", False),
-            (COR["alta"], "carga alta", False),
-            (COR["critica"], "carga crítica", False),
+            (COR["alta"], "carga alta", True),
+            (COR["critica"], "carga crítica", True),
             (AZUL, "avenida de entrada", False),
             (AMBAR, "fluxo de saída", False),
             (VERDE, "saída de emergência — manter livre", True)]):

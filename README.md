@@ -87,3 +87,49 @@ de Dublin e passam a votar lá.
 
 Nenhum modelo de tempo de votação foi aplicado, a pedido: as saídas entregam os
 totais ordenados e o critério de gargalo fica a cargo de quem analisa.
+
+## Desenho de fluxo do salão (RDS Hall 2)
+
+`scripts/fluxo_layout.py` pega as 28 urnas apuradas acima, estima o
+comparecimento por urna, simula a fila de cada uma ao longo das 9 horas de
+votação e aloca cada urna a uma posição física no perímetro do Hall 2.
+`scripts/planta_svg.py` desenha o resultado em escala.
+
+```bash
+cd scripts
+python3 fluxo_layout.py   # gera saidas/fluxo_dados.json
+python3 planta_svg.py     # gera saidas/planta_fluxo.svg
+```
+
+A geometria do salão foi medida do PDF oficial do RDS
+(`RDS_Hall_2_Floorplan_(1).pdf`, página 2). A escala de 8,69 pt/m foi aferida
+contra a ficha técnica impressa no próprio PDF — 50,2 m × 44,5 m, 2.238 m² —,
+que confere com as dimensões usadas nas simulações anteriores. Daí saem as
+cinco portas da parede sul (três vãos de 5,93 m e duas folhas de 1,25 m) e as
+onze saídas de emergência das outras três paredes, que precisam ficar
+desobstruídas e por isso recortam o perímetro disponível para as mesas.
+
+### Premissas
+
+| Premissa | Valor | Origem |
+|---|---|---|
+| Comparecimento, residentes em Dublin | 74% | taxa observada em 2022 |
+| Comparecimento, residentes no interior | 50% | taxa observada em 2022 |
+| Tempo por eleitor (ponto de projeto) | 55 s | escolhido; ver sensibilidade |
+| Perfil de chegada (8h–17h) | 8/13/15/14/12/11/10/9/8 % | pico de meio de manhã |
+| Área por pessoa em fila | 1,0 m² | fila serpenteada com balizadores |
+
+### Resultados
+
+- **11.418 eleitores esperados** dos 16.794 aptos.
+- **Três urnas críticas** — 3313, 3322 e 3315, as que somam duas seções
+  inteiras de Dublin — com 586 a 590 comparecentes cada. Depois delas há um
+  degrau: as oito seguintes ficam entre 466 e 492, e as dezessete restantes
+  abaixo de 435.
+- O tempo de atendimento domina tudo. A fila de pico somada nas 28 urnas vai de
+  **33 pessoas a 45 s/eleitor** para **241 a 55 s**, **436 a 60 s** e **2.165 a
+  90 s**. O layout é dimensionado para 55 s e reserva piso livre para absorver
+  o cenário de 60 s.
+- As 28 posições ficam contra as paredes, com a carga crescendo conforme a
+  distância até a porta da zona, de modo que nenhum eleitor de urna leve
+  caminhe por trás da fila de uma urna pesada.

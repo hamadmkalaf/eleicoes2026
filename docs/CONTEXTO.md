@@ -352,10 +352,15 @@ Por ordem de retorno:
 | `scripts/ideia2_pagina.py` + `ideia2_template.html` | Peça de leitura → `saidas/ideia2_plano.html` |
 | `saidas/dados.json` | As 28 urnas apuradas (etapa anterior, não mexer) |
 
-A peça de leitura da ideia 1 está publicada em
-<https://claude.ai/code/artifact/bdf8a5b8-2fdd-4b00-a409-9fe4af2bf3f2>.
-Para atualizá-la de outra sessão, publique passando essa URL em `url` — sem
-isso, cria-se um artefato separado.
+As peças de leitura estão publicadas em:
+
+| Ideia | Artefato |
+|---|---|
+| 1 — ilhas | <https://claude.ai/code/artifact/bdf8a5b8-2fdd-4b00-a409-9fe4af2bf3f2> |
+| 2 — paredes | <https://claude.ai/code/artifact/1193fccf-effa-49ca-8ac5-5f4946fe4788> |
+
+Para atualizar qualquer uma de outra sessão, publique passando a URL dela em
+`url` — sem isso, cria-se um artefato separado.
 
 ```bash
 cd scripts

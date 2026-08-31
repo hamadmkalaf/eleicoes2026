@@ -90,28 +90,30 @@ totais ordenados e o critério de gargalo fica a cargo de quem analisa.
 
 ## Desenho de fluxo do salão (RDS Hall 2)
 
-`scripts/fluxo_layout.py` pega as 28 urnas apuradas acima, estima o
-comparecimento por urna, simula a fila de cada uma ao longo das 9 horas de
-votação e aloca cada urna a uma posição física no salão.
-`scripts/planta_svg.py` desenha o resultado em escala e `scripts/gera_plano.py`
-monta a peça de leitura a partir de `scripts/plano_template.html`.
+Segunda etapa: a partir das 28 urnas apuradas acima, desenhar por onde o eleitor
+entra, caminha, vota e sai no salão do RDS. Há mais de um layout possível, então
+o código separa o que é comum do que é específico de cada ideia.
+
+**`docs/CONTEXTO.md` é o documento de passagem** — geometria medida, premissas,
+restrições, resultados e perguntas em aberto. Leia primeiro.
 
 ```bash
 cd scripts
-python3 fluxo_layout.py   # gera saidas/fluxo_dados.json
-python3 planta_svg.py     # gera saidas/planta_fluxo.svg
-python3 gera_plano.py     # gera saidas/plano_fluxo.html
+python3 salao.py           # confere os dados e a capacidade de parede
+python3 ideia1_ilhas.py    # gera saidas/ideia1_dados.json
+python3 ideia1_planta.py   # gera saidas/ideia1_planta.svg
+python3 ideia1_pagina.py   # gera saidas/ideia1_plano.html
 ```
 
-A geometria do salão foi medida do PDF oficial do RDS
-(`RDS_Hall_2_Floorplan_(1).pdf`, página 2) e da versão revisada com as duas
-portas de carga assinaladas. A escala de 8,69 pt/m foi aferida contra a ficha
-técnica impressa no próprio PDF — 50,2 m × 44,5 m, 2.238 m². Daí saem as sete
-aberturas utilizáveis da parede sul (duas portas de carga de ~3,6 m nas
-extremidades, três vãos de 5,93 m no meio e duas folhas de ~1,25 m) e as
-dezesseis saídas de emergência das outras três paredes.
+### `scripts/salao.py` — o núcleo comum
 
-### Premissas
+Geometria do salão medida direto dos PDFs oficiais do RDS (o que já estava no
+repositório e a versão revisada com as duas portas de carga assinaladas), com a
+escala de 8,69 pt/m aferida contra a ficha técnica impressa no próprio
+documento: 50,2 m × 44,5 m, 2.238 m². Daí saem as sete aberturas utilizáveis da
+parede sul e as saídas de emergência das outras três paredes. Traz também as
+premissas de comparecimento e mobiliário, a simulação de fila e o cálculo de
+quantas MRVs cabem no perímetro sob dadas hipóteses.
 
 | Premissa | Valor | Origem |
 |---|---|---|
@@ -123,41 +125,51 @@ dezesseis saídas de emergência das outras três paredes.
 | Recuo das saídas de emergência | 3,0 m | nenhuma seção dentro dessa faixa |
 | Área por pessoa em fila | 1,0 m² | fila serpenteada com balizadores |
 
-### Resultados
+### Achados que valem para qualquer layout
 
 - **11.418 eleitores esperados** dos 16.794 aptos.
-- **Três urnas críticas** — 3313, 3322 e 3315, as que somam duas seções
-  inteiras de Dublin — com 586 a 590 comparecentes cada. Depois delas há um
-  degrau: as oito seguintes ficam entre 466 e 492, e as dezessete restantes
-  abaixo de 435.
+- **Três urnas críticas** — 3313, 3322 e 3315, as que somam duas seções inteiras
+  de Dublin — com 586 a 590 comparecentes cada. Depois delas há um degrau: as
+  oito seguintes ficam entre 466 e 492, e as dezessete restantes abaixo de 435.
+  Sete das oito somam um condado inteiro do interior, e esses 4.213 eleitores
+  chegam em rajada, não diluídos ao longo do dia.
 - O tempo de atendimento domina tudo. A fila de pico somada nas 28 urnas vai de
   **33 pessoas a 45 s/eleitor** para **241 a 55 s**, **436 a 60 s** e **2.165 a
-  90 s**. O layout é dimensionado para 55 s e reserva piso livre para absorver
-  o cenário de 60 s.
-- **Urnas contra a parede não cabem.** Com o recuo de 3 m das saídas de
-  emergência e o módulo real de 2,80 m, o perímetro comporta 11 posições das
-  28 — a parede leste some por inteiro, porque cada trecho livre entre as
-  saídas 2.16 a 2.23 mede 2,79 m. Como o sigilo vem da estrutura que fecha o
-  fundo e os lados da urna, e não da parede, as 28 posições vão para ilhas.
+  90 s** — fator 65.
+- **O perímetro é escasso.** Com o recuo de 3 m em todas as saídas de emergência
+  e o módulo de 2,80 m, a parede comporta 11 das 28 posições; a parede leste
+  some por inteiro, porque cada trecho livre entre as saídas 2.16 a 2.23 mede
+  2,79 m. Relaxar o recuo para só a parede leste leva a 19; usar o módulo em
+  linha (1,80 m de frente) leva a 21; as duas coisas juntas, a 29.
 
-### Desenho proposto
+### Ideia 1 — três fileiras de ilhas
 
-- **Duas frentes de entrada pelas portas de carga**, nas extremidades da
-  fachada sul e a 37 m uma da outra; **saída pela baia central 2.4**, com
-  2.5/2.6 e 2.2/2.3 de reforço no pico; 2.7 e 2.1 só como emergência. A fachada
-  passa a ler-se em três blocos contíguos: entra na ponta oeste, sai pelo meio,
-  entra na ponta leste.
-- **Três fileiras de ilhas**, todas com os módulos voltados para o sul. O
-  eleitor entra na baia pelo corredor de distribuição, vota e sai pelo fundo do
-  módulo no corredor de retorno, que corre para a espinha central. Corredores
-  de entrada e de retorno se alternam em faixas paralelas e nunca se cruzam.
-- A tela da urna aponta para o painel lateral do módulo — perpendicular tanto
-  à fila quanto ao retorno.
-- A carga cresce da fileira 3 (junto às portas) para a fileira 1 (ao fundo);
-  as três urnas críticas ficam agrupadas num setor reforçado de 16,5 × 12 m no
+Como o sigilo do voto vem da estrutura que fecha o fundo e os lados da urna, e
+não da parede, este layout tira as 28 MRVs das paredes.
+
+- **Duas frentes de entrada pelas portas de carga**, nas extremidades da fachada
+  sul e a 37 m uma da outra; **saída pela baia central 2.4**, com 2.5/2.6 e
+  2.2/2.3 de reforço no pico; 2.7 e 2.1 só como emergência. A fachada se lê em
+  três blocos contíguos: entra na ponta oeste, sai pelo meio, entra na ponta
+  leste.
+- **Três fileiras**, todas com os módulos voltados para o sul. O eleitor entra na
+  baia pelo corredor de distribuição, vota e sai pelo fundo do módulo no
+  corredor de retorno, que corre para a espinha central. Corredores de entrada e
+  de retorno se alternam em faixas paralelas e nunca se cruzam.
+- A tela da urna aponta para o painel lateral do módulo — perpendicular tanto à
+  fila quanto ao retorno.
+- A carga cresce da fileira 3 (junto às portas) para a fileira 1 (ao fundo); as
+  três urnas críticas ficam agrupadas num setor reforçado de 16,5 × 12 m no
   canto noroeste, com quatro mesários cada.
 
 Três consequências de custo: as baias sozinhas pedem cerca de **477 m de
 balizador**, contra os 200 m orçados na alínea (d) do telegrama; a alimentação
 elétrica das urnas passa a ser em ilha, não pela parede; e a divisão de
 eleitores entre as duas frentes fica em **52/48**.
+
+### Ideia 2 — todo o fluxo nas paredes
+
+A fazer. `docs/CONTEXTO.md` registra o que já se sabe: a viabilidade depende de
+duas perguntas de fato — se o recuo de 3 m vale só para as saídas 2.16 a 2.23 e
+se a urna pode ficar atrás da mesa em vez de ao lado — e os problemas que a
+exploração anterior desse layout já encontrou.

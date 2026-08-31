@@ -1,9 +1,9 @@
-"""Monta saidas/plano_fluxo.html a partir de saidas/fluxo_dados.json e da planta."""
+"""Monta saidas/ideia1_plano.html a partir de saidas/ideia1_dados.json e da planta."""
 import json, os, re, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(RAIZ, "scripts"))
-import fluxo_layout as FL
+import salao as FL
 
 CLASSE = {"leve": "leve", "media": "média", "alta": "alta", "critica": "crítica"}
 FILEIRA = {"F1c": "1 · reforçado", "F1A": "1", "F1B": "1",
@@ -57,8 +57,8 @@ def tabela(mrvs):
 
 
 def main():
-    d = json.load(open(os.path.join(RAIZ, "saidas", "fluxo_dados.json"), encoding="utf-8"))
-    svg = open(os.path.join(RAIZ, "saidas", "planta_fluxo.svg"), encoding="utf-8").read()
+    d = json.load(open(os.path.join(RAIZ, "saidas", "ideia1_dados.json"), encoding="utf-8"))
+    svg = open(os.path.join(RAIZ, "saidas", "ideia1_planta.svg"), encoding="utf-8").read()
     svg = re.sub(r'\swidth="\d+"\sheight="\d+"', ' style="width:100%;height:auto"', svg, count=1)
     urnas = FL.carrega_urnas()
     for u in urnas:
@@ -98,14 +98,14 @@ def main():
         html = html.replace("@@" + k + "@@", str(v))
     assert "@@" not in html, "placeholder nao substituido: " + \
         html[html.index("@@"):html.index("@@") + 40]
-    cam = os.path.join(RAIZ, "saidas", "plano_fluxo.html")
+    cam = os.path.join(RAIZ, "saidas", "ideia1_plano.html")
     open(cam, "w", encoding="utf-8").write(html)
     print("gravado", cam, os.path.getsize(cam), "bytes")
 
 
-PAGINA = open(os.path.join(RAIZ, "scripts", "plano_template.html"),
+PAGINA = open(os.path.join(RAIZ, "scripts", "ideia1_template.html"),
               encoding="utf-8").read() if os.path.exists(
-    os.path.join(RAIZ, "scripts", "plano_template.html")) else ""
+    os.path.join(RAIZ, "scripts", "ideia1_template.html")) else ""
 
 if __name__ == "__main__":
     main()

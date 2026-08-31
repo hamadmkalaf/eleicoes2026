@@ -1,4 +1,4 @@
-"""Desenha a planta de fluxo do Hall 2 a partir de saidas/fluxo_dados.json.
+"""Desenha a planta da ideia 1 a partir de saidas/ideia1_dados.json.
 
 Tudo em escala: as coordenadas vem em metros do modelo e viram px aqui. O SVG
 usa atributos de apresentacao (nao classes CSS) para renderizar igual em
@@ -106,7 +106,7 @@ def modulo(m):
 
 
 def main():
-    d = json.load(open(os.path.join(RAIZ, "saidas", "fluxo_dados.json"),
+    d = json.load(open(os.path.join(RAIZ, "saidas", "ideia1_dados.json"),
                        encoding="utf-8"))
     LG, AL = ML + W * S + MR, MT + H * S + MB
     o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {LG:.0f} {AL:.0f}" '
@@ -245,7 +245,7 @@ def main():
              f'que corre para a espinha central.</text>')
     o.append("</svg>")
 
-    cam = os.path.join(RAIZ, "saidas", "planta_fluxo.svg")
+    cam = os.path.join(RAIZ, "saidas", "ideia1_planta.svg")
     open(cam, "w", encoding="utf-8").write("\n".join(o))
     print("gravado", cam, os.path.getsize(cam), "bytes")
 

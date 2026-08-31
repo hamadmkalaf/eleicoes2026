@@ -56,6 +56,13 @@ def tabela(mrvs):
     return "\n".join(ls)
 
 
+def estilo():
+    """A folha de estilo comum as pecas de leitura das ideias."""
+    with open(os.path.join(RAIZ, "scripts", "estilo_plano.css"),
+              encoding="utf-8") as f:
+        return f.read().rstrip("\n")
+
+
 def main():
     d = json.load(open(os.path.join(RAIZ, "saidas", "ideia1_dados.json"), encoding="utf-8"))
     svg = open(os.path.join(RAIZ, "saidas", "ideia1_planta.svg"), encoding="utf-8").read()
@@ -76,7 +83,7 @@ def main():
         .replace(",", ".") for s in sens)
 
     campos = dict(
-        svg=svg, barras=barras(m), tabela=tabela(m), sens=sens_html,
+        estilo=estilo(), svg=svg, barras=barras(m), tabela=tabela(m), sens=sens_html,
         esperado=f'{t["esperado"]:,}'.replace(",", "."),
         aptos=f'{t["aptos"]:,}'.replace(",", "."),
         interior=f'{interior:,}'.replace(",", "."),

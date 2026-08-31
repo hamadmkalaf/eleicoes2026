@@ -2,7 +2,8 @@
 
 Documento de passagem. Reúne tudo que já foi medido, calculado e decidido sobre
 o layout do salão de votação, para que uma sessão nova possa retomar sem
-refazer nada. **A ideia 1 está fechada e publicada; a ideia 2 ainda não começou.**
+refazer nada. **As ideias 1 e 2 estão fechadas.** Falta a decisão entre elas,
+que depende das perguntas em aberto do §10.
 
 ---
 
@@ -157,6 +158,12 @@ Na hipótese conservadora (primeira linha) a parede leste **desaparece por
 inteiro**: cada trecho livre entre 2.16 e 2.23 mede **2,79 m**, um centímetro a
 menos que o módulo de 2,80 m. Foi isso que empurrou a ideia 1 para ilhas.
 
+> **Correção da ideia 2.** Esta tabela conta cada MRV pela frente mínima, e
+> isso subestima a exigência. A MRV que forma fila precisa de *baia*, e a baia
+> é tão larga quanto a fila pedir na profundidade disponível: a 55 s cada urna
+> crítica pede 9,8 a 10,1 m de frente. Somadas, as 28 baias exigem **81,0 m**
+> contra 68,2 m aproveitáveis. É preciso uma **terceira alavanca** — ver §9.
+
 **Para a ideia 2 (tudo nas paredes), as duas alavancas são exatamente essas
 duas**, e ambas são perguntas de fato, não de projeto:
 
@@ -237,35 +244,73 @@ do módulo — perpendicular tanto à fila (que chega pelo sul) quanto ao retorn
 
 ---
 
-## 9. Ideia 2 — todo o fluxo nas paredes (a fazer)
+## 9. Ideia 2 — todas as MRVs nas paredes (fechada)
 
-Ainda não desenhada. O que já se sabe e não precisa ser redescoberto:
+**Viabilidade: cabe, e só cabe com três condições ao mesmo tempo.** As duas do
+§7, mais uma terceira que aquele diagnóstico não viu.
 
-**Viabilidade:** depende inteiramente das duas alavancas do §7. Comece por aí.
+1. Recuo de 3 m só nas saídas 2.16–2.23. Com o recuo em todas, 55,7 m e 11
+   posições — a ideia morre aí.
+2. Módulo **em linha**: urna atrás da mesa dos mesários, 1,80 m de frente por
+   2,60 m de profundidade. Rende 29 posições contra 19 do módulo lado a lado.
+3. **Setor reforçado nas três críticas.** Sem ele, as 28 baias dimensionadas
+   pela fila exigem 81,0 m contra 68,2 m aproveitáveis. Com quatro mesários e
+   conferência de documento dentro da fila, as três operam a 45 s, a fila de
+   pico cai de 57 para 12, e a exigência cai para **61,9 m**. Folga final:
+   6,3 m em 68,2.
 
-**Problemas que a versão anterior deste layout encontrou** (foi explorada antes
-de a restrição de 3 m e o módulo real serem conhecidos):
+**Os cantos comem parede.** O recuo de 3 m é um *envelope*, não uma faixa: a
+saída 2.16/2.17 fica a 2,8 m do canto nordeste e come 3 m da ponta da parede
+norte. Somado ao conflito entre a baia da ponta norte da parede oeste e a da
+ponta oeste da parede norte, os 74,9 m do §7 viram **68,2 m em oito trechos**.
+Os dois conflitos foram achados pela checagem geométrica, não pela conta feita
+parede a parede.
 
-- **Colisão de baias nos cantos.** Baias profundas da parede norte e das paredes
-  laterais se sobrepõem nos cantos nordeste e noroeste. Resolve-se deixando
-  cantos livres ou limitando a profundidade das baias perto deles.
-- **Cruzamento entre entrada e retorno.** Num layout de perímetro, o eleitor
-  vota encostado na parede e precisa voltar pelo mesmo lado por onde veio. A
-  solução que funcionou foi **avenida de entrada e corredor de retorno em faixas
-  paralelas e adjacentes**, ambas entre a boca das baias e o miolo, encontrando-se
-  só na espinha.
-- **Trecho longo de parede exigido pelas urnas críticas.** Com baia de 6 m de
-  profundidade, uma fila de 57 pessoas pede ~10 m de frente. Só a parede norte
-  tem trecho contínuo suficiente (23,98 m entre 24,82 e 48,80).
-- **Equilíbrio entre as zonas.** A parede leste é recortada por quatro pares de
-  saídas; qualquer divisão A/B por geografia sai desigual. Aceite 52/48 e
-  dimensione as equipes por essa proporção.
+**Layout.** Faixas a partir de cada parede: módulo 2,6 m, baia de fila até
+7,0 m, corredor de retorno 2,4 m, avenida de entrada 3,0 m. A profundidade do
+retorno e da avenida acompanha a baia mais funda daquela parede, então o anel
+encolhe onde as filas são curtas — 15,0 m no norte, 10,5 m no oeste, 11,1 m no
+leste. Avenida e retorno correm paralelos e adjacentes e só se encontram na
+espinha de saída; quem entra cruza o retorno uma vez, perpendicularmente, na
+boca da própria baia.
 
-**Comparação a fazer entre 1 e 2**, quando a 2 existir: metros de balizador,
-distância média percorrida pelo eleitor, área de piso livre remanescente, custo
-elétrico, e robustez ao cenário de 60 s.
+**Portas: as mesmas da ideia 1**, para que as duas sejam comparáveis. Entrada A
+pela porta de carga oeste, entrada B pela leste, saída pela baia central 2.4
+com 2.5/2.6 e 2.2/2.3 de reforço. A fachada sul inteira fica livre de MRVs.
 
----
+**Repartição.** Zona A (parede oeste + ponta oeste da norte) com 15 MRVs e
+4.970 comparecentes; zona B (parede leste + resto da norte) com 10 MRVs e
+4.684; setor reforçado com 3 MRVs e 1.764, no meio da parede norte, logo acima
+da cabeça da espinha e servido pelas duas entradas. Contando metade do setor
+para cada lado, a divisão sai em 51/49. As zonas têm contagens diferentes
+porque a parede leste, recortada por quatro pares de saídas, só oferece três
+posições isoladas — o equilíbrio se faz pela carga, não pela contagem: a zona B
+fica com as urnas mais pesadas, a zona A com as mais leves.
+
+**Gradiente de carga** preservado: a carga cresce ao longo do circuito de cada
+zona, então quem vota numa urna leve nunca atravessa o campo de fila de uma
+urna pesada.
+
+**Resultados:** 61,9 m de frente ocupada de 68,2 m; fila de pico somada 106
+(seria 241 sem o setor reforçado); 87 mesários, os mesmos da ideia 1; 276 m de
+balizador contra 477 m da ideia 1; caminhada média da porta ao módulo 41,6 m,
+máxima 61,7 m.
+
+**Pontos fracos conhecidos da ideia 2:**
+- **Não sobra parede.** 6,3 m de folga em 68,2. Mobiliário maior que o
+  informado, uma quarta urna crítica ou o cenário de 60 s derrubam o arranjo, e
+  aqui não há piso de reserva ao lado das baias como na ideia 1.
+- Depende de **três** condições externas, contra duas da ideia 1 (que não
+  depende de nenhuma das do §7).
+- As três posições da parede leste ficam isoladas entre pares de saídas de
+  emergência, cada uma num nicho de 2,79 m.
+
+**Comparação com a ideia 1:** ideia 2 gasta 276 m de balizador contra 477 m,
+devolve o miolo do salão e mantém as seções encostadas nas paredes, com
+alimentação elétrica pelo perímetro. Ideia 1 não depende de nenhuma das três
+condições e tem piso de reserva, mas põe as 28 seções em ilha e leva a
+alimentação elétrica para o meio do salão. A escolha é de risco, não de
+eficiência.
 
 ## 10. Perguntas em aberto
 
@@ -279,6 +324,9 @@ Por ordem de retorno:
    viabilidade da ideia 2.
 3. **A urna pode ficar atrás da mesa (módulo em linha, ~1,80 m de frente)?**
    Também decide a ideia 2.
+3b. **O Cartório aceita as três críticas com quatro mesários e conferência
+   antecipada na fila?** É a terceira condição da ideia 2 — sem ela a ideia 2
+   não fecha. Vale para a ideia 1 também, onde é refinamento e não condição.
 4. **Qual o método de identificação do eleitor** — biométrico, eletrônico ou
    caderno físico? Põe o posto em 45, 55 ou 90 s e decide se as baias bastam.
 5. **A triagem será humana ou por sinalização?** Se depender de conferência
@@ -298,6 +346,10 @@ Por ordem de retorno:
 | `scripts/ideia1_ilhas.py` | Layout da ideia 1 → `saidas/ideia1_dados.json` |
 | `scripts/ideia1_planta.py` | Planta em escala → `saidas/ideia1_planta.svg` |
 | `scripts/ideia1_pagina.py` + `ideia1_template.html` | Peça de leitura → `saidas/ideia1_plano.html` |
+| `scripts/estilo_plano.css` | Folha de estilo comum às peças de leitura das duas ideias |
+| `scripts/ideia2_paredes.py` | Layout da ideia 2 → `saidas/ideia2_dados.json` |
+| `scripts/ideia2_planta.py` | Planta em escala → `saidas/ideia2_planta.svg` |
+| `scripts/ideia2_pagina.py` + `ideia2_template.html` | Peça de leitura → `saidas/ideia2_plano.html` |
 | `saidas/dados.json` | As 28 urnas apuradas (etapa anterior, não mexer) |
 
 A peça de leitura da ideia 1 está publicada em
@@ -311,4 +363,8 @@ python3 salao.py           # confere os dados e a capacidade de parede
 python3 ideia1_ilhas.py    # imprime a alocação das 28 urnas
 python3 ideia1_planta.py
 python3 ideia1_pagina.py
+
+python3 ideia2_paredes.py  # imprime a conta de viabilidade e a alocação
+python3 ideia2_planta.py
+python3 ideia2_pagina.py
 ```

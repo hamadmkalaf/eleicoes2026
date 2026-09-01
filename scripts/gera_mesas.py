@@ -21,17 +21,28 @@ import desenho as D                                           # noqa: E402
 
 SAIDAS = os.path.join(RAIZ, "saidas")
 
-# A divisoria proposta: a menor que fecha a conta das 28 urnas. Atravessada no
-# miolo, a leste do corredor do catering (N2, que vai ate x = 25,72) e ao norte
-# do caminho dos sanitarios (O2), com 3 m livres em toda a volta.
+# A divisoria exenta do miolo deixou de ser necessaria quando a fachada leste
+# passou a receber a fileira recuada. Fica registrada porque ainda e a resposta
+# se alguma das premissas cair — se o RDS exigir os envelopes por porta em vez
+# da faixa continua, por exemplo.
 DIVISORIA = dict(nome="D1", eixo="h", fixo=31.4, s0=26.0, s1=37.1)
+
+# Duas leituras da folga: o maximo empacota com os minimos da faixa que o
+# usuario deu (2,50 dentro do par, 1,00 entre pares); o recomendado exige os
+# maximos (3,00 e 1,50) e ainda assim fecha as 28.
+A_MAXIMO, A_RECOMENDADO = MM.CORREDOR_MIN, MM.CORREDOR_MAX
 
 NOME_FACE = PM.NOME_FACE
 SUBTITULO = {"A": "S1 e S7 fora de uso",
              "B": "S1 e S7 em uso, com divisória a 2 m do vão"}
-NOTA_FLUXO = ("O corredor de cada par é o espaço de encaminhamento: o eleitor "
-              "entra por ele, passa pelos três mesários, vota de costas para o "
-              "salão e sai pelo mesmo corredor.")
+FACES_REAIS = ["norte", "leste", "sul", "oeste", "recorte_v", "recorte_h"]
+NOME_FACE_TXT = {"norte": "parede norte", "oeste": "oeste", "sul": "sul",
+                 "leste": "leste", "recorte_h": "face norte do recorte",
+                 "recorte_v": "face leste do recorte",
+                 MM.FACE_LESTE_RECUADA: "fileira recuada da fachada leste"}
+NOTA_FLUXO = ("O corredor de cada par é o espaço de encaminhamento: o eleitor entra "
+              "por ele, passa pelos três mesários e chega à urna, que fica voltada "
+              "para a parede — a tela aponta para ela e não é vista do salão.")
 
 
 def vg(x, casas=2):
@@ -55,7 +66,8 @@ def notas_de_choque(r):
 
 def main():
     os.makedirs(SAIDAS, exist_ok=True)
-    passo_max = MM.passo_do_par(MM.CORREDOR_MAX)
+    passo_min = MM.passo_do_par(MM.CORREDOR_MIN, MM.ENTRE_PARES_MIN)
+    passo_max = MM.passo_do_par(MM.CORREDOR_MAX, MM.ENTRE_PARES_MAX)
 
     out = dict(
         modulo=dict(mesa_identificacao=list(MM.MESA_IDENT), urna=MM.URNA_D,
@@ -63,16 +75,22 @@ def main():
                     folga_eleitor=MM.FOLGA_ELEITOR, passagem=MM.PASSAGEM,
                     assento_mesario=MM.MESARIO_ASSENTO,
                     corredor=[MM.CORREDOR_MIN, MM.CORREDOR_MAX],
-                    entre_pares=MM.ENTRE_PARES,
-                    passo_par=[MM.passo_do_par(MM.CORREDOR_MIN), passo_max],
-                    parede_por_mesa=[MM.passo_do_par(MM.CORREDOR_MIN) / 2,
-                                     passo_max / 2]),
+                    entre_pares=[MM.ENTRE_PARES_MIN, MM.ENTRE_PARES_MAX],
+                    faixa_leste=MM.FAIXA_LESTE,
+                    passo_par=[passo_min, passo_max],
+                    frente_por_mesa=[passo_min / 2, passo_max / 2]),
         necessario=MM.URNAS,
-        parede_para_28=[round(MM.URNAS * MM.passo_do_par(MM.CORREDOR_MIN) / 2, 1),
+        frente_para_28=[round(MM.URNAS * passo_min / 2, 1),
                         round(MM.URNAS * passo_max / 2, 1)],
-        perimetro=round(sum(f["s1"] - f["s0"] for f in FL.FACES.values()), 1),
-        vaos=round(sum(b - a for face in FL.FACES
+        perimetro=round(sum(FL.FACES[f]["s1"] - FL.FACES[f]["s0"]
+                            for f in FACES_REAIS), 1),
+        vaos=round(sum(b - a for face in FACES_REAIS
                        for _c, a, b in FL.portas_da_face(face)), 1),
+        area_faixa_leste=round(FL.HALL_H * MM.FAIXA_LESTE, 0),
+        area_envelopes=round(sum(
+            (min(FL.HALL_H, b + FL.RECUO_EMERGENCIA)
+             - max(0.0, a - FL.RECUO_EMERGENCIA)) * FL.RECUO_EMERGENCIA
+            for _c, a, b in FL.portas_da_face("leste")), 0),
         matriz=[], cenarios={})
 
     for cen in ("A", "B"):
@@ -85,53 +103,60 @@ def main():
                     por_face={k: v["mrv"] for k, v in r["por_face"].items() if v["mrv"]}))
 
     for cen in ("A", "B"):
-        base = MM.roda(cen, "prudente", MM.CORREDOR_MAX, ordem=MM.ORDEM)
-        div = MM.roda_com_divisorias(cen, "prudente", MM.CORREDOR_MAX, [dict(DIVISORIA)])
-        for r in (base, div):
+        maximo = MM.roda(cen, "prudente", A_MAXIMO, ordem=MM.ORDEM)
+        recom = MM.roda(cen, "prudente", A_RECOMENDADO, ordem=MM.ORDEM)
+        for r in (maximo, recom):
             assert not r["erros"], r["erros"]
 
-        livre = util = 0.0
-        for d in base["por_face"].values():
-            for t in d["trechos"]:
-                livre += t["livre"]
-                if t["pares"] or t["avulsas"]:
-                    util += t["livre"] - t["sobra"]
+        def frente(r):
+            return round(sum(t["livre"] - t["sobra"]
+                             for d in r["por_face"].values() for t in d["trechos"]
+                             if t["pares"] or t["avulsas"]), 1)
+
+        fileira = [t for t in maximo["por_face"][MM.FACE_LESTE_RECUADA]["trechos"]
+                   if t["pares"]][0]
+        fileira_r = [t for t in recom["por_face"][MM.FACE_LESTE_RECUADA]["trechos"]
+                     if t["pares"]][0]
 
         out["cenarios"][cen] = dict(
-            mrv=base["mrv"], mrv_com_divisoria=div["mrv"],
-            por_face={k: v["mrv"] for k, v in base["por_face"].items() if v["mrv"]},
-            trechos={k: v["trechos"] for k, v in base["por_face"].items()},
-            parede_livre=round(livre, 1), parede_util=round(util, 1),
-            avulsas=sum(v.get("avulsas", 0) for v in base["por_face"].values()),
-            corredor_avulso=next(
-                (t["corredor_avulso"] for d in base["por_face"].values()
-                 for t in d["trechos"] if t["avulsas"]), None),
-            area_faixas=round(util * MM.PROF, 0),
-            divisoria=div["divisorias"][0], choques=base["choques"])
+            mrv=maximo["mrv"], mrv_recomendado=recom["mrv"],
+            por_face={k: v["mrv"] for k, v in maximo["por_face"].items() if v["mrv"]},
+            por_face_recomendado={k: v["mrv"] for k, v in recom["por_face"].items()
+                                  if v["mrv"]},
+            trechos={k: v["trechos"] for k, v in maximo["por_face"].items()},
+            frente=frente(maximo), frente_recomendado=frente(recom),
+            fileira_leste=fileira, fileira_leste_recomendada=fileira_r,
+            area_faixas=round(frente(recom) * MM.PROF, 0),
+            choques=maximo["choques"])
 
         grava(f"mesas_cenario_{cen}.svg", PM.planta(
-            f"CENÁRIO {cen} — {base['mrv']} mesas receptoras", SUBTITULO[cen], base,
+            f"CENÁRIO {cen} — {maximo['mrv']} mesas receptoras",
+            f"{SUBTITULO[cen]}; máximo, com as folgas no mínimo da faixa "
+            f"(2,50 m dentro do par, 1,00 m entre pares)", maximo,
             notas=[NOTA_FLUXO,
-                   f"Máximo em parede real. Faltam {MM.URNAS - base['mrv']} das "
-                   f"{MM.URNAS} urnas."] + notas_de_choque(base)))
+                   "A fachada leste tem uma faixa protegida de 3 m ao longo de "
+                   "toda a sua extensão; a fileira começa logo depois dela, "
+                   "alinhada, e por isso as quatro saídas não a recortam."]
+                  + notas_de_choque(maximo)))
 
-        grava(f"mesas_cenario_{cen}_div.svg", PM.planta(
-            f"CENÁRIO {cen} + DIVISÓRIA — {div['mrv']} mesas receptoras",
-            f"{SUBTITULO[cen]}; divisória exenta de "
-            f"{vg(div['divisorias'][0]['comprimento'], 1)} m no miolo",
-            div, divisorias=[DIVISORIA],
+        grava(f"mesas_cenario_{cen}_folga.svg", PM.planta(
+            f"CENÁRIO {cen} COM FOLGA CHEIA — {recom['mrv']} mesas receptoras",
+            f"{SUBTITULO[cen]}; 3,00 m dentro do par e 1,50 m entre pares",
+            recom,
             notas=[NOTA_FLUXO,
-                   "A divisória do miolo é parede pelas duas faces: um só elemento "
-                   "serve a duas fileiras de módulos e fecha a conta das 28 urnas "
-                   "com duas de folga."] + notas_de_choque(div)))
+                   f"Quatro mesas a menos que o máximo, e ainda "
+                   f"{recom['mrv'] - MM.URNAS} acima das {MM.URNAS} urnas "
+                   f"exigidas."] + notas_de_choque(recom)))
 
         grava(f"mesas_reguas_{cen}.svg", PM.reguas(cen))
 
+    grava("mesas_leste.svg", PM.compara_leste())
     grava("mesas_modulo.svg", PM.figura_modulo())
 
-    teto, esc = MM.teto_com_divisorias("A", "prudente", MM.CORREDOR_MAX, maximo=6)
-    assert not teto["erros"], teto["erros"]
-    out["teto"] = dict(mrv=teto["mrv"], divisorias=len(esc))
+    div = MM.roda_com_divisorias("A", "prudente", A_RECOMENDADO, [dict(DIVISORIA)])
+    assert not div["erros"], div["erros"]
+    out["divisoria"] = dict(mrv=div["mrv"], acrescimo=div["divisorias"][0]["mrv"],
+                            comprimento=div["divisorias"][0]["comprimento"])
 
     grava("mesas.json", json.dumps(out, ensure_ascii=False, indent=2))
     grava("mesas.html", pagina(out))
@@ -141,14 +166,16 @@ def main():
         print(f"  {m['cenario']} · recuo {m['hipotese']:9s} · A={m['corredor']:.2f}"
               f" -> {m['mrv']:2d}  {m['por_face']}")
     for c, v in out["cenarios"].items():
-        print(f"  cenário {c}: {v['mrv']} no perímetro, {v['mrv_com_divisoria']} com "
-              f"divisória; parede livre {v['parede_livre']} m, útil {v['parede_util']} m")
-    print(f"  teto com {out['teto']['divisorias']} divisórias: {out['teto']['mrv']}")
+        f = v["fileira_leste"]
+        print(f"  cenário {c}: máximo {v['mrv']}, com folga cheia "
+              f"{v['mrv_recomendado']}; frente {v['frente']} m; fileira leste "
+              f"{f['pares']} pares em {f['livre']} m")
 
 
 # ----------------------------------------------------------- peca de leitura
 def pagina(d):
     A, B = d["cenarios"]["A"], d["cenarios"]["B"]
+    fil, filf = A["fileira_leste"], A["fileira_leste_recomendada"]
 
     linhas = []
     for face, trechos in A["trechos"].items():
@@ -162,8 +189,8 @@ def pagina(d):
                       f'<td class="num{"" if n else " nulo"}">{n or "—"}</td></tr>')
     linhas.append(f'<tr class="somatorio"><td>total</td>'
                   f'<td class="num">{sum(len(t) for t in A["trechos"].values())}</td>'
-                  f'<td class="num">{vg(A["parede_livre"], 1)}</td>'
-                  f'<td class="num">—</td><td class="num">{A["mrv"]}</td></tr>')
+                  f'<td class="num">—</td><td class="num">—</td>'
+                  f'<td class="num">{A["mrv"]}</td></tr>')
 
     def mrv(cen, hip, corr):
         return next(x["mrv"] for x in d["matriz"] if x["cenario"] == cen
@@ -172,73 +199,56 @@ def pagina(d):
     matriz = []
     for cen in ("A", "B"):
         for hip, rot in (("prudente", "3 m em todas as saídas de emergência"),
-                         ("minima", "3 m só na parede leste, como está determinado")):
+                         ("minima", "3 m só na fachada leste, como está determinado")):
+            mn, mx = mrv(cen, hip, A_MAXIMO), mrv(cen, hip, A_RECOMENDADO)
             matriz.append(f'<tr><td>cenário {cen}</td><td>{rot}</td>'
-                          f'<td class="num">{mrv(cen, hip, 2.5)}</td>'
-                          f'<td class="num">{mrv(cen, hip, 3.0)}</td>'
-                          f'<td class="num nulo">0</td></tr>')
-
-    maxb = d["perimetro"]
-    def barra(v, cls):
-        return (f'<span class="trilho"><span class="{cls}" '
-                f'style="width:{v / maxb * 100:.2f}%"></span></span>')
-
-    conta = [
-        ("Perímetro do salão", "quatro fachadas mais as duas faces do recorte",
-         d["perimetro"], "b-bruto"),
-        ("Parede livre", "descontados vãos, recuos de emergência e cantos",
-         A["parede_livre"], "b-livre"),
-        ("Parede aproveitável", "só os trechos com 6,30 m contínuos",
-         A["parede_util"], "b-util"),
-        ("O que 28 urnas pedem", "a 3,15 m de parede por urna",
-         d["parede_para_28"][1], "b-pedido"),
-    ]
-    conta_html = "".join(
-        f'<div class="linha-conta{" pedido" if cls == "b-pedido" else ""}">'
-        f'<span class="rot">{rot}<small>{sub}</small></span>{barra(v, cls)}'
-        f'<span class="val">{vg(v, 1)} m</span></div>'
-        for rot, sub, v, cls in conta)
+                          f'<td class="num">{mn}</td><td class="num">{mx}</td>'
+                          f'<td class="num">{mx - mn}</td></tr>')
 
     choques = "".join(
         f'<li><span class="mono">{c["a"]}</span> e <span class="mono">{c["b"]}</span>'
         f' disputam <span class="mono">{vg(c["area"], 1)} m²</span> do mesmo chão.</li>'
         for c in B["choques"])
 
-    ARTIGO = {"norte": "na parede norte", "oeste": "na oeste", "sul": "na sul",
-              "leste": "na leste", "recorte_h": "na face norte do recorte",
-              "recorte_v": "na face leste do recorte"}
-    ordem = ["norte", "oeste", "sul", "leste", "recorte_h", "recorte_v"]
-    partes = [f"{A['por_face'][f]} {ARTIGO[f]}" for f in ordem if A["por_face"].get(f)]
-    det_a = (", ".join(partes[:-1]) + " e " + partes[-1]) if len(partes) > 1 else partes[0]
+    ordem = ["norte", "oeste", "sul", "recorte_h", "recorte_v",
+             MM.FACE_LESTE_RECUADA]
+    artigo = {"norte": "na parede norte", "oeste": "na oeste", "sul": "na sul",
+              "recorte_h": "na face norte do recorte",
+              "recorte_v": "na face leste do recorte",
+              MM.FACE_LESTE_RECUADA: "na fileira recuada da fachada leste"}
+    partes = [f"{A['por_face'][f]} {artigo[f]}" for f in ordem if A["por_face"].get(f)]
+    det_a = ", ".join(partes[:-1]) + " e " + partes[-1]
 
+    passagem = fil["corredor"] - 2 * MM.MESARIO_ASSENTO
     sub = {
         "estilo": D.estilo(),
         "mrv": str(A["mrv"]), "mrv_b": str(B["mrv"]),
-        "mrv_div": str(A["mrv_com_divisoria"]),
-        "mrv_div_b": str(B["mrv_com_divisoria"]),
-        "piso_livre": milhar(FL.HALL_W * FL.HALL_H - FL.RECORTE[2] * FL.RECORTE[3]
-                             - A["area_faixas"]),
-        "parede_28": vg(d["parede_para_28"][1], 1),
-        "parede_util": vg(A["parede_util"], 1),
-        "parede_util_int": str(round(A["parede_util"])),
-        "parede_livre": vg(A["parede_livre"], 1),
+        "mrv_folga": str(A["mrv_recomendado"]),
+        "sobra_folga": str(A["mrv_recomendado"] - MM.URNAS),
+        "fileira_mrv": str(2 * fil["pares"]), "fileira_pares": str(fil["pares"]),
+        "fileira_livre": vg(fil["livre"], 1),
+        "fileira_mrv_folga": str(2 * filf["pares"]),
+        "fileira_pares_folga": str(filf["pares"]),
+        "corr_max": vg(fil["corredor"], 2),
+        "passagem_max": vg(passagem, 2),
+        "frente": vg(A["frente"], 1),
+        "frente_28": vg(d["frente_para_28"][1], 1),
+        "frente_28_min": vg(d["frente_para_28"][0], 1),
         "perimetro": vg(d["perimetro"], 1), "vaos": vg(d["vaos"], 1),
-        "div_comp": vg(A["divisoria"]["comprimento"], 1),
-        "div_mrv": str(A["divisoria"]["mrv"]),
-        "div_face": str(A["divisoria"]["faces"][0]),
-        "teto": str(d["teto"]["mrv"]), "teto_div": str(d["teto"]["divisorias"]),
-        "avulsas": str(A["avulsas"]),
-        "corr_avulso": vg(A["corredor_avulso"], 2),
-        "faltam": str(MM.URNAS - A["mrv"]),
-        "det_a": det_a, "conta": conta_html, "choques": choques,
-        "tabela_paredes": "".join(linhas), "matriz": "".join(matriz),
+        "area_faixa": milhar(d["area_faixa_leste"]),
+        "area_envelopes": milhar(d["area_envelopes"]),
+        "div_comp": vg(d["divisoria"]["comprimento"], 1),
+        "div_acrescimo": str(d["divisoria"]["acrescimo"]),
+        "div_mrv": str(d["divisoria"]["mrv"]),
+        "det_a": det_a, "choques": choques,
+        "tabela_faces": "".join(linhas), "matriz": "".join(matriz),
     }
     for nome, arq in (("svg_modulo", "mesas_modulo.svg"),
+                      ("svg_leste", "mesas_leste.svg"),
                       ("svg_reguas", "mesas_reguas_A.svg"),
                       ("svg_a", "mesas_cenario_A.svg"),
                       ("svg_b", "mesas_cenario_B.svg"),
-                      ("svg_a_div", "mesas_cenario_A_div.svg"),
-                      ("svg_b_div", "mesas_cenario_B_div.svg")):
+                      ("svg_a_folga", "mesas_cenario_A_folga.svg")):
         sub[nome] = open(os.path.join(SAIDAS, arq), encoding="utf-8").read()
 
     html = open(os.path.join(RAIZ, "scripts", "mesas_template.html"),

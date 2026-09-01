@@ -19,8 +19,15 @@ ML, MR, MT = 46, 58, 54
 MESA_COR, PESSOA, DIVISORIA, VIZINHA = "#3b4552", "#59616d", "#7a4c8f", "#9a8b72"
 SERVICO = "#5d6773"
 
-NOME_FACE = {"norte": "norte", "leste": "leste", "sul": "sul", "oeste": "oeste",
-             "recorte_h": "recorte (face norte)", "recorte_v": "recorte (face leste)"}
+NOME_FACE = {"norte": "norte", "leste": "fachada leste", "sul": "sul",
+             "oeste": "oeste", "recorte_h": "recorte (face norte)",
+             "recorte_v": "recorte (face leste)",
+             MM.FACE_LESTE_RECUADA: "leste, fileira recuada"}
+
+# A regua mostra tambem a fachada leste em si, que nao recebe modulo nenhum:
+# e ela que carrega a faixa protegida de 3 m.
+ORDEM_REGUA = ["norte", "recorte_h", "oeste", "sul", "leste",
+               MM.FACE_LESTE_RECUADA, "recorte_v"]
 
 
 def _margens(mb):
@@ -37,6 +44,13 @@ def _svg(largura, altura, rotulo, corpo):
 
 def txt(x, y, t, est="sub", anchor="middle", **kw):
     return D.txt(x, y, t, est, anchor, **kw)
+
+
+def vg(x, casas=2):
+    """Numero no padrao brasileiro. Nunca aplicar .replace num f-string
+    concatenado: literais adjacentes viram um so, e o ponto final da frase
+    tambem vira virgula."""
+    return f"{x:.{casas}f}".replace(".", ",")
 
 
 def livre(x, y, t, size=9.5, cor="#243244", peso=None, anchor="start"):
@@ -161,7 +175,7 @@ def planta(titulo, subtitulo, r, divisorias=(), notas=()):
     o.append(f'<polygon points="{pts}" fill="#eef1f4"/>')
 
     for rect, motivo in r["reservas"]:
-        if "recuo" in motivo:
+        if "recuo" in motivo or "faixa protegida" in motivo:
             o.append(D.rect(*rect, fill="url(#hach)", stroke=VERDE,
                             stroke_width="0.9", stroke_dasharray="4 3"))
         elif "vestíbulo" in motivo:
@@ -219,32 +233,36 @@ def planta(titulo, subtitulo, r, divisorias=(), notas=()):
     o += legenda(ly, [(MESA_COR, "mesa de identificação (1,70 × 0,80 m) e 3 mesários",
                        "rect"), (AZUL, "mesa de votação, Ø 0,90 m", "circ")])
     o += legenda(ly + 20, [(AZUL, "corredor do par", "rect"),
-                           (VERDE, "recuo de 3 m da saída de emergência", "rect"),
-                           (DIVISORIA, "divisória exenta", "linha")])
+                           (VERDE, "zona protegida de 3 m: faixa da fachada leste "
+                                   "e recuo das saídas de emergência", "rect"),
+                           (DIVISORIA, "divisória", "linha")])
     for i, n in enumerate(notas):
         o.append(livre(ML, ly + 46 + i * 13, n, 8, "#5c6c80"))
     return _svg(LG, AL, f"{titulo}: {subtitulo}", o)
 
 
 # ------------------------------------------------------------------- reguas
-def reguas(cenario, hipotese="prudente", a_min=MM.CORREDOR_MAX, esc_px=13.4):
+def reguas(cenario, hipotese="prudente", a_min=MM.CORREDOR_MIN, esc_px=13.4):
     """Por que 78 m de parede livre so rendem 48 m de parede usada."""
     r = MM.roda(cenario, hipotese, a_min, ordem=MM.ORDEM)
     cortes, _ = MM.bloqueios(cenario, hipotese)
     fora = MM.sombras(cenario, hipotese, a_min)
 
-    esq, topo, alt, salto = 132.0, 74.0, 17.0, 34.0
+    esq, topo, alt, salto = 132.0, 88.0, 17.0, 34.0
     LG = esq + W * esc_px + 92
-    AL = topo + len(MM.ORDEM) * salto + 116
+    AL = topo + len(ORDEM_REGUA) * salto + 116
     o = [livre(esq - 108, 26, "AS RÉGUAS DE PAREDE", 14, "#1f2c3c", "700"),
-         livre(esq - 108, 44, "Cada parede na mesma escala. Um par exige 6,30 m "
-               "contínuos; abaixo disso só entra MRV avulsa, e só a partir de "
-               "2,70 m. Por isso a soma dos pedaços não vira mesa.", 9.5,
-               "#5c6c80")]
+         livre(esq - 108, 44, "Cada face na mesma escala. Um par exige de 5,30 a "
+               "6,30 m contínuos — por isso a soma dos pedaços não vira mesa.",
+               9.5, "#5c6c80"),
+         livre(esq - 108, 58, "A fachada leste não recebe módulo: é ela que carrega "
+               "a faixa protegida. A fileira que vem depois dela é a linha seguinte.",
+               9.5, "#5c6c80")]
 
-    cor_motivo = [("recuo", VERDE), ("vestíbulo", VERM), ("vão", SERVICO)]
+    cor_motivo = [("recuo", VERDE), ("protegida", VERDE),
+                  ("vestíbulo", VERM), ("vão", SERVICO)]
     y = topo
-    for face in MM.ORDEM:
+    for face in ORDEM_REGUA:
         f = FL.FACES[face]
         L = f["s1"] - f["s0"]
         o.append(livre(esq - 10, y + 12, NOME_FACE[face], 9.5, "#1f2c3c", "600",
@@ -286,16 +304,17 @@ def reguas(cenario, hipotese="prudente", a_min=MM.CORREDOR_MAX, esc_px=13.4):
                  'stroke-width="1"/>')
     o.append(livre(esq + 10 * esc_px + 12, y + 7, "10 m", 8, "#5c6c80"))
 
-    itens = [(AZUL, "par de mesas (6,30 m)", "rect"),
-             (VERDE, "recuo de saída de emergência", "rect"),
+    itens = [(AZUL, "par de mesas", "rect"),
+             (VERDE, "zona protegida de 3 m", "rect"),
              (SERVICO, "vão de porta e sua folga", "rect"),
              (VIZINHA, "canto ou recuo da parede vizinha", "rect")]
     if cenario == "B":
         itens.append((VERM, "vestíbulo da divisória", "rect"))
     o += legenda(y + 26, itens, x0=esq - 108)
-    o.append(f'<rect x="{esq-108:.1f}" y="{y+46:.1f}" width="11" height="11" '
-             f'fill="{AZUL}" opacity=".26" stroke="{AZUL}" stroke-opacity=".5"/>')
-    o.append(livre(esq - 92, y + 55, "MRV avulsa (2,79 m, corredor de 1,09 m)"))
+    if any(m["par"] is None for m in r["modulos"]):
+        o.append(f'<rect x="{esq-108:.1f}" y="{y+46:.1f}" width="11" height="11" '
+                 f'fill="{AZUL}" opacity=".26" stroke="{AZUL}" stroke-opacity=".5"/>')
+        o.append(livre(esq - 92, y + 55, "MRV avulsa"))
     return _svg(LG, AL, f"As réguas de parede do cenário {cenario}", o)
 
 
@@ -303,7 +322,7 @@ def reguas(cenario, hipotese="prudente", a_min=MM.CORREDOR_MAX, esc_px=13.4):
 def figura_modulo(e=52.0):
     """Um par de mesas receptoras visto de cima, com as cotas."""
     esq, topo = 96.0, 84.0
-    util = 2 * MM.LARG + MM.CORREDOR_MAX + MM.ENTRE_PARES + MM.LARG   # 7,20 m
+    util = 2 * MM.LARG + MM.CORREDOR_MAX + MM.ENTRE_PARES_MAX + MM.LARG   # 7,20 m
     LG, AL = esq + util * e + 306, topo + MM.PROF * e + 126
 
     def x(vl): return esq + vl * e
@@ -327,7 +346,7 @@ def figura_modulo(e=52.0):
          f'fill="{AZUL}" opacity=".07"/>']
 
     centros = [MM.LARG / 2, MM.LARG + MM.CORREDOR_MAX + MM.LARG / 2,
-               2 * MM.LARG + MM.CORREDOR_MAX + MM.ENTRE_PARES + MM.LARG / 2]
+               2 * MM.LARG + MM.CORREDOR_MAX + MM.ENTRE_PARES_MAX + MM.LARG / 2]
     for c, lado, op in zip(centros, (+1, -1, +1), ("1", "1", ".34")):
         g = [f'<rect x="{x(c-MM.MESA_IDENT[1]/2):.1f}" y="{y(2.40):.1f}" '
              f'width="{MM.MESA_IDENT[1]*e:.1f}" height="{MM.MESA_IDENT[0]*e:.1f}" '
@@ -378,17 +397,17 @@ def figura_modulo(e=52.0):
                        "corredor do par · 2,50 a 3,00"),
                       (MM.LARG + MM.CORREDOR_MAX, 2 * MM.LARG + MM.CORREDOR_MAX, "0,90"),
                       (2 * MM.LARG + MM.CORREDOR_MAX,
-                       2 * MM.LARG + MM.CORREDOR_MAX + MM.ENTRE_PARES,
-                       "entre pares · 1,50")):
+                       2 * MM.LARG + MM.CORREDOR_MAX + MM.ENTRE_PARES_MAX,
+                       "entre pares · 1,00 a 1,50")):
         o.append(f'<path d="M{x(a):.1f} {cy2:.1f}L{x(b):.1f} {cy2:.1f}" '
                  'stroke="#5c6c80" stroke-width="0.9" marker-start="url(#cota)" '
                  'marker-end="url(#cota)"/>')
         o.append(livre(x((a + b) / 2), cy2 + 14, rot, 9, "#5c6c80", None, "middle"))
-    tot = 2 * MM.LARG + MM.CORREDOR_MAX + MM.ENTRE_PARES
+    tot = 2 * MM.LARG + MM.CORREDOR_MAX + MM.ENTRE_PARES_MAX
     o.append(f'<path d="M{x(0):.1f} {cy2+30:.1f}L{x(tot):.1f} {cy2+30:.1f}" '
              'stroke="#1f2c3c" stroke-width="1" marker-start="url(#cota)" '
              'marker-end="url(#cota)"/>')
-    o.append(livre(x(tot / 2), cy2 + 44, "passo do par: 5,80 a 6,30 m de parede "
+    o.append(livre(x(tot / 2), cy2 + 44, "passo do par: 5,30 a 6,30 m de frente "
                    "para duas mesas receptoras", 9.5, "#1f2c3c", "600", "middle"))
 
     o.insert(0, livre(esq, 26, "O MÓDULO — uma mesa receptora de votos, e o par",
@@ -399,106 +418,135 @@ def figura_modulo(e=52.0):
     return _svg(LG, AL, "O módulo da mesa receptora de votos, com as cotas", o)
 
 
-# --------------------------------------------------- a parede leste de perto
-def _mod_leste(x, topo, e, n=1, corredor=None, cor=AZUL, op=".85"):
-    """Um modulo visto de lado: profundidade para baixo, a partir da parede."""
+# --------------------------------------------------- a fachada leste de perto
+def _mod_leste(x, topo, e, n=1, corredor=None, cor=AZUL, op=".85", recuo=0.0):
+    """Modulos vistos de lado: a profundidade cresce para baixo, a partir de
+    `recuo` metros da parede."""
     o = []
+    u0 = recuo
     for k in range(n):
         xk = x + k * ((MM.LARG + corredor) * e if corredor else 0)
-        o.append(f'<rect x="{xk:.1f}" y="{topo+(MM.FOLGA_ELEITOR+MM.URNA_D+MM.PASSAGEM)*e:.1f}" '
+        o.append(f'<rect x="{xk:.1f}" '
+                 f'y="{topo+(u0+MM.FOLGA_ELEITOR+MM.URNA_D+MM.PASSAGEM)*e:.1f}" '
                  f'width="{MM.LARG*e:.1f}" height="{MM.MESA_IDENT[0]*e:.1f}" '
                  f'fill="{MESA_COR}" opacity="{op}"/>')
         o.append(f'<circle cx="{xk+MM.LARG*e/2:.1f}" '
-                 f'cy="{topo+(MM.FOLGA_ELEITOR+MM.URNA_D/2)*e:.1f}" '
+                 f'cy="{topo+(u0+MM.FOLGA_ELEITOR+MM.URNA_D/2)*e:.1f}" '
                  f'r="{MM.URNA_D/2*e:.1f}" fill="none" stroke="{cor}" '
                  f'stroke-width="1.4" opacity="{op}"/>')
+        o.append(f'<circle cx="{xk+MM.LARG*e/2:.1f}" '
+                 f'cy="{topo+(u0+MM.FOLGA_ELEITOR/2)*e:.1f}" '
+                 f'r="{0.22*e:.1f}" fill="none" stroke="{PESSOA}" '
+                 f'stroke-width="1" opacity="{op}"/>')
     return "".join(o)
 
 
-def compara_leste(e=25.0):
-    """As tres leituras possiveis da parede leste, na mesma escala."""
-    esq, topo, banda = 210.0, 96.0, 152.0
+def compara_leste(e=21.0):
+    """A fachada leste encostada e recuada, na mesma escala."""
+    esq, topo, banda = 208.0, 116.0, 226.0
     L = FL.HALL_H
     portas = FL.portas_da_face("leste")
-    LG, AL = esq + L * e + 108, topo + 3 * banda + 74
+    LG, AL = esq + L * e + 116, topo + 2 * banda + 118
 
     def x(v): return esq + v * e
 
-    o = [livre(28, 28, "A PAREDE LESTE, DE PERTO", 14, "#1f2c3c", "700"),
-         livre(28, 46, "Os 44,40 m da fachada, nas três leituras do recuo de 3 m. "
-               "As quatro saídas de emergência L1 a L4 estão em verde.", 9.5,
-               "#5c6c80"),
-         livre(28, 60, "Um par de mesas ocupa 6,30 m de parede; uma MRV avulsa, "
-               "2,70 m.", 9.5, "#5c6c80")]
+    o = [DEFS,
+         livre(28, 30, "A FACHADA LESTE — ENCOSTADA OU RECUADA", 14, "#1f2c3c", "700"),
+         livre(28, 48, "Os 44,40 m da fachada vistos de lado: a parede em cima, a "
+               "profundidade do salão para baixo. As quatro saídas de emergência "
+               "L1 a L4 estão em verde.", 11, "#5c6c80"),
+         livre(28, 64, "O módulo tem 4,10 m de profundidade e 0,90 m de frente; um "
+               "par ocupa 5,30 a 6,30 m de frente.", 11, "#5c6c80")]
 
-    linhas = [
-        ("recuo de 3 m dos dois lados", "o que o modelo aplica hoje", 3.0),
-        ("recuo de 3 m só à frente do vão", "sem afastamento lateral", 0.0),
-    ]
-
-    for i, (titulo, sub, lat) in enumerate(linhas):
-        y = topo + i * banda
-        o.append(livre(28, y + 14, titulo, 10.5, "#1f2c3c", "600"))
-        o.append(livre(28, y + 28, sub, 9, "#5c6c80"))
-
-        livres = [(0.0, L)]
-        for _c, a, b in portas:
-            livres = FL.subtrai(livres, (a - lat, b + lat))
-        if lat:
-            for _c, a, b in portas:
-                o.append(f'<rect x="{x(max(0, a-lat)):.1f}" y="{y+34:.1f}" '
-                         f'width="{(min(L, b+lat)-max(0, a-lat))*e:.1f}" '
-                         f'height="{MM.RECUO_FRONTAL*e:.1f}" fill="url(#hach)" '
-                         f'stroke="{VERDE}" stroke-width="0.8" '
-                         'stroke-dasharray="4 3"/>')
-
-        total = 0
-        for a, b in livres:
-            n, corr, sobra, av, corr_av = MM.ocupa_trecho(
-                b - a, MM.CORREDOR_MIN, MM.CORREDOR_MAX, avulsa=True)
-            s = a + sobra / 2
-            for _k in range(n):
-                o.append(_mod_leste(x(s), y + 34, e, 2, corr))
-                s += MM.passo_do_par(corr)
-            if av:
-                o.append(_mod_leste(x(a), y + 34, e, 1, None, AZUL, ".45"))
-            total += 2 * n + av
-        o.append(f'<line x1="{x(0):.1f}" y1="{y+34:.1f}" x2="{x(L):.1f}" '
-                 f'y2="{y+34:.1f}" stroke="#1c2733" stroke-width="3.4"/>')
-        for _c, a, b in portas:
-            o.append(f'<line x1="{x(a):.1f}" y1="{y+34:.1f}" x2="{x(b):.1f}" '
-                     f'y2="{y+34:.1f}" stroke="{VERDE}" stroke-width="5.4"/>')
-        o.append(livre(x(L) + 12, y + 40, f"{total} mesas", 11, "#1f2c3c", "700"))
-
-    # terceira faixa: a fita continua do modelo do colega
-    y = topo + 2 * banda
-    o.append(livre(28, y + 14, "a fita contínua do modelo", 10.5, "#1f2c3c", "600"))
-    o.append(livre(28, y + 28, "14 mesas, como no desenho", 9, "#5c6c80"))
-    passo = MM.passo_do_par(MM.CORREDOR_MAX)
-    usado = 7 * passo - MM.ENTRE_PARES
-    s = (L - usado) / 2
-    for _k in range(7):
-        o.append(_mod_leste(x(s), y + 34, e, 2, MM.CORREDOR_MAX, VERM))
-        s += passo
+    # ---- faixa 1: encostada, com recuo de 3 m dos dois lados de cada vao
+    y = topo
+    o.append(livre(28, y + 14, "encostada na parede", 12, "#1f2c3c", "600"))
+    o.append(livre(28, y + 28, "com recuo de 3 m dos", 10.5, "#5c6c80"))
+    o.append(livre(28, y + 40, "dois lados de cada vão", 10.5, "#5c6c80"))
+    livres = [(0.0, L)]
+    for _c, a, b in portas:
+        livres = FL.subtrai(livres, (a - 3.0, b + 3.0))
+    for _c, a, b in portas:
+        o.append(f'<rect x="{x(max(0, a-3)):.1f}" y="{y+34:.1f}" '
+                 f'width="{(min(L, b+3)-max(0, a-3))*e:.1f}" '
+                 f'height="{MM.FAIXA_LESTE*e:.1f}" fill="url(#hach)" '
+                 f'stroke="{VERDE}" stroke-width="0.8" stroke-dasharray="4 3"/>')
+    total = 0
+    for a, b in livres:
+        n, corr, _entre, sobra, av, _ca = MM.ocupa_trecho(
+            b - a, MM.CORREDOR_MIN, MM.CORREDOR_MAX, avulsa=True)
+        if av:
+            o.append(_mod_leste(x(a), y + 34, e, 1, None, AZUL, ".45"))
+        total += 2 * n + av
     o.append(f'<line x1="{x(0):.1f}" y1="{y+34:.1f}" x2="{x(L):.1f}" '
              f'y2="{y+34:.1f}" stroke="#1c2733" stroke-width="3.4"/>')
     for _c, a, b in portas:
         o.append(f'<line x1="{x(a):.1f}" y1="{y+34:.1f}" x2="{x(b):.1f}" '
                  f'y2="{y+34:.1f}" stroke="{VERDE}" stroke-width="5.4"/>')
-        o.append(f'<rect x="{x(a):.1f}" y="{y+34:.1f}" width="{(b-a)*e:.1f}" '
-                 f'height="{MM.RECUO_FRONTAL*e:.1f}" fill="{VERM}" opacity=".16"/>')
-    o.append(livre(x(L) + 12, y + 40, "14 mesas", 11, VERM, "700"))
-    o.append(livre(x(0), y + 34 + MM.PROF * e + 16,
-                   f"7 pares × 6,30 m = {usado:.2f} m".replace(".", ",")
-                   + f" de parede, e a fachada tem {L:.2f} m".replace(".", ",")
-                   + ". Sobram 1,80 m — menos que um vão de porta. As quatro "
-                     "saídas ficam por baixo das mesas.", 9, VERM))
+    o.append(livre(x(L) + 12, y + 40, f"{total} mesas", 11, "#5c6c80", "700"))
+    o.append(livre(x(0), y + 34 + 3.0 * e + 44,
+                   "Os envelopes de 3 m em volta dos quatro vãos deixam três "
+                   "trechos de 2,79 m. Não cabe par; cabe uma MRV sozinha em cada.",
+                   9, "#5c6c80"))
 
-    o.append(f'<line x1="{x(0):.1f}" y1="{AL-40:.1f}" x2="{x(10):.1f}" '
-             f'y2="{AL-40:.1f}" stroke="#5c6c80" stroke-width="1"/>')
+    # ---- faixa 2: recuada 3 m, fileira continua
+    y = topo + banda
+    r = MM.roda("A", "prudente", MM.CORREDOR_MIN, ordem=MM.ORDEM)
+    tr = [t for t in r["por_face"][MM.FACE_LESTE_RECUADA]["trechos"] if t["pares"]]
+    o.append(livre(28, y + 14, "recuada 3 m da parede", 12, "#1f2c3c", "600"))
+    o.append(livre(28, y + 28, "faixa protegida contínua", 10.5, "#5c6c80"))
+    o.append(livre(28, y + 40, "ao longo de toda a fachada", 10.5, "#5c6c80"))
+    o.append(f'<rect x="{x(0):.1f}" y="{y+34:.1f}" width="{L*e:.1f}" '
+             f'height="{MM.FAIXA_LESTE*e:.1f}" fill="url(#hach)" '
+             f'stroke="{VERDE}" stroke-width="0.8" stroke-dasharray="4 3"/>')
+    total = 0
+    for t in tr:
+        s0 = t["s0"] + t["sobra"] / 2
+        for _k in range(t["pares"]):
+            o.append(_mod_leste(x(s0), y + 34, e, 2, t["corredor"],
+                                recuo=MM.FAIXA_LESTE))
+            s0 += MM.passo_do_par(t["corredor"], t["entre_pares"] or 0)
+        total += 2 * t["pares"]
+    o.append(f'<line x1="{x(0):.1f}" y1="{y+34:.1f}" x2="{x(L):.1f}" '
+             f'y2="{y+34:.1f}" stroke="#1c2733" stroke-width="3.4"/>')
+    for _c, a, b in portas:
+        o.append(f'<line x1="{x(a):.1f}" y1="{y+34:.1f}" x2="{x(b):.1f}" '
+                 f'y2="{y+34:.1f}" stroke="{VERDE}" stroke-width="5.4"/>')
+    o.append(livre(x(L) + 12, y + 40, f"{total} mesas", 11, "#1f2c3c", "700"))
+    t0 = tr[0]
+    # cotas no primeiro par, para o olho nao ler o espacamento ao contrario
+    s0 = t0["s0"] + t0["sobra"] / 2
+    yc = y + 34 + (MM.FAIXA_LESTE + MM.PROF) * e + 12
+    for a0, b0, rot, dy in ((s0 + MM.LARG, s0 + MM.LARG + t0["corredor"],
+                             f"{vg(t0['corredor'])} no par", 13),
+                            (s0 + 2 * MM.LARG + t0["corredor"],
+                             s0 + 2 * MM.LARG + t0["corredor"] + t0["entre_pares"],
+                             f"{vg(t0['entre_pares'])} entre pares", 26)):
+        o.append(f'<path d="M{x(a0):.1f} {yc:.1f}L{x(b0):.1f} {yc:.1f}" '
+                 f'stroke="{AZUL}" stroke-width="0.9" opacity=".8"/>')
+        for xx in (x(a0), x(b0)):
+            o.append(f'<line x1="{xx:.1f}" y1="{yc-3:.1f}" x2="{xx:.1f}" '
+                     f'y2="{yc+3:.1f}" stroke="{AZUL}" stroke-width="0.9" opacity=".8"/>')
+        o.append(livre(x((a0 + b0) / 2), yc + dy, rot, 9.5, AZUL, None, "middle"))
+    base = y + 34 + (MM.FAIXA_LESTE + MM.PROF) * e
+    o.append(livre(x(0), base + 60,
+                   "A faixa de 3 m corre a fachada inteira e liga as quatro saídas: "
+                   "nada é montado nela e nenhuma fila se forma.", 10.5, "#1f2c3c"))
+    o.append(livre(x(0), base + 74,
+                   "Como a fileira não encosta na parede, os vãos deixam de "
+                   f"recortá-la — {t0['pares']} pares alinhados em "
+                   f"{vg(t0['livre'])} m.", 10.5, "#1f2c3c"))
+    o.append(livre(x(0), base + 88,
+                   "A urna fica voltada para a fachada e o eleitor se põe entre ela "
+                   "e a faixa protegida: a tela aponta para a parede e não é vista "
+                   "do salão.", 10.5, "#5c6c80"))
+
+    ey = topo - 22
+    ex0 = x(L) - 10 * e
+    o.append(f'<line x1="{ex0:.1f}" y1="{ey:.1f}" x2="{x(L):.1f}" y2="{ey:.1f}" '
+             'stroke="#5c6c80" stroke-width="1"/>')
     for k in (0, 5, 10):
-        o.append(f'<line x1="{x(k):.1f}" y1="{AL-43:.1f}" x2="{x(k):.1f}" '
-                 f'y2="{AL-37:.1f}" stroke="#5c6c80" stroke-width="1"/>')
-    o.append(livre(x(10) + 12, AL - 37, "10 m", 8, "#5c6c80"))
-    o.insert(0, DEFS)
-    return _svg(LG, AL, "A parede leste nas tres leituras do recuo de 3 m", o)
+        o.append(f'<line x1="{ex0+k*e:.1f}" y1="{ey-3:.1f}" x2="{ex0+k*e:.1f}" '
+                 f'y2="{ey+3:.1f}" stroke="#5c6c80" stroke-width="1"/>')
+    o.append(livre(x(L) + 12, ey + 3, "10 m", 8, "#5c6c80"))
+    return _svg(LG, AL, "A fachada leste encostada e recuada", o)

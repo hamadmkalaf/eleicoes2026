@@ -14,132 +14,144 @@
       2.5,
       3.0
     ],
-    "entre_pares": 1.5,
+    "entre_pares": [
+      1.0,
+      1.5
+    ],
+    "faixa_leste": 3.0,
     "passo_par": [
-      5.8,
+      5.3,
       6.3
     ],
-    "parede_por_mesa": [
-      2.9,
+    "frente_por_mesa": [
+      2.65,
       3.15
     ]
   },
   "necessario": 28,
-  "parede_para_28": [
-    81.2,
+  "frente_para_28": [
+    74.2,
     88.2
   ],
   "perimetro": 189.4,
   "vaos": 53.7,
+  "area_faixa_leste": 133.0,
+  "area_envelopes": 108.0,
   "matriz": [
     {
       "cenario": "A",
       "hipotese": "prudente",
       "corredor": 2.5,
-      "mrv": 21,
+      "mrv": 34,
       "por_face": {
-        "norte": 10,
+        "norte": 12,
         "recorte_h": 2,
         "oeste": 6,
-        "leste": 3
+        "leste_recuada": 14
       }
     },
     {
       "cenario": "A",
       "hipotese": "prudente",
       "corredor": 3.0,
-      "mrv": 21,
+      "mrv": 30,
       "por_face": {
         "norte": 10,
         "recorte_h": 2,
         "oeste": 6,
-        "leste": 3
+        "leste_recuada": 12
       }
     },
     {
       "cenario": "A",
       "hipotese": "minima",
       "corredor": 2.5,
-      "mrv": 25,
+      "mrv": 38,
+      "por_face": {
+        "norte": 12,
+        "recorte_h": 2,
+        "oeste": 6,
+        "sul": 4,
+        "leste_recuada": 14
+      }
+    },
+    {
+      "cenario": "A",
+      "hipotese": "minima",
+      "corredor": 3.0,
+      "mrv": 34,
       "por_face": {
         "norte": 10,
         "recorte_h": 2,
         "oeste": 6,
         "sul": 4,
-        "leste": 3
-      }
-    },
-    {
-      "cenario": "A",
-      "hipotese": "minima",
-      "corredor": 3.0,
-      "mrv": 25,
-      "por_face": {
-        "norte": 10,
-        "recorte_h": 2,
-        "oeste": 6,
-        "sul": 4,
-        "leste": 3
+        "leste_recuada": 12
       }
     },
     {
       "cenario": "B",
       "hipotese": "prudente",
       "corredor": 2.5,
-      "mrv": 21,
+      "mrv": 34,
       "por_face": {
-        "norte": 10,
+        "norte": 12,
         "recorte_h": 2,
         "oeste": 6,
-        "leste": 3
+        "leste_recuada": 14
       }
     },
     {
       "cenario": "B",
       "hipotese": "prudente",
       "corredor": 3.0,
-      "mrv": 21,
+      "mrv": 30,
       "por_face": {
         "norte": 10,
         "recorte_h": 2,
         "oeste": 6,
-        "leste": 3
+        "leste_recuada": 12
       }
     },
     {
       "cenario": "B",
       "hipotese": "minima",
       "corredor": 2.5,
-      "mrv": 21,
+      "mrv": 34,
       "por_face": {
-        "norte": 10,
+        "norte": 12,
         "recorte_h": 2,
         "oeste": 6,
-        "leste": 3
+        "leste_recuada": 14
       }
     },
     {
       "cenario": "B",
       "hipotese": "minima",
       "corredor": 3.0,
-      "mrv": 21,
+      "mrv": 30,
       "por_face": {
         "norte": 10,
         "recorte_h": 2,
         "oeste": 6,
-        "leste": 3
+        "leste_recuada": 12
       }
     }
   ],
   "cenarios": {
     "A": {
-      "mrv": 21,
-      "mrv_com_divisoria": 29,
+      "mrv": 34,
+      "mrv_recomendado": 30,
       "por_face": {
+        "norte": 12,
+        "recorte_h": 2,
+        "oeste": 6,
+        "leste_recuada": 14
+      },
+      "por_face_recomendado": {
         "norte": 10,
         "recorte_h": 2,
         "oeste": 6,
-        "leste": 3
+        "leste_recuada": 12
       },
       "trechos": {
         "norte": [
@@ -149,6 +161,7 @@
             "livre": 7.11,
             "pares": 1,
             "corredor": 3.0,
+            "entre_pares": null,
             "sobra": 2.31,
             "avulsas": 0,
             "corredor_avulso": null
@@ -159,6 +172,7 @@
             "livre": 9.42,
             "pares": 1,
             "corredor": 3.0,
+            "entre_pares": null,
             "sobra": 4.62,
             "avulsas": 0,
             "corredor_avulso": null
@@ -167,9 +181,10 @@
             "s0": 25.72,
             "s1": 47.3,
             "livre": 21.58,
-            "pares": 3,
-            "corredor": 3.0,
-            "sobra": 4.18,
+            "pares": 4,
+            "corredor": 2.84,
+            "entre_pares": 1.0,
+            "sobra": 0.0,
             "avulsas": 0,
             "corredor_avulso": null
           }
@@ -181,6 +196,7 @@
             "livre": 7.8,
             "pares": 1,
             "corredor": 3.0,
+            "entre_pares": null,
             "sobra": 3.0,
             "avulsas": 0,
             "corredor_avulso": null
@@ -193,6 +209,7 @@
             "livre": 6.76,
             "pares": 1,
             "corredor": 3.0,
+            "entre_pares": null,
             "sobra": 1.96,
             "avulsas": 0,
             "corredor_avulso": null
@@ -203,6 +220,7 @@
             "livre": 11.87,
             "pares": 2,
             "corredor": 3.0,
+            "entre_pares": 1.5,
             "sobra": 0.77,
             "avulsas": 0,
             "corredor_avulso": null
@@ -213,6 +231,7 @@
             "livre": 0.8,
             "pares": 0,
             "corredor": null,
+            "entre_pares": null,
             "sobra": 0.8,
             "avulsas": 0,
             "corredor_avulso": null
@@ -225,6 +244,7 @@
             "livre": 2.47,
             "pares": 0,
             "corredor": null,
+            "entre_pares": null,
             "sobra": 2.47,
             "avulsas": 0,
             "corredor_avulso": null
@@ -235,74 +255,68 @@
             "livre": 2.46,
             "pares": 0,
             "corredor": null,
+            "entre_pares": null,
             "sobra": 2.46,
             "avulsas": 0,
             "corredor_avulso": null
           }
         ],
-        "leste": [
+        "leste_recuada": [
           {
-            "s0": 9.01,
-            "s1": 11.8,
-            "livre": 2.79,
-            "pares": 0,
-            "corredor": null,
+            "s0": 3.0,
+            "s1": 40.3,
+            "livre": 37.3,
+            "pares": 7,
+            "corredor": 2.67,
+            "entre_pares": 1.0,
             "sobra": 0.0,
-            "avulsas": 1,
-            "corredor_avulso": 1.09
-          },
-          {
-            "s0": 20.87,
-            "s1": 23.66,
-            "livre": 2.79,
-            "pares": 0,
-            "corredor": null,
-            "sobra": 0.0,
-            "avulsas": 1,
-            "corredor_avulso": 1.09
-          },
-          {
-            "s0": 32.72,
-            "s1": 35.51,
-            "livre": 2.79,
-            "pares": 0,
-            "corredor": null,
-            "sobra": 0.0,
-            "avulsas": 1,
-            "corredor_avulso": 1.09
+            "avulsas": 0,
+            "corredor_avulso": null
           }
         ],
         "recorte_v": []
       },
-      "parede_livre": 78.6,
-      "parede_util": 56.1,
-      "avulsas": 3,
-      "corredor_avulso": 1.09,
-      "area_faixas": 230.0,
-      "divisoria": {
-        "nome": "D1",
-        "eixo": "h",
-        "fixo": 31.4,
-        "s0": 26.0,
-        "s1": 37.1,
-        "mrv": 8,
-        "faces": [
-          4,
-          4
-        ],
-        "comprimento": 11.1,
-        "conflitos_de_circulacao": []
+      "frente": 89.2,
+      "frente_recomendado": 84.0,
+      "fileira_leste": {
+        "s0": 3.0,
+        "s1": 40.3,
+        "livre": 37.3,
+        "pares": 7,
+        "corredor": 2.67,
+        "entre_pares": 1.0,
+        "sobra": 0.0,
+        "avulsas": 0,
+        "corredor_avulso": null
       },
+      "fileira_leste_recomendada": {
+        "s0": 3.0,
+        "s1": 40.3,
+        "livre": 37.3,
+        "pares": 6,
+        "corredor": 3.0,
+        "entre_pares": 1.5,
+        "sobra": 1.0,
+        "avulsas": 0,
+        "corredor_avulso": null
+      },
+      "area_faixas": 344.0,
       "choques": []
     },
     "B": {
-      "mrv": 21,
-      "mrv_com_divisoria": 29,
+      "mrv": 34,
+      "mrv_recomendado": 30,
       "por_face": {
+        "norte": 12,
+        "recorte_h": 2,
+        "oeste": 6,
+        "leste_recuada": 14
+      },
+      "por_face_recomendado": {
         "norte": 10,
         "recorte_h": 2,
         "oeste": 6,
-        "leste": 3
+        "leste_recuada": 12
       },
       "trechos": {
         "norte": [
@@ -312,6 +326,7 @@
             "livre": 7.11,
             "pares": 1,
             "corredor": 3.0,
+            "entre_pares": null,
             "sobra": 2.31,
             "avulsas": 0,
             "corredor_avulso": null
@@ -322,6 +337,7 @@
             "livre": 9.42,
             "pares": 1,
             "corredor": 3.0,
+            "entre_pares": null,
             "sobra": 4.62,
             "avulsas": 0,
             "corredor_avulso": null
@@ -330,9 +346,10 @@
             "s0": 25.72,
             "s1": 47.3,
             "livre": 21.58,
-            "pares": 3,
-            "corredor": 3.0,
-            "sobra": 4.18,
+            "pares": 4,
+            "corredor": 2.84,
+            "entre_pares": 1.0,
+            "sobra": 0.0,
             "avulsas": 0,
             "corredor_avulso": null
           }
@@ -344,6 +361,7 @@
             "livre": 7.8,
             "pares": 1,
             "corredor": 3.0,
+            "entre_pares": null,
             "sobra": 3.0,
             "avulsas": 0,
             "corredor_avulso": null
@@ -356,6 +374,7 @@
             "livre": 6.76,
             "pares": 1,
             "corredor": 3.0,
+            "entre_pares": null,
             "sobra": 1.96,
             "avulsas": 0,
             "corredor_avulso": null
@@ -366,6 +385,7 @@
             "livre": 11.87,
             "pares": 2,
             "corredor": 3.0,
+            "entre_pares": 1.5,
             "sobra": 0.77,
             "avulsas": 0,
             "corredor_avulso": null
@@ -376,6 +396,7 @@
             "livre": 0.8,
             "pares": 0,
             "corredor": null,
+            "entre_pares": null,
             "sobra": 0.8,
             "avulsas": 0,
             "corredor_avulso": null
@@ -388,6 +409,7 @@
             "livre": 0.27,
             "pares": 0,
             "corredor": null,
+            "entre_pares": null,
             "sobra": 0.27,
             "avulsas": 0,
             "corredor_avulso": null
@@ -398,67 +420,55 @@
             "livre": 0.26,
             "pares": 0,
             "corredor": null,
+            "entre_pares": null,
             "sobra": 0.26,
             "avulsas": 0,
             "corredor_avulso": null
           }
         ],
-        "leste": [
+        "leste_recuada": [
           {
-            "s0": 9.01,
-            "s1": 11.8,
-            "livre": 2.79,
-            "pares": 0,
-            "corredor": null,
+            "s0": 3.0,
+            "s1": 40.3,
+            "livre": 37.3,
+            "pares": 7,
+            "corredor": 2.67,
+            "entre_pares": 1.0,
             "sobra": 0.0,
-            "avulsas": 1,
-            "corredor_avulso": 1.09
-          },
-          {
-            "s0": 20.87,
-            "s1": 23.66,
-            "livre": 2.79,
-            "pares": 0,
-            "corredor": null,
-            "sobra": 0.0,
-            "avulsas": 1,
-            "corredor_avulso": 1.09
-          },
-          {
-            "s0": 32.72,
-            "s1": 35.51,
-            "livre": 2.79,
-            "pares": 0,
-            "corredor": null,
-            "sobra": 0.0,
-            "avulsas": 1,
-            "corredor_avulso": 1.09
+            "avulsas": 0,
+            "corredor_avulso": null
           }
         ],
         "recorte_v": []
       },
-      "parede_livre": 74.2,
-      "parede_util": 56.1,
-      "avulsas": 3,
-      "corredor_avulso": 1.09,
-      "area_faixas": 230.0,
-      "divisoria": {
-        "nome": "D1",
-        "eixo": "h",
-        "fixo": 31.4,
-        "s0": 26.0,
-        "s1": 37.1,
-        "mrv": 8,
-        "faces": [
-          4,
-          4
-        ],
-        "comprimento": 11.1,
-        "conflitos_de_circulacao": []
+      "frente": 89.2,
+      "frente_recomendado": 84.0,
+      "fileira_leste": {
+        "s0": 3.0,
+        "s1": 40.3,
+        "livre": 37.3,
+        "pares": 7,
+        "corredor": 2.67,
+        "entre_pares": 1.0,
+        "sobra": 0.0,
+        "avulsas": 0,
+        "corredor_avulso": null
       },
+      "fileira_leste_recomendada": {
+        "s0": 3.0,
+        "s1": 40.3,
+        "livre": 37.3,
+        "pares": 6,
+        "corredor": 3.0,
+        "entre_pares": 1.5,
+        "sobra": 1.0,
+        "avulsas": 0,
+        "corredor_avulso": null
+      },
+      "area_faixas": 344.0,
       "choques": [
         {
-          "a": "L4 · recuo de emergência",
+          "a": "fachada leste · faixa protegida de 3 m",
           "b": "S7 · vestíbulo da divisória",
           "area": 4.9
         },
@@ -470,8 +480,9 @@
       ]
     }
   },
-  "teto": {
-    "mrv": 61,
-    "divisorias": 2
+  "divisoria": {
+    "mrv": 38,
+    "acrescimo": 8,
+    "comprimento": 11.1
   }
 }

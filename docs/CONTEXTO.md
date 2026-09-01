@@ -3,11 +3,12 @@
 Documento de passagem. Reúne tudo que já foi medido e calculado sobre o salão
 de votação, para que uma sessão nova possa retomar sem refazer nada.
 
-**Há uma ideia de layout no repositório: as mesas pareadas nas paredes**
-(`scripts/mesas.py`, §11). As duas anteriores — mesas em ilhas e mesas nas
-paredes — tinham sido apagadas a pedido do usuário; esta é nova, foi desenhada
-sobre a planta-base e com o mobiliário que o usuário informou depois, e o que
-ela achou está no §11. Nenhuma porta recebeu papel de entrada ou de saída.
+**Há uma ideia de layout no repositório: as mesas pareadas, encostadas nas
+paredes e numa fileira recuada da fachada leste** (`scripts/mesas.py`, §11). As
+duas anteriores — mesas em ilhas e mesas nas paredes — tinham sido apagadas a
+pedido do usuário; esta é nova, foi desenhada sobre a planta-base e com o
+mobiliário que o usuário informou depois. **As 28 MRVs cabem**, com folga.
+Nenhuma porta recebeu papel de entrada ou de saída.
 
 **A planta-base é a referência do projeto.** Toda ideia, planta, peça de leitura
 ou conversa com o RDS daqui em diante usa a numeração de portas do §3 — N1, N2,
@@ -127,11 +128,14 @@ anterior está registrada logo abaixo porque os números do §7 ainda vêm dela.
   uns para os outros, partilhando um corredor de **2,50 a 3,00 m** que serve ao
   mesmo tempo de encaminhamento para a urna e de saída de quem já votou. O par
   seguinte fica **de costas**, a **1,50 m**.
-- **A parede leste recebe MRVs**, decidido pelo usuário depois da primeira
-  versão do §11: as mesas ficam voltadas para a parede, a **3,0 m das saídas de
-  emergência**, e **o tráfego por L1 a L4 será restringido**. Os trechos que
-  sobram entre os recuos têm 2,79 m e não aceitam par — aceitam uma **MRV
-  avulsa** cada, com os mesários de um lado só e 1,09 m de passagem do outro.
+- **A fachada leste recebe MRVs numa fileira recuada**, decidido pelo usuário:
+  o recuo de 3 m é **perpendicular à parede**, não lateral aos vãos. Uma
+  **faixa protegida de 3 m corre a fachada inteira**, ligando as quatro saídas;
+  a fileira começa logo depois dela, com **todas as mesas à mesma distância da
+  parede**, e por isso os vãos deixam de recortá-la. O tráfego por L1 a L4 fica
+  restringido e a faixa não recebe mobiliário nem fila.
+- **Espaço entre pares: 1,00 a 1,50 m** (antes era fixo em 1,50). O corredor de
+  dentro do par continua em 2,50 a 3,00 m.
 
 Disso sai o módulo que `scripts/mesas.py` usa: **0,90 m de frente × 4,10 m de
 profundidade**, com passo de par de **5,80 a 6,30 m** de parede para duas MRVs.
@@ -247,11 +251,10 @@ definido, esse trecho não pode ser contado inteiro.
 
 ## 8. Estado do projeto
 
-**Uma ideia desenhada: as mesas pareadas nas paredes (§11).** Responde à
-pergunta 1 do §1 — como distribuir as 28 MRVs — e descobriu que, com o
-mobiliário novo e a regra de pareamento, **elas não cabem todas nas paredes do
-salão**. As perguntas 2 e 3 do §1, quantas entradas e quais portas, continuam
-sem resposta e nada nesta ideia as antecipa.
+**Uma ideia desenhada: as mesas pareadas, com fileira recuada na fachada leste
+(§11).** Responde à pergunta 1 do §1 — como distribuir as 28 MRVs — e chega a
+30 no layout recomendado, 34 no máximo. As perguntas 2 e 3 do §1, quantas
+entradas e quais portas, continuam sem resposta e nada nesta ideia as antecipa.
 
 A base sobre a qual ela foi construída continua valendo: a planta-base (§3 e
 `saidas/planta_base.html`), as premissas (§4), a carga das urnas (§5), a
@@ -272,16 +275,16 @@ Por ordem de retorno:
    sul. Portas de carga costumam ser de enrolar e às vezes têm função
    corta-fogo. A resposta decide o que é possível fazer com a fachada sul.
    *Preço em mesas: zero* — o §11 mostrou que a fachada sul não entrega MRV de
-   um jeito nem do outro. O que a resposta decide é por onde o eleitor entra.
+   um jeito nem do outro. O que a resposta decide é por onde o eleitor entra. No
+   cenário B os dois vestíbulos ainda colidem com zonas protegidas (§11).
 2. **Quanto de caminho livre a saída do catering exige, e por onde ele chega até
    a N2?** Enquanto não estiver definido, a metade central da parede norte não
    pode ser ocupada com segurança.
 3. **O recuo de 3 m vale para as saídas de emergência das outras paredes?** Está
    determinado só para a leste. N1, S2, S6 e R1 também são saídas de emergência
    na planta do RDS; se exigirem o mesmo, some parede no norte e no sul.
-   *Preço em mesas: quatro* — é a única variável do modelo do §11 que muda o
-   número, e só no cenário com S1 e S7 fora de uso. Não afeta a parede leste,
-   cujo recuo já está determinado.
+   *Preço em mesas: quatro* — e, como as 28 já cabem, deixou de ser bloqueante.
+   Não afeta a fachada leste, cuja faixa de 3 m já está determinada.
 4. **A urna pode ficar atrás da mesa dos mesários** (módulo em linha, ~1,80 m de
    frente por 2,60 m de profundidade) em vez de ao lado? Muda a capacidade de
    parede de 19 para 29 posições.
@@ -292,18 +295,18 @@ Por ordem de retorno:
    verbal na entrada, vira gargalo não paralelizável.
 7. **O Cartório Eleitoral valida seções fora das paredes** (mesas em ilha) e um
    setor reforçado, com quatro mesários e conferência de documento feita dentro
-   da fila? *Preço em mesas: sete* — é a diferença entre as 21 que cabem na
-   parede e as 28 exigidas. Vale a mesma pergunta para o RDS, que precisa
+   da fila? *Preço em mesas: zero desde que a fileira recuada entrou* — nenhuma
+   MRV fica fora de parede ou de faixa protegida no layout atual. Vale a mesma pergunta para o RDS, que precisa
    aprovar a divisória exenta do §11 como montagem e como rota de fuga.
-8. **Restringir o tráfego em L1 a L4 basta para as três MRVs avulsas da parede
-   leste?** As mesas ficam a 3 m do vão e os mesários cabem dentro do trecho
-   livre, mas a aproximação à boca do corredor se faz pela faixa de recuo.
-   Confirmar com o RDS que circular por ali é aceitável, desde que nada seja
-   montado e nenhuma fila se forme.
+8. **O RDS aceita a faixa protegida contínua de 3 m na fachada leste, no lugar
+   dos envelopes por porta?** É a premissa de que a fileira inteira depende —
+   14 MRVs, quase metade do salão. Reserva 133 m² em vez de 108 m², e exige que
+   a faixa fique vazia o dia inteiro, sem mobiliário, sem material de apoio e
+   sem fila. Sem ela, a fachada leste volta a valer três mesas.
 9. **Onde ficam as caixas de piso elétricas do Hall 2**, se houver? Decide se as
    urnas podem ficar longe das paredes sem canaleta atravessando corredor. A
-   divisória do §11 torna a pergunta decisiva: as mesas da ilha ficam a mais de
-   15 m de qualquer parede.
+   fileira recuada aperta a pergunta: as 14 urnas da fachada leste ficam a 3 m
+   da parede, e a canaleta teria de atravessar justamente a faixa protegida.
 
 ---
 
@@ -315,8 +318,8 @@ Por ordem de retorno:
 | `scripts/desenho.py` | Primitivas de desenho das plantas: escala, paleta, `px`, `rect`, `txt`, `cota`, e a folha de estilo comum das peças de leitura. |
 | `scripts/planta_base.py` + `planta_base_template.html` | **Planta-base:** o salão vazio, as portas numeradas por fachada e o que já se sabe de cada uma. Grava `saidas/planta_base.svg` e `saidas/planta_base.html`. Fonte da numeração N/L/S/O. |
 | `scripts/estilo_plano.css` | Folha de estilo das peças de leitura. |
-| `scripts/mesas.py` | **Ideia 1 (§11):** módulo da MRV com o mobiliário novo, regras de bloqueio, empacotamento por face e divisórias exentas. Toda planta passa por `valida()` antes de ser gravada. |
-| `scripts/planta_mesas.py` | Desenhos da ideia 1: o módulo cotado, as réguas de parede e as plantas de ocupação. Usa as primitivas de `desenho.py`. |
+| `scripts/mesas.py` | **Ideia 1 (§11):** módulo da MRV com o mobiliário novo, faixa protegida e fileira recuada da fachada leste, regras de bloqueio, empacotamento por face e divisórias exentas. Toda planta passa por `valida()` antes de ser gravada. |
+| `scripts/planta_mesas.py` | Desenhos da ideia 1: o módulo cotado, a fachada leste de perto, as réguas de parede e as plantas de ocupação. Usa as primitivas de `desenho.py`. |
 | `scripts/gera_mesas.py` + `mesas_template.html` | Grava `saidas/mesas.json`, os seis SVGs e `saidas/mesas.html`. |
 | `saidas/dados.json` | As 28 urnas apuradas (etapa anterior, não mexer). |
 
@@ -369,42 +372,42 @@ verificadas: 0,90 m para o eleitor junto à parede, 0,60 m de passagem, 0,75 m
 de assento do mesário projetado no corredor. Estão explícitas para poderem ser
 corrigidas.
 
-### A MRV avulsa
+### A fileira recuada da fachada leste
 
-Onde o trecho de parede não aceita um par, cabe um módulo sozinho: 0,90 m de
-módulo + 0,80 m para a fila de mesários de um lado só + o que sobrar de
-passagem do outro. O modelo exige **2,70 m** de trecho e devolve a passagem
-resultante. É a exceção da parede leste, não a regra — nas demais faces só
-entra par.
+É a decisão que mudou a conta. Enquanto se tentou pôr as mesas **encostadas** na
+fachada leste, cada um dos quatro vãos levava um envelope de 3 m para cada lado
+e dos 44,40 m sobravam três pedaços de 2,79 m — nem um par cabia. Recuando a
+fileira, a faixa de 3 m passa a correr a fachada inteira e os vãos deixam de
+recortá-la: sobram **37,30 m contínuos**, que aceitam **7 pares — 14 MRVs**,
+mais do que qualquer parede do salão.
 
-Nos três trechos de 2,79 m da leste isso dá **1,09 m de passagem livre**: menos
-que os 1,50 m dos pares a 3,00 m, e menos que o 1,00 m do par apertado a
-2,50 m. Corredor de mão única, sem cruzamento e sem manobra de cadeira de
-rodas. Duas consequências: essas três seções **não devem receber as urnas de
-maior carga** (as três críticas do §5, de 586 a 590 eleitores), e o retorno de
-quem já votou precisa de sinalização. Tudo cabe dentro do trecho — nenhuma
-cadeira de mesário invade o recuo —, mas a aproximação à boca do corredor se
-faz pela faixa de recuo, o que depende de o tráfego por L1 a L4 ficar
-restringido, como se decidiu.
+A urna continua fazendo o que tem de fazer: voltada para a fachada, com o
+eleitor entre ela e a faixa protegida, de modo que a tela aponte para a parede
+e não seja vista do salão.
+
+O que a faixa custa: **133 m² de piso** reservados, contra 108 m² dos quatro
+envelopes somados. Sai mais barato porque o piso sobra e a frente não. Em troca
+ela tem de ficar vazia o dia inteiro — sem mobiliário, sem material de apoio e
+sem fila, inclusive a de quem já votou.
 
 ### Resultado
 
-**Cabem 21 das 28 MRVs**, nos dois cenários pedidos pelo usuário. O gargalo é
-parede, não piso: 28 urnas pedem 81 a 88 m de parede útil, e o salão oferece
-**56,1 m**. De 189,4 m de perímetro, 53,7 m são vão de porta; os recuos de 3 m
-comem quase toda a fachada sul e deixam a leste em três pedaços; e o que sobra
-vem em trechos curtos demais para um par — 78,6 m de parede livre viram 56,1 m
-de parede útil.
+**Cabem 34 MRVs no máximo e 30 com as folgas no topo da faixa**, nos dois
+cenários pedidos pelo usuário — em qualquer dos casos acima das 28 exigidas. A
+divisória exenta do miolo deixou de ser necessária.
 
 | | S1 e S7 fora de uso | S1 e S7 em uso, divisória a 2 m |
 |---|---|---|
-| Máximo em parede real | **21** | **21** |
-| Com uma divisória exenta de 11,1 m no miolo | **29** | **29** |
-| Se só a parede leste exigir recuo de 3 m | **25** | **21** |
+| Máximo (2,50 no par, 1,00 entre pares) | **34** | **34** |
+| Folga cheia (3,00 e 1,50) — **recomendado** | **30** | **30** |
+| Máximo, se só a fachada leste exigir recuo | **38** | **34** |
 
-Distribuição das 21: 10 na parede norte, 6 na oeste, 3 avulsas na leste e 2 na
-face norte do recorte. A **fachada sul entrega zero** — restam dois pedaços de
-2,5 m, curtos até para uma avulsa.
+Distribuição das 34: 12 na parede norte, 6 na oeste, 2 na face norte do recorte
+e **14 na fileira recuada da fachada leste**. A **fachada sul entrega zero** —
+as sete portas somam 27,6 m de vão e os recuos de S2 e S6 fecham o resto.
+
+O layout usa **89,2 m de frente** — parede encostada mais a fileira recuada.
+As 28 exigidas pediriam de 74,2 a 88,2 m.
 
 ### Três achados
 
@@ -413,32 +416,30 @@ entrega MRV de um jeito nem do outro — as sete portas somam 27,6 m de vão e o
 recuos de S2 e S6 fecham o resto. O que a decisão muda é por onde o eleitor
 entra, e quanto chão os vestíbulos consomem.
 
-**Corredor de 2,50 m não compra mesa nenhuma.** Nas oito combinações de cenário,
-hipótese de recuo e corredor mínimo, 2,50 e 3,00 m dão o mesmo número — a
-fragmentação da parede é grosseira demais para 50 cm por par fazerem diferença.
-E o custo de apertar é concreto: o mesário sentado ocupa 0,75 m de cada lado,
-então com 3,00 m sobra 1,50 m de passagem livre e com 2,50 m sobra 1,00 m —
-fila de mão única, sem cruzamento e sem manobra de cadeira de rodas, no mesmo
-corredor por onde sai quem já votou. **Adotar 3,00 m.**
+**Apertar as folgas compra quatro mesas de que ninguém precisa.** Empacotando
+pelo mínimo da faixa (2,50 no par, 1,00 entre pares) cabem 34; exigindo o máximo
+(3,00 e 1,50), 30 — ainda duas acima das 28. O custo de apertar é concreto: o
+mesário sentado ocupa 0,75 m de cada lado, então 3,00 m deixam 1,50 m de
+passagem livre e o corredor de 2,67 m da fileira leste no empacotamento máximo
+deixa 1,17 m — mão única, sem cruzamento e sem manobra de cadeira de rodas, no
+mesmo corredor por onde sai quem já votou. **Adotar 3,00 m no par e 1,50 m entre
+pares.**
 
-**No cenário B, os dois vestíbulos caem dentro de recuos de emergência.** A
-validação geométrica pegou: o vestíbulo de S7 invade o recuo de **L4** em
-4,9 m² — e o da parede leste é o único recuo já determinado —, e o de S1 invade
-o de **R1** em 6,0 m², se a porta 2.8/2.9 exigir os mesmos 3 m. Nos dois casos a
-saída é encurtar a divisória ou afastá-la do canto.
+**No cenário B, os dois vestíbulos caem dentro de zonas protegidas.** A
+validação geométrica pegou: o vestíbulo de S7 invade a **faixa protegida da
+fachada leste** em 4,9 m² — e é dela que a fileira inteira depende —, e o de S1
+invade o recuo de **R1** em 6,0 m², se a porta 2.8/2.9 exigir os mesmos 3 m. Nos
+dois casos a saída é encurtar a divisória ou afastá-la do canto.
 
-### O que fecha a conta
+### A divisória exenta, que deixou de ser necessária
 
-Faltam 7. Uma **divisória exenta de 11,1 m** atravessada no miolo serve de
-parede pelas duas faces e acrescenta 8 mesas — 4 de cada lado, todas com
-corredor de 3,00 m —, levando o salão a **29**. É a menor que fecha a conta;
-uma de 17,4 m no mesmo lugar levaria a 33, se houver interesse em reserva. Ela
-está posicionada a leste do eixo de N2 (que vai até x = 25,7 m) para não
-atravessar o caminho do catering. A ilha ocupa 8,30 m de profundidade e guarda
-3 m livres em toda a volta. Apoia-se no que o §4 já registrava: o sigilo vem da
-estrutura que fecha a urna, não da parede do prédio. Loteando o miolo, o salão
-passa de **60 mesas** — a partir daí a restrição deixa de ser capacidade e passa
-a ser fluxo.
+Enquanto faltavam mesas, a resposta era uma **divisória exenta** atravessada no
+miolo, servindo de parede pelas duas faces. Com a fileira recuada ela deixou de
+ser necessária: uma de 11,1 m acrescentaria 8 mesas e levaria o salão a 38. Fica
+registrada em `scripts/mesas.py` porque volta a ser o caminho se alguma premissa
+cair — se o RDS exigir os envelopes por porta em vez da faixa contínua, por
+exemplo. Apoia-se no que o §4 já registrava: o sigilo vem da estrutura que fecha
+a urna, não da parede do prédio.
 
 Depende de duas aprovações que ainda não existem: a do RDS, como montagem e
 rota de fuga, e a do Cartório Eleitoral, para seção fora da parede do prédio

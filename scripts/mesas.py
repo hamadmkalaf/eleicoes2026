@@ -52,8 +52,8 @@ MESARIO_ASSENTO = 0.75        # cadeira + pessoa, projetada no corredor
 PROF = FOLGA_ELEITOR + URNA_D + PASSAGEM + MESA_IDENT[0]   # 4,10 m
 LARG = max(URNA_D, MESA_IDENT[1])                          # 0,90 m
 
-CORREDOR_MIN, CORREDOR_MAX = 2.50, 3.00    # A, faixa dada pelo usuario
-ENTRE_PARES = 1.50                          # B
+CORREDOR_MIN, CORREDOR_MAX = 2.50, 3.00    # A, corredor de dentro do par
+ENTRE_PARES_MIN, ENTRE_PARES_MAX = 1.00, 1.50   # B, espaco entre pares
 
 # MRV avulsa: onde o trecho de parede nao aceita um par, cabe um modulo
 # sozinho, com os mesarios de um lado so e o corredor do outro. E o caso dos
@@ -68,32 +68,43 @@ LARG_AVULSA = LARG + MESARIO_ASSENTO + FOLGA_ASSENTO + CORREDOR_AVULSO_MIN
 URNAS = 28
 
 
-def passo_do_par(a):
-    return 2 * LARG + a + ENTRE_PARES
+def passo_do_par(a, b=ENTRE_PARES_MIN):
+    return 2 * LARG + a + b
 
 
-def pares_no_trecho(L, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX):
-    """Maximo de pares num trecho livre de L metros, e o corredor resultante
-    depois de distribuir a sobra ate a_max."""
-    n = int(math.floor((L + ENTRE_PARES) / passo_do_par(a_min) + 1e-9))
+def pares_no_trecho(L, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX,
+                    b_min=ENTRE_PARES_MIN, b_max=ENTRE_PARES_MAX):
+    """Maximo de pares num trecho livre de L metros.
+
+    Empacota com os minimos e depois distribui a sobra: primeiro alarga o
+    corredor de dentro do par ate a_max, que e onde o eleitor anda, e so
+    depois o espaco entre pares ate b_max. Devolve (pares, corredor, entre
+    pares, sobra)."""
+    n = int(math.floor((L + b_min) / passo_do_par(a_min, b_min) + 1e-9))
     if n <= 0:
-        return 0, 0.0, L
-    a = min(a_max, (L + ENTRE_PARES) / n - (2 * LARG + ENTRE_PARES))
-    return n, a, L - (n * passo_do_par(a) - ENTRE_PARES)
+        return 0, 0.0, 0.0, L
+    sobra = L - (n * (2 * LARG + a_min) + (n - 1) * b_min)
+    t = min(sobra, n * (a_max - a_min))
+    a, sobra = a_min + t / n, sobra - t
+    b = b_min
+    if n > 1:
+        t = min(sobra, (n - 1) * (b_max - b_min))
+        b, sobra = b_min + t / (n - 1), sobra - t
+    return n, a, b, sobra
 
 
 def ocupa_trecho(L, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX, avulsa=False):
     """O que cabe num trecho livre de L metros.
 
-    Devolve (pares, corredor, sobra, avulsas, corredor_avulso). A MRV avulsa so
-    entra onde nao cabe par nenhum, e so se `avulsa` estiver ligado: e a
-    excecao da parede leste, nao a regra."""
-    n, corredor, sobra = pares_no_trecho(L, a_min, a_max)
+    Devolve (pares, corredor, entre_pares, sobra, avulsas, corredor_avulso). A
+    MRV avulsa so entra onde nao cabe par nenhum, e so se `avulsa` estiver
+    ligado."""
+    n, corredor, entre, sobra = pares_no_trecho(L, a_min, a_max)
     if n or not avulsa or L < LARG_AVULSA:
-        return n, corredor, sobra, 0, 0.0
+        return n, corredor, entre, sobra, 0, 0.0
     # o corredor da avulsa e o que sobra do trecho depois do modulo e da fila
     # de mesarios de um lado so
-    return 0, 0.0, 0.0, 1, L - LARG - MESARIO_ASSENTO - FOLGA_ASSENTO
+    return 0, 0.0, 0.0, 0.0, 1, L - LARG - MESARIO_ASSENTO - FOLGA_ASSENTO
 
 
 # ---------------------------------------------------------------- bloqueios
@@ -119,13 +130,33 @@ RECUO_FRONTAL = FL.RECUO_EMERGENCIA
 RECUO_LATERAL = FL.RECUO_EMERGENCIA
 
 CARGA = {"carga oeste": "S1", "carga leste": "S7"}
-ORDEM = ["norte", "recorte_h", "oeste", "sul", "leste", "recorte_v"]
 
-# Onde a MRV avulsa e permitida. O usuario decidiu manter MRVs na parede leste,
-# a 3 m das saidas de emergencia e com o trafego delas restringido; os tres
-# trechos que sobram entre os recuos tem 2,79 m, que nao aceita par e aceita um
-# modulo sozinho. Nas demais faces a regra continua sendo o par.
-AVULSA_EM = ("leste",)
+# ---------------------------------------------------- a fachada leste recuada
+# Decisao do usuario: a parede leste inteira e area protegida numa faixa de 3 m
+# — nao um envelope por porta —, e as mesas ficam alinhadas logo depois dela,
+# todas comecando a mesma distancia da parede. E o que permite uma fileira
+# continua: as quatro saidas L1 a L4 nao recortam mais a fileira, porque ela
+# nao encosta na parede.
+#
+# A urna continua voltada para a parede: o eleitor se coloca entre ela e a
+# faixa protegida, de modo que a tela fique virada para a fachada e ninguem no
+# salao a veja. A faixa de 3 m nao recebe mobiliario nem fila; serve de
+# aproximacao e de rota de fuga, com o trafego restringido.
+FAIXA_LESTE = 3.0
+FACE_LESTE_RECUADA = "leste_recuada"
+# A fileira guarda CIRCULACAO livre das fachadas norte e sul: as bocas dos
+# corredores precisam de aproximacao, e as pontas nao podem parar em cima de
+# uma porta da fachada sul.
+FL.FACES[FACE_LESTE_RECUADA] = dict(
+    eixo="v", fixo=FL.HALL_W - FAIXA_LESTE, s0=3.0, s1=FL.HALL_H - 3.0, dentro=-1)
+
+ORDEM = ["norte", "recorte_h", "oeste", "sul", FACE_LESTE_RECUADA, "recorte_v"]
+
+# Onde a MRV avulsa e permitida. Nenhuma face precisa dela desde que a fachada
+# leste passou a receber uma fileira recuada em vez de modulos encostados entre
+# os recuos: os trechos de 2,79 m sairam de cena. A maquinaria fica, porque
+# qualquer mudanca nos recuos pode trazer o caso de volta.
+AVULSA_EM = ()
 
 
 def _numero(codigo):
@@ -143,11 +174,18 @@ def bloqueios(cenario, hipotese, lateral=None, frontal=None):
     cortes = {f: [] for f in FL.FACES}
     rects = []
 
+    # a fachada leste inteira, numa faixa de 3 m: e a reserva que substitui os
+    # quatro envelopes de porta
+    rects.append((FL.retangulo_na_parede("leste", 0.0, FL.HALL_H, FAIXA_LESTE),
+                  "fachada leste · faixa protegida de 3 m"))
+    cortes["leste"].append((0.0, FL.HALL_H, "fachada leste protegida"))
+
     for face in FL.FACES:
         for codigo, a, b in FL.portas_da_face(face):
             num = _numero(codigo)
-            emerg = (codigo in FL.EMERGENCIA
-                     and (face == "leste" or hipotese == "prudente")
+            if face == "leste":
+                continue                       # ja coberta pela faixa
+            emerg = (codigo in FL.EMERGENCIA and hipotese == "prudente"
                      and num != "N1")          # N1 esta fechada: nao e vao
 
             if emerg:
@@ -221,20 +259,21 @@ def empacota(face, cortes, a_min, a_max, obstaculos=(), avulsa_em=()):
     modulos, trechos = [], []
     for a, b in livres:
         L = b - a
-        n, corredor, sobra, avulsas, corr_av = ocupa_trecho(
+        n, corredor, entre, sobra, avulsas, corr_av = ocupa_trecho(
             L, a_min, a_max, avulsa=face in avulsa_em)
         trechos.append(dict(s0=round(a, 2), s1=round(b, 2), livre=round(L, 2),
                             pares=n, corredor=round(corredor, 2) if n else None,
+                            entre_pares=round(entre, 2) if n > 1 else None,
                             sobra=round(sobra, 2), avulsas=avulsas,
                             corredor_avulso=round(corr_av, 2) if avulsas else None))
-        s = a + sobra / 2          # centra o conjunto no trecho
+        s = a + sobra / 2          # centra o conjunto no trecho: simetrico
         for i in range(n):
             par = f"{face}|{a:.2f}|{i}"
             modulos.append(dict(face=face, s=s + LARG / 2, corredor=corredor,
                                 lado="a", par=par))
             modulos.append(dict(face=face, s=s + LARG + corredor + LARG / 2,
                                 corredor=corredor, lado="b", par=par))
-            s += passo_do_par(corredor)
+            s += passo_do_par(corredor, entre)
         if avulsas:
             # modulo encostado numa borda do trecho, mesarios voltados para o
             # corredor que sobra do outro lado
@@ -445,12 +484,13 @@ def teto_com_divisorias(cenario, hipotese, a_min, maximo=6):
 
 if __name__ == "__main__":
     print(f"Modulo: {LARG:.2f} m de largura x {PROF:.2f} m de profundidade")
-    print(f"Passo do par: {passo_do_par(CORREDOR_MIN):.2f} m (A=2,50)  "
-          f"{passo_do_par(CORREDOR_MAX):.2f} m (A=3,00)")
-    print(f"Parede por mesa: {passo_do_par(CORREDOR_MIN)/2:.2f} a "
-          f"{passo_do_par(CORREDOR_MAX)/2:.2f} m")
-    print(f"Para {URNAS} urnas: {URNAS*passo_do_par(CORREDOR_MIN)/2:.1f} a "
-          f"{URNAS*passo_do_par(CORREDOR_MAX)/2:.1f} m de parede util\n")
+    apertado = passo_do_par(CORREDOR_MIN, ENTRE_PARES_MIN)
+    folgado = passo_do_par(CORREDOR_MAX, ENTRE_PARES_MAX)
+    print(f"Passo do par: {apertado:.2f} m (2,50 / 1,00)  "
+          f"{folgado:.2f} m (3,00 / 1,50)")
+    print(f"Parede por mesa: {apertado/2:.2f} a {folgado/2:.2f} m")
+    print(f"Para {URNAS} urnas: {URNAS*apertado/2:.1f} a {URNAS*folgado/2:.1f} m "
+          f"de parede util\n")
     for cen in ("A", "B"):
         for hip in HIPOTESES:
             for a in (CORREDOR_MIN, CORREDOR_MAX):

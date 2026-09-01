@@ -52,8 +52,9 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
 
-O desenho de fluxo do salão está em `docs/CONTEXTO.md`, com a planta-base
-(`saidas/planta_base.html`) e as duas ideias de layout.
+O desenho de fluxo do salão está em `docs/CONTEXTO.md`: geometria do Hall 2,
+premissas, e a planta-base em `saidas/planta_base.html`, que numera as portas
+por fachada. Nenhuma ideia de layout está desenhada no momento.
 
 ## Validações
 
@@ -94,8 +95,10 @@ totais ordenados e o critério de gargalo fica a cargo de quem analisa.
 ## Desenho de fluxo do salão (RDS Hall 2)
 
 Segunda etapa: a partir das 28 urnas apuradas acima, desenhar por onde o eleitor
-entra, caminha, vota e sai no salão do RDS. Há mais de um layout possível, então
-o código separa o que é comum do que é específico de cada ideia.
+entra, caminha, vota e sai no salão do RDS. **Nenhum layout está desenhado no
+momento** — as duas ideias que existiam foram zeradas a pedido. O que está no
+repositório é a base comum a qualquer layout: a geometria do salão, as
+premissas, a carga das urnas e a planta-base com as portas numeradas.
 
 **`docs/CONTEXTO.md` é o documento de passagem** — geometria medida, premissas,
 restrições, resultados e perguntas em aberto. Leia primeiro.
@@ -103,9 +106,7 @@ restrições, resultados e perguntas em aberto. Leia primeiro.
 ```bash
 cd scripts
 python3 salao.py           # confere os dados e a capacidade de parede
-python3 ideia1_ilhas.py    # gera saidas/ideia1_dados.json
-python3 ideia1_planta.py   # gera saidas/ideia1_planta.svg
-python3 ideia1_pagina.py   # gera saidas/ideia1_plano.html
+python3 planta_base.py     # gera saidas/planta_base.svg e .html
 ```
 
 ### `scripts/salao.py` — o núcleo comum
@@ -139,40 +140,28 @@ quantas MRVs cabem no perímetro sob dadas hipóteses.
 - O tempo de atendimento domina tudo. A fila de pico somada nas 28 urnas vai de
   **33 pessoas a 45 s/eleitor** para **241 a 55 s**, **436 a 60 s** e **2.165 a
   90 s** — fator 65.
-- **O perímetro é escasso.** Com o recuo de 3 m em todas as saídas de emergência
-  e o módulo de 2,80 m, a parede comporta 11 das 28 posições; a parede leste
-  some por inteiro, porque cada trecho livre entre as saídas 2.16 a 2.23 mede
-  2,79 m. Relaxar o recuo para só a parede leste leva a 19; usar o módulo em
-  linha (1,80 m de frente) leva a 21; as duas coisas juntas, a 29.
+- **O perímetro é escasso.** Com o recuo de 3 m determinado para a parede leste
+  e o módulo de 2,80 m, a parede comporta 19 das 28 posições. A parede leste
+  some por inteiro: cada trecho livre entre os recuos mede 2,79 m, um centímetro
+  a menos que o módulo. Se o recuo valer para todas as saídas de emergência,
+  caem para 11; com o módulo em linha (1,80 m de frente), sobem para 29.
 
-### Ideia 1 — três fileiras de ilhas
+### A planta-base
 
-Como o sigilo do voto vem da estrutura que fecha o fundo e os lados da urna, e
-não da parede, este layout tira as 28 MRVs das paredes.
+`scripts/planta_base.py` desenha o salão vazio e é onde a numeração das portas
+é definida. O código do RDS numera folhas de porta e não localiza nada, então
+cada porta ganhou **um número por fachada**, atribuído na ordem de leitura do
+desenho: de oeste para leste nas paredes norte e sul, de norte para sul nas
+paredes leste e oeste — N1, N2, L1 a L4, S1 a S7, O1, O2, mais a R1 na parede do
+recorte. O código do RDS continua impresso abaixo de cada número.
 
-- **Duas frentes de entrada pelas portas de carga**, nas extremidades da fachada
-  sul e a 37 m uma da outra; **saída pela baia central 2.4**, com 2.5/2.6 e
-  2.2/2.3 de reforço no pico; 2.7 e 2.1 só como emergência. A fachada se lê em
-  três blocos contíguos: entra na ponta oeste, sai pelo meio, entra na ponta
-  leste.
-- **Três fileiras**, todas com os módulos voltados para o sul. O eleitor entra na
-  baia pelo corredor de distribuição, vota e sai pelo fundo do módulo no
-  corredor de retorno, que corre para a espinha central. Corredores de entrada e
-  de retorno se alternam em faixas paralelas e nunca se cruzam.
-- A tela da urna aponta para o painel lateral do módulo — perpendicular tanto à
-  fila quanto ao retorno.
-- A carga cresce da fileira 3 (junto às portas) para a fileira 1 (ao fundo); as
-  três urnas críticas ficam agrupadas num setor reforçado de 16,5 × 12 m no
-  canto noroeste, com quatro mesários cada.
+A planta registra o que já está determinado sobre as portas e nada além disso:
 
-Três consequências de custo: as baias sozinhas pedem cerca de **477 m de
-balizador**, contra os 200 m orçados na alínea (d) do telegrama; a alimentação
-elétrica das urnas passa a ser em ilha, não pela parede; e a divisão de
-eleitores entre as duas frentes fica em **52/48**.
+- **Parede leste inteira em emergência**, com os 3 m de recuo desenhados em
+  torno de cada vão.
+- **N1 fechada.**
+- **N2 desbloqueada** — é a saída do catering.
 
-### Ideia 2 — todo o fluxo nas paredes
+Entrada e saída de eleitor **não** aparecem: essa decisão vem depois.
 
-A fazer. `docs/CONTEXTO.md` registra o que já se sabe: a viabilidade depende de
-duas perguntas de fato — se o recuo de 3 m vale só para as saídas 2.16 a 2.23 e
-se a urna pode ficar atrás da mesa em vez de ao lado — e os problemas que a
-exploração anterior desse layout já encontrou.
+Saídas em `saidas/planta_base.svg` e `saidas/planta_base.html`.

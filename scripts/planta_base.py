@@ -1,13 +1,12 @@
 """Desenha a planta-base do Hall 2 e monta a peca de leitura do espaco.
 
-Vem antes das ideias 1 e 2: nao propoe layout nenhum, so mostra o salao como
-ele e e o papel que cada porta recebeu — o que as duas ideias tem em comum e o
-que precisa estar acordado antes de escolher entre elas. Serve para conferir
-que o espaco esta sendo lido do mesmo jeito pelos dois lados da conversa.
+Nao propoe layout nenhum. Mostra o salao como ele e, com as portas numeradas
+por fachada e o que ja se sabe sobre cada uma: quais estao fechadas, qual serve
+ao catering e quais sao saidas de emergencia com recuo obrigatorio. Quem entra e
+quem sai por onde e decisao posterior, e de proposito nao aparece aqui.
 
-Geometria e papeis das portas vem de `salao.py`; a linguagem grafica (escala,
-paleta, primitivas) vem de `ideia1_planta.py`, para que as tres plantas se leiam
-como um conjunto. Grava `saidas/planta_base.svg` e `saidas/planta_base.html`.
+Geometria vem de `salao.py`; a linguagem grafica, de `desenho.py`. Grava
+`saidas/planta_base.svg` e `saidas/planta_base.html`.
 """
 import os
 import re
@@ -16,352 +15,304 @@ import sys
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(RAIZ, "scripts"))
 
-import salao as FL                                          # noqa: E402
-from ideia1_planta import (AMBAR, AZUL, EST, H, ML, MR, MT, MESA, MODULO,  # noqa: E402
-                           S, VERDE, VERM, W, esc, ponta, px, rect, txt)
-from ideia1_pagina import estilo                            # noqa: E402
+import salao as FL                                            # noqa: E402
+import desenho as D                                           # noqa: E402
 
-MB = 250          # margem inferior: fachada sul, cotas e legenda
+# Esta planta rotula as portas dos quatro lados, fora do salao: as margens
+# laterais precisam caber "O2 / 2.10/2.11 · 3,07 m". As primitivas leem estas
+# constantes na hora da chamada, entao mudar aqui basta.
+D.ML, D.MR = 152, 152
+MB = 230          # margem inferior: rotulos da fachada sul, cota e legenda
 
-# As saidas 2.8/2.9 ficam na parede do recorte sudoeste, medidas no PDF. Nao
-# entram em `salao.PORTAS` porque nenhuma parede do recorte recebe MRV em
-# qualquer das duas ideias — aqui aparecem so para a planta ficar completa.
+from desenho import (AZUL, EST, H, MESA, S, VERDE, VERM,      # noqa: E402
+                     W, cota, esc, estilo, px, rect, txt)
+
+# As saidas 2.8/2.9 ficam na parede do recorte sudoeste, medidas no PDF a 3,0 e
+# 6,5 m do canto sul. Nao entram em `salao.PORTAS` nem na numeracao das
+# fachadas: a parede do recorte nao e fachada do salao.
 RECORTE_X, RECORTE_Y = FL.RECORTE[2], FL.RECORTE[3]
 PORTA_RECORTE = ("2.8/2.9", 3.0, 6.5)
 
-# Papel de cada porta. E o mesmo nas ideias 1 e 2, de proposito: as duas foram
-# desenhadas sobre a mesma decisao de fachada para poderem ser comparadas.
-PAPEL = {
-    "carga oeste": ("entrada", "ENTRADA A"),
-    "carga leste": ("entrada", "ENTRADA B"),
-    "2.4": ("saida", "SAÍDA"),
-    "2.5/2.6": ("reforco", "reforço"),
-    "2.2/2.3": ("reforco", "reforço"),
-    "2.7": ("emergencia", "emergência"),
-    "2.1": ("emergencia", "emergência"),
-    "2.13": ("emergencia", "emergência"),
-    "2.14/2.15": ("emergencia", "emergência"),
-    "2.22/2.23": ("emergencia", "emergência"),
-    "2.20/2.21": ("emergencia", "emergência"),
-    "2.18/2.19": ("emergencia", "emergência"),
-    "2.16/2.17": ("emergencia", "emergência"),
-    "2.10/2.11 (WC)": ("passagem", "acesso aos WC"),
-    "acesso Hall 1": ("passagem", "passagem"),
-    "2.8/2.9": ("emergencia", "emergência"),
-}
-COR_PAPEL = {"entrada": AZUL, "saida": AMBAR, "reforco": AMBAR,
-             "emergencia": VERDE, "passagem": MESA}
+# Ordem de leitura de cada fachada, para a numeracao: as paredes horizontais
+# sao lidas de oeste para leste; as verticais, de norte para sul. E o mesmo
+# sentido em que se le o desenho, da esquerda para a direita e de cima para
+# baixo.
+SENTIDO = {"norte": 1, "sul": 1, "leste": -1, "oeste": -1}
+INICIAL = {"norte": "N", "sul": "S", "leste": "L", "oeste": "O"}
 
-# Vetor unitario que aponta da parede para dentro do salao.
-DENTRO = {"norte": (0, -1), "sul": (0, 1), "oeste": (1, 0), "leste": (-1, 0)}
+# Estado conhecido de cada porta. `livre` quer dizer que ainda nao ha decisao —
+# nao que a porta esteja disponivel.
+ESTADO = {
+    "N1": ("fechada", "Permanece fechada."),
+    "N2": ("catering", "Desbloqueada: é a saída do catering."),
+    "L1": ("emergencia", "Saída de emergência. Recuo de 3 m."),
+    "L2": ("emergencia", "Saída de emergência. Recuo de 3 m."),
+    "L3": ("emergencia", "Saída de emergência. Recuo de 3 m."),
+    "L4": ("emergencia", "Saída de emergência. Recuo de 3 m."),
+    "O1": ("livre", "Passagem para o Hall 1."),
+    "O2": ("livre", "Único acesso aos sanitários, que ficam fora do salão."),
+    "S1": ("livre", "Porta de carga."),
+    "S7": ("livre", "Porta de carga."),
+    "R1": ("livre", "Parede do recorte sudoeste, fora das fachadas."),
+}
+PADRAO = ("livre", "Sem papel definido.")
+COR_ESTADO = {"livre": MESA, "fechada": VERM, "catering": AZUL,
+              "emergencia": VERDE}
+NOME_ESTADO = {"livre": "a definir", "fechada": "fechada",
+               "catering": "catering", "emergencia": "emergência"}
 
 
 def vg(v, casas=1) -> str:
     return f"{v:.{casas}f}".replace(".", ",")
 
 
-def ponto_na_parede(parede, t, fora=0.0):
-    """Ponto sobre a parede na coordenada `t`, deslocado `fora` metros."""
-    dx, dy = DENTRO[parede]
+def numera():
+    """Numera as portas de cada fachada na ordem de leitura do desenho.
+
+    Devolve uma lista de dicionarios com o numero atribuido, o codigo do RDS, a
+    parede, o intervalo em metros e o estado conhecido.
+    """
+    portas = []
+    for parede in ("norte", "leste", "sul", "oeste"):
+        lista = sorted(FL.PORTAS[parede],
+                       key=lambda p: SENTIDO[parede] * p[1])
+        for i, (codigo, a, b) in enumerate(lista, 1):
+            num = f"{INICIAL[parede]}{i}"
+            estado, nota = ESTADO.get(num, PADRAO)
+            portas.append({"num": num, "codigo": codigo.split(" (")[0],
+                           "parede": parede, "a": a, "b": b, "meio": (a + b) / 2,
+                           "larg": b - a, "estado": estado, "nota": nota})
+    estado, nota = ESTADO["R1"]
+    portas.append({"num": "R1", "codigo": PORTA_RECORTE[0], "parede": "recorte",
+                   "a": PORTA_RECORTE[1], "b": PORTA_RECORTE[2],
+                   "meio": sum(PORTA_RECORTE[1:]) / 2,
+                   "larg": PORTA_RECORTE[2] - PORTA_RECORTE[1],
+                   "estado": estado, "nota": nota})
+    return portas
+
+
+def ponto(parede, t):
+    """Ponto sobre a parede, na coordenada corrente daquela parede."""
     if parede == "norte":
-        return t, H + fora
+        return t, H
     if parede == "sul":
-        return t, -fora
+        return t, 0.0
     if parede == "oeste":
-        return -fora, t
-    return W + fora, t
+        return 0.0, t
+    if parede == "recorte":
+        return RECORTE_X, t
+    return W, t
 
 
-def segmento_de_porta(parede, a, b, cor, larg=5.0):
-    p1, p2 = ponto_na_parede(parede, a), ponto_na_parede(parede, b)
-    x1, y1 = px(*p1)
-    x2, y2 = px(*p2)
+def segmento(p, cor, larg=6.0):
+    x1, y1 = px(*ponto(p["parede"], p["a"]))
+    x2, y2 = px(*ponto(p["parede"], p["b"]))
     return (f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" '
             f'stroke="{cor}" stroke-width="{larg}" stroke-linecap="butt"/>')
 
 
-def envelope(parede, a, b, r, duvida):
-    """Zona de recuo de uma saida de emergencia, medida para dentro do salao."""
-    if parede == "norte":
-        z = (a - r, H - r, b + r, H)
-    elif parede == "sul":
-        z = (a - r, 0, b + r, r)
-    elif parede == "oeste":
-        z = (0, a - r, r, b + r)
-    else:
-        z = (W - r, a - r, W, b + r)
-    return rect(*z, fill=VERDE, opacity=".05" if duvida else ".09",
-                stroke=VERDE, stroke_width="0.9",
-                stroke_dasharray="2 4" if duvida else "4 3")
+def envelope(p, r=FL.RECUO_EMERGENCIA):
+    """Os 3 m a respeitar em torno de uma saida de emergencia."""
+    return rect(W - r, max(0.0, p["a"] - r), W, min(H, p["b"] + r),
+                fill=VERDE, opacity=".10", stroke=VERDE, stroke_width="1",
+                stroke_dasharray="4 3")
 
 
-def cota(x0, y0, x1, y1, rotulo, dy=0):
-    """Linha de cota simples com marcas nas pontas."""
-    a, b = px(x0, y0)
-    c, d = px(x1, y1)
-    o = [f'<path d="M{a:.1f} {b:.1f}L{c:.1f} {d:.1f}" stroke="{MESA}" '
-         f'stroke-width="0.8" opacity=".8"/>']
-    for mx, my in ((a, b), (c, d)):
-        ang = 90 if abs(a - c) > abs(b - d) else 0
-        o.append(f'<line x1="{mx - 3 * (ang == 90 and 0 or 1):.1f}" '
-                 f'y1="{my - 3 * (ang == 90 and 1 or 0):.1f}" '
-                 f'x2="{mx + 3 * (ang == 90 and 0 or 1):.1f}" '
-                 f'y2="{my + 3 * (ang == 90 and 1 or 0):.1f}" '
-                 f'stroke="{MESA}" stroke-width="0.8"/>')
-    vertical = abs(b - d) > abs(a - c)
-    o.append(txt((x0 + x1) / 2 + (0.9 if vertical else 0), (y0 + y1) / 2,
-                 rotulo, "sub", dy=dy, rot=-90 if vertical else 0))
-    return "".join(o)
+def nichos_da_parede_leste(portas, r=FL.RECUO_EMERGENCIA):
+    """Trechos da parede leste que sobram fora dos recuos."""
+    livre = [(0.0, H)]
+    for p in portas:
+        if p["parede"] != "leste":
+            continue
+        novo = []
+        for x0, x1 in livre:
+            if p["b"] + r <= x0 or p["a"] - r >= x1:
+                novo.append((x0, x1))
+                continue
+            if x0 < p["a"] - r:
+                novo.append((x0, p["a"] - r))
+            if p["b"] + r < x1:
+                novo.append((p["b"] + r, x1))
+        livre = novo
+    return [(a, b) for a, b in livre if b - a > 0.05]
 
 
-def main():
-    LG, AL = ML + W * S + MR, MT + H * S + MB
+def planta(portas):
+    LG, AL = D.ML + W * S + D.MR, D.MT + H * S + MB
     o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {LG:.0f} '
          f'{AL:.0f}" width="{LG:.0f}" height="{AL:.0f}" role="img" '
-         f'aria-label="Planta-base do Hall 2: contorno, as dezesseis portas e '
-         f'o papel de cada uma no dia da votação">',
+         f'aria-label="Planta-base do Hall 2: o salão vazio, as portas '
+         f'numeradas por fachada e o recuo de 3 m da parede leste">',
          f'<rect x="0" y="0" width="{LG}" height="{AL}" fill="#fbfaf7"/>']
 
-    # ---------- piso e contorno
     poly = [(RECORTE_X, 0), (W, 0), (W, H), (0, H), (0, RECORTE_Y),
             (RECORTE_X, RECORTE_Y)]
     pts = " ".join(f"{px(x, y)[0]:.1f},{px(x, y)[1]:.1f}" for x, y in poly)
     o.append(f'<polygon points="{pts}" fill="#eef1f4"/>')
 
-    # ---------- envelopes de recuo das saidas de emergencia
-    for parede, lista in FL.PORTAS.items():
-        for nome, a, b in lista:
-            if PAPEL[nome][0] in ("entrada", "passagem"):
-                continue
-            o.append(envelope(parede, a, b, FL.RECUO_EMERGENCIA,
-                              duvida=parede != "leste"))
+    # ---------- recuo de 3 m: so a parede leste, como foi determinado
+    for p in portas:
+        if p["estado"] == "emergencia":
+            o.append(envelope(p))
+    o.append(cota(W - FL.RECUO_EMERGENCIA, 4.48, W, 4.48, "3 m", dy=-5))
 
     o.append(f'<polygon points="{pts}" fill="none" stroke="#1c2733" '
              f'stroke-width="3.4"/>')
 
-    # ---------- portas
-    for parede, lista in FL.PORTAS.items():
-        for nome, a, b in lista:
-            papel, _ = PAPEL[nome]
-            o.append(segmento_de_porta(parede, a, b, COR_PAPEL[papel],
-                                       6.5 if papel in ("entrada", "saida") else 5.0))
-    ra, rb = PORTA_RECORTE[1], PORTA_RECORTE[2]
-    x1, y1 = px(RECORTE_X, ra)
-    x2, y2 = px(RECORTE_X, rb)
-    o.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" '
-             f'stroke="{VERDE}" stroke-width="5" stroke-linecap="butt"/>')
+    # ---------- portas e rotulos
+    for p in portas:
+        cor = COR_ESTADO[p["estado"]]
+        o.append(segmento(p, cor))
+        detalhe = f'{p["codigo"]} · {vg(p["larg"], 2)} m'
+        if p["parede"] == "norte":
+            o.append(txt(p["meio"], H, p["num"], "cod", dy=-17))
+            o.append(txt(p["meio"], H, detalhe, "sub", dy=-7))
+        elif p["parede"] == "sul":
+            o.append(txt(p["meio"], 0, p["num"], "cod", dy=20))
+            o.append(txt(p["meio"], 0, detalhe, "sub", dy=31))
+        elif p["parede"] == "leste":
+            o.append(txt(W, p["meio"], p["num"], "cod", anchor="start",
+                         dx=11, dy=-2))
+            o.append(txt(W, p["meio"], detalhe, "sub", anchor="start",
+                         dx=11, dy=9))
+        elif p["parede"] == "oeste":
+            o.append(txt(0, p["meio"], p["num"], "cod", anchor="end",
+                         dx=-11, dy=-2))
+            o.append(txt(0, p["meio"], detalhe, "sub", anchor="end",
+                         dx=-11, dy=9))
+        else:
+            o.append(txt(RECORTE_X, p["meio"], p["num"], "cod", anchor="start",
+                         dx=11, dy=-2))
+            o.append(txt(RECORTE_X, p["meio"], detalhe, "sub", anchor="start",
+                         dx=11, dy=9))
 
-    # ---------- rotulos das portas, fora do salao
-    for nome, a, b in FL.PORTAS["norte"]:
-        o.append(txt((a + b) / 2, H, nome, "lbl", dy=-14))
-        o.append(txt((a + b) / 2, H, f"{vg(b - a, 2)} m", "sub", dy=-4))
-    for nome, a, b in FL.PORTAS["leste"]:
-        o.append(txt(W, (a + b) / 2, nome, "lbl", anchor="start", dy=-3))
-        x, y = px(W, (a + b) / 2)
-        o[-1] = o[-1].replace(f'x="{x:.1f}"', f'x="{x + 10:.1f}"')
-        o.append(txt(W, (a + b) / 2, f"{vg(b - a, 2)} m", "sub",
-                     anchor="start", dy=8))
-        o[-1] = o[-1].replace(f'x="{x:.1f}"', f'x="{x + 10:.1f}"')
-    for nome, a, b in FL.PORTAS["oeste"]:
-        curto = "Hall 1" if "Hall 1" in nome else nome.split(" (")[0]
-        x, y = px(0, (a + b) / 2)
-        for i, (t, est, dy) in enumerate(((curto, "lbl", -3),
-                                          (f"{vg(b - a, 2)} m", "sub", 8))):
-            o.append(txt(0, (a + b) / 2, t, est, anchor="end", dy=dy)
-                     .replace(f'x="{x:.1f}"', f'x="{x - 10:.1f}"'))
-    xr, _ = px(RECORTE_X, (ra + rb) / 2)
-    for t, est, dy in ((PORTA_RECORTE[0], "lbl", -3), ("emergência", "sub", 8)):
-        o.append(txt(RECORTE_X, (ra + rb) / 2, t, est, anchor="start", dy=dy)
-                 .replace(f'x="{xr:.1f}"', f'x="{xr + 10:.1f}"'))
+    # ---------- o que ja esta decidido, dito no desenho
+    n1 = next(p for p in portas if p["num"] == "N1")
+    n2 = next(p for p in portas if p["num"] == "N2")
+    o.append(txt(n1["meio"], H, "FECHADA", "prt", dy=16)
+             .replace('fill="#243244"', f'fill="{VERM}"'))
+    o.append(txt(n2["meio"], H, "DESBLOQUEADA", "prt", dy=16)
+             .replace('fill="#243244"', f'fill="{AZUL}"'))
+    o.append(txt(n2["meio"], H, "saída do catering", "sub", dy=27)
+             .replace('fill="#5c6c80"', f'fill="{AZUL}"'))
+    o.append(txt(W - 5.6, H / 2, "SAÍDAS DE EMERGÊNCIA · RECUO DE 3 m", "via",
+                 rot=90).replace('fill="#243244"', f'fill="{VERDE}"'))
 
-    # ---------- fachada sul: rotulo, papel e faixas
-    for nome, a, b in FL.PORTAS["sul"]:
-        papel, rotulo = PAPEL[nome]
-        forte = papel in ("entrada", "saida")
-        o.append(txt((a + b) / 2, 0, rotulo if forte else nome,
-                     "prt" if forte else "lbl", dy=18))
-        o.append(txt((a + b) / 2, 0, f"{vg(b - a, 2)} m", "sub", dy=29))
-        if papel == "reforco":
-            o.append(txt((a + b) / 2, 0, rotulo, "sub", dy=40))
+    # ---------- para onde levam as portas da parede oeste
+    o.append(txt(0, 37.65, "para o Hall 1", "sub", anchor="end", dx=-11, dy=23))
+    o.append(txt(0, 20.90, "para os sanitários", "sub", anchor="end",
+                 dx=-11, dy=23))
 
-    faixas = [(FL.PORTA_CARGA_O, "entra", AZUL),
-              ((19.10, 37.47), "sai", AMBAR),
-              (FL.PORTA_CARGA_L, "entra", AZUL)]
-    for (a, b), papel, cor in faixas:
-        xa, ya = px(a, 0)
-        xb, _ = px(b, 0)
-        o.append(f'<path d="M{xa:.1f} {ya + 44:.1f}v6h{xb - xa:.1f}v-6" '
-                 f'fill="none" stroke="{cor}" stroke-width="1.6"/>')
-    ea, eb = sum(FL.PORTA_CARGA_O) / 2, sum(FL.PORTA_CARGA_L) / 2
-    o.append(txt(ea, 0, "entra", "via", dy=68))
-    o.append(txt((19.10 + 37.47) / 2, 0, "sai", "via", dy=68))
-    o.append(txt(eb, 0, "entra", "via", dy=68))
-    o.append(cota(ea, -6.6, eb, -6.6, f"{vg(eb - ea)} m entre as entradas",
-                  dy=-6))
+    # ---------- nomes das paredes, recorte e cotas
+    o.append(txt(W / 2, H - 3.6, "PAREDE NORTE", "zona"))
+    o.append(txt(W / 2, 3.6, "FACHADA SUL", "zona"))
+    o.append(txt(4.6, (H + RECORTE_Y) / 2, "PAREDE OESTE", "zona", rot=-90))
+    o.append(txt(W - 8.4, H / 2, "PAREDE LESTE", "zona", rot=90))
+    o.append(txt(RECORTE_X / 2, RECORTE_Y / 2 + 0.6, "fora do salão", "sub"))
+    o.append(txt(RECORTE_X / 2, RECORTE_Y / 2 - 0.6,
+                 f"{vg(RECORTE_X)} × {vg(RECORTE_Y)} m", "sub"))
+    o.append(cota(0, H + 2.4, W, H + 2.4, f"{vg(W)} m", dy=-5))
+    o.append(cota(35.0, 0, 35.0, H, f"{vg(H)} m", dy=-5))
 
-    # ---------- setas de fluxo
-    for x in (9.64, 46.94):
-        a, b = px(x, 0)
-        o.append(f'<path d="M{a:.1f} {b + 34:.1f}V{b - 42:.1f}" stroke="{AZUL}" '
-                 f'stroke-width="3" opacity=".55"/>')
-        o.append(ponta(x, 2.9, 90, AZUL, 5.2))
-    a, b = px(28.29, 0)
-    o.append(f'<path d="M{a:.1f} {b - 42:.1f}V{b + 34:.1f}" stroke="{AMBAR}" '
-             f'stroke-width="3" opacity=".55"/>')
-    o.append(ponta(28.29, -2.3, 270, AMBAR, 5.2))
-
-    # ---------- setas de servico: WC e Hall 1 saem pela parede oeste
-    for nome, a, b in FL.PORTAS["oeste"]:
-        m = (a + b) / 2
-        x, y = px(0, m)
-        o.append(f'<path d="M{x - 4:.1f} {y:.1f}h-16" stroke="{MESA}" '
-                 f'stroke-width="2" opacity=".6"/>')
-        o.append(ponta(-1.5, m, 180, MESA, 4.0))
-
-    # ---------- nomes das paredes e do recorte
-    o.append(txt(W / 2, H - 4.2, "PAREDE NORTE", "zona"))
-    o.append(txt(W / 2, 4.2, "FACHADA SUL", "zona"))
-    o.append(txt(4.4, (H + RECORTE_Y) / 2, "PAREDE OESTE", "zona", rot=-90))
-    o.append(txt(W - 4.4, H / 2, "PAREDE LESTE", "zona", rot=90))
-    o.append(txt(RECORTE_X / 2, RECORTE_Y / 2, "fora do salão", "sub"))
-    o.append(txt(RECORTE_X / 2, RECORTE_Y / 2, f"{vg(RECORTE_X)} × {vg(RECORTE_Y)} m",
-                 "sub", dy=11))
-
-    # ---------- cotas gerais
-    o.append(cota(0, H + 2.2, W, H + 2.2, f"{vg(W)} m", dy=-5))
-    o.append(cota(W + 2.9, 0, W + 2.9, H, f"{vg(H)} m", dy=-6))
-
-    o.append(txt(0.0, H + 3.7, "PLANTA-BASE — o salão e o papel de cada porta",
+    o.append(txt(0.0, H + 3.9, "PLANTA-BASE — o salão e as portas numeradas",
                  "tit", anchor="start"))
 
     # ---------- legenda
-    _, m_todas, _ = FL.capacidade_de_parede()
-    _, m_leste, _ = FL.capacidade_de_parede(
-        recuo={"leste": 3.0, "norte": 0.6, "oeste": 0.6, "sul": 0.6})
-    ly, cx = MT + H * S + 132, ML
-    itens = [(AZUL, "entrada do eleitor"), (AMBAR, "saída e reforços de saída"),
-             (VERDE, "saída de emergência e seu recuo de 3 m"),
-             (MESA, "passagem de serviço: WC e Hall 1")]
-    for c, lab in itens:
+    ly, cx = D.MT + H * S + 118, D.ML
+    for c, lab in ((MESA, "porta sem papel definido"),
+                   (VERM, "porta fechada"),
+                   (AZUL, "porta desbloqueada · saída do catering"),
+                   (VERDE, "saída de emergência e seu recuo de 3 m")):
         o.append(f'<rect x="{cx}" y="{ly - 8}" width="11" height="11" '
                  f'fill="{c}" opacity=".55" stroke="{c}"/>')
         o.append(f'<text x="{cx + 16}" y="{ly + 1}" {EST["lbl"]}>{esc(lab)}</text>')
         cx += 26 + len(lab) * 5.3
-    for i, linha in enumerate((
-            "Contorno e vãos medidos da planta oficial do RDS e da versão "
-            "revisada que assinala as duas portas de carga. Nenhuma mesa "
-            "receptora está desenhada: o miolo do salão é o",
-            "que as ideias 1 e 2 disputam. O recuo de 3 m aparece hachurado em "
-            "todas as saídas de emergência — cheio na parede leste, onde a "
-            "exigência foi confirmada, e pontilhado nas",
-            "demais, onde ainda é pergunta em aberto. É essa dúvida que separa "
-            "55,7 m de parede livre de 74,9 m.")):
-        o.append(f'<text x="{ML}" y="{ly + 26 + i * 14}" {EST["sub"]}>'
+    nichos = nichos_da_parede_leste(portas)
+    linhas = (
+        "As portas são numeradas por fachada, na ordem de leitura do desenho: "
+        "de oeste para leste nas paredes norte e sul, de norte para sul nas "
+        "paredes leste e oeste. Abaixo de cada",
+        "número vem o código do RDS e a largura do vão. Nada aqui atribui "
+        "entrada ou saída de eleitor — essa decisão vem depois. O recuo de 3 m "
+        "está marcado só na parede leste, onde",
+        f"todas as portas são saídas de emergência; sobram dela {len(nichos)} "
+        f"trechos de {vg(nichos[0][1] - nichos[0][0], 2)} m entre os recuos. "
+        "As portas 2.8/2.9 ficam na parede do recorte, que não é fachada.")
+    for i, linha in enumerate(linhas):
+        o.append(f'<text x="{D.ML}" y="{ly + 26 + i * 14}" {EST["sub"]}>'
                  f'{esc(linha)}</text>')
     o.append("</svg>")
 
+    svg = "\n".join(o)
     cam = os.path.join(RAIZ, "saidas", "planta_base.svg")
-    open(cam, "w", encoding="utf-8").write("\n".join(o))
+    open(cam, "w", encoding="utf-8").write(svg)
     print("gravado", cam, os.path.getsize(cam), "bytes")
-    return "\n".join(o)
+    return svg
 
 
 # --------------------------------------------------------------- peca de leitura
-NOTA = {
-    "carga oeste": "Porta de carga. Entrada A, na ponta oeste da fachada.",
-    "carga leste": "Porta de carga. Entrada B, na ponta leste da fachada.",
-    "2.4": "Baia central da fachada sul. Por onde o eleitor sai depois de votar.",
-    "2.5/2.6": "Abre junto com a 2.4 no pico da manhã.",
-    "2.2/2.3": "Abre junto com a 2.4 no pico da manhã.",
-    "2.7": "Fica fechada ao público; vão estreito, entre a entrada A e a saída.",
-    "2.1": "Fica fechada ao público; vão estreito, entre a saída e a entrada B.",
-    "2.13": "Recuo de 3 m em dúvida: pode ou não liberar parede para mesas.",
-    "2.14/2.15": "Recuo de 3 m em dúvida: pode ou não liberar parede para mesas.",
-    "2.22/2.23": "Recuo de 3 m confirmado. Sobra um nicho de 2,79 m entre pares.",
-    "2.20/2.21": "Recuo de 3 m confirmado. Sobra um nicho de 2,79 m entre pares.",
-    "2.18/2.19": "Recuo de 3 m confirmado. Sobra um nicho de 2,79 m entre pares.",
-    "2.16/2.17": "Recuo de 3 m confirmado. Come 3 m da ponta da parede norte.",
-    "2.10/2.11 (WC)": "Único acesso aos sanitários, que ficam fora do salão.",
-    "acesso Hall 1": "Passagem de serviço para o Hall 1. Não recebe público.",
-    "2.8/2.9": "Parede do recorte sudoeste. Fora do modelo de geometria.",
-}
-NOME_PAREDE = {"sul": "sul", "norte": "norte", "leste": "leste",
+NOME_PAREDE = {"norte": "norte", "leste": "leste", "sul": "sul",
                "oeste": "oeste", "recorte": "recorte"}
-NOME_PAPEL = {"entrada": "entrada", "saida": "saída", "reforco": "reforço",
-              "emergencia": "emergência", "passagem": "passagem"}
-CLASSE_PAPEL = {"entrada": "talta", "saida": "talta", "reforco": "tmedia",
-                "emergencia": "tleve", "passagem": "tleve"}
+CLASSE_ESTADO = {"livre": "tleve", "fechada": "tcritica",
+                 "catering": "talta", "emergencia": "tmedia"}
 
 
-def todas_as_portas():
-    """As portas de `salao.py` mais as do recorte, na ordem de leitura."""
-    for parede in ("sul", "leste", "norte", "oeste"):
-        for nome, a, b in FL.PORTAS[parede]:
-            yield parede, nome, a, b
-    yield "recorte", PORTA_RECORTE[0], PORTA_RECORTE[1], PORTA_RECORTE[2]
-
-
-def tabela_portas():
+def tabela_portas(portas):
     ls = []
-    for parede, nome, a, b in todas_as_portas():
-        papel, _ = PAPEL[nome]
-        ls.append(f'<tr><td>{NOME_PAREDE[parede]}</td>'
-                  f'<td class="mono b">{esc(nome.split(" (")[0])}</td>'
-                  f'<td class="mono">{vg(b - a, 2)} m</td>'
-                  f'<td><span class="tag {CLASSE_PAPEL[papel]}">'
-                  f'{NOME_PAPEL[papel]}</span></td>'
-                  f'<td>{esc(NOTA[nome])}</td></tr>')
+    for p in portas:
+        ls.append(f'<tr><td class="mono b">{p["num"]}</td>'
+                  f'<td>{NOME_PAREDE[p["parede"]]}</td>'
+                  f'<td class="mono">{esc(p["codigo"])}</td>'
+                  f'<td class="mono">{vg(p["larg"], 2)} m</td>'
+                  f'<td><span class="tag {CLASSE_ESTADO[p["estado"]]}">'
+                  f'{NOME_ESTADO[p["estado"]]}</span></td>'
+                  f'<td>{esc(p["nota"])}</td></tr>')
     return "\n".join(ls)
 
 
-def tabela_espacos(piso, m_leste, m_todas, p_leste, p_todas):
-    linhas = [
-        ("Piso do salão", f"{piso} m²",
-         f"{vg(W)} × {vg(H)} m menos o recorte de {vg(FL.RECORTE[2])} × "
-         f"{vg(FL.RECORTE[3])} m"),
-        ("Perímetro construído", f"{vg(2 * (W + H))} m",
-         "soma das quatro paredes, sem descontar vãos nem recuos"),
-        ("Parede livre · recuo só na leste", f"{vg(m_leste)} m",
-         f"{p_leste} posições de mesa com o módulo de "
-         f"{vg(FL.LARG_MIN_BAIA, 2)} m de frente"),
-        ("Parede livre · recuo em todas", f"{vg(m_todas)} m",
-         f"{p_todas} posições de mesa com o mesmo módulo"),
-        ("Recorte do canto sudoeste", f"{vg(FL.RECORTE[2] * FL.RECORTE[3])} m²",
-         "não pertence ao Hall 2; sobra a parede com as saídas 2.8/2.9"),
-    ]
-    return "\n".join(f'<tr><td>{a}</td><td class="mono b">{b}</td>'
-                      f'<td>{c}</td></tr>' for a, b, c in linhas)
+def tabela_fachadas(portas):
+    """Comprimento de cada fachada, quanto dela e vao e quanto sobra."""
+    comp = {"norte": W, "sul": W - RECORTE_X, "leste": H, "oeste": H - RECORTE_Y}
+    ls = []
+    for parede in ("norte", "leste", "sul", "oeste"):
+        deste = [p for p in portas if p["parede"] == parede]
+        vao = sum(p["larg"] for p in deste)
+        if parede == "leste":
+            sobra = sum(b - a for a, b in nichos_da_parede_leste(portas))
+            obs = (f"{len(nichos_da_parede_leste(portas))} trechos entre os "
+                   f"recuos de 3 m")
+        else:
+            sobra = comp[parede] - vao
+            obs = "parede cheia, sem recuo marcado"
+        ls.append(f'<tr><td>{NOME_PAREDE[parede]}</td>'
+                  f'<td class="mono">{vg(comp[parede])} m</td>'
+                  f'<td class="mono">{len(deste)}</td>'
+                  f'<td class="mono">{vg(vao)} m</td>'
+                  f'<td class="mono b">{vg(sobra)} m</td>'
+                  f'<td>{obs}</td></tr>')
+    return "\n".join(ls)
 
 
-def pagina(svg):
+def pagina(portas, svg):
     """Monta saidas/planta_base.html a partir do template e da planta."""
     svg = re.sub(r'\swidth="\d+"\sheight="\d+"',
                  ' style="width:100%;height:auto"', svg, count=1)
-    _, m_todas, p_todas = FL.capacidade_de_parede()
-    _, m_leste, p_leste = FL.capacidade_de_parede(
-        recuo={"leste": 3.0, "norte": 0.6, "oeste": 0.6, "sul": 0.6})
-    recorte = FL.RECORTE[2] * FL.RECORTE[3]
+    recorte = RECORTE_X * RECORTE_Y
     piso = W * H - recorte
-    vaos = [(PAPEL[n][0], b - a) for _, n, a, b in todas_as_portas()]
-    soma = lambda *papeis: sum(v for p, v in vaos if p in papeis)
-    ea, eb = sum(FL.PORTA_CARGA_O) / 2, sum(FL.PORTA_CARGA_L) / 2
-
+    nichos = nichos_da_parede_leste(portas)
     campos = dict(
         estilo=estilo(), svg=svg,
         piso=f"{piso:,.0f}".replace(",", "."),
         recorte=vg(recorte),
-        recorte_dim=f"{vg(FL.RECORTE[2])} × {vg(FL.RECORTE[3])}",
+        recorte_dim=f"{vg(RECORTE_X)} × {vg(RECORTE_Y)}",
         larg=vg(W), prof=vg(H),
-        nportas=len(vaos),
-        vao_total=vg(sum(v for _, v in vaos)),
-        vao_entrada=vg(soma("entrada")),
-        vao_saida=vg(soma("saida", "reforco")),
-        dist_entradas=vg(eb - ea),
-        m_leste=vg(m_leste), m_todas=vg(m_todas),
-        p_leste=p_leste, p_todas=p_todas,
-        portas=tabela_portas(),
-        espacos=tabela_espacos(f"{piso:,.0f}".replace(",", "."),
-                               m_leste, m_todas, p_leste, p_todas),
+        nportas=len(portas),
+        vao_total=vg(sum(p["larg"] for p in portas)),
+        nleste=len(nichos), nicho=vg(nichos[0][1] - nichos[0][0], 2),
+        leste_livre=vg(sum(b - a for a, b in nichos)),
+        recuo=vg(FL.RECUO_EMERGENCIA, 0).replace(",0", ""),
+        portas=tabela_portas(portas),
+        fachadas=tabela_fachadas(portas),
     )
     with open(os.path.join(RAIZ, "scripts", "planta_base_template.html"),
               encoding="utf-8") as f:
@@ -376,5 +327,10 @@ def pagina(svg):
     print("gravado", cam, os.path.getsize(cam), "bytes")
 
 
+def main():
+    portas = numera()
+    pagina(portas, planta(portas))
+
+
 if __name__ == "__main__":
-    pagina(main())
+    main()

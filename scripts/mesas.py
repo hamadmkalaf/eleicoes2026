@@ -158,6 +158,20 @@ ORDEM = ["norte", "recorte_h", "oeste", "sul", FACE_LESTE_RECUADA, "recorte_v"]
 # qualquer mudanca nos recuos pode trazer o caso de volta.
 AVULSA_EM = ()
 
+# --------------------------------------------------------------- ajuste final
+# O salao comporta 30 MRVs com a folga cheia, e sao 28 urnas. As duas que
+# sobram foram escolhidas pelo usuario sobre a planta: sai o par mais a leste
+# da parede norte, que se aproximava demais da fileira recuada no canto
+# nordeste, e o par da face norte do recorte encosta a direita, liberando o
+# canto sudoeste em vez de ficar no meio do trecho.
+#
+# Sao decisoes de desenho, nao de calculo: por isso ficam aqui, nomeadas, e nao
+# escondidas no empacotamento. Passar `ajustes={}` devolve o maximo.
+AJUSTE_28 = {
+    "norte": dict(tirar_ultimos_pares=1),
+    "recorte_h": dict(alinha="direita"),
+}
+
 
 def _numero(codigo):
     """Numero de fachada de uma porta, a partir do codigo do RDS."""
@@ -167,26 +181,31 @@ def _numero(codigo):
     return codigo
 
 
-def bloqueios(cenario, hipotese, lateral=None, frontal=None):
-    """Cortes ao longo de cada face e retangulos proibidos no piso."""
+def bloqueios(cenario, hipotese, lateral=None, frontal=None, faixa_leste=True):
+    """Cortes ao longo de cada face e retangulos proibidos no piso.
+
+    `faixa_leste=False` volta atras na decisao da fachada leste: em vez da
+    faixa protegida continua, os quatro envelopes por porta. E o plano B, para
+    o caso de o RDS nao aceitar a faixa."""
     lateral = RECUO_LATERAL if lateral is None else lateral
     frontal = RECUO_FRONTAL if frontal is None else frontal
     cortes = {f: [] for f in FL.FACES}
     rects = []
 
-    # a fachada leste inteira, numa faixa de 3 m: e a reserva que substitui os
-    # quatro envelopes de porta
-    rects.append((FL.retangulo_na_parede("leste", 0.0, FL.HALL_H, FAIXA_LESTE),
-                  "fachada leste · faixa protegida de 3 m"))
-    cortes["leste"].append((0.0, FL.HALL_H, "fachada leste protegida"))
+    if faixa_leste:
+        # a fachada leste inteira, numa faixa de 3 m: e a reserva que substitui
+        # os quatro envelopes de porta
+        rects.append((FL.retangulo_na_parede("leste", 0.0, FL.HALL_H, FAIXA_LESTE),
+                      "fachada leste · faixa protegida de 3 m"))
+        cortes["leste"].append((0.0, FL.HALL_H, "fachada leste protegida"))
 
     for face in FL.FACES:
         for codigo, a, b in FL.portas_da_face(face):
             num = _numero(codigo)
-            if face == "leste":
+            if face == "leste" and faixa_leste:
                 continue                       # ja coberta pela faixa
-            emerg = (codigo in FL.EMERGENCIA and hipotese == "prudente"
-                     and num != "N1")          # N1 esta fechada: nao e vao
+            emerg = (codigo in FL.EMERGENCIA and num != "N1"
+                     and (face == "leste" or hipotese == "prudente"))
 
             if emerg:
                 f = FL.FACES[face]
@@ -246,7 +265,12 @@ def _sombra(face, rect):
     return (rect[0], rect[2]) if f["eixo"] == "h" else (rect[1], rect[3])
 
 
-def empacota(face, cortes, a_min, a_max, obstaculos=(), avulsa_em=()):
+ALINHA = {"centro": 0.5, "direita": 1.0, "esquerda": 0.0}
+
+
+def empacota(face, cortes, a_min, a_max, obstaculos=(), avulsa_em=(), ajustes=None):
+    ajuste = (ajustes or {}).get(face, {})
+    fracao = ALINHA[ajuste.get("alinha", "centro")]
     f = FL.FACES[face]
     livres = [(f["s0"], f["s1"])]
     for a, b, _ in cortes.get(face, []):
@@ -266,7 +290,7 @@ def empacota(face, cortes, a_min, a_max, obstaculos=(), avulsa_em=()):
                             entre_pares=round(entre, 2) if n > 1 else None,
                             sobra=round(sobra, 2), avulsas=avulsas,
                             corredor_avulso=round(corr_av, 2) if avulsas else None))
-        s = a + sobra / 2          # centra o conjunto no trecho: simetrico
+        s = a + sobra * fracao     # centrado por omissao; ver AJUSTE_28
         for i in range(n):
             par = f"{face}|{a:.2f}|{i}"
             modulos.append(dict(face=face, s=s + LARG / 2, corredor=corredor,
@@ -279,6 +303,15 @@ def empacota(face, cortes, a_min, a_max, obstaculos=(), avulsa_em=()):
             # corredor que sobra do outro lado
             modulos.append(dict(face=face, s=a + LARG / 2, corredor=corr_av,
                                 lado="a", par=None))
+
+    tirar = ajuste.get("tirar_ultimos_pares", 0)
+    if tirar:
+        alvo = [p for p in dict.fromkeys(m["par"] for m in modulos) if p][-tirar:]
+        modulos = [m for m in modulos if m["par"] not in alvo]
+        for t in trechos:
+            for p in alvo:
+                if p.startswith(f"{face}|{t['s0']:.2f}|"):
+                    t["pares"] -= 1
     return modulos, trechos
 
 
@@ -315,18 +348,26 @@ def choques(rects):
 
 
 def roda(cenario, hipotese, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX,
-         ordem=None, extras=(), avulsa_em=AVULSA_EM):
+         ordem=None, extras=(), avulsa_em=AVULSA_EM, ajustes=None,
+         faixa_leste=True):
     """Perimetro. As faces sao processadas em ordem: cada faixa ja montada vira
     obstaculo para as seguintes, o que resolve os cantos — duas faces vizinhas
     nao podem ocupar o mesmo quadrado de PROF x PROF, e quem vem primeiro fica
     com ele."""
-    cortes, rects = bloqueios(cenario, hipotese)
+    cortes, rects = bloqueios(cenario, hipotese, faixa_leste=faixa_leste)
     proibidos = list(rects) + vaos_proibidos() + list(extras)
+    ordem = list(ordem or ORDEM)
+    if not faixa_leste:
+        # sem a faixa, a fileira recuada some e a fachada volta a receber
+        # modulos encostados — que so cabem avulsos, entre os envelopes
+        ordem = ["leste" if f == FACE_LESTE_RECUADA else f for f in ordem]
+        avulsa_em = tuple(avulsa_em) + ("leste",)
 
     obst = list(proibidos)
     modulos, por_face = [], {}
-    for face in (ordem or ORDEM):
-        mods, trechos = empacota(face, cortes, a_min, a_max, obst, avulsa_em)
+    for face in ordem:
+        mods, trechos = empacota(face, cortes, a_min, a_max, obst, avulsa_em,
+                                 ajustes)
         modulos += mods
         por_face[face] = dict(mrv=len(mods),
                               pares=sum(t["pares"] for t in trechos),
@@ -399,9 +440,10 @@ def ilha_rect(eixo, fixo, s0, s1, espessura=ESPESSURA_DIV, folga=0.0):
 
 
 def roda_com_divisorias(cenario, hipotese, a_min, divisorias, a_max=CORREDOR_MAX,
-                        avulsa_em=AVULSA_EM):
-    base = roda(cenario, hipotese, a_min, a_max, ordem=ORDEM, avulsa_em=avulsa_em)
-    cortes, _ = bloqueios(cenario, hipotese)
+                        avulsa_em=AVULSA_EM, faixa_leste=True):
+    base = roda(cenario, hipotese, a_min, a_max, ordem=ORDEM, avulsa_em=avulsa_em,
+                faixa_leste=faixa_leste)
+    cortes, _ = bloqueios(cenario, hipotese, faixa_leste=faixa_leste)
     modulos = list(base["modulos"])
     obst = [(rect_do_modulo(m), "faixa de perímetro") for m in modulos] \
         + list(base["proibidos"])

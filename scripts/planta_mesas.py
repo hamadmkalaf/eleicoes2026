@@ -242,11 +242,13 @@ def planta(titulo, subtitulo, r, divisorias=(), notas=()):
 
 
 # ------------------------------------------------------------------- reguas
-def reguas(cenario, hipotese="prudente", a_min=MM.CORREDOR_MIN, esc_px=13.4):
-    """Por que 78 m de parede livre so rendem 48 m de parede usada."""
-    r = MM.roda(cenario, hipotese, a_min, ordem=MM.ORDEM)
+def reguas(cenario, hipotese="prudente", a_min=MM.CORREDOR_MAX, esc_px=13.4,
+           ajustes=None):
+    """Onde a frente vem em pedacos, e onde vem inteira."""
+    r = MM.roda(cenario, hipotese, a_min, ordem=MM.ORDEM, ajustes=ajustes)
     cortes, _ = MM.bloqueios(cenario, hipotese)
     fora = MM.sombras(cenario, hipotese, a_min)
+    _ = ajustes
 
     esq, topo, alt, salto = 132.0, 88.0, 17.0, 34.0
     LG = esq + W * esc_px + 92
@@ -491,7 +493,8 @@ def compara_leste(e=21.0):
 
     # ---- faixa 2: recuada 3 m, fileira continua
     y = topo + banda
-    r = MM.roda("A", "prudente", MM.CORREDOR_MIN, ordem=MM.ORDEM)
+    r = MM.roda("A", "prudente", MM.CORREDOR_MAX, ordem=MM.ORDEM,
+                ajustes=MM.AJUSTE_28)
     tr = [t for t in r["por_face"][MM.FACE_LESTE_RECUADA]["trechos"] if t["pares"]]
     o.append(livre(28, y + 14, "recuada 3 m da parede", 12, "#1f2c3c", "600"))
     o.append(livre(28, y + 28, "faixa protegida contínua", 10.5, "#5c6c80"))

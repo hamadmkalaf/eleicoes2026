@@ -139,16 +139,11 @@
   ],
   "cenarios": {
     "A": {
-      "mrv": 34,
-      "mrv_recomendado": 30,
+      "mrv": 28,
+      "mrv_folga": 30,
+      "mrv_maximo": 34,
       "por_face": {
-        "norte": 12,
-        "recorte_h": 2,
-        "oeste": 6,
-        "leste_recuada": 14
-      },
-      "por_face_recomendado": {
-        "norte": 10,
+        "norte": 8,
         "recorte_h": 2,
         "oeste": 6,
         "leste_recuada": 12
@@ -181,10 +176,10 @@
             "s0": 25.72,
             "s1": 47.3,
             "livre": 21.58,
-            "pares": 4,
-            "corredor": 2.84,
-            "entre_pares": 1.0,
-            "sobra": 0.0,
+            "pares": 2,
+            "corredor": 3.0,
+            "entre_pares": 1.5,
+            "sobra": 4.18,
             "avulsas": 0,
             "corredor_avulso": null
           }
@@ -264,56 +259,39 @@
         "leste_recuada": [
           {
             "s0": 3.0,
-            "s1": 40.3,
-            "livre": 37.3,
-            "pares": 7,
-            "corredor": 2.67,
-            "entre_pares": 1.0,
-            "sobra": 0.0,
+            "s1": 41.4,
+            "livre": 38.4,
+            "pares": 6,
+            "corredor": 3.0,
+            "entre_pares": 1.5,
+            "sobra": 2.1,
             "avulsas": 0,
             "corredor_avulso": null
           }
         ],
         "recorte_v": []
       },
-      "frente": 89.2,
-      "frente_recomendado": 84.0,
+      "frente": 84.0,
       "fileira_leste": {
         "s0": 3.0,
-        "s1": 40.3,
-        "livre": 37.3,
-        "pares": 7,
-        "corredor": 2.67,
-        "entre_pares": 1.0,
-        "sobra": 0.0,
-        "avulsas": 0,
-        "corredor_avulso": null
-      },
-      "fileira_leste_recomendada": {
-        "s0": 3.0,
-        "s1": 40.3,
-        "livre": 37.3,
+        "s1": 41.4,
+        "livre": 38.4,
         "pares": 6,
         "corredor": 3.0,
         "entre_pares": 1.5,
-        "sobra": 1.0,
+        "sobra": 2.1,
         "avulsas": 0,
         "corredor_avulso": null
       },
-      "area_faixas": 344.0,
+      "corredor_maximo": 2.67,
       "choques": []
     },
     "B": {
-      "mrv": 34,
-      "mrv_recomendado": 30,
+      "mrv": 28,
+      "mrv_folga": 30,
+      "mrv_maximo": 34,
       "por_face": {
-        "norte": 12,
-        "recorte_h": 2,
-        "oeste": 6,
-        "leste_recuada": 14
-      },
-      "por_face_recomendado": {
-        "norte": 10,
+        "norte": 8,
         "recorte_h": 2,
         "oeste": 6,
         "leste_recuada": 12
@@ -346,10 +324,10 @@
             "s0": 25.72,
             "s1": 47.3,
             "livre": 21.58,
-            "pares": 4,
-            "corredor": 2.84,
-            "entre_pares": 1.0,
-            "sobra": 0.0,
+            "pares": 2,
+            "corredor": 3.0,
+            "entre_pares": 1.5,
+            "sobra": 4.18,
             "avulsas": 0,
             "corredor_avulso": null
           }
@@ -429,43 +407,31 @@
         "leste_recuada": [
           {
             "s0": 3.0,
-            "s1": 40.3,
-            "livre": 37.3,
-            "pares": 7,
-            "corredor": 2.67,
-            "entre_pares": 1.0,
-            "sobra": 0.0,
+            "s1": 41.4,
+            "livre": 38.4,
+            "pares": 6,
+            "corredor": 3.0,
+            "entre_pares": 1.5,
+            "sobra": 2.1,
             "avulsas": 0,
             "corredor_avulso": null
           }
         ],
         "recorte_v": []
       },
-      "frente": 89.2,
-      "frente_recomendado": 84.0,
+      "frente": 84.0,
       "fileira_leste": {
         "s0": 3.0,
-        "s1": 40.3,
-        "livre": 37.3,
-        "pares": 7,
-        "corredor": 2.67,
-        "entre_pares": 1.0,
-        "sobra": 0.0,
-        "avulsas": 0,
-        "corredor_avulso": null
-      },
-      "fileira_leste_recomendada": {
-        "s0": 3.0,
-        "s1": 40.3,
-        "livre": 37.3,
+        "s1": 41.4,
+        "livre": 38.4,
         "pares": 6,
         "corredor": 3.0,
         "entre_pares": 1.5,
-        "sobra": 1.0,
+        "sobra": 2.1,
         "avulsas": 0,
         "corredor_avulso": null
       },
-      "area_faixas": 344.0,
+      "corredor_maximo": 2.67,
       "choques": [
         {
           "a": "fachada leste · faixa protegida de 3 m",
@@ -480,8 +446,10 @@
       ]
     }
   },
-  "divisoria": {
-    "mrv": 38,
+  "plano_b": {
+    "mrv": 21,
+    "leste": 3,
+    "com_divisoria": 29,
     "acrescimo": 8,
     "comprimento": 11.1
   }

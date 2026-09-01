@@ -251,10 +251,11 @@ definido, esse trecho não pode ser contado inteiro.
 
 ## 8. Estado do projeto
 
-**Uma ideia desenhada: as mesas pareadas, com fileira recuada na fachada leste
-(§11).** Responde à pergunta 1 do §1 — como distribuir as 28 MRVs — e chega a
-30 no layout recomendado, 34 no máximo. As perguntas 2 e 3 do §1, quantas
-entradas e quais portas, continuam sem resposta e nada nesta ideia as antecipa.
+**A pergunta 1 do §1 está respondida: a planta com as 28 MRVs está desenhada**
+(§11), com fileira recuada na fachada leste e folga cheia em todos os
+corredores. As perguntas 2 e 3 do §1 — quantas entradas e quais portas —
+continuam sem resposta, e nada nesta planta as antecipa: a fachada sul ficou
+inteiramente livre de mesas justamente por isso.
 
 A base sobre a qual ela foi construída continua valendo: a planta-base (§3 e
 `saidas/planta_base.html`), as premissas (§4), a carga das urnas (§5), a
@@ -390,24 +391,36 @@ envelopes somados. Sai mais barato porque o piso sobra e a frente não. Em troca
 ela tem de ficar vazia o dia inteiro — sem mobiliário, sem material de apoio e
 sem fila, inclusive a de quem já votou.
 
-### Resultado
+### A planta final — 28 MRVs
 
-**Cabem 34 MRVs no máximo e 30 com as folgas no topo da faixa**, nos dois
-cenários pedidos pelo usuário — em qualquer dos casos acima das 28 exigidas. A
-divisória exenta do miolo deixou de ser necessária.
+**A planta entregue tem as 28 MRVs**, com a folga no topo das duas faixas:
+3,00 m dentro do par e 1,50 m entre pares em toda a planta. Vale igual nos dois
+cenários — a fachada sul não recebe mesa nenhuma, então a decisão sobre S1 e S7
+não desloca nada.
 
-| | S1 e S7 fora de uso | S1 e S7 em uso, divisória a 2 m |
-|---|---|---|
-| Máximo (2,50 no par, 1,00 entre pares) | **34** | **34** |
-| Folga cheia (3,00 e 1,50) — **recomendado** | **30** | **30** |
-| Máximo, se só a fachada leste exigir recuo | **38** | **34** |
+| Face | MRVs |
+|---|---|
+| fileira recuada da fachada leste | **12** (6 pares em 38,4 m contínuos) |
+| parede norte | **8** |
+| parede oeste | **6** |
+| face norte do recorte | **2** |
+| fachada sul, parede leste encostada, face leste do recorte | zero |
 
-Distribuição das 34: 12 na parede norte, 6 na oeste, 2 na face norte do recorte
-e **14 na fileira recuada da fachada leste**. A **fachada sul entrega zero** —
-as sete portas somam 27,6 m de vão e os recuos de S2 e S6 fecham o resto.
+Usa **84,0 m de frente**, entre parede encostada e fileira recuada.
 
-O layout usa **89,2 m de frente** — parede encostada mais a fileira recuada.
-As 28 exigidas pediriam de 74,2 a 88,2 m.
+### A capacidade, que é maior
+
+O teste de capacidade que precedeu a planta: com a mesma folga cheia o salão
+comporta **30**, e apertando até o mínimo da faixa dada (2,50 e 1,00), **34**.
+As duas MRVs excedentes foram escolhidas **pelo usuário sobre o desenho**, e a
+escolha está nomeada em `mesas.AJUSTE_28`, não escondida no empacotamento:
+
+- sai o **par mais a leste da parede norte**, que se aproximava demais da
+  fileira recuada no canto nordeste;
+- o **par da face norte do recorte** é encostado à direita, liberando o canto
+  sudoeste em vez de ficar no meio do trecho.
+
+Passar `ajustes={}` devolve as 30; `a_min=CORREDOR_MIN`, as 34.
 
 ### Três achados
 
@@ -431,15 +444,18 @@ fachada leste** em 4,9 m² — e é dela que a fileira inteira depende —, e o 
 invade o recuo de **R1** em 6,0 m², se a porta 2.8/2.9 exigir os mesmos 3 m. Nos
 dois casos a saída é encurtar a divisória ou afastá-la do canto.
 
-### A divisória exenta, que deixou de ser necessária
+### O plano B, se a faixa contínua não for aceita
 
-Enquanto faltavam mesas, a resposta era uma **divisória exenta** atravessada no
-miolo, servindo de parede pelas duas faces. Com a fileira recuada ela deixou de
-ser necessária: uma de 11,1 m acrescentaria 8 mesas e levaria o salão a 38. Fica
-registrada em `scripts/mesas.py` porque volta a ser o caminho se alguma premissa
-cair — se o RDS exigir os envelopes por porta em vez da faixa contínua, por
-exemplo. Apoia-se no que o §4 já registrava: o sigilo vem da estrutura que fecha
-a urna, não da parede do prédio.
+Está no modelo, em `roda(..., faixa_leste=False)`: volta aos quatro envelopes
+por porta na fachada leste. Aí ela vale **3 MRVs avulsas** — os três pedaços de
+2,79 m entre os envelopes, uma mesa sozinha em cada, com 1,09 m de passagem — e
+o salão cai para **21**, faltando 7. A resposta volta a ser a **divisória exenta**
+de 11,1 m atravessada no miolo, que serve de parede pelas duas faces, acrescenta
+8 e leva o salão a **29**. Apoia-se no que o §4 já registrava: o sigilo vem da
+estrutura que fecha a urna, não da parede do prédio.
+
+É o que se perde se o RDS não aceitar a faixa — e é por isso que a questão 8 do
+§9 é a mais importante das que restam.
 
 Depende de duas aprovações que ainda não existem: a do RDS, como montagem e
 rota de fuga, e a do Cartório Eleitoral, para seção fora da parede do prédio

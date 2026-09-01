@@ -109,6 +109,15 @@ CIRC_VESTIBULO = 1.50     # circulacao para chegar ao vestibulo
 # a exige onde ja esta decidido, na leste.
 HIPOTESES = ("prudente", "minima")
 
+# O recuo de emergencia tem duas medidas, e elas nao precisam ser iguais:
+#   RECUO_FRONTAL  profundidade da faixa livre a frente do vao
+#   RECUO_LATERAL  afastamento exigido de cada lado do vao, ao longo da parede
+# O RDS determinou 3 m; se os 3 m valerem so a frente, e nao dos lados, a
+# parede leste rende bem mais. E a diferenca entre as leituras comparadas em
+# `compara_recuo_lateral()`.
+RECUO_FRONTAL = FL.RECUO_EMERGENCIA
+RECUO_LATERAL = FL.RECUO_EMERGENCIA
+
 CARGA = {"carga oeste": "S1", "carga leste": "S7"}
 ORDEM = ["norte", "recorte_h", "oeste", "sul", "leste", "recorte_v"]
 
@@ -127,8 +136,10 @@ def _numero(codigo):
     return codigo
 
 
-def bloqueios(cenario, hipotese):
+def bloqueios(cenario, hipotese, lateral=None, frontal=None):
     """Cortes ao longo de cada face e retangulos proibidos no piso."""
+    lateral = RECUO_LATERAL if lateral is None else lateral
+    frontal = RECUO_FRONTAL if frontal is None else frontal
     cortes = {f: [] for f in FL.FACES}
     rects = []
 
@@ -140,10 +151,11 @@ def bloqueios(cenario, hipotese):
                      and num != "N1")          # N1 esta fechada: nao e vao
 
             if emerg:
-                r = FL.RECUO_EMERGENCIA
-                rects.append((FL.recuo_da_porta(face, a, b),
-                              f"{num} · recuo de emergência"))
-                cortes[face].append((a - r, b + r, f"{num} recuo"))
+                f = FL.FACES[face]
+                rects.append((FL.retangulo_na_parede(
+                    face, max(f["s0"], a - lateral), min(f["s1"], b + lateral),
+                    frontal), f"{num} · recuo de emergência"))
+                cortes[face].append((a - lateral, b + lateral, f"{num} recuo"))
                 continue
 
             if num in ("S1", "S7"):

@@ -9,6 +9,13 @@ suas plantas e peças de leitura. O que sobrou é o que não depende de layout: 
 geometria do salão, as premissas de comparecimento e mobiliário, a carga das 28
 urnas e a simulação de fila. Nenhuma ideia nova foi desenhada ainda.
 
+**A planta-base é a referência do projeto.** Toda ideia, planta, peça de leitura
+ou conversa com o RDS daqui em diante usa a numeração de portas do §3 — N1, N2,
+L1 a L4, S1 a S7, O1, O2 e R1 — com o código do RDS entre parênteses quando o
+interlocutor for o RDS. A geometria vem de `scripts/salao.py` e de mais lugar
+nenhum: não remeça o PDF. Se a planta-base mudar, ela é regerada e republicada
+na mesma URL (§10), nunca copiada à mão.
+
 ---
 
 ## 1. O problema

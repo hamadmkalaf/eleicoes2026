@@ -52,6 +52,9 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
 
+O desenho de fluxo do salão está em `docs/CONTEXTO.md`, com a planta-base
+(`saidas/planta_base.html`) e as duas ideias de layout.
+
 ## Validações
 
 `mapa_agregacoes.py` falha em vez de gravar saída errada se alguma destas não

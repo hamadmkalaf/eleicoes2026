@@ -1,0 +1,77 @@
+<title>Planta-base do Hall 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+@@estilo@@
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro · RDS Ballsbridge, Hall 2 · planta-base</p>
+  <h1>O salão antes de qualquer layout</h1>
+  <p class="chamada">As ideias 1 e 2 discordam sobre onde ficam as 28 mesas, mas leem o espaço do mesmo jeito: mesmo contorno, mesmas portas, mesma decisão de fachada. Esta planta isola essa parte comum — o salão vazio, com o papel que cada porta recebeu e o que sobra de piso e de parede depois das restrições. Se a leitura estiver errada aqui, as duas ideias erram juntas.</p>
+  <dl class="faixa">
+    <div><dt>Piso do salão</dt><dd>@@piso@@ m²<small>já sem o recorte de @@recorte@@ m²</small></dd></div>
+    <div><dt>Portas</dt><dd>@@nportas@@<small>@@vao_total@@ m de vão somado</small></dd></div>
+    <div><dt>Entram por</dt><dd>@@vao_entrada@@ m<small>duas portas de carga, nas pontas</small></dd></div>
+    <div><dt>Saem por</dt><dd>@@vao_saida@@ m<small>2.4 mais os dois reforços</small></dd></div>
+    <div><dt>Parede livre</dt><dd>@@m_leste@@ m<small>cai para @@m_todas@@ m se o recuo valer em todas</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <p class="rotulo">A planta</p>
+  <h2>Como estou enxergando o Hall 2</h2>
+  <div class="prosa">
+  <p>O salão é um retângulo de @@larg@@ × @@prof@@ m com o canto sudoeste recortado — @@recorte_dim@@ m que não pertencem ao Hall 2. Pé-direito de 7 m, piso sem colunas. No perímetro há dezesseis vãos, e é a leitura deles que muda tudo: o desenho do RDS marca quase todos como saída de emergência, o que não diz nada sobre por onde o eleitor entra num dia de votação.</p>
+  <p>A decisão de fachada, comum às duas ideias, é esta: <strong>entra pelas duas pontas da fachada sul e sai pelo meio dela</strong>. As entradas são as portas de carga, que ficam a @@dist_entradas@@ m uma da outra; a saída é a 2.4, no centro, com 2.5/2.6 e 2.2/2.3 de reforço no pico. Lida da rua, a fachada tem três blocos contíguos e sem ambiguidade — entra na ponta, sai no meio, entra na outra ponta.</p>
+  </div>
+  <figure class="prancha">
+@@svg@@
+  <figcaption>Planta-base em escala. As hachuras verdes são o recuo de 3 m exigido em torno das saídas de emergência: cheias na parede leste, onde a exigência foi confirmada, e pontilhadas nas demais, onde ainda é pergunta em aberto. Nenhuma mesa receptora está desenhada — o miolo é justamente o que as duas ideias disputam.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">As portas</p>
+  <h2>Dezesseis vãos, cinco papéis</h2>
+  <div class="prosa">
+  <p>As duas portas de carga não aparecem rotuladas como <span class="mono">EXIT</span> na planta do RDS porque são portas de <em>get-in</em> de feira — foram identificadas na versão revisada do desenho, e a largura bate com a ficha técnica, que registra a porta principal de carga em 4,87 × 3,73 m. São elas que tornam possível separar entrada de saída em blocos contíguos.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Parede</th><th>Porta</th><th class="mono">Vão</th><th>Papel</th><th>O que isso quer dizer</th></tr></thead>
+    <tbody>@@portas@@</tbody>
+  </table></div>
+  <p class="nota"><strong>As saídas 2.8/2.9 ficam na parede do recorte sudoeste</strong> e não entram no modelo de geometria: nenhuma das duas ideias põe mesa naquela parede. Estão desenhadas aqui só para a planta ficar completa.</p>
+</section>
+
+<section>
+  <p class="rotulo">O que sobra</p>
+  <h2>Dois espaços disputados, não um</h2>
+  <div class="prosa">
+  <p>O salão oferece duas coisas escassas e muito diferentes. A primeira é <strong>piso</strong>: @@piso@@ m² de chão livre, que é o que a ideia 1 usa, pondo as mesas em ilhas no meio do salão e gastando a metade sul em circulação. A segunda é <strong>parede</strong>: o perímetro útil, que é o que a ideia 2 usa, encostando as 28 mesas nas paredes para que a tela da urna aponte para uma superfície fechada.</p>
+  <p>Piso o salão tem de sobra. Parede, não: o perímetro está recortado por dezesseis vãos, e cada saída de emergência leva junto o recuo de 3 m à sua volta. Descontado tudo, restam <strong>@@m_leste@@ m</strong> de parede aproveitável se o recuo valer só para as saídas 2.16–2.23 — e apenas <strong>@@m_todas@@ m</strong> se valer para todas. É a diferença entre @@p_leste@@ e @@p_todas@@ posições de mesa: a mesma planta, duas respostas opostas.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>O que</th><th class="mono">Quanto</th><th>Como foi medido</th></tr></thead>
+    <tbody>@@espacos@@</tbody>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Antes de seguir</p>
+  <h2>O que esta planta assume</h2>
+  <ol class="passos">
+    <li><div><h3>As portas de carga podem ficar abertas e travadas as nove horas</h3><p>Toda a decisão de fachada depende disso. Portas de carga costumam ser de enrolar e às vezes têm função corta-fogo; se não puderem ficar abertas, ou se a soleira não servir para pedestre, as entradas voltam para as baias 2.5/2.6 e 2.2/2.3 e as três aberturas se amontoam em 18 m de fachada — entrada e saída deixam de ser inequívocas.</p></div></li>
+    <li><div><h3>O recuo de 3 m vale só para as saídas 2.16–2.23</h3><p>Foi o que se disse literalmente, e é o que está desenhado cheio na parede leste. Se valer para todas as saídas de emergência, a parede livre cai de @@m_leste@@ m para @@m_todas@@ m e a ideia 2 deixa de existir. Nenhuma outra pergunta muda tanto o desenho.</p></div></li>
+    <li><div><h3>Os sanitários ficam fora do salão, na parede oeste</h3><p>Chega-se a eles por 2.10/2.11, do lado oposto às entradas e à saída. Quem vai ao banheiro sai do circuito e volta a ele — nenhuma das duas ideias trata esse movimento, e ele precisa de sinalização própria.</p></div></li>
+    <li><div><h3>O acesso ao Hall 1 é passagem de serviço, não entrada de público</h3><p>São 1,70 m de vão na parede oeste. Serve para equipe e material; usá-lo como entrada de eleitor colocaria um terceiro fluxo na parede que já tem o caminho dos sanitários.</p></div></li>
+  </ol>
+</section>
+
+<footer>
+  <p>Geometria medida da planta oficial do RDS (Hall 2, pavimento térreo) e da versão revisada com as duas portas de carga assinaladas, com escala aferida contra a ficha técnica do próprio documento: 50,2 × 44,5 m, 2.238 m². Está codificada em <span class="mono">scripts/salao.py</span>, fonte única das três plantas deste projeto.</p>
+  <p>A ficha técnica do RDS registra 2.238 m² de área bruta; o contorno desenhado, já sem o recorte do canto sudoeste, dá @@piso@@ m². A diferença é o próprio recorte mais o arredondamento das dimensões impressas.</p>
+</footer>
+</div>

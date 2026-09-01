@@ -68,7 +68,9 @@ codificada em **`scripts/salao.py`**, que é a fonte única.
 As portas de carga **não** aparecem rotuladas como EXIT na planta porque são
 portas de *get-in* de feira. A largura bate com a ficha técnica, que registra a
 porta principal de carga em **4,87 × 3,73 m**. As saídas 2.8/2.9 ficam na parede
-do recorte sudoeste.
+do recorte sudoeste, medidas do PDF em 3,0 a 6,5 m a partir do canto sul; não
+entram em `PORTAS` porque nenhuma parede do recorte recebe MRV, e só aparecem
+desenhadas na planta-base.
 
 ---
 
@@ -342,6 +344,7 @@ Por ordem de retorno:
 
 | Arquivo | O que é |
 |---|---|
+| `scripts/planta_base.py` + `planta_base_template.html` | **Planta-base:** o salão vazio e o papel de cada porta, sem layout. Grava `saidas/planta_base.svg` e `saidas/planta_base.html`. É a leitura do espaço comum às duas ideias — serve para conferir a fachada e os recuos antes de discutir layout. |
 | `scripts/salao.py` | **Núcleo comum:** geometria medida, premissas, carga das urnas, simulação de fila, cálculo de capacidade de parede. Toda ideia importa daqui. Rodando sozinho, imprime os cenários do §7. |
 | `scripts/ideia1_ilhas.py` | Layout da ideia 1 → `saidas/ideia1_dados.json` |
 | `scripts/ideia1_planta.py` | Planta em escala → `saidas/ideia1_planta.svg` |
@@ -354,8 +357,9 @@ Por ordem de retorno:
 
 As peças de leitura estão publicadas em:
 
-| Ideia | Artefato |
+| Peça | Artefato |
 |---|---|
+| planta-base | <https://claude.ai/code/artifact/48817634-cbe1-426e-829f-5b5c674a688c> |
 | 1 — ilhas | <https://claude.ai/code/artifact/bdf8a5b8-2fdd-4b00-a409-9fe4af2bf3f2> |
 | 2 — paredes | <https://claude.ai/code/artifact/1193fccf-effa-49ca-8ac5-5f4946fe4788> |
 
@@ -365,6 +369,7 @@ Para atualizar qualquer uma de outra sessão, publique passando a URL dela em
 ```bash
 cd scripts
 python3 salao.py           # confere os dados e a capacidade de parede
+python3 planta_base.py     # planta-base: salao vazio e papel das portas
 python3 ideia1_ilhas.py    # imprime a alocação das 28 urnas
 python3 ideia1_planta.py
 python3 ideia1_pagina.py

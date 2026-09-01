@@ -1,0 +1,355 @@
+<title>Planta-base do Hall 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  --papel:#f6f4ef; --folha:#fffdf8; --tinta:#17202b; --meio:#59616d;
+  --fraco:#8a919b; --regua:#ddd7cb; --regua2:#eae5da;
+  --entrada:#1f6fb2; --saida:#b26a12; --emerg:#16867f; --alerta:#b23b2e;
+  --grade:#e9ecef; --grade2:#b2bcc8; --grade3:#75808e; --grade4:#3b4552;
+  --marca:rgba(31,111,178,.09);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --papel:#111519; --folha:#191e24; --tinta:#e7ebef; --meio:#a3abb5;
+  --fraco:#78818c; --regua:#2c333b; --regua2:#232a31;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a;
+  --grade:#2a3138; --grade2:#4a545f; --grade3:#7b8692; --grade4:#aab3bd;
+  --marca:rgba(99,166,224,.12);
+}}
+:root[data-theme="dark"]{
+  --papel:#111519; --folha:#191e24; --tinta:#e7ebef; --meio:#a3abb5;
+  --fraco:#78818c; --regua:#2c333b; --regua2:#232a31;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a;
+  --grade:#2a3138; --grade2:#4a545f; --grade3:#7b8692; --grade4:#aab3bd;
+  --marca:rgba(99,166,224,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.folha{max-width:1140px; margin:0 auto; padding:0 28px 96px}
+.prosa{max-width:70ch}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+  text-wrap:balance; margin:0; font-weight:700; letter-spacing:-.008em}
+h1{font-size:clamp(2rem,4.4vw,3.05rem); line-height:1.08}
+h2{font-size:clamp(1.45rem,2.5vw,1.95rem); line-height:1.18}
+h3{font-size:1.06rem; font-weight:600; line-height:1.3}
+p{margin:0 0 1.05em}
+a{color:var(--entrada)}
+strong{font-weight:600}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+.b{font-weight:600}
+.peq{font-size:.86em}
+
+/* ---- cabecalho ---- */
+header{padding:76px 0 0}
+.olho{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 20px}
+.chamada{font-family:"Source Serif 4",Georgia,serif; font-size:clamp(1.1rem,2vw,1.32rem);
+  line-height:1.5; color:var(--meio); max-width:60ch; margin:22px 0 0}
+.faixa{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
+  gap:1px; background:var(--regua); border:1px solid var(--regua);
+  margin:44px 0 0}
+.faixa div{background:var(--papel); padding:15px 16px}
+.faixa dt{font-size:.72rem; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--meio); margin:0 0 5px}
+.faixa dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.42rem;
+  font-weight:500; font-variant-numeric:tabular-nums; line-height:1.15}
+.faixa dd small{display:block; font-family:"IBM Plex Sans",sans-serif;
+  font-size:.74rem; font-weight:400; color:var(--fraco); letter-spacing:0;
+  margin-top:3px}
+
+section{margin:72px 0 0}
+.rotulo{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 10px;
+  padding-bottom:9px; border-bottom:1px solid var(--regua)}
+section > h2{margin-bottom:18px}
+
+/* ---- as tres respostas ---- */
+.respostas{display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(268px,1fr));
+  margin-top:26px}
+.resposta{background:var(--folha); border:1px solid var(--regua); padding:22px 22px 24px;
+  display:flex; flex-direction:column; gap:11px}
+.resposta .pergunta{font-size:.83rem; color:var(--meio); line-height:1.45}
+.resposta .num{font-family:"IBM Plex Mono",monospace; font-size:.72rem;
+  color:var(--entrada); letter-spacing:.1em}
+.resposta .curta{font-family:"Source Serif 4",Georgia,serif; font-size:1.24rem;
+  font-weight:700; line-height:1.26}
+.resposta p{margin:0; font-size:.93rem; color:var(--meio)}
+
+/* ---- grafico ---- */
+figure{margin:30px 0 0}
+figcaption{font-size:.84rem; color:var(--meio); margin-top:14px; max-width:74ch}
+.grafico{background:var(--folha); border:1px solid var(--regua); padding:22px 24px 18px}
+.linha{display:grid; grid-template-columns:44px 1fr 42px; align-items:center;
+  gap:11px; padding:1.5px 0; position:relative; outline:none}
+.linha .cod{font-family:"IBM Plex Mono",monospace; font-size:.76rem; color:var(--meio);
+  text-align:right; font-variant-numeric:tabular-nums}
+.linha .trilho{height:13px; background:var(--regua2)}
+.linha .barra{display:block; height:100%; background:var(--grade3);
+  border-radius:0 3px 3px 0}
+.linha.destaque .barra{background:var(--alerta)}
+.linha.destaque .cod,.linha.destaque .val{color:var(--tinta); font-weight:600}
+.linha .val{font-family:"IBM Plex Mono",monospace; font-size:.76rem;
+  font-variant-numeric:tabular-nums; color:var(--meio)}
+.linha .dica{position:absolute; left:56px; bottom:100%; z-index:5; opacity:0;
+  pointer-events:none; background:var(--tinta); color:var(--papel);
+  font-family:"IBM Plex Mono",monospace; font-size:.72rem; line-height:1.45;
+  padding:5px 9px; max-width:min(360px,66vw); transition:opacity .12s}
+.linha:hover .dica,.linha:focus .dica{opacity:1}
+.linha:focus .trilho{outline:2px solid var(--entrada); outline-offset:2px}
+.degrau{display:flex; align-items:center; gap:10px; margin:9px 0 3px;
+  font-size:.76rem; color:var(--alerta); font-weight:600}
+.degrau::before,.degrau::after{content:""; flex:1; height:1px; background:var(--alerta);
+  opacity:.4}
+
+/* ---- planta ---- */
+.prancha{background:#fbfaf7; border:1px solid var(--regua); padding:8px;
+  overflow-x:auto}
+.prancha svg{display:block; min-width:760px}
+
+/* ---- tabelas ---- */
+.rolagem{overflow-x:auto; border:1px solid var(--regua); background:var(--folha)}
+table{border-collapse:collapse; width:100%; font-size:.855rem}
+th,td{text-align:left; padding:8px 11px; border-bottom:1px solid var(--regua2);
+  white-space:nowrap}
+thead th{position:sticky; top:0; background:var(--folha); font-size:.71rem;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--meio);
+  font-weight:500; border-bottom:1px solid var(--regua)}
+tbody tr:last-child td{border-bottom:none}
+td.mono{font-variant-numeric:tabular-nums;
+  font-family:"IBM Plex Mono",ui-monospace,monospace}
+td.z{font-family:"IBM Plex Mono",monospace; font-weight:600; text-align:center;
+  width:34px}
+td.zA{color:var(--entrada)} td.zB{color:var(--saida)}
+tr.proj td{background:var(--marca); font-weight:600}
+.tag{display:inline-block; font-size:.7rem; letter-spacing:.05em; padding:2px 7px;
+  border:1px solid currentColor; color:var(--meio)}
+.tleve{opacity:.6} .tmedia{opacity:.8}
+.talta{color:var(--tinta)} .tcritica{color:var(--alerta); font-weight:600}
+.compacta{max-width:660px}
+.compacta th,.compacta td{white-space:normal}
+
+/* ---- portas ---- */
+.portas{background:var(--folha); border:1px solid var(--regua); padding:22px 24px}
+.portas svg{display:block; width:100%; height:auto}
+
+/* ---- listas ---- */
+ol.passos{counter-reset:p; list-style:none; padding:0; margin:24px 0 0;
+  display:grid; gap:14px}
+ol.passos li{counter-increment:p; display:grid; grid-template-columns:30px 1fr;
+  gap:14px; align-items:start}
+ol.passos li::before{content:counter(p); font-family:"IBM Plex Mono",monospace;
+  font-size:.78rem; color:var(--entrada); border:1px solid var(--regua);
+  width:30px; height:30px; display:grid; place-items:center; margin-top:1px}
+ul.marcas{list-style:none; padding:0; margin:20px 0 0; display:grid; gap:12px}
+ul.marcas li{padding-left:20px; position:relative; color:var(--meio)}
+ul.marcas li::before{content:""; position:absolute; left:0; top:.62em; width:8px;
+  height:1px; background:var(--fraco)}
+ul.marcas li strong{color:var(--tinta)}
+
+.nota{border-left:2px solid var(--saida); padding:2px 0 2px 20px; margin:26px 0 0;
+  color:var(--meio); font-size:.95rem}
+.nota strong{color:var(--tinta)}
+
+footer{margin:84px 0 0; padding-top:22px; border-top:1px solid var(--regua);
+  font-size:.82rem; color:var(--fraco)}
+footer p{margin:0 0 .5em; max-width:74ch}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:640px){ .folha{padding:0 18px 64px} header{padding-top:48px} }
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro · RDS Ballsbridge, Hall 2 · planta-base</p>
+  <h1>O salão antes de qualquer layout</h1>
+  <p class="chamada">As ideias 1 e 2 discordam sobre onde ficam as 28 mesas, mas leem o espaço do mesmo jeito: mesmo contorno, mesmas portas, mesma decisão de fachada. Esta planta isola essa parte comum — o salão vazio, com o papel que cada porta recebeu e o que sobra de piso e de parede depois das restrições. Se a leitura estiver errada aqui, as duas ideias erram juntas.</p>
+  <dl class="faixa">
+    <div><dt>Piso do salão</dt><dd>2.179 m²<small>já sem o recorte de 54,6 m²</small></dd></div>
+    <div><dt>Portas</dt><dd>16<small>53,7 m de vão somado</small></dd></div>
+    <div><dt>Entram por</dt><dd>7,3 m<small>duas portas de carga, nas pontas</small></dd></div>
+    <div><dt>Saem por</dt><dd>17,8 m<small>2.4 mais os dois reforços</small></dd></div>
+    <div><dt>Parede livre</dt><dd>74,9 m<small>cai para 55,7 m se o recuo valer em todas</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <p class="rotulo">A planta</p>
+  <h2>Como estou enxergando o Hall 2</h2>
+  <div class="prosa">
+  <p>O salão é um retângulo de 50,3 × 44,4 m com o canto sudoeste recortado — 7,8 × 7,0 m que não pertencem ao Hall 2. Pé-direito de 7 m, piso sem colunas. No perímetro há dezesseis vãos, e é a leitura deles que muda tudo: o desenho do RDS marca quase todos como saída de emergência, o que não diz nada sobre por onde o eleitor entra num dia de votação.</p>
+  <p>A decisão de fachada, comum às duas ideias, é esta: <strong>entra pelas duas pontas da fachada sul e sai pelo meio dela</strong>. As entradas são as portas de carga, que ficam a 37,3 m uma da outra; a saída é a 2.4, no centro, com 2.5/2.6 e 2.2/2.3 de reforço no pico. Lida da rua, a fachada tem três blocos contíguos e sem ambiguidade — entra na ponta, sai no meio, entra na outra ponta.</p>
+  </div>
+  <figure class="prancha">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 882 992" style="width:100%;height:auto" role="img" aria-label="Planta-base do Hall 2: contorno, as dezesseis portas e o papel de cada uma no dia da votação">
+<rect x="0" y="0" width="882.5" height="992.0" fill="#fbfaf7"/>
+<polygon points="181.0,742.0 818.5,742.0 818.5,76.0 64.0,76.0 64.0,637.0 181.0,637.0" fill="#eef1f4"/>
+<rect x="277.3" y="697.0" width="108.8" height="45.0" fill="#16867f" opacity=".05" stroke="#16867f" stroke-width="0.9" stroke-dasharray="2 4"/>
+<rect x="305.5" y="697.0" width="179.0" height="45.0" fill="#16867f" opacity=".05" stroke="#16867f" stroke-width="0.9" stroke-dasharray="2 4"/>
+<rect x="398.8" y="697.0" width="178.9" height="45.0" fill="#16867f" opacity=".05" stroke="#16867f" stroke-width="0.9" stroke-dasharray="2 4"/>
+<rect x="492.1" y="697.0" width="178.9" height="45.0" fill="#16867f" opacity=".05" stroke="#16867f" stroke-width="0.9" stroke-dasharray="2 4"/>
+<rect x="590.4" y="697.0" width="109.0" height="45.0" fill="#16867f" opacity=".05" stroke="#16867f" stroke-width="0.9" stroke-dasharray="2 4"/>
+<rect x="130.2" y="76.0" width="120.4" height="45.0" fill="#16867f" opacity=".05" stroke="#16867f" stroke-width="0.9" stroke-dasharray="2 4"/>
+<rect x="328.9" y="76.0" width="143.4" height="45.0" fill="#16867f" opacity=".05" stroke="#16867f" stroke-width="0.9" stroke-dasharray="2 4"/>
+<rect x="773.5" y="606.9" width="45.0" height="135.9" fill="#16867f" opacity=".09" stroke="#16867f" stroke-width="0.9" stroke-dasharray="4 3"/>
+<rect x="773.5" y="428.9" width="45.0" height="136.0" fill="#16867f" opacity=".09" stroke="#16867f" stroke-width="0.9" stroke-dasharray="4 3"/>
+<rect x="773.5" y="251.2" width="45.0" height="135.9" fill="#16867f" opacity=".09" stroke="#16867f" stroke-width="0.9" stroke-dasharray="4 3"/>
+<rect x="773.5" y="73.4" width="45.0" height="135.9" fill="#16867f" opacity=".09" stroke="#16867f" stroke-width="0.9" stroke-dasharray="4 3"/>
+<polygon points="181.0,742.0 818.5,742.0 818.5,76.0 64.0,76.0 64.0,637.0 181.0,637.0" fill="none" stroke="#1c2733" stroke-width="3.4"/>
+<line x1="181.4" y1="742.0" x2="235.8" y2="742.0" stroke="#1f6fb2" stroke-width="6.5" stroke-linecap="butt"/>
+<line x1="322.3" y1="742.0" x2="341.0" y2="742.0" stroke="#16867f" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="350.5" y1="742.0" x2="439.5" y2="742.0" stroke="#b26a12" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="443.8" y1="742.0" x2="532.8" y2="742.0" stroke="#b26a12" stroke-width="6.5" stroke-linecap="butt"/>
+<line x1="537.1" y1="742.0" x2="626.0" y2="742.0" stroke="#b26a12" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="635.4" y1="742.0" x2="654.4" y2="742.0" stroke="#16867f" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="740.8" y1="742.0" x2="795.2" y2="742.0" stroke="#1f6fb2" stroke-width="6.5" stroke-linecap="butt"/>
+<line x1="175.2" y1="76.0" x2="205.6" y2="76.0" stroke="#16867f" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="373.9" y1="76.0" x2="427.3" y2="76.0" stroke="#16867f" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="818.5" y1="697.7" x2="818.5" y2="651.9" stroke="#16867f" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="818.5" y1="520.0" x2="818.5" y2="473.9" stroke="#16867f" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="818.5" y1="342.1" x2="818.5" y2="296.2" stroke="#16867f" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="818.5" y1="164.4" x2="818.5" y2="118.4" stroke="#16867f" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="64.0" y1="451.6" x2="64.0" y2="405.5" stroke="#5d6773" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="64.0" y1="190.0" x2="64.0" y2="164.5" stroke="#5d6773" stroke-width="5.0" stroke-linecap="butt"/>
+<line x1="181.0" y1="697.0" x2="181.0" y2="644.5" stroke="#16867f" stroke-width="5" stroke-linecap="butt"/>
+<text x="190.4" y="62.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="middle">2.13</text>
+<text x="190.4" y="72.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">2,03 m</text>
+<text x="400.6" y="62.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="middle">2.14/2.15</text>
+<text x="400.6" y="72.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">3,56 m</text>
+<text x="828.5" y="671.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="start">2.22/2.23</text>
+<text x="828.5" y="682.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">3,06 m</text>
+<text x="828.5" y="494.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="start">2.20/2.21</text>
+<text x="828.5" y="505.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">3,07 m</text>
+<text x="828.5" y="316.1" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="start">2.18/2.19</text>
+<text x="828.5" y="327.1" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">3,06 m</text>
+<text x="828.5" y="138.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="start">2.16/2.17</text>
+<text x="828.5" y="149.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">3,06 m</text>
+<text x="54.0" y="425.6" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="end">2.10/2.11</text>
+<text x="54.0" y="436.6" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">3,07 m</text>
+<text x="54.0" y="174.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="end">Hall 1</text>
+<text x="54.0" y="185.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">1,70 m</text>
+<text x="191.0" y="667.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="start">2.8/2.9</text>
+<text x="191.0" y="678.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">emergência</text>
+<text x="208.6" y="760.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#243244" text-anchor="middle">ENTRADA A</text>
+<text x="208.6" y="771.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">3,62 m</text>
+<text x="331.7" y="760.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="middle">2.7</text>
+<text x="331.7" y="771.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">1,25 m</text>
+<text x="395.0" y="760.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="middle">2.5/2.6</text>
+<text x="395.0" y="771.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">5,93 m</text>
+<text x="395.0" y="782.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">reforço</text>
+<text x="488.3" y="760.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#243244" text-anchor="middle">SAÍDA</text>
+<text x="488.3" y="771.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">5,93 m</text>
+<text x="581.6" y="760.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="middle">2.2/2.3</text>
+<text x="581.6" y="771.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">5,93 m</text>
+<text x="581.6" y="782.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">reforço</text>
+<text x="644.9" y="760.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244" text-anchor="middle">2.1</text>
+<text x="644.9" y="771.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">1,27 m</text>
+<text x="768.0" y="760.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#243244" text-anchor="middle">ENTRADA B</text>
+<text x="768.0" y="771.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">3,63 m</text>
+<path d="M181.4 786.0v6h54.3v-6" fill="none" stroke="#1f6fb2" stroke-width="1.6"/>
+<path d="M350.5 786.0v6h275.5v-6" fill="none" stroke="#b26a12" stroke-width="1.6"/>
+<path d="M740.8 786.0v6h54.5v-6" fill="none" stroke="#1f6fb2" stroke-width="1.6"/>
+<text x="208.6" y="810.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle">entra</text>
+<text x="488.3" y="810.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle">sai</text>
+<text x="768.0" y="810.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#243244" opacity=".75" text-anchor="middle">entra</text>
+<path d="M208.6 841.0L768.0 841.0" stroke="#5d6773" stroke-width="0.8" opacity=".8"/><line x1="205.6" y1="838.0" x2="211.6" y2="844.0" stroke="#5d6773" stroke-width="0.8"/><line x1="765.0" y1="838.0" x2="771.0" y2="844.0" stroke="#5d6773" stroke-width="0.8"/><text x="488.3" y="835.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">37,3 m entre as entradas</text>
+<path d="M208.6 776.0V700.0" stroke="#1f6fb2" stroke-width="3" opacity=".55"/>
+<polygon points="208.6,689.7 205.3,702.5 211.9,702.5" fill="#1f6fb2"/>
+<path d="M768.1 776.0V700.0" stroke="#1f6fb2" stroke-width="3" opacity=".55"/>
+<polygon points="768.1,689.7 764.8,702.5 771.4,702.5" fill="#1f6fb2"/>
+<path d="M488.3 700.0V776.0" stroke="#b26a12" stroke-width="3" opacity=".55"/>
+<polygon points="488.3,785.3 491.7,772.5 485.0,772.5" fill="#b26a12"/>
+<path d="M60.0 428.6h-16" stroke="#5d6773" stroke-width="2" opacity=".6"/>
+<polygon points="34.7,428.6 44.6,431.1 44.6,426.0" fill="#5d6773"/>
+<path d="M60.0 177.2h-16" stroke="#5d6773" stroke-width="2" opacity=".6"/>
+<polygon points="34.7,177.2 44.6,179.8 44.6,174.7" fill="#5d6773"/>
+<text x="441.2" y="139.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle">PAREDE NORTE</text>
+<text x="441.2" y="679.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle">FACHADA SUL</text>
+<text x="130.0" y="356.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle" transform="rotate(-90 130.0 356.5)">PAREDE OESTE</text>
+<text x="752.5" y="409.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle" transform="rotate(90 752.5 409.0)">PAREDE LESTE</text>
+<text x="122.5" y="689.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">fora do salão</text>
+<text x="122.5" y="700.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">7,8 × 7,0 m</text>
+<path d="M64.0 43.0L818.5 43.0" stroke="#5d6773" stroke-width="0.8" opacity=".8"/><line x1="61.0" y1="40.0" x2="67.0" y2="46.0" stroke="#5d6773" stroke-width="0.8"/><line x1="815.5" y1="40.0" x2="821.5" y2="46.0" stroke="#5d6773" stroke-width="0.8"/><text x="441.2" y="38.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">50,3 m</text>
+<path d="M862.0 742.0L862.0 76.0" stroke="#5d6773" stroke-width="0.8" opacity=".8"/><line x1="859.0" y1="742.0" x2="865.0" y2="742.0" stroke="#5d6773" stroke-width="0.8"/><line x1="859.0" y1="76.0" x2="865.0" y2="76.0" stroke="#5d6773" stroke-width="0.8"/><text x="875.5" y="403.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle" transform="rotate(-90 875.5 403.0)">44,4 m</text>
+<text x="64.0" y="20.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="16" font-weight="700" fill="#1f2c3c" text-anchor="start">PLANTA-BASE — o salão e o papel de cada porta</text>
+<rect x="64" y="866.0" width="11" height="11" fill="#1f6fb2" opacity=".55" stroke="#1f6fb2"/>
+<text x="80" y="875.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">entrada do eleitor</text>
+<rect x="185.39999999999998" y="866.0" width="11" height="11" fill="#b26a12" opacity=".55" stroke="#b26a12"/>
+<text x="201.39999999999998" y="875.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">saída e reforços de saída</text>
+<rect x="343.9" y="866.0" width="11" height="11" fill="#16867f" opacity=".55" stroke="#16867f"/>
+<text x="359.9" y="875.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">saída de emergência e seu recuo de 3 m</text>
+<rect x="571.3" y="866.0" width="11" height="11" fill="#5d6773" opacity=".55" stroke="#5d6773"/>
+<text x="587.3" y="875.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">passagem de serviço: WC e Hall 1</text>
+<text x="64" y="900.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80">Contorno e vãos medidos da planta oficial do RDS e da versão revisada que assinala as duas portas de carga. Nenhuma mesa receptora está desenhada: o miolo do salão é o</text>
+<text x="64" y="914.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80">que as ideias 1 e 2 disputam. O recuo de 3 m aparece hachurado em todas as saídas de emergência — cheio na parede leste, onde a exigência foi confirmada, e pontilhado nas</text>
+<text x="64" y="928.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80">demais, onde ainda é pergunta em aberto. É essa dúvida que separa 55,7 m de parede livre de 74,9 m.</text>
+</svg>
+  <figcaption>Planta-base em escala. As hachuras verdes são o recuo de 3 m exigido em torno das saídas de emergência: cheias na parede leste, onde a exigência foi confirmada, e pontilhadas nas demais, onde ainda é pergunta em aberto. Nenhuma mesa receptora está desenhada — o miolo é justamente o que as duas ideias disputam.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">As portas</p>
+  <h2>Dezesseis vãos, cinco papéis</h2>
+  <div class="prosa">
+  <p>As duas portas de carga não aparecem rotuladas como <span class="mono">EXIT</span> na planta do RDS porque são portas de <em>get-in</em> de feira — foram identificadas na versão revisada do desenho, e a largura bate com a ficha técnica, que registra a porta principal de carga em 4,87 × 3,73 m. São elas que tornam possível separar entrada de saída em blocos contíguos.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Parede</th><th>Porta</th><th class="mono">Vão</th><th>Papel</th><th>O que isso quer dizer</th></tr></thead>
+    <tbody><tr><td>sul</td><td class="mono b">carga oeste</td><td class="mono">3,62 m</td><td><span class="tag talta">entrada</span></td><td>Porta de carga. Entrada A, na ponta oeste da fachada.</td></tr>
+<tr><td>sul</td><td class="mono b">2.7</td><td class="mono">1,25 m</td><td><span class="tag tleve">emergência</span></td><td>Fica fechada ao público; vão estreito, entre a entrada A e a saída.</td></tr>
+<tr><td>sul</td><td class="mono b">2.5/2.6</td><td class="mono">5,93 m</td><td><span class="tag tmedia">reforço</span></td><td>Abre junto com a 2.4 no pico da manhã.</td></tr>
+<tr><td>sul</td><td class="mono b">2.4</td><td class="mono">5,93 m</td><td><span class="tag talta">saída</span></td><td>Baia central da fachada sul. Por onde o eleitor sai depois de votar.</td></tr>
+<tr><td>sul</td><td class="mono b">2.2/2.3</td><td class="mono">5,93 m</td><td><span class="tag tmedia">reforço</span></td><td>Abre junto com a 2.4 no pico da manhã.</td></tr>
+<tr><td>sul</td><td class="mono b">2.1</td><td class="mono">1,27 m</td><td><span class="tag tleve">emergência</span></td><td>Fica fechada ao público; vão estreito, entre a saída e a entrada B.</td></tr>
+<tr><td>sul</td><td class="mono b">carga leste</td><td class="mono">3,63 m</td><td><span class="tag talta">entrada</span></td><td>Porta de carga. Entrada B, na ponta leste da fachada.</td></tr>
+<tr><td>leste</td><td class="mono b">2.22/2.23</td><td class="mono">3,06 m</td><td><span class="tag tleve">emergência</span></td><td>Recuo de 3 m confirmado. Sobra um nicho de 2,79 m entre pares.</td></tr>
+<tr><td>leste</td><td class="mono b">2.20/2.21</td><td class="mono">3,07 m</td><td><span class="tag tleve">emergência</span></td><td>Recuo de 3 m confirmado. Sobra um nicho de 2,79 m entre pares.</td></tr>
+<tr><td>leste</td><td class="mono b">2.18/2.19</td><td class="mono">3,06 m</td><td><span class="tag tleve">emergência</span></td><td>Recuo de 3 m confirmado. Sobra um nicho de 2,79 m entre pares.</td></tr>
+<tr><td>leste</td><td class="mono b">2.16/2.17</td><td class="mono">3,06 m</td><td><span class="tag tleve">emergência</span></td><td>Recuo de 3 m confirmado. Come 3 m da ponta da parede norte.</td></tr>
+<tr><td>norte</td><td class="mono b">2.13</td><td class="mono">2,03 m</td><td><span class="tag tleve">emergência</span></td><td>Recuo de 3 m em dúvida: pode ou não liberar parede para mesas.</td></tr>
+<tr><td>norte</td><td class="mono b">2.14/2.15</td><td class="mono">3,56 m</td><td><span class="tag tleve">emergência</span></td><td>Recuo de 3 m em dúvida: pode ou não liberar parede para mesas.</td></tr>
+<tr><td>oeste</td><td class="mono b">2.10/2.11</td><td class="mono">3,07 m</td><td><span class="tag tleve">passagem</span></td><td>Único acesso aos sanitários, que ficam fora do salão.</td></tr>
+<tr><td>oeste</td><td class="mono b">acesso Hall 1</td><td class="mono">1,70 m</td><td><span class="tag tleve">passagem</span></td><td>Passagem de serviço para o Hall 1. Não recebe público.</td></tr>
+<tr><td>recorte</td><td class="mono b">2.8/2.9</td><td class="mono">3,50 m</td><td><span class="tag tleve">emergência</span></td><td>Parede do recorte sudoeste. Fora do modelo de geometria.</td></tr></tbody>
+  </table></div>
+  <p class="nota"><strong>As saídas 2.8/2.9 ficam na parede do recorte sudoeste</strong> e não entram no modelo de geometria: nenhuma das duas ideias põe mesa naquela parede. Estão desenhadas aqui só para a planta ficar completa.</p>
+</section>
+
+<section>
+  <p class="rotulo">O que sobra</p>
+  <h2>Dois espaços disputados, não um</h2>
+  <div class="prosa">
+  <p>O salão oferece duas coisas escassas e muito diferentes. A primeira é <strong>piso</strong>: 2.179 m² de chão livre, que é o que a ideia 1 usa, pondo as mesas em ilhas no meio do salão e gastando a metade sul em circulação. A segunda é <strong>parede</strong>: o perímetro útil, que é o que a ideia 2 usa, encostando as 28 mesas nas paredes para que a tela da urna aponte para uma superfície fechada.</p>
+  <p>Piso o salão tem de sobra. Parede, não: o perímetro está recortado por dezesseis vãos, e cada saída de emergência leva junto o recuo de 3 m à sua volta. Descontado tudo, restam <strong>74,9 m</strong> de parede aproveitável se o recuo valer só para as saídas 2.16–2.23 — e apenas <strong>55,7 m</strong> se valer para todas. É a diferença entre 19 e 11 posições de mesa: a mesma planta, duas respostas opostas.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>O que</th><th class="mono">Quanto</th><th>Como foi medido</th></tr></thead>
+    <tbody><tr><td>Piso do salão</td><td class="mono b">2.179 m²</td><td>50,3 × 44,4 m menos o recorte de 7,8 × 7,0 m</td></tr>
+<tr><td>Perímetro construído</td><td class="mono b">189,4 m</td><td>soma das quatro paredes, sem descontar vãos nem recuos</td></tr>
+<tr><td>Parede livre · recuo só na leste</td><td class="mono b">74,9 m</td><td>19 posições de mesa com o módulo de 3,20 m de frente</td></tr>
+<tr><td>Parede livre · recuo em todas</td><td class="mono b">55,7 m</td><td>11 posições de mesa com o mesmo módulo</td></tr>
+<tr><td>Recorte do canto sudoeste</td><td class="mono b">54,6 m²</td><td>não pertence ao Hall 2; sobra a parede com as saídas 2.8/2.9</td></tr></tbody>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Antes de seguir</p>
+  <h2>O que esta planta assume</h2>
+  <ol class="passos">
+    <li><div><h3>As portas de carga podem ficar abertas e travadas as nove horas</h3><p>Toda a decisão de fachada depende disso. Portas de carga costumam ser de enrolar e às vezes têm função corta-fogo; se não puderem ficar abertas, ou se a soleira não servir para pedestre, as entradas voltam para as baias 2.5/2.6 e 2.2/2.3 e as três aberturas se amontoam em 18 m de fachada — entrada e saída deixam de ser inequívocas.</p></div></li>
+    <li><div><h3>O recuo de 3 m vale só para as saídas 2.16–2.23</h3><p>Foi o que se disse literalmente, e é o que está desenhado cheio na parede leste. Se valer para todas as saídas de emergência, a parede livre cai de 74,9 m para 55,7 m e a ideia 2 deixa de existir. Nenhuma outra pergunta muda tanto o desenho.</p></div></li>
+    <li><div><h3>Os sanitários ficam fora do salão, na parede oeste</h3><p>Chega-se a eles por 2.10/2.11, do lado oposto às entradas e à saída. Quem vai ao banheiro sai do circuito e volta a ele — nenhuma das duas ideias trata esse movimento, e ele precisa de sinalização própria.</p></div></li>
+    <li><div><h3>O acesso ao Hall 1 é passagem de serviço, não entrada de público</h3><p>São 1,70 m de vão na parede oeste. Serve para equipe e material; usá-lo como entrada de eleitor colocaria um terceiro fluxo na parede que já tem o caminho dos sanitários.</p></div></li>
+  </ol>
+</section>
+
+<footer>
+  <p>Geometria medida da planta oficial do RDS (Hall 2, pavimento térreo) e da versão revisada com as duas portas de carga assinaladas, com escala aferida contra a ficha técnica do próprio documento: 50,2 × 44,5 m, 2.238 m². Está codificada em <span class="mono">scripts/salao.py</span>, fonte única das três plantas deste projeto.</p>
+  <p>A ficha técnica do RDS registra 2.238 m² de área bruta; o contorno desenhado, já sem o recorte do canto sudoeste, dá 2.179 m². A diferença é o próprio recorte mais o arredondamento das dimensões impressas.</p>
+</footer>
+</div>

@@ -156,3 +156,45 @@ footer{margin:84px 0 0; padding-top:22px; border-top:1px solid var(--regua);
 footer p{margin:0 0 .5em; max-width:74ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media (max-width:640px){ .folha{padding:0 18px 64px} header{padding-top:48px} }
+
+/* ---- a conta: o que existe contra o que a operacao pede ---- */
+.conta{margin-top:30px; border:1px solid var(--regua); background:var(--folha)}
+.linha-conta{display:grid; grid-template-columns:minmax(190px,26%) 1fr minmax(74px,auto);
+  align-items:center; gap:16px; padding:13px 18px;
+  border-bottom:1px solid var(--regua2)}
+.linha-conta:last-child{border-bottom:none}
+.linha-conta .rot{font-size:.87rem; line-height:1.35}
+.linha-conta .rot small{display:block; color:var(--meio); font-size:.78rem}
+.linha-conta .trilho{height:15px; background:var(--regua2); position:relative}
+.linha-conta .trilho span{position:absolute; inset:0 auto 0 0; display:block}
+.linha-conta .val{font-family:"IBM Plex Mono",monospace; font-size:.9rem;
+  font-variant-numeric:tabular-nums; text-align:right; font-weight:600}
+.linha-conta.pedido{background:var(--papel)}
+.linha-conta.pedido .val{color:var(--alerta)}
+.b-bruto{background:var(--saida); opacity:.5}
+.b-livre{background:var(--entrada); opacity:.4}
+.b-util{background:var(--entrada)}
+.b-pedido{background:var(--alerta)}
+
+/* ---- aviso e veredito ---- */
+.aviso{margin-top:24px; border-left:3px solid var(--alerta);
+  background:var(--folha); padding:16px 20px}
+.aviso h3{color:var(--alerta); margin-bottom:6px}
+.aviso p,.aviso ul{margin:0 0 .6em; font-size:.93rem; color:var(--meio); max-width:72ch}
+.aviso ul{padding-left:1.1em}
+.aviso li{margin-bottom:.25em}
+.aviso > :last-child{margin-bottom:0}
+
+.veredito{margin-top:28px; border:1px solid var(--regua); background:var(--folha);
+  padding:24px 26px; display:flex; flex-direction:column; gap:10px}
+.veredito .curta{font-family:"Source Serif 4",Georgia,serif; font-size:1.3rem;
+  font-weight:700; line-height:1.28; text-wrap:balance}
+.veredito p{margin:0; font-size:.93rem; color:var(--meio); max-width:70ch}
+
+td.num{text-align:right; font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums}
+tr.somatorio td{border-top:1.5px solid var(--regua); font-weight:600;
+  background:var(--papel)}
+td.nulo{color:var(--fraco)}
+
+@media (max-width:640px){ .linha-conta{grid-template-columns:1fr; gap:7px} }

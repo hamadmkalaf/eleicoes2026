@@ -52,11 +52,96 @@ PORTAS = {
               ("2.18/2.19", 26.66, 29.72), ("2.16/2.17", 38.51, 41.57)],
     "oeste": [("2.10/2.11 (WC)", 19.36, 22.43), ("acesso Hall 1", 36.80, 38.50)],
 }
+# As saidas 2.8/2.9 ficam na parede do recorte sudoeste, medidas no PDF a 3,0 e
+# 6,5 m do canto sul. Ficam fora de PORTAS e da numeracao das fachadas — a
+# parede do recorte nao e fachada —, mas entram na geometria: o recuo delas cai
+# dentro do salao e disputa chao com a fachada sul.
+PORTA_RECORTE = ("2.8/2.9", 3.0, 6.5)
+
 ENTRADA_A = (sum(PORTA_CARGA_O) / 2, 0.0)    # porta de carga oeste
 ENTRADA_B = (sum(PORTA_CARGA_L) / 2, 0.0)    # porta de carga leste
 SAIDA = (28.29, 0.0)                          # baia central 2.4
 
 ENTRADA_ZONA = {"A": ENTRADA_A, "B": ENTRADA_B}
+
+
+# ------------------------------------------------------------ faces do salao
+# As quatro fachadas mais as duas faces do recorte sudoeste. Cada face tem uma
+# coordenada fixa e um intervalo na outra; `dentro` e o sinal da normal que
+# aponta para o interior do salao. `s` e a coordenada corrente da face — x nas
+# horizontais, y nas verticais —, a mesma em que as portas estao medidas.
+FACES = {
+    "norte":     dict(eixo="h", fixo=HALL_H,    s0=0.0,         s1=HALL_W, dentro=-1),
+    "leste":     dict(eixo="v", fixo=HALL_W,    s0=0.0,         s1=HALL_H, dentro=-1),
+    "sul":       dict(eixo="h", fixo=0.0,       s0=RECORTE[2],  s1=HALL_W, dentro=+1),
+    "oeste":     dict(eixo="v", fixo=0.0,       s0=RECORTE[3],  s1=HALL_H, dentro=+1),
+    "recorte_v": dict(eixo="v", fixo=RECORTE[2], s0=0.0,        s1=RECORTE[3], dentro=+1),
+    "recorte_h": dict(eixo="h", fixo=RECORTE[3], s0=0.0,        s1=RECORTE[2], dentro=+1),
+}
+
+# Portas que constam como saida de emergencia na planta do RDS, pelo codigo do
+# RDS. So as quatro da parede leste tiveram o recuo de 3 m determinado; para as
+# demais a exigencia esta em aberto (questao 3 do contexto).
+EMERGENCIA = {"2.16/2.17", "2.18/2.19", "2.20/2.21", "2.22/2.23",
+              "2.13", "2.7", "2.1", "2.8/2.9"}
+
+CONTORNO = [(RECORTE[2], 0.0), (HALL_W, 0.0), (HALL_W, HALL_H), (0.0, HALL_H),
+            (0.0, RECORTE[3]), (RECORTE[2], RECORTE[3])]
+
+
+def portas_da_face(face):
+    """[(codigo, a, b)] de uma face, incluida a do recorte."""
+    if face == "recorte_v":
+        return [PORTA_RECORTE]
+    return list(PORTAS.get(face, []))
+
+
+def retangulo_na_parede(face, s_a, s_b, profundidade):
+    """Retangulo (x0, y0, x1, y1) encostado na face, do trecho [s_a, s_b] ate
+    `profundidade` metros para dentro do salao."""
+    f = FACES[face]
+    fixo, d = f["fixo"], f["dentro"]
+    if f["eixo"] == "h":
+        y_a, y_b = sorted((fixo, fixo + d * profundidade))
+        return (s_a, y_a, s_b, y_b)
+    x_a, x_b = sorted((fixo, fixo + d * profundidade))
+    return (x_a, s_a, x_b, s_b)
+
+
+def recuo_da_porta(face, a, b, recuo=RECUO_EMERGENCIA):
+    """Zona livre exigida por uma saida de emergencia: `recuo` metros para
+    dentro do salao e `recuo` metros para cada lado do vao."""
+    f = FACES[face]
+    return retangulo_na_parede(face, max(f["s0"], a - recuo),
+                               min(f["s1"], b + recuo), recuo)
+
+
+def sobrepoe(r1, r2, tol=1e-9):
+    return (r1[0] < r2[2] - tol and r2[0] < r1[2] - tol and
+            r1[1] < r2[3] - tol and r2[1] < r1[3] - tol)
+
+
+def dentro_do_salao(r, tol=1e-6):
+    """O retangulo cabe no contorno do Hall 2 — retangulo menos o recorte?"""
+    x0, y0, x1, y1 = r
+    if x0 < -tol or y0 < -tol or x1 > HALL_W + tol or y1 > HALL_H + tol:
+        return False
+    return not sobrepoe(r, RECORTE)
+
+
+def subtrai(intervalos, corte):
+    """Remove o intervalo `corte` de uma lista de intervalos [(a, b), ...]."""
+    ca, cb = corte
+    saida = []
+    for a, b in intervalos:
+        if cb <= a or ca >= b:
+            saida.append((a, b))
+            continue
+        if a < ca:
+            saida.append((a, ca))
+        if cb < b:
+            saida.append((cb, b))
+    return [(a, b) for a, b in saida if b - a > 1e-9]
 
 
 def carrega_urnas():

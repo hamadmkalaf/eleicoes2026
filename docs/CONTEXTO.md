@@ -3,11 +3,11 @@
 Documento de passagem. Reúne tudo que já foi medido e calculado sobre o salão
 de votação, para que uma sessão nova possa retomar sem refazer nada.
 
-**As ideias de layout foram zeradas a pedido do usuário.** As duas que existiam
-— mesas em ilhas e mesas nas paredes — foram apagadas do repositório junto com
-suas plantas e peças de leitura. O que sobrou é o que não depende de layout: a
-geometria do salão, as premissas de comparecimento e mobiliário, a carga das 28
-urnas e a simulação de fila. Nenhuma ideia nova foi desenhada ainda.
+**Há uma ideia de layout no repositório: as mesas pareadas nas paredes**
+(`scripts/mesas.py`, §11). As duas anteriores — mesas em ilhas e mesas nas
+paredes — tinham sido apagadas a pedido do usuário; esta é nova, foi desenhada
+sobre a planta-base e com o mobiliário que o usuário informou depois, e o que
+ela achou está no §11. Nenhuma porta recebeu papel de entrada ou de saída.
 
 **A planta-base é a referência do projeto.** Toda ideia, planta, peça de leitura
 ou conversa com o RDS daqui em diante usa a numeração de portas do §3 — N1, N2,
@@ -112,17 +112,33 @@ desenhadas na planta-base.
 | Área por pessoa em fila | 1,0 m² | fila serpenteada com balizadores |
 | Balizador entre baias vizinhas | 0,6 m | |
 
-### Mobiliário (informado pelo usuário)
+### Mobiliário — atualizado pelo usuário
 
-- Mesa dos mesários: **1,60 × 0,70 m**
-- Mesa da urna: **redonda, Ø 0,90 m**
-- Estrutura que fecha o **fundo e os lados** da urna. **O que importa é bloquear
-  a face para onde aponta a tela.** O sigilo vem da estrutura, não da parede —
-  por isso ilha é tão válida quanto parede.
-- Módulo com mesa e urna **lado a lado**: **2,80 m de frente × 1,90 m de
-  profundidade**, medido do mobiliário informado. É o que `salao.py` usa. Numa
-  disposição **em linha** (urna atrás da mesa) o módulo cairia para ~1,80 m de
-  frente × ~2,60 m de profundidade — hipótese, não premissa; ver §7 e §9.
+O usuário revisou o mobiliário depois da planta-base. **Vale esta versão**; a
+anterior está registrada logo abaixo porque os números do §7 ainda vêm dela.
+
+- **Mesa de identificação: 1,70 × 0,80 m**, para **três mesários** sentados no
+  lado voltado ao corredor. É a primeira mesa da MRV.
+- **Mesa de votação: redonda, Ø 0,90 m**, com a urna. É a segunda mesa, e
+  **fica sempre encostada e voltada para a parede**; o eleitor vota de costas
+  para o salão. O usuário acrescentou que **as urnas não podem ficar muito
+  distantes das paredes**.
+- **As MRVs andam em pares.** Os mesários de duas MRVs vizinhas ficam de frente
+  uns para os outros, partilhando um corredor de **2,50 a 3,00 m** que serve ao
+  mesmo tempo de encaminhamento para a urna e de saída de quem já votou. O par
+  seguinte fica **de costas**, a **1,50 m**.
+
+Disso sai o módulo que `scripts/mesas.py` usa: **0,90 m de frente × 4,10 m de
+profundidade**, com passo de par de **5,80 a 6,30 m** de parede para duas MRVs.
+
+> **Versão anterior, superada.** Mesa dos mesários de 1,60 × 0,70 m com a urna
+> **ao lado**, num módulo de 2,80 m de frente × 1,90 m de profundidade, mais a
+> estrutura que fecha o fundo e os lados da urna. Dela veio uma observação que
+> continua valendo e que sustenta a proposta de divisória do §11: **o que
+> importa é bloquear a face para onde aponta a tela — o sigilo vem da
+> estrutura, não da parede do prédio.** As constantes `MOD_LARGURA` e
+> `MOD_PROFUND` de `salao.py` ainda são as dessa versão, e é com elas que o §7
+> está calculado.
 
 ### Restrições conhecidas (informadas pelo usuário)
 
@@ -226,15 +242,19 @@ definido, esse trecho não pode ser contado inteiro.
 
 ## 8. Estado do projeto
 
-**Zerado.** Não há nenhuma ideia de layout no repositório. As duas anteriores —
-mesas em ilhas no miolo do salão e mesas encostadas nas paredes — foram
-apagadas a pedido do usuário, com suas plantas, dados e peças de leitura. Os
-artefatos que haviam sido publicados delas continuam existindo na conta do
-usuário no claude.ai e podem ser removidos por lá; do repositório já saíram.
+**Uma ideia desenhada: as mesas pareadas nas paredes (§11).** Responde à
+pergunta 1 do §1 — como distribuir as 28 MRVs — e descobriu que, com o
+mobiliário novo e a regra de pareamento, **elas não cabem todas nas paredes do
+salão**. As perguntas 2 e 3 do §1, quantas entradas e quais portas, continuam
+sem resposta e nada nesta ideia as antecipa.
 
-O que permanece é a base sobre a qual qualquer ideia nova vai ser construída: a
-planta-base (§3 e `saidas/planta_base.html`), as premissas (§4), a carga das
-urnas (§5), a simulação de fila (§6) e a capacidade de parede (§7).
+A base sobre a qual ela foi construída continua valendo: a planta-base (§3 e
+`saidas/planta_base.html`), as premissas (§4), a carga das urnas (§5), a
+simulação de fila (§6) e a capacidade de parede (§7).
+
+O §7 **não foi refeito** com o mobiliário novo: ele mede o teto de parede com o
+módulo de 2,80 m de frente, sem pareamento, e serve de comparação. O número que
+vale para o mobiliário atual é o do §11.
 
 ---
 
@@ -246,12 +266,16 @@ Por ordem de retorno:
    horas, e a soleira serve para pedestre?** São os dois maiores vãos da fachada
    sul. Portas de carga costumam ser de enrolar e às vezes têm função
    corta-fogo. A resposta decide o que é possível fazer com a fachada sul.
+   *Preço em mesas: zero* — o §11 mostrou que a fachada sul não entrega MRV de
+   um jeito nem do outro. O que a resposta decide é por onde o eleitor entra.
 2. **Quanto de caminho livre a saída do catering exige, e por onde ele chega até
    a N2?** Enquanto não estiver definido, a metade central da parede norte não
    pode ser ocupada com segurança.
 3. **O recuo de 3 m vale para as saídas de emergência das outras paredes?** Está
    determinado só para a leste. N1, S2, S6 e R1 também são saídas de emergência
    na planta do RDS; se exigirem o mesmo, some parede no norte e no sul.
+   *Preço em mesas: quatro* — é a única variável do modelo do §11 que muda o
+   número, e só no cenário com S1 e S7 fora de uso.
 4. **A urna pode ficar atrás da mesa dos mesários** (módulo em linha, ~1,80 m de
    frente por 2,60 m de profundidade) em vez de ao lado? Muda a capacidade de
    parede de 19 para 29 posições.
@@ -262,9 +286,13 @@ Por ordem de retorno:
    verbal na entrada, vira gargalo não paralelizável.
 7. **O Cartório Eleitoral valida seções fora das paredes** (mesas em ilha) e um
    setor reforçado, com quatro mesários e conferência de documento feita dentro
-   da fila?
+   da fila? *Preço em mesas: dez* — é a diferença entre as 18 que cabem na
+   parede e as 28 exigidas. Vale a mesma pergunta para o RDS, que precisa
+   aprovar a divisória exenta do §11 como montagem e como rota de fuga.
 8. **Onde ficam as caixas de piso elétricas do Hall 2**, se houver? Decide se as
-   urnas podem ficar longe das paredes sem canaleta atravessando corredor.
+   urnas podem ficar longe das paredes sem canaleta atravessando corredor. A
+   divisória do §11 torna a pergunta decisiva: as mesas da ilha ficam a mais de
+   15 m de qualquer parede.
 
 ---
 
@@ -272,10 +300,13 @@ Por ordem de retorno:
 
 | Arquivo | O que é |
 |---|---|
-| `scripts/salao.py` | **Núcleo:** geometria medida, premissas, carga das urnas, simulação de fila, cálculo de capacidade de parede. Rodando sozinho, imprime os cenários do §7. |
+| `scripts/salao.py` | **Núcleo:** geometria medida, as seis faces do salão (`FACES`), premissas, carga das urnas, simulação de fila, cálculo de capacidade de parede. Rodando sozinho, imprime os cenários do §7. |
 | `scripts/desenho.py` | Primitivas de desenho das plantas: escala, paleta, `px`, `rect`, `txt`, `cota`, e a folha de estilo comum das peças de leitura. |
 | `scripts/planta_base.py` + `planta_base_template.html` | **Planta-base:** o salão vazio, as portas numeradas por fachada e o que já se sabe de cada uma. Grava `saidas/planta_base.svg` e `saidas/planta_base.html`. Fonte da numeração N/L/S/O. |
 | `scripts/estilo_plano.css` | Folha de estilo das peças de leitura. |
+| `scripts/mesas.py` | **Ideia 1 (§11):** módulo da MRV com o mobiliário novo, regras de bloqueio, empacotamento por face e divisórias exentas. Toda planta passa por `valida()` antes de ser gravada. |
+| `scripts/planta_mesas.py` | Desenhos da ideia 1: o módulo cotado, as réguas de parede e as plantas de ocupação. Usa as primitivas de `desenho.py`. |
+| `scripts/gera_mesas.py` + `mesas_template.html` | Grava `saidas/mesas.json`, os seis SVGs e `saidas/mesas.html`. |
 | `saidas/dados.json` | As 28 urnas apuradas (etapa anterior, não mexer). |
 
 A planta-base está publicada em
@@ -283,8 +314,106 @@ A planta-base está publicada em
 atualizá-la de outra sessão, publique passando essa URL em `url` — sem isso,
 cria-se um artefato separado.
 
+A peça da ideia 1 está publicada em
+<https://claude.ai/code/artifact/8ea7b55b-ec3f-4dd4-baaf-7702c4d3fcce>. Mesma
+regra: para atualizá-la de outra sessão, publique passando essa URL em `url`.
+
 ```bash
 cd scripts
 python3 salao.py           # confere os dados e a capacidade de parede
 python3 planta_base.py     # planta-base: salao vazio e portas numeradas
+python3 mesas.py           # as 8 combinacoes da ideia 1, com validacao
+python3 gera_mesas.py      # saidas/mesas.json, os SVGs e saidas/mesas.html
 ```
+
+---
+
+## 11. Ideia 1 — as mesas pareadas nas paredes
+
+Desenhada com o mobiliário do §4 atualizado e a regra de pareamento que o
+usuário descreveu. Roda em `scripts/mesas.py`; a peça de leitura é
+`saidas/mesas.html`.
+
+### O módulo
+
+O eleitor entra pelo corredor, percorre o lado longo de 1,70 m da mesa de
+identificação — três mesários sentados desse lado —, segue até a mesa de
+votação encostada na parede, vota de costas para o salão e volta pelo mesmo
+corredor. O eixo do módulo é **perpendicular à parede**:
+
+| Trecho, a partir da parede | m |
+|---|---|
+| eleitor votando, entre a urna e a parede | 0,90 |
+| mesa de votação, Ø 0,90 | 0,90 |
+| passagem entre as duas mesas | 0,60 |
+| mesa de identificação, 1,70 no eixo | 1,70 |
+| **profundidade total** | **4,10** |
+
+Frente: **0,90 m** — a mesa de votação, que é o elemento mais largo. Passo do
+par ao longo da parede: `0,90 + A + 0,90 + 1,50`, com A o corredor. Dá **5,80 m**
+(A = 2,50) a **6,30 m** (A = 3,00), ou **2,90 a 3,15 m de parede por urna**.
+
+As três cotas de profundidade **são premissas deste modelo**, não medidas
+verificadas: 0,90 m para o eleitor junto à parede, 0,60 m de passagem, 0,75 m
+de assento do mesário projetado no corredor. Estão explícitas para poderem ser
+corrigidas.
+
+### Resultado
+
+**Cabem 18 das 28 MRVs**, nos dois cenários pedidos pelo usuário. O gargalo é
+parede, não piso: 28 urnas pedem 81 a 88 m de parede útil, e o salão oferece
+**47,7 m**. De 189,4 m de perímetro, 53,7 m são vão de porta; os recuos de 3 m
+comem a parede leste inteira e quase toda a fachada sul; e o que sobra vem em
+pedaços curtos demais para um par — 78,6 m de parede livre viram 47,7 m de
+parede útil.
+
+| | S1 e S7 fora de uso | S1 e S7 em uso, divisória a 2 m |
+|---|---|---|
+| Máximo em parede real | **18** | **18** |
+| Com uma divisória exenta de 17,4 m no miolo | **30** | **30** |
+| Se só a parede leste exigir recuo de 3 m | **22** | **18** |
+
+Distribuição das 18: 10 na parede norte, 6 na oeste, 2 na face norte do
+recorte. Fachada sul e parede leste entregam **zero**.
+
+### Três achados
+
+**A decisão sobre S1 e S7 não muda o número de mesas.** A fachada sul não
+entrega MRV de um jeito nem do outro — as sete portas somam 27,6 m de vão e os
+recuos de S2 e S6 fecham o resto. O que a decisão muda é por onde o eleitor
+entra, e quanto chão os vestíbulos consomem.
+
+**Corredor de 2,50 m não compra mesa nenhuma.** Nas oito combinações de cenário,
+hipótese de recuo e corredor mínimo, 2,50 e 3,00 m dão o mesmo número — a
+fragmentação da parede é grosseira demais para 50 cm por par fazerem diferença.
+E o custo de apertar é concreto: o mesário sentado ocupa 0,75 m de cada lado,
+então com 3,00 m sobra 1,50 m de passagem livre e com 2,50 m sobra 1,00 m —
+fila de mão única, sem cruzamento e sem manobra de cadeira de rodas, no mesmo
+corredor por onde sai quem já votou. **Adotar 3,00 m.**
+
+**No cenário B, os dois vestíbulos caem dentro de recuos de emergência.** A
+validação geométrica pegou: o vestíbulo de S7 invade o recuo de **L4** em
+4,9 m² — e o da parede leste é o único recuo já determinado —, e o de S1 invade
+o de **R1** em 6,0 m², se a porta 2.8/2.9 exigir os mesmos 3 m. Nos dois casos a
+saída é encurtar a divisória ou afastá-la do canto.
+
+### O que fecha a conta
+
+Uma **divisória exenta** de 17,4 m atravessada no miolo serve de parede pelas
+duas faces e acrescenta 12 mesas, levando o salão a **30** — duas acima das 28.
+A ilha ocupa 8,30 m de profundidade e guarda 3 m livres em toda a volta.
+Apoia-se no que o §4 já registrava: o sigilo vem da estrutura que fecha a urna,
+não da parede do prédio. Loteando o miolo, o teto vai a **74 mesas com 4
+divisórias** — ou seja, a partir daí a restrição deixa de ser capacidade e passa
+a ser fluxo.
+
+Depende de duas aprovações que ainda não existem: a do RDS, como montagem e
+rota de fuga, e a do Cartório Eleitoral, para seção fora da parede do prédio
+(questão 7 do §9).
+
+### Validação
+
+Nenhuma planta é gravada sem passar por `mesas.valida()`: todo módulo tem de
+caber no contorno do Hall 2, não invadir vão de porta nem recuo de emergência,
+e não se sobrepor a outro módulo. `mesas.choques()` reporta à parte as reservas
+que se pisam — foi assim que os dois conflitos do cenário B apareceram.

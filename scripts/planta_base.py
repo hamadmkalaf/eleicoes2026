@@ -27,11 +27,11 @@ MB = 230          # margem inferior: rotulos da fachada sul, cota e legenda
 from desenho import (AZUL, EST, H, MESA, S, VERDE, VERM,      # noqa: E402
                      W, cota, esc, estilo, px, rect, txt)
 
-# As saidas 2.8/2.9 ficam na parede do recorte sudoeste, medidas no PDF a 3,0 e
-# 6,5 m do canto sul. Nao entram em `salao.PORTAS` nem na numeracao das
-# fachadas: a parede do recorte nao e fachada do salao.
+# As saidas 2.8/2.9 ficam na parede do recorte sudoeste. Nao entram em
+# `salao.PORTAS` nem na numeracao das fachadas — a parede do recorte nao e
+# fachada do salao —, mas a medida vem de `salao.py` como todas as outras.
 RECORTE_X, RECORTE_Y = FL.RECORTE[2], FL.RECORTE[3]
-PORTA_RECORTE = ("2.8/2.9", 3.0, 6.5)
+PORTA_RECORTE = FL.PORTA_RECORTE
 
 # Ordem de leitura de cada fachada, para a numeracao: as paredes horizontais
 # sao lidas de oeste para leste; as verticais, de norte para sul. E o mesmo

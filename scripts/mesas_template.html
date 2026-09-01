@@ -1,0 +1,140 @@
+<title>Quantas mesas cabem no Hall 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+@@estilo@@
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro · RDS Ballsbridge, Hall&nbsp;2 · ocupação</p>
+  <h1>Falta parede, não falta chão</h1>
+  <p class="chamada">As 28 urnas de Dublin precisam de 28 mesas receptoras, e cada uma precisa de parede: a mesa de votação tem de ficar encostada e voltada para ela. Encostando tudo o que existe de parede no Hall&nbsp;2, cabem <strong>@@mrv@@</strong>. O piso não é o problema — sobram @@piso_livre@@ m² dele.</p>
+  <dl class="faixa">
+    <div><dt>Urnas exigidas</dt><dd>28<small>uma mesa receptora para cada</small></dd></div>
+    <div><dt>Cabem na parede</dt><dd>@@mrv@@<small>nos dois cenários</small></dd></div>
+    <div><dt>Parede que 28 pedem</dt><dd>@@parede_28@@ m<small>há @@parede_util@@ m aproveitáveis</small></dd></div>
+    <div><dt>Módulo</dt><dd>0,90 × 4,10 m<small>mesa receptora completa</small></dd></div>
+    <div><dt>Com uma divisória</dt><dd>@@mrv_div@@<small>@@div_comp@@ m no miolo</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <p class="rotulo">O módulo</p>
+  <h2>Duas mesas, três mesários, uma urna</h2>
+  <div class="prosa">
+  <p>A mesa receptora de votos é um conjunto, não um móvel. O eleitor entra pelo corredor, percorre o lado longo da <strong>mesa de identificação</strong> — 1,70 × 0,80 m, com os três mesários sentados desse lado —, segue até a <strong>mesa de votação</strong>, redonda, de 0,90 m, encostada na parede, vota de costas para o salão e volta pelo mesmo corredor. É o desenho do croqui: o corredor é ao mesmo tempo o encaminhamento para a urna e a saída de quem já votou.</p>
+  <p>Daí sai o módulo: <strong>4,10 m de profundidade</strong> a partir da parede e <strong>0,90 m de largura</strong>. Dois módulos formam um par, com os mesários de frente uns para os outros e o corredor entre eles; o par seguinte fica de costas, a 1,50 m. O que interessa para a conta é o <strong>passo do par</strong>: 5,80 a 6,30 m de parede para cada duas mesas receptoras — ou seja, <strong>2,90 a 3,15 m de parede por urna</strong>.</p>
+  <p class="peq">Este mobiliário substitui o do §4 do contexto — mesa de 1,60 × 0,70 m com a urna <em>ao lado</em>, num módulo de 2,80 m de frente. Agora a urna fica <em>em linha</em> com a mesa e encostada na parede, o que estreita a frente para 0,90 m e aprofunda o módulo para 4,10 m.</p>
+  </div>
+  <figure class="prancha">@@svg_modulo@@
+  <figcaption>O módulo em escala e o passo do par. As cotas de profundidade são premissas de trabalho, não medidas do RDS: 0,90 m para o eleitor votando junto à parede, 0,60 m de passagem entre as duas mesas. Apertar qualquer uma delas encurta o módulo, mas não muda a conta — o que decide é a largura.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">A conta que decide tudo</p>
+  <h2>189 metros de perímetro que viram 48</h2>
+  <div class="prosa">
+  <p>O Hall&nbsp;2 tem @@perimetro@@ m de perímetro, contando as duas faces do recorte sudoeste. Desses, @@vaos@@ m são vão de porta. O recuo de 3 m das quatro saídas de emergência da parede leste come a leste inteira e, aplicado às outras saídas de emergência, come também quase toda a fachada sul. Sobram @@parede_livre@@ m de parede livre.</p>
+  <p>E aí vem o passo que a soma não mostra: <strong>parede livre não é parede útil</strong>. Um par de mesas exige 6,30 m contínuos. Um trecho de 2,79 m — e a parede leste tem três deles, entre os recuos — vale zero. Dos @@parede_livre@@ m livres, só <strong>@@parede_util@@ m</strong> estão em pedaços grandes o bastante, e é isso que dá as @@mrv@@ mesas.</p>
+  </div>
+
+  <div class="conta">@@conta@@</div>
+
+  <figure class="prancha">@@svg_reguas@@
+  <figcaption>Cada parede na mesma escala, no cenário A. O branco é parede genuinamente livre; o azul, os pares que ela aceita. A distância entre os dois é a fragmentação: a fachada sul soma quase 5 m livres em dois pedaços e não aceita uma única mesa.</figcaption>
+  </figure>
+
+  <div class="rolagem"><table>
+    <thead><tr><th>Parede</th><th>Trechos livres</th><th>Parede livre</th><th>Maior trecho</th><th>Mesas</th></tr></thead>
+    <tbody>@@tabela_paredes@@</tbody>
+  </table></div>
+  <p class="nota"><strong>A parede leste não entra com nenhuma mesa.</strong> Os recuos de 3 m das quatro saídas de emergência deixam três trechos de 2,79 m, e nenhum chega aos 6,30 m de um par. O mesmo vale para a fachada sul, onde as sete portas somam 27,6 m de vão. A face norte do recorte, que o contexto dava como sem uso para MRV, aceita um par — são as duas únicas mesas que ela rende.</p>
+</section>
+
+<section>
+  <p class="rotulo">Simulação 1</p>
+  <h2>Cenário A — S1 e S7 fora de uso</h2>
+  <div class="prosa">
+  <p>As duas portas de carga ficam fechadas e sem papel nenhum. Nada é montado na frente delas, mas também não se reserva recuo: são portas de carga e não constam como saída de emergência na planta do RDS — ressalva feita ao que a planta-base já registrou, que portas de carga às vezes têm função corta-fogo. O máximo é <strong>@@mrv@@ mesas receptoras</strong>: @@det_a@@.</p>
+  </div>
+  <figure class="prancha">@@svg_a@@
+  <figcaption>Cenário A no máximo, com corredor de 3,00 m em todos os pares. As setas mostram o encaminhamento: o eleitor entra pela boca do corredor, é identificado e chega à urna encostada na parede. O hachurado verde inclui os recuos que ainda não foram determinados — N1, S2, S6 e R1 —, aplicados aqui por prudência.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">Simulação 2</p>
+  <h2>Cenário B — S1 e S7 em uso, com divisória a 2 m</h2>
+  <div class="prosa">
+  <p>As portas de carga passam a servir ao eleitor, e cada uma ganha um vestíbulo de 2 m fechado por divisória. O número de mesas <strong>não muda: continuam @@mrv_b@@</strong>. A razão é que a fachada sul já não entregava mesa nenhuma no cenário A — o que os vestíbulos consomem é chão que estava sobrando, não parede que estava sendo usada.</p>
+  <p>Mas a simulação revelou uma coisa que a contagem não mostra. Nos dois cantos onde estão as portas de carga, o espaço já tem dono.</p>
+  </div>
+
+  <div class="aviso">
+    <h3>Os dois vestíbulos caem dentro de recuos de emergência</h3>
+    <ul>@@choques@@</ul>
+    <p>O primeiro é duro: o recuo da parede leste é o único que já está determinado, e a divisória de S7 entraria nele. O segundo depende de a porta 2.8/2.9 do recorte exigir ou não os mesmos 3 m — a pergunta que a planta-base já tinha deixado em aberto. Nos dois casos a saída é a mesma: encurtar a divisória, ou afastá-la do canto.</p>
+  </div>
+
+  <figure class="prancha">@@svg_b@@
+  <figcaption>Cenário B no máximo. Em vermelho, os dois vestíbulos de 2 m; a linha roxa é a divisória. A sobreposição com o hachurado das saídas de emergência está desenhada em escala.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">Uma dimensão a discutir</p>
+  <h2>O corredor do par: 2,50 ou 3,00 m?</h2>
+  <div class="prosa">
+  <p>A pergunta tem uma resposta incomum: <strong>apertar o corredor não compra nenhuma mesa</strong>. Nas oito combinações de cenário, hipótese de recuo e corredor mínimo, 2,50 m e 3,00 m dão exatamente o mesmo número. A fragmentação da parede é grosseira demais para que 50 cm por par façam diferença — os trechos livres ou aceitam mais um par com folga, ou não aceitam de jeito nenhum.</p>
+  <p>E o custo de apertar é concreto. Um mesário sentado ocupa cerca de 0,75 m a partir da borda da mesa, e são três de cada lado do corredor. Com 3,00 m sobra <strong>1,50 m</strong> de passagem livre entre as costas dos mesários — o suficiente para duas pessoas se cruzarem e para uma cadeira de rodas manobrar. Com 2,50 m sobra <strong>1,00 m</strong>: fila de mão única, sem cruzamento e sem manobra, no mesmo corredor por onde tem de sair quem já votou.</p>
+  </div>
+
+  <div class="veredito">
+    <p class="curta">Adotar 3,00 m. Não custa mesa nenhuma e é a diferença entre um corredor que funciona nos dois sentidos e um que não funciona.</p>
+    <p>Onde o trecho de parede permite, a sobra é distribuída nos corredores até esse limite — foi assim que todos os pares das plantas acima acabaram com 3,00 m exatos.</p>
+  </div>
+
+  <div class="rolagem"><table>
+    <thead><tr><th>Cenário</th><th>Hipótese de recuo</th><th>Corredor 2,50 m</th><th>Corredor 3,00 m</th><th>Ganho de apertar</th></tr></thead>
+    <tbody>@@matriz@@</tbody>
+  </table></div>
+  <p class="nota"><strong>A hipótese de recuo é a variável que realmente mexe no número.</strong> Só a parede leste teve os 3 m determinados; N1, S2, S6 e R1 também constam como saída de emergência na planta do RDS. Se elas não exigirem o mesmo recuo, a fachada sul devolve quatro mesas — mas só no cenário A, porque no B os vestíbulos ocupam justamente esses trechos.</p>
+</section>
+
+<section>
+  <p class="rotulo">O que fecha a conta</p>
+  <h2>Uma divisória de @@div_comp@@ m no miolo do salão</h2>
+  <div class="prosa">
+  <p>Se o problema é falta de parede e sobra de chão, a saída é fabricar parede. Uma divisória exenta serve às duas faces: um só elemento recebe duas fileiras de módulos, e a urna continua encostada e voltada para uma superfície cega. É o que o §4 do contexto já registrava — <em>o sigilo vem da estrutura, não da parede</em>.</p>
+  <p>Uma divisória de @@div_comp@@ m, atravessada no miolo, acrescenta <strong>@@div_mrv@@ mesas</strong> — @@div_face@@ de cada lado — e leva o salão a <strong>@@mrv_div@@</strong>, duas acima das 28 exigidas. A ilha ocupa 8,30 m de profundidade e guarda 3 m livres em toda a volta. Vale igual nos dois cenários.</p>
+  <p>A folga é maior do que parece. Loteando o miolo com divisórias e mantendo os mesmos 3 m de circulação, o salão chegaria a <strong>@@teto@@ mesas</strong> com @@teto_div@@ delas. A partir daqui a restrição deixa de ser capacidade e passa a ser fluxo: onde entra a fila, por onde sai quem votou, e quanto de chão a espera precisa.</p>
+  </div>
+  <figure class="prancha">@@svg_a_div@@
+  <figcaption>Cenário A com a divisória. Entre a faixa da parede norte e a ilha ficam 4,75 m livres, que é por onde o catering sai por N2. Ao sul da ilha sobram 27 m de profundidade — a área de chegada e espera do eleitor, ainda por desenhar.</figcaption>
+  </figure>
+  <figure class="prancha">@@svg_b_div@@
+  <figcaption>O mesmo no cenário B: a divisória do miolo é independente das duas das portas de carga, e o total é o mesmo — @@mrv_div_b@@ mesas.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">O que isso obriga a decidir</p>
+  <h2>Quatro perguntas, agora com um preço em mesas</h2>
+  <ol class="passos">
+    <li><div><h3>As saídas de emergência das paredes norte e sul exigem os mesmos 3 m da leste?</h3><p>Vale quatro mesas no cenário A e zero no B. É a única variável do modelo que muda o número, e continua sem resposta desde a planta-base. É a questão 3 do contexto.</p></div></li>
+    <li><div><h3>Divisória exenta é aceitável para o RDS e para o Cartório Eleitoral?</h3><p>Toda a diferença entre @@mrv@@ e 28 depende disso. Para o RDS é questão de montagem e de rota de fuga; para o Cartório, de a seção poder ficar fora da parede do prédio — questão 7 do contexto.</p></div></li>
+    <li><div><h3>Onde estão as tomadas, e as urnas do miolo alcançam alguma?</h3><p>Encostada na parede, a urna disputa a tomada mais próxima com as vizinhas do mesmo trecho. No miolo, a parede mais próxima fica a mais de 15 m — e aí é canaleta atravessando corredor, ou bateria. É a questão 8 do contexto, que a ilha torna decisiva.</p></div></li>
+    <li><div><h3>Qual porta recebe a fila e qual devolve quem votou?</h3><p>Nenhuma mesa foi posta na fachada sul nos dois cenários, o que deixa S3, S4 e S5 inteiramente livres — 17,8 m de vão. A decisão não custa mesa; custa metros quadrados de espera, que ainda não foram dimensionados.</p></div></li>
+  </ol>
+  <p class="nota"><strong>Esta é uma ideia de layout, não uma proposta fechada.</strong> Nada aqui atribui papel de entrada ou de saída a nenhuma porta — essa decisão continua sendo do usuário, como manda a planta-base.</p>
+</section>
+
+<footer>
+  <p>Geometria do salão, das 16 portas e das seis faces em <span class="mono">scripts/salao.py</span>, a fonte única do projeto; modelo do módulo, regras de bloqueio, empacotamento e divisórias em <span class="mono">scripts/mesas.py</span>; desenhos em <span class="mono">scripts/planta_mesas.py</span>, sobre as primitivas de <span class="mono">scripts/desenho.py</span>. Todos os números desta página saem de <span class="mono">saidas/mesas.json</span>, gerado por <span class="mono">scripts/gera_mesas.py</span>.</p>
+  <p>Cada layout passa por uma validação antes de virar desenho: todo módulo tem de caber no contorno do Hall&nbsp;2, não pode invadir vão de porta nem recuo de emergência, e não pode se sobrepor a outro módulo. Nenhuma das plantas desta página foi publicada com erro em aberto.</p>
+  <p>As dimensões da mesa de identificação (1,70 × 0,80 m) e da mesa de votação (Ø 0,90 m) vieram do usuário. A profundidade de 4,10 m, o assento de 0,75 m do mesário e as folgas de serviço são premissas de trabalho deste modelo, não medidas verificadas — estão explícitas para poderem ser corrigidas.</p>
+</footer>
+</div>

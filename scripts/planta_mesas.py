@@ -81,16 +81,37 @@ def modulo(m):
     return "".join(o)
 
 
+def agrupa(modulos):
+    """Agrupa os modulos por par; a MRV avulsa vem sozinha no seu grupo."""
+    grupos, indice = [], {}
+    for m in modulos:
+        if m["par"] is None:
+            grupos.append([m])
+            continue
+        if m["par"] not in indice:
+            indice[m["par"]] = len(grupos)
+            grupos.append([])
+        grupos[indice[m["par"]]].append(m)
+    return grupos
+
+
 def pares(modulos):
     o = []
-    for i in range(0, len(modulos), 2):
-        a, b = modulos[i], modulos[i + 1]
+    for grupo in agrupa(modulos):
+        a = grupo[0]
+        b = grupo[1] if len(grupo) > 1 else None
         f = FL.FACES[a["face"]]
-        s0 = min(a["s"], b["s"]) + MM.LARG / 2
-        s1 = max(a["s"], b["s"]) - MM.LARG / 2
+        if b is None:
+            # avulsa: do outro lado do modulo ficam os mesarios e, depois
+            # deles, a passagem livre que sobra do trecho
+            s0 = a["s"] + MM.LARG / 2
+            s1 = s0 + MM.MESARIO_ASSENTO + MM.FOLGA_ASSENTO + a["corredor"]
+        else:
+            s0 = min(a["s"], b["s"]) + MM.LARG / 2
+            s1 = max(a["s"], b["s"]) - MM.LARG / 2
         o.append(D.rect(*FL.retangulo_na_parede(a["face"], s0, s1, MM.PROF),
                         fill=AZUL, opacity=".07"))
-        meio = (s0 + s1) / 2
+        meio = (s1 - a["corredor"] / 2) if b is None else (s0 + s1) / 2
         if f["eixo"] == "h":
             p0 = px(meio, f["fixo"] + f["dentro"] * (MM.PROF - 0.25))
             p1 = px(meio, f["fixo"] + f["dentro"] * 1.6)
@@ -100,7 +121,7 @@ def pares(modulos):
         o.append(f'<path d="M{p0[0]:.1f} {p0[1]:.1f}L{p1[0]:.1f} {p1[1]:.1f}" '
                  f'stroke="{AZUL}" stroke-width="1.1" opacity=".5" '
                  f'marker-end="url(#seta)"/>')
-        o.append(modulo(a) + modulo(b))
+        o.append(modulo(a) + (modulo(b) if b else ""))
     return "".join(o)
 
 
@@ -214,11 +235,12 @@ def reguas(cenario, hipotese="prudente", a_min=MM.CORREDOR_MAX, esc_px=13.4):
 
     esq, topo, alt, salto = 132.0, 74.0, 17.0, 34.0
     LG = esq + W * esc_px + 92
-    AL = topo + len(MM.ORDEM) * salto + 96
+    AL = topo + len(MM.ORDEM) * salto + 116
     o = [livre(esq - 108, 26, "AS RÉGUAS DE PAREDE", 14, "#1f2c3c", "700"),
-         livre(esq - 108, 44, "Cada parede na mesma escala. Só um trecho contínuo "
-               "de 6,30 m aceita um par de mesas — por isso a soma dos pedaços "
-               "não vira mesa.", 9.5, "#5c6c80")]
+         livre(esq - 108, 44, "Cada parede na mesma escala. Um par exige 6,30 m "
+               "contínuos; abaixo disso só entra MRV avulsa, e só a partir de "
+               "2,70 m. Por isso a soma dos pedaços não vira mesa.", 9.5,
+               "#5c6c80")]
 
     cor_motivo = [("recuo", VERDE), ("vestíbulo", VERM), ("vão", SERVICO)]
     y = topo
@@ -240,13 +262,16 @@ def reguas(cenario, hipotese="prudente", a_min=MM.CORREDOR_MAX, esc_px=13.4):
                          f'width="{(b-a)*esc_px:.1f}" height="{alt}" fill="{cor}" '
                          'opacity=".32"/>')
         mods = [m for m in r["modulos"] if m["face"] == face]
-        for i in range(0, len(mods), 2):
-            a, b = mods[i], mods[i + 1]
-            s0 = min(a["s"], b["s"]) - MM.LARG / 2
-            s1 = max(a["s"], b["s"]) + MM.LARG / 2
+        for grupo in agrupa(mods):
+            avulsa = len(grupo) == 1
+            s0 = min(m["s"] for m in grupo) - MM.LARG / 2
+            s1 = max(m["s"] for m in grupo) + MM.LARG / 2
+            if avulsa:                       # o modulo mais o corredor que sobra
+                s1 = s0 + MM.LARG + MM.MESARIO_ASSENTO + MM.FOLGA_ASSENTO \
+                    + grupo[0]["corredor"]
             o.append(f'<rect x="{esq+(s0-f["s0"])*esc_px:.1f}" y="{y+2:.1f}" '
                      f'width="{(s1-s0)*esc_px:.1f}" height="{alt-4}" '
-                     f'fill="{AZUL}" opacity=".78"/>')
+                     f'fill="{AZUL}" opacity="{".38" if avulsa else ".78"}"/>')
         n = len(mods)
         o.append(livre(esq + L * esc_px + 10, y + 12,
                        "—" if not n else f"{n} mesa" + ("s" if n > 1 else ""),
@@ -261,13 +286,16 @@ def reguas(cenario, hipotese="prudente", a_min=MM.CORREDOR_MAX, esc_px=13.4):
                  'stroke-width="1"/>')
     o.append(livre(esq + 10 * esc_px + 12, y + 7, "10 m", 8, "#5c6c80"))
 
-    itens = [(AZUL, "par de mesas montado (6,30 m)", "rect"),
+    itens = [(AZUL, "par de mesas (6,30 m)", "rect"),
              (VERDE, "recuo de saída de emergência", "rect"),
              (SERVICO, "vão de porta e sua folga", "rect"),
              (VIZINHA, "canto ou recuo da parede vizinha", "rect")]
     if cenario == "B":
         itens.append((VERM, "vestíbulo da divisória", "rect"))
     o += legenda(y + 26, itens, x0=esq - 108)
+    o.append(f'<rect x="{esq-108:.1f}" y="{y+46:.1f}" width="11" height="11" '
+             f'fill="{AZUL}" opacity=".26" stroke="{AZUL}" stroke-opacity=".5"/>')
+    o.append(livre(esq - 92, y + 55, "MRV avulsa (2,79 m, corredor de 1,09 m)"))
     return _svg(LG, AL, f"As réguas de parede do cenário {cenario}", o)
 
 

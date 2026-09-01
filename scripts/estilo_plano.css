@@ -184,6 +184,8 @@ footer p{margin:0 0 .5em; max-width:74ch}
 .aviso ul{padding-left:1.1em}
 .aviso li{margin-bottom:.25em}
 .aviso > :last-child{margin-bottom:0}
+.aviso.positivo{border-left-color:var(--entrada)}
+.aviso.positivo h3{color:var(--entrada)}
 
 .veredito{margin-top:28px; border:1px solid var(--regua); background:var(--folha);
   padding:24px 26px; display:flex; flex-direction:column; gap:10px}

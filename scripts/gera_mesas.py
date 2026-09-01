@@ -21,9 +21,10 @@ import desenho as D                                           # noqa: E402
 
 SAIDAS = os.path.join(RAIZ, "saidas")
 
-# A divisoria proposta: atravessada no miolo, longe do corredor do catering
-# (N2) e do caminho dos sanitarios (O2), com 3 m livres em toda a volta.
-DIVISORIA = dict(nome="D1", eixo="h", fixo=31.4, s0=16.0, s1=33.4)
+# A divisoria proposta: a menor que fecha a conta das 28 urnas. Atravessada no
+# miolo, a leste do corredor do catering (N2, que vai ate x = 25,72) e ao norte
+# do caminho dos sanitarios (O2), com 3 m livres em toda a volta.
+DIVISORIA = dict(nome="D1", eixo="h", fixo=31.4, s0=26.0, s1=37.1)
 
 NOME_FACE = PM.NOME_FACE
 SUBTITULO = {"A": "S1 e S7 fora de uso",
@@ -93,7 +94,7 @@ def main():
         for d in base["por_face"].values():
             for t in d["trechos"]:
                 livre += t["livre"]
-                if t["pares"]:
+                if t["pares"] or t["avulsas"]:
                     util += t["livre"] - t["sobra"]
 
         out["cenarios"][cen] = dict(
@@ -101,7 +102,11 @@ def main():
             por_face={k: v["mrv"] for k, v in base["por_face"].items() if v["mrv"]},
             trechos={k: v["trechos"] for k, v in base["por_face"].items()},
             parede_livre=round(livre, 1), parede_util=round(util, 1),
-            area_faixas=round(base["mrv"] // 2 * passo_max * MM.PROF, 0),
+            avulsas=sum(v.get("avulsas", 0) for v in base["por_face"].values()),
+            corredor_avulso=next(
+                (t["corredor_avulso"] for d in base["por_face"].values()
+                 for t in d["trechos"] if t["avulsas"]), None),
+            area_faixas=round(util * MM.PROF, 0),
             divisoria=div["divisorias"][0], choques=base["choques"])
 
         grava(f"mesas_cenario_{cen}.svg", PM.planta(
@@ -215,12 +220,16 @@ def pagina(d):
                              - A["area_faixas"]),
         "parede_28": vg(d["parede_para_28"][1], 1),
         "parede_util": vg(A["parede_util"], 1),
+        "parede_util_int": str(round(A["parede_util"])),
         "parede_livre": vg(A["parede_livre"], 1),
         "perimetro": vg(d["perimetro"], 1), "vaos": vg(d["vaos"], 1),
         "div_comp": vg(A["divisoria"]["comprimento"], 1),
         "div_mrv": str(A["divisoria"]["mrv"]),
         "div_face": str(A["divisoria"]["faces"][0]),
         "teto": str(d["teto"]["mrv"]), "teto_div": str(d["teto"]["divisorias"]),
+        "avulsas": str(A["avulsas"]),
+        "corr_avulso": vg(A["corredor_avulso"], 2),
+        "faltam": str(MM.URNAS - A["mrv"]),
         "det_a": det_a, "conta": conta_html, "choques": choques,
         "tabela_paredes": "".join(linhas), "matriz": "".join(matriz),
     }

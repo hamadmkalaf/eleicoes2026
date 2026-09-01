@@ -55,6 +55,16 @@ LARG = max(URNA_D, MESA_IDENT[1])                          # 0,90 m
 CORREDOR_MIN, CORREDOR_MAX = 2.50, 3.00    # A, faixa dada pelo usuario
 ENTRE_PARES = 1.50                          # B
 
+# MRV avulsa: onde o trecho de parede nao aceita um par, cabe um modulo
+# sozinho, com os mesarios de um lado so e o corredor do outro. E o caso dos
+# tres trechos de 2,79 m da parede leste, entre os recuos das saidas de
+# emergencia. O corredor de uma avulsa e menor que o de um par — o modelo
+# devolve quanto — e o modulo tem de caber inteiro no trecho, sem que cadeira
+# de mesario invada o recuo vizinho.
+CORREDOR_AVULSO_MIN = 1.00     # passagem livre minima ao lado dos mesarios
+FOLGA_ASSENTO = 0.05           # entre a cadeira do mesario e a borda do trecho
+LARG_AVULSA = LARG + MESARIO_ASSENTO + FOLGA_ASSENTO + CORREDOR_AVULSO_MIN
+
 URNAS = 28
 
 
@@ -72,6 +82,20 @@ def pares_no_trecho(L, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX):
     return n, a, L - (n * passo_do_par(a) - ENTRE_PARES)
 
 
+def ocupa_trecho(L, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX, avulsa=False):
+    """O que cabe num trecho livre de L metros.
+
+    Devolve (pares, corredor, sobra, avulsas, corredor_avulso). A MRV avulsa so
+    entra onde nao cabe par nenhum, e so se `avulsa` estiver ligado: e a
+    excecao da parede leste, nao a regra."""
+    n, corredor, sobra = pares_no_trecho(L, a_min, a_max)
+    if n or not avulsa or L < LARG_AVULSA:
+        return n, corredor, sobra, 0, 0.0
+    # o corredor da avulsa e o que sobra do trecho depois do modulo e da fila
+    # de mesarios de um lado so
+    return 0, 0.0, 0.0, 1, L - LARG - MESARIO_ASSENTO - FOLGA_ASSENTO
+
+
 # ---------------------------------------------------------------- bloqueios
 FOLGA_VAO = 0.30          # nada encosta na folha de uma porta
 FOLGA_SERVICO = 1.50      # N2 (catering) e O2 (unico acesso aos WC)
@@ -87,6 +111,12 @@ HIPOTESES = ("prudente", "minima")
 
 CARGA = {"carga oeste": "S1", "carga leste": "S7"}
 ORDEM = ["norte", "recorte_h", "oeste", "sul", "leste", "recorte_v"]
+
+# Onde a MRV avulsa e permitida. O usuario decidiu manter MRVs na parede leste,
+# a 3 m das saidas de emergencia e com o trafego delas restringido; os tres
+# trechos que sobram entre os recuos tem 2,79 m, que nao aceita par e aceita um
+# modulo sozinho. Nas demais faces a regra continua sendo o par.
+AVULSA_EM = ("leste",)
 
 
 def _numero(codigo):
@@ -166,7 +196,7 @@ def _sombra(face, rect):
     return (rect[0], rect[2]) if f["eixo"] == "h" else (rect[1], rect[3])
 
 
-def empacota(face, cortes, a_min, a_max, obstaculos=()):
+def empacota(face, cortes, a_min, a_max, obstaculos=(), avulsa_em=()):
     f = FL.FACES[face]
     livres = [(f["s0"], f["s1"])]
     for a, b, _ in cortes.get(face, []):
@@ -179,10 +209,12 @@ def empacota(face, cortes, a_min, a_max, obstaculos=()):
     modulos, trechos = [], []
     for a, b in livres:
         L = b - a
-        n, corredor, sobra = pares_no_trecho(L, a_min, a_max)
+        n, corredor, sobra, avulsas, corr_av = ocupa_trecho(
+            L, a_min, a_max, avulsa=face in avulsa_em)
         trechos.append(dict(s0=round(a, 2), s1=round(b, 2), livre=round(L, 2),
                             pares=n, corredor=round(corredor, 2) if n else None,
-                            sobra=round(sobra, 2)))
+                            sobra=round(sobra, 2), avulsas=avulsas,
+                            corredor_avulso=round(corr_av, 2) if avulsas else None))
         s = a + sobra / 2          # centra o conjunto no trecho
         for i in range(n):
             par = f"{face}|{a:.2f}|{i}"
@@ -191,6 +223,11 @@ def empacota(face, cortes, a_min, a_max, obstaculos=()):
             modulos.append(dict(face=face, s=s + LARG + corredor + LARG / 2,
                                 corredor=corredor, lado="b", par=par))
             s += passo_do_par(corredor)
+        if avulsas:
+            # modulo encostado numa borda do trecho, mesarios voltados para o
+            # corredor que sobra do outro lado
+            modulos.append(dict(face=face, s=a + LARG / 2, corredor=corr_av,
+                                lado="a", par=None))
     return modulos, trechos
 
 
@@ -227,7 +264,7 @@ def choques(rects):
 
 
 def roda(cenario, hipotese, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX,
-         ordem=None, extras=()):
+         ordem=None, extras=(), avulsa_em=AVULSA_EM):
     """Perimetro. As faces sao processadas em ordem: cada faixa ja montada vira
     obstaculo para as seguintes, o que resolve os cantos — duas faces vizinhas
     nao podem ocupar o mesmo quadrado de PROF x PROF, e quem vem primeiro fica
@@ -238,9 +275,12 @@ def roda(cenario, hipotese, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX,
     obst = list(proibidos)
     modulos, por_face = [], {}
     for face in (ordem or ORDEM):
-        mods, trechos = empacota(face, cortes, a_min, a_max, obst)
+        mods, trechos = empacota(face, cortes, a_min, a_max, obst, avulsa_em)
         modulos += mods
-        por_face[face] = dict(mrv=len(mods), pares=len(mods) // 2, trechos=trechos)
+        por_face[face] = dict(mrv=len(mods),
+                              pares=sum(t["pares"] for t in trechos),
+                              avulsas=sum(t["avulsas"] for t in trechos),
+                              trechos=trechos)
         for m in mods:
             obst.append((rect_do_modulo(m), f"faixa~{face}"))
 
@@ -250,7 +290,7 @@ def roda(cenario, hipotese, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX,
                 erros=valida(modulos, proibidos), choques=choques(rects))
 
 
-def sombras(cenario, hipotese, a_min, ordem=None):
+def sombras(cenario, hipotese, a_min, ordem=None, avulsa_em=AVULSA_EM):
     """Por face, os trechos comidos por algo que nao esta nela: o recuo de uma
     porta da face vizinha, ou a faixa de modulos que ja tomou o canto."""
     cortes, rects = bloqueios(cenario, hipotese)
@@ -274,7 +314,7 @@ def sombras(cenario, hipotese, a_min, ordem=None):
             if b - a > 1e-9:
                 marcas.append((round(a, 2), round(b, 2)))
         fora[face] = marcas
-        mods, _ = empacota(face, cortes, a_min, CORREDOR_MAX, obst)
+        mods, _ = empacota(face, cortes, a_min, CORREDOR_MAX, obst, avulsa_em)
         for m in mods:
             obst.append((rect_do_modulo(m), f"faixa~{face}"))
     return fora
@@ -307,8 +347,9 @@ def ilha_rect(eixo, fixo, s0, s1, espessura=ESPESSURA_DIV, folga=0.0):
     return (fixo - meia, s0 - folga, fixo + meia, s1 + folga)
 
 
-def roda_com_divisorias(cenario, hipotese, a_min, divisorias, a_max=CORREDOR_MAX):
-    base = roda(cenario, hipotese, a_min, a_max, ordem=ORDEM)
+def roda_com_divisorias(cenario, hipotese, a_min, divisorias, a_max=CORREDOR_MAX,
+                        avulsa_em=AVULSA_EM):
+    base = roda(cenario, hipotese, a_min, a_max, ordem=ORDEM, avulsa_em=avulsa_em)
     cortes, _ = bloqueios(cenario, hipotese)
     modulos = list(base["modulos"])
     obst = [(rect_do_modulo(m), "faixa de perímetro") for m in modulos] \

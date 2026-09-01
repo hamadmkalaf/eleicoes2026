@@ -127,6 +127,11 @@ anterior está registrada logo abaixo porque os números do §7 ainda vêm dela.
   uns para os outros, partilhando um corredor de **2,50 a 3,00 m** que serve ao
   mesmo tempo de encaminhamento para a urna e de saída de quem já votou. O par
   seguinte fica **de costas**, a **1,50 m**.
+- **A parede leste recebe MRVs**, decidido pelo usuário depois da primeira
+  versão do §11: as mesas ficam voltadas para a parede, a **3,0 m das saídas de
+  emergência**, e **o tráfego por L1 a L4 será restringido**. Os trechos que
+  sobram entre os recuos têm 2,79 m e não aceitam par — aceitam uma **MRV
+  avulsa** cada, com os mesários de um lado só e 1,09 m de passagem do outro.
 
 Disso sai o módulo que `scripts/mesas.py` usa: **0,90 m de frente × 4,10 m de
 profundidade**, com passo de par de **5,80 a 6,30 m** de parede para duas MRVs.
@@ -275,7 +280,8 @@ Por ordem de retorno:
    determinado só para a leste. N1, S2, S6 e R1 também são saídas de emergência
    na planta do RDS; se exigirem o mesmo, some parede no norte e no sul.
    *Preço em mesas: quatro* — é a única variável do modelo do §11 que muda o
-   número, e só no cenário com S1 e S7 fora de uso.
+   número, e só no cenário com S1 e S7 fora de uso. Não afeta a parede leste,
+   cujo recuo já está determinado.
 4. **A urna pode ficar atrás da mesa dos mesários** (módulo em linha, ~1,80 m de
    frente por 2,60 m de profundidade) em vez de ao lado? Muda a capacidade de
    parede de 19 para 29 posições.
@@ -286,10 +292,15 @@ Por ordem de retorno:
    verbal na entrada, vira gargalo não paralelizável.
 7. **O Cartório Eleitoral valida seções fora das paredes** (mesas em ilha) e um
    setor reforçado, com quatro mesários e conferência de documento feita dentro
-   da fila? *Preço em mesas: dez* — é a diferença entre as 18 que cabem na
+   da fila? *Preço em mesas: sete* — é a diferença entre as 21 que cabem na
    parede e as 28 exigidas. Vale a mesma pergunta para o RDS, que precisa
    aprovar a divisória exenta do §11 como montagem e como rota de fuga.
-8. **Onde ficam as caixas de piso elétricas do Hall 2**, se houver? Decide se as
+8. **Restringir o tráfego em L1 a L4 basta para as três MRVs avulsas da parede
+   leste?** As mesas ficam a 3 m do vão e os mesários cabem dentro do trecho
+   livre, mas a aproximação à boca do corredor se faz pela faixa de recuo.
+   Confirmar com o RDS que circular por ali é aceitável, desde que nada seja
+   montado e nenhuma fila se forme.
+9. **Onde ficam as caixas de piso elétricas do Hall 2**, se houver? Decide se as
    urnas podem ficar longe das paredes sem canaleta atravessando corredor. A
    divisória do §11 torna a pergunta decisiva: as mesas da ilha ficam a mais de
    15 m de qualquer parede.
@@ -358,23 +369,42 @@ verificadas: 0,90 m para o eleitor junto à parede, 0,60 m de passagem, 0,75 m
 de assento do mesário projetado no corredor. Estão explícitas para poderem ser
 corrigidas.
 
+### A MRV avulsa
+
+Onde o trecho de parede não aceita um par, cabe um módulo sozinho: 0,90 m de
+módulo + 0,80 m para a fila de mesários de um lado só + o que sobrar de
+passagem do outro. O modelo exige **2,70 m** de trecho e devolve a passagem
+resultante. É a exceção da parede leste, não a regra — nas demais faces só
+entra par.
+
+Nos três trechos de 2,79 m da leste isso dá **1,09 m de passagem livre**: menos
+que os 1,50 m dos pares a 3,00 m, e menos que o 1,00 m do par apertado a
+2,50 m. Corredor de mão única, sem cruzamento e sem manobra de cadeira de
+rodas. Duas consequências: essas três seções **não devem receber as urnas de
+maior carga** (as três críticas do §5, de 586 a 590 eleitores), e o retorno de
+quem já votou precisa de sinalização. Tudo cabe dentro do trecho — nenhuma
+cadeira de mesário invade o recuo —, mas a aproximação à boca do corredor se
+faz pela faixa de recuo, o que depende de o tráfego por L1 a L4 ficar
+restringido, como se decidiu.
+
 ### Resultado
 
-**Cabem 18 das 28 MRVs**, nos dois cenários pedidos pelo usuário. O gargalo é
+**Cabem 21 das 28 MRVs**, nos dois cenários pedidos pelo usuário. O gargalo é
 parede, não piso: 28 urnas pedem 81 a 88 m de parede útil, e o salão oferece
-**47,7 m**. De 189,4 m de perímetro, 53,7 m são vão de porta; os recuos de 3 m
-comem a parede leste inteira e quase toda a fachada sul; e o que sobra vem em
-pedaços curtos demais para um par — 78,6 m de parede livre viram 47,7 m de
-parede útil.
+**56,1 m**. De 189,4 m de perímetro, 53,7 m são vão de porta; os recuos de 3 m
+comem quase toda a fachada sul e deixam a leste em três pedaços; e o que sobra
+vem em trechos curtos demais para um par — 78,6 m de parede livre viram 56,1 m
+de parede útil.
 
 | | S1 e S7 fora de uso | S1 e S7 em uso, divisória a 2 m |
 |---|---|---|
-| Máximo em parede real | **18** | **18** |
-| Com uma divisória exenta de 17,4 m no miolo | **30** | **30** |
-| Se só a parede leste exigir recuo de 3 m | **22** | **18** |
+| Máximo em parede real | **21** | **21** |
+| Com uma divisória exenta de 11,1 m no miolo | **29** | **29** |
+| Se só a parede leste exigir recuo de 3 m | **25** | **21** |
 
-Distribuição das 18: 10 na parede norte, 6 na oeste, 2 na face norte do
-recorte. Fachada sul e parede leste entregam **zero**.
+Distribuição das 21: 10 na parede norte, 6 na oeste, 3 avulsas na leste e 2 na
+face norte do recorte. A **fachada sul entrega zero** — restam dois pedaços de
+2,5 m, curtos até para uma avulsa.
 
 ### Três achados
 
@@ -399,12 +429,15 @@ saída é encurtar a divisória ou afastá-la do canto.
 
 ### O que fecha a conta
 
-Uma **divisória exenta** de 17,4 m atravessada no miolo serve de parede pelas
-duas faces e acrescenta 12 mesas, levando o salão a **30** — duas acima das 28.
-A ilha ocupa 8,30 m de profundidade e guarda 3 m livres em toda a volta.
-Apoia-se no que o §4 já registrava: o sigilo vem da estrutura que fecha a urna,
-não da parede do prédio. Loteando o miolo, o teto vai a **74 mesas com 4
-divisórias** — ou seja, a partir daí a restrição deixa de ser capacidade e passa
+Faltam 7. Uma **divisória exenta de 11,1 m** atravessada no miolo serve de
+parede pelas duas faces e acrescenta 8 mesas — 4 de cada lado, todas com
+corredor de 3,00 m —, levando o salão a **29**. É a menor que fecha a conta;
+uma de 17,4 m no mesmo lugar levaria a 33, se houver interesse em reserva. Ela
+está posicionada a leste do eixo de N2 (que vai até x = 25,7 m) para não
+atravessar o caminho do catering. A ilha ocupa 8,30 m de profundidade e guarda
+3 m livres em toda a volta. Apoia-se no que o §4 já registrava: o sigilo vem da
+estrutura que fecha a urna, não da parede do prédio. Loteando o miolo, o salão
+passa de **60 mesas** — a partir daí a restrição deixa de ser capacidade e passa
 a ser fluxo.
 
 Depende de duas aprovações que ainda não existem: a do RDS, como montagem e

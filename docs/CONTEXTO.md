@@ -80,11 +80,11 @@ oeste. A inicial é a da parede — N, L, S, O. A numeração é gerada por
 | **L3** | Leste | 2.20/2.21 | 14,80 | 17,87 | 3,07 m | emergência · recuo de 3 m |
 | **L4** | Leste | 2.22/2.23 | 2,95 | 6,01 | 3,06 m | emergência · recuo de 3 m |
 | **S1** | Sul | carga oeste | 7,83 | 11,45 | 3,62 m | a definir |
-| **S2** | Sul | 2.7 | 17,22 | 18,47 | 1,25 m | a definir |
+| **S2** | Sul | 2.7 | 17,22 | 18,47 | 1,25 m | **emergência confirmada — sem recuo, porta permanece aberta** |
 | **S3** | Sul | 2.5/2.6 | 19,10 | 25,03 | 5,93 m | a definir |
 | **S4** | Sul | 2.4 | 25,32 | 31,25 | 5,93 m | a definir |
 | **S5** | Sul | 2.2/2.3 | 31,54 | 37,47 | 5,93 m | a definir |
-| **S6** | Sul | 2.1 | 38,09 | 39,36 | 1,27 m | a definir |
+| **S6** | Sul | 2.1 | 38,09 | 39,36 | 1,27 m | **emergência confirmada — sem recuo, porta permanece aberta** |
 | **S7** | Sul | carga leste | 45,12 | 48,75 | 3,63 m | a definir |
 | **O1** | Oeste | acesso Hall 1 | 36,80 | 38,50 | 1,70 m | a definir · leva ao Hall 1 |
 | **O2** | Oeste | 2.10/2.11 | 19,36 | 22,43 | 3,07 m | a definir · único acesso aos WC |
@@ -158,8 +158,14 @@ profundidade**, com passo de par de **5,80 a 6,30 m** de parede para duas MRVs.
 - **N1 permanece fechada.** Não conta como vão para nenhum efeito.
 - **N2 fica desbloqueada — é a saída do catering.** Precisa de caminho livre até
   ela; quanto de caminho ainda não foi definido.
-- Para as saídas de emergência das outras paredes (N1, S2, S6, R1) **não foi
-  determinado recuo nenhum**. A planta-base não desenha recuo fora da leste.
+- **S2 (2.7) e S6 (2.1) são saída de emergência confirmada, sem recuo.**
+  Confirmado no local em 02/09/2026 pelo chefe de segurança do RDS, a partir de
+  fotos da fachada sul: são as portas pretas de sinalização verde, entre as
+  portas de carga e o bloco central de portas — ficam **permanentemente
+  abertas**, por isso dispensam o recuo de 3 m. Ver `salao.SEM_RECUO`.
+- Para as saídas de emergência restantes fora da leste — **N1** (já fechada,
+  então o recuo não teria efeito) e **R1** — **não foi determinado recuo
+  nenhum**. A planta-base não desenha recuo nelas.
 
 ---
 
@@ -281,11 +287,13 @@ Por ordem de retorno:
 2. **Quanto de caminho livre a saída do catering exige, e por onde ele chega até
    a N2?** Enquanto não estiver definido, a metade central da parede norte não
    pode ser ocupada com segurança.
-3. **O recuo de 3 m vale para as saídas de emergência das outras paredes?** Está
-   determinado só para a leste. N1, S2, S6 e R1 também são saídas de emergência
-   na planta do RDS; se exigirem o mesmo, some parede no norte e no sul.
-   *Preço em mesas: quatro* — e, como as 28 já cabem, deixou de ser bloqueante.
-   Não afeta a fachada leste, cuja faixa de 3 m já está determinada.
+3. **Parcialmente respondida — S2 e S6 não pedem recuo.** Confirmado no local
+   (§4): são saída de emergência, mas ficam permanentemente abertas. Só falta
+   **R1** — N1 não conta, já que permanece fechada. Se R1 exigir recuo, o preço
+   é em piso do canto sudoeste, não em parede da fachada sul (R1 fica na parede
+   do recorte, fora das fachadas). Não afeta a fachada leste, cuja faixa de 3 m
+   já está determinada. **Atualiza o §11:** a alegação de que "os recuos de S2 e
+   S6 fecham o resto" da fachada sul não vale mais — ver nota lá.
 4. **A urna pode ficar atrás da mesa dos mesários** (módulo em linha, ~1,80 m de
    frente por 2,60 m de profundidade) em vez de ao lado? Muda a capacidade de
    parede de 19 para 29 posições.
@@ -423,27 +431,40 @@ Usa **84,0 m de frente**, entre parede encostada e fileira recuada.
 ### A capacidade, que é maior
 
 O teste de capacidade que precedeu a planta: com a mesma folga cheia o salão
-comporta **30**, e apertando até o mínimo da faixa dada (2,50 e 1,00), **34**.
-As duas MRVs excedentes foram escolhidas **pelo usuário sobre o desenho**, e a
-escolha está nomeada em `mesas.AJUSTE_28`, não escondida no empacotamento:
+comporta **34**, e apertando até o mínimo da faixa dada (2,50 e 1,00), **38**
+— dos quais **4 na fachada sul**, entre S2 e S6, desde que essas duas deixaram
+de exigir recuo (§4). As seis MRVs excedentes sobre as 28 entregues foram
+escolhidas **pelo usuário sobre o desenho**, e a escolha está nomeada em
+`mesas.AJUSTE_28`, não escondida no empacotamento:
 
 - sai o **par mais a leste da parede norte**, que se aproximava demais da
   fileira recuada no canto nordeste;
 - o **par da face norte do recorte** é encostado à direita, liberando o canto
-  sudoeste em vez de ficar no meio do trecho.
+  sudoeste em vez de ficar no meio do trecho;
+- a **fachada sul inteira** fica de fora — decisão de projeto (§8), não mais
+  falta de parede: nenhuma porta dela tem papel de entrada ou saída definido, e
+  usá-la aqui anteciparia essa escolha.
 
-Passar `ajustes={}` devolve as 30; `a_min=CORREDOR_MIN`, as 34.
+Passar `ajustes={}` devolve as 34; `a_min=CORREDOR_MIN`, as 38.
 
 ### Três achados
 
-**A decisão sobre S1 e S7 não muda o número de mesas.** A fachada sul não
-entrega MRV de um jeito nem do outro — as sete portas somam 27,6 m de vão e os
-recuos de S2 e S6 fecham o resto. O que a decisão muda é por onde o eleitor
-entra, e quanto chão os vestíbulos consomem.
+**A decisão sobre S1 e S7 não muda o número de mesas — no cenário A.** A
+fachada sul continua sem MRV nenhuma na planta entregue, mas não mais porque a
+parede fique cheia: **S2 e S6 deixaram de exigir recuo**, confirmado no local
+em 02/09/2026 (§4) — essa era a segunda metade da conta original ("as sete
+portas somam 27,6 m de vão e os recuos de S2 e S6 fecham o resto", dizia a
+versão anterior deste parágrafo). O motivo que sobra é só de política do
+projeto, já registrado em `mesas.AJUSTE_28`: a fachada sul fica de fora de
+propósito, para não antecipar a decisão de entrada/saída (§8). Fisicamente ela
+já rende 4 MRVs (ver "capacidade, que é maior", acima) — o que muda é que agora
+é uma escolha explícita, não uma consequência do recuo. O que a decisão sobre
+S1 e S7 muda continua sendo por onde o eleitor entra, e quanto chão os
+vestíbulos consomem.
 
-**Apertar as folgas compra quatro mesas de que ninguém precisa.** Empacotando
-pelo mínimo da faixa (2,50 no par, 1,00 entre pares) cabem 34; exigindo o máximo
-(3,00 e 1,50), 30 — ainda duas acima das 28. O custo de apertar é concreto: o
+**Apertar as folgas compra seis mesas de que ninguém precisa.** Empacotando
+pelo mínimo da faixa (2,50 no par, 1,00 entre pares) cabem 38; exigindo o máximo
+(3,00 e 1,50), 34 — seis acima das 28. O custo de apertar é concreto: o
 mesário sentado ocupa 0,75 m de cada lado, então 3,00 m deixam 1,50 m de
 passagem livre e o corredor de 2,67 m da fileira leste no empacotamento máximo
 deixa 1,17 m — mão única, sem cruzamento e sem manobra de cadeira de rodas, no
@@ -458,12 +479,18 @@ dois casos a saída é encurtar a divisória ou afastá-la do canto.
 
 ### O plano B, se a faixa contínua não for aceita
 
+> **Recalculado em 02/09/2026**, depois de confirmado que S2 e S6 dispensam
+> recuo (§4, §9 pergunta 3). Antes dessa confirmação o salão caía para 21
+> (29 com divisória); a fachada sul entrava zerada na conta, pelo mesmo motivo
+> que zerava no cenário A. Os números abaixo já são os corrigidos.
+
 Está no modelo, em `roda(..., faixa_leste=False)`: volta aos quatro envelopes
 por porta na fachada leste. Aí ela vale **3 MRVs avulsas** — os três pedaços de
-2,79 m entre os envelopes, uma mesa sozinha em cada, com 1,09 m de passagem — e
-o salão cai para **21**, faltando 7. A resposta volta a ser a **divisória exenta**
+2,79 m entre os envelopes, uma mesa sozinha em cada, com 1,09 m de passagem —,
+a fachada sul entra com as **4 MRVs de S2/S6** que este recálculo liberou, e o
+salão fecha em **25**, faltando 3. A resposta volta a ser a **divisória exenta**
 de 11,1 m atravessada no miolo, que serve de parede pelas duas faces, acrescenta
-8 e leva o salão a **29**. Apoia-se no que o §4 já registrava: o sigilo vem da
+8 e leva o salão a **33**. Apoia-se no que o §4 já registrava: o sigilo vem da
 estrutura que fecha a urna, não da parede do prédio.
 
 É o que se perde se o RDS não aceitar a faixa — e é por isso que a questão 8 do

@@ -49,6 +49,10 @@ ESTADO = {
     "L2": ("emergencia", "Saída de emergência. Recuo de 3 m."),
     "L3": ("emergencia", "Saída de emergência. Recuo de 3 m."),
     "L4": ("emergencia", "Saída de emergência. Recuo de 3 m."),
+    "S2": ("emergencia", "Saída de emergência confirmada no local (porta "
+           "preta, sinal verde) — fica permanentemente aberta; sem recuo."),
+    "S6": ("emergencia", "Saída de emergência confirmada no local (porta "
+           "preta, sinal verde) — fica permanentemente aberta; sem recuo."),
     "O1": ("livre", "Passagem para o Hall 1."),
     "O2": ("livre", "Único acesso aos sanitários, que ficam fora do salão."),
     "S1": ("livre", "Porta de carga."),
@@ -150,9 +154,11 @@ def planta(portas):
     pts = " ".join(f"{px(x, y)[0]:.1f},{px(x, y)[1]:.1f}" for x, y in poly)
     o.append(f'<polygon points="{pts}" fill="#eef1f4"/>')
 
-    # ---------- recuo de 3 m: so a parede leste, como foi determinado
+    # ---------- recuo de 3 m: parede leste inteira, e mais nenhuma porta —
+    # S2 e S6 sao emergencia confirmada, mas ficam permanentemente abertas e
+    # por isso nao pedem o recuo
     for p in portas:
-        if p["estado"] == "emergencia":
+        if p["estado"] == "emergencia" and p["codigo"] not in FL.SEM_RECUO:
             o.append(envelope(p))
     o.append(cota(W - FL.RECUO_EMERGENCIA, 4.48, W, 4.48, "3 m", dy=-5))
 
@@ -197,6 +203,10 @@ def planta(portas):
              .replace('fill="#5c6c80"', f'fill="{AZUL}"'))
     o.append(txt(W - 5.6, H / 2, "SAÍDAS DE EMERGÊNCIA · RECUO DE 3 m", "via",
                  rot=90).replace('fill="#243244"', f'fill="{VERDE}"'))
+    for num in ("S2", "S6"):
+        p = next(q for q in portas if q["num"] == num)
+        o.append(txt(p["meio"], 0, "sem recuo · porta aberta", "sub", dy=42)
+                 .replace('fill="#5c6c80"', f'fill="{VERDE}"'))
 
     # ---------- para onde levam as portas da parede oeste
     o.append(txt(0, 37.65, "para o Hall 1", "sub", anchor="end", dx=-11, dy=23))
@@ -222,7 +232,7 @@ def planta(portas):
     for c, lab in ((MESA, "porta sem papel definido"),
                    (VERM, "porta fechada"),
                    (AZUL, "porta desbloqueada · saída do catering"),
-                   (VERDE, "saída de emergência e seu recuo de 3 m")):
+                   (VERDE, "saída de emergência (recuo de 3 m onde determinado)")):
         o.append(f'<rect x="{cx}" y="{ly - 8}" width="11" height="11" '
                  f'fill="{c}" opacity=".55" stroke="{c}"/>')
         o.append(f'<text x="{cx + 16}" y="{ly + 1}" {EST["lbl"]}>{esc(lab)}</text>')
@@ -237,7 +247,12 @@ def planta(portas):
         "está marcado só na parede leste, onde",
         f"todas as portas são saídas de emergência; sobram dela {len(nichos)} "
         f"trechos de {vg(nichos[0][1] - nichos[0][0], 2)} m entre os recuos. "
-        "As portas 2.8/2.9 ficam na parede do recorte, que não é fachada.")
+        "As portas 2.8/2.9 ficam na parede do recorte, que não é fachada.",
+        "S2 e S6 também são saída de emergência — confirmado no local, são as "
+        "portas pretas de sinal verde entre as portas centrais e as portas de "
+        "carga da fachada sul —, mas ficam permanentemente",
+        "abertas e por isso não pedem recuo. Segue em aberto se N1 e R1, as "
+        "duas saídas de emergência restantes, também dispensam.")
     for i, linha in enumerate(linhas):
         o.append(f'<text x="{D.ML}" y="{ly + 26 + i * 14}" {EST["sub"]}>'
                  f'{esc(linha)}</text>')

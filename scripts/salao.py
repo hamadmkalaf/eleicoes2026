@@ -80,10 +80,15 @@ FACES = {
 }
 
 # Portas que constam como saida de emergencia na planta do RDS, pelo codigo do
-# RDS. So as quatro da parede leste tiveram o recuo de 3 m determinado; para as
-# demais a exigencia esta em aberto (questao 3 do contexto).
+# RDS. As quatro da parede leste tem o recuo de 3 m determinado. 2.7 (S2) e
+# 2.1 (S6) foram confirmadas no local em 02/09/2026 pelo chefe de seguranca do
+# RDS -- sao as portas pretas de sinal verde entre as portas de carga e as
+# portas centrais da fachada sul -- e ficam permanentemente abertas, por isso
+# dispensam recuo (questao 3 do contexto, agora parcialmente respondida). N1
+# (fechada) e 2.8/2.9 (R1) continuam em aberto.
 EMERGENCIA = {"2.16/2.17", "2.18/2.19", "2.20/2.21", "2.22/2.23",
               "2.13", "2.7", "2.1", "2.8/2.9"}
+SEM_RECUO = {"2.7", "2.1"}    # confirmadas abertas: dispensam o recuo de 3 m
 
 CONTORNO = [(RECORTE[2], 0.0), (HALL_W, 0.0), (HALL_W, HALL_H), (0.0, HALL_H),
             (0.0, RECORTE[3]), (RECORTE[2], RECORTE[3])]

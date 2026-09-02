@@ -165,11 +165,20 @@ AVULSA_EM = ()
 # nordeste, e o par da face norte do recorte encosta a direita, liberando o
 # canto sudoeste em vez de ficar no meio do trecho.
 #
+# A fachada sul fica de fora por decisao de projeto, nao por falta de parede:
+# nenhuma porta dela tem papel de entrada ou saida ainda definido (§8 do
+# contexto), e povoa-la aqui anteciparia essa escolha. Ate 02/09/2026 ela
+# ficava vazia tambem por calculo -- os recuos de S2 e S6 fechavam o que
+# sobrava -- mas isso deixou de valer (S2 e S6 sao emergencia confirmada sem
+# recuo; ver salao.SEM_RECUO), entao a exclusao agora e so a de projeto.
+#
 # Sao decisoes de desenho, nao de calculo: por isso ficam aqui, nomeadas, e nao
-# escondidas no empacotamento. Passar `ajustes={}` devolve o maximo.
+# escondidas no empacotamento. Passar `ajustes={}` devolve o maximo -- que
+# agora inclui a fachada sul.
 AJUSTE_28 = {
     "norte": dict(tirar_ultimos_pares=1),
     "recorte_h": dict(alinha="direita"),
+    "sul": dict(tirar_ultimos_pares=99),   # de fora por decisao, nao por falta
 }
 
 
@@ -204,7 +213,8 @@ def bloqueios(cenario, hipotese, lateral=None, frontal=None, faixa_leste=True):
             num = _numero(codigo)
             if face == "leste" and faixa_leste:
                 continue                       # ja coberta pela faixa
-            emerg = (codigo in FL.EMERGENCIA and num != "N1"
+            emerg = (codigo in FL.EMERGENCIA and codigo not in FL.SEM_RECUO
+                     and num != "N1"
                      and (face == "leste" or hipotese == "prudente"))
 
             if emerg:

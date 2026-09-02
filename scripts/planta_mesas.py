@@ -92,6 +92,11 @@ def modulo(m):
                            lado * (MM.MESA_IDENT[1] / 2 + 0.26)))
         o.append(f'<circle cx="{mx:.1f}" cy="{my:.1f}" r="{0.22*S:.1f}" '
                  f'fill="{PESSOA}" opacity=".55"/>')
+    if m.get("n"):
+        nx, ny = px(*ponto(m, 2.40 + MM.MESA_IDENT[0] / 2))
+        o.append(f'<text x="{nx:.1f}" y="{ny+3.4:.1f}" {D.FONTE} font-size="9.5" '
+                 f'font-weight="700" fill="#fbfaf7" text-anchor="middle">'
+                 f'{m["n"]}</text>')
     return "".join(o)
 
 

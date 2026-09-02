@@ -321,7 +321,8 @@ Por ordem de retorno:
 | `scripts/estilo_plano.css` | Folha de estilo das peças de leitura. |
 | `scripts/mesas.py` | **Ideia 1 (§11):** módulo da MRV com o mobiliário novo, faixa protegida e fileira recuada da fachada leste, regras de bloqueio, empacotamento por face e divisórias exentas. Toda planta passa por `valida()` antes de ser gravada. |
 | `scripts/planta_mesas.py` | Desenhos da ideia 1: o módulo cotado, a fachada leste de perto, as réguas de parede e as plantas de ocupação. Usa as primitivas de `desenho.py`. |
-| `scripts/gera_mesas.py` + `mesas_template.html` | Grava `saidas/mesas.json`, os seis SVGs e `saidas/mesas.html`. |
+| `scripts/gera_mesas.py` + `mesas_template.html` | Grava `saidas/mesas.json`, os SVGs e `saidas/mesas.html`. |
+| `scripts/gera_editor.py` + `editor_template.html` | Grava `saidas/editor_dados.json` e `saidas/editor.html`, a prancheta: arrastar mesa, girar de 90 em 90 e medir distância. Não recalcula nada — consome as MRVs já validadas por `mesas.py`. |
 | `saidas/dados.json` | As 28 urnas apuradas (etapa anterior, não mexer). |
 
 A planta-base está publicada em
@@ -330,8 +331,11 @@ atualizá-la de outra sessão, publique passando essa URL em `url` — sem isso,
 cria-se um artefato separado.
 
 A peça da ideia 1 está publicada em
-<https://claude.ai/code/artifact/8ea7b55b-ec3f-4dd4-baaf-7702c4d3fcce>. Mesma
-regra: para atualizá-la de outra sessão, publique passando essa URL em `url`.
+<https://claude.ai/code/artifact/8ea7b55b-ec3f-4dd4-baaf-7702c4d3fcce> e a
+prancheta — a mesma planta manipulável, em escala — em
+<https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0>. Mesma
+regra das outras: para atualizar de outra sessão, publique passando a URL em
+`url`.
 
 ```bash
 cd scripts
@@ -390,6 +394,14 @@ O que a faixa custa: **133 m² de piso** reservados, contra 108 m² dos quatro
 envelopes somados. Sai mais barato porque o piso sobra e a frente não. Em troca
 ela tem de ficar vazia o dia inteiro — sem mobiliário, sem material de apoio e
 sem fila, inclusive a de quem já votou.
+
+### A numeração
+
+As MRVs são numeradas de **1 a 28** por `mesas.numera_mrv()`, num circuito único
+no sentido horário a partir do canto noroeste: **1 a 8** na parede norte de oeste
+para leste, **9 a 20** descendo a fileira recuada da fachada leste, **21 e 22** na
+face norte do recorte e **23 a 28** subindo a parede oeste. É a identidade da
+mesa em campo, e sai impressa na planta.
 
 ### A planta final — 28 MRVs
 

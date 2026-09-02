@@ -376,10 +376,37 @@ def roda(cenario, hipotese, a_min=CORREDOR_MIN, a_max=CORREDOR_MAX,
         for m in mods:
             obst.append((rect_do_modulo(m), f"faixa~{face}"))
 
+    numera_mrv(modulos)
     return dict(cenario=cenario, hipotese=hipotese, a_min=a_min,
                 mrv=len(modulos), por_face=por_face, modulos=modulos,
                 proibidos=proibidos, reservas=rects,
                 erros=valida(modulos, proibidos), choques=choques(rects))
+
+
+# Ordem em que as MRVs sao numeradas: um circuito unico pelo salao, no sentido
+# horario a partir do canto noroeste. O sinal e o sentido de percurso ao longo
+# de cada face — +1 segue a coordenada corrente, -1 vai contra ela.
+CIRCUITO = [("norte", +1), (FACE_LESTE_RECUADA, -1), ("leste", -1), ("sul", -1),
+            ("recorte_v", -1), ("recorte_h", -1), ("oeste", +1)]
+
+
+def numera_mrv(modulos):
+    """Numera as MRVs de 1 a N seguindo o circuito, e devolve a lista ordenada.
+
+    O numero e a identidade da mesa em campo: e por ele que se fala de uma
+    secao no dia, e e ele que a planta imprime."""
+    ordenados, vistas = [], set()
+    for face, sentido in CIRCUITO:
+        da_face = [m for m in modulos if m["face"] == face]
+        ordenados += sorted(da_face, key=lambda m: sentido * m["s"])
+        vistas.add(face)
+    # faces fora do circuito — as divisorias exentas, por exemplo — entram
+    # depois, em ordem estavel
+    resto = [m for m in modulos if m["face"] not in vistas]
+    ordenados += sorted(resto, key=lambda m: (m["face"], m["s"]))
+    for i, m in enumerate(ordenados, 1):
+        m["n"] = i
+    return ordenados
 
 
 def sombras(cenario, hipotese, a_min, ordem=None, avulsa_em=AVULSA_EM):

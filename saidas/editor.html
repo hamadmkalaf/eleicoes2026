@@ -1,0 +1,679 @@
+<title>Prancheta do Hall 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  --papel:#f0ede5; --folha:#fffdf8; --tinta:#17202b; --meio:#59616d;
+  --fraco:#8a919b; --regua:#d9d3c6; --regua2:#e8e3d8;
+  --entrada:#1f6fb2; --emerg:#16867f; --alerta:#b23b2e; --aviso:#b26a12;
+  --prancha:#fbfaf7; --piso:#eef1f4; --traco:#1c2733;
+  --mesa:#3b4552; --pessoa:#59616d;
+  --sel:#1f6fb2; --medida:#7a4c8f;
+  --sombra:0 1px 2px rgba(23,32,43,.06), 0 6px 18px rgba(23,32,43,.06);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --papel:#0f1317; --folha:#181d23; --tinta:#e7ebef; --meio:#a3abb5;
+  --fraco:#78818c; --regua:#2b3239; --regua2:#222930;
+  --entrada:#63a6e0; --emerg:#3cb8ab; --alerta:#e0796a; --aviso:#dda257;
+  --sel:#63a6e0; --medida:#c39ae0;
+  --sombra:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --papel:#0f1317; --folha:#181d23; --tinta:#e7ebef; --meio:#a3abb5;
+  --fraco:#78818c; --regua:#2b3239; --regua2:#222930;
+  --entrada:#63a6e0; --emerg:#3cb8ab; --alerta:#e0796a; --aviso:#dda257;
+  --sel:#63a6e0; --medida:#c39ae0;
+  --sombra:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+button{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--entrada); outline-offset:2px}
+
+.app{display:grid; grid-template-rows:auto 1fr auto; height:100vh; min-height:560px}
+.app > *{min-width:0}
+
+/* ---- cabecalho ---- */
+header{display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
+  padding:12px 20px; border-bottom:1px solid var(--regua); background:var(--folha)}
+header h1{font-family:"Source Serif 4",Georgia,serif; font-size:1.12rem;
+  font-weight:700; margin:0; letter-spacing:-.01em; white-space:nowrap}
+header .sub{font-size:.78rem; color:var(--meio)}
+header .dir{margin-left:auto; display:flex; gap:8px; align-items:center}
+
+.grupo{display:flex; border:1px solid var(--regua); background:var(--papel)}
+.grupo button{background:none; border:0; padding:5px 11px; cursor:pointer;
+  font-size:.79rem; color:var(--meio); border-right:1px solid var(--regua)}
+.grupo button:last-child{border-right:0}
+.grupo button[aria-pressed="true"]{background:var(--tinta); color:var(--folha);
+  font-weight:600}
+.acao{background:var(--papel); border:1px solid var(--regua); padding:5px 12px;
+  font-size:.79rem; cursor:pointer; color:var(--meio)}
+.acao:hover{color:var(--tinta); border-color:var(--fraco)}
+
+/* ---- corpo ---- */
+.corpo{display:grid; grid-template-columns:1fr 302px; min-height:0}
+.palco{position:relative; overflow:hidden; background:var(--papel)}
+.palco svg{display:block; width:100%; height:100%; touch-action:none;
+  cursor:grab}
+.palco svg.arrastando{cursor:grabbing}
+.palco svg.medindo{cursor:crosshair}
+.zoom{position:absolute; left:14px; bottom:14px; display:flex; flex-direction:column;
+  border:1px solid var(--regua); background:var(--folha); box-shadow:var(--sombra)}
+.zoom button{background:none; border:0; border-bottom:1px solid var(--regua);
+  width:32px; height:30px; cursor:pointer; color:var(--meio); font-size:.9rem}
+.zoom button:last-child{border-bottom:0; font-size:.66rem}
+.zoom button:hover{color:var(--tinta)}
+
+/* ---- painel ---- */
+.painel{border-left:1px solid var(--regua); background:var(--folha);
+  overflow-y:auto; display:flex; flex-direction:column}
+.bloco{padding:14px 16px; border-bottom:1px solid var(--regua)}
+.bloco:last-child{border-bottom:0}
+.rot{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 9px}
+.dica{font-size:.78rem; color:var(--meio); margin:0}
+.dica + .dica{margin-top:7px}
+kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid var(--regua);
+  border-bottom-width:2px; padding:0 4px; background:var(--papel); color:var(--tinta)}
+
+.leitura{display:grid; grid-template-columns:auto 1fr; gap:5px 12px; margin:0;
+  font-size:.8rem}
+.leitura dt{color:var(--meio)}
+.leitura dd{margin:0; font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums; text-align:right}
+.leitura dd.ruim{color:var(--alerta); font-weight:600}
+.leitura dd.bom{color:var(--emerg)}
+
+.chip{display:inline-flex; align-items:center; gap:6px; font-size:.74rem;
+  padding:3px 9px; border:1px solid currentColor; color:var(--emerg);
+  font-weight:600; letter-spacing:.01em}
+.chip.ruim{color:var(--alerta)}
+.chip.neutro{color:var(--meio)}
+
+.medidas{list-style:none; margin:0; padding:0; display:flex; flex-direction:column;
+  gap:1px; background:var(--regua2)}
+.medidas li{display:grid; grid-template-columns:1fr auto auto; gap:10px;
+  align-items:center; background:var(--folha); padding:6px 2px 6px 0;
+  font-size:.78rem}
+.medidas .val{font-family:"IBM Plex Mono",monospace; font-weight:600;
+  font-variant-numeric:tabular-nums}
+.medidas .det{font-family:"IBM Plex Mono",monospace; font-size:.7rem;
+  color:var(--fraco)}
+.medidas button{background:none; border:0; cursor:pointer; color:var(--fraco);
+  padding:2px 4px; font-size:.9rem; line-height:1}
+.medidas button:hover{color:var(--alerta)}
+.vazio{font-size:.78rem; color:var(--fraco); margin:0}
+
+.opcoes{display:flex; flex-direction:column; gap:7px; font-size:.79rem}
+.opcoes label{display:flex; align-items:center; gap:8px; cursor:pointer}
+.opcoes input{accent-color:var(--entrada)}
+.passo{display:flex; align-items:center; gap:8px; font-size:.79rem; margin-top:10px}
+.passo select{font:inherit; font-size:.79rem; padding:2px 4px; background:var(--papel);
+  color:var(--tinta); border:1px solid var(--regua)}
+
+/* ---- barra de estado ---- */
+footer{display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  padding:7px 20px; border-top:1px solid var(--regua); background:var(--folha);
+  font-size:.76rem; color:var(--meio)}
+footer .mono{color:var(--tinta)}
+footer .estado{margin-left:auto; font-weight:600}
+footer .estado.ruim{color:var(--alerta)}
+footer .estado.ok{color:var(--emerg)}
+
+@media (max-width:860px){
+  .corpo{grid-template-columns:1fr; grid-template-rows:minmax(340px,1fr) auto}
+  .painel{border-left:0; border-top:1px solid var(--regua)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+<header>
+  <h1>Prancheta do Hall&nbsp;2</h1>
+  <span class="sub">28 mesas receptoras · escala real · RDS Ballsbridge</span>
+  <div class="dir">
+    <div class="grupo" role="group" aria-label="Cenário">
+      <button id="cenA" aria-pressed="true">Cenário A</button>
+      <button id="cenB" aria-pressed="false">Cenário B</button>
+    </div>
+    <div class="grupo" role="group" aria-label="Ferramenta">
+      <button id="tMover" aria-pressed="true">Mover</button>
+      <button id="tMedir" aria-pressed="false">Medir</button>
+    </div>
+    <button class="acao" id="copiar">Copiar posições</button>
+    <button class="acao" id="restaurar">Restaurar planta</button>
+  </div>
+</header>
+
+<div class="corpo">
+  <div class="palco">
+    <svg id="sheet" role="application" aria-label="Planta do Hall 2 em escala, com as 28 mesas receptoras"></svg>
+    <div class="zoom">
+      <button id="zMais" title="Aproximar" aria-label="Aproximar">+</button>
+      <button id="zMenos" title="Afastar" aria-label="Afastar">−</button>
+      <button id="zTudo" title="Enquadrar o salão" aria-label="Enquadrar o salão">tudo</button>
+    </div>
+  </div>
+
+  <aside class="painel">
+    <div class="bloco">
+      <p class="rot">Mesa selecionada</p>
+      <div id="sel"></div>
+    </div>
+    <div class="bloco">
+      <p class="rot">Medidas</p>
+      <ul class="medidas" id="listaMedidas"></ul>
+      <p class="vazio" id="semMedidas">Nenhuma medida. Passe para <strong>Medir</strong> e clique em dois pontos da planta.</p>
+    </div>
+    <div class="bloco">
+      <p class="rot">Exibir</p>
+      <div class="opcoes">
+        <label><input type="checkbox" id="optAssentos" checked> Cadeiras dos mesários (0,75 m)</label>
+        <label><input type="checkbox" id="optZonas" checked> Zonas protegidas de 3 m</label>
+        <label><input type="checkbox" id="optGrade"> Grade de 1 m</label>
+        <label><input type="checkbox" id="optPortas" checked> Nome das portas</label>
+      </div>
+      <div class="passo">
+        <label for="selPasso">Passo do encaixe</label>
+        <select id="selPasso">
+          <option value="0.01">1 cm</option>
+          <option value="0.05" selected>5 cm</option>
+          <option value="0.1">10 cm</option>
+          <option value="0.25">25 cm</option>
+        </select>
+      </div>
+    </div>
+    <div class="bloco">
+      <p class="rot">Como usar</p>
+      <p class="dica">Arraste uma mesa para movê-la. Ela fica <strong>vermelha</strong> enquanto estiver em cima de uma zona protegida, de um vão de porta, de outra mesa ou fora do salão.</p>
+      <p class="dica"><kbd>R</kbd> gira a mesa selecionada 90°. As setas movem de um passo, com <kbd>Shift</kbd> de dez. <kbd>Esc</kbd> desmarca.</p>
+      <p class="dica">Arraste o fundo para deslocar a planta; a roda do mouse aproxima e afasta.</p>
+      <p class="dica">O que você mover fica salvo só neste navegador. <strong>Copiar posições</strong> leva as 28 coordenadas para a área de transferência.</p>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <span>Cursor <span class="mono" id="cursor">—</span></span>
+  <span>Módulo <span class="mono">0,90 × 4,10 m</span></span>
+  <span>Salão <span class="mono">50,3 × 44,4 m</span></span>
+  <span class="estado" id="estado">28 mesas na planta original</span>
+</footer>
+</div>
+
+<script>
+const D = {"salao": {"largura": 50.3, "altura": 44.4, "recorte": [0.0, 0.0, 7.8, 7.0], "contorno": [[7.8, 0.0], [50.3, 0.0], [50.3, 44.4], [0.0, 44.4], [0.0, 7.0], [7.8, 7.0]]}, "modulo": {"prof": 4.1, "larg": 0.9, "urna": 0.9, "mesa": [1.7, 0.8], "eleitor": 0.9, "passagem": 0.6, "assento": 0.75, "corredor": [2.5, 3.0], "entre_pares": [1.0, 1.5]}, "portas": [{"id": "N1", "rds": "2.13", "face": "norte", "estado": "fechada", "x1": 7.41, "y1": 44.4, "x2": 9.44, "y2": 44.4, "larg": 2.03}, {"id": "N2", "rds": "2.14/2.15", "face": "norte", "estado": "catering", "x1": 20.66, "y1": 44.4, "x2": 24.22, "y2": 44.4, "larg": 3.56}, {"id": "L1", "rds": "2.16/2.17", "face": "leste", "estado": "emergencia", "x1": 50.3, "y1": 38.51, "x2": 50.3, "y2": 41.57, "larg": 3.06}, {"id": "L2", "rds": "2.18/2.19", "face": "leste", "estado": "emergencia", "x1": 50.3, "y1": 26.66, "x2": 50.3, "y2": 29.72, "larg": 3.06}, {"id": "L3", "rds": "2.20/2.21", "face": "leste", "estado": "emergencia", "x1": 50.3, "y1": 14.8, "x2": 50.3, "y2": 17.87, "larg": 3.07}, {"id": "L4", "rds": "2.22/2.23", "face": "leste", "estado": "emergencia", "x1": 50.3, "y1": 2.95, "x2": 50.3, "y2": 6.01, "larg": 3.06}, {"id": "S1", "rds": "carga oeste", "face": "sul", "estado": "livre", "x1": 7.83, "y1": 0.0, "x2": 11.45, "y2": 0.0, "larg": 3.62}, {"id": "S2", "rds": "2.7", "face": "sul", "estado": "livre", "x1": 17.22, "y1": 0.0, "x2": 18.47, "y2": 0.0, "larg": 1.25}, {"id": "S3", "rds": "2.5/2.6", "face": "sul", "estado": "livre", "x1": 19.1, "y1": 0.0, "x2": 25.03, "y2": 0.0, "larg": 5.93}, {"id": "S4", "rds": "2.4", "face": "sul", "estado": "livre", "x1": 25.32, "y1": 0.0, "x2": 31.25, "y2": 0.0, "larg": 5.93}, {"id": "S5", "rds": "2.2/2.3", "face": "sul", "estado": "livre", "x1": 31.54, "y1": 0.0, "x2": 37.47, "y2": 0.0, "larg": 5.93}, {"id": "S6", "rds": "2.1", "face": "sul", "estado": "livre", "x1": 38.09, "y1": 0.0, "x2": 39.36, "y2": 0.0, "larg": 1.27}, {"id": "S7", "rds": "carga leste", "face": "sul", "estado": "livre", "x1": 45.12, "y1": 0.0, "x2": 48.75, "y2": 0.0, "larg": 3.63}, {"id": "O1", "rds": "acesso Hall 1", "face": "oeste", "estado": "livre", "x1": 0.0, "y1": 36.8, "x2": 0.0, "y2": 38.5, "larg": 1.7}, {"id": "O2", "rds": "2.10/2.11", "face": "oeste", "estado": "livre", "x1": 0.0, "y1": 19.36, "x2": 0.0, "y2": 22.43, "larg": 3.07}, {"id": "R1", "rds": "2.8/2.9", "face": "recorte_v", "estado": "livre", "x1": 7.8, "y1": 3.0, "x2": 7.8, "y2": 6.5, "larg": 3.5}], "cenarios": {"A": {"zonas": [{"rect": [47.3, 0.0, 50.3, 44.4], "rotulo": "fachada leste · faixa protegida de 3 m"}, {"rect": [14.22, 0.0, 21.47, 3.0], "rotulo": "S2 · recuo de emergência"}, {"rect": [35.09, 0.0, 42.36, 3.0], "rotulo": "S6 · recuo de emergência"}, {"rect": [7.8, 0.0, 10.8, 7.0], "rotulo": "R1 · recuo de emergência"}], "vaos": [{"rect": [7.41, 44.1, 9.44, 44.4], "rotulo": "N1 vão"}, {"rect": [20.66, 44.1, 24.22, 44.4], "rotulo": "N2 vão"}, {"rect": [50.0, 2.95, 50.3, 6.01], "rotulo": "L4 vão"}, {"rect": [50.0, 14.8, 50.3, 17.87], "rotulo": "L3 vão"}, {"rect": [50.0, 26.66, 50.3, 29.72], "rotulo": "L2 vão"}, {"rect": [50.0, 38.51, 50.3, 41.57], "rotulo": "L1 vão"}, {"rect": [7.83, 0.0, 11.45, 0.3], "rotulo": "S1 vão"}, {"rect": [17.22, 0.0, 18.47, 0.3], "rotulo": "S2 vão"}, {"rect": [19.1, 0.0, 25.03, 0.3], "rotulo": "S3 vão"}, {"rect": [25.32, 0.0, 31.25, 0.3], "rotulo": "S4 vão"}, {"rect": [31.54, 0.0, 37.47, 0.3], "rotulo": "S5 vão"}, {"rect": [38.09, 0.0, 39.36, 0.3], "rotulo": "S6 vão"}, {"rect": [45.12, 0.0, 48.75, 0.3], "rotulo": "S7 vão"}, {"rect": [0.0, 19.36, 0.3, 22.43], "rotulo": "O2 vão"}, {"rect": [0.0, 36.8, 0.3, 38.5], "rotulo": "O1 vão"}, {"rect": [7.8, 3.0, 8.1, 6.5], "rotulo": "R1 vão"}], "mrvs": [{"n": 1, "x": 1.605, "y": 44.4, "rot": 270, "lado": 1, "origem": "norte", "corredor": 3.0}, {"n": 2, "x": 5.505, "y": 44.4, "rot": 270, "lado": -1, "origem": "norte", "corredor": 3.0}, {"n": 3, "x": 12.5, "y": 44.4, "rot": 270, "lado": 1, "origem": "norte", "corredor": 3.0}, {"n": 4, "x": 16.4, "y": 44.4, "rot": 270, "lado": -1, "origem": "norte", "corredor": 3.0}, {"n": 5, "x": 28.26, "y": 44.4, "rot": 270, "lado": 1, "origem": "norte", "corredor": 3.0}, {"n": 6, "x": 32.16, "y": 44.4, "rot": 270, "lado": -1, "origem": "norte", "corredor": 3.0}, {"n": 7, "x": 34.56, "y": 44.4, "rot": 270, "lado": 1, "origem": "norte", "corredor": 3.0}, {"n": 8, "x": 38.46, "y": 44.4, "rot": 270, "lado": -1, "origem": "norte", "corredor": 3.0}, {"n": 9, "x": 47.3, "y": 39.9, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 10, "x": 47.3, "y": 36.0, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 11, "x": 47.3, "y": 33.6, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 12, "x": 47.3, "y": 29.7, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 13, "x": 47.3, "y": 27.3, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 14, "x": 47.3, "y": 23.4, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 15, "x": 47.3, "y": 21.0, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 16, "x": 47.3, "y": 17.1, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 17, "x": 47.3, "y": 14.7, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 18, "x": 47.3, "y": 10.8, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 19, "x": 47.3, "y": 8.4, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 20, "x": 47.3, "y": 4.5, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 21, "x": 7.35, "y": 7.0, "rot": 90, "lado": 1, "origem": "recorte_h", "corredor": 3.0}, {"n": 22, "x": 3.45, "y": 7.0, "rot": 90, "lado": -1, "origem": "recorte_h", "corredor": 3.0}, {"n": 23, "x": 0.0, "y": 12.53, "rot": 0, "lado": 1, "origem": "oeste", "corredor": 3.0}, {"n": 24, "x": 0.0, "y": 16.43, "rot": 0, "lado": -1, "origem": "oeste", "corredor": 3.0}, {"n": 25, "x": 0.0, "y": 24.765, "rot": 0, "lado": 1, "origem": "oeste", "corredor": 3.0}, {"n": 26, "x": 0.0, "y": 28.665, "rot": 0, "lado": -1, "origem": "oeste", "corredor": 3.0}, {"n": 27, "x": 0.0, "y": 31.065, "rot": 0, "lado": 1, "origem": "oeste", "corredor": 3.0}, {"n": 28, "x": 0.0, "y": 34.965, "rot": 0, "lado": -1, "origem": "oeste", "corredor": 3.0}]}, "B": {"zonas": [{"rect": [47.3, 0.0, 50.3, 44.4], "rotulo": "fachada leste · faixa protegida de 3 m"}, {"rect": [7.8, 0.0, 12.45, 2.0], "rotulo": "S1 · vestíbulo da divisória"}, {"rect": [14.22, 0.0, 21.47, 3.0], "rotulo": "S2 · recuo de emergência"}, {"rect": [35.09, 0.0, 42.36, 3.0], "rotulo": "S6 · recuo de emergência"}, {"rect": [44.12, 0.0, 49.75, 2.0], "rotulo": "S7 · vestíbulo da divisória"}, {"rect": [7.8, 0.0, 10.8, 7.0], "rotulo": "R1 · recuo de emergência"}], "vaos": [{"rect": [7.41, 44.1, 9.44, 44.4], "rotulo": "N1 vão"}, {"rect": [20.66, 44.1, 24.22, 44.4], "rotulo": "N2 vão"}, {"rect": [50.0, 2.95, 50.3, 6.01], "rotulo": "L4 vão"}, {"rect": [50.0, 14.8, 50.3, 17.87], "rotulo": "L3 vão"}, {"rect": [50.0, 26.66, 50.3, 29.72], "rotulo": "L2 vão"}, {"rect": [50.0, 38.51, 50.3, 41.57], "rotulo": "L1 vão"}, {"rect": [7.83, 0.0, 11.45, 0.3], "rotulo": "S1 vão"}, {"rect": [17.22, 0.0, 18.47, 0.3], "rotulo": "S2 vão"}, {"rect": [19.1, 0.0, 25.03, 0.3], "rotulo": "S3 vão"}, {"rect": [25.32, 0.0, 31.25, 0.3], "rotulo": "S4 vão"}, {"rect": [31.54, 0.0, 37.47, 0.3], "rotulo": "S5 vão"}, {"rect": [38.09, 0.0, 39.36, 0.3], "rotulo": "S6 vão"}, {"rect": [45.12, 0.0, 48.75, 0.3], "rotulo": "S7 vão"}, {"rect": [0.0, 19.36, 0.3, 22.43], "rotulo": "O2 vão"}, {"rect": [0.0, 36.8, 0.3, 38.5], "rotulo": "O1 vão"}, {"rect": [7.8, 3.0, 8.1, 6.5], "rotulo": "R1 vão"}], "mrvs": [{"n": 1, "x": 1.605, "y": 44.4, "rot": 270, "lado": 1, "origem": "norte", "corredor": 3.0}, {"n": 2, "x": 5.505, "y": 44.4, "rot": 270, "lado": -1, "origem": "norte", "corredor": 3.0}, {"n": 3, "x": 12.5, "y": 44.4, "rot": 270, "lado": 1, "origem": "norte", "corredor": 3.0}, {"n": 4, "x": 16.4, "y": 44.4, "rot": 270, "lado": -1, "origem": "norte", "corredor": 3.0}, {"n": 5, "x": 28.26, "y": 44.4, "rot": 270, "lado": 1, "origem": "norte", "corredor": 3.0}, {"n": 6, "x": 32.16, "y": 44.4, "rot": 270, "lado": -1, "origem": "norte", "corredor": 3.0}, {"n": 7, "x": 34.56, "y": 44.4, "rot": 270, "lado": 1, "origem": "norte", "corredor": 3.0}, {"n": 8, "x": 38.46, "y": 44.4, "rot": 270, "lado": -1, "origem": "norte", "corredor": 3.0}, {"n": 9, "x": 47.3, "y": 39.9, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 10, "x": 47.3, "y": 36.0, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 11, "x": 47.3, "y": 33.6, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 12, "x": 47.3, "y": 29.7, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 13, "x": 47.3, "y": 27.3, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 14, "x": 47.3, "y": 23.4, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 15, "x": 47.3, "y": 21.0, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 16, "x": 47.3, "y": 17.1, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 17, "x": 47.3, "y": 14.7, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 18, "x": 47.3, "y": 10.8, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 19, "x": 47.3, "y": 8.4, "rot": 180, "lado": 1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 20, "x": 47.3, "y": 4.5, "rot": 180, "lado": -1, "origem": "leste_recuada", "corredor": 3.0}, {"n": 21, "x": 7.35, "y": 7.0, "rot": 90, "lado": 1, "origem": "recorte_h", "corredor": 3.0}, {"n": 22, "x": 3.45, "y": 7.0, "rot": 90, "lado": -1, "origem": "recorte_h", "corredor": 3.0}, {"n": 23, "x": 0.0, "y": 12.53, "rot": 0, "lado": 1, "origem": "oeste", "corredor": 3.0}, {"n": 24, "x": 0.0, "y": 16.43, "rot": 0, "lado": -1, "origem": "oeste", "corredor": 3.0}, {"n": 25, "x": 0.0, "y": 24.765, "rot": 0, "lado": 1, "origem": "oeste", "corredor": 3.0}, {"n": 26, "x": 0.0, "y": 28.665, "rot": 0, "lado": -1, "origem": "oeste", "corredor": 3.0}, {"n": 27, "x": 0.0, "y": 31.065, "rot": 0, "lado": 1, "origem": "oeste", "corredor": 3.0}, {"n": 28, "x": 0.0, "y": 34.965, "rot": 0, "lado": -1, "origem": "oeste", "corredor": 3.0}]}}};
+
+const M = D.modulo, SAL = D.salao;
+const ALT = SAL.altura, LARG = SAL.largura;
+const svg = document.getElementById("sheet");
+const NS = "http://www.w3.org/2000/svg";
+
+/* --- helpers de geometria: tudo em metros do modelo ------------------- */
+const fx = v => v;                       // x do modelo -> x do SVG
+const fy = v => ALT - v;                 // y do modelo -> y do SVG (invertido)
+const vg = (v, c = 2) => v.toFixed(c).replace(".", ",");
+const DIR = r => [Math.round(Math.cos(r * Math.PI / 180)),
+                  Math.round(Math.sin(r * Math.PI / 180))];
+const CCW = ([x, y]) => [-y, x];
+
+function corpoRect(m){                   // 0,90 x 4,10 a partir da ancora
+  const d = DIR(m.rot), p = CCW(d);
+  const xs = [], ys = [];
+  for (const u of [0, M.prof]) for (const v of [-M.larg / 2, M.larg / 2]) {
+    xs.push(m.x + d[0] * u + p[0] * v);
+    ys.push(m.y + d[1] * u + p[1] * v);
+  }
+  return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+}
+function assentoRect(m){                 // a fila de cadeiras, de um lado so
+  const d = DIR(m.rot), p = CCW(d).map(v => v * m.lado);
+  const u0 = M.prof - M.mesa[0], u1 = M.prof;
+  const v0 = M.mesa[1] / 2, v1 = M.mesa[1] / 2 + M.assento;
+  const xs = [], ys = [];
+  for (const u of [u0, u1]) for (const v of [v0, v1]) {
+    xs.push(m.x + d[0] * u + p[0] * v);
+    ys.push(m.y + d[1] * u + p[1] * v);
+  }
+  return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+}
+const bate = (a, b, t = 1e-6) =>
+  a[0] < b[2] - t && b[0] < a[2] - t && a[1] < b[3] - t && b[1] < a[3] - t;
+function dentroDoSalao(r){
+  if (r[0] < -1e-6 || r[1] < -1e-6 || r[2] > LARG + 1e-6 || r[3] > ALT + 1e-6)
+    return false;
+  return !bate(r, SAL.recorte);
+}
+
+/* --- estado ----------------------------------------------------------- */
+const CHAVE = "prancheta-hall2-v1";
+let cenario = "A", ferramenta = "mover", selecionada = null;
+let mrvs = [], medidas = [], medindo = null;
+let vista = {x: -3, y: -3, w: LARG + 6, h: ALT + 6};
+
+function original(cen){
+  return D.cenarios[cen].mrvs.map(m => ({...m}));
+}
+function carregar(){
+  let salvo = null;
+  try { salvo = JSON.parse(localStorage.getItem(CHAVE) || "null"); } catch (e) {}
+  mrvs = (salvo && salvo[cenario] && salvo[cenario].length === 28)
+    ? salvo[cenario].map(m => ({...m})) : original(cenario);
+  medidas = (salvo && salvo.medidas) || [];
+}
+function salvar(){
+  try {
+    const s = JSON.parse(localStorage.getItem(CHAVE) || "{}");
+    s[cenario] = mrvs; s.medidas = medidas;
+    localStorage.setItem(CHAVE, JSON.stringify(s));
+  } catch (e) {}
+}
+
+/* --- validacao -------------------------------------------------------- */
+function conflitos(m){
+  const r = corpoRect(m), fora = [];
+  if (!dentroDoSalao(r)) fora.push("fora do salão");
+  for (const z of D.cenarios[cenario].zonas)
+    if (bate(r, z.rect)) fora.push(z.rotulo.split(" · ")[0]);
+  for (const v of D.cenarios[cenario].vaos)
+    if (bate(r, v.rect)) fora.push("vão " + v.rotulo.split(" ")[0]);
+  for (const o of mrvs)
+    if (o.n !== m.n && bate(r, corpoRect(o))) fora.push("mesa " + o.n);
+  const a = assentoRect(m);
+  for (const z of D.cenarios[cenario].zonas)
+    if (bate(a, z.rect)) fora.push("cadeiras em " + z.rotulo.split(" · ")[0]);
+  return [...new Set(fora)];
+}
+function distanciaAParede(m){
+  const d = DIR(m.rot);
+  const cx = m.x + d[0] * (M.eleitor + M.urna / 2);
+  const cy = m.y + d[1] * (M.eleitor + M.urna / 2);
+  const cand = [cx, LARG - cx, cy, ALT - cy];
+  if (cx <= SAL.recorte[2] && cy >= SAL.recorte[3]) cand.push(cy - SAL.recorte[3]);
+  if (cy <= SAL.recorte[3] && cx >= SAL.recorte[2]) cand.push(cx - SAL.recorte[2]);
+  return Math.max(0, Math.min(...cand) - M.urna / 2);
+}
+
+/* --- desenho ---------------------------------------------------------- */
+function el(tag, attrs, pai){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (pai) pai.appendChild(e);
+  return e;
+}
+function retangulo(pai, r, attrs){
+  return el("rect", {x: fx(r[0]), y: fy(r[3]), width: r[2] - r[0],
+                     height: r[3] - r[1], ...attrs}, pai);
+}
+let gFundo, gGrade, gZonas, gPortas, gMesas, gMedidas;
+
+function montaFundo(){
+  svg.innerHTML = "";
+  const defs = el("defs", {}, svg);
+  const pat = el("pattern", {id: "hach", width: .55, height: .55,
+    patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)"}, defs);
+  el("line", {x1: 0, y1: 0, x2: 0, y2: .55, stroke: "#16867f",
+    "stroke-width": .09, opacity: .38}, pat);
+
+  gFundo = el("g", {}, svg); gGrade = el("g", {}, svg);
+  gZonas = el("g", {}, svg); gPortas = el("g", {}, svg);
+  gMesas = el("g", {}, svg); gMedidas = el("g", {}, svg);
+
+  el("rect", {x: -60, y: -60, width: LARG + 120, height: ALT + 120,
+    fill: "var(--papel)"}, gFundo);
+  const pts = SAL.contorno.map(p => `${fx(p[0])},${fy(p[1])}`).join(" ");
+  el("polygon", {points: pts, fill: "var(--prancha)"}, gFundo);
+  el("polygon", {points: pts, fill: "none", stroke: "var(--traco)",
+    "stroke-width": .18, "stroke-linejoin": "miter"}, gFundo);
+
+  for (let x = 0; x <= LARG; x++)
+    el("line", {x1: fx(x), y1: fy(0), x2: fx(x), y2: fy(ALT),
+      stroke: "var(--traco)", "stroke-width": .015, opacity: .3}, gGrade);
+  for (let y = 0; y <= ALT; y++)
+    el("line", {x1: fx(0), y1: fy(y), x2: fx(LARG), y2: fy(y),
+      stroke: "var(--traco)", "stroke-width": .015, opacity: .3}, gGrade);
+}
+
+function montaZonas(){
+  gZonas.innerHTML = "";
+  for (const z of D.cenarios[cenario].zonas)
+    retangulo(gZonas, z.rect, {fill: "url(#hach)", stroke: "#16867f",
+      "stroke-width": .06, "stroke-dasharray": ".35 .25"});
+}
+
+const COR_PORTA = {fechada: "var(--alerta)", catering: "var(--entrada)",
+                   emergencia: "var(--emerg)"};
+function montaPortas(){
+  gPortas.innerHTML = "";
+  for (const p of D.portas) {
+    el("line", {x1: fx(p.x1), y1: fy(p.y1), x2: fx(p.x2), y2: fy(p.y2),
+      stroke: COR_PORTA[p.estado] || "var(--meio)", "stroke-width": .34,
+      "stroke-linecap": "butt"}, gPortas);
+    const mx = (p.x1 + p.x2) / 2, my = (p.y1 + p.y2) / 2;
+    const fora = {norte: [0, .95], sul: [0, -1.5], leste: [1.1, -.25],
+                  oeste: [-1.1, -.25], recorte_v: [1.1, -.25]}[p.face] || [0, 1];
+    const t = el("text", {x: fx(mx + fora[0]), y: fy(my + fora[1]),
+      "font-size": .95, "font-weight": 700, fill: "var(--tinta)",
+      "text-anchor": p.face === "leste" ? "start" :
+        (p.face === "oeste" ? "end" : "middle"),
+      "font-family": "IBM Plex Sans, sans-serif",
+      class: "rotuloPorta"}, gPortas);
+    t.textContent = p.id;
+  }
+}
+
+function montaMesas(){
+  gMesas.innerHTML = "";
+  for (const m of mrvs) {
+    const ruim = conflitos(m).length > 0;
+    const g = el("g", {class: "mrv", "data-n": m.n,
+      style: "cursor:" + (ferramenta === "mover" ? "move" : "crosshair")}, gMesas);
+    const d = DIR(m.rot), p = CCW(d), pl = p.map(v => v * m.lado);
+    const P = (u, v) => [m.x + d[0] * u + p[0] * v, m.y + d[1] * u + p[1] * v];
+    const Pl = (u, v) => [m.x + d[0] * u + pl[0] * v, m.y + d[1] * u + pl[1] * v];
+
+    // area do modulo, para agarrar com folga
+    retangulo(g, corpoRect(m), {fill: m.n === (selecionada || {}).n
+      ? "var(--sel)" : "var(--entrada)", opacity: m.n === (selecionada || {}).n
+      ? .12 : .05});
+
+    if (document.getElementById("optAssentos").checked)
+      retangulo(g, assentoRect(m), {fill: "var(--pessoa)", opacity: .1});
+
+    // mesa de identificacao
+    const c = [P(M.prof - M.mesa[0], -M.mesa[1] / 2), P(M.prof, -M.mesa[1] / 2),
+               P(M.prof, M.mesa[1] / 2), P(M.prof - M.mesa[0], M.mesa[1] / 2)];
+    el("polygon", {points: c.map(q => `${fx(q[0])},${fy(q[1])}`).join(" "),
+      fill: ruim ? "var(--alerta)" : "var(--mesa)",
+      opacity: ruim ? .9 : .86}, g);
+
+    // urna e eleitor
+    const cu = P(M.eleitor + M.urna / 2, 0);
+    el("circle", {cx: fx(cu[0]), cy: fy(cu[1]), r: M.urna / 2, fill: "none",
+      stroke: ruim ? "var(--alerta)" : "var(--entrada)", "stroke-width": .1}, g);
+    el("circle", {cx: fx(cu[0]), cy: fy(cu[1]), r: .2,
+      fill: ruim ? "var(--alerta)" : "var(--entrada)", opacity: .6}, g);
+    const ce = P(M.eleitor / 2, 0);
+    el("circle", {cx: fx(ce[0]), cy: fy(ce[1]), r: .22, fill: "none",
+      stroke: "var(--pessoa)", "stroke-width": .07}, g);
+
+    // tres mesarios
+    for (let k = 0; k < 3; k++) {
+      const q = Pl(M.prof - M.mesa[0] + .283 + k * .567, M.mesa[1] / 2 + .26);
+      el("circle", {cx: fx(q[0]), cy: fy(q[1]), r: .21, fill: "var(--pessoa)",
+        opacity: .5}, g);
+    }
+
+    // numero, sempre na horizontal
+    const q = P(M.prof - M.mesa[0] / 2, 0);
+    const t = el("text", {x: fx(q[0]), y: fy(q[1]) + .22, "font-size": .62,
+      "font-weight": 700, fill: "var(--prancha)", "text-anchor": "middle",
+      "font-family": "IBM Plex Mono, monospace",
+      style: "pointer-events:none"}, g);
+    t.textContent = m.n;
+
+    if (m.n === (selecionada || {}).n) {
+      const r = corpoRect(m);
+      retangulo(g, [r[0] - .18, r[1] - .18, r[2] + .18, r[3] + .18],
+        {fill: "none", stroke: "var(--sel)", "stroke-width": .12,
+         "stroke-dasharray": ".4 .3"});
+    }
+  }
+}
+
+function montaMedidas(){
+  gMedidas.innerHTML = "";
+  const linha = (a, b, viva) => {
+    el("line", {x1: fx(a[0]), y1: fy(a[1]), x2: fx(b[0]), y2: fy(b[1]),
+      stroke: "var(--medida)", "stroke-width": .12,
+      "stroke-dasharray": viva ? ".4 .25" : "none"}, gMedidas);
+    for (const q of [a, b])
+      el("circle", {cx: fx(q[0]), cy: fy(q[1]), r: .22, fill: "var(--prancha)",
+        stroke: "var(--medida)", "stroke-width": .1}, gMedidas);
+    const d = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    const t = el("text", {x: fx((a[0] + b[0]) / 2), y: fy((a[1] + b[1]) / 2) - .55,
+      "font-size": 1.05, "font-weight": 600, fill: "var(--medida)",
+      "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace",
+      "paint-order": "stroke", stroke: "var(--prancha)", "stroke-width": .3,
+      style: "pointer-events:none"}, gMedidas);
+    t.textContent = vg(d) + " m";
+  };
+  for (const md of medidas) linha(md.a, md.b, false);
+  if (medindo && medindo.b) linha(medindo.a, medindo.b, true);
+  else if (medindo)
+    el("circle", {cx: fx(medindo.a[0]), cy: fy(medindo.a[1]), r: .22,
+      fill: "var(--prancha)", stroke: "var(--medida)", "stroke-width": .1}, gMedidas);
+}
+
+function aplicaVista(){
+  svg.setAttribute("viewBox", `${vista.x} ${ALT - vista.y - vista.h} ${vista.w} ${vista.h}`);
+}
+function opcoes(){
+  gGrade.style.display = document.getElementById("optGrade").checked ? "" : "none";
+  gZonas.style.display = document.getElementById("optZonas").checked ? "" : "none";
+  for (const t of gPortas.querySelectorAll(".rotuloPorta"))
+    t.style.display = document.getElementById("optPortas").checked ? "" : "none";
+}
+
+/* --- painel ----------------------------------------------------------- */
+function pintaPainel(){
+  const cx = document.getElementById("sel");
+  if (!selecionada) {
+    cx.innerHTML = '<p class="dica">Clique numa mesa para ver as coordenadas dela e a distância da urna à parede.</p>';
+  } else {
+    const m = mrvs.find(o => o.n === selecionada.n);
+    const c = conflitos(m), r = corpoRect(m);
+    const orig = original(cenario).find(o => o.n === m.n);
+    const movida = Math.hypot(m.x - orig.x, m.y - orig.y) > 1e-6 || m.rot !== orig.rot;
+    cx.innerHTML =
+      `<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px">
+         <span class="mono" style="font-size:1.5rem;font-weight:600">${m.n}</span>
+         <span class="chip ${c.length ? "ruim" : ""}">${c.length ? "conflito" : "encaixa"}</span>
+       </div>
+       <dl class="leitura">
+         <dt>Ancoragem</dt><dd>${vg(m.x)} ; ${vg(m.y)} m</dd>
+         <dt>Ocupa</dt><dd>${vg(r[2] - r[0], 1)} × ${vg(r[3] - r[1], 1)} m</dd>
+         <dt>Giro</dt><dd>${m.rot}°</dd>
+         <dt>Urna à parede</dt><dd class="${distanciaAParede(m) > 3.2 ? "ruim" : "bom"}">${vg(distanciaAParede(m))} m</dd>
+         <dt>Origem</dt><dd>${movida ? "deslocada" : "planta"}</dd>
+       </dl>` +
+      (c.length ? `<p class="dica" style="color:var(--alerta);margin-top:9px">Sobrepõe ${c.join(", ")}.</p>` : "");
+  }
+
+  const lista = document.getElementById("listaMedidas");
+  lista.innerHTML = "";
+  document.getElementById("semMedidas").style.display = medidas.length ? "none" : "";
+  medidas.forEach((md, i) => {
+    const d = Math.hypot(md.b[0] - md.a[0], md.b[1] - md.a[1]);
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="val">${vg(d)} m</span>
+      <span class="det">Δx ${vg(Math.abs(md.b[0] - md.a[0]), 1)} · Δy ${vg(Math.abs(md.b[1] - md.a[1]), 1)}</span>`;
+    const b = document.createElement("button");
+    b.textContent = "×"; b.title = "Apagar esta medida";
+    b.setAttribute("aria-label", "Apagar medida de " + vg(d) + " metros");
+    b.onclick = () => { medidas.splice(i, 1); salvar(); montaMedidas(); pintaPainel(); };
+    li.appendChild(b); lista.appendChild(li);
+  });
+
+  const est = document.getElementById("estado");
+  const ruins = mrvs.filter(m => conflitos(m).length).length;
+  const movidas = mrvs.filter(m => {
+    const o = original(cenario).find(q => q.n === m.n);
+    return Math.hypot(m.x - o.x, m.y - o.y) > 1e-6 || m.rot !== o.rot;
+  }).length;
+  est.className = "estado" + (ruins ? " ruim" : (movidas ? "" : " ok"));
+  est.textContent = ruins
+    ? `${ruins} mesa${ruins > 1 ? "s" : ""} em conflito`
+    : (movidas ? `${movidas} mesa${movidas > 1 ? "s" : ""} deslocada${movidas > 1 ? "s" : ""}, todas encaixam`
+               : "28 mesas na planta original");
+}
+
+/* --- interacao -------------------------------------------------------- */
+function paraModelo(ev){
+  const p = svg.createSVGPoint();
+  p.x = ev.clientX; p.y = ev.clientY;
+  const q = p.matrixTransform(svg.getScreenCTM().inverse());
+  return [q.x, ALT - q.y];
+}
+const passo = () => parseFloat(document.getElementById("selPasso").value);
+const encaixa = v => Math.round(v / passo()) * passo();
+
+let arrasto = null, pan = null;
+
+svg.addEventListener("pointerdown", ev => {
+  const alvo = ev.target.closest(".mrv");
+  if (ferramenta === "medir") {
+    const p = paraModelo(ev).map(encaixa);
+    if (!medindo) medindo = {a: p, b: null};
+    else { medidas.push({a: medindo.a, b: p}); medindo = null; salvar(); pintaPainel(); }
+    montaMedidas();
+    return;
+  }
+  if (alvo) {
+    const n = +alvo.dataset.n;
+    selecionada = {n};
+    const m = mrvs.find(o => o.n === n);
+    const p = paraModelo(ev);
+    arrasto = {n, dx: m.x - p[0], dy: m.y - p[1]};
+    svg.setPointerCapture(ev.pointerId);
+    montaMesas(); pintaPainel();
+  } else {
+    selecionada = null;
+    pan = {x: ev.clientX, y: ev.clientY, vx: vista.x, vy: vista.y};
+    svg.classList.add("arrastando");
+    svg.setPointerCapture(ev.pointerId);
+    montaMesas(); pintaPainel();
+  }
+});
+
+svg.addEventListener("pointermove", ev => {
+  const p = paraModelo(ev);
+  document.getElementById("cursor").textContent = vg(p[0], 1) + " ; " + vg(p[1], 1) + " m";
+  if (medindo && ferramenta === "medir") {
+    medindo.b = p.map(encaixa); montaMedidas(); return;
+  }
+  if (arrasto) {
+    const m = mrvs.find(o => o.n === arrasto.n);
+    m.x = encaixa(p[0] + arrasto.dx);
+    m.y = encaixa(p[1] + arrasto.dy);
+    montaMesas(); pintaPainel();
+  } else if (pan) {
+    const esc = vista.w / svg.clientWidth;
+    vista.x = pan.vx - (ev.clientX - pan.x) * esc;
+    vista.y = pan.vy + (ev.clientY - pan.y) * esc;
+    aplicaVista();
+  }
+});
+
+function solta(ev){
+  if (arrasto) { salvar(); arrasto = null; }
+  if (pan) { pan = null; svg.classList.remove("arrastando"); }
+  try { svg.releasePointerCapture(ev.pointerId); } catch (e) {}
+}
+svg.addEventListener("pointerup", solta);
+svg.addEventListener("pointercancel", solta);
+
+svg.addEventListener("wheel", ev => {
+  ev.preventDefault();
+  const p = paraModelo(ev);
+  const k = Math.exp(ev.deltaY * 0.0012);
+  const w = Math.min(Math.max(vista.w * k, 4), LARG * 3);
+  const f = w / vista.w;
+  vista.x = p[0] - (p[0] - vista.x) * f;
+  vista.y = p[1] - (p[1] - vista.y) * f;
+  vista.w = w; vista.h = vista.h * f;
+  aplicaVista();
+}, {passive: false});
+
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape") {
+    selecionada = null; medindo = null; montaMesas(); montaMedidas(); pintaPainel();
+    return;
+  }
+  if (!selecionada) return;
+  const m = mrvs.find(o => o.n === selecionada.n);
+  if (ev.key === "r" || ev.key === "R") {
+    m.rot = (m.rot + 90) % 360; salvar(); montaMesas(); pintaPainel();
+    ev.preventDefault(); return;
+  }
+  const d = {ArrowLeft: [-1, 0], ArrowRight: [1, 0],
+             ArrowUp: [0, 1], ArrowDown: [0, -1]}[ev.key];
+  if (!d) return;
+  const k = passo() * (ev.shiftKey ? 10 : 1);
+  m.x = +(m.x + d[0] * k).toFixed(3);
+  m.y = +(m.y + d[1] * k).toFixed(3);
+  salvar(); montaMesas(); pintaPainel();
+  ev.preventDefault();
+});
+
+/* --- controles -------------------------------------------------------- */
+function enquadra(){
+  const marg = 3;
+  const razao = svg.clientHeight / Math.max(svg.clientWidth, 1);
+  let w = LARG + marg * 2, h = w * razao;
+  if (h < ALT + marg * 2) { h = ALT + marg * 2; w = h / razao; }
+  vista = {x: LARG / 2 - w / 2, y: ALT / 2 - h / 2, w, h};
+  aplicaVista();
+}
+function zoom(k){
+  const cx = vista.x + vista.w / 2, cy = vista.y + vista.h / 2;
+  vista.w = Math.min(Math.max(vista.w * k, 4), LARG * 3);
+  vista.h = vista.h * k;
+  vista.x = cx - vista.w / 2; vista.y = cy - vista.h / 2;
+  aplicaVista();
+}
+document.getElementById("zMais").onclick = () => zoom(1 / 1.3);
+document.getElementById("zMenos").onclick = () => zoom(1.3);
+document.getElementById("zTudo").onclick = enquadra;
+
+function ferramentaPara(f){
+  ferramenta = f; medindo = null;
+  document.getElementById("tMover").setAttribute("aria-pressed", f === "mover");
+  document.getElementById("tMedir").setAttribute("aria-pressed", f === "medir");
+  svg.classList.toggle("medindo", f === "medir");
+  montaMesas(); montaMedidas();
+}
+document.getElementById("tMover").onclick = () => ferramentaPara("mover");
+document.getElementById("tMedir").onclick = () => ferramentaPara("medir");
+
+function cenarioPara(c){
+  cenario = c; selecionada = null; medindo = null;
+  document.getElementById("cenA").setAttribute("aria-pressed", c === "A");
+  document.getElementById("cenB").setAttribute("aria-pressed", c === "B");
+  carregar(); montaZonas(); montaMesas(); montaMedidas(); pintaPainel(); opcoes();
+}
+document.getElementById("cenA").onclick = () => cenarioPara("A");
+document.getElementById("cenB").onclick = () => cenarioPara("B");
+
+document.getElementById("restaurar").onclick = () => {
+  mrvs = original(cenario); selecionada = null; salvar();
+  montaMesas(); pintaPainel();
+};
+document.getElementById("copiar").onclick = async () => {
+  const linhas = ["mesa\tx (m)\ty (m)\tgiro\tconflito"];
+  for (const m of mrvs)
+    linhas.push([m.n, vg(m.x), vg(m.y), m.rot + "°",
+                 conflitos(m).join("; ") || "—"].join("\t"));
+  const txt = `Hall 2 — cenário ${cenario} — ${mrvs.length} mesas receptoras\n`
+    + `ancoragem no ponto da parede em que o módulo começa; x para leste, y para norte\n\n`
+    + linhas.join("\n");
+  const b = document.getElementById("copiar");
+  try { await navigator.clipboard.writeText(txt); b.textContent = "Copiado"; }
+  catch (e) { b.textContent = "Não deu — veja o console"; console.log(txt); }
+  setTimeout(() => { b.textContent = "Copiar posições"; }, 1800);
+};
+for (const id of ["optAssentos", "optZonas", "optGrade", "optPortas"])
+  document.getElementById(id).onchange = () => { opcoes(); montaMesas(); };
+
+/* --- inicio ----------------------------------------------------------- */
+carregar();
+montaFundo(); montaZonas(); montaPortas(); montaMesas(); montaMedidas();
+opcoes(); pintaPainel(); enquadra();
+addEventListener("resize", enquadra);
+</script>

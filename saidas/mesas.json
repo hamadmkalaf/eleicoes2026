@@ -34,7 +34,7 @@
     88.2
   ],
   "perimetro": 189.4,
-  "vaos": 53.7,
+  "vaos": 56.1,
   "area_faixa_leste": 133.0,
   "area_envelopes": 108.0,
   "matriz": [
@@ -42,12 +42,11 @@
       "cenario": "A",
       "hipotese": "prudente",
       "corredor": 2.5,
-      "mrv": 38,
+      "mrv": 34,
       "por_face": {
         "norte": 12,
         "recorte_h": 2,
         "oeste": 6,
-        "sul": 4,
         "leste_recuada": 14
       }
     },
@@ -55,12 +54,11 @@
       "cenario": "A",
       "hipotese": "prudente",
       "corredor": 3.0,
-      "mrv": 34,
+      "mrv": 30,
       "por_face": {
         "norte": 10,
         "recorte_h": 2,
         "oeste": 6,
-        "sul": 4,
         "leste_recuada": 12
       }
     },
@@ -68,12 +66,11 @@
       "cenario": "A",
       "hipotese": "minima",
       "corredor": 2.5,
-      "mrv": 38,
+      "mrv": 34,
       "por_face": {
         "norte": 12,
         "recorte_h": 2,
         "oeste": 6,
-        "sul": 4,
         "leste_recuada": 14
       }
     },
@@ -81,12 +78,11 @@
       "cenario": "A",
       "hipotese": "minima",
       "corredor": 3.0,
-      "mrv": 34,
+      "mrv": 30,
       "por_face": {
         "norte": 10,
         "recorte_h": 2,
         "oeste": 6,
-        "sul": 4,
         "leste_recuada": 12
       }
     },
@@ -142,8 +138,8 @@
   "cenarios": {
     "A": {
       "mrv": 28,
-      "mrv_folga": 34,
-      "mrv_maximo": 38,
+      "mrv_folga": 30,
+      "mrv_maximo": 34,
       "por_face": {
         "norte": 8,
         "recorte_h": 2,
@@ -237,45 +233,23 @@
         "sul": [
           {
             "s0": 11.75,
-            "s1": 16.92,
-            "livre": 5.17,
-            "pares": 0,
-            "corredor": 3.0,
-            "entre_pares": null,
-            "sobra": 0.37,
-            "avulsas": 0,
-            "corredor_avulso": null
-          },
-          {
-            "s0": 18.77,
-            "s1": 18.8,
-            "livre": 0.03,
+            "s1": 12.95,
+            "livre": 1.2,
             "pares": 0,
             "corredor": null,
             "entre_pares": null,
-            "sobra": 0.03,
+            "sobra": 1.2,
             "avulsas": 0,
             "corredor_avulso": null
           },
           {
-            "s0": 37.77,
-            "s1": 37.79,
-            "livre": 0.02,
-            "pares": 0,
-            "corredor": null,
-            "entre_pares": null,
-            "sobra": 0.02,
-            "avulsas": 0,
-            "corredor_avulso": null
-          },
-          {
-            "s0": 39.66,
+            "s0": 43.62,
             "s1": 44.82,
-            "livre": 5.16,
+            "livre": 1.2,
             "pares": 0,
-            "corredor": 3.0,
+            "corredor": null,
             "entre_pares": null,
-            "sobra": 0.36,
+            "sobra": 1.2,
             "avulsas": 0,
             "corredor_avulso": null
           }
@@ -307,7 +281,7 @@
         "avulsas": 0,
         "corredor_avulso": null
       },
-      "corredor_maximo": 2.51,
+      "corredor_maximo": 2.67,
       "choques": []
     },
     "B": {
@@ -404,52 +378,7 @@
             "corredor_avulso": null
           }
         ],
-        "sul": [
-          {
-            "s0": 13.95,
-            "s1": 16.92,
-            "livre": 2.97,
-            "pares": 0,
-            "corredor": null,
-            "entre_pares": null,
-            "sobra": 2.97,
-            "avulsas": 0,
-            "corredor_avulso": null
-          },
-          {
-            "s0": 18.77,
-            "s1": 18.8,
-            "livre": 0.03,
-            "pares": 0,
-            "corredor": null,
-            "entre_pares": null,
-            "sobra": 0.03,
-            "avulsas": 0,
-            "corredor_avulso": null
-          },
-          {
-            "s0": 37.77,
-            "s1": 37.79,
-            "livre": 0.02,
-            "pares": 0,
-            "corredor": null,
-            "entre_pares": null,
-            "sobra": 0.02,
-            "avulsas": 0,
-            "corredor_avulso": null
-          },
-          {
-            "s0": 39.66,
-            "s1": 42.62,
-            "livre": 2.96,
-            "pares": 0,
-            "corredor": null,
-            "entre_pares": null,
-            "sobra": 2.96,
-            "avulsas": 0,
-            "corredor_avulso": null
-          }
-        ],
+        "sul": [],
         "leste_recuada": [
           {
             "s0": 3.0,
@@ -481,7 +410,7 @@
       "choques": [
         {
           "a": "fachada leste · faixa protegida de 3 m",
-          "b": "S7 · vestíbulo da divisória",
+          "b": "S9 · vestíbulo da divisória",
           "area": 4.9
         },
         {
@@ -493,9 +422,9 @@
     }
   },
   "plano_b": {
-    "mrv": 25,
+    "mrv": 21,
     "leste": 3,
-    "com_divisoria": 33,
+    "com_divisoria": 29,
     "acrescimo": 8,
     "comprimento": 11.1
   }

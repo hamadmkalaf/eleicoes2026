@@ -34,8 +34,8 @@ DIVISORIA = dict(nome="D1", eixo="h", fixo=31.4, s0=26.0, s1=37.1)
 A_MAXIMO, A_FOLGA = MM.CORREDOR_MIN, MM.CORREDOR_MAX
 
 NOME_FACE = PM.NOME_FACE
-SUBTITULO = {"A": "S1 e S7 fora de uso",
-             "B": "S1 e S7 em uso, com divisória a 2 m do vão"}
+SUBTITULO = {"A": "S1 e S9 fora de uso",
+             "B": "S1 e S9 em uso, com divisória a 2 m do vão"}
 FACES_REAIS = ["norte", "leste", "sul", "oeste", "recorte_v", "recorte_h"]
 NOME_FACE_TXT = {"norte": "parede norte", "oeste": "oeste", "sul": "sul",
                  "leste": "leste", "recorte_h": "face norte do recorte",

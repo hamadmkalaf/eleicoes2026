@@ -50,13 +50,15 @@ ESTADO = {
     "L3": ("emergencia", "Saída de emergência. Recuo de 3 m."),
     "L4": ("emergencia", "Saída de emergência. Recuo de 3 m."),
     "S2": ("emergencia", "Saída de emergência confirmada no local (porta "
-           "preta, sinal verde) — fica permanentemente aberta; sem recuo."),
-    "S6": ("emergencia", "Saída de emergência confirmada no local (porta "
-           "preta, sinal verde) — fica permanentemente aberta; sem recuo."),
+           "preta, sinal verde) — fica permanentemente aberta; sem recuo. "
+           "Sem código RDS: não consta na planta original."),
+    "S8": ("emergencia", "Saída de emergência confirmada no local (porta "
+           "preta, sinal verde) — fica permanentemente aberta; sem recuo. "
+           "Sem código RDS: não consta na planta original."),
     "O1": ("livre", "Passagem para o Hall 1."),
     "O2": ("livre", "Único acesso aos sanitários, que ficam fora do salão."),
     "S1": ("livre", "Porta de carga."),
-    "S7": ("livre", "Porta de carga."),
+    "S9": ("livre", "Porta de carga."),
     "R1": ("livre", "Parede do recorte sudoeste, fora das fachadas."),
 }
 PADRAO = ("livre", "Sem papel definido.")
@@ -174,8 +176,12 @@ def planta(portas):
             o.append(txt(p["meio"], H, p["num"], "cod", dy=-17))
             o.append(txt(p["meio"], H, detalhe, "sub", dy=-7))
         elif p["parede"] == "sul":
-            o.append(txt(p["meio"], 0, p["num"], "cod", dy=20))
-            o.append(txt(p["meio"], 0, detalhe, "sub", dy=31))
+            # S2 e S8 sao estreitas e ficam coladas as portas de carga: o
+            # rotulo nao cabe na mesma linha sem colidir, entao desce uma
+            # segunda fileira
+            desce = 22 if p["num"] in ("S2", "S8") else 0
+            o.append(txt(p["meio"], 0, p["num"], "cod", dy=20 + desce))
+            o.append(txt(p["meio"], 0, detalhe, "sub", dy=31 + desce))
         elif p["parede"] == "leste":
             o.append(txt(W, p["meio"], p["num"], "cod", anchor="start",
                          dx=11, dy=-2))
@@ -203,9 +209,9 @@ def planta(portas):
              .replace('fill="#5c6c80"', f'fill="{AZUL}"'))
     o.append(txt(W - 5.6, H / 2, "SAÍDAS DE EMERGÊNCIA · RECUO DE 3 m", "via",
                  rot=90).replace('fill="#243244"', f'fill="{VERDE}"'))
-    for num in ("S2", "S6"):
+    for num in ("S2", "S8"):
         p = next(q for q in portas if q["num"] == num)
-        o.append(txt(p["meio"], 0, "sem recuo · porta aberta", "sub", dy=42)
+        o.append(txt(p["meio"], 0, "sem recuo · porta aberta", "sub", dy=64)
                  .replace('fill="#5c6c80"', f'fill="{VERDE}"'))
 
     # ---------- para onde levam as portas da parede oeste
@@ -248,11 +254,13 @@ def planta(portas):
         f"todas as portas são saídas de emergência; sobram dela {len(nichos)} "
         f"trechos de {vg(nichos[0][1] - nichos[0][0], 2)} m entre os recuos. "
         "As portas 2.8/2.9 ficam na parede do recorte, que não é fachada.",
-        "S2 e S6 também são saída de emergência — confirmado no local, são as "
-        "portas pretas de sinal verde entre as portas centrais e as portas de "
-        "carga da fachada sul —, mas ficam permanentemente",
-        "abertas e por isso não pedem recuo. Segue em aberto se N1 e R1, as "
-        "duas saídas de emergência restantes, também dispensam.")
+        "S2 e S8 são saída de emergência sem código do RDS — não constavam na "
+        "planta original, confirmadas no local: portas pretas de sinal verde "
+        "encostadas às portas de carga. Ficam permanentemente",
+        "abertas e por isso não pedem recuo; posição e vão são estimados até "
+        "medir no local. Segue em aberto se S3 (2.7), S7 (2.1) e R1, as três "
+        "saídas de emergência restantes, também dispensam — N1 não conta, já "
+        "fechada.")
     for i, linha in enumerate(linhas):
         o.append(f'<text x="{D.ML}" y="{ly + 26 + i * 14}" {EST["sub"]}>'
                  f'{esc(linha)}</text>')

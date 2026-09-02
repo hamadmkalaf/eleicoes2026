@@ -152,7 +152,7 @@ quantas MRVs cabem no perímetro sob dadas hipóteses.
 é definida. O código do RDS numera folhas de porta e não localiza nada, então
 cada porta ganhou **um número por fachada**, atribuído na ordem de leitura do
 desenho: de oeste para leste nas paredes norte e sul, de norte para sul nas
-paredes leste e oeste — N1, N2, L1 a L4, S1 a S7, O1, O2, mais a R1 na parede do
+paredes leste e oeste — N1, N2, L1 a L4, S1 a S9, O1, O2, mais a R1 na parede do
 recorte. O código do RDS continua impresso abaixo de cada número.
 
 A planta registra o que já está determinado sobre as portas e nada além disso:

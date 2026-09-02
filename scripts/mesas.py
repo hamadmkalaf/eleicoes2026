@@ -129,7 +129,7 @@ HIPOTESES = ("prudente", "minima")
 RECUO_FRONTAL = FL.RECUO_EMERGENCIA
 RECUO_LATERAL = FL.RECUO_EMERGENCIA
 
-CARGA = {"carga oeste": "S1", "carga leste": "S7"}
+CARGA = {"carga oeste": "S1", "carga leste": "S9"}
 
 # ---------------------------------------------------- a fachada leste recuada
 # Decisao do usuario: a parede leste inteira e area protegida numa faixa de 3 m
@@ -225,7 +225,7 @@ def bloqueios(cenario, hipotese, lateral=None, frontal=None, faixa_leste=True):
                 cortes[face].append((a - lateral, b + lateral, f"{num} recuo"))
                 continue
 
-            if num in ("S1", "S7"):
+            if num in ("S1", "S9"):
                 if cenario == "B":
                     lado = VESTIBULO_LADO + CIRC_VESTIBULO
                     cortes[face].append((a - lado, b + lado, f"{num} vestíbulo"))

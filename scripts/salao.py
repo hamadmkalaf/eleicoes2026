@@ -42,10 +42,24 @@ RECORTE = (0.0, 0.0, 7.8, 7.0)      # canto sudoeste suprimido do salao
 PORTA_CARGA_O = (7.83, 11.45)
 PORTA_CARGA_L = (45.12, 48.75)
 
+
+# As duas saidas de emergencia junto as portas de carga nao constam da planta
+# do RDS -- foram confirmadas no local em 02/09/2026 (chefe de seguranca do
+# RDS, a partir de fotos da fachada sul): portas pretas de sinal verde,
+# encostadas ao lado de cada porta de carga, do lado voltado para o miolo da
+# fachada. Posicao e vao **estimados** sobre a foto, ainda sem medicao no
+# local -- 1,20 m de vao, a cerca de 1,8 m de cada porta de carga (a folga
+# extra sobre a foto e so para a planta nao amontoar os rotulos).
+SAIDA_CAMPO_O = (13.25, 14.45)
+SAIDA_CAMPO_L = (42.12, 43.32)
+
 PORTAS = {
-    "sul":   [("carga oeste", *PORTA_CARGA_O), ("2.7", 17.22, 18.47),
+    "sul":   [("carga oeste", *PORTA_CARGA_O),
+              ("sem codigo RDS (oeste)", *SAIDA_CAMPO_O),
+              ("2.7", 17.22, 18.47),
               ("2.5/2.6", 19.10, 25.03), ("2.4", 25.32, 31.25),
               ("2.2/2.3", 31.54, 37.47), ("2.1", 38.09, 39.36),
+              ("sem codigo RDS (leste)", *SAIDA_CAMPO_L),
               ("carga leste", *PORTA_CARGA_L)],
     "norte": [("2.13", 7.41, 9.44), ("2.14/2.15", 20.66, 24.22)],
     "leste": [("2.22/2.23", 2.95, 6.01), ("2.20/2.21", 14.80, 17.87),
@@ -80,15 +94,22 @@ FACES = {
 }
 
 # Portas que constam como saida de emergencia na planta do RDS, pelo codigo do
-# RDS. As quatro da parede leste tem o recuo de 3 m determinado. 2.7 (S2) e
-# 2.1 (S6) foram confirmadas no local em 02/09/2026 pelo chefe de seguranca do
-# RDS -- sao as portas pretas de sinal verde entre as portas de carga e as
-# portas centrais da fachada sul -- e ficam permanentemente abertas, por isso
-# dispensam recuo (questao 3 do contexto, agora parcialmente respondida). N1
-# (fechada) e 2.8/2.9 (R1) continuam em aberto.
+# RDS. As quatro da parede leste tem o recuo de 3 m determinado; para 2.13
+# (N1, ja fechada) e 2.8/2.9 (R1) o recuo continua em aberto (questao 3 do
+# contexto). 2.7 e 2.1 tambem constam como EXIT na planta do RDS, mas seu
+# recuo nao foi determinado -- nao confundir com as duas saidas abaixo.
 EMERGENCIA = {"2.16/2.17", "2.18/2.19", "2.20/2.21", "2.22/2.23",
               "2.13", "2.7", "2.1", "2.8/2.9"}
-SEM_RECUO = {"2.7", "2.1"}    # confirmadas abertas: dispensam o recuo de 3 m
+
+# As duas saidas junto as portas de carga (SAIDA_CAMPO_O e SAIDA_CAMPO_L, sem
+# codigo RDS) foram confirmadas no local em 02/09/2026 pelo chefe de seguranca
+# do RDS: ficam permanentemente abertas, por isso dispensam o recuo de 3 m.
+# Correcao de uma leitura anterior: a confirmacao havia sido atribuida por
+# engano a 2.7 e 2.1, que sao outras portas -- unicas, ao lado das portas
+# duplas 2.5/2.6 e 2.2/2.3 -- mais afastadas das portas de carga do que as
+# fotos mostravam.
+EMERGENCIA |= {"sem codigo RDS (oeste)", "sem codigo RDS (leste)"}
+SEM_RECUO = {"sem codigo RDS (oeste)", "sem codigo RDS (leste)"}
 
 CONTORNO = [(RECORTE[2], 0.0), (HALL_W, 0.0), (HALL_W, HALL_H), (0.0, HALL_H),
             (0.0, RECORTE[3]), (RECORTE[2], RECORTE[3])]

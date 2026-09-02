@@ -14,7 +14,7 @@ Retomar o trabalho sem lê-lo leva a refazer o que já está feito.
 `saidas/planta_base.html` (gerada por `scripts/planta_base.py`) é a leitura
 acordada do salão. Duas regras valem para tudo que for produzido depois:
 
-- **Portas são chamadas pelo número de fachada** — N1, N2, L1 a L4, S1 a S7,
+- **Portas são chamadas pelo número de fachada** — N1, N2, L1 a L4, S1 a S9,
   O1, O2 e R1 —, com o código do RDS junto quando o interlocutor for o RDS. A
   numeração é por fachada, na ordem de leitura do desenho: de oeste para leste
   nas paredes norte e sul, de norte para sul nas paredes leste e oeste. Ela é

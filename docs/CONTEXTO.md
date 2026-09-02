@@ -347,7 +347,7 @@ Por ordem de retorno:
 | `scripts/mesas.py` | **Ideia 1 (§11):** módulo da MRV com o mobiliário novo, faixa protegida e fileira recuada da fachada leste, regras de bloqueio, empacotamento por face e divisórias exentas. Toda planta passa por `valida()` antes de ser gravada. |
 | `scripts/planta_mesas.py` | Desenhos da ideia 1: o módulo cotado, a fachada leste de perto, as réguas de parede e as plantas de ocupação. Usa as primitivas de `desenho.py`. |
 | `scripts/gera_mesas.py` + `mesas_template.html` | Grava `saidas/mesas.json`, os SVGs e `saidas/mesas.html`. |
-| `scripts/gera_editor.py` + `editor_template.html` | Grava `saidas/editor_dados.json` e `saidas/editor.html`, a prancheta: arrastar mesa, girar de 90 em 90 e medir distância. Não recalcula nada — consome as MRVs já validadas por `mesas.py`. |
+| `scripts/gera_editor.py` + `editor_template.html` | Grava `saidas/editor_dados.json` e `saidas/editor.html`, a prancheta: arrastar (com seleção múltipla e cotas vivas), girar de 90 em 90, reparear ao corredor de 3,00 m com encosto a 1,50 m, medir distância, desfazer/refazer e salvar cenários. Não recalcula nada — consome as MRVs já validadas por `mesas.py`. |
 | `saidas/dados.json` | As 28 urnas apuradas (etapa anterior, não mexer). |
 
 A planta-base está publicada em
@@ -360,7 +360,10 @@ A peça da ideia 1 está publicada em
 prancheta — a mesma planta manipulável, em escala — em
 <https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0>. Mesma
 regra das outras: para atualizar de outra sessão, publique passando a URL em
-`url`.
+`url`. A prancheta declara a capability `db` (coleção `cenarios`): os cenários
+salvos são compartilhados entre todos que abrem o link — por isso o artefato
+não admite compartilhamento público, só dentro da organização. Ao republicar,
+mantenha a declaração (omitir `capabilities` a preserva).
 
 ```bash
 cd scripts

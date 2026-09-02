@@ -33,18 +33,19 @@ body{margin:0; background:var(--papel); color:var(--tinta);
 .mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   font-variant-numeric:tabular-nums}
 button{font:inherit; color:inherit}
+input[type=text]{font:inherit}
 :focus-visible{outline:2px solid var(--entrada); outline-offset:2px}
 
 .app{display:grid; grid-template-rows:auto 1fr auto; height:100vh; min-height:560px}
 .app > *{min-width:0}
 
 /* ---- cabecalho ---- */
-header{display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
-  padding:12px 20px; border-bottom:1px solid var(--regua); background:var(--folha)}
+header{display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding:10px 20px; border-bottom:1px solid var(--regua); background:var(--folha)}
 header h1{font-family:"Source Serif 4",Georgia,serif; font-size:1.12rem;
   font-weight:700; margin:0; letter-spacing:-.01em; white-space:nowrap}
 header .sub{font-size:.78rem; color:var(--meio)}
-header .dir{margin-left:auto; display:flex; gap:8px; align-items:center}
+header .dir{margin-left:auto; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
 
 .grupo{display:flex; border:1px solid var(--regua); background:var(--papel)}
 .grupo button{background:none; border:0; padding:5px 11px; cursor:pointer;
@@ -52,17 +53,19 @@ header .dir{margin-left:auto; display:flex; gap:8px; align-items:center}
 .grupo button:last-child{border-right:0}
 .grupo button[aria-pressed="true"]{background:var(--tinta); color:var(--folha);
   font-weight:600}
+.grupo button:disabled{opacity:.4; cursor:default}
 .acao{background:var(--papel); border:1px solid var(--regua); padding:5px 12px;
   font-size:.79rem; cursor:pointer; color:var(--meio)}
 .acao:hover{color:var(--tinta); border-color:var(--fraco)}
+.acao.mini{padding:3px 8px; font-size:.74rem}
+.acao.perigo:hover{color:var(--alerta); border-color:var(--alerta)}
 
 /* ---- corpo ---- */
-.corpo{display:grid; grid-template-columns:1fr 302px; min-height:0}
+.corpo{display:grid; grid-template-columns:1fr 306px; min-height:0}
 .palco{position:relative; overflow:hidden; background:var(--papel)}
-.palco svg{display:block; width:100%; height:100%; touch-action:none;
-  cursor:grab}
+.palco svg{display:block; width:100%; height:100%; touch-action:none; cursor:grab}
 .palco svg.arrastando{cursor:grabbing}
-.palco svg.medindo{cursor:crosshair}
+.palco svg.mira{cursor:crosshair}
 .zoom{position:absolute; left:14px; bottom:14px; display:flex; flex-direction:column;
   border:1px solid var(--regua); background:var(--folha); box-shadow:var(--sombra)}
 .zoom button{background:none; border:0; border-bottom:1px solid var(--regua);
@@ -73,10 +76,12 @@ header .dir{margin-left:auto; display:flex; gap:8px; align-items:center}
 /* ---- painel ---- */
 .painel{border-left:1px solid var(--regua); background:var(--folha);
   overflow-y:auto; display:flex; flex-direction:column}
-.bloco{padding:14px 16px; border-bottom:1px solid var(--regua)}
+.bloco{padding:13px 16px; border-bottom:1px solid var(--regua)}
 .bloco:last-child{border-bottom:0}
 .rot{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.13em;
-  text-transform:uppercase; color:var(--meio); margin:0 0 9px}
+  text-transform:uppercase; color:var(--meio); margin:0 0 9px;
+  display:flex; align-items:center; gap:8px}
+.rot .direita{margin-left:auto}
 .dica{font-size:.78rem; color:var(--meio); margin:0}
 .dica + .dica{margin-top:7px}
 kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid var(--regua);
@@ -96,8 +101,8 @@ kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid va
 .chip.ruim{color:var(--alerta)}
 .chip.neutro{color:var(--meio)}
 
-.medidas{list-style:none; margin:0; padding:0; display:flex; flex-direction:column;
-  gap:1px; background:var(--regua2)}
+.medidas,.salvos{list-style:none; margin:0; padding:0; display:flex;
+  flex-direction:column; gap:1px; background:var(--regua2)}
 .medidas li{display:grid; grid-template-columns:1fr auto auto; gap:10px;
   align-items:center; background:var(--folha); padding:6px 2px 6px 0;
   font-size:.78rem}
@@ -105,10 +110,28 @@ kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid va
   font-variant-numeric:tabular-nums}
 .medidas .det{font-family:"IBM Plex Mono",monospace; font-size:.7rem;
   color:var(--fraco)}
-.medidas button{background:none; border:0; cursor:pointer; color:var(--fraco);
-  padding:2px 4px; font-size:.9rem; line-height:1}
-.medidas button:hover{color:var(--alerta)}
+.medidas button,.salvos .fechar{background:none; border:0; cursor:pointer;
+  color:var(--fraco); padding:2px 4px; font-size:.9rem; line-height:1}
+.medidas button:hover,.salvos .fechar:hover{color:var(--alerta)}
+
+.salvos li{background:var(--folha); padding:7px 2px 7px 0; font-size:.78rem}
+.salvos .linha1{display:flex; align-items:baseline; gap:8px}
+.salvos .nome{font-weight:600; overflow-wrap:anywhere}
+.salvos .quando{margin-left:auto; font-size:.68rem; color:var(--fraco);
+  font-family:"IBM Plex Mono",monospace; white-space:nowrap}
+.salvos .linha2{display:flex; gap:6px; margin-top:5px; align-items:center}
+.salvos .fechar{margin-left:auto}
+.salvos .fechar.confirma{color:var(--alerta); font-size:.72rem; font-weight:600}
 .vazio{font-size:.78rem; color:var(--fraco); margin:0}
+.salvarLinha{display:flex; gap:6px; margin-bottom:10px}
+.salvarLinha input{flex:1; min-width:0; padding:4px 8px; font-size:.79rem;
+  background:var(--papel); color:var(--tinta); border:1px solid var(--regua)}
+#colarCaixa{display:none; margin-top:8px}
+#colarCaixa textarea{width:100%; height:70px; font-family:"IBM Plex Mono",monospace;
+  font-size:.7rem; background:var(--papel); color:var(--tinta);
+  border:1px solid var(--regua); resize:vertical}
+#colarCaixa .linha2{display:flex; gap:6px; margin-top:5px}
+.avisoDb{font-size:.74rem; color:var(--aviso); margin:8px 0 0}
 
 .opcoes{display:flex; flex-direction:column; gap:7px; font-size:.79rem}
 .opcoes label{display:flex; align-items:center; gap:8px; cursor:pointer}
@@ -125,6 +148,7 @@ footer .mono{color:var(--tinta)}
 footer .estado{margin-left:auto; font-weight:600}
 footer .estado.ruim{color:var(--alerta)}
 footer .estado.ok{color:var(--emerg)}
+footer .estado.guia{color:var(--entrada)}
 
 @media (max-width:860px){
   .corpo{grid-template-columns:1fr; grid-template-rows:minmax(340px,1fr) auto}
@@ -145,9 +169,14 @@ footer .estado.ok{color:var(--emerg)}
     <div class="grupo" role="group" aria-label="Ferramenta">
       <button id="tMover" aria-pressed="true">Mover</button>
       <button id="tMedir" aria-pressed="false">Medir</button>
+      <button id="tReparear" aria-pressed="false">Reparear</button>
+    </div>
+    <div class="grupo" role="group" aria-label="Histórico">
+      <button id="desfazer" title="Desfazer (Ctrl+Z)" aria-label="Desfazer" disabled>↶</button>
+      <button id="refazer" title="Refazer (Ctrl+Shift+Z)" aria-label="Refazer" disabled>↷</button>
     </div>
     <button class="acao" id="copiar">Copiar posições</button>
-    <button class="acao" id="restaurar">Restaurar planta</button>
+    <button class="acao perigo" id="restaurar">Restaurar planta</button>
   </div>
 </header>
 
@@ -163,11 +192,31 @@ footer .estado.ok{color:var(--emerg)}
 
   <aside class="painel">
     <div class="bloco">
-      <p class="rot">Mesa selecionada</p>
+      <p class="rot">Seleção</p>
       <div id="sel"></div>
     </div>
     <div class="bloco">
-      <p class="rot">Medidas</p>
+      <p class="rot">Cenários salvos <span class="direita"></span></p>
+      <div class="salvarLinha">
+        <input type="text" id="nomeCenario" placeholder="nome do cenário" maxlength="60" aria-label="Nome do cenário">
+        <button class="acao mini" id="salvarCenario">Salvar</button>
+      </div>
+      <ul class="salvos" id="listaSalvos"></ul>
+      <p class="vazio" id="semSalvos">Nenhum cenário salvo ainda.</p>
+      <div id="colarCaixa">
+        <textarea id="colarTexto" placeholder="cole aqui o JSON de um cenário copiado" aria-label="JSON do cenário"></textarea>
+        <div class="linha2">
+          <button class="acao mini" id="colarAplicar">Aplicar</button>
+          <button class="acao mini" id="colarCancelar">Cancelar</button>
+        </div>
+      </div>
+      <div class="linha2" style="margin-top:8px">
+        <button class="acao mini" id="colarCenario">Colar cenário…</button>
+      </div>
+      <p class="avisoDb" id="dbAviso" hidden>Sem ligação com o banco do artefato nesta janela: os cenários não estão compartilhados. Salvar guarda só neste navegador; use Copiar/Colar para trocar com colegas.</p>
+    </div>
+    <div class="bloco">
+      <p class="rot">Medidas <button class="acao mini direita" id="apagarMedidas">Apagar todas</button></p>
       <ul class="medidas" id="listaMedidas"></ul>
       <p class="vazio" id="semMedidas">Nenhuma medida. Passe para <strong>Medir</strong> e clique em dois pontos da planta.</p>
     </div>
@@ -178,6 +227,7 @@ footer .estado.ok{color:var(--emerg)}
         <label><input type="checkbox" id="optZonas" checked> Zonas protegidas de 3 m</label>
         <label><input type="checkbox" id="optGrade"> Grade de 1 m</label>
         <label><input type="checkbox" id="optPortas" checked> Nome das portas</label>
+        <label><input type="checkbox" id="optCotas" checked> Cotas vivas ao arrastar</label>
       </div>
       <div class="passo">
         <label for="selPasso">Passo do encaixe</label>
@@ -191,10 +241,10 @@ footer .estado.ok{color:var(--emerg)}
     </div>
     <div class="bloco">
       <p class="rot">Como usar</p>
-      <p class="dica">Arraste uma mesa para movê-la. Ela fica <strong>vermelha</strong> enquanto estiver em cima de uma zona protegida, de um vão de porta, de outra mesa ou fora do salão.</p>
-      <p class="dica"><kbd>R</kbd> gira a mesa selecionada 90°. As setas movem de um passo, com <kbd>Shift</kbd> de dez. <kbd>Esc</kbd> desmarca.</p>
-      <p class="dica">Arraste o fundo para deslocar a planta; a roda do mouse aproxima e afasta.</p>
-      <p class="dica">O que você mover fica salvo só neste navegador. <strong>Copiar posições</strong> leva as 28 coordenadas para a área de transferência.</p>
+      <p class="dica">Arraste uma mesa para movê-la; <kbd>Shift</kbd>+clique soma mesas à seleção e o arrasto move o conjunto. A mesa fica <strong>vermelha</strong> quando invade zona protegida, vão de porta, outra mesa, ou sai do salão.</p>
+      <p class="dica"><strong>Reparear</strong>: clique na mesa que fica parada e depois na que vai formar par — ela vem para 3,00 m de corredor e, se houver vizinha alinhada, o par encosta a 1,50 m dela.</p>
+      <p class="dica"><kbd>R</kbd> gira a seleção 90°. Setas movem de um passo, com <kbd>Shift</kbd> de dez. <kbd>Ctrl+Z</kbd> desfaz. <kbd>Esc</kbd> desmarca.</p>
+      <p class="dica">Arraste o fundo para deslocar a planta; a roda do mouse aproxima e afasta. O rascunho fica neste navegador; <strong>Salvar</strong> publica o cenário para todos que abrem este link.</p>
     </div>
   </aside>
 </div>
@@ -214,16 +264,17 @@ const M = D.modulo, SAL = D.salao;
 const ALT = SAL.altura, LARG = SAL.largura;
 const svg = document.getElementById("sheet");
 const NS = "http://www.w3.org/2000/svg";
+const $ = id => document.getElementById(id);
 
-/* --- helpers de geometria: tudo em metros do modelo ------------------- */
-const fx = v => v;                       // x do modelo -> x do SVG
-const fy = v => ALT - v;                 // y do modelo -> y do SVG (invertido)
+/* --- geometria: tudo em metros do modelo ------------------------------ */
+const fx = v => v;
+const fy = v => ALT - v;
 const vg = (v, c = 2) => v.toFixed(c).replace(".", ",");
 const DIR = r => [Math.round(Math.cos(r * Math.PI / 180)),
                   Math.round(Math.sin(r * Math.PI / 180))];
 const CCW = ([x, y]) => [-y, x];
 
-function corpoRect(m){                   // 0,90 x 4,10 a partir da ancora
+function corpoRect(m){
   const d = DIR(m.rot), p = CCW(d);
   const xs = [], ys = [];
   for (const u of [0, M.prof]) for (const v of [-M.larg / 2, M.larg / 2]) {
@@ -232,7 +283,7 @@ function corpoRect(m){                   // 0,90 x 4,10 a partir da ancora
   }
   return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
 }
-function assentoRect(m){                 // a fila de cadeiras, de um lado so
+function assentoRect(m){
   const d = DIR(m.rot), p = CCW(d).map(v => v * m.lado);
   const u0 = M.prof - M.mesa[0], u1 = M.prof;
   const v0 = M.mesa[1] / 2, v1 = M.mesa[1] / 2 + M.assento;
@@ -250,16 +301,22 @@ function dentroDoSalao(r){
     return false;
   return !bate(r, SAL.recorte);
 }
+const uniao = rs => [Math.min(...rs.map(r => r[0])), Math.min(...rs.map(r => r[1])),
+                     Math.max(...rs.map(r => r[2])), Math.max(...rs.map(r => r[3]))];
 
 /* --- estado ----------------------------------------------------------- */
 const CHAVE = "prancheta-hall2-v1";
-let cenario = "A", ferramenta = "mover", selecionada = null;
+let cenario = "A", ferramenta = "mover";
+let selecao = new Set();                 // numeros das mesas selecionadas
 let mrvs = [], medidas = [], medindo = null;
+let reparo = null;                       // {a: n} aguardando a segunda mesa
+let undoPilha = [], redoPilha = [];
+let cotasVivas = [];                     // cotas temporarias do arrasto
+let guia = null;                         // mensagem transitoria na barra
 let vista = {x: -3, y: -3, w: LARG + 6, h: ALT + 6};
 
-function original(cen){
-  return D.cenarios[cen].mrvs.map(m => ({...m}));
-}
+const original = cen => D.cenarios[cen].mrvs.map(m => ({...m}));
+
 function carregar(){
   let salvo = null;
   try { salvo = JSON.parse(localStorage.getItem(CHAVE) || "null"); } catch (e) {}
@@ -267,12 +324,39 @@ function carregar(){
     ? salvo[cenario].map(m => ({...m})) : original(cenario);
   medidas = (salvo && salvo.medidas) || [];
 }
-function salvar(){
+function rascunho(){
   try {
     const s = JSON.parse(localStorage.getItem(CHAVE) || "{}");
     s[cenario] = mrvs; s.medidas = medidas;
     localStorage.setItem(CHAVE, JSON.stringify(s));
   } catch (e) {}
+}
+
+/* --- desfazer / refazer ----------------------------------------------- */
+const instantanea = () => JSON.stringify(mrvs);
+function registra(antes){
+  if (antes === instantanea()) return;
+  undoPilha.push(antes);
+  if (undoPilha.length > 50) undoPilha.shift();
+  redoPilha = [];
+  pintaHistorico();
+}
+function desfaz(){
+  if (!undoPilha.length) return;
+  redoPilha.push(instantanea());
+  mrvs = JSON.parse(undoPilha.pop());
+  rascunho(); montaMesas(); pintaPainel(); pintaHistorico();
+}
+function refaz(){
+  if (!redoPilha.length) return;
+  undoPilha.push(instantanea());
+  mrvs = JSON.parse(redoPilha.pop());
+  rascunho(); montaMesas(); pintaPainel(); pintaHistorico();
+}
+function limpaHistorico(){ undoPilha = []; redoPilha = []; pintaHistorico(); }
+function pintaHistorico(){
+  $("desfazer").disabled = !undoPilha.length;
+  $("refazer").disabled = !redoPilha.length;
 }
 
 /* --- validacao -------------------------------------------------------- */
@@ -300,6 +384,48 @@ function distanciaAParede(m){
   return Math.max(0, Math.min(...cand) - M.urna / 2);
 }
 
+/* --- reparear --------------------------------------------------------- */
+function repareia(nA, nB){
+  const A = mrvs.find(m => m.n === nA), B = mrvs.find(m => m.n === nB);
+  const antes = instantanea();
+  const d = DIR(A.rot), p = CCW(d);
+  const passoPar = M.larg + M.corredor[1];          // 0,90 + 3,00
+  B.rot = A.rot; B.lado = -A.lado;
+  B.x = +(A.x + p[0] * A.lado * passoPar).toFixed(3);
+  B.y = +(A.y + p[1] * A.lado * passoPar).toFixed(3);
+
+  // regra do 1,5 m: se ha mesa alinhada perto da borda externa do par,
+  // o par inteiro desliza para encostar a exatamente 1,50 m dela
+  const proj = m => m.x * p[0] + m.y * p[1];        // ao longo da parede
+  const prof = m => m.x * d[0] + m.y * d[1];        // distancia da parede
+  const par = [proj(A), proj(B)].sort((a, b) => a - b);
+  const parMin = par[0] - M.larg / 2, parMax = par[1] + M.larg / 2;
+  let ajuste = null;                                 // {delta, viz}
+  for (const C of mrvs) {
+    if (C.n === nA || C.n === nB) continue;
+    if (C.rot !== A.rot && (C.rot + 180) % 360 !== A.rot) continue;
+    if (Math.abs(prof(C) - prof(A)) > 0.5) continue; // linha diferente
+    const c0 = proj(C) - M.larg / 2, c1 = proj(C) + M.larg / 2;
+    let gap = null, delta = 0;
+    if (c0 >= parMax - 1e-6) { gap = c0 - parMax; delta = gap - 1.5; }
+    else if (c1 <= parMin + 1e-6) { gap = parMin - c1; delta = 1.5 - gap; }
+    if (gap === null || gap > 3.0) continue;
+    if (!ajuste || Math.abs(gap - 1.5) > Math.abs(delta) - 1e-9)
+      if (!ajuste || gap < ajuste.gap) ajuste = {delta, gap, viz: C.n};
+  }
+  let msg = `Par ${nA}–${nB} refeito: corredor de 3,00 m`;
+  if (ajuste && Math.abs(ajuste.delta) > 1e-4) {
+    for (const m of [A, B]) {
+      m.x = +(m.x + p[0] * ajuste.delta).toFixed(3);
+      m.y = +(m.y + p[1] * ajuste.delta).toFixed(3);
+    }
+    msg += ` · encostado a 1,50 m da mesa ${ajuste.viz}`;
+  }
+  registra(antes); rascunho();
+  selecao = new Set([nA, nB]);
+  avisa(msg, 4000);
+}
+
 /* --- desenho ---------------------------------------------------------- */
 function el(tag, attrs, pai){
   const e = document.createElementNS(NS, tag);
@@ -311,7 +437,7 @@ function retangulo(pai, r, attrs){
   return el("rect", {x: fx(r[0]), y: fy(r[3]), width: r[2] - r[0],
                      height: r[3] - r[1], ...attrs}, pai);
 }
-let gFundo, gGrade, gZonas, gPortas, gMesas, gMedidas;
+let gFundo, gGrade, gZonas, gPortas, gMesas, gCotas, gMedidas;
 
 function montaFundo(){
   svg.innerHTML = "";
@@ -323,7 +449,8 @@ function montaFundo(){
 
   gFundo = el("g", {}, svg); gGrade = el("g", {}, svg);
   gZonas = el("g", {}, svg); gPortas = el("g", {}, svg);
-  gMesas = el("g", {}, svg); gMedidas = el("g", {}, svg);
+  gMesas = el("g", {}, svg); gCotas = el("g", {}, svg);
+  gMedidas = el("g", {}, svg);
 
   el("rect", {x: -60, y: -60, width: LARG + 120, height: ALT + 120,
     fill: "var(--papel)"}, gFundo);
@@ -372,28 +499,24 @@ function montaMesas(){
   gMesas.innerHTML = "";
   for (const m of mrvs) {
     const ruim = conflitos(m).length > 0;
+    const marcada = selecao.has(m.n);
+    const ancora = reparo && reparo.a === m.n;
     const g = el("g", {class: "mrv", "data-n": m.n,
       style: "cursor:" + (ferramenta === "mover" ? "move" : "crosshair")}, gMesas);
     const d = DIR(m.rot), p = CCW(d), pl = p.map(v => v * m.lado);
     const P = (u, v) => [m.x + d[0] * u + p[0] * v, m.y + d[1] * u + p[1] * v];
     const Pl = (u, v) => [m.x + d[0] * u + pl[0] * v, m.y + d[1] * u + pl[1] * v];
 
-    // area do modulo, para agarrar com folga
-    retangulo(g, corpoRect(m), {fill: m.n === (selecionada || {}).n
-      ? "var(--sel)" : "var(--entrada)", opacity: m.n === (selecionada || {}).n
-      ? .12 : .05});
-
-    if (document.getElementById("optAssentos").checked)
+    retangulo(g, corpoRect(m), {fill: marcada ? "var(--sel)" : "var(--entrada)",
+      opacity: marcada ? .12 : .05});
+    if ($("optAssentos").checked)
       retangulo(g, assentoRect(m), {fill: "var(--pessoa)", opacity: .1});
 
-    // mesa de identificacao
     const c = [P(M.prof - M.mesa[0], -M.mesa[1] / 2), P(M.prof, -M.mesa[1] / 2),
                P(M.prof, M.mesa[1] / 2), P(M.prof - M.mesa[0], M.mesa[1] / 2)];
     el("polygon", {points: c.map(q => `${fx(q[0])},${fy(q[1])}`).join(" "),
-      fill: ruim ? "var(--alerta)" : "var(--mesa)",
-      opacity: ruim ? .9 : .86}, g);
+      fill: ruim ? "var(--alerta)" : "var(--mesa)", opacity: ruim ? .9 : .86}, g);
 
-    // urna e eleitor
     const cu = P(M.eleitor + M.urna / 2, 0);
     el("circle", {cx: fx(cu[0]), cy: fy(cu[1]), r: M.urna / 2, fill: "none",
       stroke: ruim ? "var(--alerta)" : "var(--entrada)", "stroke-width": .1}, g);
@@ -403,14 +526,12 @@ function montaMesas(){
     el("circle", {cx: fx(ce[0]), cy: fy(ce[1]), r: .22, fill: "none",
       stroke: "var(--pessoa)", "stroke-width": .07}, g);
 
-    // tres mesarios
     for (let k = 0; k < 3; k++) {
       const q = Pl(M.prof - M.mesa[0] + .283 + k * .567, M.mesa[1] / 2 + .26);
       el("circle", {cx: fx(q[0]), cy: fy(q[1]), r: .21, fill: "var(--pessoa)",
         opacity: .5}, g);
     }
 
-    // numero, sempre na horizontal
     const q = P(M.prof - M.mesa[0] / 2, 0);
     const t = el("text", {x: fx(q[0]), y: fy(q[1]) + .22, "font-size": .62,
       "font-weight": 700, fill: "var(--prancha)", "text-anchor": "middle",
@@ -418,12 +539,50 @@ function montaMesas(){
       style: "pointer-events:none"}, g);
     t.textContent = m.n;
 
-    if (m.n === (selecionada || {}).n) {
+    if (marcada || ancora) {
       const r = corpoRect(m);
       retangulo(g, [r[0] - .18, r[1] - .18, r[2] + .18, r[3] + .18],
-        {fill: "none", stroke: "var(--sel)", "stroke-width": .12,
-         "stroke-dasharray": ".4 .3"});
+        {fill: "none", stroke: ancora ? "var(--aviso)" : "var(--sel)",
+         "stroke-width": ancora ? .16 : .12, "stroke-dasharray": ".4 .3"});
     }
+  }
+}
+
+/* --- cotas vivas do arrasto ------------------------------------------- */
+function calculaCotas(numeros){
+  const caixas = [...numeros].map(n => corpoRect(mrvs.find(m => m.n === n)));
+  const B = uniao(caixas);
+  const outras = mrvs.filter(m => !numeros.has(m.n)).map(corpoRect);
+  const sobrepoeY = r => r[1] < B[3] && B[1] < r[3];
+  const sobrepoeX = r => r[0] < B[2] && B[0] < r[2];
+  const cotas = [];
+  const my = (B[1] + B[3]) / 2, mx = (B[0] + B[2]) / 2;
+
+  let e = Math.max(0, ...outras.filter(sobrepoeY).map(r => r[2]).filter(v => v <= B[0] + 1e-6));
+  cotas.push({a: [e, my], b: [B[0], my]});
+  let dir = Math.min(LARG, ...outras.filter(sobrepoeY).map(r => r[0]).filter(v => v >= B[2] - 1e-6));
+  cotas.push({a: [B[2], my], b: [dir, my]});
+  let baixo = Math.max(0, ...outras.filter(sobrepoeX).map(r => r[3]).filter(v => v <= B[1] + 1e-6));
+  cotas.push({a: [mx, baixo], b: [mx, B[1]]});
+  let cima = Math.min(ALT, ...outras.filter(sobrepoeX).map(r => r[1]).filter(v => v >= B[3] - 1e-6));
+  cotas.push({a: [mx, B[3]], b: [mx, cima]});
+  return cotas.filter(c => Math.hypot(c.b[0] - c.a[0], c.b[1] - c.a[1]) > 0.011);
+}
+function montaCotas(){
+  gCotas.innerHTML = "";
+  for (const c of cotasVivas) {
+    el("line", {x1: fx(c.a[0]), y1: fy(c.a[1]), x2: fx(c.b[0]), y2: fy(c.b[1]),
+      stroke: "var(--aviso)", "stroke-width": .07, "stroke-dasharray": ".28 .2"}, gCotas);
+    const dist = Math.hypot(c.b[0] - c.a[0], c.b[1] - c.a[1]);
+    const horiz = Math.abs(c.b[1] - c.a[1]) < 1e-9;
+    const t = el("text", {x: fx((c.a[0] + c.b[0]) / 2) + (horiz ? 0 : .35),
+      y: fy((c.a[1] + c.b[1]) / 2) - (horiz ? .3 : 0),
+      "font-size": .8, "font-weight": 600, fill: "var(--aviso)",
+      "text-anchor": horiz ? "middle" : "start",
+      "paint-order": "stroke", stroke: "var(--prancha)", "stroke-width": .24,
+      "font-family": "IBM Plex Mono, monospace",
+      style: "pointer-events:none"}, gCotas);
+    t.textContent = vg(dist);
   }
 }
 
@@ -439,8 +598,8 @@ function montaMedidas(){
     const d = Math.hypot(b[0] - a[0], b[1] - a[1]);
     const t = el("text", {x: fx((a[0] + b[0]) / 2), y: fy((a[1] + b[1]) / 2) - .55,
       "font-size": 1.05, "font-weight": 600, fill: "var(--medida)",
-      "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace",
-      "paint-order": "stroke", stroke: "var(--prancha)", "stroke-width": .3,
+      "text-anchor": "middle", "paint-order": "stroke", stroke: "var(--prancha)",
+      "stroke-width": .3, "font-family": "IBM Plex Mono, monospace",
       style: "pointer-events:none"}, gMedidas);
     t.textContent = vg(d) + " m";
   };
@@ -455,53 +614,27 @@ function aplicaVista(){
   svg.setAttribute("viewBox", `${vista.x} ${ALT - vista.y - vista.h} ${vista.w} ${vista.h}`);
 }
 function opcoes(){
-  gGrade.style.display = document.getElementById("optGrade").checked ? "" : "none";
-  gZonas.style.display = document.getElementById("optZonas").checked ? "" : "none";
+  gGrade.style.display = $("optGrade").checked ? "" : "none";
+  gZonas.style.display = $("optZonas").checked ? "" : "none";
   for (const t of gPortas.querySelectorAll(".rotuloPorta"))
-    t.style.display = document.getElementById("optPortas").checked ? "" : "none";
+    t.style.display = $("optPortas").checked ? "" : "none";
 }
 
-/* --- painel ----------------------------------------------------------- */
-function pintaPainel(){
-  const cx = document.getElementById("sel");
-  if (!selecionada) {
-    cx.innerHTML = '<p class="dica">Clique numa mesa para ver as coordenadas dela e a distância da urna à parede.</p>';
-  } else {
-    const m = mrvs.find(o => o.n === selecionada.n);
-    const c = conflitos(m), r = corpoRect(m);
-    const orig = original(cenario).find(o => o.n === m.n);
-    const movida = Math.hypot(m.x - orig.x, m.y - orig.y) > 1e-6 || m.rot !== orig.rot;
-    cx.innerHTML =
-      `<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px">
-         <span class="mono" style="font-size:1.5rem;font-weight:600">${m.n}</span>
-         <span class="chip ${c.length ? "ruim" : ""}">${c.length ? "conflito" : "encaixa"}</span>
-       </div>
-       <dl class="leitura">
-         <dt>Ancoragem</dt><dd>${vg(m.x)} ; ${vg(m.y)} m</dd>
-         <dt>Ocupa</dt><dd>${vg(r[2] - r[0], 1)} × ${vg(r[3] - r[1], 1)} m</dd>
-         <dt>Giro</dt><dd>${m.rot}°</dd>
-         <dt>Urna à parede</dt><dd class="${distanciaAParede(m) > 3.2 ? "ruim" : "bom"}">${vg(distanciaAParede(m))} m</dd>
-         <dt>Origem</dt><dd>${movida ? "deslocada" : "planta"}</dd>
-       </dl>` +
-      (c.length ? `<p class="dica" style="color:var(--alerta);margin-top:9px">Sobrepõe ${c.join(", ")}.</p>` : "");
+/* --- painel e barra de estado ----------------------------------------- */
+function avisa(msg, ms){
+  guia = msg; pintaEstado();
+  if (ms) setTimeout(() => { if (guia === msg) { guia = null; pintaEstado(); } }, ms);
+}
+function pintaEstado(){
+  const est = $("estado");
+  if (guia) { est.className = "estado guia"; est.textContent = guia; return; }
+  if (ferramenta === "reparear") {
+    est.className = "estado guia";
+    est.textContent = reparo
+      ? `Reparear: agora clique na mesa que vai formar par com a ${reparo.a}`
+      : "Reparear: clique na mesa que fica parada";
+    return;
   }
-
-  const lista = document.getElementById("listaMedidas");
-  lista.innerHTML = "";
-  document.getElementById("semMedidas").style.display = medidas.length ? "none" : "";
-  medidas.forEach((md, i) => {
-    const d = Math.hypot(md.b[0] - md.a[0], md.b[1] - md.a[1]);
-    const li = document.createElement("li");
-    li.innerHTML = `<span class="val">${vg(d)} m</span>
-      <span class="det">Δx ${vg(Math.abs(md.b[0] - md.a[0]), 1)} · Δy ${vg(Math.abs(md.b[1] - md.a[1]), 1)}</span>`;
-    const b = document.createElement("button");
-    b.textContent = "×"; b.title = "Apagar esta medida";
-    b.setAttribute("aria-label", "Apagar medida de " + vg(d) + " metros");
-    b.onclick = () => { medidas.splice(i, 1); salvar(); montaMedidas(); pintaPainel(); };
-    li.appendChild(b); lista.appendChild(li);
-  });
-
-  const est = document.getElementById("estado");
   const ruins = mrvs.filter(m => conflitos(m).length).length;
   const movidas = mrvs.filter(m => {
     const o = original(cenario).find(q => q.n === m.n);
@@ -513,15 +646,90 @@ function pintaPainel(){
     : (movidas ? `${movidas} mesa${movidas > 1 ? "s" : ""} deslocada${movidas > 1 ? "s" : ""}, todas encaixam`
                : "28 mesas na planta original");
 }
+function pintaPainel(){
+  const cx = $("sel");
+  if (!selecao.size) {
+    cx.innerHTML = '<p class="dica">Clique numa mesa para ver as coordenadas dela; <kbd>Shift</kbd>+clique soma mais mesas à seleção.</p>';
+  } else if (selecao.size === 1) {
+    const m = mrvs.find(o => selecao.has(o.n));
+    const c = conflitos(m), r = corpoRect(m);
+    const o = original(cenario).find(q => q.n === m.n);
+    const movida = Math.hypot(m.x - o.x, m.y - o.y) > 1e-6 || m.rot !== o.rot;
+    cx.innerHTML =
+      `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+         <span class="mono" style="font-size:1.5rem;font-weight:600">${m.n}</span>
+         <span class="chip ${c.length ? "ruim" : ""}">${c.length ? "conflito" : "encaixa"}</span>
+         <button class="acao mini" id="girarSel" style="margin-left:auto">Girar 90°</button>
+       </div>
+       <dl class="leitura">
+         <dt>Ancoragem</dt><dd>${vg(m.x)} ; ${vg(m.y)} m</dd>
+         <dt>Ocupa</dt><dd>${vg(r[2] - r[0], 1)} × ${vg(r[3] - r[1], 1)} m</dd>
+         <dt>Giro</dt><dd>${m.rot}°</dd>
+         <dt>Urna à parede</dt><dd class="${distanciaAParede(m) > 3.2 ? "ruim" : "bom"}">${vg(distanciaAParede(m))} m</dd>
+         <dt>Origem</dt><dd>${movida ? "deslocada" : "planta"}</dd>
+       </dl>` +
+      (c.length ? `<p class="dica" style="color:var(--alerta);margin-top:9px">Sobrepõe ${c.join(", ")}.</p>` : "");
+    $("girarSel").onclick = giraSelecao;
+  } else {
+    const ns = [...selecao].sort((a, b) => a - b);
+    const B = uniao(ns.map(n => corpoRect(mrvs.find(m => m.n === n))));
+    const ruins = ns.filter(n => conflitos(mrvs.find(m => m.n === n)).length).length;
+    cx.innerHTML =
+      `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+         <span class="mono" style="font-size:1.5rem;font-weight:600">${selecao.size}</span>
+         <span class="chip ${ruins ? "ruim" : ""}">${ruins ? ruins + " em conflito" : "mesas"}</span>
+         <button class="acao mini" id="girarSel" style="margin-left:auto">Girar 90°</button>
+       </div>
+       <dl class="leitura">
+         <dt>Mesas</dt><dd>${ns.join(", ")}</dd>
+         <dt>Conjunto ocupa</dt><dd>${vg(B[2] - B[0], 1)} × ${vg(B[3] - B[1], 1)} m</dd>
+       </dl>
+       <p class="dica" style="margin-top:9px">Arraste qualquer uma para mover o conjunto junto.</p>`;
+    $("girarSel").onclick = giraSelecao;
+  }
 
-/* --- interacao -------------------------------------------------------- */
+  const lista = $("listaMedidas");
+  lista.innerHTML = "";
+  $("semMedidas").style.display = medidas.length ? "none" : "";
+  $("apagarMedidas").style.display = medidas.length ? "" : "none";
+  medidas.forEach((md, i) => {
+    const d = Math.hypot(md.b[0] - md.a[0], md.b[1] - md.a[1]);
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="val">${vg(d)} m</span>
+      <span class="det">Δx ${vg(Math.abs(md.b[0] - md.a[0]), 1)} · Δy ${vg(Math.abs(md.b[1] - md.a[1]), 1)}</span>`;
+    const b = document.createElement("button");
+    b.textContent = "×"; b.title = "Apagar esta medida";
+    b.setAttribute("aria-label", "Apagar medida de " + vg(d) + " metros");
+    b.onclick = () => { medidas.splice(i, 1); rascunho(); montaMedidas(); pintaPainel(); };
+    li.appendChild(b); lista.appendChild(li);
+  });
+  pintaEstado();
+}
+
+function giraSelecao(){
+  if (!selecao.size) return;
+  const antes = instantanea();
+  const alvos = [...selecao].map(n => mrvs.find(m => m.n === n));
+  const B = uniao(alvos.map(corpoRect));
+  const cx = (B[0] + B[2]) / 2, cy = (B[1] + B[3]) / 2;
+  for (const m of alvos) {
+    if (alvos.length > 1) {
+      const dx = m.x - cx, dy = m.y - cy;          // rot 90 anti-horario
+      m.x = +(cx - dy).toFixed(3); m.y = +(cy + dx).toFixed(3);
+    }
+    m.rot = (m.rot + 90) % 360;
+  }
+  registra(antes); rascunho(); montaMesas(); pintaPainel();
+}
+
+/* --- interacao no palco ------------------------------------------------ */
 function paraModelo(ev){
   const p = svg.createSVGPoint();
   p.x = ev.clientX; p.y = ev.clientY;
   const q = p.matrixTransform(svg.getScreenCTM().inverse());
   return [q.x, ALT - q.y];
 }
-const passo = () => parseFloat(document.getElementById("selPasso").value);
+const passo = () => parseFloat($("selPasso").value);
 const encaixa = v => Math.round(v / passo()) * passo();
 
 let arrasto = null, pan = null;
@@ -531,20 +739,41 @@ svg.addEventListener("pointerdown", ev => {
   if (ferramenta === "medir") {
     const p = paraModelo(ev).map(encaixa);
     if (!medindo) medindo = {a: p, b: null};
-    else { medidas.push({a: medindo.a, b: p}); medindo = null; salvar(); pintaPainel(); }
+    else { medidas.push({a: medindo.a, b: p}); medindo = null; rascunho(); pintaPainel(); }
     montaMedidas();
+    return;
+  }
+  if (ferramenta === "reparear") {
+    if (!alvo) return;
+    const n = +alvo.dataset.n;
+    if (!reparo) { reparo = {a: n}; }
+    else if (reparo.a !== n) {
+      const a = reparo.a; reparo = null;
+      repareia(a, n);
+      montaMesas(); pintaPainel();
+      return;
+    }
+    montaMesas(); pintaEstado();
     return;
   }
   if (alvo) {
     const n = +alvo.dataset.n;
-    selecionada = {n};
-    const m = mrvs.find(o => o.n === n);
+    if (ev.shiftKey) {
+      if (selecao.has(n)) selecao.delete(n); else selecao.add(n);
+      montaMesas(); pintaPainel();
+      return;
+    }
+    if (!selecao.has(n)) selecao = new Set([n]);
     const p = paraModelo(ev);
-    arrasto = {n, dx: m.x - p[0], dy: m.y - p[1]};
+    arrasto = {agarrada: n, p0: p, antes: instantanea(),
+               orig: new Map([...selecao].map(k => {
+                 const m = mrvs.find(o => o.n === k);
+                 return [k, [m.x, m.y]];
+               }))};
     svg.setPointerCapture(ev.pointerId);
     montaMesas(); pintaPainel();
   } else {
-    selecionada = null;
+    selecao = new Set();
     pan = {x: ev.clientX, y: ev.clientY, vx: vista.x, vy: vista.y};
     svg.classList.add("arrastando");
     svg.setPointerCapture(ev.pointerId);
@@ -554,15 +783,20 @@ svg.addEventListener("pointerdown", ev => {
 
 svg.addEventListener("pointermove", ev => {
   const p = paraModelo(ev);
-  document.getElementById("cursor").textContent = vg(p[0], 1) + " ; " + vg(p[1], 1) + " m";
+  $("cursor").textContent = vg(p[0], 1) + " ; " + vg(p[1], 1) + " m";
   if (medindo && ferramenta === "medir") {
     medindo.b = p.map(encaixa); montaMedidas(); return;
   }
   if (arrasto) {
-    const m = mrvs.find(o => o.n === arrasto.n);
-    m.x = encaixa(p[0] + arrasto.dx);
-    m.y = encaixa(p[1] + arrasto.dy);
-    montaMesas(); pintaPainel();
+    const g = arrasto.orig.get(arrasto.agarrada);
+    const dx = encaixa(g[0] + p[0] - arrasto.p0[0]) - g[0];
+    const dy = encaixa(g[1] + p[1] - arrasto.p0[1]) - g[1];
+    for (const [n, o] of arrasto.orig) {
+      const m = mrvs.find(q => q.n === n);
+      m.x = +(o[0] + dx).toFixed(3); m.y = +(o[1] + dy).toFixed(3);
+    }
+    cotasVivas = $("optCotas").checked ? calculaCotas(selecao) : [];
+    montaMesas(); montaCotas(); pintaPainel();
   } else if (pan) {
     const esc = vista.w / svg.clientWidth;
     vista.x = pan.vx - (ev.clientX - pan.x) * esc;
@@ -572,7 +806,11 @@ svg.addEventListener("pointermove", ev => {
 });
 
 function solta(ev){
-  if (arrasto) { salvar(); arrasto = null; }
+  if (arrasto) {
+    registra(arrasto.antes);
+    rascunho(); arrasto = null;
+    cotasVivas = []; montaCotas();
+  }
   if (pan) { pan = null; svg.classList.remove("arrastando"); }
   try { svg.releasePointerCapture(ev.pointerId); } catch (e) {}
 }
@@ -592,23 +830,28 @@ svg.addEventListener("wheel", ev => {
 }, {passive: false});
 
 document.addEventListener("keydown", ev => {
+  if (ev.target.tagName === "INPUT" || ev.target.tagName === "TEXTAREA") return;
+  if ((ev.ctrlKey || ev.metaKey) && (ev.key === "z" || ev.key === "Z")) {
+    ev.shiftKey ? refaz() : desfaz(); ev.preventDefault(); return;
+  }
   if (ev.key === "Escape") {
-    selecionada = null; medindo = null; montaMesas(); montaMedidas(); pintaPainel();
+    selecao = new Set(); medindo = null; reparo = null;
+    montaMesas(); montaMedidas(); pintaPainel();
     return;
   }
-  if (!selecionada) return;
-  const m = mrvs.find(o => o.n === selecionada.n);
-  if (ev.key === "r" || ev.key === "R") {
-    m.rot = (m.rot + 90) % 360; salvar(); montaMesas(); pintaPainel();
-    ev.preventDefault(); return;
-  }
+  if (!selecao.size) return;
+  if (ev.key === "r" || ev.key === "R") { giraSelecao(); ev.preventDefault(); return; }
   const d = {ArrowLeft: [-1, 0], ArrowRight: [1, 0],
              ArrowUp: [0, 1], ArrowDown: [0, -1]}[ev.key];
   if (!d) return;
+  const antes = instantanea();
   const k = passo() * (ev.shiftKey ? 10 : 1);
-  m.x = +(m.x + d[0] * k).toFixed(3);
-  m.y = +(m.y + d[1] * k).toFixed(3);
-  salvar(); montaMesas(); pintaPainel();
+  for (const n of selecao) {
+    const m = mrvs.find(o => o.n === n);
+    m.x = +(m.x + d[0] * k).toFixed(3);
+    m.y = +(m.y + d[1] * k).toFixed(3);
+  }
+  registra(antes); rascunho(); montaMesas(); pintaPainel();
   ev.preventDefault();
 });
 
@@ -628,52 +871,228 @@ function zoom(k){
   vista.x = cx - vista.w / 2; vista.y = cy - vista.h / 2;
   aplicaVista();
 }
-document.getElementById("zMais").onclick = () => zoom(1 / 1.3);
-document.getElementById("zMenos").onclick = () => zoom(1.3);
-document.getElementById("zTudo").onclick = enquadra;
+$("zMais").onclick = () => zoom(1 / 1.3);
+$("zMenos").onclick = () => zoom(1.3);
+$("zTudo").onclick = enquadra;
+$("desfazer").onclick = desfaz;
+$("refazer").onclick = refaz;
 
 function ferramentaPara(f){
-  ferramenta = f; medindo = null;
-  document.getElementById("tMover").setAttribute("aria-pressed", f === "mover");
-  document.getElementById("tMedir").setAttribute("aria-pressed", f === "medir");
-  svg.classList.toggle("medindo", f === "medir");
-  montaMesas(); montaMedidas();
+  ferramenta = f; medindo = null; reparo = null;
+  for (const [id, nome] of [["tMover", "mover"], ["tMedir", "medir"],
+                            ["tReparear", "reparear"]])
+    $(id).setAttribute("aria-pressed", f === nome);
+  svg.classList.toggle("mira", f !== "mover");
+  montaMesas(); montaMedidas(); pintaEstado();
 }
-document.getElementById("tMover").onclick = () => ferramentaPara("mover");
-document.getElementById("tMedir").onclick = () => ferramentaPara("medir");
+$("tMover").onclick = () => ferramentaPara("mover");
+$("tMedir").onclick = () => ferramentaPara("medir");
+$("tReparear").onclick = () => ferramentaPara("reparear");
 
 function cenarioPara(c){
-  cenario = c; selecionada = null; medindo = null;
-  document.getElementById("cenA").setAttribute("aria-pressed", c === "A");
-  document.getElementById("cenB").setAttribute("aria-pressed", c === "B");
+  cenario = c; selecao = new Set(); medindo = null; reparo = null;
+  $("cenA").setAttribute("aria-pressed", c === "A");
+  $("cenB").setAttribute("aria-pressed", c === "B");
+  limpaHistorico();
   carregar(); montaZonas(); montaMesas(); montaMedidas(); pintaPainel(); opcoes();
 }
-document.getElementById("cenA").onclick = () => cenarioPara("A");
-document.getElementById("cenB").onclick = () => cenarioPara("B");
+$("cenA").onclick = () => cenarioPara("A");
+$("cenB").onclick = () => cenarioPara("B");
 
-document.getElementById("restaurar").onclick = () => {
-  mrvs = original(cenario); selecionada = null; salvar();
-  montaMesas(); pintaPainel();
+$("restaurar").onclick = () => {
+  const antes = instantanea();
+  mrvs = original(cenario); selecao = new Set();
+  medidas = []; medindo = null;
+  registra(antes); rascunho();
+  montaMesas(); montaMedidas(); pintaPainel();
+  avisa("Planta original restaurada; medidas apagadas", 3000);
 };
-document.getElementById("copiar").onclick = async () => {
+$("apagarMedidas").onclick = () => {
+  medidas = []; medindo = null; rascunho(); montaMedidas(); pintaPainel();
+};
+$("copiar").onclick = async () => {
   const linhas = ["mesa\tx (m)\ty (m)\tgiro\tconflito"];
   for (const m of mrvs)
     linhas.push([m.n, vg(m.x), vg(m.y), m.rot + "°",
                  conflitos(m).join("; ") || "—"].join("\t"));
   const txt = `Hall 2 — cenário ${cenario} — ${mrvs.length} mesas receptoras\n`
-    + `ancoragem no ponto da parede em que o módulo começa; x para leste, y para norte\n\n`
+    + `ancoragem no ponto em que o módulo começa; x para leste, y para norte\n\n`
     + linhas.join("\n");
-  const b = document.getElementById("copiar");
+  const b = $("copiar");
   try { await navigator.clipboard.writeText(txt); b.textContent = "Copiado"; }
   catch (e) { b.textContent = "Não deu — veja o console"; console.log(txt); }
   setTimeout(() => { b.textContent = "Copiar posições"; }, 1800);
 };
 for (const id of ["optAssentos", "optZonas", "optGrade", "optPortas"])
-  document.getElementById(id).onchange = () => { opcoes(); montaMesas(); };
+  $(id).onchange = () => { opcoes(); montaMesas(); };
+
+/* --- cenarios salvos --------------------------------------------------- */
+let db = null, salvos = [], confirmaApagar = null;
+const CHAVE_SALVOS = CHAVE + "-salvos";
+
+function pacoteCenario(nome){
+  return {nome: nome, base: cenario,
+          mrvs: mrvs.map(m => ({...m})), medidas: medidas.map(m => ({...m})),
+          criadoEm: new Date().toISOString()};
+}
+function aplicaCenario(cen){
+  if (!cen || !Array.isArray(cen.mrvs) || cen.mrvs.length !== 28) {
+    avisa("Cenário inválido — precisa das 28 mesas", 3500); return;
+  }
+  let trocouBase = false;
+  if ((cen.base === "A" || cen.base === "B") && cen.base !== cenario) {
+    cenario = cen.base; trocouBase = true;
+    $("cenA").setAttribute("aria-pressed", cenario === "A");
+    $("cenB").setAttribute("aria-pressed", cenario === "B");
+    montaZonas();
+  }
+  const antes = instantanea();
+  mrvs = cen.mrvs.map(m => ({...m}));
+  medidas = Array.isArray(cen.medidas) ? cen.medidas.map(m => ({...m})) : [];
+  selecao = new Set();
+  // trocar de base zera o historico: o instantaneo anterior era da outra base
+  if (trocouBase) limpaHistorico(); else registra(antes);
+  rascunho();
+  montaMesas(); montaMedidas(); pintaPainel();
+  avisa(`Cenário “${cen.nome || "sem nome"}” aberto`, 3000);
+}
+
+function pintaSalvos(){
+  const lista = $("listaSalvos");
+  lista.innerHTML = "";
+  $("semSalvos").style.display = salvos.length ? "none" : "";
+  for (const s of salvos) {
+    const li = document.createElement("li");
+    const quando = (s.criadoEm || "").slice(0, 16).replace("T", " ");
+    li.innerHTML =
+      `<div class="linha1"><span class="nome"></span>
+         <span class="quando">${quando} · ${s.base || "A"}</span></div>
+       <div class="linha2">
+         <button class="acao mini abrir">Abrir</button>
+         <button class="acao mini copiarUm">Copiar</button>
+         <button class="fechar" title="Apagar este cenário" aria-label="Apagar cenário">×</button>
+       </div>`;
+    li.querySelector(".nome").textContent = s.nome || "sem nome";
+    li.querySelector(".abrir").onclick = () => aplicaCenario(s);
+    li.querySelector(".copiarUm").onclick = async ev => {
+      const b = ev.target;
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(
+          {nome: s.nome, base: s.base, mrvs: s.mrvs, medidas: s.medidas,
+           criadoEm: s.criadoEm}));
+        b.textContent = "Copiado";
+      } catch (e) { b.textContent = "não deu"; }
+      setTimeout(() => { b.textContent = "Copiar"; }, 1500);
+    };
+    const x = li.querySelector(".fechar");
+    x.onclick = () => {
+      if (confirmaApagar !== s.id) {
+        confirmaApagar = s.id;
+        x.textContent = "apagar?"; x.classList.add("confirma");
+        setTimeout(() => {
+          if (confirmaApagar === s.id) {
+            confirmaApagar = null;
+            x.textContent = "×"; x.classList.remove("confirma");
+          }
+        }, 3000);
+        return;
+      }
+      confirmaApagar = null;
+      apagaSalvo(s.id);
+    };
+    lista.appendChild(li);
+  }
+}
+
+function salvosLocais(){
+  try { return JSON.parse(localStorage.getItem(CHAVE_SALVOS) || "[]"); }
+  catch (e) { return []; }
+}
+function gravaSalvosLocais(v){
+  try { localStorage.setItem(CHAVE_SALVOS, JSON.stringify(v)); } catch (e) {}
+}
+
+async function salvaCenario(){
+  const nome = $("nomeCenario").value.trim() || "sem nome";
+  const corpo = pacoteCenario(nome);
+  const b = $("salvarCenario");
+  if (db) {
+    b.textContent = "…"; b.disabled = true;
+    try {
+      await db.collection("cenarios").add(corpo);
+      $("nomeCenario").value = "";
+      avisa(`Cenário “${nome}” salvo para todos`, 3000);
+    } catch (e) {
+      avisa(e && e.code === "quota_exceeded"
+        ? "O banco encheu — apague cenários antigos para salvar novos"
+        : "Não deu para salvar agora — tente de novo", 4500);
+    }
+    b.textContent = "Salvar"; b.disabled = false;
+  } else {
+    const v = salvosLocais();
+    v.unshift({...corpo, id: "local-" + Date.now()});
+    gravaSalvosLocais(v);
+    salvos = v; pintaSalvos();
+    $("nomeCenario").value = "";
+    avisa(`Cenário “${nome}” salvo neste navegador`, 3000);
+  }
+}
+async function apagaSalvo(id){
+  if (db && !String(id).startsWith("local-")) {
+    try { await db.doc("cenarios/" + id).delete(); }
+    catch (e) { avisa("Não deu para apagar agora", 3000); }
+  } else {
+    const v = salvosLocais().filter(s => s.id !== id);
+    gravaSalvosLocais(v);
+    salvos = v; pintaSalvos();
+  }
+}
+$("salvarCenario").onclick = salvaCenario;
+$("nomeCenario").addEventListener("keydown", ev => {
+  if (ev.key === "Enter") salvaCenario();
+});
+$("colarCenario").onclick = () => {
+  $("colarCaixa").style.display = "block"; $("colarTexto").focus();
+};
+$("colarCancelar").onclick = () => { $("colarCaixa").style.display = "none"; };
+$("colarAplicar").onclick = () => {
+  try {
+    const cen = JSON.parse($("colarTexto").value);
+    $("colarCaixa").style.display = "none"; $("colarTexto").value = "";
+    aplicaCenario(cen);
+  } catch (e) { avisa("Isso não é um JSON de cenário válido", 3500); }
+};
+
+async function ligaBanco(){
+  let ns = null;
+  try {
+    if (window.claude && typeof window.claude.use === "function")
+      ns = await window.claude.use("db");
+  } catch (e) { ns = null; }
+  if (!ns) {
+    $("dbAviso").hidden = false;
+    salvos = salvosLocais(); pintaSalvos();
+    return;
+  }
+  db = ns;
+  db.collection("cenarios").orderBy("criadoEm", "desc").limit(50).onSnapshot(
+    snap => {
+      salvos = snap.docs.filter(d => d.exists)
+        .map(d => ({id: d.id, ...d.data()}));
+      pintaSalvos();
+    },
+    err => {
+      db = null;
+      $("dbAviso").hidden = false;
+      salvos = salvosLocais(); pintaSalvos();
+    });
+}
 
 /* --- inicio ----------------------------------------------------------- */
 carregar();
 montaFundo(); montaZonas(); montaPortas(); montaMesas(); montaMedidas();
-opcoes(); pintaPainel(); enquadra();
+opcoes(); pintaPainel(); pintaHistorico(); enquadra();
+salvos = salvosLocais(); pintaSalvos();
+ligaBanco();
 addEventListener("resize", enquadra);
 </script>

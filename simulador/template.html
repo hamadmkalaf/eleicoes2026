@@ -1,0 +1,392 @@
+<title>Simulador do Hall 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --papel:#f0ede5; --folha:#fffdf8; --tinta:#17202b; --meio:#59616d; --fraco:#8a919b;
+  --regua:#d9d3c6; --regua2:#e8e3d8; --prancha:#fbfaf7; --traco:#1c2733;
+  --mesa:#3b4552; --pessoa:#59616d;
+  --entrada:#1f6fb2; --saida:#b26a12; --emerg:#16867f; --alerta:#b23b2e; --aviso:#b26a12;
+  --z1:#2a78d6; --z2:#eb6834; --z3:#1baf7a; --z4:#eda100;
+  --ok:#0ca30c; --ok-txt:#006300; --atencao:#fab219; --atencao-txt:#7a5200; --falha:#d03b3b; --falha-txt:#a12626;
+  --grade:#e1e0d9; --eixo:#c3c2b7;
+  --sombra:0 1px 2px rgba(23,32,43,.06), 0 6px 18px rgba(23,32,43,.06);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --papel:#0f1317; --folha:#181d23; --tinta:#e7ebef; --meio:#a3abb5; --fraco:#78818c;
+  --regua:#2b3239; --regua2:#222930; --prancha:#1d232b; --traco:#c9d1da;
+  --mesa:#aab3bd; --pessoa:#a3abb5;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a; --aviso:#dda257;
+  --z1:#3987e5; --z2:#d95926; --z3:#199e70; --z4:#c98500;
+  --ok:#0ca30c; --ok-txt:#4fd24f; --atencao:#fab219; --atencao-txt:#fab219; --falha:#d03b3b; --falha-txt:#f08a8a;
+  --grade:#2c2c2a; --eixo:#383835;
+  --sombra:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --papel:#0f1317; --folha:#181d23; --tinta:#e7ebef; --meio:#a3abb5; --fraco:#78818c;
+  --regua:#2b3239; --regua2:#222930; --prancha:#1d232b; --traco:#c9d1da;
+  --mesa:#aab3bd; --pessoa:#a3abb5;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a; --aviso:#dda257;
+  --z1:#3987e5; --z2:#d95926; --z3:#199e70; --z4:#c98500;
+  --ok:#0ca30c; --ok-txt:#4fd24f; --atencao:#fab219; --atencao-txt:#fab219; --falha:#d03b3b; --falha-txt:#f08a8a;
+  --grade:#2c2c2a; --eixo:#383835;
+  --sombra:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums}
+button,input,select{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--entrada); outline-offset:2px}
+h1,h2,h3{margin:0; text-wrap:balance}
+
+/* ---- casca ---- */
+.app{display:grid; grid-template-rows:auto 1fr; min-height:100vh}
+header{display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:10px 22px;
+  border-bottom:1px solid var(--regua); background:var(--folha); position:sticky; top:0; z-index:5}
+header h1{font-family:"Source Serif 4",Georgia,serif; font-size:1.12rem; font-weight:700; letter-spacing:-.01em; white-space:nowrap}
+header .sub{font-size:.78rem; color:var(--meio)}
+.abas{display:flex; border:1px solid var(--regua); background:var(--papel)}
+.abas button{background:none; border:0; padding:6px 14px; cursor:pointer; font-size:.82rem; color:var(--meio); border-right:1px solid var(--regua); display:flex; gap:8px; align-items:center}
+.abas button:last-child{border-right:0}
+.abas button[aria-selected="true"]{background:var(--tinta); color:var(--folha); font-weight:600}
+.abas .num{font-family:"IBM Plex Mono",monospace; font-size:.7rem; opacity:.7}
+header .dir{margin-left:auto; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.acao{background:var(--papel); border:1px solid var(--regua); padding:6px 12px; font-size:.8rem; cursor:pointer; color:var(--meio)}
+.acao:hover{color:var(--tinta); border-color:var(--fraco)}
+.acao.primaria{background:var(--entrada); border-color:var(--entrada); color:#fff; font-weight:600}
+.acao.primaria:hover{filter:brightness(1.08); color:#fff}
+.acao.mini{padding:3px 8px; font-size:.74rem}
+.acao:disabled{opacity:.5; cursor:default}
+.tela{display:none; padding:22px; max-width:1360px; margin:0 auto; width:100%}
+.tela.ativa{display:block}
+
+/* ---- rótulos ---- */
+.rot{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.13em; text-transform:uppercase; color:var(--meio); margin:0 0 8px}
+.dica{font-size:.78rem; color:var(--meio); margin:0}
+.dica + .dica{margin-top:6px}
+.chip{display:inline-flex; align-items:center; gap:6px; font-size:.72rem; padding:2px 8px; border:1px solid currentColor; color:var(--meio); font-weight:600; white-space:nowrap}
+.chip.ok{color:var(--ok-txt)} .chip.atencao{color:var(--atencao-txt)} .chip.falha{color:var(--falha-txt)}
+.swatch{display:inline-block; width:10px; height:10px; border-radius:2px; vertical-align:-1px; margin-right:4px}
+
+/* ---- premissas ---- */
+.premissas{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:22px; align-items:start}
+.form{display:flex; flex-direction:column; gap:18px}
+.bloco{background:var(--folha); border:1px solid var(--regua); padding:16px 18px}
+.bloco h2{font-family:"Source Serif 4",Georgia,serif; font-size:1.02rem; font-weight:600; margin-bottom:4px}
+.bloco .pergunta{font-size:.8rem; color:var(--meio); margin:0 0 12px}
+.fixa{border-left:3px solid var(--emerg)}
+.fixa .valorfixo{display:flex; gap:10px; align-items:baseline; font-size:.86rem}
+.linha{display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+.campo{display:flex; flex-direction:column; gap:4px; min-width:0}
+.campo label{font-size:.76rem; color:var(--meio)}
+.campo input[type=number],.campo select,.campo input[type=text]{padding:5px 8px; background:var(--papel); border:1px solid var(--regua); color:var(--tinta); font-size:.84rem; width:110px}
+.campo input[type=text]{width:220px}
+.campo input[type=range]{width:200px; accent-color:var(--entrada)}
+.opcoes{display:flex; gap:0; border:1px solid var(--regua); background:var(--papel); flex-wrap:wrap}
+.opcoes button{background:none; border:0; border-right:1px solid var(--regua); padding:5px 12px; font-size:.8rem; color:var(--meio); cursor:pointer}
+.opcoes button:last-child{border-right:0}
+.opcoes button[aria-pressed="true"]{background:var(--tinta); color:var(--folha); font-weight:600}
+.tabela{width:100%; border-collapse:collapse; font-size:.8rem}
+.tabela th{font-family:"IBM Plex Mono",monospace; font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--meio); text-align:left; padding:6px 8px; border-bottom:1px solid var(--regua); font-weight:500}
+.tabela td{padding:6px 8px; border-bottom:1px solid var(--regua2); vertical-align:top}
+.tabela td.num,.tabela th.num{text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.tabela tr:last-child td{border-bottom:0}
+.rolagem{overflow-x:auto}
+.portas{display:block; width:100%; height:auto}
+.portas .porta{cursor:pointer}
+.portas text{font-family:"IBM Plex Mono",monospace}
+.zonasMini{display:block; width:100%; height:auto; max-width:420px}
+.resumoVivo{position:sticky; top:66px; display:flex; flex-direction:column; gap:14px}
+.resumoVivo .bloco{padding:14px 16px}
+.kpi{display:grid; grid-template-columns:1fr auto; gap:4px 10px; font-size:.8rem}
+.kpi dt{color:var(--meio)} .kpi dd{margin:0; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; text-align:right}
+.kpi dd.ruim{color:var(--falha-txt); font-weight:600} .kpi dd.bom{color:var(--ok-txt)}
+.curva{display:block; width:100%; height:auto}
+.cenarios{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+textarea{width:100%; min-height:70px; font-family:"IBM Plex Mono",monospace; font-size:.7rem; background:var(--papel); color:var(--tinta); border:1px solid var(--regua); resize:vertical}
+.aviso{font-size:.78rem; color:var(--aviso); margin:6px 0 0}
+
+/* ---- simulação ---- */
+.simGrid{display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:18px; align-items:start}
+.palco{background:var(--folha); border:1px solid var(--regua); position:relative}
+.palco svg{display:block; width:100%; height:auto; background:var(--prancha)}
+.tempoBarra{display:flex; gap:12px; align-items:center; padding:10px 14px; border-top:1px solid var(--regua); flex-wrap:wrap}
+.tempoBarra input[type=range]{flex:1; min-width:160px; accent-color:var(--entrada)}
+.tempoBarra .hora{font-family:"IBM Plex Mono",monospace; font-size:1.1rem; font-weight:600; min-width:64px}
+.painel{display:flex; flex-direction:column; gap:12px}
+.estagios{display:flex; flex-direction:column; gap:1px; background:var(--regua2)}
+.estagio{background:var(--folha); padding:8px 10px; display:grid; grid-template-columns:1fr auto; gap:2px 10px; font-size:.8rem}
+.estagio .n{font-family:"IBM Plex Mono",monospace; font-size:1.05rem; font-weight:600; text-align:right}
+.estagio .sub{grid-column:1/3; font-size:.72rem; color:var(--meio)}
+.legenda{display:flex; gap:12px; flex-wrap:wrap; font-size:.74rem; color:var(--meio)}
+.graficos{display:grid; grid-template-columns:repeat(auto-fit,minmax(400px,1fr)); gap:16px; margin-top:18px}
+figure{margin:0; background:var(--folha); border:1px solid var(--regua); padding:12px 14px 10px}
+figure figcaption{font-size:.8rem; font-weight:600; margin-bottom:6px; display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
+figure figcaption .sub{font-weight:400; color:var(--meio); font-size:.74rem}
+figure svg{display:block; width:100%; height:auto; overflow:visible}
+figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
+.tip{position:fixed; pointer-events:none; background:var(--tinta); color:var(--folha); font-size:.74rem; padding:6px 9px; border-radius:3px; z-index:20; display:none; box-shadow:var(--sombra); max-width:260px}
+.tip b{font-weight:600}
+.semResultado{padding:40px 20px; text-align:center; color:var(--meio); font-size:.9rem}
+.progresso{height:4px; background:var(--regua2); position:relative; overflow:hidden}
+.progresso span{position:absolute; inset:0 auto 0 0; background:var(--entrada); width:0; transition:width .15s}
+
+/* ---- resultado ---- */
+.relatorio{max-width:980px; margin:0 auto; display:flex; flex-direction:column; gap:20px}
+.notaGeral{display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; background:var(--folha); border:1px solid var(--regua); padding:18px 22px}
+.notaGeral .selo{font-family:"Source Serif 4",Georgia,serif; font-size:2rem; font-weight:700; line-height:1; padding:12px 16px; border:2px solid currentColor}
+.notaGeral .selo.ok{color:var(--ok-txt)} .notaGeral .selo.atencao{color:var(--atencao-txt)} .notaGeral .selo.falha{color:var(--falha-txt)}
+.notaGeral h2{font-family:"Source Serif 4",Georgia,serif; font-size:1.3rem; font-weight:600}
+.notaGeral p{margin:4px 0 0; color:var(--meio); font-size:.86rem; max-width:70ch}
+.vereditos{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px}
+.veredito{background:var(--folha); border:1px solid var(--regua); padding:12px 14px; display:grid; grid-template-columns:auto 1fr; gap:4px 12px; border-left-width:4px}
+.veredito.ok{border-left-color:var(--ok)} .veredito.atencao{border-left-color:var(--atencao)} .veredito.falha{border-left-color:var(--falha)}
+.veredito .icone{font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:.9rem; width:18px; text-align:center}
+.veredito.ok .icone{color:var(--ok-txt)} .veredito.atencao .icone{color:var(--atencao-txt)} .veredito.falha .icone{color:var(--falha-txt)}
+.veredito h3{font-size:.9rem; font-weight:600}
+.veredito .valor{grid-column:2; font-family:"IBM Plex Mono",monospace; font-size:.8rem; font-variant-numeric:tabular-nums}
+.veredito .meta{grid-column:2; font-size:.72rem; color:var(--fraco)}
+.veredito .porque{grid-column:2; font-size:.78rem; color:var(--meio); margin-top:4px}
+.prosa{background:var(--folha); border:1px solid var(--regua); padding:18px 22px}
+.prosa h2,.secao h2{font-family:"Source Serif 4",Georgia,serif; font-size:1.05rem; font-weight:600; margin-bottom:8px}
+.prosa p{margin:0 0 10px; max-width:72ch; font-size:.9rem}
+.prosa p:last-child{margin-bottom:0}
+.secao{background:var(--folha); border:1px solid var(--regua); padding:16px 18px}
+.barraMesa{display:inline-block; height:8px; background:var(--z1); vertical-align:middle; border-radius:0 2px 2px 0}
+.comparativo td.melhor{font-weight:600; color:var(--ok-txt)}
+@media (max-width:900px){
+  .premissas,.simGrid{grid-template-columns:1fr}
+  .resumoVivo{position:static}
+  header{position:static}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+<header>
+  <h1>Simulador do Hall&nbsp;2</h1>
+  <span class="sub">fluxo de eleitores · RDS Ballsbridge · 04/10/2026</span>
+  <nav class="abas" role="tablist" aria-label="Telas">
+    <button role="tab" id="abaPremissas" aria-selected="true" data-tela="premissas"><span class="num">1</span> Premissas</button>
+    <button role="tab" id="abaSimulacao" aria-selected="false" data-tela="simulacao"><span class="num">2</span> Simulação</button>
+    <button role="tab" id="abaResultado" aria-selected="false" data-tela="resultado"><span class="num">3</span> Resultado</button>
+  </nav>
+  <div class="dir">
+    <span class="sub" id="nomeAtual"></span>
+    <button class="acao primaria" id="rodar">Rodar simulação</button>
+  </div>
+</header>
+<div class="progresso" id="progresso" hidden><span></span></div>
+
+<!-- ============================ 1 · PREMISSAS ============================ -->
+<section class="tela ativa" id="tela-premissas">
+<div class="premissas">
+<div class="form">
+
+  <div class="bloco">
+    <h2>Cenário</h2>
+    <p class="pergunta">Comece de um cenário pronto ou monte o seu. Cada resposta abaixo é uma premissa da simulação.</p>
+    <div class="cenarios">
+      <button class="acao" id="btnClaude">Cenário Claude</button>
+      <button class="acao" id="btnPadrao">Ponto de partida</button>
+      <span class="campo" style="flex-direction:row;gap:6px;align-items:center"><input type="text" id="nomeCenario" placeholder="nome deste cenário" maxlength="60" aria-label="Nome do cenário"></span>
+      <button class="acao" id="btnCopiar">Copiar cenário</button>
+      <button class="acao" id="btnColar">Colar cenário…</button>
+    </div>
+    <div id="colarCaixa" hidden style="margin-top:10px">
+      <textarea id="colarTexto" placeholder="cole aqui o JSON de um cenário do simulador ou de um cenário salvo da prancheta" aria-label="JSON"></textarea>
+      <div class="linha" style="margin-top:6px"><button class="acao mini" id="colarAplicar">Aplicar</button><button class="acao mini" id="colarCancelar">Cancelar</button></div>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h2>Salão</h2>
+    <p class="pergunta">Qual arranjo das 28 mesas da prancheta serve de base?</p>
+    <div class="linha">
+      <div class="opcoes" role="group" aria-label="Base da prancheta">
+        <button data-base="A" aria-pressed="true">Cenário A da prancheta</button>
+        <button data-base="B" aria-pressed="false">Cenário B</button>
+      </div>
+      <span class="dica" id="alteracoesInfo"></span>
+    </div>
+    <p class="dica" style="margin-top:8px">Para usar um arranjo salvo na prancheta, copie o cenário lá e cole em <strong>Colar cenário</strong> acima: o simulador lê o mesmo JSON.</p>
+  </div>
+
+  <div class="bloco">
+    <h2>Portas da fachada sul</h2>
+    <p class="pergunta">Perguntas 1 e 2 · Quais portas entram e quais saem? Clique numa porta para alternar entre fechada, entrada e saída. S2 e S8 são só de emergência.</p>
+    <svg class="portas" id="svgPortas" viewBox="0 0 560 74" role="group" aria-label="Portas da fachada sul"></svg>
+    <div class="legenda" style="margin-top:6px"><span><span class="swatch" style="background:var(--entrada)"></span>entrada</span><span><span class="swatch" style="background:var(--saida)"></span>saída</span><span><span class="swatch" style="background:var(--regua)"></span>fechada</span><span><span class="swatch" style="background:var(--emerg)"></span>emergência</span></div>
+  </div>
+
+  <div class="bloco">
+    <h2>Zonas e numeração</h2>
+    <p class="pergunta">Pergunta 3 · Em quantas zonas as mesas se dividem, por que porta cada zona entra e de onde parte a numeração MRV 1 a 28. As zonas são arcos contíguos do perímetro; a numeração fica contígua dentro de cada zona para simplificar a sinalização.</p>
+    <div class="linha">
+      <div class="campo"><label for="nZonas">Zonas</label>
+        <div class="opcoes" id="nZonas" role="group"><button data-n="2">2</button><button data-n="3" aria-pressed="true">3</button><button data-n="4">4</button></div></div>
+      <div class="campo"><label for="inicioZona1">Primeiro slot da zona A</label><input type="number" id="inicioZona1" min="1" max="28" value="1"></div>
+      <div class="campo"><label>Mesas por zona</label><div class="linha" id="tamanhos" style="gap:6px"></div></div>
+    </div>
+    <div class="linha" style="margin-top:12px; align-items:flex-start">
+      <svg class="zonasMini" id="svgZonas" viewBox="0 0 300 270" role="img" aria-label="Planta em miniatura com as zonas"></svg>
+      <div style="flex:1; min-width:260px">
+        <table class="tabela" id="tabZonas"></table>
+      </div>
+    </div>
+    <div class="linha" style="margin-top:12px">
+      <div class="campo"><label>MRV 1 começa na zona</label><div class="opcoes" id="inicioZonaMrv" role="group"></div></div>
+      <div class="campo"><label>Sentido da numeração</label><div class="opcoes" id="sentido" role="group"><button data-s="horario" aria-pressed="true">horário</button><button data-s="antihorario" aria-pressed="false">anti-horário</button></div></div>
+    </div>
+    <p class="dica" style="margin-top:8px">Horário: MRV 1 no canto noroeste seguindo a parede norte para leste. A mesa MRV k recebe a k-ª seção principal em ordem crescente, conforme a convocação publicada.</p>
+  </div>
+
+  <div class="bloco">
+    <h2>Checkpoint interno</h2>
+    <p class="pergunta">Pergunta 5 · Há checkpoint depois da porta? A que distância? Com quantos atendentes por zona? O espaço entre porta e checkpoint é o buffer que a liberação controlada enche.</p>
+    <div class="linha">
+      <div class="campo"><label>Checkpoint</label><div class="opcoes" id="cpExiste" role="group"><button data-v="1" aria-pressed="true">há checkpoint</button><button data-v="0" aria-pressed="false">sem checkpoint</button></div></div>
+      <div class="campo"><label for="cpDist">Distância da porta <span class="mono" id="cpDistVal">12 m</span></label><input type="range" id="cpDist" min="4" max="24" step="1" value="12"></div>
+      <div class="campo"><label for="cpFilas">Filas entre porta e checkpoint</label><input type="number" id="cpFilas" min="1" max="4" value="2"></div>
+      <div class="campo"><label for="cpSeg">Segundos por eleitor</label><input type="number" id="cpSeg" min="3" max="30" value="8"></div>
+    </div>
+    <div class="linha" style="margin-top:10px"><div class="campo"><label>Atendentes por zona</label><div class="linha" id="cpAtend" style="gap:6px"></div></div><span class="dica" id="cpCap"></span></div>
+  </div>
+
+  <div class="bloco">
+    <h2>Fila na frente de cada mesa</h2>
+    <p class="pergunta">Pergunta 4 · Quantas pessoas cabem na fila da mesa, por peso da mesa. A fila evita que a urna fique parada; não cria capacidade. A resposta certa aparece no resultado como “fila necessária”.</p>
+    <div class="linha">
+      <div class="campo"><label for="filaLeve">Mesas leves (≤ 500 aptos)</label><input type="number" id="filaLeve" min="1" max="12" value="3"></div>
+      <div class="campo"><label for="filaMedia">Médias (501–700)</label><input type="number" id="filaMedia" min="1" max="12" value="4"></div>
+      <div class="campo"><label for="filaPesada">Pesadas (> 700)</label><input type="number" id="filaPesada" min="1" max="12" value="6"></div>
+      <span class="dica" id="filaInfo"></span>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h2>Liberação na porta</h2>
+    <p class="pergunta">Como a porta decide deixar o próximo eleitor entrar. “Controlada pelo buffer” é a política prevista; as outras servem de comparação.</p>
+    <div class="opcoes" id="liberacao" role="group">
+      <button data-v="buffer" aria-pressed="true">controlada pelo buffer</button>
+      <button data-v="mesa" aria-pressed="false">só se a mesa do próximo tem vaga</button>
+      <button data-v="livre" aria-pressed="false">livre (sem controle)</button>
+    </div>
+    <div class="linha" style="margin-top:10px"><div class="campo"><label for="vazao">Vazão máxima da porta (pessoas/min)</label><input type="number" id="vazao" min="5" max="120" value="30"></div></div>
+  </div>
+
+  <div class="bloco">
+    <h2>Comparecimento</h2>
+    <p class="pergunta">Quantos dos 16.794 aptos aparecem. As taxas separam eleitor de Dublin e do interior, como em 2022.</p>
+    <div class="opcoes" id="comparecimento" role="group"></div>
+    <p class="dica" id="compInfo" style="margin-top:8px"></p>
+  </div>
+
+  <div class="bloco fixa">
+    <h2>Tempo de atendimento na mesa</h2>
+    <p class="pergunta">Resposta fixa: identificação pelo caderno, sem biometria. O mesário identifica o próximo enquanto o anterior vota; o ciclo é o maior dos dois tempos.</p>
+    <div class="linha">
+      <div class="campo"><label>Identificação</label><div class="opcoes" id="tId" role="group"><button data-v="30">30 s</button><button data-v="45" aria-pressed="true">45 s</button><button data-v="60">60 s</button><button data-v="90">90 s</button></div></div>
+      <div class="campo"><label for="tVoto">Voto na urna (s)</label><input type="number" id="tVoto" min="10" max="120" value="30"></div>
+      <div class="campo"><label for="cv">Variabilidade (coef.)</label><input type="number" id="cv" min="0" max="1" step="0.05" value="0.35"></div>
+      <div class="campo"><label for="just">Justificativas e dúvidas (% a mais)</label><input type="number" id="just" min="0" max="30" value="5"></div>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h2>Ring 3 e triagem externa</h2>
+    <p class="pergunta">Fora do salão as pessoas são separadas por zona. Com sinalização boa a triagem não limita; reduza para testar o efeito. A capacidade é o que cabe no Ring 3.</p>
+    <div class="linha">
+      <div class="campo"><label for="triAtend">Pessoas na triagem</label><input type="number" id="triAtend" min="1" max="20" value="6"></div>
+      <div class="campo"><label for="triSeg">Segundos por eleitor</label><input type="number" id="triSeg" min="2" max="40" value="6"></div>
+      <div class="campo"><label for="ring3Cap">Capacidade do Ring 3 (pessoas)</label><input type="number" id="ring3Cap" min="100" max="5000" step="50" value="800"></div>
+    </div>
+  </div>
+
+  <div class="bloco fixa">
+    <h2>Curva de chegada (fixa)</h2>
+    <p class="pergunta">Premissa do modelo, igual para todos os cenários: quando as pessoas chegam ao local, não quando votam. Em 2022 o voto veio bem depois da chegada por causa das filas. Pesos por meia hora, das 7h às 17h.</p>
+    <svg class="curva" id="svgCurva" viewBox="0 0 560 130" role="img" aria-label="Curva de chegada por meia hora"></svg>
+  </div>
+
+  <div class="bloco">
+    <h2>Simulação</h2>
+    <div class="linha">
+      <div class="campo"><label for="runs">Dias simulados</label><input type="number" id="runs" min="1" max="60" value="12"></div>
+      <div class="campo"><label for="seed">Semente</label><input type="number" id="seed" min="1" max="9999" value="7"></div>
+      <span class="dica">Cada dia sorteia comparecimento, horários e tempos. O resultado mostra a mediana e o dia ruim (percentil 90).</span>
+    </div>
+  </div>
+</div>
+
+<aside class="resumoVivo">
+  <div class="bloco">
+    <p class="rot">Leitura imediata</p>
+    <dl class="kpi" id="kpiEstatico"></dl>
+  </div>
+  <div class="bloco">
+    <p class="rot">Carga por zona</p>
+    <table class="tabela" id="tabCarga"></table>
+  </div>
+  <div class="bloco">
+    <p class="rot">Avisos</p>
+    <div id="avisos" class="dica">—</div>
+  </div>
+</aside>
+</div>
+</section>
+
+<!-- ============================ 2 · SIMULAÇÃO ============================ -->
+<section class="tela" id="tela-simulacao">
+  <div id="simVazio" class="semResultado">Ajuste as premissas e clique em <strong>Rodar simulação</strong>. O dia de referência (fechamento mediano) aparece aqui minuto a minuto.</div>
+  <div id="simConteudo" hidden>
+  <div class="simGrid">
+    <div class="palco">
+      <svg id="svgPlanta" viewBox="-3 -2 56.3 60" role="img" aria-label="Planta do Hall 2 com filas e fluxos"></svg>
+      <div class="tempoBarra">
+        <button class="acao mini" id="play" aria-label="Reproduzir">▶</button>
+        <span class="hora" id="horaAtual">8h00</span>
+        <input type="range" id="tempo" min="0" max="600" value="60" aria-label="Minuto do dia">
+        <select id="velocidade" aria-label="Velocidade"><option value="1">1 min/s</option><option value="5" selected>5 min/s</option><option value="15">15 min/s</option></select>
+        <div class="legenda"><span><span class="swatch" style="background:var(--pessoa)"></span>eleitor em fila</span><span><span class="swatch" style="background:var(--falha)"></span>fila além do espaço</span><span>▮ urna ocupada</span></div>
+      </div>
+    </div>
+    <aside class="painel">
+      <div class="bloco" style="padding:12px 14px">
+        <p class="rot">Neste minuto</p>
+        <div class="estagios" id="estagios"></div>
+      </div>
+      <div class="bloco" style="padding:12px 14px">
+        <p class="rot">Dia de referência</p>
+        <dl class="kpi" id="kpiDia"></dl>
+      </div>
+    </aside>
+  </div>
+  <div class="graficos" id="graficos"></div>
+  </div>
+</section>
+
+<!-- ============================ 3 · RESULTADO ============================ -->
+<section class="tela" id="tela-resultado">
+  <div id="resVazio" class="semResultado">O relatório aparece depois de rodar a simulação.</div>
+  <div id="resConteudo" class="relatorio" hidden></div>
+</section>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+/*__BASE__*/
+/*__MRVS__*/
+</script>
+<script>
+/*__MODELO_JS__*/
+</script>
+<script>
+/*__APP_JS__*/
+</script>

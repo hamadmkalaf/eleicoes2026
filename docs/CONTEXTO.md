@@ -360,10 +360,27 @@ A peça da ideia 1 está publicada em
 prancheta — a mesma planta manipulável, em escala — em
 <https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0>. Mesma
 regra das outras: para atualizar de outra sessão, publique passando a URL em
-`url`. A prancheta declara a capability `db` (coleção `cenarios`): os cenários
-salvos são compartilhados entre todos que abrem o link — por isso o artefato
-não admite compartilhamento público, só dentro da organização. Ao republicar,
-mantenha a declaração (omitir `capabilities` a preserva).
+`url`.
+
+**Os cenários salvos moram no branch `cenarios-hall2` do repositório**, um
+arquivo `.json` por cenário em `cenarios/` (formato e por quê em
+`cenarios/README.md` desse branch). A prancheta não lê esse branch ao vivo —
+a sandbox do artefato publicado bloqueia qualquer chamada de rede para fora
+do próprio claude.ai, então nem GitHub nem qualquer outro serviço externo dá
+para consultar em tempo real de dentro da página (só as capabilities do
+claude.ai escapam disso, e usar a `db` de novo voltaria a prender o artefato
+à organização, o que motivou essa troca). Por isso o fluxo é em duas
+pontas: **Salvar** monta o JSON e abre o GitHub com o commit pronto para
+confirmar (`.../new/cenarios-hall2?filename=...&value=...`); a lista que
+aparece na prancheta para todo mundo é a que `scripts/gera_editor.py` lê do
+branch **na hora de gerar e publicar** a página — salvar um cenário novo só
+aparece na lista geral depois que alguém pedir a republicação. Copiar/Colar
+em JSON continua funcionando na hora, sem depender do GitHub. Cada cenário
+grava só as mesas que mudaram da planta oficial (`alteracoes`, por número da
+mesa) — não as 28 —, o que mantém os arquivos pequenos e os diffs do git
+legíveis, e significa que mesas não citadas acompanham a planta oficial se
+ela mudar depois. A prancheta não declara mais a capability `db`; o artefato
+volta a admitir compartilhamento público.
 
 ```bash
 cd scripts

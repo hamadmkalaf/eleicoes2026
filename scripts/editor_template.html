@@ -110,9 +110,9 @@ kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid va
   font-variant-numeric:tabular-nums}
 .medidas .det{font-family:"IBM Plex Mono",monospace; font-size:.7rem;
   color:var(--fraco)}
-.medidas button,.salvos .fechar{background:none; border:0; cursor:pointer;
+.medidas button{background:none; border:0; cursor:pointer;
   color:var(--fraco); padding:2px 4px; font-size:.9rem; line-height:1}
-.medidas button:hover,.salvos .fechar:hover{color:var(--alerta)}
+.medidas button:hover{color:var(--alerta)}
 
 .salvos li{background:var(--folha); padding:7px 2px 7px 0; font-size:.78rem}
 .salvos .linha1{display:flex; align-items:baseline; gap:8px}
@@ -120,8 +120,9 @@ kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid va
 .salvos .quando{margin-left:auto; font-size:.68rem; color:var(--fraco);
   font-family:"IBM Plex Mono",monospace; white-space:nowrap}
 .salvos .linha2{display:flex; gap:6px; margin-top:5px; align-items:center}
-.salvos .fechar{margin-left:auto}
-.salvos .fechar.confirma{color:var(--alerta); font-size:.72rem; font-weight:600}
+.salvos .ver{margin-left:auto; color:var(--fraco); font-size:.72rem;
+  text-decoration:none}
+.salvos .ver:hover{color:var(--entrada)}
 .vazio{font-size:.78rem; color:var(--fraco); margin:0}
 .salvarLinha{display:flex; gap:6px; margin-bottom:10px}
 .salvarLinha input{flex:1; min-width:0; padding:4px 8px; font-size:.79rem;
@@ -131,7 +132,7 @@ kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid va
   font-size:.7rem; background:var(--papel); color:var(--tinta);
   border:1px solid var(--regua); resize:vertical}
 #colarCaixa .linha2{display:flex; gap:6px; margin-top:5px}
-.avisoDb{font-size:.74rem; color:var(--aviso); margin:8px 0 0}
+.notaSalvos{font-size:.74rem; color:var(--meio); margin:8px 0 0}
 
 .opcoes{display:flex; flex-direction:column; gap:7px; font-size:.79rem}
 .opcoes label{display:flex; align-items:center; gap:8px; cursor:pointer}
@@ -199,7 +200,7 @@ footer .estado.guia{color:var(--entrada)}
       <p class="rot">Cenários salvos <span class="direita"></span></p>
       <div class="salvarLinha">
         <input type="text" id="nomeCenario" placeholder="nome do cenário" maxlength="60" aria-label="Nome do cenário">
-        <button class="acao mini" id="salvarCenario">Salvar</button>
+        <button class="acao mini" id="salvarCenario">Salvar no GitHub</button>
       </div>
       <ul class="salvos" id="listaSalvos"></ul>
       <p class="vazio" id="semSalvos">Nenhum cenário salvo ainda.</p>
@@ -213,7 +214,7 @@ footer .estado.guia{color:var(--entrada)}
       <div class="linha2" style="margin-top:8px">
         <button class="acao mini" id="colarCenario">Colar cenário…</button>
       </div>
-      <p class="avisoDb" id="dbAviso" hidden>Sem ligação com o banco do artefato nesta janela: os cenários não estão compartilhados. Salvar guarda só neste navegador; use Copiar/Colar para trocar com colegas.</p>
+      <p class="notaSalvos">Esta lista foi gravada na última vez que a prancheta foi publicada — não é uma leitura ao vivo. <strong>Salvar</strong> abre o GitHub com o cenário pronto para confirmar o commit; depois é preciso pedir a atualização da página para ele aparecer aqui para todos. <strong>Copiar</strong> funciona na hora, sem depender do GitHub.</p>
     </div>
     <div class="bloco">
       <p class="rot">Medidas <button class="acao mini direita" id="apagarMedidas">Apagar todas</button></p>
@@ -244,7 +245,7 @@ footer .estado.guia{color:var(--entrada)}
       <p class="dica">Arraste uma mesa para movê-la; <kbd>Shift</kbd>+clique soma mesas à seleção e o arrasto move o conjunto. A mesa fica <strong>vermelha</strong> quando invade zona protegida, vão de porta, outra mesa, ou sai do salão.</p>
       <p class="dica"><strong>Reparear</strong>: clique na mesa que fica parada e depois na que vai formar par — ela vem para 3,00 m de corredor e, se houver vizinha alinhada, o par encosta a 1,50 m dela.</p>
       <p class="dica"><kbd>R</kbd> gira a seleção 90°. Setas movem de um passo, com <kbd>Shift</kbd> de dez. <kbd>Ctrl+Z</kbd> desfaz. <kbd>Esc</kbd> desmarca.</p>
-      <p class="dica">Arraste o fundo para deslocar a planta; a roda do mouse aproxima e afasta. O rascunho fica neste navegador; <strong>Salvar</strong> publica o cenário para todos que abrem este link.</p>
+      <p class="dica">Arraste o fundo para deslocar a planta; a roda do mouse aproxima e afasta. O rascunho fica neste navegador; <strong>Salvar</strong> leva o cenário para o repositório no GitHub.</p>
     </div>
   </aside>
 </div>
@@ -926,28 +927,51 @@ $("copiar").onclick = async () => {
 for (const id of ["optAssentos", "optZonas", "optGrade", "optPortas"])
   $(id).onchange = () => { opcoes(); montaMesas(); };
 
-/* --- cenarios salvos --------------------------------------------------- */
-let db = null, salvos = [], confirmaApagar = null;
-const CHAVE_SALVOS = CHAVE + "-salvos";
+/* --- cenarios salvos -----------------------------------------------------
+   A lista vem embutida em D.cenariosSalvos, gravada na ultima vez que a
+   prancheta foi gerada e publicada: o artefato nao pode buscar dados ao
+   vivo fora do proprio claude.ai (a sandbox bloqueia fetch para qualquer
+   outro host), entao nao ha como ler o GitHub em tempo real daqui. Salvar
+   abre o GitHub com o commit pronto para confirmar; Copiar/Colar funciona
+   na hora, sem depender do GitHub. Ver cenarios/README.md no branch
+   cenarios-hall2. */
+const GITHUB_OWNER = "hamadmkalaf", GITHUB_REPO = "eleicoes2026",
+      GITHUB_BRANCH_CENARIOS = "cenarios-hall2";
+let salvos = Array.isArray(D.cenariosSalvos) ? D.cenariosSalvos : [];
 
 function pacoteCenario(nome){
-  return {nome: nome, base: cenario,
-          mrvs: mrvs.map(m => ({...m})), medidas: medidas.map(m => ({...m})),
-          criadoEm: new Date().toISOString()};
+  const base = original(cenario), alteracoes = [];
+  for (const m of mrvs) {
+    const o = base.find(q => q.n === m.n);
+    if (Math.hypot(m.x - o.x, m.y - o.y) > 1e-6 || m.rot !== o.rot || m.lado !== o.lado)
+      alteracoes.push({n: m.n, x: m.x, y: m.y, rot: m.rot, lado: m.lado});
+  }
+  return {nome: nome, base: cenario, alteracoes,
+          medidas: medidas.map(m => ({...m})), criadoEm: new Date().toISOString()};
 }
 function aplicaCenario(cen){
-  if (!cen || !Array.isArray(cen.mrvs) || cen.mrvs.length !== 28) {
-    avisa("Cenário inválido — precisa das 28 mesas", 3500); return;
+  const temAlteracoes = Array.isArray(cen && cen.alteracoes);
+  const formatoAntigo = Array.isArray(cen && cen.mrvs) && cen.mrvs.length === 28;
+  if (!cen || (cen.base !== "A" && cen.base !== "B") || (!temAlteracoes && !formatoAntigo)) {
+    avisa("Cenário inválido — faltam dados essenciais", 3500); return;
   }
   let trocouBase = false;
-  if ((cen.base === "A" || cen.base === "B") && cen.base !== cenario) {
+  if (cen.base !== cenario) {
     cenario = cen.base; trocouBase = true;
     $("cenA").setAttribute("aria-pressed", cenario === "A");
     $("cenB").setAttribute("aria-pressed", cenario === "B");
     montaZonas();
   }
   const antes = instantanea();
-  mrvs = cen.mrvs.map(m => ({...m}));
+  if (formatoAntigo) {
+    mrvs = cen.mrvs.map(m => ({...m}));
+  } else {
+    mrvs = original(cenario);
+    for (const alt of cen.alteracoes) {
+      const m = mrvs.find(q => q.n === alt.n);
+      if (m) Object.assign(m, alt);
+    }
+  }
   medidas = Array.isArray(cen.medidas) ? cen.medidas.map(m => ({...m})) : [];
   selecao = new Set();
   // trocar de base zera o historico: o instantaneo anterior era da outra base
@@ -964,88 +988,60 @@ function pintaSalvos(){
   for (const s of salvos) {
     const li = document.createElement("li");
     const quando = (s.criadoEm || "").slice(0, 16).replace("T", " ");
+    const n = Array.isArray(s.alteracoes) ? s.alteracoes.length
+            : (Array.isArray(s.mrvs) ? s.mrvs.length : 0);
     li.innerHTML =
       `<div class="linha1"><span class="nome"></span>
          <span class="quando">${quando} · ${s.base || "A"}</span></div>
        <div class="linha2">
          <button class="acao mini abrir">Abrir</button>
          <button class="acao mini copiarUm">Copiar</button>
-         <button class="fechar" title="Apagar este cenário" aria-label="Apagar cenário">×</button>
+         <a class="ver" target="_blank" rel="noopener">GitHub ↗</a>
        </div>`;
-    li.querySelector(".nome").textContent = s.nome || "sem nome";
+    li.querySelector(".nome").textContent = (s.nome || "sem nome") +
+      (n ? ` · ${n} mesa${n > 1 ? "s" : ""} alterada${n > 1 ? "s" : ""}` : "");
     li.querySelector(".abrir").onclick = () => aplicaCenario(s);
     li.querySelector(".copiarUm").onclick = async ev => {
       const b = ev.target;
       try {
         await navigator.clipboard.writeText(JSON.stringify(
-          {nome: s.nome, base: s.base, mrvs: s.mrvs, medidas: s.medidas,
+          {nome: s.nome, base: s.base, alteracoes: s.alteracoes, medidas: s.medidas,
            criadoEm: s.criadoEm}));
         b.textContent = "Copiado";
       } catch (e) { b.textContent = "não deu"; }
       setTimeout(() => { b.textContent = "Copiar"; }, 1500);
     };
-    const x = li.querySelector(".fechar");
-    x.onclick = () => {
-      if (confirmaApagar !== s.id) {
-        confirmaApagar = s.id;
-        x.textContent = "apagar?"; x.classList.add("confirma");
-        setTimeout(() => {
-          if (confirmaApagar === s.id) {
-            confirmaApagar = null;
-            x.textContent = "×"; x.classList.remove("confirma");
-          }
-        }, 3000);
-        return;
-      }
-      confirmaApagar = null;
-      apagaSalvo(s.id);
-    };
+    const a = li.querySelector(".ver");
+    a.href = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/blob/`
+      + `${GITHUB_BRANCH_CENARIOS}/cenarios/${encodeURIComponent(s.id || "")}.json`;
     lista.appendChild(li);
   }
 }
 
-function salvosLocais(){
-  try { return JSON.parse(localStorage.getItem(CHAVE_SALVOS) || "[]"); }
-  catch (e) { return []; }
+function slugifica(s){
+  return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "cenario";
 }
-function gravaSalvosLocais(v){
-  try { localStorage.setItem(CHAVE_SALVOS, JSON.stringify(v)); } catch (e) {}
+function carimboArquivo(d = new Date()){
+  const p = v => String(v).padStart(2, "0");
+  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}`
+       + `-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
 }
-
-async function salvaCenario(){
+function salvaCenario(){
   const nome = $("nomeCenario").value.trim() || "sem nome";
   const corpo = pacoteCenario(nome);
-  const b = $("salvarCenario");
-  if (db) {
-    b.textContent = "…"; b.disabled = true;
-    try {
-      await db.collection("cenarios").add(corpo);
-      $("nomeCenario").value = "";
-      avisa(`Cenário “${nome}” salvo para todos`, 3000);
-    } catch (e) {
-      avisa(e && e.code === "quota_exceeded"
-        ? "O banco encheu — apague cenários antigos para salvar novos"
-        : "Não deu para salvar agora — tente de novo", 4500);
-    }
-    b.textContent = "Salvar"; b.disabled = false;
-  } else {
-    const v = salvosLocais();
-    v.unshift({...corpo, id: "local-" + Date.now()});
-    gravaSalvosLocais(v);
-    salvos = v; pintaSalvos();
-    $("nomeCenario").value = "";
-    avisa(`Cenário “${nome}” salvo neste navegador`, 3000);
-  }
-}
-async function apagaSalvo(id){
-  if (db && !String(id).startsWith("local-")) {
-    try { await db.doc("cenarios/" + id).delete(); }
-    catch (e) { avisa("Não deu para apagar agora", 3000); }
-  } else {
-    const v = salvosLocais().filter(s => s.id !== id);
-    gravaSalvosLocais(v);
-    salvos = v; pintaSalvos();
-  }
+  const json = JSON.stringify(corpo);
+  const arquivo = `cenarios/${slugifica(nome)}-${carimboArquivo()}.json`;
+  const url = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/new/${GITHUB_BRANCH_CENARIOS}`
+    + `?filename=${encodeURIComponent(arquivo)}`
+    + `&value=${encodeURIComponent(json)}`
+    + `&message=${encodeURIComponent("Cenário salvo: " + nome)}`;
+  // window.open primeiro, sincrono, para nao perder o gesto do clique;
+  // a copia para a area de transferencia pode ser assincrona depois.
+  window.open(url, "_blank", "noopener");
+  navigator.clipboard.writeText(json).catch(() => {});
+  $("nomeCenario").value = "";
+  avisa("Abrindo o GitHub para confirmar o commit — o JSON também foi copiado, caso prefira colar em outro lugar", 5000);
 }
 $("salvarCenario").onclick = salvaCenario;
 $("nomeCenario").addEventListener("keydown", ev => {
@@ -1063,36 +1059,10 @@ $("colarAplicar").onclick = () => {
   } catch (e) { avisa("Isso não é um JSON de cenário válido", 3500); }
 };
 
-async function ligaBanco(){
-  let ns = null;
-  try {
-    if (window.claude && typeof window.claude.use === "function")
-      ns = await window.claude.use("db");
-  } catch (e) { ns = null; }
-  if (!ns) {
-    $("dbAviso").hidden = false;
-    salvos = salvosLocais(); pintaSalvos();
-    return;
-  }
-  db = ns;
-  db.collection("cenarios").orderBy("criadoEm", "desc").limit(50).onSnapshot(
-    snap => {
-      salvos = snap.docs.filter(d => d.exists)
-        .map(d => ({id: d.id, ...d.data()}));
-      pintaSalvos();
-    },
-    err => {
-      db = null;
-      $("dbAviso").hidden = false;
-      salvos = salvosLocais(); pintaSalvos();
-    });
-}
-
 /* --- inicio ----------------------------------------------------------- */
 carregar();
 montaFundo(); montaZonas(); montaPortas(); montaMesas(); montaMedidas();
 opcoes(); pintaPainel(); pintaHistorico(); enquadra();
-salvos = salvosLocais(); pintaSalvos();
-ligaBanco();
+pintaSalvos();
 addEventListener("resize", enquadra);
 </script>

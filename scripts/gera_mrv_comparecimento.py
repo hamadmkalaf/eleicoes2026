@@ -1,4 +1,5 @@
-"""Junta a designacao oficial de MRVs (DJE/TRE-DF) ao eleitorado por secao.
+"""Junta a designacao oficial de MRVs (DJE/TRE-DF) ao eleitorado por secao,
+com estimativa de comparecimento por localidade de origem (domicilio).
 
 Fonte da designacao MRV -> secao principal: Diario da Justica Eletronico do
 TRE-DF, Ano 2026 n. 139, disponibilizado em 04/08/2026 ("Convocacao de
@@ -9,15 +10,19 @@ conhece a secao principal, nao o numero de MRV.
 
 QT_ELEITOR_SECAO (aqui "Eleitores aptos") e dado oficial do TSE. Nao ha, em
 nenhum arquivo de data/raw/, uma estimativa de comparecimento por secao
-publicada pelo TSE ou pelo Cartorio Eleitoral. A unica referencia a taxa de
-comparecimento no repositorio esta em contexto_eleicoes_dublin_2026.md
-(secao 1): 74% para secoes domiciliadas em Dublin e ~50% para secoes do
-interior, taxas de 2022 citadas de memoria de conversa anterior e marcadas
-la mesmo como "ainda sujeitas a validacao final com o Cartorio
-Eleitoral/TSE" -- nao e um numero oficial nem por secao, e sim uma taxa
-unica de 2022 aplicada por origem (Dublin x interior). Esse calculo esta
-isolado abaixo para poder ser substituido assim que houver dado oficial de
-comparecimento por secao (ex.: resultado por secao das eleicoes de 2022).
+publicada pelo TSE ou pelo Cartorio Eleitoral -- so o numero de aptos.
+
+A taxa de comparecimento por domicilio abaixo (TAXA_POR_DOMICILIO) vem de
+handoff_agregacao_dublin_2026.md (secao 2), fornecido pelo usuario em
+03/09/2026: taxas de 2022 por condado/localidade de origem, algumas
+"diretas" (dado do proprio domicilio), outras "proxy" (domicilio parecido
+usado como substituto) ou "genericas" (taxa media nacional de abstencao).
+Cada secao (principal ou agregada) tem 100% do seu eleitorado numa unica
+localidade de origem (achado ja registrado em
+contexto_eleicoes_dublin_2026.md), entao a taxa e aplicada secao a secao,
+nao mais por um binario Dublin/interior -- essa e uma estimativa mais fina
+que a usada na primeira versao deste script (74%/50%), mas ainda nao e
+comparecimento oficial por secao.
 """
 
 import json
@@ -34,8 +39,26 @@ MRV_SECAO_PRINCIPAL = {
     23: 3315, 24: 3322, 25: 3442, 26: 3688, 27: 3832, 28: 3862,
 }
 
-TAXA_DUBLIN = 0.74
-TAXA_INTERIOR = 0.50
+# Taxa de comparecimento 2022 por domicilio e qualidade do dado, transcritas
+# de handoff_agregacao_dublin_2026.md secao 2. Chave = valor de
+# Residencia_predominante em saidas/dados.json (mesma grafia, maiusculas).
+TAXA_POR_DOMICILIO = {
+    "DUBLIN":                   (0.740, "direto"),
+    "CORK":                     (0.533, "direto"),
+    "OUTROS LOCAIS DA IRLANDA": (0.600, "direto"),
+    "GALWAY":                   (0.481, "direto"),
+    "LIMERICK":                 (0.434, "proxy"),
+    "WESTMEATH":                (0.461, "proxy"),
+    "WATERFORD":                (0.461, "proxy"),
+    "ROSCOMMON":                (0.434, "proxy"),
+    "CLARE":                    (0.649, "direto"),
+    "CAVAN":                    (0.461, "proxy"),
+    "MAYO":                     (0.544, "proxy"),
+    "LONGFORD":                 (0.778, "direto"),
+    "DONEGAL":                  (0.510, "genérico (0,49 abst.)"),
+    "KERRY":                    (0.544, "proxy"),
+    "LEITRIM":                  (0.510, "genérico (0,49 abst.)"),
+}
 
 
 def _secao_agregada(urna: dict):
@@ -54,36 +77,50 @@ def main():
         faltando = set(MRV_SECAO_PRINCIPAL.values()) ^ set(urnas)
         raise SystemExit(f"Descasamento MRV x urnas do pipeline: {faltando}")
 
+    faltando_taxa = {s["Residencia_predominante"] for s in secoes.values()} - set(TAXA_POR_DOMICILIO)
+    if faltando_taxa:
+        raise SystemExit(f"Sem taxa de comparecimento para: {faltando_taxa}")
+
+    def comparecimento_secao(secao_num: int) -> float:
+        s = secoes[secao_num]
+        taxa, _ = TAXA_POR_DOMICILIO[s["Residencia_predominante"]]
+        return s["Eleitores"] * taxa
+
     linhas = []
     total_aptos = 0
-    total_comparecimento = 0
+    total_comparecimento_exato = 0.0
     for mrv in sorted(MRV_SECAO_PRINCIPAL):
         secao_p = MRV_SECAO_PRINCIPAL[mrv]
         urna = urnas[secao_p]
         secao_a = _secao_agregada(urna)
 
-        eleitores_p = urna["Eleitores_principal"]
-        eleitores_a = urna["Eleitores_agregada"]
-        origem_a = secoes[secao_a]["Residencia_predominante"] if secao_a else None
+        taxa_p, qual_p = TAXA_POR_DOMICILIO[secoes[secao_p]["Residencia_predominante"]]
+        comp_p = comparecimento_secao(secao_p)
 
-        eleitores_dublin = eleitores_p + (eleitores_a if origem_a == "DUBLIN" else 0)
-        eleitores_interior = eleitores_a if (secao_a and origem_a != "DUBLIN") else 0
-        comparecimento = round(
-            eleitores_dublin * TAXA_DUBLIN + eleitores_interior * TAXA_INTERIOR
-        )
+        if secao_a:
+            origem_a = secoes[secao_a]["Residencia_predominante"]
+            taxa_a, qual_a = TAXA_POR_DOMICILIO[origem_a]
+            comp_a = comparecimento_secao(secao_a)
+        else:
+            origem_a = taxa_a = qual_a = comp_a = None
 
+        comp_total = comp_p + (comp_a or 0)
         total_aptos += urna["Total_combinado"]
-        total_comparecimento += comparecimento
+        total_comparecimento_exato += comp_total
 
         linhas.append({
             "mrv": mrv,
             "secao_principal": secao_p,
+            "eleitores_principal": urna["Eleitores_principal"],
+            "taxa_principal": taxa_p,
+            "qualidade_principal": qual_p,
             "secao_agregada": secao_a,
+            "eleitores_agregada": urna["Eleitores_agregada"],
             "origem_agregada": origem_a,
-            "eleitores_principal": eleitores_p,
-            "eleitores_agregada": eleitores_a,
+            "taxa_agregada": taxa_a,
+            "qualidade_agregada": qual_a,
             "total_aptos": urna["Total_combinado"],
-            "comparecimento_estimado": comparecimento,
+            "comparecimento_estimado": round(comp_total),
         })
 
     assert total_aptos == dados["total_eleitores"], (
@@ -91,9 +128,10 @@ def main():
         f"({dados['total_eleitores']})"
     )
 
+    total_comparecimento = round(total_comparecimento_exato)
     gera_markdown(linhas, total_aptos, total_comparecimento)
     print(f"{len(linhas)} MRVs | {total_aptos:,} eleitores aptos | "
-          f"~{total_comparecimento:,} comparecimento estimado (taxa 2022, nao oficial)"
+          f"~{total_comparecimento:,} comparecimento estimado (taxa por domicílio, 2022, não oficial)"
           .replace(",", "."))
 
 
@@ -103,57 +141,61 @@ def gera_markdown(linhas, total_aptos, total_comparecimento):
     out.append(
         "Junta a designação oficial de MRVs do DJE/TRE-DF (Ano 2026 n. 139, "
         "04/08/2026 — convocação de mesários, Irlanda/Dublin) ao eleitorado "
-        "apurado em `saidas/dados.json` (fonte: TSE, `data/raw/`).\n"
+        "apurado em `saidas/dados.json` (fonte: TSE, `data/raw/`), com "
+        "estimativa de comparecimento por seção usando a taxa de 2022 do "
+        "domicílio de origem de cada seção "
+        "(`handoff_agregacao_dublin_2026.md`).\n"
     )
     out.append(
         "## Aviso sobre a coluna de comparecimento\n\n"
         "**Não há, em nenhum arquivo deste repositório, uma estimativa de "
         "comparecimento por seção publicada pelo TSE ou pelo Cartório "
-        "Eleitoral.** Os dois CSVs em `data/raw/` trazem apenas o número de "
-        "**eleitores aptos** (`QT_ELEITOR_SECAO`), não comparecimento "
-        "esperado.\n\n"
-        "A coluna **Comparecimento estimado** abaixo é um cálculo derivado, "
-        "não um dado oficial: aplica, seção a seção, a única taxa de "
-        "comparecimento registrada no repositório — "
-        f"`contexto_eleicoes_dublin_2026.md` cita **{TAXA_DUBLIN:.0%}** "
-        "para seções domiciliadas em Dublin e "
-        f"**{TAXA_INTERIOR:.0%}** para seções do interior, taxas de 2022 "
-        "que o próprio documento marca como *\"ainda sujeitas a validação "
-        "final com o Cartório Eleitoral/TSE\"* — não é uma taxa por seção, "
-        "e sim uma taxa única por origem (Dublin vs. interior) aplicada a "
-        "cada seção conforme a residência predominante do seu eleitorado. "
-        "Trate como estimativa de trabalho, não como projeção validada.\n\n"
-        "Se você localizar o comparecimento real por seção (ex.: resultado "
-        "seção a seção das eleições de 2022, publicado pelo TSE), essa é a "
-        "fonte que deveria substituir a taxa fixa usada aqui — "
-        "`scripts/gera_mrv_comparecimento.py` foi escrito para isso, "
-        "bastando trocar `TAXA_DUBLIN`/`TAXA_INTERIOR` por um valor por "
-        "seção.\n"
+        "Eleitoral.** O que existe é o número de **eleitores aptos** "
+        "(`QT_ELEITOR_SECAO`) por seção — dado oficial — e, em "
+        "`handoff_agregacao_dublin_2026.md`, uma taxa de comparecimento de "
+        "**2022** por domicílio/condado (não por seção), com qualidade "
+        "desigual: `direto` (dado do próprio domicílio), `proxy` (domicílio "
+        "parecido usado como substituto) ou `genérico` (taxa média nacional "
+        "de abstenção). A coluna **Comparecimento estimado** abaixo aplica "
+        "essa taxa a cada seção conforme seu domicílio predominante — já "
+        "verificado seção a seção contra os totais do handoff (bate em "
+        "todas as 15 localidades). Ainda assim, é uma **taxa de 2022 "
+        "aplicada a 2026**, não uma projeção validada pelo TSE/Cartório "
+        "Eleitoral para este pleito — trate como estimativa de trabalho, "
+        "de qualidade heterogênea entre localidades (ver coluna "
+        "**Qualidade**).\n"
     )
     out.append(
         "## Tabela\n\n"
-        "| MRV | Seção principal | Seção agregada | Origem da agregada | "
-        "Eleitores aptos (principal) | Eleitores aptos (agregada) | "
-        "**Total aptos** | **Comparecimento estimado*** |\n"
-        "|---|---|---|---|---|---|---|---|"
+        "| MRV | Seção principal (Dublin) | Comparecimento estimado | "
+        "Seção agregada | Origem (taxa · qualidade) | "
+        "Eleitores aptos (agregada) | Comparecimento estimado (agregada) | "
+        "**Total aptos** | **Total comparecimento estimado** |\n"
+        "|---|---|---|---|---|---|---|---|---|"
     )
     for l in linhas:
-        sec_a = f"{l['secao_agregada']:04d}" if l["secao_agregada"] else "—"
-        origem = l["origem_agregada"] or "—"
+        if l["secao_agregada"]:
+            sec_a = f"{l['secao_agregada']:04d}"
+            origem = f"{l['origem_agregada']} ({l['taxa_agregada']:.1%} · {l['qualidade_agregada']})"
+            elei_a = l["eleitores_agregada"]
+            comp_a = round(elei_a * l["taxa_agregada"])
+        else:
+            sec_a = "—"
+            origem = "—"
+            elei_a = 0
+            comp_a = 0
+        comp_p = round(l["eleitores_principal"] * l["taxa_principal"])
         out.append(
-            f"| MRV {l['mrv']} | {l['secao_principal']:04d} | {sec_a} | "
-            f"{origem} | {l['eleitores_principal']} | "
-            f"{l['eleitores_agregada'] or 0} | **{l['total_aptos']}** | "
+            f"| MRV {l['mrv']} | {l['secao_principal']:04d} "
+            f"({l['eleitores_principal']} aptos · {l['taxa_principal']:.0%} · "
+            f"{l['qualidade_principal']}) | {comp_p} | {sec_a} | {origem} | "
+            f"{elei_a} | {comp_a} | **{l['total_aptos']}** | "
             f"**{l['comparecimento_estimado']}** |"
         )
+    fmt = lambda n: f"{int(n):,}".replace(",", ".")
     out.append(
-        f"| **Total (28 MRVs)** | | | | | | **{total_aptos:,}**".replace(",", ".")
-        + f" | **{total_comparecimento:,}*** |".replace(",", ".")
-    )
-    out.append(
-        "\n\\* Estimado a 74% (origem Dublin) / 50% (origem interior) sobre "
-        "os eleitores aptos — ver aviso acima. Não confundir com "
-        "eleitores aptos, que é dado oficial (TSE).\n"
+        f"| **Total (28 MRVs)** | | | | | | | **{fmt(total_aptos)}** | "
+        f"**{fmt(total_comparecimento)}** |\n"
     )
     out.append(
         "## Fontes\n\n"
@@ -165,9 +207,11 @@ def gera_markdown(linhas, total_aptos, total_comparecimento):
         "`data/raw/eleitorado_local_votacao_2026_ZZ.csv` (TSE, 13/08/2026) "
         "e `data/raw/Filtrado_Dublin.csv` (TSE, 14/07/2026); reconciliado "
         "contra `QT_ELEITOR_ELEICAO_FEDERAL`.\n"
-        "- **Taxa de comparecimento (74%/50%):** "
-        "`contexto_eleicoes_dublin_2026.md`, seção 1 — não oficial, "
-        "pendente de validação.\n"
+        "- **Taxa de comparecimento por domicílio (2022):** "
+        "`handoff_agregacao_dublin_2026.md`, seção 2 — não oficial, "
+        "qualidade do dado varia por localidade (ver coluna Qualidade na "
+        "tabela); pendente de validação por fonte primária (ex.: "
+        "resultado seção a seção de 2022 do TSE).\n"
     )
     (SAIDAS / "mrv_secoes_comparecimento.md").write_text(
         "\n".join(out) + "\n", encoding="utf-8"

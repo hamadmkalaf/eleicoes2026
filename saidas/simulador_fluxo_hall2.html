@@ -1,0 +1,549 @@
+<title>Simulador Hall 2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    color-scheme: light dark;
+    --paper:#F5F1E9; --paper-raised:#FFFFFF; --floor:#EFEAE0;
+    --ink:#221E19; --ink-soft:#5B554A;
+    --line:#D7CFBE; --line-strong:#B2A78F; --wall:#2E2A24;
+    --entrance:#1D6E8C; --entrance-soft:#D8E9EE;
+    --exit:#B0611F; --exit-soft:#F1E0CC;
+    --checkpoint:#6B4C99; --checkpoint-soft:#E9E1F4;
+    --ok:#3C7A4E; --warn:#A97318; --critical:#AE3B3B;
+    --accent:#1D6E8C;
+    --zone-1:#1D6E8C; --zone-2:#3C7A4E; --zone-3:#A97318; --zone-4:#7A4B86; --zone-5:#46527E;
+    --font-display:'Archivo',system-ui,sans-serif;
+    --font-body:'Public Sans',system-ui,sans-serif;
+    --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#191510; --paper-raised:#221D17; --floor:#201B15;
+      --ink:#EFE8DC; --ink-soft:#B7AC99;
+      --line:#3C362C; --line-strong:#524A3B; --wall:#EFE8DC;
+      --entrance:#6BB6D6; --entrance-soft:#1E3742;
+      --exit:#E2924F; --exit-soft:#3A2A18;
+      --checkpoint:#B79CE6; --checkpoint-soft:#2E2440;
+      --ok:#7FC496; --warn:#DDAA55; --critical:#E28080;
+      --accent:#6BB6D6;
+      --zone-1:#6BB6D6; --zone-2:#7FC496; --zone-3:#DDAA55; --zone-4:#C79AD1; --zone-5:#8E9CD6;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#191510; --paper-raised:#221D17; --floor:#201B15;
+    --ink:#EFE8DC; --ink-soft:#B7AC99;
+    --line:#3C362C; --line-strong:#524A3B; --wall:#EFE8DC;
+    --entrance:#6BB6D6; --entrance-soft:#1E3742;
+    --exit:#E2924F; --exit-soft:#3A2A18;
+    --checkpoint:#B79CE6; --checkpoint-soft:#2E2440;
+    --ok:#7FC496; --warn:#DDAA55; --critical:#E28080;
+    --accent:#6BB6D6;
+    --zone-1:#6BB6D6; --zone-2:#7FC496; --zone-3:#DDAA55; --zone-4:#C79AD1; --zone-5:#8E9CD6;
+  }
+  :root[data-theme="dark"]{ color-scheme: dark; }
+  :root[data-theme="light"]{ color-scheme: light; }
+
+  *{ box-sizing:border-box; }
+  html,body{ background:var(--paper); }
+  body{ margin:0; color:var(--ink); font-family:var(--font-body); }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .app{ display:flex; flex-direction:column; min-height:100vh; background:var(--paper); }
+
+  header.topbar{ padding:1.1rem 1.5rem; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; align-items:baseline; gap:.35rem 1.25rem; }
+  header.topbar h1{ margin:0; font-family:var(--font-display); font-weight:800; font-size:1.3rem; letter-spacing:-.01em; text-wrap:balance; }
+  header.topbar .sub{ color:var(--ink-soft); font-size:.85rem; }
+  header.topbar .tag{ margin-left:auto; font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); border:1px solid var(--line); border-radius:99px; padding:.2rem .65rem; white-space:nowrap; }
+
+  .kpis{ display:flex; gap:.65rem; padding:.75rem 1.5rem; overflow-x:auto; border-bottom:1px solid var(--line); background:var(--paper-raised); }
+  .kpi{ flex:0 0 auto; min-width:190px; border:1px solid var(--line); border-radius:6px; padding:.55rem .75rem; display:flex; flex-direction:column; gap:.15rem; }
+  .kpi .label{ font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); font-weight:600; }
+  .kpi .value{ font-family:var(--font-mono); font-size:1.02rem; font-weight:600; }
+  .kpi.state-ok{ border-color:var(--ok); }
+  .kpi.state-warn{ border-color:var(--warn); }
+  .kpi.state-critical{ border-color:var(--critical); background:color-mix(in srgb, var(--critical) 8%, var(--paper-raised)); }
+  .kpi .value.ok{ color:var(--ok); } .kpi .value.warn{ color:var(--warn); } .kpi .value.critical{ color:var(--critical); }
+
+  main.workspace{ display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:1.5rem; padding:1.5rem; flex:1; align-items:start; }
+  @media (max-width:900px){ main.workspace{ grid-template-columns:1fr; } }
+
+  .canvas-pane{ display:flex; flex-direction:column; gap:.85rem; min-width:0; }
+  .canvas-frame{ background:var(--paper-raised); border:1px solid var(--line); border-radius:6px; padding:.5rem; }
+  .canvas-frame svg{ width:100%; height:auto; display:block; }
+
+  .legend{ display:flex; flex-wrap:wrap; gap:.6rem .9rem; font-size:.78rem; }
+  .legend .item{ display:flex; align-items:center; gap:.4rem; border:1px solid var(--line); border-radius:6px; padding:.35rem .6rem; }
+  .legend .swatch{ width:.7rem; height:.7rem; border-radius:2px; flex:none; }
+  .legend .item b{ font-family:var(--font-mono); }
+
+  aside.controls{ display:flex; flex-direction:column; gap:1.1rem; }
+  fieldset{ border:1px solid var(--line); border-radius:6px; padding:.8rem .85rem .95rem; margin:0; display:flex; flex-direction:column; gap:.6rem; }
+  legend.fs-legend{ font-family:var(--font-display); font-weight:700; font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); padding:0 .35rem; }
+  .hint{ font-size:.72rem; color:var(--ink-soft); line-height:1.4; }
+
+  .door-row{ display:grid; grid-template-columns:2.6rem 1fr auto auto; align-items:center; gap:.4rem; font-size:.8rem; }
+  .door-row .code{ font-family:var(--font-mono); font-weight:600; }
+  .toggle{ position:relative; }
+  .toggle input{ position:absolute; opacity:0; inset:0; margin:0; cursor:pointer; }
+  .toggle span{ display:inline-flex; align-items:center; justify-content:center; padding:.28rem .55rem; border-radius:99px; border:1px solid var(--line-strong); font-size:.7rem; font-weight:600; letter-spacing:.02em; color:var(--ink-soft); white-space:nowrap; }
+  .toggle input:checked + span{ color:#fff; border-color:transparent; }
+  .toggle.entrada input:checked + span{ background:var(--entrance); }
+  .toggle.saida input:checked + span{ background:var(--exit); }
+
+  .field{ display:flex; flex-direction:column; gap:.3rem; font-size:.8rem; }
+  .field .row{ display:flex; align-items:center; gap:.5rem; }
+  .field label{ font-weight:600; }
+  .field .readout{ font-family:var(--font-mono); font-size:.78rem; color:var(--ink-soft); margin-left:auto; }
+  input[type="number"]{ width:5.2rem; font-family:var(--font-mono); background:var(--paper); color:var(--ink); border:1px solid var(--line-strong); border-radius:4px; padding:.25rem .4rem; }
+  input[type="range"]{ width:100%; accent-color:var(--accent); }
+
+  .segmented{ display:flex; border:1px solid var(--line-strong); border-radius:6px; overflow:hidden; }
+  .segmented label{ flex:1; text-align:center; font-size:.75rem; padding:.35rem .3rem; cursor:pointer; color:var(--ink-soft); font-weight:600; }
+  .segmented input{ position:absolute; opacity:0; pointer-events:none; }
+  .segmented input:checked + label{ background:var(--accent); color:#fff; }
+  .segmented label + input{ display:none; }
+
+  footer.assumptions{ padding:1rem 1.5rem 2rem; border-top:1px solid var(--line); font-size:.76rem; color:var(--ink-soft); line-height:1.55; }
+  footer.assumptions strong{ color:var(--ink); }
+  footer.assumptions ul{ margin:.4rem 0 0; padding-left:1.1rem; }
+
+  svg text{ font-family:var(--font-body); fill:var(--ink); }
+  svg text.mono{ font-family:var(--font-mono); }
+  svg text.soft{ fill:var(--ink-soft); }
+</style>
+
+<div class="app">
+  <header class="topbar">
+    <h1>Simulador de fluxo — Hall 2</h1>
+    <span class="sub">RDS Ballsbridge, Shelbourne Hall · 1º turno 04/10/2026, 8h–17h</span>
+    <span class="tag">v1 · só interior — Ring 3 ainda não integrado</span>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <main class="workspace">
+    <div class="canvas-pane">
+      <div class="canvas-frame">
+        <svg id="plan" viewBox="-2.5 -3.5 55.2 54" role="img" aria-label="Planta esquemática do Hall 2 com portas, zonas e filas"></svg>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <aside class="controls">
+      <fieldset>
+        <legend class="fs-legend">1–2 · Portas da fachada sul</legend>
+        <div id="doors"></div>
+        <p class="hint">Numeração aproximada, referente às portas 2.1–2.7 da planta do RDS — confirmar o mapeamento exato porta a porta antes de fechar o plano.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend class="fs-legend">3 · Zonas e mesas</legend>
+        <div class="field"><div class="row"><label for="numZones">Nº de zonas</label><input type="number" id="numZones" min="2" max="5" value="3"></div></div>
+        <div class="field"><div class="row"><label for="totalMesas">Total de mesas</label><input type="number" id="totalMesas" min="20" max="40" value="30"></div></div>
+        <div class="field"><div class="row"><label for="hvCount">Mesas de alto volume</label><input type="number" id="hvCount" min="0" max="8" value="4"></div></div>
+        <div class="field">
+          <label>Distribuição das mesas de alto volume</label>
+          <div class="segmented">
+            <input type="radio" name="hvMode" id="hvSpread" value="spread" checked><label for="hvSpread">1 por zona</label>
+            <input type="radio" name="hvMode" id="hvConc" value="concentrated"><label for="hvConc">Concentradas</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="fs-legend">4 · Comparecimento e fila</legend>
+        <div class="field">
+          <label>Cenário de comparecimento (mesas comuns)</label>
+          <div class="segmented">
+            <input type="radio" name="turnout" id="tSmall" value="pequeno"><label for="tSmall">Pequeno</label>
+            <input type="radio" name="turnout" id="tMed" value="medio" checked><label for="tMed">Médio</label>
+            <input type="radio" name="turnout" id="tLarge" value="grande"><label for="tLarge">Grande</label>
+          </div>
+        </div>
+        <div class="field"><div class="row"><label for="vSmall">Pequeno = eleitores/mesa</label><input type="number" id="vSmall" min="100" max="900" value="400"></div></div>
+        <div class="field"><div class="row"><label for="vMed">Médio = eleitores/mesa</label><input type="number" id="vMed" min="100" max="900" value="580"></div></div>
+        <div class="field"><div class="row"><label for="vLarge">Grande = eleitores/mesa</label><input type="number" id="vLarge" min="100" max="900" value="750"></div></div>
+        <div class="field"><div class="row"><label for="vHV">Alto volume = eleitores/mesa</label><input type="number" id="vHV" min="100" max="1000" value="780"></div></div>
+        <div class="field"><div class="row"><label for="spacing">Espaçamento por pessoa</label><input type="number" id="spacing" min="0.4" max="1.2" step="0.1" value="0.6"><span class="readout">m</span></div></div>
+        <div class="field"><div class="row"><label for="maxDepth">Profundidade máx. de fila</label><input type="number" id="maxDepth" min="2" max="20" value="8"><span class="readout">m</span></div></div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="fs-legend">5 · Checkpoint interno</legend>
+        <div class="field">
+          <div class="row"><label for="ckDist">Distância até a porta</label><span class="readout" id="ckDistOut">8,0 m</span></div>
+          <input type="range" id="ckDist" min="2" max="20" step="0.5" value="8">
+        </div>
+        <div class="field"><div class="row"><label for="ckStaff">Direcionadores / zona</label><input type="number" id="ckStaff" min="1" max="6" value="2"></div></div>
+        <div class="field"><div class="row"><label for="ckService">Tempo de direcionamento</label><input type="number" id="ckService" min="3" max="30" value="8"><span class="readout">s/eleitor</span></div></div>
+        <p class="hint">Identificação do eleitor ocorre só na mesa, por caderno físico — o checkpoint apenas direciona, por isso seu tempo de atendimento é curto.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend class="fs-legend">Horário e chegada</legend>
+        <div class="field">
+          <label>Curva de chegada</label>
+          <div class="segmented">
+            <input type="radio" name="arrival" id="aUnif" value="uniforme"><label for="aUnif">Uniforme</label>
+            <input type="radio" name="arrival" id="aPico" value="pico" checked><label for="aPico">Pico matinal</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="row"><label for="timeOfDay">Horário simulado</label><span class="readout" id="timeOut">09:30</span></div>
+          <input type="range" id="timeOfDay" min="0" max="540" step="10" value="90">
+        </div>
+        <p class="hint">Tempo de atendimento na mesa: <strong>90 s/eleitor</strong> (caderno físico) — o pior caso já simulado para esta agregação de seções.</p>
+      </fieldset>
+    </aside>
+  </main>
+
+  <footer class="assumptions">
+    <strong>Premissas assumidas nesta simulação (ajustar antes de decidir):</strong> tempo de atendimento na mesa fixo em 90 s/eleitor durante toda a janela; checkpoint interno só direciona, não confere identidade; curva de "pico matinal" é uma aproximação linear por trechos (55% dos eleitores nos primeiros 30% do horário), não uma curva ajustada a dados reais de 2022; distribuição das mesas pelas paredes é ilustrativa, não a planta final do RDS.
+    <ul>
+      <li>Fila que ainda está formada às 17h tem direito a votar (regra vigente) — por isso o horário de fechamento de cada mesa pode passar de 17h no ritmo atual.</li>
+      <li>Ring 3 (fila externa) ainda não está modelado aqui — este simulador cobre só o interior do Hall 2, do checkpoint até a mesa.</li>
+    </ul>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const HALL = { w:50.2, l:44.5 };
+  const FLOOR_POLY = [[9,0],[50.2,0],[50.2,44.5],[4,44.5],[4,40],[0,40],[0,13],[9,13]];
+  const RUNS = [
+    { name:'top',   length:41.2, point:t=>({x:9+t*41.2, y:0}),        inward:{x:0,y:1} },
+    { name:'right', length:44.5, point:t=>({x:50.2, y:t*44.5}),       inward:{x:-1,y:0} },
+    { name:'left',  length:27,   point:t=>({x:0, y:40-t*27}),         inward:{x:1,y:0} },
+  ];
+  const DOOR_SLOTS = (()=>{ const start=6,end=48.2,n=5,span=end-start;
+    return Array.from({length:n},(_,i)=> start+(i+0.5)*(span/n)); })();
+  const ZONE_PALETTE = ['var(--zone-1)','var(--zone-2)','var(--zone-3)','var(--zone-4)','var(--zone-5)'];
+  const ZONE_LETTERS = ['A','B','C','D','E'];
+
+  function fmtInt(n){ return Math.round(n).toLocaleString('pt-BR'); }
+  function fmtM(n){ return n.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+' m'; }
+  function fmtTime(min){ const total=8*60+min; const h=Math.floor(total/60), m=Math.round(total%60); return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'); }
+
+  function svgEl(tag, attrs, styleStr){
+    const n=document.createElementNS(SVGNS, tag);
+    for(const k in attrs) n.setAttribute(k, attrs[k]);
+    if(styleStr) n.setAttribute('style', styleStr);
+    return n;
+  }
+
+  const doorsBox = document.getElementById('doors');
+  DOOR_SLOTS.forEach((x,i)=>{
+    const row=document.createElement('div'); row.className='door-row';
+    row.innerHTML = '<span class="code">S'+(i+1)+'</span>'+
+      '<span class="hint" style="font-size:.72rem">porta '+(i+1)+' de 5</span>'+
+      '<label class="toggle entrada"><input type="checkbox" data-door="'+i+'" data-mode="entrada"><span>Entrada</span></label>'+
+      '<label class="toggle saida"><input type="checkbox" data-door="'+i+'" data-mode="saida"><span>Saída</span></label>';
+    doorsBox.appendChild(row);
+  });
+  const DEFAULT_DOORS = [ {entrada:false,saida:false}, {entrada:true,saida:false}, {entrada:true,saida:false}, {entrada:true,saida:false}, {entrada:false,saida:true} ];
+  DEFAULT_DOORS.forEach((d,i)=>{
+    doorsBox.querySelector('input[data-door="'+i+'"][data-mode="entrada"]').checked = d.entrada;
+    doorsBox.querySelector('input[data-door="'+i+'"][data-mode="saida"]').checked = d.saida;
+  });
+
+  function readState(){
+    const doors = DOOR_SLOTS.map((x,i)=>({
+      x,
+      entrada: doorsBox.querySelector('input[data-door="'+i+'"][data-mode="entrada"]').checked,
+      saida: doorsBox.querySelector('input[data-door="'+i+'"][data-mode="saida"]').checked,
+    }));
+    const num=id=>parseFloat(document.getElementById(id).value);
+    const radio=name=>document.querySelector('input[name="'+name+'"]:checked').value;
+    return {
+      doors,
+      numZones: Math.max(2, Math.min(5, Math.round(num('numZones')))),
+      totalMesas: Math.max(10, Math.round(num('totalMesas'))),
+      highVolumeCount: Math.max(0, Math.round(num('hvCount'))),
+      highVolumeMode: radio('hvMode'),
+      turnoutDefault: radio('turnout'),
+      turnout: { pequeno:num('vSmall'), medio:num('vMed'), grande:num('vLarge') },
+      highVolumeVoters: num('vHV'),
+      personSpacing: num('spacing'),
+      maxQueueDepth: num('maxDepth'),
+      checkpointDistance: num('ckDist'),
+      checkpointStaffPerZone: num('ckStaff'),
+      checkpointServiceSeconds: num('ckService'),
+      arrivalShape: radio('arrival'),
+      timeOfDay: num('timeOfDay'),
+      mesaServiceSeconds: 90,
+    };
+  }
+
+  function buildMesas(state){
+    const totalLen = RUNS.reduce((s,r)=>s+r.length,0);
+    const N = state.totalMesas;
+    const raw = RUNS.map(r=> r.length/totalLen*N);
+    const floors = raw.map(Math.floor);
+    let assigned = floors.reduce((a,b)=>a+b,0);
+    let remainder = N-assigned;
+    const order = raw.map((v,i)=>({i,frac:v-floors[i]})).sort((a,b)=>b.frac-a.frac);
+    for(let k=0;k<remainder;k++) floors[order[k].i]++;
+
+    let mesas=[]; let globalIndex=0;
+    RUNS.forEach((run,ri)=>{
+      const n=floors[ri];
+      for(let k=0;k<n;k++){
+        globalIndex++;
+        const t=(k+0.5)/n;
+        const p=run.point(t);
+        mesas.push({ index:globalIndex, run:ri, x:p.x, y:p.y, inward:run.inward });
+      }
+    });
+
+    const nz=state.numZones, base=Math.floor(N/nz), rem=N%nz;
+    let boundaries=[]; let acc=0;
+    for(let z=0; z<nz; z++){ const size=base+(z<rem?1:0); boundaries.push({z,start:acc+1,end:acc+size}); acc+=size; }
+    mesas.forEach(m=>{ m.zone = boundaries.find(b=> m.index>=b.start && m.index<=b.end).z; });
+
+    let hvSet=new Set();
+    const hvCount=Math.min(state.highVolumeCount, N);
+    if(state.highVolumeMode==='spread'){
+      for(let k=0;k<hvCount;k++){
+        const zb=boundaries[k%nz]; const mid=(zb.start+zb.end)/2;
+        let candidates=[]; for(let idx=zb.start; idx<=zb.end; idx++) if(!hvSet.has(idx)) candidates.push(idx);
+        if(!candidates.length) for(let idx=1; idx<=N; idx++) if(!hvSet.has(idx)){ candidates=[idx]; break; }
+        candidates.sort((a,b)=>Math.abs(a-mid)-Math.abs(b-mid));
+        if(candidates.length) hvSet.add(candidates[0]);
+      }
+    } else {
+      const biggest = boundaries.reduce((a,b)=> (b.end-b.start)>(a.end-a.start)?b:a);
+      for(let idx=biggest.start; idx<=biggest.end && hvSet.size<hvCount; idx++) hvSet.add(idx);
+    }
+    mesas.forEach(m=>{ m.isHighVolume=hvSet.has(m.index); m.voters = m.isHighVolume ? state.highVolumeVoters : state.turnout[state.turnoutDefault]; });
+    mesas.boundaries=boundaries;
+    return mesas;
+  }
+
+  function buildZones(state, mesas){
+    const activeEntrances = state.doors.map((d,i)=>({...d,i})).filter(d=>d.entrada);
+    return mesas.boundaries.map((b,z)=>{
+      const zoneMesas = mesas.filter(m=>m.zone===z);
+      const totalVoters = zoneMesas.reduce((s,m)=>s+m.voters,0);
+      const door = activeEntrances.length ? activeEntrances[z % activeEntrances.length] : null;
+      return { z, label:ZONE_LETTERS[z], color:ZONE_PALETTE[z%ZONE_PALETTE.length], range:b.start+'–'+b.end, totalVoters, mesas:zoneMesas, door };
+    });
+  }
+
+  function cumFraction(f, shape){
+    if(shape==='uniforme') return f;
+    const k1=0.3, k2=0.55;
+    if(f<=k1) return (k2/k1)*f;
+    return k2 + ((1-k2)/(1-k1))*(f-k1);
+  }
+  function arrivalsAt(mesa, tMin, state){
+    const f=Math.min(Math.max(tMin/540,0),1);
+    return cumFraction(f, state.arrivalShape)*mesa.voters;
+  }
+  function serviceCapacityAt(tMin, serviceSeconds){ return Math.max(0,tMin)*60/serviceSeconds; }
+  function queueAt(mesa, state, tMin){
+    const a=arrivalsAt(mesa,tMin,state), s=serviceCapacityAt(tMin,state.mesaServiceSeconds);
+    const count=Math.max(0,a-s);
+    return { count, meters: count*state.personSpacing };
+  }
+  function maxQueueOverDay(mesa, state){
+    let max={count:0,meters:0,atMin:0};
+    for(let t=0;t<=540;t+=15){ const q=queueAt(mesa,state,t); if(q.meters>max.meters) max={...q,atMin:t}; }
+    return max;
+  }
+  function closeInfo(mesa, state){
+    const q=queueAt(mesa,state,540);
+    const overrunMin = q.count*state.mesaServiceSeconds/60;
+    return { overflow: q.count>0.05, closeMin: 540+overrunMin, overrunHours: overrunMin/60 };
+  }
+  function peakRatePerHour(mesa, state){
+    if(state.arrivalShape==='uniforme') return mesa.voters/9;
+    const k1=0.3,k2=0.55;
+    return (k2*mesa.voters)/(k1*9);
+  }
+  function computeCheckpoints(state, zones){
+    return zones.map(zone=>{
+      const peakRate = zone.mesas.reduce((s,m)=>s+peakRatePerHour(m,state),0);
+      const capacity = state.checkpointStaffPerZone*3600/state.checkpointServiceSeconds;
+      return { z:zone.z, label:zone.label, peakRate, capacity, bottleneck: peakRate>capacity, door:zone.door };
+    });
+  }
+
+  function render(){
+    const state=readState();
+    document.getElementById('ckDistOut').textContent = state.checkpointDistance.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+' m';
+    document.getElementById('timeOut').textContent = fmtTime(state.timeOfDay);
+
+    const mesas = buildMesas(state);
+    mesas.forEach(m=>{ m.queueNow=queueAt(m,state,state.timeOfDay); m.queueMax=maxQueueOverDay(m,state); m.close=closeInfo(m,state); });
+    const zones = buildZones(state, mesas);
+    const checkpoints = computeCheckpoints(state, zones);
+
+    renderSVG(state, mesas, zones, checkpoints);
+    renderLegend(zones, checkpoints);
+    renderKPIs(state, mesas, zones, checkpoints);
+  }
+
+  function renderSVG(state, mesas, zones, checkpoints){
+    const svg=document.getElementById('plan');
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    svg.appendChild(svgEl('polygon',{points:FLOOR_POLY.map(p=>p.join(',')).join(' ')},
+      'fill:var(--floor);stroke:var(--wall);stroke-width:.32;stroke-linejoin:round'));
+
+    const notchA=svgEl('rect',{x:0,y:0,width:9,height:13},'fill:var(--paper-raised);stroke:var(--line-strong);stroke-width:.12;stroke-dasharray:.4,.3');
+    svg.appendChild(notchA);
+    const notchLabel=svgEl('text',{x:4.5,y:6.2,'text-anchor':'middle','font-size':'1.0'},'fill:var(--ink-soft)');
+    notchLabel.textContent='WC /'; svg.appendChild(notchLabel);
+    const notchLabel2=svgEl('text',{x:4.5,y:7.6,'text-anchor':'middle','font-size':'1.0'},'fill:var(--ink-soft)');
+    notchLabel2.textContent='Transmissão'; svg.appendChild(notchLabel2);
+
+    // north arrow + scale bar
+    const na=svgEl('g',{transform:'translate(48,-2)'});
+    na.appendChild(svgEl('line',{x1:0,y1:1.6,x2:0,y2:-1.2},'stroke:var(--ink);stroke-width:.15'));
+    na.appendChild(svgEl('polygon',{points:'-.5,-1.2 .5,-1.2 0,-2.3'},'fill:var(--ink)'));
+    const nLabel=svgEl('text',{x:0,y:2.6,'text-anchor':'middle','font-size':'1.1','font-weight':'700'},'fill:var(--ink)'); nLabel.textContent='N';
+    na.appendChild(nLabel); svg.appendChild(na);
+
+    const scaleG=svgEl('g',{transform:'translate(0,-2.2)'});
+    scaleG.appendChild(svgEl('line',{x1:0,y1:0,x2:10,y2:0},'stroke:var(--ink);stroke-width:.15'));
+    [0,10].forEach(x=> scaleG.appendChild(svgEl('line',{x1:x,y1:-.3,x2:x,y2:.3},'stroke:var(--ink);stroke-width:.15')));
+    const scaleLabel=svgEl('text',{x:5,y:-.6,'text-anchor':'middle','font-size':'.95'},'fill:var(--ink-soft) class:mono');
+    scaleLabel.setAttribute('class','mono'); scaleLabel.textContent='10 m';
+    scaleG.appendChild(scaleLabel); svg.appendChild(scaleG);
+
+    const southLabel=svgEl('text',{x:27.1,y:51.2,'text-anchor':'middle','font-size':'1.5','font-weight':'700','letter-spacing':'.08em'},'fill:var(--ink-soft)');
+    southLabel.textContent='FACHADA SUL'; svg.appendChild(southLabel);
+
+    // doors
+    state.doors.forEach((d,i)=>{
+      const cx=DOOR_SLOTS[i];
+      svg.appendChild(svgEl('rect',{x:cx-1.7,y:43.9,width:3.4,height:1.2},'fill:var(--paper-raised)'));
+      if(d.entrada){
+        const g=svgEl('g',{transform:'translate('+(cx-0.55)+',0)'});
+        g.appendChild(svgEl('line',{x1:0,y1:47.2,x2:0,y2:44.7},'stroke:var(--entrance);stroke-width:.28'));
+        g.appendChild(svgEl('polygon',{points:'-.5,45.4 .5,45.4 0,44.4'},'fill:var(--entrance)'));
+        svg.appendChild(g);
+      }
+      if(d.saida){
+        const g=svgEl('g',{transform:'translate('+(cx+0.55)+',0)'});
+        g.appendChild(svgEl('line',{x1:0,y1:44.7,x2:0,y2:47.2},'stroke:var(--exit);stroke-width:.28'));
+        g.appendChild(svgEl('polygon',{points:'-.5,46.5 .5,46.5 0,47.5'},'fill:var(--exit)'));
+        svg.appendChild(g);
+      }
+      const code=svgEl('text',{x:cx,y:48.8,'text-anchor':'middle','font-size':'1.05','font-weight':'600'},'fill:var(--ink) class:mono');
+      code.setAttribute('class','mono'); code.textContent='S'+(i+1);
+      svg.appendChild(code);
+      if(!d.entrada && !d.saida){
+        const closed=svgEl('text',{x:cx,y:50.1,'text-anchor':'middle','font-size':'.85'},'fill:var(--ink-soft)');
+        closed.textContent='fechada'; svg.appendChild(closed);
+      } else if(d.entrada && d.saida){
+        const both=svgEl('text',{x:cx,y:50.1,'text-anchor':'middle','font-size':'.85'},'fill:var(--critical)');
+        both.textContent='entrada+saída'; svg.appendChild(both);
+      }
+    });
+
+    // checkpoint line
+    const ckY = 44.5 - state.checkpointDistance;
+    svg.appendChild(svgEl('line',{x1:0.3,y1:ckY,x2:49.9,y2:ckY},'stroke:var(--checkpoint);stroke-width:.22;stroke-dasharray:.9,.6'));
+    const ckLabel=svgEl('text',{x:1,y:ckY-.5,'font-size':'.9','font-weight':'600'},'fill:var(--checkpoint)');
+    ckLabel.textContent='checkpoint interno — '+state.checkpointDistance.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+' m da porta';
+    svg.appendChild(ckLabel);
+
+    checkpoints.forEach(ck=>{
+      if(!ck.door) return;
+      const cx=ck.door.x;
+      const ring=svgEl('circle',{cx,cy:ckY,r:1.0},'fill:'+ck.z+' '+'');
+      ring.setAttribute('style','fill:'+zones[ck.z].color+';stroke:'+(ck.bottleneck?'var(--critical)':'var(--paper-raised)')+';stroke-width:'+(ck.bottleneck?0.35:0.15));
+      svg.appendChild(ring);
+      const t=svgEl('text',{x:cx,y:ckY+.4,'text-anchor':'middle','font-size':'1.05','font-weight':'700'},'fill:#fff');
+      t.textContent=ck.label; svg.appendChild(t);
+      const staffLabel=svgEl('text',{x:cx,y:ckY+1.9,'text-anchor':'middle','font-size':'.78'},'fill:'+(ck.bottleneck?'var(--critical)':'var(--ink-soft)'));
+      staffLabel.textContent = ck.bottleneck ? 'gargalo' : (state.checkpointStaffPerZone+' direc.');
+      svg.appendChild(staffLabel);
+    });
+
+    // mesas
+    const CAP=12;
+    mesas.forEach(m=>{
+      const zone=zones[m.zone];
+      const ix=m.x+m.inward.x*0.55, iy=m.y+m.inward.y*0.55;
+      const wide = m.inward.y!==0;
+      const rw = wide?1.0:0.55, rh = wide?0.55:1.0;
+      svg.appendChild(svgEl('rect',{x:ix-rw/2,y:iy-rh/2,width:rw,height:rh,rx:.12},
+        'fill:'+zone.color+';fill-opacity:.9;stroke:var(--wall);stroke-width:.1'));
+      if(m.isHighVolume){
+        svg.appendChild(svgEl('circle',{cx:ix+m.inward.x*0.62,cy:iy+m.inward.y*0.62,r:.22},'fill:var(--critical)'));
+      }
+      const qMeters = m.queueNow.meters;
+      if(qMeters>0.05){
+        const capped=Math.min(qMeters,CAP);
+        const sx=ix+m.inward.x*(rw/2+0.15), sy=iy+m.inward.y*(rh/2+0.15);
+        const ex=sx+m.inward.x*capped, ey=sy+m.inward.y*capped;
+        const over = qMeters>state.maxQueueDepth;
+        const nearLimit = qMeters>state.maxQueueDepth*0.75;
+        const color = over ? 'var(--critical)' : nearLimit ? 'var(--warn)' : zone.color;
+        svg.appendChild(svgEl('line',{x1:sx,y1:sy,x2:ex,y2:ey},'stroke:'+color+';stroke-width:.4;stroke-linecap:round'));
+        if(qMeters>=2){
+          const lx=ex+m.inward.x*0.9, ly=ey+m.inward.y*0.9;
+          const lbl=svgEl('text',{x:lx,y:ly+0.3,'text-anchor':'middle','font-size':'.8'},'fill:'+color+' class:mono');
+          lbl.setAttribute('class','mono'); lbl.textContent=fmtM(qMeters);
+          svg.appendChild(lbl);
+        }
+      }
+    });
+
+    // zone start badges
+    zones.forEach(zone=>{
+      if(!zone.mesas.length) return;
+      const first=zone.mesas[0];
+      const bx=first.x+first.inward.x*-1.2, by=first.y+first.inward.y*-1.2;
+      svg.appendChild(svgEl('circle',{cx:bx,cy:by,r:.75},'fill:'+zone.color));
+      const t=svgEl('text',{x:bx,y:by+.32,'text-anchor':'middle','font-size':'.95','font-weight':'700'},'fill:#fff');
+      t.textContent=zone.label; svg.appendChild(t);
+    });
+  }
+
+  function renderLegend(zones, checkpoints){
+    const box=document.getElementById('legend');
+    box.innerHTML='';
+    zones.forEach(z=>{
+      const ck=checkpoints.find(c=>c.z===z.z);
+      const doorLabel = z.door ? 'S'+(z.door.i+1) : '—';
+      const div=document.createElement('div'); div.className='item';
+      div.innerHTML = '<span class="swatch" style="background:'+z.color+'"></span>'+
+        '<span><b>Zona '+z.label+'</b> · mesas '+z.range+' · '+fmtInt(z.totalVoters)+' eleitores · entrada '+doorLabel+
+        (ck && ck.bottleneck ? ' · <span style="color:var(--critical)">checkpoint sobrecarregado</span>' : '')+'</span>';
+      box.appendChild(div);
+    });
+  }
+
+  function renderKPIs(state, mesas, zones, checkpoints){
+    const box=document.getElementById('kpis'); box.innerHTML='';
+    const worst = mesas.reduce((a,b)=> b.queueMax.meters>a.queueMax.meters?b:a, mesas[0]);
+    const worstZone = zones[worst.zone];
+    const overflowCount = mesas.filter(m=>m.queueMax.meters>state.maxQueueDepth).length;
+    const closeOverruns = mesas.filter(m=>m.close.overflow);
+    const worstClose = closeOverruns.reduce((a,b)=> (!a||b.close.closeMin>a.close.closeMin)?b:a, null);
+    const bottleneckZones = checkpoints.filter(c=>c.bottleneck);
+    const crossing = state.doors.filter(d=>d.entrada&&d.saida).length;
+    const activeEntrances = state.doors.filter(d=>d.entrada).length;
+
+    function kpi(label, value, cls){
+      const d=document.createElement('div'); d.className='kpi'+(cls?' state-'+cls:'');
+      d.innerHTML='<span class="label">'+label+'</span><span class="value'+(cls?' '+cls:'')+'">'+value+'</span>';
+      box.appendChild(d);
+    }
+    kpi('Fila mais longa agora', 'Mesa '+worst.index+' (Zona '+worstZone.label+') · '+fmtM(worst.queueNow.meters));
+    kpi('Mesas além da profundidade máx.', overflowCount+' de '+mesas.length, overflowCount>0?'critical':'ok');
+    kpi('Fecham depois das 17h', worstClose ? closeOverruns.length+' mesas · pior caso '+fmtTime(worstClose.close.closeMin-480+480>540?540:worstClose.close.closeMin-0) : '0 mesas', closeOverruns.length>0?'warn':'ok');
+    kpi('Checkpoint sobrecarregado', bottleneckZones.length ? bottleneckZones.map(z=>'Zona '+z.label).join(', ') : 'nenhum', bottleneckZones.length?'critical':'ok');
+    kpi('Zonas × entradas ativas', state.numZones+' zonas / '+activeEntrances+' portas', state.numZones!==activeEntrances?'warn':'ok');
+    kpi('Portas com entrada e saída', crossing, crossing>0?'warn':'ok');
+  }
+
+  document.querySelector('aside.controls').addEventListener('input', render);
+  render();
+})();
+</script>

@@ -1,0 +1,2042 @@
+<title>Simulador do Hall 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --papel:#f0ede5; --folha:#fffdf8; --tinta:#17202b; --meio:#59616d; --fraco:#8a919b;
+  --regua:#d9d3c6; --regua2:#e8e3d8; --prancha:#fbfaf7; --traco:#1c2733;
+  --mesa:#3b4552; --pessoa:#59616d;
+  --entrada:#1f6fb2; --saida:#b26a12; --emerg:#16867f; --alerta:#b23b2e; --aviso:#b26a12;
+  --z1:#2a78d6; --z2:#eb6834; --z3:#1baf7a; --z4:#eda100;
+  --ok:#0ca30c; --ok-txt:#006300; --atencao:#fab219; --atencao-txt:#7a5200; --falha:#d03b3b; --falha-txt:#a12626;
+  --grade:#e1e0d9; --eixo:#c3c2b7;
+  --sombra:0 1px 2px rgba(23,32,43,.06), 0 6px 18px rgba(23,32,43,.06);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --papel:#0f1317; --folha:#181d23; --tinta:#e7ebef; --meio:#a3abb5; --fraco:#78818c;
+  --regua:#2b3239; --regua2:#222930; --prancha:#1d232b; --traco:#c9d1da;
+  --mesa:#aab3bd; --pessoa:#a3abb5;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a; --aviso:#dda257;
+  --z1:#3987e5; --z2:#d95926; --z3:#199e70; --z4:#c98500;
+  --ok:#0ca30c; --ok-txt:#4fd24f; --atencao:#fab219; --atencao-txt:#fab219; --falha:#d03b3b; --falha-txt:#f08a8a;
+  --grade:#2c2c2a; --eixo:#383835;
+  --sombra:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --papel:#0f1317; --folha:#181d23; --tinta:#e7ebef; --meio:#a3abb5; --fraco:#78818c;
+  --regua:#2b3239; --regua2:#222930; --prancha:#1d232b; --traco:#c9d1da;
+  --mesa:#aab3bd; --pessoa:#a3abb5;
+  --entrada:#63a6e0; --saida:#dda257; --emerg:#3cb8ab; --alerta:#e0796a; --aviso:#dda257;
+  --z1:#3987e5; --z2:#d95926; --z3:#199e70; --z4:#c98500;
+  --ok:#0ca30c; --ok-txt:#4fd24f; --atencao:#fab219; --atencao-txt:#fab219; --falha:#d03b3b; --falha-txt:#f08a8a;
+  --grade:#2c2c2a; --eixo:#383835;
+  --sombra:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums}
+button,input,select{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--entrada); outline-offset:2px}
+h1,h2,h3{margin:0; text-wrap:balance}
+
+/* ---- casca ---- */
+.app{display:grid; grid-template-rows:auto 1fr; min-height:100vh}
+header{display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:10px 22px;
+  border-bottom:1px solid var(--regua); background:var(--folha); position:sticky; top:0; z-index:5}
+header h1{font-family:"Source Serif 4",Georgia,serif; font-size:1.12rem; font-weight:700; letter-spacing:-.01em; white-space:nowrap}
+header .sub{font-size:.78rem; color:var(--meio)}
+.abas{display:flex; border:1px solid var(--regua); background:var(--papel)}
+.abas button{background:none; border:0; padding:6px 14px; cursor:pointer; font-size:.82rem; color:var(--meio); border-right:1px solid var(--regua); display:flex; gap:8px; align-items:center}
+.abas button:last-child{border-right:0}
+.abas button[aria-selected="true"]{background:var(--tinta); color:var(--folha); font-weight:600}
+.abas .num{font-family:"IBM Plex Mono",monospace; font-size:.7rem; opacity:.7}
+header .dir{margin-left:auto; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.acao{background:var(--papel); border:1px solid var(--regua); padding:6px 12px; font-size:.8rem; cursor:pointer; color:var(--meio)}
+.acao:hover{color:var(--tinta); border-color:var(--fraco)}
+.acao.primaria{background:var(--entrada); border-color:var(--entrada); color:#fff; font-weight:600}
+.acao.primaria:hover{filter:brightness(1.08); color:#fff}
+.acao.mini{padding:3px 8px; font-size:.74rem}
+.acao:disabled{opacity:.5; cursor:default}
+.tela{display:none; padding:22px; max-width:1360px; margin:0 auto; width:100%}
+.tela.ativa{display:block}
+
+/* ---- rótulos ---- */
+.rot{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.13em; text-transform:uppercase; color:var(--meio); margin:0 0 8px}
+.dica{font-size:.78rem; color:var(--meio); margin:0}
+.dica + .dica{margin-top:6px}
+.chip{display:inline-flex; align-items:center; gap:6px; font-size:.72rem; padding:2px 8px; border:1px solid currentColor; color:var(--meio); font-weight:600; white-space:nowrap}
+.chip.ok{color:var(--ok-txt)} .chip.atencao{color:var(--atencao-txt)} .chip.falha{color:var(--falha-txt)}
+.swatch{display:inline-block; width:10px; height:10px; border-radius:2px; vertical-align:-1px; margin-right:4px}
+
+/* ---- premissas ---- */
+.premissas{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:22px; align-items:start}
+.form{display:flex; flex-direction:column; gap:18px}
+.bloco{background:var(--folha); border:1px solid var(--regua); padding:16px 18px}
+.bloco h2{font-family:"Source Serif 4",Georgia,serif; font-size:1.02rem; font-weight:600; margin-bottom:4px}
+.bloco .pergunta{font-size:.8rem; color:var(--meio); margin:0 0 12px}
+.fixa{border-left:3px solid var(--emerg)}
+.fixa .valorfixo{display:flex; gap:10px; align-items:baseline; font-size:.86rem}
+.linha{display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+.campo{display:flex; flex-direction:column; gap:4px; min-width:0}
+.campo label{font-size:.76rem; color:var(--meio)}
+.campo input[type=number],.campo select,.campo input[type=text]{padding:5px 8px; background:var(--papel); border:1px solid var(--regua); color:var(--tinta); font-size:.84rem; width:110px}
+.campo input[type=text]{width:220px}
+.campo input[type=range]{width:200px; accent-color:var(--entrada)}
+.opcoes{display:flex; gap:0; border:1px solid var(--regua); background:var(--papel); flex-wrap:wrap}
+.opcoes button{background:none; border:0; border-right:1px solid var(--regua); padding:5px 12px; font-size:.8rem; color:var(--meio); cursor:pointer}
+.opcoes button:last-child{border-right:0}
+.opcoes button[aria-pressed="true"]{background:var(--tinta); color:var(--folha); font-weight:600}
+.tabela{width:100%; border-collapse:collapse; font-size:.8rem}
+.tabela th{font-family:"IBM Plex Mono",monospace; font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--meio); text-align:left; padding:6px 8px; border-bottom:1px solid var(--regua); font-weight:500}
+.tabela td{padding:6px 8px; border-bottom:1px solid var(--regua2); vertical-align:top}
+.tabela td.num,.tabela th.num{text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.tabela tr:last-child td{border-bottom:0}
+.rolagem{overflow-x:auto}
+.portas{display:block; width:100%; height:auto}
+.portas .porta{cursor:pointer}
+.portas text{font-family:"IBM Plex Mono",monospace}
+.zonasMini{display:block; width:100%; height:auto; max-width:420px}
+.resumoVivo{position:sticky; top:66px; display:flex; flex-direction:column; gap:14px}
+.resumoVivo .bloco{padding:14px 16px}
+.kpi{display:grid; grid-template-columns:1fr auto; gap:4px 10px; font-size:.8rem}
+.kpi dt{color:var(--meio)} .kpi dd{margin:0; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; text-align:right}
+.kpi dd.ruim{color:var(--falha-txt); font-weight:600} .kpi dd.bom{color:var(--ok-txt)}
+.curva{display:block; width:100%; height:auto}
+.cenarios{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+textarea{width:100%; min-height:70px; font-family:"IBM Plex Mono",monospace; font-size:.7rem; background:var(--papel); color:var(--tinta); border:1px solid var(--regua); resize:vertical}
+.aviso{font-size:.78rem; color:var(--aviso); margin:6px 0 0}
+
+/* ---- simulação ---- */
+.simGrid{display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:18px; align-items:start}
+.palco{background:var(--folha); border:1px solid var(--regua); position:relative}
+.palco svg{display:block; width:100%; height:auto; background:var(--prancha)}
+.tempoBarra{display:flex; gap:12px; align-items:center; padding:10px 14px; border-top:1px solid var(--regua); flex-wrap:wrap}
+.tempoBarra input[type=range]{flex:1; min-width:160px; accent-color:var(--entrada)}
+.tempoBarra .hora{font-family:"IBM Plex Mono",monospace; font-size:1.1rem; font-weight:600; min-width:64px}
+.painel{display:flex; flex-direction:column; gap:12px}
+.estagios{display:flex; flex-direction:column; gap:1px; background:var(--regua2)}
+.estagio{background:var(--folha); padding:8px 10px; display:grid; grid-template-columns:1fr auto; gap:2px 10px; font-size:.8rem}
+.estagio .n{font-family:"IBM Plex Mono",monospace; font-size:1.05rem; font-weight:600; text-align:right}
+.estagio .sub{grid-column:1/3; font-size:.72rem; color:var(--meio)}
+.legenda{display:flex; gap:12px; flex-wrap:wrap; font-size:.74rem; color:var(--meio)}
+.graficos{display:grid; grid-template-columns:repeat(auto-fit,minmax(400px,1fr)); gap:16px; margin-top:18px}
+figure{margin:0; background:var(--folha); border:1px solid var(--regua); padding:12px 14px 10px}
+figure figcaption{font-size:.8rem; font-weight:600; margin-bottom:6px; display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
+figure figcaption .sub{font-weight:400; color:var(--meio); font-size:.74rem}
+figure svg{display:block; width:100%; height:auto; overflow:visible}
+figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
+.tip{position:fixed; pointer-events:none; background:var(--tinta); color:var(--folha); font-size:.74rem; padding:6px 9px; border-radius:3px; z-index:20; display:none; box-shadow:var(--sombra); max-width:260px}
+.tip b{font-weight:600}
+.semResultado{padding:40px 20px; text-align:center; color:var(--meio); font-size:.9rem}
+.progresso{height:4px; background:var(--regua2); position:relative; overflow:hidden}
+.progresso span{position:absolute; inset:0 auto 0 0; background:var(--entrada); width:0; transition:width .15s}
+
+/* ---- resultado ---- */
+.relatorio{max-width:980px; margin:0 auto; display:flex; flex-direction:column; gap:20px}
+.notaGeral{display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; background:var(--folha); border:1px solid var(--regua); padding:18px 22px}
+.notaGeral .selo{font-family:"Source Serif 4",Georgia,serif; font-size:2rem; font-weight:700; line-height:1; padding:12px 16px; border:2px solid currentColor}
+.notaGeral .selo.ok{color:var(--ok-txt)} .notaGeral .selo.atencao{color:var(--atencao-txt)} .notaGeral .selo.falha{color:var(--falha-txt)}
+.notaGeral h2{font-family:"Source Serif 4",Georgia,serif; font-size:1.3rem; font-weight:600}
+.notaGeral p{margin:4px 0 0; color:var(--meio); font-size:.86rem; max-width:70ch}
+.vereditos{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px}
+.veredito{background:var(--folha); border:1px solid var(--regua); padding:12px 14px; display:grid; grid-template-columns:auto 1fr; gap:4px 12px; border-left-width:4px}
+.veredito.ok{border-left-color:var(--ok)} .veredito.atencao{border-left-color:var(--atencao)} .veredito.falha{border-left-color:var(--falha)}
+.veredito .icone{font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:.9rem; width:18px; text-align:center}
+.veredito.ok .icone{color:var(--ok-txt)} .veredito.atencao .icone{color:var(--atencao-txt)} .veredito.falha .icone{color:var(--falha-txt)}
+.veredito h3{font-size:.9rem; font-weight:600}
+.veredito .valor{grid-column:2; font-family:"IBM Plex Mono",monospace; font-size:.8rem; font-variant-numeric:tabular-nums}
+.veredito .meta{grid-column:2; font-size:.72rem; color:var(--fraco)}
+.veredito .porque{grid-column:2; font-size:.78rem; color:var(--meio); margin-top:4px}
+.prosa{background:var(--folha); border:1px solid var(--regua); padding:18px 22px}
+.prosa h2,.secao h2{font-family:"Source Serif 4",Georgia,serif; font-size:1.05rem; font-weight:600; margin-bottom:8px}
+.prosa p{margin:0 0 10px; max-width:72ch; font-size:.9rem}
+.prosa p:last-child{margin-bottom:0}
+.secao{background:var(--folha); border:1px solid var(--regua); padding:16px 18px}
+.barraMesa{display:inline-block; height:8px; background:var(--z1); vertical-align:middle; border-radius:0 2px 2px 0}
+.comparativo td.melhor{font-weight:600; color:var(--ok-txt)}
+@media (max-width:900px){
+  .premissas,.simGrid{grid-template-columns:1fr}
+  .resumoVivo{position:static}
+  header{position:static}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+<header>
+  <h1>Simulador do Hall&nbsp;2</h1>
+  <span class="sub">fluxo de eleitores · RDS Ballsbridge · 04/10/2026</span>
+  <nav class="abas" role="tablist" aria-label="Telas">
+    <button role="tab" id="abaPremissas" aria-selected="true" data-tela="premissas"><span class="num">1</span> Premissas</button>
+    <button role="tab" id="abaSimulacao" aria-selected="false" data-tela="simulacao"><span class="num">2</span> Simulação</button>
+    <button role="tab" id="abaResultado" aria-selected="false" data-tela="resultado"><span class="num">3</span> Resultado</button>
+  </nav>
+  <div class="dir">
+    <span class="sub" id="nomeAtual"></span>
+    <button class="acao primaria" id="rodar">Rodar simulação</button>
+  </div>
+</header>
+<div class="progresso" id="progresso" hidden><span></span></div>
+
+<!-- ============================ 1 · PREMISSAS ============================ -->
+<section class="tela ativa" id="tela-premissas">
+<div class="premissas">
+<div class="form">
+
+  <div class="bloco">
+    <h2>Cenário</h2>
+    <p class="pergunta">Comece de um cenário pronto ou monte o seu. Cada resposta abaixo é uma premissa da simulação.</p>
+    <div class="cenarios">
+      <button class="acao" id="btnClaude">Cenário Claude</button>
+      <button class="acao" id="btnPadrao">Ponto de partida</button>
+      <span class="campo" style="flex-direction:row;gap:6px;align-items:center"><input type="text" id="nomeCenario" placeholder="nome deste cenário" maxlength="60" aria-label="Nome do cenário"></span>
+      <button class="acao" id="btnCopiar">Copiar cenário</button>
+      <button class="acao" id="btnColar">Colar cenário…</button>
+    </div>
+    <div id="colarCaixa" hidden style="margin-top:10px">
+      <textarea id="colarTexto" placeholder="cole aqui o JSON de um cenário do simulador ou de um cenário salvo da prancheta" aria-label="JSON"></textarea>
+      <div class="linha" style="margin-top:6px"><button class="acao mini" id="colarAplicar">Aplicar</button><button class="acao mini" id="colarCancelar">Cancelar</button></div>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h2>Salão</h2>
+    <p class="pergunta">Qual arranjo das 28 mesas da prancheta serve de base?</p>
+    <div class="linha">
+      <div class="opcoes" role="group" aria-label="Base da prancheta">
+        <button data-base="A" aria-pressed="true">Cenário A da prancheta</button>
+        <button data-base="B" aria-pressed="false">Cenário B</button>
+      </div>
+      <span class="dica" id="alteracoesInfo"></span>
+    </div>
+    <p class="dica" style="margin-top:8px">Para usar um arranjo salvo na prancheta, copie o cenário lá e cole em <strong>Colar cenário</strong> acima: o simulador lê o mesmo JSON.</p>
+  </div>
+
+  <div class="bloco">
+    <h2>Portas da fachada sul</h2>
+    <p class="pergunta">Perguntas 1 e 2 · Quais portas entram e quais saem? Clique numa porta para alternar entre fechada, entrada e saída. S2 e S8 são só de emergência.</p>
+    <svg class="portas" id="svgPortas" viewBox="0 0 560 74" role="group" aria-label="Portas da fachada sul"></svg>
+    <div class="legenda" style="margin-top:6px"><span><span class="swatch" style="background:var(--entrada)"></span>entrada</span><span><span class="swatch" style="background:var(--saida)"></span>saída</span><span><span class="swatch" style="background:var(--regua)"></span>fechada</span><span><span class="swatch" style="background:var(--emerg)"></span>emergência</span></div>
+  </div>
+
+  <div class="bloco">
+    <h2>Zonas e numeração</h2>
+    <p class="pergunta">Pergunta 3 · Em quantas zonas as mesas se dividem, por que porta cada zona entra e de onde parte a numeração MRV 1 a 28. As zonas são arcos contíguos do perímetro; a numeração fica contígua dentro de cada zona para simplificar a sinalização.</p>
+    <div class="linha">
+      <div class="campo"><label for="nZonas">Zonas</label>
+        <div class="opcoes" id="nZonas" role="group"><button data-n="2">2</button><button data-n="3" aria-pressed="true">3</button><button data-n="4">4</button></div></div>
+      <div class="campo"><label for="inicioZona1">Primeiro slot da zona A</label><input type="number" id="inicioZona1" min="1" max="28" value="1"></div>
+      <div class="campo"><label>Mesas por zona</label><div class="linha" id="tamanhos" style="gap:6px"></div></div>
+    </div>
+    <div class="linha" style="margin-top:12px; align-items:flex-start">
+      <svg class="zonasMini" id="svgZonas" viewBox="0 0 300 270" role="img" aria-label="Planta em miniatura com as zonas"></svg>
+      <div style="flex:1; min-width:260px">
+        <table class="tabela" id="tabZonas"></table>
+      </div>
+    </div>
+    <div class="linha" style="margin-top:12px">
+      <div class="campo"><label>MRV 1 começa na zona</label><div class="opcoes" id="inicioZonaMrv" role="group"></div></div>
+      <div class="campo"><label>Sentido da numeração</label><div class="opcoes" id="sentido" role="group"><button data-s="horario" aria-pressed="true">horário</button><button data-s="antihorario" aria-pressed="false">anti-horário</button></div></div>
+    </div>
+    <p class="dica" style="margin-top:8px">Horário: MRV 1 no canto noroeste seguindo a parede norte para leste. A mesa MRV k recebe a k-ª seção principal em ordem crescente, conforme a convocação publicada.</p>
+  </div>
+
+  <div class="bloco">
+    <h2>Checkpoint interno</h2>
+    <p class="pergunta">Pergunta 5 · Há checkpoint depois da porta? A que distância? Com quantos atendentes por zona? O espaço entre porta e checkpoint é o buffer que a liberação controlada enche.</p>
+    <div class="linha">
+      <div class="campo"><label>Checkpoint</label><div class="opcoes" id="cpExiste" role="group"><button data-v="1" aria-pressed="true">há checkpoint</button><button data-v="0" aria-pressed="false">sem checkpoint</button></div></div>
+      <div class="campo"><label for="cpDist">Distância da porta <span class="mono" id="cpDistVal">12 m</span></label><input type="range" id="cpDist" min="4" max="24" step="1" value="12"></div>
+      <div class="campo"><label for="cpFilas">Filas entre porta e checkpoint</label><input type="number" id="cpFilas" min="1" max="4" value="2"></div>
+      <div class="campo"><label for="cpSeg">Segundos por eleitor</label><input type="number" id="cpSeg" min="3" max="30" value="8"></div>
+    </div>
+    <div class="linha" style="margin-top:10px"><div class="campo"><label>Atendentes por zona</label><div class="linha" id="cpAtend" style="gap:6px"></div></div><span class="dica" id="cpCap"></span></div>
+  </div>
+
+  <div class="bloco">
+    <h2>Fila na frente de cada mesa</h2>
+    <p class="pergunta">Pergunta 4 · Quantas pessoas cabem na fila da mesa, por peso da mesa. A fila evita que a urna fique parada; não cria capacidade. A resposta certa aparece no resultado como “fila necessária”.</p>
+    <div class="linha">
+      <div class="campo"><label for="filaLeve">Mesas leves (≤ 500 aptos)</label><input type="number" id="filaLeve" min="1" max="12" value="3"></div>
+      <div class="campo"><label for="filaMedia">Médias (501–700)</label><input type="number" id="filaMedia" min="1" max="12" value="4"></div>
+      <div class="campo"><label for="filaPesada">Pesadas (> 700)</label><input type="number" id="filaPesada" min="1" max="12" value="6"></div>
+      <span class="dica" id="filaInfo"></span>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h2>Liberação na porta</h2>
+    <p class="pergunta">Como a porta decide deixar o próximo eleitor entrar. “Controlada pelo buffer” é a política prevista; as outras servem de comparação.</p>
+    <div class="opcoes" id="liberacao" role="group">
+      <button data-v="buffer" aria-pressed="true">controlada pelo buffer</button>
+      <button data-v="mesa" aria-pressed="false">só se a mesa do próximo tem vaga</button>
+      <button data-v="livre" aria-pressed="false">livre (sem controle)</button>
+    </div>
+    <div class="linha" style="margin-top:10px"><div class="campo"><label for="vazao">Vazão máxima da porta (pessoas/min)</label><input type="number" id="vazao" min="5" max="120" value="30"></div></div>
+  </div>
+
+  <div class="bloco">
+    <h2>Comparecimento</h2>
+    <p class="pergunta">Quantos dos 16.794 aptos aparecem. As taxas separam eleitor de Dublin e do interior, como em 2022.</p>
+    <div class="opcoes" id="comparecimento" role="group"></div>
+    <p class="dica" id="compInfo" style="margin-top:8px"></p>
+  </div>
+
+  <div class="bloco fixa">
+    <h2>Tempo de atendimento na mesa</h2>
+    <p class="pergunta">Resposta fixa: identificação pelo caderno, sem biometria. O mesário identifica o próximo enquanto o anterior vota; o ciclo é o maior dos dois tempos.</p>
+    <div class="linha">
+      <div class="campo"><label>Identificação</label><div class="opcoes" id="tId" role="group"><button data-v="30">30 s</button><button data-v="45" aria-pressed="true">45 s</button><button data-v="60">60 s</button><button data-v="90">90 s</button></div></div>
+      <div class="campo"><label for="tVoto">Voto na urna (s)</label><input type="number" id="tVoto" min="10" max="120" value="30"></div>
+      <div class="campo"><label for="cv">Variabilidade (coef.)</label><input type="number" id="cv" min="0" max="1" step="0.05" value="0.35"></div>
+      <div class="campo"><label for="just">Justificativas e dúvidas (% a mais)</label><input type="number" id="just" min="0" max="30" value="5"></div>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h2>Ring 3 e triagem externa</h2>
+    <p class="pergunta">Fora do salão as pessoas são separadas por zona. Com sinalização boa a triagem não limita; reduza para testar o efeito. A capacidade é o que cabe no Ring 3.</p>
+    <div class="linha">
+      <div class="campo"><label for="triAtend">Pessoas na triagem</label><input type="number" id="triAtend" min="1" max="20" value="6"></div>
+      <div class="campo"><label for="triSeg">Segundos por eleitor</label><input type="number" id="triSeg" min="2" max="40" value="6"></div>
+      <div class="campo"><label for="ring3Cap">Capacidade do Ring 3 (pessoas)</label><input type="number" id="ring3Cap" min="100" max="5000" step="50" value="800"></div>
+    </div>
+  </div>
+
+  <div class="bloco fixa">
+    <h2>Curva de chegada (fixa)</h2>
+    <p class="pergunta">Premissa do modelo, igual para todos os cenários: quando as pessoas chegam ao local, não quando votam. Em 2022 o voto veio bem depois da chegada por causa das filas. Pesos por meia hora, das 7h às 17h.</p>
+    <svg class="curva" id="svgCurva" viewBox="0 0 560 130" role="img" aria-label="Curva de chegada por meia hora"></svg>
+  </div>
+
+  <div class="bloco">
+    <h2>Simulação</h2>
+    <div class="linha">
+      <div class="campo"><label for="runs">Dias simulados</label><input type="number" id="runs" min="1" max="60" value="12"></div>
+      <div class="campo"><label for="seed">Semente</label><input type="number" id="seed" min="1" max="9999" value="7"></div>
+      <span class="dica">Cada dia sorteia comparecimento, horários e tempos. O resultado mostra a mediana e o dia ruim (percentil 90).</span>
+    </div>
+  </div>
+</div>
+
+<aside class="resumoVivo">
+  <div class="bloco">
+    <p class="rot">Leitura imediata</p>
+    <dl class="kpi" id="kpiEstatico"></dl>
+  </div>
+  <div class="bloco">
+    <p class="rot">Carga por zona</p>
+    <table class="tabela" id="tabCarga"></table>
+  </div>
+  <div class="bloco">
+    <p class="rot">Avisos</p>
+    <div id="avisos" class="dica">—</div>
+  </div>
+</aside>
+</div>
+</section>
+
+<!-- ============================ 2 · SIMULAÇÃO ============================ -->
+<section class="tela" id="tela-simulacao">
+  <div id="simVazio" class="semResultado">Ajuste as premissas e clique em <strong>Rodar simulação</strong>. O dia de referência (fechamento mediano) aparece aqui minuto a minuto.</div>
+  <div id="simConteudo" hidden>
+  <div class="simGrid">
+    <div class="palco">
+      <svg id="svgPlanta" viewBox="-3 -2 56.3 60" role="img" aria-label="Planta do Hall 2 com filas e fluxos"></svg>
+      <div class="tempoBarra">
+        <button class="acao mini" id="play" aria-label="Reproduzir">▶</button>
+        <span class="hora" id="horaAtual">8h00</span>
+        <input type="range" id="tempo" min="0" max="600" value="60" aria-label="Minuto do dia">
+        <select id="velocidade" aria-label="Velocidade"><option value="1">1 min/s</option><option value="5" selected>5 min/s</option><option value="15">15 min/s</option></select>
+        <div class="legenda"><span><span class="swatch" style="background:var(--pessoa)"></span>eleitor em fila</span><span><span class="swatch" style="background:var(--falha)"></span>fila além do espaço</span><span>▮ urna ocupada</span></div>
+      </div>
+    </div>
+    <aside class="painel">
+      <div class="bloco" style="padding:12px 14px">
+        <p class="rot">Neste minuto</p>
+        <div class="estagios" id="estagios"></div>
+      </div>
+      <div class="bloco" style="padding:12px 14px">
+        <p class="rot">Dia de referência</p>
+        <dl class="kpi" id="kpiDia"></dl>
+      </div>
+    </aside>
+  </div>
+  <div class="graficos" id="graficos"></div>
+  </div>
+</section>
+
+<!-- ============================ 3 · RESULTADO ============================ -->
+<section class="tela" id="tela-resultado">
+  <div id="resVazio" class="semResultado">O relatório aparece depois de rodar a simulação.</div>
+  <div id="resConteudo" class="relatorio" hidden></div>
+</section>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const BASE = {"salao":{"largura":50.3,"altura":44.4,"recorte":[0.0,0.0,7.8,7.0],"contorno":[[7.8,0.0],[50.3,0.0],[50.3,44.4],[0.0,44.4],[0.0,7.0],[7.8,7.0]]},"modulo":{"prof":4.1,"larg":0.9,"urna":0.9,"mesa":[1.7,0.8],"eleitor":0.9,"passagem":0.6,"assento":0.75,"corredor":[2.5,3.0],"entre_pares":[1.0,1.5]},"portas":[{"id":"N1","rds":"2.13","face":"norte","estado":"fechada","x1":7.41,"y1":44.4,"x2":9.44,"y2":44.4,"larg":2.03},{"id":"N2","rds":"2.14/2.15","face":"norte","estado":"catering","x1":20.66,"y1":44.4,"x2":24.22,"y2":44.4,"larg":3.56},{"id":"L1","rds":"2.16/2.17","face":"leste","estado":"emergencia","x1":50.3,"y1":38.51,"x2":50.3,"y2":41.57,"larg":3.06},{"id":"L2","rds":"2.18/2.19","face":"leste","estado":"emergencia","x1":50.3,"y1":26.66,"x2":50.3,"y2":29.72,"larg":3.06},{"id":"L3","rds":"2.20/2.21","face":"leste","estado":"emergencia","x1":50.3,"y1":14.8,"x2":50.3,"y2":17.87,"larg":3.07},{"id":"L4","rds":"2.22/2.23","face":"leste","estado":"emergencia","x1":50.3,"y1":2.95,"x2":50.3,"y2":6.01,"larg":3.06},{"id":"S1","rds":"carga oeste","face":"sul","estado":"livre","x1":7.83,"y1":0.0,"x2":11.45,"y2":0.0,"larg":3.62},{"id":"S2","rds":"sem codigo RDS","face":"sul","estado":"emergencia","x1":13.25,"y1":0.0,"x2":14.45,"y2":0.0,"larg":1.2},{"id":"S3","rds":"2.7","face":"sul","estado":"livre","x1":17.22,"y1":0.0,"x2":18.47,"y2":0.0,"larg":1.25},{"id":"S4","rds":"2.5/2.6","face":"sul","estado":"livre","x1":19.1,"y1":0.0,"x2":25.03,"y2":0.0,"larg":5.93},{"id":"S5","rds":"2.4","face":"sul","estado":"livre","x1":25.32,"y1":0.0,"x2":31.25,"y2":0.0,"larg":5.93},{"id":"S6","rds":"2.2/2.3","face":"sul","estado":"livre","x1":31.54,"y1":0.0,"x2":37.47,"y2":0.0,"larg":5.93},{"id":"S7","rds":"2.1","face":"sul","estado":"livre","x1":38.09,"y1":0.0,"x2":39.36,"y2":0.0,"larg":1.27},{"id":"S8","rds":"sem codigo RDS","face":"sul","estado":"emergencia","x1":42.12,"y1":0.0,"x2":43.32,"y2":0.0,"larg":1.2},{"id":"S9","rds":"carga leste","face":"sul","estado":"livre","x1":45.12,"y1":0.0,"x2":48.75,"y2":0.0,"larg":3.63},{"id":"O1","rds":"acesso Hall 1","face":"oeste","estado":"livre","x1":0.0,"y1":36.8,"x2":0.0,"y2":38.5,"larg":1.7},{"id":"O2","rds":"2.10/2.11","face":"oeste","estado":"livre","x1":0.0,"y1":19.36,"x2":0.0,"y2":22.43,"larg":3.07},{"id":"R1","rds":"2.8/2.9","face":"recorte_v","estado":"livre","x1":7.8,"y1":3.0,"x2":7.8,"y2":6.5,"larg":3.5}],"cenarios":{"A":{"zonas":[{"rect":[47.3,0.0,50.3,44.4],"rotulo":"fachada leste · faixa protegida de 3 m"},{"rect":[14.22,0.0,21.47,3.0],"rotulo":"S3 · recuo de emergência"},{"rect":[35.09,0.0,42.36,3.0],"rotulo":"S7 · recuo de emergência"},{"rect":[7.8,0.0,10.8,7.0],"rotulo":"R1 · recuo de emergência"}],"vaos":[{"rect":[7.41,44.1,9.44,44.4],"rotulo":"N1 vão"},{"rect":[20.66,44.1,24.22,44.4],"rotulo":"N2 vão"},{"rect":[50.0,2.95,50.3,6.01],"rotulo":"L4 vão"},{"rect":[50.0,14.8,50.3,17.87],"rotulo":"L3 vão"},{"rect":[50.0,26.66,50.3,29.72],"rotulo":"L2 vão"},{"rect":[50.0,38.51,50.3,41.57],"rotulo":"L1 vão"},{"rect":[7.83,0.0,11.45,0.3],"rotulo":"S1 vão"},{"rect":[13.25,0.0,14.45,0.3],"rotulo":"S2 vão"},{"rect":[17.22,0.0,18.47,0.3],"rotulo":"S3 vão"},{"rect":[19.1,0.0,25.03,0.3],"rotulo":"S4 vão"},{"rect":[25.32,0.0,31.25,0.3],"rotulo":"S5 vão"},{"rect":[31.54,0.0,37.47,0.3],"rotulo":"S6 vão"},{"rect":[38.09,0.0,39.36,0.3],"rotulo":"S7 vão"},{"rect":[42.12,0.0,43.32,0.3],"rotulo":"S2 vão"},{"rect":[45.12,0.0,48.75,0.3],"rotulo":"S9 vão"},{"rect":[0.0,19.36,0.3,22.43],"rotulo":"O2 vão"},{"rect":[0.0,36.8,0.3,38.5],"rotulo":"O1 vão"},{"rect":[7.8,3.0,8.1,6.5],"rotulo":"R1 vão"}],"mrvs":[{"n":1,"x":1.605,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":2,"x":5.505,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":3,"x":12.5,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":4,"x":16.4,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":5,"x":28.26,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":6,"x":32.16,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":7,"x":34.56,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":8,"x":38.46,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":9,"x":47.3,"y":39.9,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":10,"x":47.3,"y":36.0,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":11,"x":47.3,"y":33.6,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":12,"x":47.3,"y":29.7,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":13,"x":47.3,"y":27.3,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":14,"x":47.3,"y":23.4,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":15,"x":47.3,"y":21.0,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":16,"x":47.3,"y":17.1,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":17,"x":47.3,"y":14.7,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":18,"x":47.3,"y":10.8,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":19,"x":47.3,"y":8.4,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":20,"x":47.3,"y":4.5,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":21,"x":7.35,"y":7.0,"rot":90,"lado":1,"origem":"recorte_h","corredor":3.0},{"n":22,"x":3.45,"y":7.0,"rot":90,"lado":-1,"origem":"recorte_h","corredor":3.0},{"n":23,"x":0.0,"y":12.53,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":24,"x":0.0,"y":16.43,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":25,"x":0.0,"y":24.765,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":26,"x":0.0,"y":28.665,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":27,"x":0.0,"y":31.065,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":28,"x":0.0,"y":34.965,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0}]},"B":{"zonas":[{"rect":[47.3,0.0,50.3,44.4],"rotulo":"fachada leste · faixa protegida de 3 m"},{"rect":[7.8,0.0,12.45,2.0],"rotulo":"S1 · vestíbulo da divisória"},{"rect":[14.22,0.0,21.47,3.0],"rotulo":"S3 · recuo de emergência"},{"rect":[35.09,0.0,42.36,3.0],"rotulo":"S7 · recuo de emergência"},{"rect":[44.12,0.0,49.75,2.0],"rotulo":"S9 · vestíbulo da divisória"},{"rect":[7.8,0.0,10.8,7.0],"rotulo":"R1 · recuo de emergência"}],"vaos":[{"rect":[7.41,44.1,9.44,44.4],"rotulo":"N1 vão"},{"rect":[20.66,44.1,24.22,44.4],"rotulo":"N2 vão"},{"rect":[50.0,2.95,50.3,6.01],"rotulo":"L4 vão"},{"rect":[50.0,14.8,50.3,17.87],"rotulo":"L3 vão"},{"rect":[50.0,26.66,50.3,29.72],"rotulo":"L2 vão"},{"rect":[50.0,38.51,50.3,41.57],"rotulo":"L1 vão"},{"rect":[7.83,0.0,11.45,0.3],"rotulo":"S1 vão"},{"rect":[13.25,0.0,14.45,0.3],"rotulo":"S2 vão"},{"rect":[17.22,0.0,18.47,0.3],"rotulo":"S3 vão"},{"rect":[19.1,0.0,25.03,0.3],"rotulo":"S4 vão"},{"rect":[25.32,0.0,31.25,0.3],"rotulo":"S5 vão"},{"rect":[31.54,0.0,37.47,0.3],"rotulo":"S6 vão"},{"rect":[38.09,0.0,39.36,0.3],"rotulo":"S7 vão"},{"rect":[42.12,0.0,43.32,0.3],"rotulo":"S2 vão"},{"rect":[45.12,0.0,48.75,0.3],"rotulo":"S9 vão"},{"rect":[0.0,19.36,0.3,22.43],"rotulo":"O2 vão"},{"rect":[0.0,36.8,0.3,38.5],"rotulo":"O1 vão"},{"rect":[7.8,3.0,8.1,6.5],"rotulo":"R1 vão"}],"mrvs":[{"n":1,"x":1.605,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":2,"x":5.505,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":3,"x":12.5,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":4,"x":16.4,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":5,"x":28.26,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":6,"x":32.16,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":7,"x":34.56,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":8,"x":38.46,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":9,"x":47.3,"y":39.9,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":10,"x":47.3,"y":36.0,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":11,"x":47.3,"y":33.6,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":12,"x":47.3,"y":29.7,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":13,"x":47.3,"y":27.3,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":14,"x":47.3,"y":23.4,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":15,"x":47.3,"y":21.0,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":16,"x":47.3,"y":17.1,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":17,"x":47.3,"y":14.7,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":18,"x":47.3,"y":10.8,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":19,"x":47.3,"y":8.4,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":20,"x":47.3,"y":4.5,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":21,"x":7.35,"y":7.0,"rot":90,"lado":1,"origem":"recorte_h","corredor":3.0},{"n":22,"x":3.45,"y":7.0,"rot":90,"lado":-1,"origem":"recorte_h","corredor":3.0},{"n":23,"x":0.0,"y":12.53,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":24,"x":0.0,"y":16.43,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":25,"x":0.0,"y":24.765,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":26,"x":0.0,"y":28.665,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":27,"x":0.0,"y":31.065,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":28,"x":0.0,"y":34.965,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0}]}}};
+const MRVS = {"fonte":"Diário da Justiça Eletrônico do TRE-DF, ano 2026 n. 139, 04/08/2026, p. 915-921 (convocação de mesários, Irlanda/Dublin). Nomes omitidos; apenas MRV e seção.","regra":"MRV k corresponde à k-ésima seção principal em ordem crescente de número.","mrvs":[{"mrv":1,"principal":511,"agregada":1100,"aptos":582,"aptos_principal":400,"aptos_agregada":182,"origem_agregada":"ROSCOMMON","aptos_dublin":400,"aptos_interior":182},{"mrv":2,"principal":512,"agregada":2855,"aptos":476,"aptos_principal":400,"aptos_agregada":76,"origem_agregada":"LONGFORD","aptos_dublin":400,"aptos_interior":76},{"mrv":3,"principal":513,"agregada":1105,"aptos":502,"aptos_principal":400,"aptos_agregada":102,"origem_agregada":"MAYO","aptos_dublin":400,"aptos_interior":102},{"mrv":4,"principal":517,"agregada":1292,"aptos":513,"aptos_principal":400,"aptos_agregada":113,"origem_agregada":"CAVAN","aptos_dublin":400,"aptos_interior":113},{"mrv":5,"principal":1160,"agregada":3845,"aptos":473,"aptos_principal":400,"aptos_agregada":73,"origem_agregada":"LIMERICK","aptos_dublin":400,"aptos_interior":73},{"mrv":6,"principal":1352,"agregada":522,"aptos":462,"aptos_principal":400,"aptos_agregada":62,"origem_agregada":"DONEGAL","aptos_dublin":400,"aptos_interior":62},{"mrv":7,"principal":3054,"agregada":1099,"aptos":454,"aptos_principal":400,"aptos_agregada":54,"origem_agregada":"KERRY","aptos_dublin":400,"aptos_interior":54},{"mrv":8,"principal":3078,"agregada":2847,"aptos":429,"aptos_principal":400,"aptos_agregada":29,"origem_agregada":"LEITRIM","aptos_dublin":400,"aptos_interior":29},{"mrv":9,"principal":3108,"agregada":3422,"aptos":756,"aptos_principal":398,"aptos_agregada":358,"origem_agregada":"GALWAY","aptos_dublin":398,"aptos_interior":358},{"mrv":10,"principal":3142,"agregada":1278,"aptos":793,"aptos_principal":398,"aptos_agregada":395,"origem_agregada":"LIMERICK","aptos_dublin":398,"aptos_interior":395},{"mrv":11,"principal":3161,"agregada":3307,"aptos":791,"aptos_principal":397,"aptos_agregada":394,"origem_agregada":"CORK","aptos_dublin":397,"aptos_interior":394},{"mrv":12,"principal":3179,"agregada":530,"aptos":676,"aptos_principal":398,"aptos_agregada":278,"origem_agregada":"WESTMEATH","aptos_dublin":398,"aptos_interior":278},{"mrv":13,"principal":3216,"agregada":527,"aptos":571,"aptos_principal":398,"aptos_agregada":173,"origem_agregada":"CLARE","aptos_dublin":398,"aptos_interior":173},{"mrv":14,"principal":3229,"agregada":3821,"aptos":606,"aptos_principal":398,"aptos_agregada":208,"origem_agregada":"CORK","aptos_dublin":398,"aptos_interior":208},{"mrv":15,"principal":3245,"agregada":519,"aptos":781,"aptos_principal":397,"aptos_agregada":384,"origem_agregada":"CORK","aptos_dublin":397,"aptos_interior":384},{"mrv":16,"principal":3302,"agregada":3181,"aptos":771,"aptos_principal":396,"aptos_agregada":375,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos_dublin":396,"aptos_interior":375},{"mrv":17,"principal":3305,"agregada":521,"aptos":767,"aptos_principal":397,"aptos_agregada":370,"origem_agregada":"GALWAY","aptos_dublin":397,"aptos_interior":370},{"mrv":18,"principal":3306,"agregada":518,"aptos":766,"aptos_principal":396,"aptos_agregada":370,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos_dublin":396,"aptos_interior":370},{"mrv":19,"principal":3308,"agregada":null,"aptos":399,"aptos_principal":399,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":399,"aptos_interior":0},{"mrv":20,"principal":3309,"agregada":1314,"aptos":615,"aptos_principal":398,"aptos_agregada":217,"origem_agregada":"WATERFORD","aptos_dublin":398,"aptos_interior":217},{"mrv":21,"principal":3311,"agregada":3913,"aptos":630,"aptos_principal":397,"aptos_agregada":233,"origem_agregada":"DUBLIN","aptos_dublin":630,"aptos_interior":0},{"mrv":22,"principal":3313,"agregada":3889,"aptos":797,"aptos_principal":397,"aptos_agregada":400,"origem_agregada":"DUBLIN","aptos_dublin":797,"aptos_interior":0},{"mrv":23,"principal":3315,"agregada":3778,"aptos":792,"aptos_principal":395,"aptos_agregada":397,"origem_agregada":"DUBLIN","aptos_dublin":792,"aptos_interior":0},{"mrv":24,"principal":3322,"agregada":3752,"aptos":794,"aptos_principal":398,"aptos_agregada":396,"origem_agregada":"DUBLIN","aptos_dublin":794,"aptos_interior":0},{"mrv":25,"principal":3442,"agregada":null,"aptos":398,"aptos_principal":398,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":398,"aptos_interior":0},{"mrv":26,"principal":3688,"agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":400,"aptos_interior":0},{"mrv":27,"principal":3832,"agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":400,"aptos_interior":0},{"mrv":28,"principal":3862,"agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":400,"aptos_interior":0}]};
+</script>
+<script>
+/* Simulador de fluxo do Hall 2 — motor de simulação.
+ *
+ * Roda no navegador (global `Modelo`) e em Node (module.exports). Não depende
+ * de DOM. Recebe a base da prancheta (salão, portas, módulo, posições das 28
+ * mesas), o mapeamento MRV → seção e um cenário de premissas; devolve o
+ * resumo estático (cargas, geometria, cruzamentos) e o resultado de N dias
+ * simulados por eventos discretos, eleitor a eleitor.
+ *
+ * Estágios do eleitor:
+ *   chegada ao Ring 3 → triagem → fila da área → porta (liberação controlada)
+ *   → buffer → checkpoint → fila da mesa → mesa (identificação por caderno)
+ *   → urna → saída.
+ */
+(function (raiz) {
+"use strict";
+
+/* ------------------------------------------------------------------ */
+/* Constantes do modelo (premissas fixas, iguais para todos os cenários) */
+/* ------------------------------------------------------------------ */
+const VEL = 1.2;               // m/s, caminhada em salão com gente
+const PASSO_FILA = 0.6;        // m por pessoa numa fila em unifila
+const ABERTURA = 8 * 3600;     // 8h00
+const ENCERRAMENTO = 17 * 3600;// 17h00: quem chegou antes vota
+const INICIO_CURVA = 7 * 3600; // primeiras chegadas às 7h00
+const MEIA_HORA = 1800;
+const LIMITE_SEPARADORES = 200;  // m de fita contratados (100 unifilas)
+
+/* Curva fixa de chegada ao local, em fatias de 30 min a partir das 7h00.
+ * É chegada, não votação: em 2022 o voto aconteceu bem depois da chegada
+ * porque as filas eram longas. Forma apoiada no levantamento qualitativo
+ * (branch claude/eleicoes-brasileiras-horarios-pico-210a6l): fila formada
+ * de 1h30 a 2h antes da abertura (Nova York, Lisboa, Dublin em 2022), maior
+ * volume nas primeiras horas, vale entre 12h e 15h e repique de retardatários
+ * perto das 17h. Pesos somam 100. Não há estatística oficial por hora; os
+ * logs de urna de 2022 permitiriam calibrar. */
+const CURVA_CHEGADA = [
+  /* 7h00 */ 3, /* 7h30 */ 5,
+  /* 8h00 */ 7, /* 8h30 */ 7,
+  /* 9h00 */ 7.5, /* 9h30 */ 7,
+  /* 10h00 */ 7, /* 10h30 */ 6.5,
+  /* 11h00 */ 6, /* 11h30 */ 5.5,
+  /* 12h00 */ 4.5, /* 12h30 */ 4,
+  /* 13h00 */ 3.5, /* 13h30 */ 3.5,
+  /* 14h00 */ 3.5, /* 14h30 */ 3.5,
+  /* 15h00 */ 4, /* 15h30 */ 4,
+  /* 16h00 */ 4.5, /* 16h30 */ 3.5,
+];
+
+/* Taxas de comparecimento por origem do eleitor. "medio" replica 2022
+ * (74 % nas seções de Dublin, ~50 % nas do interior). */
+const COMPARECIMENTO = {
+  pequeno: {dublin: 0.62, interior: 0.40, rotulo: "pequeno"},
+  medio:   {dublin: 0.74, interior: 0.50, rotulo: "médio (2022)"},
+  grande:  {dublin: 0.84, interior: 0.60, rotulo: "grande"},
+};
+
+const CLASSES = ["leve", "media", "pesada"];
+function classeMesa(aptos){ return aptos > 700 ? "pesada" : (aptos > 500 ? "media" : "leve"); }
+const ROTULO_CLASSE = {leve: "leve (≤ 500 aptos)", media: "média (501–700)", pesada: "pesada (> 700)"};
+
+/* ------------------------------------------------------------------ */
+/* Cenários de referência                                              */
+/* ------------------------------------------------------------------ */
+function cenarioPadrao(){
+  return {
+    nome: "Ponto de partida",
+    salao: {base: "A", alteracoes: []},
+    portas: {S1: "fechada", S3: "fechada", S4: "entrada", S5: "saida", S6: "entrada", S7: "fechada", S9: "fechada"},
+    zonas: {inicio: 1, tamanhos: [16, 12], portas: ["S4", "S6"]},
+    ordem: {inicioZona: 0, sentido: "horario"},
+    checkpoint: {existe: true, dist: 8, filas: 2, atendentes: [2, 2], seg: 8},
+    filaMesa: {leve: 3, media: 4, pesada: 5},
+    liberacao: "buffer",
+    porta: {vazao: 30},
+    comparecimento: "medio",
+    tempos: {identificacao: 45, voto: 30, cv: 0.35},
+    ring3: {atendentes: 6, seg: 6, capacidade: 800},
+    extras: {justificativas: 0.05},
+    sim: {runs: 12, seed: 7},
+  };
+}
+
+/* Escolhido por varredura em Node (simulador/varredura.js): entre 4.228
+ * combinações de partição, portas, ordem e checkpoint, esta zera os
+ * cruzamentos de saída com corredor de entrada, mantém as mesas pesadas sem
+ * fome e cabe na fita contratada. Sobe as mesas 23 e 24 em 3,5 a 5 m para a
+ * fila da mesa do recorte (slot 22) não invadir a mesa 23. */
+function cenarioClaude(){
+  const c = cenarioPadrao();
+  c.nome = "Cenário Claude";
+  c.salao = {base: "A", alteracoes: [{n: 23, y: 17.5}, {n: 24, y: 21.4}]};
+  c.portas = {S1: "saida", S3: "fechada", S4: "entrada", S5: "entrada", S6: "entrada", S7: "fechada", S9: "saida"};
+  c.zonas = {inicio: 1, tamanhos: [8, 12, 8], portas: ["S5", "S6", "S4"]};
+  c.ordem = {inicioZona: 1, sentido: "horario"};
+  c.checkpoint = {existe: true, dist: 14, filas: 2, atendentes: [2, 3, 2], seg: 8};
+  c.filaMesa = {leve: 4, media: 5, pesada: 8};
+  c.liberacao = "buffer";
+  c.sim = {runs: 16, seed: 7};
+  return c;
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilidades                                                          */
+/* ------------------------------------------------------------------ */
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function lognormal(rnd, media, cv){
+  if (!(cv > 0)) return () => media;
+  const s2 = Math.log(1 + cv * cv), mu = Math.log(media) - s2 / 2, s = Math.sqrt(s2);
+  return () => {
+    let u = 0, v = 0;
+    while (u === 0) u = rnd();
+    while (v === 0) v = rnd();
+    const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    return Math.exp(mu + s * z);
+  };
+}
+function binomial(rnd, n, p){
+  if (n > 60) {                   // aproximação normal, suficiente aqui
+    let u = 0, v = 0;
+    while (u === 0) u = rnd();
+    while (v === 0) v = rnd();
+    const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    return Math.max(0, Math.min(n, Math.round(n * p + z * Math.sqrt(n * p * (1 - p)))));
+  }
+  let k = 0; for (let i = 0; i < n; i++) if (rnd() < p) k++;
+  return k;
+}
+const hipot = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
+const DIR = r => [Math.round(Math.cos(r * Math.PI / 180)), Math.round(Math.sin(r * Math.PI / 180))];
+const CCW = ([x, y]) => [-y, x];
+const percentil = (arr, p) => {
+  if (!arr.length) return 0;
+  const a = arr.slice().sort((x, y) => x - y);
+  const i = Math.min(a.length - 1, Math.max(0, Math.round((a.length - 1) * p)));
+  return a[i];
+};
+const mediana = arr => percentil(arr, 0.5);
+const soma = arr => arr.reduce((s, v) => s + v, 0);
+const hhmm = seg => {
+  const h = Math.floor(seg / 3600), m = Math.floor((seg % 3600) / 60);
+  return `${h}h${m < 10 ? "0" : ""}${m}`;
+};
+const minutos = seg => Math.round(seg / 60);
+
+/* Fila com ponteiro de cabeça (evita shift O(n) nas filas grandes). */
+class Fila {
+  constructor(){ this.a = []; this.h = 0; }
+  get length(){ return this.a.length - this.h; }
+  push(v){ this.a.push(v); }
+  peek(){ return this.a[this.h]; }
+  shift(){
+    const v = this.a[this.h++];
+    if (this.h > 1024 && this.h * 2 > this.a.length) { this.a = this.a.slice(this.h); this.h = 0; }
+    return v;
+  }
+}
+/* Heap binário de eventos: [tempo, seq, tipo, dado]. */
+class Heap {
+  constructor(){ this.a = []; this.seq = 0; }
+  get length(){ return this.a.length; }
+  push(t, tipo, dado){
+    const e = [t, this.seq++, tipo, dado]; const a = this.a; a.push(e);
+    let i = a.length - 1;
+    while (i > 0) {
+      const p = (i - 1) >> 1;
+      if (a[p][0] < e[0] || (a[p][0] === e[0] && a[p][1] < e[1])) break;
+      a[i] = a[p]; i = p;
+    }
+    a[i] = e;
+  }
+  pop(){
+    const a = this.a, top = a[0], fim = a.pop();
+    if (a.length) {
+      let i = 0; const n = a.length;
+      for (;;) {
+        let l = 2 * i + 1, r = l + 1, m = i;
+        let mi = fim;
+        if (l < n && (a[l][0] < mi[0] || (a[l][0] === mi[0] && a[l][1] < mi[1]))) { m = l; mi = a[l]; }
+        if (r < n && (a[r][0] < mi[0] || (a[r][0] === mi[0] && a[r][1] < mi[1]))) { m = r; mi = a[r]; }
+        if (m === i) break;
+        a[i] = a[m]; i = m;
+      }
+      a[i] = fim;
+    }
+    return top;
+  }
+}
+
+/* Segmentos e retângulos (para cruzamentos e conflitos de fila). */
+function cruzam(p1, p2, p3, p4){
+  const d = (a, b, c) => (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+  const d1 = d(p3, p4, p1), d2 = d(p3, p4, p2), d3 = d(p1, p2, p3), d4 = d(p1, p2, p4);
+  return ((d1 > 0) !== (d2 > 0)) && ((d3 > 0) !== (d4 > 0)) && d1 !== 0 && d2 !== 0 && d3 !== 0 && d4 !== 0;
+}
+function segmentoBateRect(a, b, r){
+  const dentro = p => p[0] > r[0] && p[0] < r[2] && p[1] > r[1] && p[1] < r[3];
+  if (dentro(a) || dentro(b)) return true;
+  const c = [[r[0], r[1]], [r[2], r[1]], [r[2], r[3]], [r[0], r[3]]];
+  for (let i = 0; i < 4; i++) if (cruzam(a, b, c[i], c[(i + 1) % 4])) return true;
+  return false;
+}
+const bate = (a, b, t = 1e-6) => a[0] < b[2] - t && b[0] < a[2] - t && a[1] < b[3] - t && b[1] < a[3] - t;
+
+/* ------------------------------------------------------------------ */
+/* Geometria herdada da prancheta                                      */
+/* ------------------------------------------------------------------ */
+function mesasDoCenario(base, cen){
+  const orig = base.cenarios[cen.salao.base || "A"].mrvs.map(m => ({...m}));
+  for (const alt of (cen.salao.alteracoes || [])) {
+    const m = orig.find(q => q.n === alt.n);
+    if (m) Object.assign(m, alt);
+  }
+  return orig;
+}
+function corpoRect(M, m){
+  const d = DIR(m.rot), p = CCW(d), xs = [], ys = [];
+  for (const u of [0, M.prof]) for (const v of [-M.larg / 2, M.larg / 2]) {
+    xs.push(m.x + d[0] * u + p[0] * v); ys.push(m.y + d[1] * u + p[1] * v);
+  }
+  return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+}
+/* Ponto em que a fila da mesa começa (0,3 m à frente da mesa dos mesários). */
+function frenteMesa(M, m){
+  const d = DIR(m.rot);
+  return [m.x + d[0] * (M.prof + 0.3), m.y + d[1] * (M.prof + 0.3)];
+}
+function caudaFila(M, m, L){
+  const d = DIR(m.rot), f = frenteMesa(M, m);
+  return [f[0] + d[0] * L * PASSO_FILA, f[1] + d[1] * L * PASSO_FILA];
+}
+function centroPorta(p){ return [(p.x1 + p.x2) / 2, (p.y1 + p.y2) / 2]; }
+
+/* Zonas = arcos contíguos da sequência perimetral de slots (1→28 horário
+ * a partir do canto noroeste). */
+function slotsDasZonas(zonas){
+  const n = 28, seq = [];
+  const ini = ((zonas.inicio || 1) - 1 + n) % n;
+  for (let i = 0; i < n; i++) seq.push(((ini + i) % n) + 1);
+  const out = []; let k = 0;
+  for (const tam of zonas.tamanhos) { out.push(seq.slice(k, k + tam)); k += tam; }
+  return out;
+}
+/* Numeração MRV por slot: contígua dentro de cada zona, começando na zona
+ * escolhida e seguindo o perímetro no sentido dado. */
+function mapaMrv(zonasSlots, ordem){
+  if (ordem.manual) return {...ordem.manual};
+  const plano = [];
+  const z0 = Math.min(ordem.inicioZona || 0, zonasSlots.length - 1);
+  const ordemZonas = [];
+  for (let i = 0; i < zonasSlots.length; i++) ordemZonas.push((z0 + i) % zonasSlots.length);
+  if (ordem.sentido === "antihorario") {
+    // percorre as zonas em ordem inversa e cada zona de trás para frente
+    const inv = [z0];
+    for (let i = 1; i < zonasSlots.length; i++) inv.push((z0 - i + zonasSlots.length) % zonasSlots.length);
+    for (const z of inv) plano.push(...zonasSlots[z].slice().reverse());
+  } else {
+    for (const z of ordemZonas) plano.push(...zonasSlots[z]);
+  }
+  const mapa = {};
+  plano.forEach((slot, i) => { mapa[slot] = i + 1; });
+  return mapa;
+}
+
+/* ------------------------------------------------------------------ */
+/* Montagem do cenário resolvido (estático)                            */
+/* ------------------------------------------------------------------ */
+function montar(base, mrvsDados, cen){
+  const M = base.modulo;
+  const mesasPos = mesasDoCenario(base, cen);
+  const zonasSlots = slotsDasZonas(cen.zonas);
+  const mapa = mapaMrv(zonasSlots, cen.ordem);
+  const porMrv = {}; for (const r of mrvsDados.mrvs) porMrv[r.mrv] = r;
+  const portas = {}; for (const p of base.portas) portas[p.id] = p;
+  const taxa = COMPARECIMENTO[cen.comparecimento] || COMPARECIMENTO.medio;
+  const avisos = [];
+
+  // portas de saída
+  const saidas = Object.keys(cen.portas).filter(id => cen.portas[id] === "saida" && portas[id]);
+  const entradas = Object.keys(cen.portas).filter(id => cen.portas[id] === "entrada" && portas[id]);
+
+  // zonas
+  const zonas = zonasSlots.map((slots, z) => {
+    let pid = cen.zonas.portas[z];
+    if (!pid || cen.portas[pid] !== "entrada") {
+      avisos.push(`Zona ${z + 1} sem porta de entrada válida; usando ${entradas[0] || "S5"}.`);
+      pid = entradas[0] || "S5";
+    }
+    const porta = portas[pid], cp = centroPorta(porta);
+    return {idx: z, nome: `Zona ${String.fromCharCode(65 + z)}`, letra: String.fromCharCode(65 + z),
+            slots, porta: pid, portaCentro: cp, portaLarg: porta.larg};
+  });
+  // checkpoint de cada zona: à frente da porta, à distância escolhida.
+  // Se duas zonas dividem a porta, afasta 1,5 m lateralmente.
+  const usoPorta = {};
+  for (const z of zonas) {
+    const k = usoPorta[z.porta] = (usoPorta[z.porta] || 0) + 1;
+    const dx = (k - 1) * 1.5 * (k % 2 ? 1 : -1);
+    z.checkpoint = cen.checkpoint.existe ? [z.portaCentro[0] + dx, cen.checkpoint.dist] : null;
+    z.dividePorta = false;
+  }
+  for (const z of zonas) if (usoPorta[z.porta] > 1) z.dividePorta = true;
+
+  // mesas
+  const mesas = mesasPos.map(pos => {
+    const mrv = mapa[pos.n], dados = porMrv[mrv];
+    const zona = zonas.find(z => z.slots.includes(pos.n));
+    const classe = classeMesa(dados.aptos);
+    const L = Math.max(1, Math.round(cen.filaMesa[classe] || 3));
+    const frente = frenteMesa(M, pos), cauda = caudaFila(M, pos, L);
+    const esperados = dados.aptos_dublin * taxa.dublin + dados.aptos_interior * taxa.interior;
+    const saida = saidas.length
+      ? saidas.map(id => ({id, d: hipot(frente, centroPorta(portas[id]))})).sort((a, b) => a.d - b.d)[0]
+      : {id: zona.porta, d: hipot(frente, zona.portaCentro)};
+    const distCp = zona.checkpoint ? hipot(zona.checkpoint, frente) : hipot(zona.portaCentro, frente);
+    return {slot: pos.n, pos, mrv, secao: dados.principal, agregada: dados.agregada,
+            origemAgregada: dados.origem_agregada, aptos: dados.aptos,
+            aptosDublin: dados.aptos_dublin, aptosInterior: dados.aptos_interior,
+            classe, L, zona: zona.idx, frente, cauda, esperados, saida: saida.id, distSaida: saida.d,
+            distCp, corpo: corpoRect(M, pos)};
+  });
+  for (const z of zonas) {
+    z.mesas = mesas.filter(m => m.zona === z.idx).map(m => m.slot);
+    z.esperados = soma(mesas.filter(m => m.zona === z.idx).map(m => m.esperados));
+    z.aptos = soma(mesas.filter(m => m.zona === z.idx).map(m => m.aptos));
+    z.mrvs = mesas.filter(m => m.zona === z.idx).map(m => m.mrv).sort((a, b) => a - b);
+    z.faixaMrv = `${z.mrvs[0]}–${z.mrvs[z.mrvs.length - 1]}`;
+    z.capBuffer = cen.checkpoint.existe
+      ? Math.max(1, Math.floor(cen.checkpoint.dist * Math.max(1, cen.checkpoint.filas) / PASSO_FILA))
+      : soma(mesas.filter(m => m.zona === z.idx).map(m => m.L));
+    z.atendentesCp = cen.checkpoint.existe
+      ? Math.max(1, Math.round((Array.isArray(cen.checkpoint.atendentes)
+          ? cen.checkpoint.atendentes[z.idx] : cen.checkpoint.atendentes) || 1))
+      : 0;
+    z.distCpMedia = soma(mesas.filter(m => m.zona === z.idx).map(m => m.distCp)) / z.mesas.length;
+    z.distCpMax = Math.max(...mesas.filter(m => m.zona === z.idx).map(m => m.distCp));
+    // retângulo do buffer (entre porta e checkpoint), para conflitos de fila
+    const larg = Math.max(1, cen.checkpoint.filas) * 1.0 + 1.0;
+    z.bufferRect = cen.checkpoint.existe
+      ? [z.portaCentro[0] - larg / 2, 0, z.portaCentro[0] + larg / 2, cen.checkpoint.dist] : null;
+  }
+  // carga por porta (zonas podem dividir porta)
+  const cargaPorta = {};
+  for (const z of zonas) cargaPorta[z.porta] = (cargaPorta[z.porta] || 0) + z.esperados;
+  const cargas = Object.values(cargaPorta);
+  const desequilibrio = cargas.length > 1 ? Math.max(...cargas) / Math.min(...cargas) : 1;
+
+  // separadores: filas das mesas + corredores até o checkpoint
+  const fitaMesas = soma(mesas.map(m => m.L * PASSO_FILA));
+  const fitaBuffer = cen.checkpoint.existe
+    ? soma(zonas.map(z => cen.checkpoint.dist * Math.max(1, cen.checkpoint.filas))) : 0;
+  const separadores = fitaMesas + fitaBuffer;
+
+  // conflitos das filas das mesas com buffers, zonas protegidas, outras mesas
+  const zonasProt = base.cenarios[cen.salao.base || "A"].zonas;
+  const conflitos = [];
+  for (const m of mesas) {
+    const a = m.frente, b = m.cauda;
+    for (const z of zonas) if (z.bufferRect && segmentoBateRect(a, b, z.bufferRect))
+      conflitos.push({mesa: m.mrv, com: `corredor porta→checkpoint da ${z.nome}`});
+    for (const zp of zonasProt) if (segmentoBateRect(a, b, zp.rect))
+      conflitos.push({mesa: m.mrv, com: zp.rotulo.split(" · ")[0]});
+    for (const o of mesas) if (o.slot !== m.slot && segmentoBateRect(a, b, o.corpo))
+      conflitos.push({mesa: m.mrv, com: `mesa ${o.mrv}`});
+    if (b[0] < 0 || b[1] < 0 || b[0] > base.salao.largura || b[1] > base.salao.altura
+        || bate([Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[0], b[0]), Math.max(a[1], b[1])], base.salao.recorte))
+      conflitos.push({mesa: m.mrv, com: "fora do salão"});
+  }
+
+  // cruzamentos. O que importa é a saída cortar um corredor denso de entrada
+  // (porta→checkpoint, onde há fila parada). Cruzar as linhas do leque
+  // checkpoint→mesa é gente andando contra gente andando: informativo.
+  const corredores = zonas.filter(z => z.checkpoint).map(z => ({zona: z.idx, rect: z.bufferRect, a: z.portaCentro, b: z.checkpoint}));
+  let eleitoresCruzam = 0; const mesasCruzam = [];
+  for (const m of mesas) {
+    const a = m.frente, b = centroPorta(portas[m.saida]);
+    const corta = corredores.some(c => segmentoBateRect(a, b, c.rect) || cruzam(a, b, c.a, c.b));
+    if (corta) { eleitoresCruzam += m.esperados; mesasCruzam.push(m.mrv); }
+  }
+  const fracaoCruza = mesas.length ? eleitoresCruzam / soma(mesas.map(m => m.esperados)) : 0;
+  let paresLeque = 0, paresTotal = 0;
+  for (const e of mesas) for (const sm of mesas) {
+    if (e.slot === sm.slot) continue;
+    paresTotal++;
+    const z = zonas[e.zona];
+    if (cruzam(z.checkpoint || z.portaCentro, e.frente, sm.frente, centroPorta(portas[sm.saida]))) paresLeque++;
+  }
+  const fracaoLeque = paresTotal ? paresLeque / paresTotal : 0;
+  const mesmaPorta = zonas.filter(z => saidas.includes(z.porta)).map(z => z.porta);
+
+  return {cen, base, M, zonas, mesas, mapa, portas, saidas, entradas, taxa,
+          esperadosTotal: soma(mesas.map(m => m.esperados)),
+          aptosTotal: soma(mesas.map(m => m.aptos)),
+          cargaPorta, desequilibrio, separadores, fitaMesas, fitaBuffer, conflitos,
+          eleitoresCruzam, fracaoCruza, mesasCruzam, fracaoLeque, mesmaPorta, avisos,
+          curva: CURVA_CHEGADA.slice(), limiteSeparadores: LIMITE_SEPARADORES};
+}
+
+/* ------------------------------------------------------------------ */
+/* Um dia simulado                                                     */
+/* ------------------------------------------------------------------ */
+const EV = {CHEGADA: 1, TRIAGEM_FIM: 2, PORTA_TICK: 3, CP_CHEGADA: 4, CP_FIM: 5,
+            MESA_CHEGADA: 6, ID_FIM: 7, VOTO_FIM: 8, SAIDA_FIM: 9, AMOSTRA: 10};
+
+function simularDia(mont, seed){
+  const {cen, zonas, mesas} = mont;
+  const rnd = mulberry32(seed);
+  const tId = lognormal(rnd, cen.tempos.identificacao, cen.tempos.cv);
+  const tVoto = lognormal(rnd, cen.tempos.voto, cen.tempos.cv);
+  const tCp = lognormal(rnd, cen.checkpoint.seg || 8, 0.3);
+  const tTri = lognormal(rnd, cen.ring3.seg || 8, 0.3);
+  const comCp = !!cen.checkpoint.existe;
+  const politica = cen.liberacao || "buffer";
+  const gapPorta = 60 / Math.max(1, cen.porta.vazao || 30);
+
+  // curva acumulada
+  const acum = []; let s = 0;
+  for (const w of CURVA_CHEGADA) { s += w; acum.push(s); }
+  const sorteiaChegada = () => {
+    const u = rnd() * s; let i = 0;
+    while (acum[i] < u) i++;
+    return INICIO_CURVA + i * MEIA_HORA + rnd() * MEIA_HORA;
+  };
+
+  // eleitores
+  const porSlot = {}; mesas.forEach(m => { porSlot[m.slot] = m; });
+  const eleitores = [];
+  for (const m of mesas) {
+    const nD = binomial(rnd, m.aptosDublin, mont.taxa.dublin);
+    const nI = binomial(rnd, m.aptosInterior, mont.taxa.interior);
+    const n = nD + nI;
+    const nJ = Math.round(n * (cen.extras.justificativas || 0));
+    for (let i = 0; i < n + nJ; i++)
+      eleitores.push({id: eleitores.length, mesa: m.slot, zona: m.zona, just: i >= n,
+                      tA: sorteiaChegada(), tR: -1, tM: -1, tI: -1, tV: -1});
+  }
+  eleitores.sort((a, b) => a.tA - b.tA);
+
+  const heap = new Heap();
+  for (const e of eleitores) heap.push(e.tA, EV.CHEGADA, e);
+
+  // estado
+  const nz = zonas.length;
+  const triFila = new Fila(); let triOcupados = 0;
+  const areaFila = zonas.map(() => new Fila());
+  const proxLib = {}; const tickAgendado = zonas.map(() => false);
+  const buffer = new Array(nz).fill(0);          // porta→checkpoint (inclui retidos)
+  const dentroZona = new Array(nz).fill(0);       // dentro do salão, nesta zona
+  const cpFila = zonas.map(() => new Fila()); const cpOcup = new Array(nz).fill(0);
+  const cpAtend = new Array(nz).fill(0), cpServ = new Array(nz).fill(0);
+  const est = {}; // por slot
+  for (const m of mesas) est[m.slot] = {fila: [], transito: 0, retidos: new Fila(), mesarioLivre: true,
+    urnaLivre: true, esperaUrna: null, votos: 0, just: 0, fecha: 0, ocioso: 0, fome: 0, urnaBusy: 0,
+    idBusy: 0, filaMax: 0, estouro: 0, retidosMax: 0};
+  let dentroTotal = 0, dentroMax = 0, restantes = eleitores.length;
+  const ring3Max = new Array(nz).fill(0), bufferMax = new Array(nz).fill(0), cpFilaMax = new Array(nz).fill(0);
+  let ring3TotalMax = 0, ring3Estouro = 0, bufferEstouro = new Array(nz).fill(0);
+  let triFilaMax = 0, triBusy = 0, amostrasAberto = 0, amostrasTri = 0;
+  const liberadosPorta = {};
+  const saidasPorta = {};
+  const linha = {t: [], ring3: zonas.map(() => []), buffer: zonas.map(() => []), cp: zonas.map(() => []),
+                 dentro: [], votados: [], mesaFila: mesas.map(() => []), mesaEstado: mesas.map(() => [])};
+  const idxSlot = {}; mesas.forEach((m, i) => { idxSlot[m.slot] = i; });
+  let votados = 0;
+
+  const slotsLivres = slot => { const e = est[slot]; return porSlot[slot].L - e.fila.length - e.transito; };
+
+  function podeLiberar(z, v){
+    if (politica === "livre") return true;
+    const zz = zonas[z];
+    const capOk = comCp ? buffer[z] < zz.capBuffer : dentroZona[z] < zz.capBuffer;
+    if (!capOk) return false;
+    if (politica === "mesa") return slotsLivres(v.mesa) - est[v.mesa].retidos.length > 0;
+    return true;
+  }
+  function tentaLiberar(z, t){
+    const zz = zonas[z], porta = zz.porta;
+    if (t < ABERTURA - 1e-9) {
+      if (!tickAgendado[z]) { tickAgendado[z] = true; heap.push(ABERTURA, EV.PORTA_TICK, z); }
+      return;
+    }
+    while (areaFila[z].length) {
+      const prox = proxLib[porta] || 0;
+      if (prox > t + 1e-9) {
+        if (!tickAgendado[z]) { tickAgendado[z] = true; heap.push(prox, EV.PORTA_TICK, z); }
+        return;
+      }
+      const v = areaFila[z].peek();
+      if (!podeLiberar(z, v)) return;
+      areaFila[z].shift();
+      proxLib[porta] = t + gapPorta;
+      liberadosPorta[porta] = (liberadosPorta[porta] || 0) + 1;
+      v.tR = t; dentroTotal++; dentroZona[z]++;
+      if (dentroTotal > dentroMax) dentroMax = dentroTotal;
+      if (comCp) {
+        buffer[z]++;
+        heap.push(t + cen.checkpoint.dist / VEL, EV.CP_CHEGADA, v);
+      } else {
+        est[v.mesa].transito++;
+        heap.push(t + 10 + porSlot[v.mesa].distCp / VEL, EV.MESA_CHEGADA, v);
+      }
+    }
+  }
+  function tentaTriagem(t){
+    while (triOcupados < Math.max(1, cen.ring3.atendentes) && triFila.length) {
+      const v = triFila.shift(); triOcupados++;
+      heap.push(t + tTri(), EV.TRIAGEM_FIM, v);
+    }
+  }
+  function despacha(v, t){
+    const z = v.zona, m = v.mesa;
+    if (slotsLivres(m) > 0) {
+      est[m].transito++; buffer[z]--;
+      heap.push(t + porSlot[m].distCp / VEL, EV.MESA_CHEGADA, v);
+      tentaLiberar(z, t);
+    } else {
+      est[m].retidos.push(v);
+      if (est[m].retidos.length > est[m].retidosMax) est[m].retidosMax = est[m].retidos.length;
+    }
+  }
+  function tentaCp(z, t){
+    while (cpOcup[z] < zonas[z].atendentesCp && cpFila[z].length) {
+      const v = cpFila[z].shift(); cpOcup[z]++;
+      heap.push(t + tCp(), EV.CP_FIM, v);
+    }
+  }
+  function liberaRetidos(m, t){
+    const e = est[m];
+    while (e.retidos.length && slotsLivres(m) > 0) {
+      const v = e.retidos.shift();
+      e.transito++; buffer[v.zona]--;
+      heap.push(t + porSlot[m].distCp / VEL, EV.MESA_CHEGADA, v);
+      tentaLiberar(v.zona, t);
+    }
+  }
+  function tentaMesa(m, t){
+    const e = est[m];
+    if (e.mesarioLivre && e.fila.length) {
+      const v = e.fila.shift(); v.tI = t; e.mesarioLivre = false;
+      heap.push(t + tId() * (v.just ? 1.5 : 1), EV.ID_FIM, v);
+      liberaRetidos(m, t);
+    }
+  }
+  function sai(v, t){
+    const m = porSlot[v.mesa];
+    dentroZona[v.zona]--; restantes--;
+    saidasPorta[m.saida] = (saidasPorta[m.saida] || 0) + 1;
+    heap.push(t + m.distSaida / VEL, EV.SAIDA_FIM, v);
+    if (!comCp) tentaLiberar(v.zona, t);
+  }
+
+  heap.push(INICIO_CURVA, EV.AMOSTRA, null);
+  let tAnterior = INICIO_CURVA;
+  while (heap.length) {
+    const [t, , tipo, d] = heap.pop();
+    switch (tipo) {
+      case EV.CHEGADA:
+        triFila.push(d); if (triFila.length > triFilaMax) triFilaMax = triFila.length;
+        tentaTriagem(t); break;
+      case EV.TRIAGEM_FIM:
+        triOcupados--; areaFila[d.zona].push(d); tentaTriagem(t); tentaLiberar(d.zona, t); break;
+      case EV.PORTA_TICK:
+        tickAgendado[d] = false; tentaLiberar(d, t); break;
+      case EV.CP_CHEGADA:
+        cpFila[d.zona].push(d); tentaCp(d.zona, t); break;
+      case EV.CP_FIM:
+        cpOcup[d.zona]--; cpServ[d.zona]++; despacha(d, t); tentaCp(d.zona, t); break;
+      case EV.MESA_CHEGADA: {
+        const e = est[d.mesa]; e.transito--; e.fila.push(d); d.tM = t;
+        if (e.fila.length > e.filaMax) e.filaMax = e.fila.length;
+        if (e.fila.length > porSlot[d.mesa].L) e.estouro++;
+        tentaMesa(d.mesa, t); break;
+      }
+      case EV.ID_FIM: {
+        const e = est[d.mesa];
+        if (d.just) { d.tV = t; e.just++; e.fecha = t; e.mesarioLivre = true; sai(d, t); tentaMesa(d.mesa, t); }
+        else if (e.urnaLivre) { e.urnaLivre = false; heap.push(t + tVoto(), EV.VOTO_FIM, d); e.mesarioLivre = true; tentaMesa(d.mesa, t); }
+        else { e.esperaUrna = d; }
+        break;
+      }
+      case EV.VOTO_FIM: {
+        const e = est[d.mesa]; d.tV = t; e.votos++; votados++; e.fecha = t; sai(d, t);
+        if (e.esperaUrna) { const w = e.esperaUrna; e.esperaUrna = null; heap.push(t + tVoto(), EV.VOTO_FIM, w); e.mesarioLivre = true; tentaMesa(d.mesa, t); }
+        else e.urnaLivre = true;
+        break;
+      }
+      case EV.SAIDA_FIM: dentroTotal--; break;
+      case EV.AMOSTRA: {
+        linha.t.push(t);
+        let ring3Total = triFila.length;
+        for (let z = 0; z < nz; z++) {
+          const r = areaFila[z].length; ring3Total += r;
+          if (r > ring3Max[z]) ring3Max[z] = r;
+          if (buffer[z] > bufferMax[z]) bufferMax[z] = buffer[z];
+          if (buffer[z] > zonas[z].capBuffer) bufferEstouro[z] += 60;
+          if (cpFila[z].length > cpFilaMax[z]) cpFilaMax[z] = cpFila[z].length;
+          if (t >= ABERTURA && restantes > 0) cpAtend[z] += cpOcup[z];
+          linha.ring3[z].push(r); linha.buffer[z].push(buffer[z]); linha.cp[z].push(cpFila[z].length);
+        }
+        if (ring3Total > ring3TotalMax) ring3TotalMax = ring3Total;
+        if (ring3Total > (cen.ring3.capacidade || 1e9)) ring3Estouro += 60;
+        if (ring3Total > 0 || triOcupados > 0) { triBusy += triOcupados; amostrasTri++; }
+        if (t >= ABERTURA && restantes > 0) amostrasAberto++;
+        linha.dentro.push(dentroTotal); linha.votados.push(votados);
+        for (const m of mesas) {
+          const e = est[m.slot];
+          const ocioso = e.mesarioLivre && e.urnaLivre && !e.fila.length;
+          let cod = 0; // 0 ocioso, 1 identificando, 2 identificando+urna, 3 só urna, 4 bloqueado
+          if (!e.mesarioLivre && !e.urnaLivre) cod = e.esperaUrna ? 4 : 2;
+          else if (!e.mesarioLivre) cod = 1;
+          else if (!e.urnaLivre) cod = 3;
+          if (t >= ABERTURA && restantes > 0) {
+            if (ocioso) e.ocioso += 60;
+            if (ocioso && (areaFila[m.zona].length > 0 || e.retidos.length > 0)) e.fome += 60;
+          }
+          if (t >= ABERTURA && t < ENCERRAMENTO) {
+            if (!e.urnaLivre) e.urnaBusy += 60;
+            if (!e.mesarioLivre) e.idBusy += 60;
+          }
+          linha.mesaFila[idxSlot[m.slot]].push(e.fila.length + e.transito);
+          linha.mesaEstado[idxSlot[m.slot]].push(cod);
+        }
+        if (restantes > 0 || dentroTotal > 0) heap.push(t + 60, EV.AMOSTRA, null);
+        break;
+      }
+    }
+    tAnterior = t;
+  }
+
+  // agregados do dia
+  const esperaFora = [], esperaDentro = [], total = [];
+  for (const v of eleitores) if (v.tV >= 0) {
+    esperaFora.push(v.tR - v.tA); esperaDentro.push(v.tI - v.tR); total.push(v.tV - v.tA);
+  }
+  const fechaUltima = Math.max(...mesas.map(m => est[m.slot].fecha));
+  const abertoSeg = ENCERRAMENTO - ABERTURA;
+  const nAmostrasAberto = abertoSeg / 60;
+  const porMesa = mesas.map(m => {
+    const e = est[m.slot];
+    return {slot: m.slot, mrv: m.mrv, zona: m.zona, classe: m.classe, votos: e.votos, just: e.just,
+            fecha: e.fecha, ocioso: e.ocioso, fome: e.fome, ocupUrna: e.urnaBusy / abertoSeg,
+            ocupMesario: e.idBusy / abertoSeg, filaMax: e.filaMax, estouro: e.estouro, retidosMax: e.retidosMax};
+  });
+  const porZona = zonas.map((z, i) => ({
+    idx: i, ring3Max: ring3Max[i], bufferMax: bufferMax[i], capBuffer: z.capBuffer,
+    bufferEstouroMin: bufferEstouro[i] / 60, cpFilaMax: cpFilaMax[i],
+    cpOcupacao: comCp ? cpAtend[i] / (Math.max(1, amostrasAberto) * Math.max(1, z.atendentesCp)) : 0,
+    cpServ: cpServ[i], liberados: liberadosPorta[z.porta] || 0,
+    fecha: Math.max(...porMesa.filter(m => m.zona === i).map(m => m.fecha)),
+  }));
+  return {
+    seed, eleitores: eleitores.length, votos: votados, justificativas: eleitores.filter(v => v.just).length,
+    fechaUltima, porMesa, porZona, linha,
+    esperaForaP50: mediana(esperaFora), esperaForaP90: percentil(esperaFora, 0.9), esperaForaMax: Math.max(0, ...esperaFora),
+    esperaDentroP50: mediana(esperaDentro), esperaDentroP90: percentil(esperaDentro, 0.9),
+    totalP50: mediana(total), totalP90: percentil(total, 0.9), totalMax: Math.max(0, ...total),
+    dentroMax, ring3TotalMax, ring3EstouroMin: ring3Estouro / 60, triFilaMax,
+    triOcupacao: triBusy / (Math.max(1, amostrasTri) * Math.max(1, cen.ring3.atendentes)),
+    fomeTotalMin: soma(porMesa.map(m => m.fome)) / 60,
+    fomePesadasMin: soma(porMesa.filter(m => m.classe === "pesada").map(m => m.fome)) / 60,
+    estouroFilas: soma(porMesa.map(m => m.estouro)),
+    saidasPorta, liberadosPorta,
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Vários dias, agregação e vereditos                                  */
+/* ------------------------------------------------------------------ */
+function simular(base, mrvsDados, cen, opts = {}){
+  const mont = montar(base, mrvsDados, cen);
+  const runs = Math.max(1, Math.min(200, (cen.sim && cen.sim.runs) || 10));
+  const seed = (cen.sim && cen.sim.seed) || 7;
+  const dias = [];
+  for (let i = 0; i < runs; i++) {
+    dias.push(simularDia(mont, seed + i * 7919));
+    if (opts.progresso) opts.progresso(i + 1, runs);
+  }
+  return agregar(mont, dias);
+}
+
+/* Agrega N dias simulados: medianas, percentis, vereditos e texto. */
+function agregar(mont, dias){
+  const runs = dias.length;
+  // dia de referência: o de fechamento mediano
+  const fechas = dias.map(d => d.fechaUltima);
+  const medF = mediana(fechas);
+  const ref = dias.reduce((a, b) => Math.abs(b.fechaUltima - medF) < Math.abs(a.fechaUltima - medF) ? b : a, dias[0]);
+
+  const agg = chave => ({p50: mediana(dias.map(d => d[chave])), p90: percentil(dias.map(d => d[chave]), 0.9),
+                         max: Math.max(...dias.map(d => d[chave])), min: Math.min(...dias.map(d => d[chave]))});
+  const resumo = {
+    runs, fechaUltima: agg("fechaUltima"), totalP90: agg("totalP90"), totalP50: agg("totalP50"),
+    esperaForaP90: agg("esperaForaP90"), esperaDentroP90: agg("esperaDentroP90"),
+    dentroMax: agg("dentroMax"), ring3TotalMax: agg("ring3TotalMax"), ring3EstouroMin: agg("ring3EstouroMin"),
+    fomePesadasMin: agg("fomePesadasMin"), fomeTotalMin: agg("fomeTotalMin"), estouroFilas: agg("estouroFilas"),
+    triOcupacao: agg("triOcupacao"), votos: agg("votos"), eleitores: agg("eleitores"),
+  };
+  // por mesa: mediana entre dias
+  const porMesa = mont.mesas.map((m, i) => {
+    const col = chave => mediana(dias.map(d => d.porMesa[i][chave]));
+    return {slot: m.slot, mrv: m.mrv, zona: m.zona, classe: m.classe, secao: m.secao, aptos: m.aptos,
+            esperados: m.esperados, L: m.L, votos: col("votos"), fecha: col("fecha"), fechaMax: Math.max(...dias.map(d => d.porMesa[i].fecha)),
+            ocioso: col("ocioso"), fome: col("fome"), ocupUrna: col("ocupUrna"), ocupMesario: col("ocupMesario"),
+            filaMax: Math.max(...dias.map(d => d.porMesa[i].filaMax)), estouro: col("estouro"), retidosMax: Math.max(...dias.map(d => d.porMesa[i].retidosMax))};
+  });
+  const porZona = mont.zonas.map((z, i) => {
+    const col = chave => mediana(dias.map(d => d.porZona[i][chave]));
+    const mx = chave => Math.max(...dias.map(d => d.porZona[i][chave]));
+    return {idx: i, nome: z.nome, porta: z.porta, esperados: z.esperados, mesas: z.mesas.length, faixaMrv: z.faixaMrv,
+            ring3Max: mx("ring3Max"), ring3P50: col("ring3Max"), bufferMax: mx("bufferMax"), capBuffer: z.capBuffer,
+            bufferEstouroMin: col("bufferEstouroMin"), cpFilaMax: mx("cpFilaMax"), cpOcupacao: col("cpOcupacao"),
+            atendentesCp: z.atendentesCp, fecha: col("fecha"), liberados: col("liberados")};
+  });
+  const vereditos = avaliar(mont, resumo, porMesa, porZona);
+  const nota = vereditos.filter(v => v.status === "falha").length ? "falha"
+    : (vereditos.filter(v => v.status === "atencao").length ? "atencao" : "ok");
+  return {mont, dias, ref, resumo, porMesa, porZona, vereditos, nota, texto: narrar(mont, resumo, porMesa, porZona, vereditos)};
+}
+
+function avaliar(mont, r, porMesa, porZona){
+  const V = [];
+  const add = (id, titulo, status, valor, meta, porque) => V.push({id, titulo, status, valor, meta, porque});
+  const nivel = (v, ok, at) => v <= ok ? "ok" : (v <= at ? "atencao" : "falha");
+
+  // 1 fechamento
+  const f = r.fechaUltima.p50, f90 = r.fechaUltima.p90;
+  add("fecho", "Última mesa fecha", f90 <= 17.5 * 3600 ? "ok" : (f90 <= 18.5 * 3600 ? "atencao" : "falha"),
+      `${hhmm(f)} (mediana) · ${hhmm(f90)} em dia ruim`, "até 17h30",
+      f90 <= 17.5 * 3600 ? "Todas as mesas terminam perto do encerramento oficial."
+        : "Mesas ainda votam depois das 17h30: a fila de quem chegou antes das 17h se arrasta e atrasa a apuração.");
+  const tardias = porMesa.filter(m => m.fecha > 17.5 * 3600).sort((a, b) => b.fecha - a.fecha);
+  if (tardias.length) V[V.length - 1].detalhe = `Mesas que passam de 17h30: ${tardias.slice(0, 8).map(m => `MRV ${m.mrv} (${hhmm(m.fecha)})`).join(", ")}${tardias.length > 8 ? "…" : ""}.`;
+
+  // 2 fome nas pesadas
+  const pes = porMesa.filter(m => m.classe === "pesada");
+  const fomeMedia = pes.length ? soma(pes.map(m => m.fome)) / pes.length / 60 : 0;
+  add("fome", "Mesas pesadas sem fome", nivel(fomeMedia, 10, 30), `${Math.round(fomeMedia)} min por mesa pesada`, "≤ 10 min",
+      fomeMedia <= 10 ? "As mesas de mais de 700 aptos quase nunca ficaram paradas enquanto havia gente esperando fora."
+        : "Mesas pesadas ficaram ociosas com fila no Ring 3: a fila da frente delas ou o despacho do checkpoint não alimentou a urna.");
+
+  // 3 espera total
+  const t90 = r.totalP90.p50 / 60;
+  add("espera", "Espera do eleitor (P90)", nivel(t90, 45, 90), `${Math.round(t90)} min da chegada ao voto`, "≤ 45 min",
+      `Fora: ${Math.round(r.esperaForaP90.p50 / 60)} min · dentro: ${Math.round(r.esperaDentroP90.p50 / 60)} min (P90). ` +
+      (t90 <= 45 ? "Espera dentro do que se tolera num domingo de eleição." : "Nove em dez eleitores esperam mais do que isso; parte desiste."));
+
+  // 4 buffer / porta
+  const est = porZona.map(z => z.bufferEstouroMin);
+  const estMax = Math.max(0, ...est);
+  if (mont.cen.checkpoint.existe)
+    add("buffer", "Fila interna não volta até a porta", estMax === 0 ? "ok" : (estMax <= 15 ? "atencao" : "falha"),
+        estMax === 0 ? "nunca" : `${Math.round(estMax)} min acima do que cabe`, "0 min",
+        mont.cen.liberacao === "livre" ? "Sem controle na porta, o espaço entre porta e checkpoint enche e a fila sai pela porta."
+          : `Cabem ${porZona.map(z => `${z.capBuffer} na ${z.nome}`).join(", ")} entre porta e checkpoint; a liberação controlada respeita isso.`);
+
+  // 5 checkpoint
+  if (mont.cen.checkpoint.existe) {
+    const pior = porZona.reduce((a, b) => b.cpOcupacao > a.cpOcupacao ? b : a, porZona[0]);
+    add("checkpoint", "Checkpoint acompanha as mesas", nivel(pior.cpOcupacao, 0.8, 0.93),
+        `${Math.round(pior.cpOcupacao * 100)} % de ocupação na ${pior.nome} · fila até ${pior.cpFilaMax}`, "≤ 80 %",
+        pior.cpOcupacao <= 0.8 ? "Os atendentes têm folga para redirecionar quem errou de área e cuidar de prioridades."
+          : `Com ${pior.atendentesCp} atendente${pior.atendentesCp > 1 ? "s" : ""} na ${pior.nome}, o checkpoint vira o gargalo: as mesas atrás dele ficam com fome.`);
+  } else {
+    const estouro = r.estouroFilas.p50;
+    add("semcp", "Filas das mesas sem checkpoint", estouro === 0 ? "ok" : (estouro < 50 ? "atencao" : "falha"),
+        estouro === 0 ? "nenhum estouro" : `${Math.round(estouro)} chegadas com a fila da mesa já cheia`, "0",
+        "Sem checkpoint ninguém retém o eleitor: quem chega a uma mesa cheia fica em pé no corredor.");
+  }
+
+  // 6 equilíbrio entre portas
+  add("equilibrio", "Portas equilibradas", nivel(mont.desequilibrio, 1.25, 1.5),
+      `porta mais carregada recebe ${mont.desequilibrio.toFixed(2)}× a menos carregada`, "≤ 1,25×",
+      Object.entries(mont.cargaPorta).map(([p, v]) => `${p}: ${Math.round(v)} eleitores`).join(" · "));
+
+  // 7 cruzamentos
+  const pc = Math.round(mont.fracaoCruza * 100), pl = Math.round(mont.fracaoLeque * 100);
+  add("cruzamentos", "Saída não corta corredor de entrada", pc === 0 ? "ok" : (pc <= 15 ? "atencao" : "falha"),
+      `${pc} % dos eleitores cruzam um corredor porta→checkpoint ao sair` + (mont.mesmaPorta.length ? ` · mesma porta entra e sai: ${mont.mesmaPorta.join(", ")}` : ""), "0 %",
+      (pc === 0 ? "Quem sai não atravessa fila parada de quem entra. " : `Saída das mesas MRV ${mont.mesasCruzam.slice(0, 10).join(", ")}${mont.mesasCruzam.length > 10 ? "…" : ""} atravessa corredor de entrada: precisa de separador físico ou outra porta. `) +
+      `Cruzamentos de gente andando (leque checkpoint→mesa × saída): ${pl} % dos pares, inevitáveis em parte com entrada e saída na mesma fachada.`);
+
+  // 8 separadores
+  add("separadores", "Fita de unifila", nivel(mont.separadores, LIMITE_SEPARADORES, LIMITE_SEPARADORES * 1.25),
+      `${Math.round(mont.separadores)} m (mesas ${Math.round(mont.fitaMesas)} m + corredores ${Math.round(mont.fitaBuffer)} m)`, `≤ ${LIMITE_SEPARADORES} m contratados`,
+      mont.separadores <= LIMITE_SEPARADORES ? "Cabe nos 100 unifilas contratados, sem contar o Ring 3." : "Passa do contratado; encurte filas ou compre mais unifila.");
+
+  // 9 conflitos geométricos
+  add("encaixe", "Filas cabem no espaço", mont.conflitos.length === 0 ? "ok" : "falha",
+      mont.conflitos.length === 0 ? "sem conflitos" : `${mont.conflitos.length} conflito${mont.conflitos.length > 1 ? "s" : ""}`, "0",
+      mont.conflitos.length === 0 ? "Nenhuma fila invade corredor de porta, zona protegida ou outra mesa."
+        : mont.conflitos.slice(0, 6).map(c => `MRV ${c.mesa} × ${c.com}`).join("; ") + (mont.conflitos.length > 6 ? "…" : ""));
+
+  // 10 Ring 3
+  const r3 = r.ring3TotalMax.p90;
+  add("ring3", "Ring 3 comporta a fila externa", nivel(r3, mont.cen.ring3.capacidade, mont.cen.ring3.capacidade * 1.3),
+      `pico de ${Math.round(r3)} pessoas fora (P90)`, `≤ ${mont.cen.ring3.capacidade}`,
+      r3 <= mont.cen.ring3.capacidade ? "A fila externa cabe no espaço previsto." : "Fila externa maior que o espaço do Ring 3; transborda para a rua.");
+
+  // 11 triagem
+  add("triagem", "Triagem do Ring 3 dá vazão", nivel(r.triOcupacao.p50, 0.75, 0.9),
+      `${Math.round(r.triOcupacao.p50 * 100)} % de ocupação`, "≤ 75 %",
+      r.triOcupacao.p50 <= 0.75 ? "Quem separa as pessoas por área acompanha as chegadas." : "A triagem externa segura a chegada: ponha mais gente ou sinalização mais clara.");
+
+  return V;
+}
+
+function narrar(mont, r, porMesa, porZona, V){
+  const cen = mont.cen, p = [];
+  const falhas = V.filter(v => v.status === "falha"), atencoes = V.filter(v => v.status === "atencao");
+  const zonasTxt = mont.zonas.map(z => `${z.nome} (MRV ${z.faixaMrv}, ${z.mesas.length} mesas, ${Math.round(z.esperados)} eleitores) entra por ${z.porta}`).join("; ");
+  p.push(`${Math.round(mont.esperadosTotal)} eleitores esperados sobre ${mont.aptosTotal} aptos (comparecimento ${mont.taxa.rotulo}), ` +
+    `${mont.zonas.length} zona${mont.zonas.length > 1 ? "s" : ""}: ${zonasTxt}. ` +
+    `Saída por ${mont.saidas.length ? mont.saidas.join(" e ") : "a mesma porta de entrada"}. ` +
+    (cen.checkpoint.existe ? `Checkpoint a ${cen.checkpoint.dist} m da porta com ${mont.zonas.map(z => z.atendentesCp).join("/")} atendente(s) por zona.` : "Sem checkpoint interno: o eleitor acha a mesa pela sinalização."));
+  p.push(`Em ${r.runs} dias simulados, a última mesa fecha às ${hhmm(r.fechaUltima.p50)} na mediana e às ${hhmm(r.fechaUltima.p90)} num dia ruim. ` +
+    `Nove em dez eleitores levam até ${Math.round(r.totalP90.p50 / 60)} min da chegada ao voto, ${Math.round(r.esperaForaP90.p50 / 60)} deles fora e ${Math.round(r.esperaDentroP90.p50 / 60)} dentro. ` +
+    `O pico dentro do salão é de ${Math.round(r.dentroMax.p50)} pessoas; fora, ${Math.round(r.ring3TotalMax.p50)}.`);
+  if (falhas.length) p.push(`O que falha: ${falhas.map(v => v.titulo.toLowerCase() + " (" + v.valor + ")").join("; ")}.`);
+  if (atencoes.length) p.push(`Pede atenção: ${atencoes.map(v => v.titulo.toLowerCase() + " (" + v.valor + ")").join("; ")}.`);
+  if (!falhas.length && !atencoes.length) p.push("Todos os critérios passam. O gargalo remanescente é a própria capacidade das mesas pesadas, que a organização do fluxo não muda.");
+  const piorMesa = porMesa.slice().sort((a, b) => b.fecha - a.fecha)[0];
+  const melhorMesa = porMesa.slice().sort((a, b) => a.fecha - b.fecha)[0];
+  p.push(`A mesa que fecha por último é a MRV ${piorMesa.mrv} (seção ${piorMesa.secao}, ${piorMesa.aptos} aptos) às ${hhmm(piorMesa.fecha)}, com ${Math.round(piorMesa.ocupUrna * 100)} % de uso da urna e ${Math.round(piorMesa.fome / 60)} min de fome; ` +
+    `a primeira a fechar é a MRV ${melhorMesa.mrv} às ${hhmm(melhorMesa.fecha)}. ` +
+    `Uma urna que passa de 90 % de uso está no limite físico: só mais mesas ou identificação mais rápida resolvem.`);
+  return p;
+}
+
+/* ------------------------------------------------------------------ */
+/* Exportação                                                          */
+/* ------------------------------------------------------------------ */
+const Modelo = {
+  VEL, PASSO_FILA, ABERTURA, ENCERRAMENTO, INICIO_CURVA, MEIA_HORA, CURVA_CHEGADA, COMPARECIMENTO,
+  CLASSES, ROTULO_CLASSE, LIMITE_SEPARADORES, classeMesa, cenarioPadrao, cenarioClaude,
+  slotsDasZonas, mapaMrv, montar, simularDia, simular, agregar, hhmm, minutos, mediana, percentil,
+  frenteMesa, caudaFila, corpoRect, centroPorta, DIR, CCW,
+};
+if (typeof module !== "undefined" && module.exports) module.exports = Modelo;
+else raiz.Modelo = Modelo;
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+/* Interface do simulador: três telas (premissas, simulação, resultado).
+ * Depende de Modelo (modelo.js), BASE e MRVS embutidos pelo gerador. */
+(function(){
+"use strict";
+const M = Modelo;
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const CORES_ZONA = ["var(--z1)", "var(--z2)", "var(--z3)", "var(--z4)"];
+const LETRAS = ["A", "B", "C", "D"];
+const CHAVE_RASCUNHO = "simulador-hall2-cenario-v1";
+const CHAVE_COMPARATIVO = "simulador-hall2-comparativo-v1";
+const SUL = BASE.portas.filter(p => p.face === "sul");
+const SUL_USAVEIS = SUL.filter(p => p.estado !== "emergencia").map(p => p.id);
+const ALT = BASE.salao.altura, LARG = BASE.salao.largura;
+const fy = v => ALT - v;
+
+function el(tag, attrs, pai){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (pai) pai.appendChild(e);
+  return e;
+}
+function h(tag, attrs, ...filhos){
+  const e = document.createElement(tag);
+  for (const k in (attrs || {})) {
+    if (k === "class") e.className = attrs[k];
+    else if (k === "text") e.textContent = attrs[k];
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  for (const f of filhos) if (f != null) e.appendChild(typeof f === "string" ? document.createTextNode(f) : f);
+  return e;
+}
+const fmt = n => Math.round(n).toLocaleString("pt-BR");
+const vg = (v, c = 1) => Number(v).toFixed(c).replace(".", ",");
+const pct = v => Math.round(v * 100) + " %";
+const min = seg => Math.round(seg / 60) + " min";
+
+/* ------------------------------------------------------------------ */
+/* Estado                                                              */
+/* ------------------------------------------------------------------ */
+let cen = null;          // cenário atual (premissas)
+let mont = null;         // montagem estática do cenário atual
+let res = null;          // último resultado
+let tempoIdx = 0, tocando = null;
+
+function carregaRascunho(){
+  try {
+    const s = JSON.parse(localStorage.getItem(CHAVE_RASCUNHO) || "null");
+    if (s && s.zonas && s.portas) return s;
+  } catch (e) {}
+  return null;
+}
+function guardaRascunho(){ try { localStorage.setItem(CHAVE_RASCUNHO, JSON.stringify(cen)); } catch (e) {} }
+
+function normaliza(c){
+  // garante campos e coerência (tamanhos somam 28, portas por zona válidas)
+  const nz = Math.max(2, Math.min(4, c.zonas.tamanhos.length));
+  c.zonas.tamanhos = c.zonas.tamanhos.slice(0, nz).map(v => Math.max(1, Math.round(v)));
+  while (c.zonas.tamanhos.length < nz) c.zonas.tamanhos.push(1);
+  let s = c.zonas.tamanhos.reduce((a, b) => a + b, 0);
+  if (s !== 28) { c.zonas.tamanhos[nz - 1] = Math.max(1, c.zonas.tamanhos[nz - 1] + 28 - s); }
+  s = c.zonas.tamanhos.reduce((a, b) => a + b, 0);
+  if (s !== 28) { c.zonas.tamanhos = nz === 2 ? [16, 12] : (nz === 3 ? [8, 12, 8] : [8, 6, 6, 8]); }
+  c.zonas.inicio = Math.max(1, Math.min(28, Math.round(c.zonas.inicio || 1)));
+  const entradas = SUL_USAVEIS.filter(id => c.portas[id] === "entrada");
+  if (!entradas.length) { c.portas.S5 = "entrada"; entradas.push("S5"); }
+  c.zonas.portas = c.zonas.tamanhos.map((_, z) => entradas.includes(c.zonas.portas[z]) ? c.zonas.portas[z] : entradas[Math.min(z, entradas.length - 1)]);
+  if (!Array.isArray(c.checkpoint.atendentes)) c.checkpoint.atendentes = c.zonas.tamanhos.map(() => c.checkpoint.atendentes || 2);
+  c.checkpoint.atendentes = c.zonas.tamanhos.map((_, z) => Math.max(1, Math.round(c.checkpoint.atendentes[z] || 2)));
+  c.ordem.inicioZona = Math.max(0, Math.min(nz - 1, c.ordem.inicioZona || 0));
+  if (!c.salao) c.salao = {base: "A", alteracoes: []};
+  if (!c.sim) c.sim = {runs: 12, seed: 7};
+  return c;
+}
+function aplica(c, nome){
+  cen = normaliza(JSON.parse(JSON.stringify(c)));
+  if (nome !== undefined) cen.nome = nome;
+  preencher(); atualizaDerivados(); guardaRascunho();
+}
+
+/* ------------------------------------------------------------------ */
+/* Tela 1: formulário                                                  */
+/* ------------------------------------------------------------------ */
+function grupo(id, attr, valor){
+  for (const b of $(id).querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset[attr]) === String(valor));
+}
+function preencher(){
+  $("nomeCenario").value = cen.nome || "";
+  grupo("nZonas", "n", cen.zonas.tamanhos.length);
+  $("inicioZona1").value = cen.zonas.inicio;
+  // tamanhos
+  const T = $("tamanhos"); T.innerHTML = "";
+  cen.zonas.tamanhos.forEach((v, z) => {
+    const inp = h("input", {type: "number", min: 1, max: 26, value: v, "aria-label": `Mesas na zona ${LETRAS[z]}`, style: "width:58px"});
+    inp.addEventListener("change", () => {
+      const novo = Math.max(1, Math.min(26, Math.round(+inp.value || 1)));
+      cen.zonas.tamanhos[z] = novo;
+      const outros = z === cen.zonas.tamanhos.length - 1 ? 0 : cen.zonas.tamanhos.length - 1;
+      const resto = 28 - cen.zonas.tamanhos.reduce((a, b) => a + b, 0);
+      cen.zonas.tamanhos[outros] = Math.max(1, cen.zonas.tamanhos[outros] + resto);
+      normaliza(cen); preencher(); atualizaDerivados();
+    });
+    T.appendChild(h("span", {class: "campo", style: "flex-direction:row;align-items:center;gap:4px"},
+      h("span", {class: "swatch", style: `background:${CORES_ZONA[z]}`}), h("span", {class: "mono", text: LETRAS[z]}), inp));
+  });
+  // MRV começa na zona
+  const IZ = $("inicioZonaMrv"); IZ.innerHTML = "";
+  cen.zonas.tamanhos.forEach((_, z) => {
+    const b = h("button", {"data-z": z, "aria-pressed": String(z === cen.ordem.inicioZona), text: `Zona ${LETRAS[z]}`});
+    b.addEventListener("click", () => { cen.ordem.inicioZona = z; grupo("inicioZonaMrv", "z", z); atualizaDerivados(); });
+    IZ.appendChild(b);
+  });
+  grupo("sentido", "s", cen.ordem.sentido);
+  // checkpoint
+  grupo("cpExiste", "v", cen.checkpoint.existe ? 1 : 0);
+  $("cpDist").value = cen.checkpoint.dist; $("cpDistVal").textContent = cen.checkpoint.dist + " m";
+  $("cpFilas").value = cen.checkpoint.filas; $("cpSeg").value = cen.checkpoint.seg;
+  const CA = $("cpAtend"); CA.innerHTML = "";
+  cen.zonas.tamanhos.forEach((_, z) => {
+    const inp = h("input", {type: "number", min: 1, max: 8, value: cen.checkpoint.atendentes[z], "aria-label": `Atendentes na zona ${LETRAS[z]}`, style: "width:58px"});
+    inp.addEventListener("change", () => { cen.checkpoint.atendentes[z] = Math.max(1, Math.round(+inp.value || 1)); atualizaDerivados(); });
+    CA.appendChild(h("span", {class: "campo", style: "flex-direction:row;align-items:center;gap:4px"},
+      h("span", {class: "swatch", style: `background:${CORES_ZONA[z]}`}), h("span", {class: "mono", text: LETRAS[z]}), inp));
+  });
+  $("filaLeve").value = cen.filaMesa.leve; $("filaMedia").value = cen.filaMesa.media; $("filaPesada").value = cen.filaMesa.pesada;
+  grupo("liberacao", "v", cen.liberacao); $("vazao").value = cen.porta.vazao;
+  // comparecimento
+  const C = $("comparecimento"); C.innerHTML = "";
+  for (const k of Object.keys(M.COMPARECIMENTO)) {
+    const b = h("button", {"data-v": k, "aria-pressed": String(k === cen.comparecimento), text: M.COMPARECIMENTO[k].rotulo});
+    b.addEventListener("click", () => { cen.comparecimento = k; grupo("comparecimento", "v", k); atualizaDerivados(); });
+    C.appendChild(b);
+  }
+  grupo("tId", "v", cen.tempos.identificacao);
+  $("tVoto").value = cen.tempos.voto; $("cv").value = cen.tempos.cv; $("just").value = Math.round((cen.extras.justificativas || 0) * 100);
+  $("triAtend").value = cen.ring3.atendentes; $("triSeg").value = cen.ring3.seg; $("ring3Cap").value = cen.ring3.capacidade;
+  $("runs").value = cen.sim.runs; $("seed").value = cen.sim.seed;
+  for (const b of document.querySelectorAll("#tela-premissas [data-base]")) b.setAttribute("aria-pressed", String(b.dataset.base === (cen.salao.base || "A")));
+  const na = (cen.salao.alteracoes || []).length;
+  $("alteracoesInfo").textContent = na ? `${na} mesa${na > 1 ? "s" : ""} deslocada${na > 1 ? "s" : ""} em relação à planta original` : "planta original";
+}
+
+function ligaControles(){
+  $("nomeCenario").addEventListener("input", ev => { cen.nome = ev.target.value; $("nomeAtual").textContent = cen.nome; guardaRascunho(); });
+  for (const b of document.querySelectorAll("#tela-premissas [data-base]"))
+    b.addEventListener("click", () => { cen.salao = {base: b.dataset.base, alteracoes: []}; preencher(); atualizaDerivados(); });
+  for (const b of $("nZonas").querySelectorAll("button"))
+    b.addEventListener("click", () => {
+      const n = +b.dataset.n;
+      cen.zonas.tamanhos = n === 2 ? [16, 12] : (n === 3 ? [8, 12, 8] : [8, 6, 6, 8]);
+      cen.zonas.portas = cen.zonas.tamanhos.map((_, z) => cen.zonas.portas[z] || cen.zonas.portas[0]);
+      cen.checkpoint.atendentes = cen.zonas.tamanhos.map((_, z) => cen.checkpoint.atendentes[z] || 2);
+      normaliza(cen); preencher(); atualizaDerivados();
+    });
+  $("inicioZona1").addEventListener("change", ev => { cen.zonas.inicio = Math.max(1, Math.min(28, Math.round(+ev.target.value || 1))); atualizaDerivados(); });
+  for (const b of $("sentido").querySelectorAll("button"))
+    b.addEventListener("click", () => { cen.ordem.sentido = b.dataset.s; grupo("sentido", "s", b.dataset.s); atualizaDerivados(); });
+  for (const b of $("cpExiste").querySelectorAll("button"))
+    b.addEventListener("click", () => { cen.checkpoint.existe = b.dataset.v === "1"; grupo("cpExiste", "v", b.dataset.v); atualizaDerivados(); });
+  $("cpDist").addEventListener("input", ev => { cen.checkpoint.dist = +ev.target.value; $("cpDistVal").textContent = cen.checkpoint.dist + " m"; atualizaDerivados(); });
+  $("cpFilas").addEventListener("change", ev => { cen.checkpoint.filas = Math.max(1, Math.round(+ev.target.value || 1)); atualizaDerivados(); });
+  $("cpSeg").addEventListener("change", ev => { cen.checkpoint.seg = Math.max(2, +ev.target.value || 8); atualizaDerivados(); });
+  for (const [id, k] of [["filaLeve", "leve"], ["filaMedia", "media"], ["filaPesada", "pesada"]])
+    $(id).addEventListener("change", ev => { cen.filaMesa[k] = Math.max(1, Math.round(+ev.target.value || 1)); atualizaDerivados(); });
+  for (const b of $("liberacao").querySelectorAll("button"))
+    b.addEventListener("click", () => { cen.liberacao = b.dataset.v; grupo("liberacao", "v", b.dataset.v); atualizaDerivados(); });
+  $("vazao").addEventListener("change", ev => { cen.porta.vazao = Math.max(5, +ev.target.value || 30); atualizaDerivados(); });
+  for (const b of $("tId").querySelectorAll("button"))
+    b.addEventListener("click", () => { cen.tempos.identificacao = +b.dataset.v; grupo("tId", "v", b.dataset.v); atualizaDerivados(); });
+  $("tVoto").addEventListener("change", ev => { cen.tempos.voto = Math.max(5, +ev.target.value || 30); atualizaDerivados(); });
+  $("cv").addEventListener("change", ev => { cen.tempos.cv = Math.max(0, Math.min(1, +ev.target.value || 0)); atualizaDerivados(); });
+  $("just").addEventListener("change", ev => { cen.extras.justificativas = Math.max(0, Math.min(0.5, (+ev.target.value || 0) / 100)); atualizaDerivados(); });
+  $("triAtend").addEventListener("change", ev => { cen.ring3.atendentes = Math.max(1, Math.round(+ev.target.value || 1)); atualizaDerivados(); });
+  $("triSeg").addEventListener("change", ev => { cen.ring3.seg = Math.max(1, +ev.target.value || 6); atualizaDerivados(); });
+  $("ring3Cap").addEventListener("change", ev => { cen.ring3.capacidade = Math.max(50, Math.round(+ev.target.value || 800)); atualizaDerivados(); });
+  $("runs").addEventListener("change", ev => { cen.sim.runs = Math.max(1, Math.min(60, Math.round(+ev.target.value || 12))); guardaRascunho(); });
+  $("seed").addEventListener("change", ev => { cen.sim.seed = Math.max(1, Math.round(+ev.target.value || 7)); guardaRascunho(); });
+
+  $("btnClaude").addEventListener("click", () => aplica(M.cenarioClaude()));
+  $("btnPadrao").addEventListener("click", () => aplica(M.cenarioPadrao()));
+  $("btnCopiar").addEventListener("click", async () => {
+    const b = $("btnCopiar");
+    try { await navigator.clipboard.writeText(JSON.stringify(cen)); b.textContent = "Copiado"; }
+    catch (e) { b.textContent = "Não deu (veja o console)"; console.log(JSON.stringify(cen)); }
+    setTimeout(() => { b.textContent = "Copiar cenário"; }, 1800);
+  });
+  $("btnColar").addEventListener("click", () => { $("colarCaixa").hidden = false; $("colarTexto").focus(); });
+  $("colarCancelar").addEventListener("click", () => { $("colarCaixa").hidden = true; });
+  $("colarAplicar").addEventListener("click", () => {
+    let obj;
+    try { obj = JSON.parse($("colarTexto").value); } catch (e) { alert("Isso não é um JSON válido."); return; }
+    $("colarCaixa").hidden = true; $("colarTexto").value = "";
+    if (obj && obj.zonas && obj.portas) { aplica(obj); return; }
+    if (obj && (obj.base === "A" || obj.base === "B") && (Array.isArray(obj.alteracoes) || Array.isArray(obj.mrvs))) {
+      // cenário salvo da prancheta: só muda o salão
+      let alteracoes = obj.alteracoes || [];
+      if (Array.isArray(obj.mrvs) && obj.mrvs.length === 28) {
+        const orig = BASE.cenarios[obj.base].mrvs;
+        alteracoes = obj.mrvs.filter(m => { const o = orig.find(q => q.n === m.n); return o && (o.x !== m.x || o.y !== m.y || o.rot !== m.rot); })
+          .map(m => ({n: m.n, x: m.x, y: m.y, rot: m.rot, lado: m.lado}));
+      }
+      cen.salao = {base: obj.base, alteracoes};
+      if (obj.nome) cen.nome = `${cen.nome || "cenário"} · salão “${obj.nome}”`;
+      preencher(); atualizaDerivados(); guardaRascunho();
+      return;
+    }
+    alert("JSON reconhecido nem como cenário do simulador nem como cenário salvo da prancheta.");
+  });
+
+  for (const b of document.querySelectorAll(".abas button")) b.addEventListener("click", () => mostraTela(b.dataset.tela));
+  $("rodar").addEventListener("click", rodar);
+  $("tempo").addEventListener("input", ev => { tempoIdx = +ev.target.value; pintaMinuto(); });
+  $("play").addEventListener("click", togglePlay);
+}
+
+function mostraTela(nome){
+  for (const s of document.querySelectorAll(".tela")) s.classList.toggle("ativa", s.id === "tela-" + nome);
+  for (const b of document.querySelectorAll(".abas button")) b.setAttribute("aria-selected", String(b.dataset.tela === nome));
+  if (nome !== "simulacao" && tocando) togglePlay();
+}
+
+/* ---- derivados da tela 1 ---- */
+function atualizaDerivados(){
+  normaliza(cen);
+  try { mont = M.montar(BASE, MRVS, cen); } catch (e) { console.error(e); return; }
+  $("nomeAtual").textContent = cen.nome || "";
+  desenhaPortas(); desenhaZonasMini(); tabelaZonas(); kpisEstaticos(); guardaRascunho();
+  $("cpCap").textContent = cen.checkpoint.existe
+    ? `Cabem ${mont.zonas.map(z => `${z.capBuffer} na ${z.letra}`).join(", ")} entre porta e checkpoint (${cen.checkpoint.filas} fila${cen.checkpoint.filas > 1 ? "s" : ""}, 0,6 m por pessoa).`
+    : "Sem checkpoint, a porta libera enquanto houver vaga somada nas filas das mesas da zona.";
+  const n = {leve: 0, media: 0, pesada: 0}; for (const m of mont.mesas) n[m.classe]++;
+  $("filaInfo").textContent = `${n.leve} leves · ${n.media} médias · ${n.pesada} pesadas · ${vg(mont.fitaMesas, 0)} m de fita nas mesas`;
+  const tx = mont.taxa;
+  $("compInfo").textContent = `Dublin ${Math.round(tx.dublin * 100)} % · interior ${Math.round(tx.interior * 100)} % → ${fmt(mont.esperadosTotal)} eleitores esperados, mais ${Math.round((cen.extras.justificativas || 0) * 100)} % de atendimentos sem voto.`;
+}
+
+function estadoPorta(id){ return cen.portas[id] || "fechada"; }
+function desenhaPortas(){
+  const svg = $("svgPortas"); svg.innerHTML = "";
+  const esc = 540 / LARG, x0 = 10, yFach = 44;
+  el("line", {x1: x0, y1: yFach, x2: x0 + LARG * esc, y2: yFach, stroke: "var(--traco)", "stroke-width": 2}, svg);
+  // recorte (parede começa em 7,8 m)
+  el("line", {x1: x0, y1: yFach, x2: x0 + BASE.salao.recorte[2] * esc, y2: yFach, stroke: "var(--regua)", "stroke-width": 2}, svg);
+  const t0 = el("text", {x: x0, y: 62, "font-size": 9, fill: "var(--fraco)"}, svg); t0.textContent = "oeste";
+  const t1 = el("text", {x: x0 + LARG * esc, y: 62, "font-size": 9, fill: "var(--fraco)", "text-anchor": "end"}, svg); t1.textContent = "leste";
+  for (const p of SUL) {
+    const emerg = p.estado === "emergencia";
+    const est = emerg ? "emergencia" : estadoPorta(p.id);
+    const cor = {entrada: "var(--entrada)", saida: "var(--saida)", fechada: "var(--regua)", emergencia: "var(--emerg)"}[est];
+    const g = el("g", {class: emerg ? "" : "porta", tabindex: emerg ? -1 : 0, role: emerg ? null : "button",
+      "aria-label": `${p.id}: ${est}`}, svg);
+    const x = x0 + p.x1 * esc, w = Math.max(4, (p.x2 - p.x1) * esc);
+    el("rect", {x, y: yFach - 9, width: w, height: 18, fill: cor, stroke: "var(--folha)", "stroke-width": 1}, g);
+    el("rect", {x: x - 6, y: 4, width: w + 12, height: 52, fill: "transparent"}, g);
+    const t = el("text", {x: x + w / 2, y: 24, "font-size": 10, "font-weight": 600, fill: "var(--tinta)", "text-anchor": "middle"}, g); t.textContent = p.id;
+    const zonasNaPorta = mont.zonas.filter(z => z.porta === p.id).map(z => z.letra);
+    if (est === "entrada" && zonasNaPorta.length) {
+      const tz = el("text", {x: x + w / 2, y: 13, "font-size": 9, fill: "var(--meio)", "text-anchor": "middle", "font-weight": 600}, g); tz.textContent = "zona " + zonasNaPorta.join("+");
+    }
+    const tl = el("text", {x: x + w / 2, y: 70, "font-size": 8, fill: "var(--fraco)", "text-anchor": "middle"}, g); tl.textContent = vg(p.larg, 1) + " m";
+    if (!emerg) {
+      const alterna = () => { const ordem = ["fechada", "entrada", "saida"]; cen.portas[p.id] = ordem[(ordem.indexOf(estadoPorta(p.id)) + 1) % 3]; normaliza(cen); preencher(); atualizaDerivados(); };
+      g.addEventListener("click", alterna);
+      g.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); alterna(); } });
+    }
+  }
+}
+
+function desenhaZonasMini(){
+  const svg = $("svgZonas"); svg.innerHTML = "";
+  const esc = 5.4, ox = 14, oy = 12;
+  const X = v => ox + v * esc, Y = v => oy + (ALT - v) * esc;
+  const pts = BASE.salao.contorno.map(p => `${X(p[0])},${Y(p[1])}`).join(" ");
+  el("polygon", {points: pts, fill: "var(--prancha)", stroke: "var(--traco)", "stroke-width": .8}, svg);
+  for (const m of mont.mesas) {
+    const r = m.corpo, cor = CORES_ZONA[m.zona];
+    el("rect", {x: X(r[0]), y: Y(r[3]), width: (r[2] - r[0]) * esc, height: (r[3] - r[1]) * esc, fill: cor, opacity: .85}, svg);
+    const t = el("text", {x: X((r[0] + r[2]) / 2), y: Y((r[1] + r[3]) / 2) + 2.6, "font-size": 6.4, "font-weight": 600, fill: "#fff", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, svg);
+    t.textContent = m.mrv;
+  }
+  for (const p of SUL) {
+    const est = p.estado === "emergencia" ? "emergencia" : estadoPorta(p.id);
+    const cor = {entrada: "var(--entrada)", saida: "var(--saida)", fechada: "var(--regua)", emergencia: "var(--emerg)"}[est];
+    el("line", {x1: X(p.x1), y1: Y(0), x2: X(p.x2), y2: Y(0), stroke: cor, "stroke-width": 3}, svg);
+    if (est !== "fechada" && est !== "emergencia") { const t = el("text", {x: X((p.x1 + p.x2) / 2), y: Y(0) + 9, "font-size": 6.5, fill: "var(--meio)", "text-anchor": "middle"}, svg); t.textContent = p.id; }
+  }
+  for (const z of mont.zonas) {
+    if (z.checkpoint) {
+      el("line", {x1: X(z.portaCentro[0]), y1: Y(0), x2: X(z.checkpoint[0]), y2: Y(z.checkpoint[1]), stroke: CORES_ZONA[z.idx], "stroke-width": 1.2, "stroke-dasharray": "2 2"}, svg);
+      el("circle", {cx: X(z.checkpoint[0]), cy: Y(z.checkpoint[1]), r: 3.2, fill: CORES_ZONA[z.idx], stroke: "var(--prancha)", "stroke-width": 1}, svg);
+      const t = el("text", {x: X(z.checkpoint[0]), y: Y(z.checkpoint[1]) - 5, "font-size": 7, "font-weight": 700, fill: "var(--tinta)", "text-anchor": "middle"}, svg); t.textContent = z.letra;
+    }
+  }
+  const t = el("text", {x: X(LARG / 2), y: Y(ALT) - 4, "font-size": 6.5, fill: "var(--fraco)", "text-anchor": "middle"}, svg); t.textContent = "norte";
+}
+
+function tabelaZonas(){
+  const T = $("tabZonas"); T.innerHTML = "";
+  const entradas = SUL_USAVEIS.filter(id => cen.portas[id] === "entrada");
+  T.appendChild(h("thead", null, h("tr", null,
+    h("th", {text: "Zona"}), h("th", {text: "Slots"}), h("th", {text: "MRV"}), h("th", {class: "num", text: "Mesas"}),
+    h("th", {class: "num", text: "Eleitores"}), h("th", {text: "Entra por"}))));
+  const tb = h("tbody");
+  for (const z of mont.zonas) {
+    const sel = h("select", {"aria-label": `Porta de entrada da zona ${z.letra}`});
+    for (const id of entradas) sel.appendChild(h("option", {value: id, text: id, selected: id === z.porta ? "" : null}));
+    if (!entradas.includes(z.porta)) sel.appendChild(h("option", {value: z.porta, text: z.porta, selected: ""}));
+    sel.value = z.porta;
+    sel.addEventListener("change", () => { cen.zonas.portas[z.idx] = sel.value; atualizaDerivados(); });
+    const arco = z.slots[0] === z.slots[z.slots.length - 1] ? `${z.slots[0]}` : `${z.slots[0]}→${z.slots[z.slots.length - 1]}`;
+    tb.appendChild(h("tr", null,
+      h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), h("strong", {text: z.letra})),
+      h("td", {class: "mono", text: arco}), h("td", {class: "mono", text: z.faixaMrv}),
+      h("td", {class: "num", text: z.mesas.length}), h("td", {class: "num", text: fmt(z.esperados)}), h("td", null, sel)));
+  }
+  T.appendChild(tb);
+  // carga (lateral)
+  const C = $("tabCarga"); C.innerHTML = "";
+  C.appendChild(h("thead", null, h("tr", null, h("th", {text: "Zona"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleit."}), h("th", {class: "num", text: "por mesa"}), h("th", {text: "Porta"}))));
+  const cb = h("tbody");
+  for (const z of mont.zonas) cb.appendChild(h("tr", null,
+    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), z.letra + " · MRV " + z.faixaMrv),
+    h("td", {class: "num", text: z.mesas.length}), h("td", {class: "num", text: fmt(z.esperados)}),
+    h("td", {class: "num", text: fmt(z.esperados / z.mesas.length)}), h("td", {class: "mono", text: z.porta})));
+  C.appendChild(cb);
+}
+
+function kpisEstaticos(){
+  const K = $("kpiEstatico"); K.innerHTML = "";
+  const add = (k, v, cls) => { K.appendChild(h("dt", {text: k})); K.appendChild(h("dd", {class: cls || "", text: v})); };
+  add("Eleitores esperados", fmt(mont.esperadosTotal));
+  add("Média por mesa", fmt(mont.esperadosTotal / 28));
+  const cap = 28 * 60 / Math.max(cen.tempos.identificacao, cen.tempos.voto);
+  add("Capacidade das mesas", vg(cap, 0) + " /min");
+  add("Pico de chegada (≈)", vg(mont.esperadosTotal * 0.16 / 60, 0) + " /min");
+  add("Desequilíbrio entre portas", vg(mont.desequilibrio, 2) + "×", mont.desequilibrio > 1.5 ? "ruim" : (mont.desequilibrio <= 1.25 ? "bom" : ""));
+  add("Saída cruza corredor de entrada", pct(mont.fracaoCruza) + " dos eleitores", mont.fracaoCruza > 0.15 ? "ruim" : (mont.fracaoCruza === 0 ? "bom" : ""));
+  add("Fita de unifila", vg(mont.separadores, 0) + " m de " + mont.limiteSeparadores, mont.separadores > mont.limiteSeparadores ? "ruim" : "bom");
+  add("Conflitos de fila", String(mont.conflitos.length), mont.conflitos.length ? "ruim" : "bom");
+  if (cen.checkpoint.existe) add("Checkpoint → mesa (média)", vg(mont.zonas.reduce((s, z) => s + z.distCpMedia * z.mesas.length, 0) / 28, 0) + " m");
+  const A = $("avisos"); A.innerHTML = "";
+  const avisos = mont.avisos.slice();
+  for (const c of mont.conflitos.slice(0, 4)) avisos.push(`Fila da MRV ${c.mesa} invade ${c.com}.`);
+  if (mont.mesmaPorta.length) avisos.push(`Entrada e saída pela mesma porta: ${mont.mesmaPorta.join(", ")}.`);
+  if (!mont.saidas.length) avisos.push("Nenhuma porta de saída marcada: os eleitores saem pela porta em que entraram.");
+  if (mont.zonas.some(z => z.dividePorta)) avisos.push("Duas zonas dividem a mesma porta de entrada; a vazão da porta é partilhada.");
+  A.textContent = avisos.length ? "" : "Nenhum.";
+  for (const a of avisos) A.appendChild(h("p", {class: "dica", text: a}));
+}
+
+function desenhaCurva(){
+  const svg = $("svgCurva"); svg.innerHTML = "";
+  const W = 560, H = 130, ml = 30, mr = 10, mt = 14, mb = 26;
+  const n = M.CURVA_CHEGADA.length, pw = W - ml - mr, ph = H - mt - mb;
+  const maxV = Math.max(...M.CURVA_CHEGADA);
+  const yTicks = [0, 4, 8];
+  for (const v of yTicks) {
+    const y = mt + ph - v / maxV * ph;
+    el("line", {x1: ml, y1: y, x2: W - mr, y2: y, stroke: v === 0 ? "var(--eixo)" : "var(--grade)", "stroke-width": 1}, svg);
+    const t = el("text", {x: ml - 6, y: y + 3, "font-size": 9, fill: "var(--fraco)", "text-anchor": "end", "font-family": "IBM Plex Mono, monospace"}, svg); t.textContent = v + "%";
+  }
+  const bw = Math.min(22, pw / n - 4);
+  M.CURVA_CHEGADA.forEach((v, i) => {
+    const x = ml + (i + 0.5) * pw / n - bw / 2, hgt = v / maxV * ph, y = mt + ph - hgt;
+    const g = el("g", {}, svg);
+    el("path", {d: `M${x},${mt + ph} L${x},${y + 3} Q${x},${y} ${x + 3},${y} L${x + bw - 3},${y} Q${x + bw},${y} ${x + bw},${y + 3} L${x + bw},${mt + ph} Z`, fill: "var(--z1)"}, g);
+    el("rect", {x: x - 2, y: mt, width: bw + 4, height: ph, fill: "transparent"}, g);
+    const hora = 7 + Math.floor(i / 2), meia = i % 2 ? "30" : "00";
+    tooltip(g, () => `<b>${v} %</b> dos eleitores chegam entre ${hora}h${meia} e ${i % 2 ? hora + 1 + "h00" : hora + "h30"}`);
+    if (i % 2 === 0) { const t = el("text", {x: x + bw / 2, y: H - 10, "font-size": 9, fill: "var(--fraco)", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, svg); t.textContent = hora + "h"; }
+    if (v === maxV) { const t = el("text", {x: x + bw / 2, y: y - 4, "font-size": 9, fill: "var(--meio)", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, svg); t.textContent = v + " %"; }
+  });
+  const ab = ml + 2 * pw / n;
+  el("line", {x1: ab, y1: mt, x2: ab, y2: mt + ph, stroke: "var(--meio)", "stroke-width": 1}, svg);
+  const t = el("text", {x: ab + 4, y: mt + 8, "font-size": 9, fill: "var(--meio)", "font-family": "IBM Plex Mono, monospace"}, svg); t.textContent = "abertura 8h";
+}
+
+/* tooltip genérico */
+const TIP = $("tip");
+function tooltip(alvo, texto){
+  const mostra = ev => { TIP.innerHTML = typeof texto === "function" ? texto() : texto; TIP.style.display = "block"; move(ev); };
+  const move = ev => { const x = ev.clientX + 14, y = ev.clientY + 14; TIP.style.left = Math.min(x, window.innerWidth - TIP.offsetWidth - 8) + "px"; TIP.style.top = Math.min(y, window.innerHeight - TIP.offsetHeight - 8) + "px"; };
+  alvo.addEventListener("pointerenter", mostra); alvo.addEventListener("pointermove", move);
+  alvo.addEventListener("pointerleave", () => { TIP.style.display = "none"; });
+  alvo.addEventListener("focus", ev => mostra({clientX: 200, clientY: 200})); alvo.addEventListener("blur", () => { TIP.style.display = "none"; });
+}
+
+/* ------------------------------------------------------------------ */
+/* Rodar                                                               */
+/* ------------------------------------------------------------------ */
+function rodar(){
+  if (!mont) atualizaDerivados();
+  const btn = $("rodar"); btn.disabled = true; btn.textContent = "Simulando…";
+  const P = $("progresso"); P.hidden = false; P.firstElementChild.style.width = "0";
+  const montagem = M.montar(BASE, MRVS, cen);
+  const runs = cen.sim.runs, seed = cen.sim.seed, dias = [];
+  let i = 0;
+  const passo = () => {
+    const t0 = performance.now();
+    while (i < runs && performance.now() - t0 < 120) { dias.push(M.simularDia(montagem, seed + i * 7919)); i++; }
+    P.firstElementChild.style.width = (100 * i / runs) + "%";
+    if (i < runs) { setTimeout(passo, 0); return; }
+    res = M.agregar(montagem, dias);
+    btn.disabled = false; btn.textContent = "Rodar simulação"; P.hidden = true;
+    pintaSimulacao(); pintaResultado();
+    if ($("tela-premissas").classList.contains("ativa")) mostraTela("resultado");
+  };
+  setTimeout(passo, 0);
+}
+
+/* ------------------------------------------------------------------ */
+/* Tela 2: simulação                                                   */
+/* ------------------------------------------------------------------ */
+let gEstatico, gDinamico, refs = {};
+function pintaSimulacao(){
+  $("simVazio").hidden = true; $("simConteudo").hidden = false;
+  const L = res.ref.linha;
+  const sl = $("tempo"); sl.max = L.t.length - 1;
+  tempoIdx = Math.min(L.t.length - 1, 60 + 120); sl.value = tempoIdx;
+  desenhaPlanta(); pintaMinuto(); kpisDia(); graficos();
+}
+function desenhaPlanta(){
+  const svg = $("svgPlanta"); svg.innerHTML = "";
+  const mo = res.mont, Mm = mo.M;
+  el("rect", {x: -10, y: -10, width: LARG + 20, height: ALT + 30, fill: "var(--prancha)"}, svg);
+  const pts = BASE.salao.contorno.map(p => `${p[0]},${fy(p[1])}`).join(" ");
+  el("polygon", {points: pts, fill: "var(--folha)", stroke: "var(--traco)", "stroke-width": .18}, svg);
+  gEstatico = el("g", {}, svg);
+  // buffers e checkpoints
+  for (const z of mo.zonas) {
+    if (z.bufferRect) {
+      const r = z.bufferRect;
+      el("rect", {x: r[0], y: fy(r[3]), width: r[2] - r[0], height: r[3] - r[1], fill: CORES_ZONA[z.idx], opacity: .10}, gEstatico);
+      el("line", {x1: z.checkpoint[0] - 2, y1: fy(z.checkpoint[1]), x2: z.checkpoint[0] + 2, y2: fy(z.checkpoint[1]), stroke: CORES_ZONA[z.idx], "stroke-width": .3}, gEstatico);
+      const t = el("text", {x: z.checkpoint[0], y: fy(z.checkpoint[1]) - .6, "font-size": .9, "font-weight": 700, fill: "var(--tinta)", "text-anchor": "middle", "font-family": "IBM Plex Sans, sans-serif"}, gEstatico);
+      t.textContent = `cp ${z.letra}`;
+    }
+  }
+  // portas
+  for (const p of BASE.portas) {
+    const est = p.face === "sul" && p.estado !== "emergencia" ? (cen.portas[p.id] || "fechada") : (p.estado === "emergencia" ? "emergencia" : "outra");
+    const cor = {entrada: "var(--entrada)", saida: "var(--saida)", fechada: "var(--regua)", emergencia: "var(--emerg)", outra: "var(--regua)"}[est];
+    el("line", {x1: p.x1, y1: fy(p.y1), x2: p.x2, y2: fy(p.y2), stroke: cor, "stroke-width": .4}, gEstatico);
+    if (p.face === "sul" && (est === "entrada" || est === "saida")) {
+      const t = el("text", {x: (p.x1 + p.x2) / 2, y: fy(0) + 1.4, "font-size": .95, "font-weight": 700, fill: "var(--tinta)", "text-anchor": "middle", "font-family": "IBM Plex Sans, sans-serif"}, gEstatico);
+      t.textContent = `${p.id} ${est === "entrada" ? "entrada" : "saída"}`;
+    }
+  }
+  // mesas
+  refs = {mesas: {}, filas: {}, ring3: {}, buffer: {}, cp: {}};
+  for (const m of mo.mesas) {
+    const pos = m.pos, d = M.DIR(pos.rot), p = M.CCW(d), cor = CORES_ZONA[m.zona];
+    const P = (u, v) => [pos.x + d[0] * u + p[0] * v, pos.y + d[1] * u + p[1] * v];
+    const g = el("g", {}, gEstatico);
+    const r = m.corpo;
+    el("rect", {x: r[0], y: fy(r[3]), width: r[2] - r[0], height: r[3] - r[1], fill: cor, opacity: .12}, g);
+    const c = [P(Mm.prof - Mm.mesa[0], -Mm.mesa[1] / 2), P(Mm.prof, -Mm.mesa[1] / 2), P(Mm.prof, Mm.mesa[1] / 2), P(Mm.prof - Mm.mesa[0], Mm.mesa[1] / 2)];
+    const mesa = el("polygon", {points: c.map(q => `${q[0]},${fy(q[1])}`).join(" "), fill: "var(--mesa)", opacity: .85}, g);
+    const cu = P(Mm.eleitor + Mm.urna / 2, 0);
+    const urna = el("circle", {cx: cu[0], cy: fy(cu[1]), r: Mm.urna / 2 - .1, fill: "none", stroke: cor, "stroke-width": .12}, g);
+    const q = P(Mm.prof - Mm.mesa[0] / 2, 0);
+    const t = el("text", {x: q[0], y: fy(q[1]) + .25, "font-size": .68, "font-weight": 700, fill: "var(--prancha)", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, g);
+    t.textContent = m.mrv;
+    // fila: L posições
+    const gf = el("g", {}, g); const dots = [];
+    for (let k = 0; k < m.L; k++) {
+      const pt = [m.frente[0] + d[0] * (k + .5) * M.PASSO_FILA, m.frente[1] + d[1] * (k + .5) * M.PASSO_FILA];
+      dots.push(el("circle", {cx: pt[0], cy: fy(pt[1]), r: .21, fill: "none", stroke: "var(--pessoa)", "stroke-width": .06, opacity: .6}, gf));
+    }
+    const extra = el("text", {x: m.cauda[0] + d[0] * .9, y: fy(m.cauda[1] + d[1] * .9) + .3, "font-size": .8, "font-weight": 700, fill: "var(--falha)", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, g);
+    extra.textContent = "";
+    refs.mesas[m.slot] = {mesa, urna, dots, extra, cor};
+    const hit = el("rect", {x: r[0] - .3, y: fy(r[3]) - .3, width: r[2] - r[0] + .6, height: r[3] - r[1] + .6, fill: "transparent"}, g);
+    tooltip(hit, () => {
+      const i = tempoIdx, idx = mo.mesas.indexOf(m), L = res.ref.linha;
+      const pm = res.porMesa[idx];
+      return `<b>MRV ${m.mrv}</b> · seção ${m.secao}${m.agregada ? " + " + m.agregada : ""} · ${m.aptos} aptos (${m.classe})<br>` +
+        `zona ${mo.zonas[m.zona].letra} · fila de ${m.L} · ${fmt(m.esperados)} eleitores esperados<br>` +
+        `agora: ${L.mesaFila[idx][i]} na fila · ${["urna e mesário parados", "identificando", "identificando e votando", "votando", "mesário esperando a urna"][L.mesaEstado[idx][i]]}<br>` +
+        `dia: fecha ${M.hhmm(pm.fecha)} · urna ${pct(pm.ocupUrna)} · fome ${min(pm.fome)} · fila máx ${pm.filaMax}`;
+    });
+  }
+  // Ring 3: barras abaixo da fachada, uma por zona
+  gDinamico = el("g", {}, svg);
+  for (const z of mo.zonas) {
+    const x = z.portaCentro[0] + (z.dividePorta ? (z.idx % 2 ? 1.4 : -1.4) : 0);
+    const bar = el("rect", {x: x - 1.1, y: fy(0) + 2.2, width: 2.2, height: 0, fill: CORES_ZONA[z.idx], opacity: .8}, gDinamico);
+    const t = el("text", {x, y: fy(0) + 3.6, "font-size": .95, "font-weight": 600, fill: "var(--tinta)", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, gDinamico);
+    const tb = el("text", {x: z.checkpoint ? z.checkpoint[0] : x, y: z.checkpoint ? fy(z.checkpoint[1] / 2) + .3 : fy(0) - 1, "font-size": .9, "font-weight": 600, fill: "var(--tinta)", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, gDinamico);
+    refs.ring3[z.idx] = {bar, t}; refs.buffer[z.idx] = tb;
+  }
+  const tr = el("text", {x: 2, y: fy(0) + 3.6, "font-size": 1, fill: "var(--meio)", "font-family": "IBM Plex Sans, sans-serif"}, gDinamico);
+  tr.textContent = "Ring 3 · fila externa por zona";
+  const tn = el("text", {x: LARG / 2, y: -.8, "font-size": .9, fill: "var(--fraco)", "text-anchor": "middle", "font-family": "IBM Plex Sans, sans-serif"}, gEstatico);
+  tn.textContent = "norte · parede de fundo";
+}
+function pintaMinuto(){
+  if (!res) return;
+  const L = res.ref.linha, i = Math.min(tempoIdx, L.t.length - 1), mo = res.mont;
+  $("horaAtual").textContent = M.hhmm(L.t[i]);
+  mo.mesas.forEach((m, idx) => {
+    const R = refs.mesas[m.slot], n = L.mesaFila[idx][i], cod = L.mesaEstado[idx][i];
+    R.dots.forEach((dt, k) => { const cheio = k < n; dt.setAttribute("fill", cheio ? "var(--pessoa)" : "none"); dt.setAttribute("opacity", cheio ? .9 : .5); });
+    R.extra.textContent = n > m.L ? `+${n - m.L}` : "";
+    R.urna.setAttribute("fill", (cod === 2 || cod === 3 || cod === 4) ? R.cor : "none");
+    R.mesa.setAttribute("opacity", (cod === 1 || cod === 2 || cod === 4) ? 1 : .55);
+  });
+  for (const z of mo.zonas) {
+    const r3 = L.ring3[z.idx][i], hgt = Math.min(9, r3 / 60);
+    refs.ring3[z.idx].bar.setAttribute("height", hgt);
+    refs.ring3[z.idx].t.setAttribute("y", fy(0) + 2.2 + hgt + 1.2);
+    refs.ring3[z.idx].t.textContent = r3 ? `${z.letra} ${r3}` : `${z.letra} 0`;
+    refs.buffer[z.idx].textContent = z.checkpoint ? `${L.buffer[z.idx][i]}/${z.capBuffer}` : "";
+  }
+  // estágios
+  const E = $("estagios"); E.innerHTML = "";
+  const est = (nome, val, sub) => E.appendChild(h("div", {class: "estagio"}, h("span", {text: nome}), h("span", {class: "n", text: val}), sub ? h("span", {class: "sub", text: sub}) : null));
+  const ring3 = mo.zonas.map(z => L.ring3[z.idx][i]);
+  est("Fora, no Ring 3", fmt(ring3.reduce((a, b) => a + b, 0)), mo.zonas.map(z => `${z.letra} ${ring3[z.idx]}`).join(" · "));
+  if (cen.checkpoint.existe) {
+    est("Entre porta e checkpoint", fmt(mo.zonas.reduce((s, z) => s + L.buffer[z.idx][i], 0)), mo.zonas.map(z => `${z.letra} ${L.buffer[z.idx][i]}/${z.capBuffer}`).join(" · "));
+    est("Na fila do checkpoint", fmt(mo.zonas.reduce((s, z) => s + L.cp[z.idx][i], 0)), mo.zonas.map(z => `${z.letra} ${L.cp[z.idx][i]}`).join(" · "));
+  }
+  const ociosas = mo.mesas.filter((m, idx) => L.mesaEstado[idx][i] === 0).length;
+  const bloqueadas = mo.mesas.filter((m, idx) => L.mesaEstado[idx][i] === 4).length;
+  est("Dentro do salão", fmt(L.dentro[i]), `${28 - ociosas} mesas trabalhando · ${ociosas} paradas · ${bloqueadas} esperando a urna`);
+  est("Já votaram", fmt(L.votados[i]), `${pct(L.votados[i] / Math.max(1, res.ref.votos))} do dia`);
+}
+function togglePlay(){
+  if (tocando) { clearInterval(tocando); tocando = null; $("play").textContent = "▶"; return; }
+  $("play").textContent = "❚❚";
+  tocando = setInterval(() => {
+    const L = res.ref.linha, v = +$("velocidade").value;
+    tempoIdx = Math.min(L.t.length - 1, tempoIdx + v / 5);
+    $("tempo").value = Math.floor(tempoIdx); pintaMinuto();
+    if (tempoIdx >= L.t.length - 1) togglePlay();
+  }, 200);
+}
+function kpisDia(){
+  const K = $("kpiDia"); K.innerHTML = "";
+  const d = res.ref, add = (k, v) => { K.appendChild(h("dt", {text: k})); K.appendChild(h("dd", {text: v})); };
+  add("Eleitores no dia", fmt(d.eleitores));
+  add("Última mesa fecha", M.hhmm(d.fechaUltima));
+  add("Espera total P90", min(d.totalP90));
+  add("Espera fora P90", min(d.esperaForaP90));
+  add("Pico dentro do salão", fmt(d.dentroMax));
+  add("Pico no Ring 3", fmt(d.ring3TotalMax));
+  add("Fome nas mesas pesadas", min(d.fomePesadasMin * 60));
+  add("Dias simulados", String(res.resumo.runs));
+}
+
+/* ---- gráficos ---- */
+function graficos(){
+  const G = $("graficos"); G.innerHTML = "";
+  const L = res.ref.linha, mo = res.mont;
+  const zonasSeries = mo.zonas.map(z => ({nome: `${z.nome} · ${z.porta}`, cor: CORES_ZONA[z.idx], dados: L.ring3[z.idx]}));
+  G.appendChild(graficoLinhas({titulo: "Fila externa no Ring 3", sub: "pessoas por zona, dia de referência", t: L.t, series: zonasSeries,
+    limite: {v: cen.ring3.capacidade, rotulo: "capacidade do Ring 3"}}));
+  if (cen.checkpoint.existe)
+    G.appendChild(graficoLinhas({titulo: "Fila no checkpoint", sub: "pessoas esperando o atendente, por zona", t: L.t,
+      series: mo.zonas.map(z => ({nome: `${z.nome} · ${z.atendentesCp} atend.`, cor: CORES_ZONA[z.idx], dados: L.cp[z.idx]}))}));
+  G.appendChild(graficoLinhas({titulo: "Pessoas dentro do salão", sub: "em fila, sendo atendidas ou saindo", t: L.t,
+    series: [{nome: "dentro", cor: "var(--z1)", dados: L.dentro}]}));
+  G.appendChild(graficoLinhas({titulo: "Votos acumulados", sub: `${fmt(res.ref.votos)} votos no dia de referência`, t: L.t,
+    series: [{nome: "votos", cor: "var(--z1)", dados: L.votados}], marca: {t: M.ENCERRAMENTO, rotulo: "17h"}}));
+  G.appendChild(heatmapMesas());
+}
+function eixoY(max){
+  const passo = Math.pow(10, Math.floor(Math.log10(Math.max(1, max))));
+  const cand = [passo / 2, passo, passo * 2, passo * 5].find(p => max / p <= 5) || passo * 5;
+  const topo = Math.ceil(max / cand) * cand || cand;
+  const ticks = []; for (let v = 0; v <= topo + 1e-9; v += cand) ticks.push(v);
+  return {topo, ticks};
+}
+function graficoLinhas(o){
+  const W = 560, H = 210, ml = 44, mr = 14, mt = 12, mb = 28, pw = W - ml - mr, ph = H - mt - mb;
+  const n = o.t.length, t0 = o.t[0], t1 = o.t[n - 1];
+  const maxV = Math.max(1, ...o.series.map(s => Math.max(...s.dados)), o.limite ? o.limite.v : 0);
+  const {topo, ticks} = eixoY(maxV);
+  const X = t => ml + (t - t0) / (t1 - t0) * pw, Y = v => mt + ph - v / topo * ph;
+  const fig = h("figure");
+  const cap = h("figcaption", null, o.titulo, h("span", {class: "sub", text: o.sub}));
+  fig.appendChild(cap);
+  const svg = el("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.titulo});
+  for (const v of ticks) {
+    el("line", {x1: ml, y1: Y(v), x2: W - mr, y2: Y(v), stroke: v === 0 ? "var(--eixo)" : "var(--grade)", "stroke-width": 1}, svg);
+    const t = el("text", {x: ml - 6, y: Y(v) + 3, "font-size": 9, fill: "var(--fraco)", "text-anchor": "end", "font-family": "IBM Plex Mono, monospace"}, svg); t.textContent = fmt(v);
+  }
+  for (let hh = Math.ceil(t0 / 3600); hh * 3600 <= t1; hh++) {
+    const x = X(hh * 3600);
+    const t = el("text", {x, y: H - 10, "font-size": 9, fill: "var(--fraco)", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, svg); t.textContent = hh + "h";
+  }
+  if (o.limite && o.limite.v <= topo) {
+    el("line", {x1: ml, y1: Y(o.limite.v), x2: W - mr, y2: Y(o.limite.v), stroke: "var(--falha)", "stroke-width": 1, opacity: .7}, svg);
+    const t = el("text", {x: W - mr, y: Y(o.limite.v) - 4, "font-size": 9, fill: "var(--meio)", "text-anchor": "end", "font-family": "IBM Plex Mono, monospace"}, svg); t.textContent = o.limite.rotulo;
+  }
+  if (o.marca) {
+    el("line", {x1: X(o.marca.t), y1: mt, x2: X(o.marca.t), y2: mt + ph, stroke: "var(--meio)", "stroke-width": 1}, svg);
+    const t = el("text", {x: X(o.marca.t) + 4, y: mt + 9, "font-size": 9, fill: "var(--meio)", "font-family": "IBM Plex Mono, monospace"}, svg); t.textContent = o.marca.rotulo;
+  }
+  const passo = Math.max(1, Math.floor(n / 280));
+  for (const s of o.series) {
+    let d = ""; for (let i = 0; i < n; i += passo) d += (i ? "L" : "M") + X(o.t[i]).toFixed(1) + "," + Y(s.dados[i]).toFixed(1);
+    if ((n - 1) % passo) d += "L" + X(t1).toFixed(1) + "," + Y(s.dados[n - 1]).toFixed(1);
+    if (o.series.length === 1) el("path", {d: d + `L${X(t1)},${Y(0)}L${X(t0)},${Y(0)}Z`, fill: s.cor, opacity: .1}, svg);
+    el("path", {d, fill: "none", stroke: s.cor, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round"}, svg);
+    // ponto e rótulo no máximo
+    let im = 0; for (let i = 1; i < n; i++) if (s.dados[i] > s.dados[im]) im = i;
+    el("circle", {cx: X(o.t[im]), cy: Y(s.dados[im]), r: 4, fill: s.cor, stroke: "var(--folha)", "stroke-width": 2}, svg);
+    const t = el("text", {x: Math.min(W - mr - 20, Math.max(ml + 20, X(o.t[im]))), y: Y(s.dados[im]) - 8, "font-size": 9.5, "font-weight": 600, fill: "var(--tinta)", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace", "paint-order": "stroke", stroke: "var(--folha)", "stroke-width": 3}, svg);
+    t.textContent = fmt(s.dados[im]);
+  }
+  // crosshair + tooltip
+  const cross = el("line", {x1: 0, y1: mt, x2: 0, y2: mt + ph, stroke: "var(--meio)", "stroke-width": 1, opacity: 0}, svg);
+  const hit = el("rect", {x: ml, y: mt, width: pw, height: ph, fill: "transparent"}, svg);
+  hit.addEventListener("pointermove", ev => {
+    const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) / r.width * W;
+    const tt = t0 + (px - ml) / pw * (t1 - t0);
+    const i = Math.max(0, Math.min(n - 1, Math.round((tt - t0) / (t1 - t0) * (n - 1))));
+    cross.setAttribute("x1", X(o.t[i])); cross.setAttribute("x2", X(o.t[i])); cross.setAttribute("opacity", 1);
+    TIP.innerHTML = `<b>${M.hhmm(o.t[i])}</b>` + o.series.map(s => `<br><span style="display:inline-block;width:10px;border-top:2px solid ${s.cor};vertical-align:middle;margin-right:5px"></span><b>${fmt(s.dados[i])}</b> ${s.nome}`).join("");
+    TIP.style.display = "block"; TIP.style.left = Math.min(ev.clientX + 14, window.innerWidth - TIP.offsetWidth - 8) + "px"; TIP.style.top = (ev.clientY + 14) + "px";
+  });
+  hit.addEventListener("pointerleave", () => { cross.setAttribute("opacity", 0); TIP.style.display = "none"; });
+  fig.appendChild(svg);
+  if (o.series.length > 1) {
+    const leg = h("div", {class: "legenda", style: "margin-top:6px"});
+    for (const s of o.series) leg.appendChild(h("span", null, h("span", {style: `display:inline-block;width:14px;border-top:2px solid ${s.cor};vertical-align:middle;margin-right:5px`}), s.nome));
+    fig.appendChild(leg);
+  }
+  return fig;
+}
+function heatmapMesas(){
+  const L = res.ref.linha, mo = res.mont, n = L.t.length, linhaPx = 10;
+  const fig = h("figure", {style: "grid-column:1/-1"});
+  fig.appendChild(h("figcaption", null, "Estado de cada mesa ao longo do dia", h("span", {class: "sub", text: "uma linha por mesa, ordem MRV; passe o mouse para ler"})));
+  const wrap = h("div", {style: "display:grid;grid-template-columns:38px 1fr;gap:4px;align-items:start"});
+  const rot = h("div", {style: `display:flex;flex-direction:column;font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:var(--meio);line-height:${linhaPx}px`});
+  const ordem = mo.mesas.map((m, idx) => ({idx, mrv: m.mrv})).sort((a, b) => a.mrv - b.mrv);
+  for (const o of ordem) rot.appendChild(h("span", {text: "MRV " + o.mrv}));
+  const cv = document.createElement("canvas"); cv.width = n; cv.height = 28 * linhaPx;
+  cv.style.height = (28 * linhaPx) + "px";
+  const ctx = cv.getContext("2d");
+  const cs = getComputedStyle(document.documentElement);
+  const cores = ["rgba(140,140,140,0.18)", cs.getPropertyValue("--z1").trim() + "99", cs.getPropertyValue("--z1").trim(), cs.getPropertyValue("--z1").trim() + "cc", cs.getPropertyValue("--atencao").trim()];
+  ordem.forEach((o, row) => {
+    const est = L.mesaEstado[o.idx];
+    for (let i = 0; i < n; i++) { ctx.fillStyle = cores[est[i]] || cores[0]; ctx.fillRect(i, row * linhaPx, 1, linhaPx - 1); }
+  });
+  // linha das 17h
+  const i17 = L.t.findIndex(t => t >= M.ENCERRAMENTO);
+  if (i17 >= 0) { ctx.fillStyle = cs.getPropertyValue("--tinta").trim(); ctx.fillRect(i17, 0, 1, cv.height); }
+  cv.addEventListener("pointermove", ev => {
+    const r = cv.getBoundingClientRect(); const i = Math.max(0, Math.min(n - 1, Math.floor((ev.clientX - r.left) / r.width * n)));
+    const row = Math.max(0, Math.min(27, Math.floor((ev.clientY - r.top) / r.height * 28)));
+    const o = ordem[row], m = mo.mesas[o.idx];
+    TIP.innerHTML = `<b>MRV ${m.mrv}</b> · ${M.hhmm(L.t[i])}<br>${["urna e mesário parados", "identificando", "identificando e votando", "votando", "mesário esperando a urna"][L.mesaEstado[o.idx][i]]}<br>${L.mesaFila[o.idx][i]} na fila (cabem ${m.L})`;
+    TIP.style.display = "block"; TIP.style.left = Math.min(ev.clientX + 14, window.innerWidth - TIP.offsetWidth - 8) + "px"; TIP.style.top = (ev.clientY + 14) + "px";
+  });
+  cv.addEventListener("pointerleave", () => { TIP.style.display = "none"; });
+  wrap.appendChild(rot); wrap.appendChild(cv); fig.appendChild(wrap);
+  const eixo = h("div", {style: "display:grid;grid-template-columns:38px 1fr;gap:4px"}, h("span"), h("div", {class: "legenda mono", style: "justify-content:space-between;font-size:.7rem"}));
+  const ex = eixo.lastElementChild;
+  for (let hh = Math.ceil(L.t[0] / 3600); hh * 3600 <= L.t[n - 1]; hh += 2) ex.appendChild(h("span", {text: hh + "h"}));
+  fig.appendChild(eixo);
+  const leg = h("div", {class: "legenda", style: "margin-top:6px"});
+  [["parada", cores[0]], ["identificando", cores[1]], ["identificando e votando", cores[2]], ["só votando", cores[3]], ["mesário esperando a urna", cores[4]]].forEach(([nome, cor]) =>
+    leg.appendChild(h("span", null, h("span", {class: "swatch", style: `background:${cor}`}), nome)));
+  fig.appendChild(leg);
+  return fig;
+}
+
+/* ------------------------------------------------------------------ */
+/* Tela 3: resultado                                                   */
+/* ------------------------------------------------------------------ */
+function pintaResultado(){
+  $("resVazio").hidden = true;
+  const R = $("resConteudo"); R.hidden = false; R.innerHTML = "";
+  const r = res.resumo, V = res.vereditos;
+  const nF = V.filter(v => v.status === "falha").length, nA = V.filter(v => v.status === "atencao").length, nO = V.length - nF - nA;
+  const selo = {ok: "Aprovado", atencao: "Atenção", falha: "Reprovado"}[res.nota];
+  R.appendChild(h("div", {class: "notaGeral"},
+    h("div", {class: "selo " + res.nota, text: selo}),
+    h("div", null, h("h2", {text: `${cen.nome || "Cenário sem nome"}: ${nO} critérios passam, ${nA} pedem atenção, ${nF} falham`}),
+      h("p", {text: res.texto[1]}))));
+  const grid = h("div", {class: "vereditos"});
+  const icone = {ok: "✓", atencao: "!", falha: "×"};
+  for (const v of V) grid.appendChild(h("div", {class: "veredito " + v.status},
+    h("span", {class: "icone", text: icone[v.status], "aria-label": v.status}), h("h3", {text: v.titulo}),
+    h("span", {class: "valor", text: v.valor}), h("span", {class: "meta", text: "meta " + v.meta}),
+    h("p", {class: "porque", text: v.porque + (v.detalhe ? " " + v.detalhe : "")})));
+  R.appendChild(grid);
+  const prosa = h("div", {class: "prosa"}, h("h2", {text: "O que a simulação diz"}));
+  for (const p of res.texto) prosa.appendChild(h("p", {text: p}));
+  prosa.appendChild(h("p", {class: "dica", text: "Premissas do modelo: curva de chegada fixa (7h–17h), caminhada a 1,2 m/s, 0,6 m por pessoa em fila, identificação pelo caderno com o mesário identificando o próximo enquanto o anterior vota. Não modelados: chuva, prioridade legal na fila, eleitor na zona errada, apuração."}));
+  R.appendChild(prosa);
+
+  // números
+  const sec = h("div", {class: "secao"}, h("h2", {text: `Números em ${r.runs} dias simulados`}));
+  const tab = h("table", {class: "tabela"});
+  tab.appendChild(h("thead", null, h("tr", null, h("th", {text: "Indicador"}), h("th", {class: "num", text: "Dia mediano"}), h("th", {class: "num", text: "Dia ruim (P90)"}), h("th", {class: "num", text: "Pior dia"}))));
+  const tb = h("tbody");
+  const lin = (nome, a, f) => tb.appendChild(h("tr", null, h("td", {text: nome}), h("td", {class: "num", text: f(a.p50)}), h("td", {class: "num", text: f(a.p90)}), h("td", {class: "num", text: f(a.max)})));
+  lin("Última mesa fecha", r.fechaUltima, M.hhmm);
+  lin("Espera total, 9 em 10 eleitores", r.totalP90, min);
+  lin("Espera fora (Ring 3), P90", r.esperaForaP90, min);
+  lin("Espera dentro, P90", r.esperaDentroP90, min);
+  lin("Pico de pessoas dentro", r.dentroMax, fmt);
+  lin("Pico de pessoas fora", r.ring3TotalMax, fmt);
+  lin("Fome total das mesas pesadas", r.fomePesadasMin, v => Math.round(v) + " min");
+  lin("Votos", r.votos, fmt);
+  tab.appendChild(tb); sec.appendChild(h("div", {class: "rolagem"}, tab)); R.appendChild(sec);
+
+  // por zona
+  const secZ = h("div", {class: "secao"}, h("h2", {text: "Por zona"}));
+  const tz = h("table", {class: "tabela"});
+  tz.appendChild(h("thead", null, h("tr", null, h("th", {text: "Zona"}), h("th", {text: "Porta"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleitores"}),
+    h("th", {class: "num", text: "Pico fora"}), h("th", {class: "num", text: "Buffer máx / cabe"}), h("th", {class: "num", text: "Fila checkpoint"}), h("th", {class: "num", text: "Ocup. checkpoint"}), h("th", {class: "num", text: "Fecha"}))));
+  const tzb = h("tbody");
+  for (const z of res.porZona) tzb.appendChild(h("tr", null,
+    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), `${z.nome} · MRV ${z.faixaMrv}`), h("td", {class: "mono", text: z.porta}),
+    h("td", {class: "num", text: z.mesas}), h("td", {class: "num", text: fmt(z.esperados)}), h("td", {class: "num", text: fmt(z.ring3Max)}),
+    h("td", {class: "num", text: cen.checkpoint.existe ? `${z.bufferMax} / ${z.capBuffer}` : "—"}), h("td", {class: "num", text: cen.checkpoint.existe ? String(z.cpFilaMax) : "—"}),
+    h("td", {class: "num", text: cen.checkpoint.existe ? `${pct(z.cpOcupacao)} (${z.atendentesCp} atend.)` : "—"}), h("td", {class: "num", text: M.hhmm(z.fecha)})));
+  tz.appendChild(tzb); secZ.appendChild(h("div", {class: "rolagem"}, tz)); R.appendChild(secZ);
+
+  // por mesa
+  const secM = h("div", {class: "secao"}, h("h2", {text: "Por mesa, da que fecha mais tarde à mais cedo"}),
+    h("p", {class: "dica", style: "margin-bottom:10px", text: "“Fila necessária” é o maior tamanho que a fila da mesa atingiu; se bate no que cabe, o checkpoint reteve gente. Uso da urna acima de 90 % é mesa saturada. “Fome” é tempo parada enquanto havia gente da zona no Ring 3; em mesa leve é inevitável, porque quem espera lá fora é de outra mesa."}));
+  const tm = h("table", {class: "tabela"});
+  tm.appendChild(h("thead", null, h("tr", null, h("th", {text: "MRV"}), h("th", {text: "Seções"}), h("th", {class: "num", text: "Aptos"}), h("th", {text: "Zona"}), h("th", {class: "num", text: "Votos"}),
+    h("th", {class: "num", text: "Fecha"}), h("th", {class: "num", text: "Uso da urna"}), h("th", {class: "num", text: "Fome"}), h("th", {class: "num", text: "Fila necessária / cabe"}))));
+  const tmb = h("tbody");
+  const maxOc = Math.max(...res.porMesa.map(m => m.ocupUrna), .01);
+  for (const m of res.porMesa.slice().sort((a, b) => b.fecha - a.fecha)) {
+    const mm = res.mont.mesas.find(x => x.slot === m.slot);
+    tmb.appendChild(h("tr", null,
+      h("td", {class: "mono", text: String(m.mrv)}), h("td", {class: "mono", text: `${mm.secao}${mm.agregada ? " + " + mm.agregada : ""}`}),
+      h("td", {class: "num", text: String(m.aptos)}), h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[m.zona]}`}), LETRAS[m.zona]),
+      h("td", {class: "num", text: fmt(m.votos)}), h("td", {class: "num", text: M.hhmm(m.fecha)}),
+      h("td", {class: "num"}, h("span", {class: "barraMesa", style: `width:${Math.round(m.ocupUrna / maxOc * 60)}px;margin-right:6px;background:${m.ocupUrna > .9 ? "var(--falha)" : "var(--z1)"}`}), pct(m.ocupUrna)),
+      h("td", {class: "num", text: min(m.fome)}), h("td", {class: "num", text: `${m.filaMax} / ${m.L}`})));
+  }
+  tm.appendChild(tmb); secM.appendChild(h("div", {class: "rolagem"}, tm)); R.appendChild(secM);
+
+  // comparativo
+  R.appendChild(comparativo());
+  const acoes = h("div", {class: "linha"});
+  const bg = h("button", {class: "acao", text: "Guardar este resultado para comparar"});
+  bg.addEventListener("click", () => { guardaComparativo(); pintaResultado(); });
+  const bc = h("button", {class: "acao", text: "Copiar relatório (texto)"});
+  bc.addEventListener("click", async () => { try { await navigator.clipboard.writeText(relatorioTexto()); bc.textContent = "Copiado"; } catch (e) { bc.textContent = "não deu"; } setTimeout(() => { bc.textContent = "Copiar relatório (texto)"; }, 1800); });
+  acoes.appendChild(bg); acoes.appendChild(bc); R.appendChild(acoes);
+}
+function leComparativo(){ try { return JSON.parse(localStorage.getItem(CHAVE_COMPARATIVO) || "[]"); } catch (e) { return []; } }
+function guardaComparativo(){
+  const lista = leComparativo(), r = res.resumo;
+  lista.unshift({nome: cen.nome || "sem nome", quando: new Date().toISOString().slice(0, 16).replace("T", " "), nota: res.nota,
+    falhas: res.vereditos.filter(v => v.status === "falha").length, atencoes: res.vereditos.filter(v => v.status === "atencao").length,
+    fecha: r.fechaUltima.p90, p90: r.totalP90.p50, fora: r.ring3TotalMax.p50, cruza: res.mont.fracaoCruza, sep: res.mont.separadores, cen: JSON.parse(JSON.stringify(cen))});
+  try { localStorage.setItem(CHAVE_COMPARATIVO, JSON.stringify(lista.slice(0, 12))); } catch (e) {}
+}
+function comparativo(){
+  const lista = leComparativo();
+  const sec = h("div", {class: "secao"}, h("h2", {text: "Cenários guardados neste navegador"}));
+  if (!lista.length) { sec.appendChild(h("p", {class: "dica", text: "Guarde resultados para compará-los lado a lado. A lista fica só neste navegador."})); return sec; }
+  const t = h("table", {class: "tabela comparativo"});
+  t.appendChild(h("thead", null, h("tr", null, h("th", {text: "Cenário"}), h("th", {text: "Nota"}), h("th", {class: "num", text: "Falhas"}), h("th", {class: "num", text: "Fecha (P90)"}), h("th", {class: "num", text: "Espera P90"}), h("th", {class: "num", text: "Pico fora"}), h("th", {class: "num", text: "Cruza"}), h("th", {class: "num", text: "Fita"}), h("th"))));
+  const tb = h("tbody");
+  const melhorP90 = Math.min(...lista.map(x => x.p90)), melhorFecha = Math.min(...lista.map(x => x.fecha));
+  lista.forEach((x, i) => {
+    const ba = h("button", {class: "acao mini", text: "Abrir premissas"}); ba.addEventListener("click", () => { aplica(x.cen); mostraTela("premissas"); });
+    const bx = h("button", {class: "acao mini", text: "×", "aria-label": "Remover"}); bx.addEventListener("click", () => { const l = leComparativo(); l.splice(i, 1); try { localStorage.setItem(CHAVE_COMPARATIVO, JSON.stringify(l)); } catch (e) {} pintaResultado(); });
+    tb.appendChild(h("tr", null, h("td", null, h("strong", {text: x.nome}), h("span", {class: "dica", text: " " + x.quando})),
+      h("td", null, h("span", {class: "chip " + x.nota, text: {ok: "aprovado", atencao: "atenção", falha: "reprovado"}[x.nota]})),
+      h("td", {class: "num", text: `${x.falhas} / ${x.atencoes}`}), h("td", {class: "num" + (x.fecha === melhorFecha ? " melhor" : ""), text: M.hhmm(x.fecha)}),
+      h("td", {class: "num" + (x.p90 === melhorP90 ? " melhor" : ""), text: min(x.p90)}), h("td", {class: "num", text: fmt(x.fora)}),
+      h("td", {class: "num", text: pct(x.cruza)}), h("td", {class: "num", text: vg(x.sep, 0) + " m"}), h("td", null, ba, " ", bx)));
+  });
+  t.appendChild(tb); sec.appendChild(h("div", {class: "rolagem"}, t)); return sec;
+}
+function relatorioTexto(){
+  const r = res.resumo, l = [];
+  l.push(`# ${cen.nome || "Cenário"} — simulador do Hall 2`, "");
+  l.push(...res.texto, "");
+  l.push("## Critérios");
+  for (const v of res.vereditos) l.push(`- [${{ok: "OK", atencao: "ATENÇÃO", falha: "FALHA"}[v.status]}] ${v.titulo}: ${v.valor} (meta ${v.meta}). ${v.porque}${v.detalhe ? " " + v.detalhe : ""}`);
+  l.push("", "## Por zona");
+  for (const z of res.porZona) l.push(`- ${z.nome} (MRV ${z.faixaMrv}, porta ${z.porta}): ${fmt(z.esperados)} eleitores, pico fora ${fmt(z.ring3Max)}, checkpoint ${pct(z.cpOcupacao)} com ${z.atendentesCp} atendente(s), fecha ${M.hhmm(z.fecha)}`);
+  l.push("", "## Por mesa (fecha, uso da urna, fome, fila necessária/cabe)");
+  for (const m of res.porMesa.slice().sort((a, b) => b.fecha - a.fecha)) l.push(`- MRV ${m.mrv} (${m.secao}, ${m.aptos} aptos): ${M.hhmm(m.fecha)}, ${pct(m.ocupUrna)}, ${min(m.fome)}, ${m.filaMax}/${m.L}`);
+  l.push("", "## Premissas (JSON)", "```json", JSON.stringify(cen), "```");
+  return l.join("\n");
+}
+
+/* ------------------------------------------------------------------ */
+/* Início                                                              */
+/* ------------------------------------------------------------------ */
+ligaControles();
+desenhaCurva();
+aplica(carregaRascunho() || M.cenarioClaude());
+rodar();
+})();
+
+</script>

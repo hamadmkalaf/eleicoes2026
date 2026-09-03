@@ -87,3 +87,52 @@ de Dublin e passam a votar lá.
 
 Nenhum modelo de tempo de votação foi aplicado, a pedido: as saídas entregam os
 totais ordenados e o critério de gargalo fica a cargo de quem analisa.
+
+## Simulador de fluxo do Hall 2
+
+Segundo artefato, irmão da prancheta: recebe o arranjo das 28 mesas (cenário A
+ou B da prancheta, ou um cenário salvo nela colado como JSON) e as respostas às
+perguntas de organização do fluxo, e simula o dia de votação eleitor a eleitor.
+Três telas: **Premissas**, **Simulação** (planta minuto a minuto) e
+**Resultado** (relatório com critérios aprovados, em atenção ou reprovados).
+
+```bash
+python3 scripts/gera_simulador.py   # gera saidas/simulador_fluxo.html
+node simulador/teste_modelo.js claude 16   # roda o motor em Node e imprime o resumo
+node simulador/varredura.js 3       # varre combinações e ranqueia (demora alguns minutos)
+```
+
+Arquivos:
+
+| Arquivo | Papel |
+|---|---|
+| `simulador/modelo.js` | Motor: geometria herdada da prancheta, curva de chegada, simulação por eventos discretos, vereditos e texto. Roda no navegador e em Node. |
+| `simulador/app.js` | Interface das três telas. |
+| `simulador/template.html` | Casca HTML e CSS; o gerador embute dados, motor e interface. |
+| `data/prancheta_hall2.json` | Base da prancheta: salão, portas, módulo da mesa, posições das 28 mesas nos cenários A e B. |
+| `data/mrv_secoes.json` | MRV 1–28 → seção principal e agregada, conforme a convocação de mesários (DJE TRE-DF n. 139, 04/08/2026). MRV k é a k-ª seção principal em ordem crescente. |
+| `simulador/varredura.js` | Varredura que escolheu o Cenário Claude. |
+
+### O que é fixo e o que é premissa
+
+Fixo em todos os cenários: identificação pelo caderno (sem biometria), liberação
+controlada na porta, curva de chegada das 7h às 17h (8 % chegam antes da
+abertura), caminhada a 1,2 m/s, 0,6 m por pessoa em fila, 200 m de fita de
+unifila contratados. Premissas escolhidas por quem simula: portas de entrada e
+saída na fachada sul, número e recorte das zonas, onde a numeração MRV começa,
+existência, distância e atendentes do checkpoint, fila por peso de mesa,
+política de liberação, comparecimento, tempos de identificação e voto, triagem
+e capacidade do Ring 3.
+
+### Cenário Claude
+
+Escolhido por varredura de 4.228 combinações: três zonas geográficas (parede
+norte, parede leste, recorte + parede oeste), entradas pelas três portas duplas
+do meio (S5 → norte, S6 → leste, S4 → oeste), saídas pelas portas de carga das
+pontas (S1 e S9), numeração começando na parede leste (MRV 1–12 leste, 13–20
+oeste, 21–28 norte), checkpoint a 14 m com 2/3/2 atendentes, filas de 4/5/8 por
+mesa leve/média/pesada, e as mesas 23 e 24 deslocadas para o norte para a fila
+da mesa do recorte não invadir a mesa vizinha. Zera cruzamentos de saída com
+corredor de entrada e mantém as mesas pesadas sem fome. O que sobra é
+estrutural: fila de abertura de ~950 pessoas às 8h e espera P90 de ~1 h, que só
+mais mesas, identificação mais rápida ou chegada mais espalhada mudam.

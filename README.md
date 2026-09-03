@@ -38,8 +38,9 @@ eleitor e é usado aqui como referência de onde ele reside.
 ```bash
 pip install pandas openpyxl
 cd scripts
-python3 mapa_agregacoes.py   # gera saidas/Dublin_2026_agregacoes.xlsx e saidas/dados.json
-python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
+python3 mapa_agregacoes.py          # gera saidas/Dublin_2026_agregacoes.xlsx e saidas/dados.json
+python3 gera_pagina.py              # gera saidas/dublin_agregacoes.html
+python3 gera_mrv_comparecimento.py  # gera saidas/mrv_secoes_comparecimento.md
 ```
 
 `parse_dados.py` também roda sozinho e imprime um resumo da carga.
@@ -51,6 +52,13 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
   `Residencia x Urna` e `Inconsistencias`.
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
+- **`saidas/mrv_secoes_comparecimento.md`** — junta o número de MRV (fonte:
+  convocação de mesários do DJE/TRE-DF, não está nos CSVs do TSE) à seção e
+  ao eleitorado apto de cada urna. Inclui uma estimativa de comparecimento
+  por MRV calculada com a taxa de 2022 (74% Dublin / 50% interior) citada em
+  `contexto_eleicoes_dublin_2026.md` — **não é comparecimento oficial por
+  seção**, que não existe em nenhum arquivo deste repositório; ver aviso no
+  próprio arquivo.
 
 ## Validações
 

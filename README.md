@@ -33,13 +33,20 @@ duplicadas, então precisa de um passo de desempacotamento — tratado em
 `NM_LOCAL_VOTACAO` no arquivo de perfil é o local de votação original do
 eleitor e é usado aqui como referência de onde ele reside.
 
+`handoff_agregacao_dublin_2026.md` (fornecido pelo usuário) traz a taxa de
+comparecimento de 2022 por domicílio de origem, usada em
+`scripts/gera_mrv_comparecimento.py` — não é um CSV do TSE, é uma taxa
+histórica com qualidade de dado desigual entre localidades (ver o arquivo
+gerado para o detalhe).
+
 ## Como rodar
 
 ```bash
 pip install pandas openpyxl
 cd scripts
-python3 mapa_agregacoes.py   # gera saidas/Dublin_2026_agregacoes.xlsx e saidas/dados.json
-python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
+python3 mapa_agregacoes.py          # gera saidas/Dublin_2026_agregacoes.xlsx e saidas/dados.json
+python3 gera_pagina.py              # gera saidas/dublin_agregacoes.html
+python3 gera_mrv_comparecimento.py  # gera saidas/mrv_secoes_comparecimento.md
 ```
 
 `parse_dados.py` também roda sozinho e imprime um resumo da carga.
@@ -51,6 +58,13 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
   `Residencia x Urna` e `Inconsistencias`.
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
+- **`saidas/mrv_secoes_comparecimento.md`** — junta o número de MRV (fonte:
+  convocação de mesários do DJE/TRE-DF, não está nos CSVs do TSE) à seção e
+  ao eleitorado apto de cada urna. Inclui uma estimativa de comparecimento
+  por seção, calculada com a taxa de comparecimento de 2022 por domicílio de
+  origem citada em `handoff_agregacao_dublin_2026.md` — **não é
+  comparecimento oficial por seção**, que não existe em nenhum arquivo deste
+  repositório; ver aviso e coluna de qualidade do dado no próprio arquivo.
 
 ## Validações
 

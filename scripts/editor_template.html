@@ -200,7 +200,7 @@ footer .estado.guia{color:var(--entrada)}
       <p class="rot">Cenários salvos <span class="direita"></span></p>
       <div class="salvarLinha">
         <input type="text" id="nomeCenario" placeholder="nome do cenário" maxlength="60" aria-label="Nome do cenário">
-        <button class="acao mini" id="salvarCenario">Salvar no GitHub</button>
+        <button class="acao mini" id="salvarCenario">Copiar cenário</button>
       </div>
       <ul class="salvos" id="listaSalvos"></ul>
       <p class="vazio" id="semSalvos">Nenhum cenário salvo ainda.</p>
@@ -214,7 +214,7 @@ footer .estado.guia{color:var(--entrada)}
       <div class="linha2" style="margin-top:8px">
         <button class="acao mini" id="colarCenario">Colar cenário…</button>
       </div>
-      <p class="notaSalvos">Esta lista foi gravada na última vez que a prancheta foi publicada — não é uma leitura ao vivo. <strong>Salvar</strong> abre o GitHub com o cenário pronto para confirmar o commit; depois é preciso pedir a atualização da página para ele aparecer aqui para todos. <strong>Copiar</strong> funciona na hora, sem depender do GitHub.</p>
+      <p class="notaSalvos"><strong>Copiar cenário</strong> coloca o JSON na área de transferência — envie para quem publica a prancheta (por mensagem, e-mail, ou colando numa conversa com o Claude) para ele entrar nesta lista para todo mundo. A lista abaixo foi gravada na última vez que a prancheta foi publicada; não é uma leitura ao vivo.</p>
     </div>
     <div class="bloco">
       <p class="rot">Medidas <button class="acao mini direita" id="apagarMedidas">Apagar todas</button></p>
@@ -245,7 +245,7 @@ footer .estado.guia{color:var(--entrada)}
       <p class="dica">Arraste uma mesa para movê-la; <kbd>Shift</kbd>+clique soma mesas à seleção e o arrasto move o conjunto. A mesa fica <strong>vermelha</strong> quando invade zona protegida, vão de porta, outra mesa, ou sai do salão.</p>
       <p class="dica"><strong>Reparear</strong>: clique na mesa que fica parada e depois na que vai formar par — ela vem para 3,00 m de corredor e, se houver vizinha alinhada, o par encosta a 1,50 m dela.</p>
       <p class="dica"><kbd>R</kbd> gira a seleção 90°. Setas movem de um passo, com <kbd>Shift</kbd> de dez. <kbd>Ctrl+Z</kbd> desfaz. <kbd>Esc</kbd> desmarca.</p>
-      <p class="dica">Arraste o fundo para deslocar a planta; a roda do mouse aproxima e afasta. O rascunho fica neste navegador; <strong>Salvar</strong> leva o cenário para o repositório no GitHub.</p>
+      <p class="dica">Arraste o fundo para deslocar a planta; a roda do mouse aproxima e afasta. O rascunho fica neste navegador; <strong>Copiar cenário</strong> copia o JSON para você enviar a quem publica a prancheta.</p>
     </div>
   </aside>
 </div>
@@ -1018,30 +1018,18 @@ function pintaSalvos(){
   }
 }
 
-function slugifica(s){
-  return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "cenario";
-}
-function carimboArquivo(d = new Date()){
-  const p = v => String(v).padStart(2, "0");
-  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}`
-       + `-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
-}
-function salvaCenario(){
+async function salvaCenario(){
   const nome = $("nomeCenario").value.trim() || "sem nome";
   const corpo = pacoteCenario(nome);
   const json = JSON.stringify(corpo);
-  const arquivo = `cenarios/${slugifica(nome)}-${carimboArquivo()}.json`;
-  const url = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/new/${GITHUB_BRANCH_CENARIOS}`
-    + `?filename=${encodeURIComponent(arquivo)}`
-    + `&value=${encodeURIComponent(json)}`
-    + `&message=${encodeURIComponent("Cenário salvo: " + nome)}`;
-  // window.open primeiro, sincrono, para nao perder o gesto do clique;
-  // a copia para a area de transferencia pode ser assincrona depois.
-  window.open(url, "_blank", "noopener");
-  navigator.clipboard.writeText(json).catch(() => {});
-  $("nomeCenario").value = "";
-  avisa("Abrindo o GitHub para confirmar o commit — o JSON também foi copiado, caso prefira colar em outro lugar", 5000);
+  try {
+    await navigator.clipboard.writeText(json);
+    avisa(`Cenário “${nome}” copiado — envie a quem publica a prancheta (ou cole aqui numa conversa com o Claude) para ele entrar na lista de todos`, 6000);
+    $("nomeCenario").value = "";
+  } catch (e) {
+    avisa("Não deu para copiar automaticamente — o JSON está no console (F12) para copiar à mão", 5000);
+    console.log(json);
+  }
 }
 $("salvarCenario").onclick = salvaCenario;
 $("nomeCenario").addEventListener("keydown", ev => {

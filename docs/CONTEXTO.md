@@ -369,18 +369,34 @@ a sandbox do artefato publicado bloqueia qualquer chamada de rede para fora
 do próprio claude.ai, então nem GitHub nem qualquer outro serviço externo dá
 para consultar em tempo real de dentro da página (só as capabilities do
 claude.ai escapam disso, e usar a `db` de novo voltaria a prender o artefato
-à organização, o que motivou essa troca). Por isso o fluxo é em duas
-pontas: **Salvar** monta o JSON e abre o GitHub com o commit pronto para
-confirmar (`.../new/cenarios-hall2?filename=...&value=...`); a lista que
-aparece na prancheta para todo mundo é a que `scripts/gera_editor.py` lê do
-branch **na hora de gerar e publicar** a página — salvar um cenário novo só
-aparece na lista geral depois que alguém pedir a republicação. Copiar/Colar
-em JSON continua funcionando na hora, sem depender do GitHub. Cada cenário
-grava só as mesas que mudaram da planta oficial (`alteracoes`, por número da
-mesa) — não as 28 —, o que mantém os arquivos pequenos e os diffs do git
-legíveis, e significa que mesas não citadas acompanham a planta oficial se
-ela mudar depois. A prancheta não declara mais a capability `db`; o artefato
-volta a admitir compartilhamento público.
+à organização, o que motivou essa troca).
+
+O botão **Copiar cenário** copia o JSON para a área de transferência — é o
+único passo que a página faz sozinha, sem depender de conta em nada. Quem
+desenha manda esse JSON (mensagem, e-mail, colando numa conversa com o
+Claude) para quem publica a prancheta, que roda
+`python3 scripts/salva_cenario.py arquivo.json` (ou `-` para ler da entrada
+padrão): o script grava o arquivo no branch `cenarios-hall2` sem tocar no
+checkout local (usa um worktree temporário) e não pede nada além do JSON
+colado. Só depois disso — `scripts/gera_editor.py` lê os arquivos do branch
+e embute a lista em `saidas/editor_dados.json` **na hora de gerar e
+publicar** a página — o cenário aparece para todo mundo; salvar sozinho não
+basta, é preciso pedir a republicação. Cada cenário grava só as mesas que
+mudaram da planta oficial (`alteracoes`, por número da mesa) — não as 28 —,
+o que mantém os arquivos pequenos e os diffs do git legíveis, e significa
+que mesas não citadas acompanham a planta oficial se ela mudar depois.
+
+(A primeira versão desse fluxo tentava abrir o GitHub com o commit pronto
+para a própria pessoa confirmar — `.../new/cenarios-hall2?filename=...`.
+Foi abandonada: exige conta no GitHub e um clique final em página externa
+que ninguém sem experiência técnica completa de forma confiável — não dá
+para saber, de dentro da prancheta, se aquele clique aconteceu. `Colar
+cenário` na prancheta ainda aceita o link de um item da lista para abrir
+localmente; a leitura do arquivo em si, por quem publica, é sempre pelo
+`salva_cenario.py`.)
+
+A prancheta não declara mais a capability `db`; o artefato volta a admitir
+compartilhamento público.
 
 ```bash
 cd scripts

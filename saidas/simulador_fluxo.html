@@ -414,19 +414,23 @@ const LIMITE_SEPARADORES = 200;  // m de fita contratados (100 unifilas)
 
 /* Curva fixa de chegada ao local, em fatias de 30 min a partir das 7h00.
  * É chegada, não votação: em 2022 o voto aconteceu bem depois da chegada
- * porque as filas eram longas. Pesos somam 100. Premissa do modelo, a
- * calibrar com os logs de urna de 2022 quando forem processados. */
+ * porque as filas eram longas. Forma apoiada no levantamento qualitativo
+ * (branch claude/eleicoes-brasileiras-horarios-pico-210a6l): fila formada
+ * de 1h30 a 2h antes da abertura (Nova York, Lisboa, Dublin em 2022), maior
+ * volume nas primeiras horas, vale entre 12h e 15h e repique de retardatários
+ * perto das 17h. Pesos somam 100. Não há estatística oficial por hora; os
+ * logs de urna de 2022 permitiriam calibrar. */
 const CURVA_CHEGADA = [
   /* 7h00 */ 3, /* 7h30 */ 5,
   /* 8h00 */ 7, /* 8h30 */ 7,
-  /* 9h00 */ 8, /* 9h30 */ 7,
-  /* 10h00 */ 7, /* 10h30 */ 7,
-  /* 11h00 */ 6, /* 11h30 */ 6,
-  /* 12h00 */ 5, /* 12h30 */ 4,
+  /* 9h00 */ 7.5, /* 9h30 */ 7,
+  /* 10h00 */ 7, /* 10h30 */ 6.5,
+  /* 11h00 */ 6, /* 11h30 */ 5.5,
+  /* 12h00 */ 4.5, /* 12h30 */ 4,
   /* 13h00 */ 3.5, /* 13h30 */ 3.5,
   /* 14h00 */ 3.5, /* 14h30 */ 3.5,
   /* 15h00 */ 4, /* 15h30 */ 4,
-  /* 16h00 */ 3.5, /* 16h30 */ 2.5,
+  /* 16h00 */ 4.5, /* 16h30 */ 3.5,
 ];
 
 /* Taxas de comparecimento por origem do eleitor. "medio" replica 2022

@@ -1,0 +1,79 @@
+<title>Planta-base do Hall 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+@@estilo@@
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro · RDS Ballsbridge, Hall 2 · planta-base</p>
+  <h1>O salão e as portas numeradas</h1>
+  <p class="chamada">Ponto de partida do desenho de fluxo, e só isso: o contorno medido do Hall&nbsp;2, as @@nportas@@ portas com um número por fachada e o pouco que já está decidido sobre cada uma. Nenhuma porta é entrada nem saída de eleitor aqui — essa decisão vem depois, e vem melhor se a linguagem para falar do espaço já estiver acordada.</p>
+  <dl class="faixa">
+    <div><dt>Piso do salão</dt><dd>@@piso@@ m²<small>já sem o recorte de @@recorte@@ m²</small></dd></div>
+    <div><dt>Dimensões</dt><dd>@@larg@@ × @@prof@@ m<small>pé-direito de 7 m, sem colunas</small></dd></div>
+    <div><dt>Portas</dt><dd>@@nportas@@<small>@@vao_total@@ m de vão somado</small></dd></div>
+    <div><dt>Parede leste</dt><dd>@@leste_livre@@ m<small>fora dos recuos de @@recuo@@ m</small></dd></div>
+    <div><dt>Já decidido</dt><dd>3 portas<small>N1 fechada, N2 catering, leste em emergência</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <p class="rotulo">A planta</p>
+  <h2>Uma linguagem para falar do salão</h2>
+  <div class="prosa">
+  <p>O salão é um retângulo de @@larg@@ × @@prof@@ m com o canto sudoeste recortado — @@recorte_dim@@ m que não pertencem ao Hall&nbsp;2. Piso sem colunas, pé-direito de 7 m. No perímetro há @@nportas@@ vãos, e até agora cada um era chamado pelo código do RDS, que numera as folhas de porta e não ajuda a localizar nada: a 2.16 fica na parede leste, a 2.13 na norte, a 2.4 na sul.</p>
+  <p>A numeração desta planta é por fachada, na ordem de leitura do desenho: <strong>de oeste para leste nas paredes norte e sul, de norte para sul nas paredes leste e oeste</strong>. A porta N2 é a segunda da parede norte contada da esquerda; a L1 é a primeira da leste contada de cima. O código do RDS continua impresso embaixo de cada número, porque é ele que o pessoal do RDS entende.</p>
+  </div>
+  <figure class="prancha">
+@@svg@@
+  <figcaption>Planta-base em escala. O miolo está vazio de propósito: onde ficam as 28 mesas receptoras, e por onde o eleitor entra e sai, ainda não foi decidido.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">O que já está decidido</p>
+  <h2>Três coisas, e nenhuma delas é sobre eleitor</h2>
+  <div class="prosa">
+  <p><strong>A parede leste é toda de emergência.</strong> As quatro portas L1 a L4 são saídas de emergência e exigem @@recuo@@ m livres à sua volta. O recuo está desenhado como uma faixa hachurada, medida para dentro do salão e para os lados de cada vão: é área onde nada pode ser montado. Ele consome quase toda a parede — sobram apenas @@nleste@@ trechos de @@nicho@@ m entre os recuos, o que efetivamente elimina a parede leste como lugar de mesa.</p>
+  <p><strong>A porta N2 fica desbloqueada.</strong> É a saída do catering, e está marcada na planta em azul. Precisa de caminho livre até ela, o que restringe o que pode ser montado na metade central da parede norte — a distância exata depende do que o catering movimenta, e ainda não foi definida.</p>
+  <p><strong>A porta N1 permanece fechada.</strong> Não conta como vão para nenhum efeito de fluxo.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Nº</th><th>Parede</th><th class="mono">Código RDS</th><th class="mono">Vão</th><th>Estado</th><th>Observação</th></tr></thead>
+    <tbody>@@portas@@</tbody>
+  </table></div>
+  <p class="nota"><strong>“A definir” não quer dizer disponível.</strong> Quer dizer que ainda não se decidiu nada sobre a porta — nem que ela sirva ao público, nem que possa ficar aberta. As portas de carga S1 e S9, por exemplo, dependem de poderem ficar destravadas o dia inteiro e de a soleira servir para pedestre.</p>
+</section>
+
+<section>
+  <p class="rotulo">O que sobra</p>
+  <h2>Piso e parede, medidos separadamente</h2>
+  <div class="prosa">
+  <p>O salão oferece duas coisas que qualquer layout vai disputar, e elas se medem de formas diferentes. <strong>Piso</strong>: @@piso@@ m² de chão livre, sem colunas — bastante, para qualquer arranjo. <strong>Parede</strong>: o perímetro aproveitável, que é escasso e desigual, porque cada vão o recorta e o recuo da parede leste consome quase tudo o que ela tinha.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Fachada</th><th class="mono">Comprimento</th><th class="mono">Portas</th><th class="mono">Vão</th><th class="mono">Parede cheia</th><th>Observação</th></tr></thead>
+    <tbody>@@fachadas@@</tbody>
+  </table></div>
+  <p class="nota">A coluna <strong>parede cheia</strong> é só o comprimento menos os vãos: não desconta cantos, nem afastamento de mobiliário, nem folga de circulação — e, fora a leste, não desconta recuo nenhum, porque nenhum outro foi determinado. É o teto do que existe, não o que dá para usar.</p>
+</section>
+
+<section>
+  <p class="rotulo">Antes de desenhar qualquer ideia</p>
+  <h2>O que ainda falta saber sobre o espaço</h2>
+  <ol class="passos">
+    <li><div><h3>As portas de carga S1 e S9 podem ficar abertas e travadas as nove horas?</h3><p>São os dois maiores vãos da fachada sul, com 3,6 m cada. Portas de carga costumam ser de enrolar e às vezes têm função corta-fogo. A resposta muda o que é possível fazer com a fachada sul inteira.</p></div></li>
+    <li><div><h3>Quanto de caminho livre a saída do catering exige?</h3><p>N2 está desbloqueada, mas “desbloqueada” não diz se o que passa por ali é uma pessoa com bandeja ou um carrinho — nem por onde ele chega até a porta. Enquanto isso não estiver definido, a metade central da parede norte não pode ser ocupada com segurança.</p></div></li>
+    <li><div><h3>O recuo de 3 m vale para as saídas de emergência das outras paredes?</h3><p>Está marcado só na leste, que foi o que se determinou. As portas 2.13, 2.7, 2.1 e 2.8/2.9 também são saídas de emergência na planta do RDS; se exigirem o mesmo recuo, some parede também no norte e no sul.</p></div></li>
+    <li><div><h3>Onde ficam as caixas de piso elétricas, se houver?</h3><p>Decide se as urnas podem ficar longe das paredes sem canaleta atravessando corredor.</p></div></li>
+  </ol>
+</section>
+
+<footer>
+  <p>Geometria medida da planta oficial do RDS (Hall 2, pavimento térreo) e da versão revisada com as duas portas de carga assinaladas, com escala aferida contra a ficha técnica do próprio documento: 50,2 × 44,5 m, 2.238 m². Está codificada em <span class="mono">scripts/salao.py</span>, fonte única do projeto.</p>
+  <p>A ficha técnica do RDS registra 2.238 m² de área bruta; o contorno desenhado, já sem o recorte do canto sudoeste, dá @@piso@@ m². A diferença é o próprio recorte mais o arredondamento das dimensões impressas. As portas 2.8/2.9, na parede do recorte, entram no desenho como R1 mas fora da numeração das fachadas.</p>
+</footer>
+</div>

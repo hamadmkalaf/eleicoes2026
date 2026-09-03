@@ -7,9 +7,25 @@ arquivos; o código do desenho de fluxo vive em `deisgn-fluxo`.
 
 ## Como um arquivo chega aqui
 
-Pelo botão **Salvar** da prancheta, que abre o GitHub com o commit pronto
-para confirmar (ou, sem permissão de escrita, para abrir um PR por fork).
-Também dá para criar o arquivo à mão, seguindo o formato abaixo.
+A prancheta não grava neste branch sozinha — ela não pode fazer chamadas de
+rede fora do claude.ai. Quem desenha clica em **Copiar cenário**, que copia
+o JSON para a área de transferência, e manda esse texto (mensagem, e-mail,
+colado numa conversa com o Claude) para quem publica a prancheta. Essa
+pessoa grava o arquivo com:
+
+```bash
+python3 scripts/salva_cenario.py arquivo.json   # ou "-" para ler da entrada padrão
+```
+
+O script valida o formato, monta o nome do arquivo a partir do `nome` do
+cenário e grava neste branch sem tocar no checkout local (usa um worktree
+temporário). Também dá para criar o arquivo à mão, seguindo o formato
+abaixo.
+
+(Uma primeira versão deste fluxo tentava abrir o GitHub com o commit
+pronto para a própria pessoa confirmar. Foi abandonada: exige conta no
+GitHub e um clique final numa página externa que nem sempre acontece, e a
+prancheta não tem como saber se aconteceu.)
 
 ## Formato
 
@@ -38,5 +54,5 @@ A lista de cenários é embutida **na hora de gerar e publicar** a prancheta
 (`scripts/gera_editor.py` lê os arquivos deste branch e grava a lista em
 `saidas/editor_dados.json`). Não é leitura ao vivo — a sandbox do artefato
 publicado bloqueia chamadas de rede para fora do próprio claude.ai. Depois
-de salvar um cenário novo, é preciso gerar e publicar a prancheta de novo
-para ele aparecer na lista de todo mundo.
+de gravar um cenário novo com `salva_cenario.py`, é preciso gerar e
+publicar a prancheta de novo para ele aparecer na lista de todo mundo.

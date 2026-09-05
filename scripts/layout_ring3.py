@@ -18,6 +18,7 @@ Uso:  python3 scripts/layout_ring3.py
 """
 
 import math
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -208,8 +209,8 @@ def desenha():
         elif nome in SAIDAS_PORTAS:
             add(f'<rect x="{cx-17}" y="{hy+20}" width="34" height="9" '
                 f'fill="#1e8449"/>')
-            add(f'<text x="{cx}" y="{hy+45}" {LBL} text-anchor="middle" '
-                f'font-weight="bold" fill="#1e8449">{nome}</text>')
+            add(f'<text x="{cx}" y="{hy+45}" font-size="13" fill="#1e8449" '
+                f'text-anchor="middle" font-weight="bold">{nome}</text>')
             add(f'<text x="{cx}" y="{hy+58}" font-size="10" fill="#1e8449" '
                 f'text-anchor="middle">saída</text>')
         else:
@@ -399,7 +400,15 @@ def desenha():
         ty += 17
     add('</svg>')
 
-    SAIDA.write_text("\n".join(out), encoding="utf-8")
+    svg = "\n".join(out)
+    # Navegadores usam parser XML estrito; o renderizador local e tolerante.
+    # Validar aqui evita entregar um SVG que so quebra na tela do usuario.
+    try:
+        ET.fromstring(svg)
+    except ET.ParseError as erro:
+        raise SystemExit(f"SVG invalido, nao gravado: {erro}") from erro
+
+    SAIDA.write_text(svg, encoding="utf-8")
     return r
 
 

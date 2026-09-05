@@ -89,16 +89,68 @@ def chip(porta):
 # Diagrama principal da rota
 # --------------------------------------------------------------------------
 
+# Geometria do Hall 2 e do Ring 3, em metros, conforme a ficha técnica do RDS e
+# as medições de saidas/plano_ring3.md (PR #6). ESCALA converte para o viewBox.
+ESCALA = 5.18          # px por metro
+X0, Y0 = 370, 155      # canto noroeste do Hall 2 no viewBox
+HALL_L, HALL_P = 50.2, 44.5
+# Aberturas da fachada sul, em metros a partir do canto sudoeste (prancheta do Posto).
+ABERTURAS = {"S2": 13.7, "S4": 21.9, "S5": 28.1, "S6": 34.3, "S8": 42.6}
+
+
+def mx(metros):
+    return round(X0 + metros * ESCALA)
+
+
 def diagrama_rota():
+    sul = round(Y0 + HALL_P * ESCALA)                 # y da fachada sul
+    apron_h = round(14 * ESCALA)                      # apron de 14 m de profundidade
+    ring_y = sul + apron_h
+    ring_l, ring_p = round(39 * ESCALA), round(35 * ESCALA)
+    ring_x = round((mx(ABERTURAS["S5"])) - ring_l / 2)
+    fundo_y = ring_y + ring_p - 18                    # corredor de distribuição
+
+    portas = ""
+    for nome, cor, letra in (("S4", "--a", "A"), ("S5", "--b", "B"), ("S6", "--c", "C")):
+        x = mx(ABERTURAS[nome])
+        portas += (
+            f'<rect x="{x - 12}" y="{sul - 8}" width="24" height="16" rx="2" fill="var({cor})"/>'
+            f'<text x="{x}" y="{sul + 4}" text-anchor="middle" font-family="Archivo,sans-serif"'
+            f' font-size="11" font-weight="700" fill="var(--ground)">{letra}</text>'
+        )
+    for nome in ("S2", "S8"):
+        x = mx(ABERTURAS[nome])
+        portas += (
+            f'<rect x="{x - 12}" y="{sul - 7}" width="24" height="14" rx="2" fill="var(--surface)"'
+            f' stroke="var(--muted)" stroke-width="1.5"/>'
+            f'<text x="{x}" y="{sul + 22}" text-anchor="middle" font-family="Archivo,sans-serif"'
+            f' font-size="9.5" font-weight="600" fill="var(--muted)">saída {nome}</text>'
+        )
+
+    # Serpenteados: blocos de 7,0 m a passo de 9,0 m, descarregando nas portas.
+    blocos = ""
+    passo = round(9 * ESCALA)
+    largura = round(7 * ESCALA)
+    centro_b = mx(ABERTURAS["S5"])
+    for desloc, cor, nome in ((-passo, "--a", "S4"), (0, "--b", "S5"), (passo, "--c", "S6")):
+        cx = centro_b + desloc
+        topo = ring_y + 34
+        blocos += (
+            f'<rect x="{cx - largura // 2}" y="{topo}" width="{largura}"'
+            f' height="{fundo_y - topo - 6}" rx="3" fill="var({cor}-soft)"'
+            f' stroke="var({cor})" stroke-width="1"/>'
+            f'<line x1="{cx}" y1="{topo - 2}" x2="{mx(ABERTURAS[nome])}" y2="{sul + 10}"'
+            f' stroke="var({cor})" stroke-width="2.2" marker-end="url(#arw{nome[-1]})"/>'
+        )
+
     discos = [
-        (240, 47, "0"), (700, 47, "0"),
-        (570, 100, "1"),
-        (668, 190, "2"), (668, 262, "2"), (668, 334, "2"), (668, 406, "2"),
-        (652, 470, "3"),
-        (340, 470, "4"),
-        (352, 397, "5"),
+        (240, 47, "0"), (700, 47, "0"), (570, 100, "1"),
+        (668, 200, "2"), (668, 292, "2"), (668, 384, "2"), (668, 476, "2"),
+        (ring_x + ring_l + 22, fundo_y + 4, "3"),
+        (ring_x + 16, ring_y + 96, "4"),
+        (360, sul + 18, "5"),
         (400, 350, "6"),
-        (700, 240, "7"),
+        (700, 441, "7"),
     ]
     marcas = "".join(
         f'<circle cx="{x}" cy="{y}" r="11" fill="currentColor"/>'
@@ -106,38 +158,23 @@ def diagrama_rota():
         f' font-size="11.5" font-weight="700" fill="var(--ground)">{n}</text>'
         for x, y, n in discos
     )
-
-    # Mesas sugeridas encostadas nas paredes norte e oeste do salão.
-    mesas_norte = "".join(
+    mesas = "".join(
         f'<rect x="{388 + i * 27}" y="168" width="19" height="7" fill="currentColor" opacity=".28"/>'
         for i in range(9)
-    )
-    mesas_oeste = "".join(
-        f'<rect x="{376}" y="{200 + i * 27}" width="7" height="19" fill="currentColor" opacity=".28"/>'
+    ) + "".join(
+        f'<rect x="376" y="{200 + i * 27}" width="7" height="19" fill="currentColor" opacity=".28"/>'
         for i in range(5)
     )
 
-    portas = ""
-    for x, cor, letra in ((410, "--a", "A"), (480, "--b", "B"), (550, "--c", "C")):
-        portas += (
-            f'<rect x="{x - 17}" y="385" width="34" height="16" rx="2" fill="var({cor})"/>'
-            f'<text x="{x}" y="397" text-anchor="middle" font-family="Archivo,sans-serif"'
-            f' font-size="12" font-weight="700" fill="var(--ground)">{letra}</text>'
-            f'<line x1="{x}" y1="448" x2="{x}" y2="407" stroke="var({cor})" stroke-width="2.5"'
-            f' marker-end="url(#arw{letra})"/>'
-            f'<rect x="{x - 16}" y="470" width="32" height="86" rx="3" fill="var({cor}-soft)"'
-            f' stroke="var({cor})" stroke-width="1"/>'
-        )
-
     return f'''<figure>
   <div class="figbox">
-    <svg class="diagram" viewBox="0 0 920 660" role="img"
-         aria-label="Planta esquemática do RDS Ballsbridge mostrando a rota do eleitor do portão da Merrion Road, pela lateral leste do Hall 2, até o Ring 3 e as portas A, B e C da fachada sul, com a saída em circuito pela fachada leste.">
+    <svg class="diagram" viewBox="0 0 920 740" role="img"
+         aria-label="Planta esquemática do RDS Ballsbridge: a rota do eleitor entra pelo portão da Merrion Road, desce pela lateral leste do Hall 2, entra no Ring 3 pela garganta sudeste, percorre um dos três serpenteados e descarrega nas portas S4, S5 e S6 da fachada sul. As saídas S2 e S8 ficam nos flancos, fora do vão das entradas.">
       <defs>
         <marker id="arw" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
-        <marker id="arwA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--a)"/></marker>
-        <marker id="arwB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--b)"/></marker>
-        <marker id="arwC" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--c)"/></marker>
+        <marker id="arw4" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--a)"/></marker>
+        <marker id="arw5" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--b)"/></marker>
+        <marker id="arw6" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--c)"/></marker>
       </defs>
 
       <rect x="0" y="26" width="920" height="42" fill="var(--surface-2)"/>
@@ -149,7 +186,6 @@ def diagrama_rota():
       <line x1="604" y1="66" x2="604" y2="86" stroke="currentColor" stroke-width="2.5"/>
       <text x="614" y="64" font-family="Archivo,sans-serif" font-size="10.5" font-weight="600"
             fill="var(--alert)">placa fixa do venue: EXIT</text>
-
       <line x1="880" y1="132" x2="880" y2="102" stroke="currentColor" stroke-width="1.5" marker-end="url(#arw)"/>
       <text x="880" y="94" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10"
             font-weight="700" fill="var(--muted)">N</text>
@@ -158,8 +194,9 @@ def diagrama_rota():
       <text x="235" y="292" text-anchor="middle" font-family="Archivo,sans-serif" font-size="12"
             font-weight="600" fill="var(--muted)">HALL 1</text>
 
-      <rect x="370" y="155" width="260" height="240" fill="var(--surface)" stroke="currentColor" stroke-width="1.5"/>
-      {mesas_norte}{mesas_oeste}
+      <rect x="{X0}" y="{Y0}" width="{round(HALL_L * ESCALA)}" height="{round(HALL_P * ESCALA)}"
+            fill="var(--surface)" stroke="currentColor" stroke-width="1.5"/>
+      {mesas}
       <text x="500" y="262" text-anchor="middle" font-family="Archivo,sans-serif" font-size="15"
             font-weight="700" fill="currentColor">HALL 2</text>
       <text x="500" y="280" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10.5"
@@ -173,31 +210,41 @@ def diagrama_rota():
       <text x="795" y="170" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10.5"
             fill="var(--muted)">estacionamento</text>
 
-      <rect x="300" y="452" width="330" height="150" rx="8" fill="var(--surface)"
-            stroke="var(--rule)" stroke-width="1.5"/>
-      <text x="316" y="590" font-family="Archivo,sans-serif" font-size="11.5" font-weight="600"
-            fill="var(--muted)">RING 3 · área de fila</text>
+      <rect x="345" y="{sul + 2}" width="311" height="{apron_h - 2}" fill="var(--surface-2)"
+            stroke="var(--rule)" stroke-width="1"/>
+      <text x="352" y="{sul + 40}" font-family="Archivo,sans-serif" font-size="10"
+            fill="var(--muted)">apron pavimentado</text>
       {portas}
 
-      <polyline points="570,78 570,112 668,142 668,432 668,470 642,470" fill="none"
-                stroke="currentColor" stroke-width="3.5" marker-end="url(#arw)"/>
-      <text x="690" y="128" font-family="Archivo,sans-serif" font-size="11" font-weight="600"
-            fill="currentColor">≈150 m · fila e leitura</text>
-      <text x="292" y="443" text-anchor="end" font-family="Archivo,sans-serif" font-size="10.5"
-            fill="var(--muted)">triagem já resolvida</text>
+      <rect x="{ring_x}" y="{ring_y}" width="{ring_l}" height="{ring_p}" rx="6"
+            fill="var(--surface)" stroke="var(--rule)" stroke-width="1.5"/>
+      <rect x="{ring_x + 6}" y="{fundo_y}" width="{ring_l - 12}" height="13" rx="2"
+            fill="var(--surface-2)"/>
+      <text x="{ring_x + 10}" y="{ring_y + 17}" text-anchor="start"
+            font-family="Archivo,sans-serif" font-size="11" font-weight="600"
+            fill="var(--muted)">RING 3 · 39 × 35 m</text>
+      {blocos}
 
-      <rect x="626" y="232" width="8" height="26" fill="var(--muted)"/>
-      <polyline points="636,245 790,245 790,88" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-dasharray="7 4" opacity=".75" marker-end="url(#arw)"/>
-      <text x="800" y="300" font-family="Archivo,sans-serif" font-size="11" font-weight="600"
-            fill="currentColor">saída</text>
-      <text x="800" y="316" font-family="Archivo,sans-serif" font-size="10.5"
-            fill="var(--muted)">não cruza a fila</text>
+      <polyline points="570,78 570,112 668,142 668,{fundo_y + 6} {ring_x + ring_l + 6},{fundo_y + 6}"
+                fill="none" stroke="currentColor" stroke-width="3.5" marker-end="url(#arw)"/>
+      <text x="528" y="128" text-anchor="end" font-family="Archivo,sans-serif" font-size="11"
+            font-weight="600" fill="currentColor">≈150 m · fila e leitura</text>
+      <text x="{ring_x + ring_l + 34}" y="{fundo_y + 42}" font-family="Archivo,sans-serif"
+            font-size="10.5" fill="var(--muted)">garganta sudeste</text>
 
-      <line x1="140" y1="632" x2="399" y2="632" stroke="currentColor" stroke-width="1.5"/>
-      <line x1="140" y1="627" x2="140" y2="637" stroke="currentColor" stroke-width="1.5"/>
-      <line x1="399" y1="627" x2="399" y2="637" stroke="currentColor" stroke-width="1.5"/>
-      <text x="270" y="623" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10"
+      <polyline points="{mx(ABERTURAS['S2'])},{sul + 30} {mx(ABERTURAS['S2'])},{sul + 56} 360,{sul + 56}"
+                fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="7 4"
+                opacity=".7" marker-end="url(#arw)"/>
+      <polyline points="{mx(ABERTURAS['S8'])},{sul + 30} {mx(ABERTURAS['S8'])},{sul + 56} 762,{sul + 56} 762,88"
+                fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="7 4"
+                opacity=".7" marker-end="url(#arw)"/>
+      <text x="772" y="{sul + 44}" font-family="Archivo,sans-serif" font-size="10.5"
+            font-weight="600" fill="currentColor">saídas pelos flancos</text>
+
+      <line x1="140" y1="712" x2="399" y2="712" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="140" y1="707" x2="140" y2="717" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="399" y1="707" x2="399" y2="717" stroke="currentColor" stroke-width="1.5"/>
+      <text x="270" y="703" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10"
             fill="var(--muted)">50 m</text>
 
       {marcas}
@@ -206,14 +253,14 @@ def diagrama_rota():
       <b>0</b> aproximação na Merrion Road e nos demais portões &nbsp;·&nbsp;
       <b>1</b> portão de entrada &nbsp;·&nbsp;
       <b>2</b> corredor da lateral leste, painéis a cada 25–30 m &nbsp;·&nbsp;
-      <b>3</b> boca do Ring 3, divisão em três filas &nbsp;·&nbsp;
-      <b>4</b> cabeças de fila &nbsp;·&nbsp;
-      <b>5</b> portas A · B · C &nbsp;·&nbsp;
+      <b>3</b> garganta sudeste do Ring 3 &nbsp;·&nbsp;
+      <b>4</b> cabeças dos três serpenteados &nbsp;·&nbsp;
+      <b>5</b> portas S4 · S5 · S6, no apron &nbsp;·&nbsp;
       <b>6</b> checkpoint interno &nbsp;·&nbsp;
-      <b>7</b> saída pela fachada leste
+      <b>7</b> saídas S2 e S8
     </p>
   </div>
-  <figcaption>A consulta acontece toda no trecho 1 → 3, onde as pessoas já estão paradas ou andando. Da boca do Ring 3 em diante o eleitor só confirma uma letra que já sabe. A saída pela fachada leste fecha um circuito de sentido único: quem sai nunca atravessa quem entra. Traçado esquemático, na escala do Hall 2 (ficha técnica RDS); a posição exata do Ring 3 e do portão ainda depende de conferência no local.</figcaption>
+  <figcaption>Em escala, sobre as dimensões da ficha técnica do RDS e as medições do plano do Ring 3. A consulta acontece toda no trecho 1 → 3, onde as pessoas já estão paradas ou andando; da garganta em diante o eleitor só confirma a letra. As três entradas ficam a apenas 6,2 m uma da outra, e os serpenteados, a 9,0 m de passo, descarregam em diagonal sobre elas — é por isso que a disciplina de faixa precisa estar resolvida antes, e não na fachada. As saídas S2 e S8 já ficam fora do vão das entradas, então os fluxos se separam sem barreira adicional.</figcaption>
 </figure>'''
 
 
@@ -355,18 +402,18 @@ PONTOS = [
      "Nada. Repete a consulta durante o tempo morto de caminhada e de fila",
      "A mesma tabela mestra, idêntica em todos · seta “Ring 3, 100 m”",
      "4 painéis duplos (8 faces)"),
-    ("P3", "Boca do Ring 3",
-     "Na entrada da área de fila, imediatamente antes da divisão",
-     "Última consulta possível · divisão em três filas",
+    ("P3", "Garganta sudeste",
+     "No funil de entrada do Ring 3, junto aos três agentes de pré-triagem",
+     "Última consulta possível · divisão nos três serpenteados",
      "Tabela mestra (última ocorrência) + três totens A · B · C com as faixas de mesas",
      "2 painéis · 3 totens de 3 m"),
-    ("P4", "Cabeças de fila",
-     "No início de cada serpentina, dentro do Ring 3",
-     "Confirmação da letra · captura de quem errou, sem refluxo na fila",
-     "Letra em corpo grande + faixa de mesas + “errou? faixa lateral →”",
+    ("P4", "Cabeças dos serpenteados",
+     "No início de cada bloco de 7,0 m, ao longo do corredor de distribuição",
+     "Confirmação da letra · captura de quem errou, enquanto ainda cabe corrigir",
+     "Letra em corpo grande + faixa de mesas + “errou? volte ao corredor →”",
      "3 totens · 1 faixa de correção"),
-    ("P5", "Portas A · B · C",
-     "Sobre cada vão da fachada sul do Hall 2",
+    ("P5", "Portas S4 · S5 · S6",
+     "Sobre cada vão de entrada da fachada sul, lidas de dentro do serpenteado",
      "Só confirmação. Nenhuma informação nova",
      "Letra de 300 mm + lista das mesas atendidas",
      "3 bandeirolas de fachada"),
@@ -375,9 +422,9 @@ PONTOS = [
      "Mesa → posição física no salão",
      "Faixas suspensas por bloco de mesas + numeração em totem sobre cada mesa",
      "3 faixas suspensas · 28 totens de mesa"),
-    ("P7", "Saída",
-     "Portas da fachada leste (vãos 2.16 a 2.23), com desemboque no estacionamento",
-     "Fecha o circuito de sentido único",
+    ("P7", "Saídas S2 e S8",
+     "Nos flancos da fachada sul, fora do vão das entradas — os fluxos já se separam sozinhos",
+     "Encaminha para a rua sem reentrar no Ring 3",
      "SAÍDA / WAY OUT → Merrion Road",
      "2 painéis internos · 2 externos"),
 ]
@@ -400,7 +447,7 @@ SPECS = [
     ("Setas do corredor", "120 mm", "Leitura a 25 m, em movimento."),
     ("Corpo da tabela mestra", "18 mm", "Três vezes o limite de acuidade a 1,2 m — a tabela é lida em pé, sob chuva, por leitores présbitas."),
     ("Altura de montagem", "≥ 2,5 m", "Uma fila sob guarda-chuvas corta a linha de visão a 1,80 m. Peça baixa é peça invisível."),
-    ("Material", "PVC 5 mm", "Alveolar em base d'água, ou lona com ilhoses. Chove em Dublin cerca de 20 dos 31 dias de outubro."),
+    ("Material", "PVC 5 mm", "Alveolar em base d'água, ou lona com ilhoses. Entre 40% e 65% de chance de chuva no dia 4, conforme o limiar da fonte."),
     ("Idiomas", "PT + EN", "A placa do venue e a equipe do RDS são em inglês; a sinalização de rua precisa ser bilíngue."),
     ("Código de cor", "3 tons", "Azul, âmbar e magenta. Nunca verde com vermelho, e a cor nunca aparece sem a letra."),
 ]

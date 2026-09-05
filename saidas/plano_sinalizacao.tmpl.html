@@ -1,0 +1,263 @@
+<title>Rota do Eleitor RDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+  :root{
+    --ink:#16202b; --ground:#f1f3f0; --surface:#ffffff; --surface-2:#e6eae5;
+    --rule:#c6cfc8; --rule-soft:#dde3dd; --muted:#5c6a70;
+    --a:#1f5fa8; --b:#b8760a; --c:#8b3a8e; --alert:#a8352a;
+    --a-soft:#e2edf8; --b-soft:#f8eed9; --c-soft:#f2e4f3; --alert-soft:#f7e3e0;
+    --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ink:#e3eae6; --ground:#101719; --surface:#182022; --surface-2:#202a2d;
+      --rule:#33403f; --rule-soft:#283335; --muted:#94a3a0;
+      --a:#79b0ea; --b:#e8b354; --c:#cb8ace; --alert:#e88375;
+      --a-soft:#1a2c40; --b-soft:#33290f; --c-soft:#332034; --alert-soft:#3a201d;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#e3eae6; --ground:#101719; --surface:#182022; --surface-2:#202a2d;
+    --rule:#33403f; --rule-soft:#283335; --muted:#94a3a0;
+    --a:#79b0ea; --b:#e8b354; --c:#cb8ace; --alert:#e88375;
+    --a-soft:#1a2c40; --b-soft:#33290f; --c-soft:#332034; --alert-soft:#3a201d;
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+       font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px 96px}
+  p{margin:0 0 1.1em;max-width:68ch}
+  a{color:var(--a)}
+  strong{font-weight:600}
+  em{font-style:italic}
+
+  /* ---------- masthead ---------- */
+  header.mast{padding:52px 0 30px;border-bottom:2px solid var(--ink)}
+  .eyebrow{font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.16em;
+           text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+  h1{font-family:var(--sans);font-weight:700;font-size:clamp(34px,6vw,56px);line-height:1.02;
+     letter-spacing:-.025em;margin:0 0 16px;text-wrap:balance}
+  .standfirst{font-size:19px;color:var(--muted);max-width:60ch;margin:0}
+
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
+         gap:1px;background:var(--rule);border:1px solid var(--rule);margin:28px 0 0}
+  .fact{background:var(--ground);padding:13px 14px}
+  .fact dt{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.11em;
+           text-transform:uppercase;color:var(--muted);margin:0 0 5px}
+  .fact dd{margin:0;font-family:var(--mono);font-size:21px;font-weight:600;
+           font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .fact dd span{font-family:var(--sans);font-size:12px;font-weight:500;color:var(--muted)}
+
+  /* ---------- sections ---------- */
+  section{padding-top:52px}
+  h2{font-family:var(--sans);font-weight:700;font-size:26px;letter-spacing:-.018em;
+     margin:0 0 6px;text-wrap:balance;display:flex;align-items:baseline;gap:13px}
+  h2 .num{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--muted);
+          letter-spacing:0;flex:none}
+  h3{font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:-.005em;
+     margin:34px 0 9px}
+  .lede{font-size:18.5px;color:var(--muted);max-width:62ch;margin:0 0 26px}
+
+  /* ---------- figures ---------- */
+  figure{margin:30px 0;padding:0}
+  .figbox{background:var(--surface);border:1px solid var(--rule);padding:20px 20px 14px;
+          overflow-x:auto}
+  svg.diagram{display:block;width:100%;min-width:660px;height:auto;color:var(--ink)}
+  figcaption{font-size:14.5px;color:var(--muted);margin-top:12px;max-width:74ch}
+  .key{font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:11px;
+       padding-top:11px;border-top:1px solid var(--rule-soft);line-height:1.9}
+  .key b{font-family:var(--mono);font-weight:600;color:var(--ink);
+         background:var(--surface-2);padding:1px 5px;border-radius:2px;margin-right:3px}
+
+  /* ---------- tables ---------- */
+  .tscroll{overflow-x:auto;margin:24px 0;border:1px solid var(--rule);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-family:var(--sans);font-size:14px}
+  th{text-align:left;font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+     color:var(--muted);padding:11px 14px;border-bottom:1px solid var(--rule);
+     background:var(--surface-2);vertical-align:bottom;white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  td.num,th.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;
+                white-space:nowrap}
+  td.pt{font-family:var(--mono);font-weight:600;white-space:nowrap}
+  .sub{display:block;color:var(--muted);font-size:12.5px;line-height:1.45;margin-top:3px}
+
+  /* ---------- door chips ---------- */
+  .chip{display:inline-block;min-width:20px;text-align:center;font-family:var(--sans);
+        font-weight:700;font-size:12px;line-height:18px;border-radius:2px;padding:0 5px}
+  .chip.a{background:var(--a-soft);color:var(--a);box-shadow:inset 0 0 0 1px var(--a)}
+  .chip.b{background:var(--b-soft);color:var(--b);box-shadow:inset 0 0 0 1px var(--b)}
+  .chip.c{background:var(--c-soft);color:var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+
+  /* ---------- master lookup table ---------- */
+  .mestra{columns:3;column-gap:34px;margin:22px 0 0;font-family:var(--mono);font-size:13.5px}
+  @media (max-width:820px){.mestra{columns:2}}
+  @media (max-width:520px){.mestra{columns:1}}
+  .mrow{break-inside:avoid;display:flex;align-items:center;gap:8px;
+        padding:4.5px 0;border-bottom:1px solid var(--rule-soft)}
+  .mrow .sec{font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .mrow .dots{flex:1;border-bottom:1px dotted var(--rule);height:.7em}
+  .mrow .mesa{color:var(--muted);font-variant-numeric:tabular-nums}
+
+  /* ---------- callouts ---------- */
+  .note{border-left:3px solid var(--a);background:var(--surface);padding:16px 20px;
+        margin:26px 0;font-size:16px}
+  .note.warn{border-left-color:var(--alert);background:var(--alert-soft)}
+  .note p:last-child{margin-bottom:0}
+  .note .tag{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.12em;
+             text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px}
+  .note.warn .tag{color:var(--alert)}
+
+  /* ---------- arithmetic ledger ---------- */
+  .ledger{background:var(--surface);border:1px solid var(--rule);margin:26px 0;
+          font-family:var(--mono);font-size:14px}
+  .ledger .lrow{display:flex;justify-content:space-between;gap:20px;padding:10px 18px;
+                border-bottom:1px solid var(--rule-soft);font-variant-numeric:tabular-nums}
+  .ledger .lrow:last-child{border-bottom:0}
+  .ledger .lrow.total{background:var(--surface-2);font-weight:600}
+  .ledger .lrow span:first-child{font-family:var(--serif);font-size:15.5px;color:var(--muted)}
+  .ledger .lrow.total span:first-child{color:var(--ink);font-weight:600}
+
+  /* ---------- spec grid ---------- */
+  .specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:1px;
+         background:var(--rule);border:1px solid var(--rule);margin:24px 0}
+  .spec{background:var(--surface);padding:16px 17px}
+  .spec h4{font-family:var(--sans);font-size:13px;font-weight:600;margin:0 0 8px}
+  .spec p{font-size:14.5px;margin:0;color:var(--muted);max-width:none}
+  .spec .big{font-family:var(--mono);font-size:24px;font-weight:600;color:var(--ink);
+             display:block;margin:0 0 4px;letter-spacing:-.02em}
+
+  ul.checks{list-style:none;padding:0;margin:20px 0;max-width:74ch}
+  ul.checks li{position:relative;padding:0 0 14px 30px;font-size:16.5px}
+  ul.checks li::before{content:"";position:absolute;left:2px;top:.52em;width:11px;height:11px;
+                       border:2px solid var(--muted);border-radius:2px}
+  ul.checks li b{font-family:var(--sans);font-weight:600;font-size:15.5px}
+
+  footer{margin-top:64px;padding-top:22px;border-top:1px solid var(--rule);
+         font-size:13.5px;color:var(--muted);font-family:var(--sans)}
+  footer a{color:var(--muted)}
+  :focus-visible{outline:2px solid var(--a);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Eleições 2026 · 1º turno · 4 de outubro · Posto de Dublin</p>
+  <h1>Rota do Eleitor</h1>
+  <p class="standfirst">Onde colocar cada placa entre o portão da Merrion Road e a urna, e por que o ponto de decisão não pode ficar na porta.</p>
+  <dl class="facts">
+    <div class="fact"><dt>Aptos</dt><dd>16.794</dd></div>
+    <div class="fact"><dt>Seções</dt><dd>51</dd></div>
+    <div class="fact"><dt>Mesas / urnas</dt><dd>28</dd></div>
+    <div class="fact"><dt>Comparecimento esperado</dt><dd>11.418</dd></div>
+    <div class="fact"><dt>Portas de entrada</dt><dd>3 <span>A · B · C</span></dd></div>
+    <div class="fact"><dt>Hall 2 (Shelbourne)</dt><dd>50,2 <span>× 44,5 m</span></dd></div>
+  </dl>
+</header>
+
+<section id="tese">
+  <h2><span class="num">01</span>A tese</h2>
+  <p class="lede">O problema não é onde cabem placas. É onde o eleitor para para pensar.</p>
+  <p>Cada consulta que o eleitor precisa fazer — “qual é a minha mesa?”, “qual é a minha porta?” — é uma operação de leitura que consome de 10 a 20 segundos. Feita num ponto estreito (o portão, a boca da fila, a porta do Hall), essa leitura vira um servidor de fila e estrangula todo o fluxo a montante. É exatamente o gargalo de pré-triagem já sinalizado no plano de fluxo: se a triagem depende de conversa com um funcionário, ela não paraleliza.</p>
+  <p>A rota do RDS resolve isso de graça. Entre o portão da Merrion Road e a fachada sul do Hall 2 há <strong>cerca de 150 metros de caminhada</strong> pela lateral leste do prédio — e, no pico, muito mais tempo do que isso parado em fila. Esse é tempo morto. A consulta inteira cabe ali. Quando o eleitor chega à bifurcação A/B/C, ele não deve estar decidindo nada: deve estar apenas confirmando uma letra que já sabe há dois minutos.</p>
+  <p>Daí as três regras que organizam todo o resto deste plano: <strong>uma consulta só</strong> (seção → mesa <em>e</em> porta no mesmo painel), <strong>consulta replicada</strong> (o mesmo painel repetido ao longo do corredor, nunca um único quadro grande) e <strong>bifurcação sem informação nova</strong> (na porta, só a letra).</p>
+</section>
+
+<section id="rota">
+  <h2><span class="num">02</span>A rota e os oito pontos</h2>
+  <p class="lede">Do portão à urna, e de volta à rua sem cruzar a fila de entrada.</p>
+  <p>A geometria abaixo não é ilustrativa: vem da ficha técnica do Hall 2 e das medições do plano do Ring 3 (<span style="font-family:var(--mono)">saidas/plano_ring3.md</span>), que fixou o Ring em ~39 × 35 m, o apron pavimentado em ~60 × 14 m e os papéis das nove aberturas da fachada sul. Este plano não redesenha nada disso — ele coloca as placas sobre esse desenho.</p>
+  {{DIAGRAMA}}
+</section>
+
+<section id="consulta">
+  <h2><span class="num">03</span>Uma consulta, não duas</h2>
+  <p>O enunciado do problema tem duas perguntas — qual a mesa, qual a porta —, mas o eleitor não deve fazer duas buscas. A porta é função determinística da mesa, que é função determinística da seção. Publique as três colunas juntas, ordenadas pela única coisa que o eleitor já traz de casa: <strong>o número da seção</strong>.</p>
+  {{FIG_CONSULTA}}
+
+  <div class="note warn">
+    <span class="tag">Armadilha de ordenação</span>
+    <p>A tabela precisa ter <strong>51 linhas, ordenadas por seção</strong> — não 28 linhas ordenadas por mesa. São 23 seções agregadas: um eleitor da seção 3889 procura “3889” e precisa encontrar. Se o painel listar apenas as 28 seções principais, cerca de <strong>7 mil eleitores não se acham no quadro</strong> e vão todos para o balcão de dúvidas — que é o recurso mais escasso da operação.</p>
+  </div>
+
+  <h3>Índice secundário por localidade de origem</h3>
+  <p>Os 4.213 eleitores que residem fora de Dublin (25% da zona) foram removidos do seu local de votação original. Muitos chegarão procurando o nome do condado, não o número da seção. Como cada condado cai em uma a três mesas apenas, um índice paralelo curto resolve — e deve ficar no mesmo painel, à direita da tabela principal.</p>
+  {{TAB_LOCALIDADE}}
+</section>
+
+<section id="vazao">
+  <h2><span class="num">04</span>Por que replicar em vez de ampliar</h2>
+  <p>A tentação é imprimir um quadro enorme no portão. A aritmética diz que um quadro, de qualquer tamanho, não serve: o que limita não é a área impressa, é <strong>quantas pessoas conseguem ficar de pé em frente a ele ao mesmo tempo</strong>.</p>
+  {{LEDGER_LEITURA}}
+  <p>Um painel de 1,2 m de largura acomoda três leitores lado a lado. São necessários, portanto, <strong>quatro painéis simultâneos no pico</strong> — ou o equivalente distribuído ao longo do percurso, que é a solução barata: o mesmo painel repetido a cada 25–30 m no corredor da lateral leste faz as pessoas lerem enquanto andam, sem nenhum ponto de parada.</p>
+
+  <div class="note">
+    <span class="tag">Onde este plano encosta no plano do Ring 3</span>
+    <p>A contagem acima é de <em>painéis de leitura</em>, não de barreira. O quantitativo de barreira já está dimensionado em <span style="font-family:var(--mono)">saidas/plano_ring3.md</span>: os três serpenteados, o corredor de distribuição, a garganta e os canais de descarga somam <strong>560,2 m (281 separadores)</strong>, contra 200 m em mãos — faltam <strong>362 m, ~EUR 2.357</strong>, e isso esgota o estoque sem sobrar metro para dentro do Hall 2. A capacidade resultante é de 780 pessoas nos serpenteados mais ~490 na reserva de flanco.</p>
+    <p>Os dois planos se encontram num ponto específico. O plano do Ring 3 prevê <strong>três agentes de pré-triagem na garganta sudeste</strong> entregando o cartão de roteamento, e sinaliza esses agentes como gargalo potencial. É exatamente o risco que a sinalização a montante elimina: se a consulta já aconteceu no portão e se repetiu quatro vezes ao longo do corredor, o agente da garganta deixa de fazer a busca e passa a apenas conferir uma letra — de operação de 15 segundos para operação de 2.</p>
+  </div>
+</section>
+
+<section id="pontos">
+  <h2><span class="num">05</span>Os pontos, um a um</h2>
+  <p class="lede">O que cada peça decide, o que ela diz, e onde ela fica.</p>
+  {{TAB_PONTOS}}
+</section>
+
+<section id="spec">
+  <h2><span class="num">06</span>Especificação das peças</h2>
+  <p>Dois condicionantes locais mandam na especificação, e os dois são fáceis de esquecer num escritório. O primeiro é a chuva: as fontes divergem conforme o limiar adotado — <strong>12 dias</strong> pelas normais de 30 anos (1991–2020, limiar ≥ 1 mm) e <strong>17 a 20 dias</strong> em fontes de limiar mais frouxo, ou seja, algo entre <strong>40% e 65%</strong> de probabilidade para o dia 4. Os números não são metodologicamente comparáveis entre si, mas qualquer ponto dessa faixa já obriga material impermeável. O segundo é geométrico: uma fila sob guarda-chuvas destrói a linha de visão a partir de 1,80 m de altura.</p>
+  {{SPECS}}
+  <p>A razão adotada é <strong>1 mm de altura de letra para cada 200 mm de distância de leitura</strong>. Ela fica deliberadamente entre os dois limites publicados: a regra de impacto da <em>International Sign Association</em>, de 25 mm a cada 3 m (1:120), conservadora demais para um painel que se lê parado; e o limite de acuidade visual, de 25 mm legíveis a 15 m (1:600), que só vale com visão 20/20, luz boa e leitura de frente. Fora dessas condições — ângulo oblíquo de 45°, chuva, céu encoberto — a legibilidade cai cerca de um quarto, margem já embutida nos valores acima.</p>
+
+  <h3>Código de cor das portas</h3>
+  <p>Azul, âmbar e magenta — deliberadamente <strong>sem verde e sem vermelho juntos</strong>. Cerca de 8% dos homens têm alguma deficiência de visão de cores, quase sempre no eixo vermelho-verde; a tríade escolhida se mantém distinguível em deuteranopia e protanopia. A cor nunca aparece sozinha: sempre acompanhada da letra, que é a informação primária.</p>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Porta</th><th>Cor</th><th class="num">Mesas</th><th class="num">Aptos</th><th class="num">Esperado</th><th>Mesa mais pesada</th></tr></thead>
+      <tbody>{{TAB_PORTAS}}</tbody>
+    </table>
+  </div>
+</section>
+
+<section id="mesas">
+  <h2><span class="num">07</span>Distribuição das mesas pelas portas</h2>
+  <p>A proposta abaixo equilibra o <strong>comparecimento esperado</strong> — não o número de aptos —, porque é o comparecimento que gera fila. As taxas usadas são as de 2022: 74% para seções domiciliadas em Dublin e 50% para as do interior, aplicadas eleitor a eleitor conforme a residência registrada em cada seção.</p>
+  <p>As três mesas mais pesadas da zona (M7, M17 e M27, com 586 a 590 comparecentes esperados cada) foram <strong>separadas uma por porta</strong>. Concentrá-las criaria um problema de vazão bruta numa porta específica e concentraria o risco operacional num único ponto; distribuídas, o pico se reparte e qualquer incidente fica geograficamente isolado.</p>
+  {{TAB_MESAS}}
+  <div class="note">
+    <span class="tag">Dependência</span>
+    <p>Esta distribuição é <strong>ilustrativa e ainda reversível</strong>: ela assume as 28 urnas da agregação atual do TSE. Se a contraproposta de desagregação for aceita (32 a 40 mesas), a numeração muda inteira — mas o método não, e a tabela mestra é regerada em minutos a partir do mesmo script. O que <em>não</em> pode mudar depois de impresso é a numeração das mesas: ela precisa estar congelada antes de qualquer pedido de impressão.</p>
+  </div>
+</section>
+
+<section id="mestra">
+  <h2><span class="num">08</span>Tabela mestra</h2>
+  <p class="lede">As 51 seções, ordenadas por número. Este é o conteúdo literal do painel de P1 a P3.</p>
+  {{TAB_MESTRA}}
+</section>
+
+<section id="riscos">
+  <h2><span class="num">09</span>Riscos e confirmações pendentes</h2>
+  <ul class="checks">
+    <li><b>A placa diz EXIT.</b> A entrada de eleitores está sinalizada, no local, com uma placa permanente que diz o oposto. Um painel temporário ao lado não vence uma placa fixa de venue: o painel de P1 precisa cobrir ou dominar visualmente a placa EXIT, e um agente humano deve ficar no portão nas duas primeiras horas. Quem erra o portão anda 400 m até o próximo e volta em contrafluxo.</li>
+    <li><b>As três entradas estão a 6,2 m uma da outra.</b> Este é o risco central da sinalização, e ele é geométrico. S4, S5 e S6 ficam tão próximas que, na fachada, a disciplina de faixa não se sustenta sozinha: quem percebe o erro no último metro simplesmente atravessa. Duas consequências de projeto — a letra na porta precisa ser lida <em>de dentro do serpenteado</em>, a 40–60 m, e não a 5 m; e a correção de rota tem de estar disponível na cabeça da fila (P4), onde ainda cabe, e não na descarga.</li>
+    <li><b>Numeração das aberturas divergente.</b> A prancheta do Posto numera a fachada sul como S1–S9; a planta do RDS numera as mesmas aberturas como 2.1–2.23, com posições que não coincidem. Este plano adotou a prancheta, porque é ela que define os papéis (S4/S5/S6 entradas, S2/S8 saídas). A aferição em campo precisa fechar essa divergência antes da impressão — uma placa apontando para a abertura errada é pior que placa nenhuma.</li>
+    <li><b>Fator de pico sem estatística oficial.</b> O 1,8× usado no dimensionamento de leitura é premissa assumida. O levantamento de horários de pico deste repositório mostra que <em>não existe</em> curva oficial de comparecimento por hora, e — mais relevante — que o precedente de Dublin em 2022 não teve pico isolado: a fila de 2h30–3h nunca esvaziou e persistiu além das 17h. Se esse for o cenário, o número de painéis importa menos que a sua distribuição ao longo do corredor, porque as pessoas ficarão paradas nele por muito tempo.</li>
+    <li><b>Conflito entre pedestres e veículos.</b> O corredor da lateral leste é área de estacionamento em operação. Se ele vai receber fila e painéis, precisa de faixa balizada e de acordo formal com o RDS sobre circulação de veículos no dia.</li>
+    <li><b>Balcão “não sei minha seção”.</b> Deve ficar em P1, recuado do fluxo, com barreira própria, dois a três operadores e <strong>cópia impressa</strong> do caderno — a cobertura de Wi-Fi ao ar livre no portão não está confirmada. Colocá-lo na garganta do Ring 3, junto com os agentes de pré-triagem, recria ali o gargalo que este plano existe para evitar; colocá-lo dentro do Hall empurra os casos mais lentos para depois do checkpoint interno, onde custam o dobro.</li>
+    <li><b>Sinalizar a rota prioritária desde a rua.</b> O plano do Ring 3 já define o acesso prioritário pelo apron pavimentado, direto do desembarque à porta, para os ~296 eleitores com 60+ anos ou deficiência declarada. Falta a peça correspondente: essa rota precisa ser anunciada em P0, na Merrion Road, e no portão — se só aparecer no apron, o eleitor prioritário já terá andado os 150 m e entrado no serpenteado de 130 m.</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fontes de dados: <span style="font-family:var(--mono)">eleitorado_local_votacao_2026_ZZ.csv</span> (TSE, 13/08/2026) e <span style="font-family:var(--mono)">Filtrado_Dublin.csv</span> (TSE, 14/07/2026), processados por <span style="font-family:var(--mono)">scripts/mapa_agregacoes.py</span>. Planta e dimensões do salão: ficha técnica RDS Hall 2 (Shelbourne Hall). Dimensões do Ring 3, do apron, papéis das aberturas S1–S9 e quantitativo de barreira: <span style="font-family:var(--mono)">saidas/plano_ring3.md</span>. Precedente de fila em Dublin 2022 e ausência de curva oficial de comparecimento por hora: <span style="font-family:var(--mono)">pesquisa_horarios_pico_votacao.md</span>. Taxas de comparecimento: 2022, por domicílio. Fator de pico de chegada (1,8×) e tempo de leitura (15 s) são premissas assumidas, não medidas. Regra de altura de letra: <a href="https://www.signknights.com/sign-visibility-and-viewing-distance-guidelines/">International Sign Association</a>; correção para condições não ideais: <a href="https://healthfacilityguidelines.com/ViewPDF/ViewIndexPDF/iHFG_part_w_wayfinding_complete">iHFG Part W — Wayfinding Guidelines</a>. Precipitação de outubro em Dublin: <a href="https://www.met.ie/climate-statement-for-october-2025">Met Éireann</a>.</p>
+</footer>
+
+</div>

@@ -1,0 +1,374 @@
+<title>Rota do Eleitor RDS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+  :root{
+    --ink:#16202b; --ground:#f1f3f0; --surface:#ffffff; --surface-2:#e6eae5;
+    --rule:#c6cfc8; --rule-soft:#dde3dd; --muted:#5c6a70;
+    --a:#1f5fa8; --b:#b8760a; --c:#8b3a8e; --alert:#a8352a;
+    --a-soft:#e2edf8; --b-soft:#f8eed9; --c-soft:#f2e4f3; --alert-soft:#f7e3e0;
+    --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ink:#e3eae6; --ground:#101719; --surface:#182022; --surface-2:#202a2d;
+      --rule:#33403f; --rule-soft:#283335; --muted:#94a3a0;
+      --a:#79b0ea; --b:#e8b354; --c:#cb8ace; --alert:#e88375;
+      --a-soft:#1a2c40; --b-soft:#33290f; --c-soft:#332034; --alert-soft:#3a201d;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#e3eae6; --ground:#101719; --surface:#182022; --surface-2:#202a2d;
+    --rule:#33403f; --rule-soft:#283335; --muted:#94a3a0;
+    --a:#79b0ea; --b:#e8b354; --c:#cb8ace; --alert:#e88375;
+    --a-soft:#1a2c40; --b-soft:#33290f; --c-soft:#332034; --alert-soft:#3a201d;
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+       font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px 96px}
+  p{margin:0 0 1.1em;max-width:68ch}
+  a{color:var(--a)}
+  strong{font-weight:600}
+  em{font-style:italic}
+
+  /* ---------- masthead ---------- */
+  header.mast{padding:52px 0 30px;border-bottom:2px solid var(--ink)}
+  .eyebrow{font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.16em;
+           text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+  h1{font-family:var(--sans);font-weight:700;font-size:clamp(34px,6vw,56px);line-height:1.02;
+     letter-spacing:-.025em;margin:0 0 16px;text-wrap:balance}
+  .standfirst{font-size:19px;color:var(--muted);max-width:60ch;margin:0}
+
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
+         gap:1px;background:var(--rule);border:1px solid var(--rule);margin:28px 0 0}
+  .fact{background:var(--ground);padding:13px 14px}
+  .fact dt{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.11em;
+           text-transform:uppercase;color:var(--muted);margin:0 0 5px}
+  .fact dd{margin:0;font-family:var(--mono);font-size:21px;font-weight:600;
+           font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .fact dd span{font-family:var(--sans);font-size:12px;font-weight:500;color:var(--muted)}
+
+  /* ---------- sections ---------- */
+  section{padding-top:52px}
+  h2{font-family:var(--sans);font-weight:700;font-size:26px;letter-spacing:-.018em;
+     margin:0 0 6px;text-wrap:balance;display:flex;align-items:baseline;gap:13px}
+  h2 .num{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--muted);
+          letter-spacing:0;flex:none}
+  h3{font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:-.005em;
+     margin:34px 0 9px}
+  .lede{font-size:18.5px;color:var(--muted);max-width:62ch;margin:0 0 26px}
+
+  /* ---------- figures ---------- */
+  figure{margin:30px 0;padding:0}
+  .figbox{background:var(--surface);border:1px solid var(--rule);padding:20px 20px 14px;
+          overflow-x:auto}
+  svg.diagram{display:block;width:100%;min-width:660px;height:auto;color:var(--ink)}
+  figcaption{font-size:14.5px;color:var(--muted);margin-top:12px;max-width:74ch}
+  .key{font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:11px;
+       padding-top:11px;border-top:1px solid var(--rule-soft);line-height:1.9}
+  .key b{font-family:var(--mono);font-weight:600;color:var(--ink);
+         background:var(--surface-2);padding:1px 5px;border-radius:2px;margin-right:3px}
+
+  /* ---------- tables ---------- */
+  .tscroll{overflow-x:auto;margin:24px 0;border:1px solid var(--rule);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-family:var(--sans);font-size:14px}
+  th{text-align:left;font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+     color:var(--muted);padding:11px 14px;border-bottom:1px solid var(--rule);
+     background:var(--surface-2);vertical-align:bottom;white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  td.num,th.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;
+                white-space:nowrap}
+  td.pt{font-family:var(--mono);font-weight:600;white-space:nowrap}
+  .sub{display:block;color:var(--muted);font-size:12.5px;line-height:1.45;margin-top:3px}
+
+  /* ---------- door chips ---------- */
+  .chip{display:inline-block;min-width:20px;text-align:center;font-family:var(--sans);
+        font-weight:700;font-size:12px;line-height:18px;border-radius:2px;padding:0 5px}
+  .chip.a{background:var(--a-soft);color:var(--a);box-shadow:inset 0 0 0 1px var(--a)}
+  .chip.b{background:var(--b-soft);color:var(--b);box-shadow:inset 0 0 0 1px var(--b)}
+  .chip.c{background:var(--c-soft);color:var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+
+  /* ---------- master lookup table ---------- */
+  .mestra{columns:3;column-gap:34px;margin:22px 0 0;font-family:var(--mono);font-size:13.5px}
+  @media (max-width:820px){.mestra{columns:2}}
+  @media (max-width:520px){.mestra{columns:1}}
+  .mrow{break-inside:avoid;display:flex;align-items:center;gap:8px;
+        padding:4.5px 0;border-bottom:1px solid var(--rule-soft)}
+  .mrow .sec{font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .mrow .dots{flex:1;border-bottom:1px dotted var(--rule);height:.7em}
+  .mrow .mesa{color:var(--muted);font-variant-numeric:tabular-nums}
+
+  /* ---------- callouts ---------- */
+  .note{border-left:3px solid var(--a);background:var(--surface);padding:16px 20px;
+        margin:26px 0;font-size:16px}
+  .note.warn{border-left-color:var(--alert);background:var(--alert-soft)}
+  .note p:last-child{margin-bottom:0}
+  .note .tag{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.12em;
+             text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px}
+  .note.warn .tag{color:var(--alert)}
+
+  /* ---------- arithmetic ledger ---------- */
+  .ledger{background:var(--surface);border:1px solid var(--rule);margin:26px 0;
+          font-family:var(--mono);font-size:14px}
+  .ledger .lrow{display:flex;justify-content:space-between;gap:20px;padding:10px 18px;
+                border-bottom:1px solid var(--rule-soft);font-variant-numeric:tabular-nums}
+  .ledger .lrow:last-child{border-bottom:0}
+  .ledger .lrow.total{background:var(--surface-2);font-weight:600}
+  .ledger .lrow span:first-child{font-family:var(--serif);font-size:15.5px;color:var(--muted)}
+  .ledger .lrow.total span:first-child{color:var(--ink);font-weight:600}
+
+  /* ---------- spec grid ---------- */
+  .specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:1px;
+         background:var(--rule);border:1px solid var(--rule);margin:24px 0}
+  .spec{background:var(--surface);padding:16px 17px}
+  .spec h4{font-family:var(--sans);font-size:13px;font-weight:600;margin:0 0 8px}
+  .spec p{font-size:14.5px;margin:0;color:var(--muted);max-width:none}
+  .spec .big{font-family:var(--mono);font-size:24px;font-weight:600;color:var(--ink);
+             display:block;margin:0 0 4px;letter-spacing:-.02em}
+
+  ul.checks{list-style:none;padding:0;margin:20px 0;max-width:74ch}
+  ul.checks li{position:relative;padding:0 0 14px 30px;font-size:16.5px}
+  ul.checks li::before{content:"";position:absolute;left:2px;top:.52em;width:11px;height:11px;
+                       border:2px solid var(--muted);border-radius:2px}
+  ul.checks li b{font-family:var(--sans);font-weight:600;font-size:15.5px}
+
+  footer{margin-top:64px;padding-top:22px;border-top:1px solid var(--rule);
+         font-size:13.5px;color:var(--muted);font-family:var(--sans)}
+  footer a{color:var(--muted)}
+  :focus-visible{outline:2px solid var(--a);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Eleições 2026 · 1º turno · 4 de outubro · Posto de Dublin</p>
+  <h1>Rota do Eleitor</h1>
+  <p class="standfirst">Onde colocar cada placa entre o portão da Merrion Road e a urna, e por que o ponto de decisão não pode ficar na porta.</p>
+  <dl class="facts">
+    <div class="fact"><dt>Aptos</dt><dd>16.794</dd></div>
+    <div class="fact"><dt>Seções</dt><dd>51</dd></div>
+    <div class="fact"><dt>Mesas / urnas</dt><dd>28</dd></div>
+    <div class="fact"><dt>Comparecimento esperado</dt><dd>11.418</dd></div>
+    <div class="fact"><dt>Portas de entrada</dt><dd>3 <span>A · B · C</span></dd></div>
+    <div class="fact"><dt>Hall 2 (Shelbourne)</dt><dd>50,2 <span>× 44,5 m</span></dd></div>
+  </dl>
+</header>
+
+<section id="tese">
+  <h2><span class="num">01</span>A tese</h2>
+  <p class="lede">O problema não é onde cabem placas. É onde o eleitor para para pensar.</p>
+  <p>Cada consulta que o eleitor precisa fazer — “qual é a minha mesa?”, “qual é a minha porta?” — é uma operação de leitura que consome de 10 a 20 segundos. Feita num ponto estreito (o portão, a boca da fila, a porta do Hall), essa leitura vira um servidor de fila e estrangula todo o fluxo a montante. É exatamente o gargalo de pré-triagem já sinalizado no plano de fluxo: se a triagem depende de conversa com um funcionário, ela não paraleliza.</p>
+  <p>A rota do RDS resolve isso de graça. Entre o portão da Merrion Road e a fachada sul do Hall 2 há <strong>cerca de 150 metros de caminhada</strong> pela lateral leste do prédio — e, no pico, muito mais tempo do que isso parado em fila. Esse é tempo morto. A consulta inteira cabe ali. Quando o eleitor chega à bifurcação A/B/C, ele não deve estar decidindo nada: deve estar apenas confirmando uma letra que já sabe há dois minutos.</p>
+  <p>Daí as três regras que organizam todo o resto deste plano: <strong>uma consulta só</strong> (seção → mesa <em>e</em> porta no mesmo painel), <strong>consulta replicada</strong> (o mesmo painel repetido ao longo do corredor, nunca um único quadro grande) e <strong>bifurcação sem informação nova</strong> (na porta, só a letra).</p>
+</section>
+
+<section id="rota">
+  <h2><span class="num">02</span>A rota e os oito pontos</h2>
+  <p class="lede">Do portão à urna, e de volta à rua sem cruzar a fila de entrada.</p>
+  <p>A geometria abaixo não é ilustrativa: vem da ficha técnica do Hall 2 e das medições do plano do Ring 3 (<span style="font-family:var(--mono)">saidas/plano_ring3.md</span>), que fixou o Ring em ~39 × 35 m, o apron pavimentado em ~60 × 14 m e os papéis das nove aberturas da fachada sul. Este plano não redesenha nada disso — ele coloca as placas sobre esse desenho.</p>
+  <figure>
+  <div class="figbox">
+    <svg class="diagram" viewBox="0 0 920 740" role="img"
+         aria-label="Planta esquemática do RDS Ballsbridge: a rota do eleitor entra pelo portão da Merrion Road, desce pela lateral leste do Hall 2, entra no Ring 3 pela garganta sudeste, percorre um dos três serpenteados e descarrega nas portas S4, S5 e S6 da fachada sul. As saídas S2 e S8 ficam nos flancos, fora do vão das entradas.">
+      <defs>
+        <marker id="arw" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+        <marker id="arw4" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--a)"/></marker>
+        <marker id="arw5" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--b)"/></marker>
+        <marker id="arw6" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--c)"/></marker>
+      </defs>
+
+      <rect x="0" y="26" width="920" height="42" fill="var(--surface-2)"/>
+      <text x="16" y="52" font-family="Archivo,sans-serif" font-size="11" font-weight="600"
+            letter-spacing="1.6" fill="var(--muted)">MERRION ROAD (R118)</text>
+      <line x1="0" y1="76" x2="536" y2="76" stroke="currentColor" stroke-width="2" opacity=".5"/>
+      <line x1="604" y1="76" x2="920" y2="76" stroke="currentColor" stroke-width="2" opacity=".5"/>
+      <line x1="536" y1="66" x2="536" y2="86" stroke="currentColor" stroke-width="2.5"/>
+      <line x1="604" y1="66" x2="604" y2="86" stroke="currentColor" stroke-width="2.5"/>
+      <text x="614" y="64" font-family="Archivo,sans-serif" font-size="10.5" font-weight="600"
+            fill="var(--alert)">placa fixa do venue: EXIT</text>
+      <line x1="880" y1="132" x2="880" y2="102" stroke="currentColor" stroke-width="1.5" marker-end="url(#arw)"/>
+      <text x="880" y="94" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10"
+            font-weight="700" fill="var(--muted)">N</text>
+
+      <rect x="140" y="180" width="190" height="215" fill="var(--surface-2)" stroke="var(--rule)"/>
+      <text x="235" y="292" text-anchor="middle" font-family="Archivo,sans-serif" font-size="12"
+            font-weight="600" fill="var(--muted)">HALL 1</text>
+
+      <rect x="370" y="155" width="260" height="231"
+            fill="var(--surface)" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="388" y="168" width="19" height="7" fill="currentColor" opacity=".28"/><rect x="415" y="168" width="19" height="7" fill="currentColor" opacity=".28"/><rect x="442" y="168" width="19" height="7" fill="currentColor" opacity=".28"/><rect x="469" y="168" width="19" height="7" fill="currentColor" opacity=".28"/><rect x="496" y="168" width="19" height="7" fill="currentColor" opacity=".28"/><rect x="523" y="168" width="19" height="7" fill="currentColor" opacity=".28"/><rect x="550" y="168" width="19" height="7" fill="currentColor" opacity=".28"/><rect x="577" y="168" width="19" height="7" fill="currentColor" opacity=".28"/><rect x="604" y="168" width="19" height="7" fill="currentColor" opacity=".28"/><rect x="376" y="200" width="7" height="19" fill="currentColor" opacity=".28"/><rect x="376" y="227" width="7" height="19" fill="currentColor" opacity=".28"/><rect x="376" y="254" width="7" height="19" fill="currentColor" opacity=".28"/><rect x="376" y="281" width="7" height="19" fill="currentColor" opacity=".28"/><rect x="376" y="308" width="7" height="19" fill="currentColor" opacity=".28"/>
+      <text x="500" y="262" text-anchor="middle" font-family="Archivo,sans-serif" font-size="15"
+            font-weight="700" fill="currentColor">HALL 2</text>
+      <text x="500" y="280" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10.5"
+            fill="var(--muted)">Shelbourne · 50,2 × 44,5 m</text>
+      <line x1="392" y1="350" x2="608" y2="350" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="5 4"/>
+      <text x="520" y="342" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10.5"
+            fill="var(--muted)">checkpoint interno · mesa → posição</text>
+
+      <rect x="700" y="150" width="190" height="300" fill="none" stroke="var(--rule)"
+            stroke-width="1.2" stroke-dasharray="5 4"/>
+      <text x="795" y="170" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10.5"
+            fill="var(--muted)">estacionamento</text>
+
+      <rect x="345" y="388" width="311" height="71" fill="var(--surface-2)"
+            stroke="var(--rule)" stroke-width="1"/>
+      <text x="352" y="426" font-family="Archivo,sans-serif" font-size="10"
+            fill="var(--muted)">apron pavimentado</text>
+      <rect x="471" y="378" width="24" height="16" rx="2" fill="var(--a)"/><text x="483" y="390" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11" font-weight="700" fill="var(--ground)">A</text><rect x="504" y="378" width="24" height="16" rx="2" fill="var(--b)"/><text x="516" y="390" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11" font-weight="700" fill="var(--ground)">B</text><rect x="536" y="378" width="24" height="16" rx="2" fill="var(--c)"/><text x="548" y="390" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11" font-weight="700" fill="var(--ground)">C</text><rect x="429" y="379" width="24" height="14" rx="2" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5"/><text x="441" y="408" text-anchor="middle" font-family="Archivo,sans-serif" font-size="9.5" font-weight="600" fill="var(--muted)">saída S2</text><rect x="579" y="379" width="24" height="14" rx="2" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5"/><text x="591" y="408" text-anchor="middle" font-family="Archivo,sans-serif" font-size="9.5" font-weight="600" fill="var(--muted)">saída S8</text>
+
+      <rect x="415" y="459" width="202" height="181" rx="6"
+            fill="var(--surface)" stroke="var(--rule)" stroke-width="1.5"/>
+      <rect x="421" y="622" width="190" height="13" rx="2"
+            fill="var(--surface-2)"/>
+      <text x="425" y="476" text-anchor="start"
+            font-family="Archivo,sans-serif" font-size="11" font-weight="600"
+            fill="var(--muted)">RING 3 · 39 × 35 m</text>
+      <rect x="451" y="493" width="36" height="123" rx="3" fill="var(--a-soft)" stroke="var(--a)" stroke-width="1"/><line x1="469" y1="491" x2="483" y2="396" stroke="var(--a)" stroke-width="2.2" marker-end="url(#arw4)"/><rect x="498" y="493" width="36" height="123" rx="3" fill="var(--b-soft)" stroke="var(--b)" stroke-width="1"/><line x1="516" y1="491" x2="516" y2="396" stroke="var(--b)" stroke-width="2.2" marker-end="url(#arw5)"/><rect x="545" y="493" width="36" height="123" rx="3" fill="var(--c-soft)" stroke="var(--c)" stroke-width="1"/><line x1="563" y1="491" x2="548" y2="396" stroke="var(--c)" stroke-width="2.2" marker-end="url(#arw6)"/>
+
+      <polyline points="570,78 570,112 668,142 668,628 623,628"
+                fill="none" stroke="currentColor" stroke-width="3.5" marker-end="url(#arw)"/>
+      <text x="528" y="128" text-anchor="end" font-family="Archivo,sans-serif" font-size="11"
+            font-weight="600" fill="currentColor">≈150 m · fila e leitura</text>
+      <text x="651" y="664" font-family="Archivo,sans-serif"
+            font-size="10.5" fill="var(--muted)">garganta sudeste</text>
+
+      <polyline points="441,416 441,442 360,442"
+                fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="7 4"
+                opacity=".7" marker-end="url(#arw)"/>
+      <polyline points="591,416 591,442 762,442 762,88"
+                fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="7 4"
+                opacity=".7" marker-end="url(#arw)"/>
+      <text x="772" y="430" font-family="Archivo,sans-serif" font-size="10.5"
+            font-weight="600" fill="currentColor">saídas pelos flancos</text>
+
+      <line x1="140" y1="712" x2="399" y2="712" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="140" y1="707" x2="140" y2="717" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="399" y1="707" x2="399" y2="717" stroke="currentColor" stroke-width="1.5"/>
+      <text x="270" y="703" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10"
+            fill="var(--muted)">50 m</text>
+
+      <circle cx="240" cy="47" r="11" fill="currentColor"/><text x="240" y="51" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">0</text><circle cx="700" cy="47" r="11" fill="currentColor"/><text x="700" y="51" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">0</text><circle cx="570" cy="100" r="11" fill="currentColor"/><text x="570" y="104" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">1</text><circle cx="668" cy="200" r="11" fill="currentColor"/><text x="668" y="204" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">2</text><circle cx="668" cy="292" r="11" fill="currentColor"/><text x="668" y="296" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">2</text><circle cx="668" cy="384" r="11" fill="currentColor"/><text x="668" y="388" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">2</text><circle cx="668" cy="476" r="11" fill="currentColor"/><text x="668" y="480" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">2</text><circle cx="639" cy="626" r="11" fill="currentColor"/><text x="639" y="630" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">3</text><circle cx="431" cy="555" r="11" fill="currentColor"/><text x="431" y="559" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">4</text><circle cx="360" cy="404" r="11" fill="currentColor"/><text x="360" y="408" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">5</text><circle cx="400" cy="350" r="11" fill="currentColor"/><text x="400" y="354" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">6</text><circle cx="700" cy="441" r="11" fill="currentColor"/><text x="700" y="445" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11.5" font-weight="700" fill="var(--ground)">7</text>
+    </svg>
+    <p class="key">
+      <b>0</b> aproximação na Merrion Road e nos demais portões &nbsp;·&nbsp;
+      <b>1</b> portão de entrada &nbsp;·&nbsp;
+      <b>2</b> corredor da lateral leste, painéis a cada 25–30 m &nbsp;·&nbsp;
+      <b>3</b> garganta sudeste do Ring 3 &nbsp;·&nbsp;
+      <b>4</b> cabeças dos três serpenteados &nbsp;·&nbsp;
+      <b>5</b> portas S4 · S5 · S6, no apron &nbsp;·&nbsp;
+      <b>6</b> checkpoint interno &nbsp;·&nbsp;
+      <b>7</b> saídas S2 e S8
+    </p>
+  </div>
+  <figcaption>Em escala, sobre as dimensões da ficha técnica do RDS e as medições do plano do Ring 3. A consulta acontece toda no trecho 1 → 3, onde as pessoas já estão paradas ou andando; da garganta em diante o eleitor só confirma a letra. As três entradas ficam a apenas 6,2 m uma da outra, e os serpenteados, a 9,0 m de passo, descarregam em diagonal sobre elas — é por isso que a disciplina de faixa precisa estar resolvida antes, e não na fachada. As saídas S2 e S8 já ficam fora do vão das entradas, então os fluxos se separam sem barreira adicional.</figcaption>
+</figure>
+</section>
+
+<section id="consulta">
+  <h2><span class="num">03</span>Uma consulta, não duas</h2>
+  <p>O enunciado do problema tem duas perguntas — qual a mesa, qual a porta —, mas o eleitor não deve fazer duas buscas. A porta é função determinística da mesa, que é função determinística da seção. Publique as três colunas juntas, ordenadas pela única coisa que o eleitor já traz de casa: <strong>o número da seção</strong>.</p>
+  <figure>
+  <div class="figbox">
+    <svg class="diagram" viewBox="0 0 760 180" role="img" style="min-width:560px"
+         aria-label="Comparação entre duas consultas encadeadas, que criam duas paradas, e uma consulta única que resolve mesa e porta de uma vez.">
+      <defs>
+        <marker id="arw2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      </defs>
+      <text x="8" y="14" font-family="Archivo,sans-serif" font-size="10.5" font-weight="600"
+            letter-spacing=".1em" fill="var(--alert)">COMO NÃO FAZER</text>
+      <rect x="8" y="24" width="148" height="40" rx="3" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.3"/><text x="82.0" y="41.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">o eleitor sabe</text><text x="82.0" y="55.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">a SEÇÃO</text><line x1="162" y1="44" x2="194" y2="44" stroke="currentColor" stroke-width="1.6" marker-end="url(#arw2)"/><rect x="200" y="24" width="168" height="40" rx="3" fill="var(--surface)" stroke="var(--alert)" stroke-width="1.3"/><text x="284.0" y="41.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">painel 1</text><text x="284.0" y="55.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">seção → mesa</text><line x1="374" y1="44" x2="406" y2="44" stroke="currentColor" stroke-width="1.6" marker-end="url(#arw2)"/><rect x="412" y="24" width="168" height="40" rx="3" fill="var(--surface)" stroke="var(--alert)" stroke-width="1.3"/><text x="496.0" y="41.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">painel 2</text><text x="496.0" y="55.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">mesa → porta</text><line x1="586" y1="44" x2="618" y2="44" stroke="currentColor" stroke-width="1.6" marker-end="url(#arw2)"/><rect x="624" y="24" width="128" height="40" rx="3" fill="var(--surface-2)" stroke="var(--rule)" stroke-width="1.3"/><text x="688.0" y="48.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="600" fill="currentColor">MESA + PORTA</text><text x="284" y="80" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10" font-weight="600" fill="var(--alert)">parada</text><text x="496" y="80" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10" font-weight="600" fill="var(--alert)">parada</text>
+      <text x="8" y="102" font-family="Archivo,sans-serif" font-size="10.5" font-weight="600"
+            letter-spacing=".1em" fill="var(--a)">COMO FAZER</text>
+      <rect x="8" y="112" width="148" height="40" rx="3" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.3"/><text x="82.0" y="129.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">o eleitor sabe</text><text x="82.0" y="143.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">a SEÇÃO</text><line x1="162" y1="132" x2="194" y2="132" stroke="currentColor" stroke-width="1.6" marker-end="url(#arw2)"/><rect x="200" y="112" width="380" height="40" rx="3" fill="var(--surface)" stroke="var(--a)" stroke-width="1.3"/><text x="390.0" y="129.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">painel único · 51 linhas ordenadas por seção</text><text x="390.0" y="143.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="400" fill="currentColor">seção → mesa → porta</text><line x1="586" y1="132" x2="618" y2="132" stroke="currentColor" stroke-width="1.6" marker-end="url(#arw2)"/><rect x="624" y="112" width="128" height="40" rx="3" fill="var(--surface-2)" stroke="var(--rule)" stroke-width="1.3"/><text x="688.0" y="136.0" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11.5" font-weight="600" fill="currentColor">MESA + PORTA</text><text x="390" y="168" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10" font-weight="600" fill="var(--a)">uma parada, replicável ao longo do corredor</text>
+    </svg>
+  </div>
+  <figcaption>Duas consultas encadeadas criam dois pontos de parada, e cada parada é um servidor de fila. A porta é função determinística da mesa, que é função determinística da seção — então as três colunas cabem no mesmo painel, e o painel pode ser replicado ao longo de todo o percurso.</figcaption>
+</figure>
+
+  <div class="note warn">
+    <span class="tag">Armadilha de ordenação</span>
+    <p>A tabela precisa ter <strong>51 linhas, ordenadas por seção</strong> — não 28 linhas ordenadas por mesa. São 23 seções agregadas: um eleitor da seção 3889 procura “3889” e precisa encontrar. Se o painel listar apenas as 28 seções principais, cerca de <strong>7 mil eleitores não se acham no quadro</strong> e vão todos para o balcão de dúvidas — que é o recurso mais escasso da operação.</p>
+  </div>
+
+  <h3>Índice secundário por localidade de origem</h3>
+  <p>Os 4.213 eleitores que residem fora de Dublin (25% da zona) foram removidos do seu local de votação original. Muitos chegarão procurando o nome do condado, não o número da seção. Como cada condado cai em uma a três mesas apenas, um índice paralelo curto resolve — e deve ficar no mesmo painel, à direita da tabela principal.</p>
+  <div class="tscroll"><table><thead><tr><th>Localidade de origem</th><th class="num">Eleitores</th><th class="num">Seções</th><th>Mesa · porta</th></tr></thead><tbody><tr><td>Cork</td><td class="num">986</td><td class="num">519 · 3307 · 3821</td><td class="pt">M4&nbsp;<span class="chip a">A</span> M13&nbsp;<span class="chip b">B</span> M14&nbsp;<span class="chip b">B</span></td></tr><tr><td>Outros locais da Irlanda</td><td class="num">745</td><td class="num">518 · 3181</td><td class="pt">M5&nbsp;<span class="chip a">A</span> M25&nbsp;<span class="chip c">C</span></td></tr><tr><td>Galway</td><td class="num">728</td><td class="num">521 · 3422</td><td class="pt">M15&nbsp;<span class="chip b">B</span> M22&nbsp;<span class="chip c">C</span></td></tr><tr><td>Limerick</td><td class="num">468</td><td class="num">1278 · 3845</td><td class="pt">M11&nbsp;<span class="chip b">B</span> M23&nbsp;<span class="chip c">C</span></td></tr><tr><td>Westmeath</td><td class="num">278</td><td class="num">530</td><td class="pt">M3&nbsp;<span class="chip a">A</span></td></tr><tr><td>Waterford</td><td class="num">217</td><td class="num">1314</td><td class="pt">M6&nbsp;<span class="chip a">A</span></td></tr><tr><td>Roscommon</td><td class="num">182</td><td class="num">1100</td><td class="pt">M19&nbsp;<span class="chip c">C</span></td></tr><tr><td>Clare</td><td class="num">173</td><td class="num">527</td><td class="pt">M24&nbsp;<span class="chip c">C</span></td></tr><tr><td>Cavan</td><td class="num">113</td><td class="num">1292</td><td class="pt">M10&nbsp;<span class="chip b">B</span></td></tr><tr><td>Mayo</td><td class="num">102</td><td class="num">1105</td><td class="pt">M2&nbsp;<span class="chip a">A</span></td></tr><tr><td>Longford</td><td class="num">76</td><td class="num">2855</td><td class="pt">M1&nbsp;<span class="chip a">A</span></td></tr><tr><td>Donegal</td><td class="num">62</td><td class="num">522</td><td class="pt">M20&nbsp;<span class="chip c">C</span></td></tr><tr><td>Kerry</td><td class="num">54</td><td class="num">1099</td><td class="pt">M21&nbsp;<span class="chip c">C</span></td></tr><tr><td>Leitrim</td><td class="num">29</td><td class="num">2847</td><td class="pt">M12&nbsp;<span class="chip b">B</span></td></tr></tbody></table></div>
+</section>
+
+<section id="vazao">
+  <h2><span class="num">04</span>Por que replicar em vez de ampliar</h2>
+  <p>A tentação é imprimir um quadro enorme no portão. A aritmética diz que um quadro, de qualquer tamanho, não serve: o que limita não é a área impressa, é <strong>quantas pessoas conseguem ficar de pé em frente a ele ao mesmo tempo</strong>.</p>
+  <div class="ledger"><div class="lrow"><span>Comparecimento esperado</span><span>11.418 eleitores</span></div><div class="lrow"><span>Janela de votação</span><span>9 h (8h–17h)</span></div><div class="lrow"><span>Chegada média</span><span>21 / min</span></div><div class="lrow"><span>Chegada no pico (premissa: 1,8× a média)</span><span>38 / min</span></div><div class="lrow"><span>Tempo de leitura por pessoa (premissa)</span><span>15 s</span></div><div class="lrow"><span>Posições de leitura simultâneas necessárias</span><span>10</span></div><div class="lrow"><span>Capacidade de um painel de 1,2 m</span><span>3 leitores</span></div><div class="lrow total"><span>Painéis simultâneos no pico</span><span>4</span></div></div>
+  <p>Um painel de 1,2 m de largura acomoda três leitores lado a lado. São necessários, portanto, <strong>quatro painéis simultâneos no pico</strong> — ou o equivalente distribuído ao longo do percurso, que é a solução barata: o mesmo painel repetido a cada 25–30 m no corredor da lateral leste faz as pessoas lerem enquanto andam, sem nenhum ponto de parada.</p>
+
+  <div class="note">
+    <span class="tag">Onde este plano encosta no plano do Ring 3</span>
+    <p>A contagem acima é de <em>painéis de leitura</em>, não de barreira. O quantitativo de barreira já está dimensionado em <span style="font-family:var(--mono)">saidas/plano_ring3.md</span>: os três serpenteados, o corredor de distribuição, a garganta e os canais de descarga somam <strong>560,2 m (281 separadores)</strong>, contra 200 m em mãos — faltam <strong>362 m, ~EUR 2.357</strong>, e isso esgota o estoque sem sobrar metro para dentro do Hall 2. A capacidade resultante é de 780 pessoas nos serpenteados mais ~490 na reserva de flanco.</p>
+    <p>Os dois planos se encontram num ponto específico. O plano do Ring 3 prevê <strong>três agentes de pré-triagem na garganta sudeste</strong> entregando o cartão de roteamento, e sinaliza esses agentes como gargalo potencial. É exatamente o risco que a sinalização a montante elimina: se a consulta já aconteceu no portão e se repetiu quatro vezes ao longo do corredor, o agente da garganta deixa de fazer a busca e passa a apenas conferir uma letra — de operação de 15 segundos para operação de 2.</p>
+  </div>
+</section>
+
+<section id="pontos">
+  <h2><span class="num">05</span>Os pontos, um a um</h2>
+  <p class="lede">O que cada peça decide, o que ela diz, e onde ela fica.</p>
+  <div class="tscroll"><table style="min-width:940px"><thead><tr><th>Ponto</th><th>Onde fica</th><th>O que decide</th><th>O que a peça diz</th><th>Peças</th></tr></thead><tbody><tr><td class="pt">P0<span class="sub">Aproximação</span></td><td>Calçada da Merrion Road nos dois sentidos, pontos de ônibus e demais portões do RDS (Anglesea / Simmonscourt)</td><td>Se o eleitor está no lugar certo e por qual portão entra</td><td>ELEIÇÕES BRASILEIRAS 2026 · Entrada de eleitores → · distância</td><td>4 painéis (2 na via + 2 de redirecionamento)</td></tr><tr><td class="pt">P1<span class="sub">Portão de entrada</span></td><td>No vão do portão, cobrindo ou dominando visualmente a placa EXIT fixa</td><td>Entrada confirmada · primeira consulta seção → mesa → porta · desvio dos casos sem seção</td><td>Pórtico de boas-vindas + tabela mestra completa + “não sabe sua seção? →”</td><td>1 pórtico · 3 painéis de consulta · 1 totem do balcão de dúvidas</td></tr><tr><td class="pt">P2<span class="sub">Corredor da lateral leste</span></td><td>A cada 25–30 m ao longo do percurso, alternando os lados</td><td>Nada. Repete a consulta durante o tempo morto de caminhada e de fila</td><td>A mesma tabela mestra, idêntica em todos · seta “Ring 3, 100 m”</td><td>4 painéis duplos (8 faces)</td></tr><tr><td class="pt">P3<span class="sub">Garganta sudeste</span></td><td>No funil de entrada do Ring 3, junto aos três agentes de pré-triagem</td><td>Última consulta possível · divisão nos três serpenteados</td><td>Tabela mestra (última ocorrência) + três totens A · B · C com as faixas de mesas</td><td>2 painéis · 3 totens de 3 m</td></tr><tr><td class="pt">P4<span class="sub">Cabeças dos serpenteados</span></td><td>No início de cada bloco de 7,0 m, ao longo do corredor de distribuição</td><td>Confirmação da letra · captura de quem errou, enquanto ainda cabe corrigir</td><td>Letra em corpo grande + faixa de mesas + “errou? volte ao corredor →”</td><td>3 totens · 1 faixa de correção</td></tr><tr><td class="pt">P5<span class="sub">Portas S4 · S5 · S6</span></td><td>Sobre cada vão de entrada da fachada sul, lidas de dentro do serpenteado</td><td>Só confirmação. Nenhuma informação nova</td><td>Letra de 300 mm + lista das mesas atendidas</td><td>3 bandeirolas de fachada</td></tr><tr><td class="pt">P6<span class="sub">Checkpoint interno</span></td><td>Logo depois das portas, dentro do salão</td><td>Mesa → posição física no salão</td><td>Faixas suspensas por bloco de mesas + numeração em totem sobre cada mesa</td><td>3 faixas suspensas · 28 totens de mesa</td></tr><tr><td class="pt">P7<span class="sub">Saídas S2 e S8</span></td><td>Nos flancos da fachada sul, fora do vão das entradas — os fluxos já se separam sozinhos</td><td>Encaminha para a rua sem reentrar no Ring 3</td><td>SAÍDA / WAY OUT → Merrion Road</td><td>2 painéis internos · 2 externos</td></tr></tbody></table></div>
+</section>
+
+<section id="spec">
+  <h2><span class="num">06</span>Especificação das peças</h2>
+  <p>Dois condicionantes locais mandam na especificação, e os dois são fáceis de esquecer num escritório. O primeiro é a chuva: as fontes divergem conforme o limiar adotado — <strong>12 dias</strong> pelas normais de 30 anos (1991–2020, limiar ≥ 1 mm) e <strong>17 a 20 dias</strong> em fontes de limiar mais frouxo, ou seja, algo entre <strong>40% e 65%</strong> de probabilidade para o dia 4. Os números não são metodologicamente comparáveis entre si, mas qualquer ponto dessa faixa já obriga material impermeável. O segundo é geométrico: uma fila sob guarda-chuvas destrói a linha de visão a partir de 1,80 m de altura.</p>
+  <div class="specs"><div class="spec"><h4>Portas A · B · C</h4><span class="big">300 mm</span><p>Altura de letra para leitura de qualquer ponto do Ring 3, a cerca de 60 m.</p></div><div class="spec"><h4>Totens de cabeça de fila</h4><span class="big">120 mm</span><p>Leitura a 15 m, acima da linha dos guarda-chuvas.</p></div><div class="spec"><h4>Setas do corredor</h4><span class="big">120 mm</span><p>Leitura a 25 m, em movimento.</p></div><div class="spec"><h4>Corpo da tabela mestra</h4><span class="big">18 mm</span><p>Três vezes o limite de acuidade a 1,2 m — a tabela é lida em pé, sob chuva, por leitores présbitas.</p></div><div class="spec"><h4>Altura de montagem</h4><span class="big">≥ 2,5 m</span><p>Uma fila sob guarda-chuvas corta a linha de visão a 1,80 m. Peça baixa é peça invisível.</p></div><div class="spec"><h4>Material</h4><span class="big">PVC 5 mm</span><p>Alveolar em base d'água, ou lona com ilhoses. Entre 40% e 65% de chance de chuva no dia 4, conforme o limiar da fonte.</p></div><div class="spec"><h4>Idiomas</h4><span class="big">PT + EN</span><p>A placa do venue e a equipe do RDS são em inglês; a sinalização de rua precisa ser bilíngue.</p></div><div class="spec"><h4>Código de cor</h4><span class="big">3 tons</span><p>Azul, âmbar e magenta. Nunca verde com vermelho, e a cor nunca aparece sem a letra.</p></div></div>
+  <p>A razão adotada é <strong>1 mm de altura de letra para cada 200 mm de distância de leitura</strong>. Ela fica deliberadamente entre os dois limites publicados: a regra de impacto da <em>International Sign Association</em>, de 25 mm a cada 3 m (1:120), conservadora demais para um painel que se lê parado; e o limite de acuidade visual, de 25 mm legíveis a 15 m (1:600), que só vale com visão 20/20, luz boa e leitura de frente. Fora dessas condições — ângulo oblíquo de 45°, chuva, céu encoberto — a legibilidade cai cerca de um quarto, margem já embutida nos valores acima.</p>
+
+  <h3>Código de cor das portas</h3>
+  <p>Azul, âmbar e magenta — deliberadamente <strong>sem verde e sem vermelho juntos</strong>. Cerca de 8% dos homens têm alguma deficiência de visão de cores, quase sempre no eixo vermelho-verde; a tríade escolhida se mantém distinguível em deuteranopia e protanopia. A cor nunca aparece sozinha: sempre acompanhada da letra, que é a informação primária.</p>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Porta</th><th>Cor</th><th class="num">Mesas</th><th class="num">Aptos</th><th class="num">Esperado</th><th>Mesa mais pesada</th></tr></thead>
+      <tbody><tr><td><span class="chip a">A</span> <strong>Porta A</strong></td><td>Azul</td><td class="num">9<span class="sub">M1–M9</span></td><td class="num">5.418</td><td class="num">3.667</td><td class="pt">M7<span class="sub">590 esperados</span></td></tr><tr><td><span class="chip b">B</span> <strong>Porta B</strong></td><td>Âmbar</td><td class="num">9<span class="sub">M10–M18</span></td><td class="num">5.403</td><td class="num">3.713</td><td class="pt">M17<span class="sub">588 esperados</span></td></tr><tr><td><span class="chip c">C</span> <strong>Porta C</strong></td><td>Magenta</td><td class="num">10<span class="sub">M19–M28</span></td><td class="num">5.973</td><td class="num">4.038</td><td class="pt">M27<span class="sub">586 esperados</span></td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="mesas">
+  <h2><span class="num">07</span>Distribuição das mesas pelas portas</h2>
+  <p>A proposta abaixo equilibra o <strong>comparecimento esperado</strong> — não o número de aptos —, porque é o comparecimento que gera fila. As taxas usadas são as de 2022: 74% para seções domiciliadas em Dublin e 50% para as do interior, aplicadas eleitor a eleitor conforme a residência registrada em cada seção.</p>
+  <p>As três mesas mais pesadas da zona (M7, M17 e M27, com 586 a 590 comparecentes esperados cada) foram <strong>separadas uma por porta</strong>. Concentrá-las criaria um problema de vazão bruta numa porta específica e concentraria o risco operacional num único ponto; distribuídas, o pico se reparte e qualquer incidente fica geograficamente isolado.</p>
+  <div class="tscroll"><table><thead><tr><th>Mesa</th><th>Porta</th><th class="num">Urna</th><th>Seções</th><th class="num">Aptos</th><th class="num">Esperado</th></tr></thead><tbody><tr><td class="pt">M1</td><td><span class="chip a">A</span></td><td class="num">512</td><td class="pt">512 + 2855<span class="sub">Dublin + 76 do interior</span></td><td class="num">476</td><td class="num">334</td></tr><tr><td class="pt">M2</td><td><span class="chip a">A</span></td><td class="num">513</td><td class="pt">513 + 1105<span class="sub">Dublin + 102 do interior</span></td><td class="num">502</td><td class="num">347</td></tr><tr><td class="pt">M3</td><td><span class="chip a">A</span></td><td class="num">3179</td><td class="pt">3179 + 530<span class="sub">Dublin + 278 do interior</span></td><td class="num">676</td><td class="num">434</td></tr><tr><td class="pt">M4</td><td><span class="chip a">A</span></td><td class="num">3245</td><td class="pt">3245 + 519<span class="sub">Dublin + 384 do interior</span></td><td class="num">781</td><td class="num">486</td></tr><tr><td class="pt">M5</td><td><span class="chip a">A</span></td><td class="num">3302</td><td class="pt">3302 + 3181<span class="sub">Dublin + 375 do interior</span></td><td class="num">771</td><td class="num">481</td></tr><tr><td class="pt">M6</td><td><span class="chip a">A</span></td><td class="num">3309</td><td class="pt">3309 + 1314<span class="sub">Dublin + 217 do interior</span></td><td class="num">615</td><td class="num">403</td></tr><tr><td class="pt">M7</td><td><span class="chip a">A</span></td><td class="num">3313</td><td class="pt">3313 + 3889<span class="sub">Dublin</span></td><td class="num">797</td><td class="num">590</td></tr><tr><td class="pt">M8</td><td><span class="chip a">A</span></td><td class="num">3688</td><td class="pt">3688<span class="sub">Dublin</span></td><td class="num">400</td><td class="num">296</td></tr><tr><td class="pt">M9</td><td><span class="chip a">A</span></td><td class="num">3862</td><td class="pt">3862<span class="sub">Dublin</span></td><td class="num">400</td><td class="num">296</td></tr><tr><td class="pt">M10</td><td><span class="chip b">B</span></td><td class="num">517</td><td class="pt">517 + 1292<span class="sub">Dublin + 113 do interior</span></td><td class="num">513</td><td class="num">352</td></tr><tr><td class="pt">M11</td><td><span class="chip b">B</span></td><td class="num">1160</td><td class="pt">1160 + 3845<span class="sub">Dublin + 73 do interior</span></td><td class="num">473</td><td class="num">332</td></tr><tr><td class="pt">M12</td><td><span class="chip b">B</span></td><td class="num">3078</td><td class="pt">3078 + 2847<span class="sub">Dublin + 29 do interior</span></td><td class="num">429</td><td class="num">310</td></tr><tr><td class="pt">M13</td><td><span class="chip b">B</span></td><td class="num">3161</td><td class="pt">3161 + 3307<span class="sub">Dublin + 394 do interior</span></td><td class="num">791</td><td class="num">491</td></tr><tr><td class="pt">M14</td><td><span class="chip b">B</span></td><td class="num">3229</td><td class="pt">3229 + 3821<span class="sub">Dublin + 208 do interior</span></td><td class="num">606</td><td class="num">399</td></tr><tr><td class="pt">M15</td><td><span class="chip b">B</span></td><td class="num">3305</td><td class="pt">3305 + 521<span class="sub">Dublin + 370 do interior</span></td><td class="num">767</td><td class="num">479</td></tr><tr><td class="pt">M16</td><td><span class="chip b">B</span></td><td class="num">3311</td><td class="pt">3311 + 3913<span class="sub">Dublin</span></td><td class="num">630</td><td class="num">466</td></tr><tr><td class="pt">M17</td><td><span class="chip b">B</span></td><td class="num">3322</td><td class="pt">3322 + 3752<span class="sub">Dublin</span></td><td class="num">794</td><td class="num">588</td></tr><tr><td class="pt">M18</td><td><span class="chip b">B</span></td><td class="num">3832</td><td class="pt">3832<span class="sub">Dublin</span></td><td class="num">400</td><td class="num">296</td></tr><tr><td class="pt">M19</td><td><span class="chip c">C</span></td><td class="num">511</td><td class="pt">511 + 1100<span class="sub">Dublin + 182 do interior</span></td><td class="num">582</td><td class="num">387</td></tr><tr><td class="pt">M20</td><td><span class="chip c">C</span></td><td class="num">1352</td><td class="pt">1352 + 522<span class="sub">Dublin + 62 do interior</span></td><td class="num">462</td><td class="num">327</td></tr><tr><td class="pt">M21</td><td><span class="chip c">C</span></td><td class="num">3054</td><td class="pt">3054 + 1099<span class="sub">Dublin + 54 do interior</span></td><td class="num">454</td><td class="num">323</td></tr><tr><td class="pt">M22</td><td><span class="chip c">C</span></td><td class="num">3108</td><td class="pt">3108 + 3422<span class="sub">Dublin + 358 do interior</span></td><td class="num">756</td><td class="num">474</td></tr><tr><td class="pt">M23</td><td><span class="chip c">C</span></td><td class="num">3142</td><td class="pt">3142 + 1278<span class="sub">Dublin + 395 do interior</span></td><td class="num">793</td><td class="num">492</td></tr><tr><td class="pt">M24</td><td><span class="chip c">C</span></td><td class="num">3216</td><td class="pt">3216 + 527<span class="sub">Dublin + 173 do interior</span></td><td class="num">571</td><td class="num">381</td></tr><tr><td class="pt">M25</td><td><span class="chip c">C</span></td><td class="num">3306</td><td class="pt">3306 + 518<span class="sub">Dublin + 370 do interior</span></td><td class="num">766</td><td class="num">478</td></tr><tr><td class="pt">M26</td><td><span class="chip c">C</span></td><td class="num">3308</td><td class="pt">3308<span class="sub">Dublin</span></td><td class="num">399</td><td class="num">295</td></tr><tr><td class="pt">M27</td><td><span class="chip c">C</span></td><td class="num">3315</td><td class="pt">3315 + 3778<span class="sub">Dublin</span></td><td class="num">792</td><td class="num">586</td></tr><tr><td class="pt">M28</td><td><span class="chip c">C</span></td><td class="num">3442</td><td class="pt">3442<span class="sub">Dublin</span></td><td class="num">398</td><td class="num">295</td></tr></tbody></table></div>
+  <div class="note">
+    <span class="tag">Dependência</span>
+    <p>Esta distribuição é <strong>ilustrativa e ainda reversível</strong>: ela assume as 28 urnas da agregação atual do TSE. Se a contraproposta de desagregação for aceita (32 a 40 mesas), a numeração muda inteira — mas o método não, e a tabela mestra é regerada em minutos a partir do mesmo script. O que <em>não</em> pode mudar depois de impresso é a numeração das mesas: ela precisa estar congelada antes de qualquer pedido de impressão.</p>
+  </div>
+</section>
+
+<section id="mestra">
+  <h2><span class="num">08</span>Tabela mestra</h2>
+  <p class="lede">As 51 seções, ordenadas por número. Este é o conteúdo literal do painel de P1 a P3.</p>
+  <div class="mestra"><div class="mrow"><span class="sec">511</span><span class="dots"></span><span class="mesa">M19</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">512</span><span class="dots"></span><span class="mesa">M1</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">513</span><span class="dots"></span><span class="mesa">M2</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">517</span><span class="dots"></span><span class="mesa">M10</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">518</span><span class="dots"></span><span class="mesa">M25</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">519</span><span class="dots"></span><span class="mesa">M4</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">521</span><span class="dots"></span><span class="mesa">M15</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">522</span><span class="dots"></span><span class="mesa">M20</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">527</span><span class="dots"></span><span class="mesa">M24</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">530</span><span class="dots"></span><span class="mesa">M3</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">1099</span><span class="dots"></span><span class="mesa">M21</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">1100</span><span class="dots"></span><span class="mesa">M19</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">1105</span><span class="dots"></span><span class="mesa">M2</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">1160</span><span class="dots"></span><span class="mesa">M11</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">1278</span><span class="dots"></span><span class="mesa">M23</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">1292</span><span class="dots"></span><span class="mesa">M10</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">1314</span><span class="dots"></span><span class="mesa">M6</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">1352</span><span class="dots"></span><span class="mesa">M20</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">2847</span><span class="dots"></span><span class="mesa">M12</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">2855</span><span class="dots"></span><span class="mesa">M1</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3054</span><span class="dots"></span><span class="mesa">M21</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3078</span><span class="dots"></span><span class="mesa">M12</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3108</span><span class="dots"></span><span class="mesa">M22</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3142</span><span class="dots"></span><span class="mesa">M23</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3161</span><span class="dots"></span><span class="mesa">M13</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3179</span><span class="dots"></span><span class="mesa">M3</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3181</span><span class="dots"></span><span class="mesa">M5</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3216</span><span class="dots"></span><span class="mesa">M24</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3229</span><span class="dots"></span><span class="mesa">M14</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3245</span><span class="dots"></span><span class="mesa">M4</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3302</span><span class="dots"></span><span class="mesa">M5</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3305</span><span class="dots"></span><span class="mesa">M15</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3306</span><span class="dots"></span><span class="mesa">M25</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3307</span><span class="dots"></span><span class="mesa">M13</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3308</span><span class="dots"></span><span class="mesa">M26</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3309</span><span class="dots"></span><span class="mesa">M6</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3311</span><span class="dots"></span><span class="mesa">M16</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3313</span><span class="dots"></span><span class="mesa">M7</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3315</span><span class="dots"></span><span class="mesa">M27</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3322</span><span class="dots"></span><span class="mesa">M17</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3422</span><span class="dots"></span><span class="mesa">M22</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3442</span><span class="dots"></span><span class="mesa">M28</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3688</span><span class="dots"></span><span class="mesa">M8</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3752</span><span class="dots"></span><span class="mesa">M17</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3778</span><span class="dots"></span><span class="mesa">M27</span><span class="chip c">C</span></div><div class="mrow"><span class="sec">3821</span><span class="dots"></span><span class="mesa">M14</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3832</span><span class="dots"></span><span class="mesa">M18</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3845</span><span class="dots"></span><span class="mesa">M11</span><span class="chip b">B</span></div><div class="mrow"><span class="sec">3862</span><span class="dots"></span><span class="mesa">M9</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3889</span><span class="dots"></span><span class="mesa">M7</span><span class="chip a">A</span></div><div class="mrow"><span class="sec">3913</span><span class="dots"></span><span class="mesa">M16</span><span class="chip b">B</span></div></div>
+</section>
+
+<section id="riscos">
+  <h2><span class="num">09</span>Riscos e confirmações pendentes</h2>
+  <ul class="checks">
+    <li><b>A placa diz EXIT.</b> A entrada de eleitores está sinalizada, no local, com uma placa permanente que diz o oposto. Um painel temporário ao lado não vence uma placa fixa de venue: o painel de P1 precisa cobrir ou dominar visualmente a placa EXIT, e um agente humano deve ficar no portão nas duas primeiras horas. Quem erra o portão anda 400 m até o próximo e volta em contrafluxo.</li>
+    <li><b>As três entradas estão a 6,2 m uma da outra.</b> Este é o risco central da sinalização, e ele é geométrico. S4, S5 e S6 ficam tão próximas que, na fachada, a disciplina de faixa não se sustenta sozinha: quem percebe o erro no último metro simplesmente atravessa. Duas consequências de projeto — a letra na porta precisa ser lida <em>de dentro do serpenteado</em>, a 40–60 m, e não a 5 m; e a correção de rota tem de estar disponível na cabeça da fila (P4), onde ainda cabe, e não na descarga.</li>
+    <li><b>Numeração das aberturas divergente.</b> A prancheta do Posto numera a fachada sul como S1–S9; a planta do RDS numera as mesmas aberturas como 2.1–2.23, com posições que não coincidem. Este plano adotou a prancheta, porque é ela que define os papéis (S4/S5/S6 entradas, S2/S8 saídas). A aferição em campo precisa fechar essa divergência antes da impressão — uma placa apontando para a abertura errada é pior que placa nenhuma.</li>
+    <li><b>Fator de pico sem estatística oficial.</b> O 1,8× usado no dimensionamento de leitura é premissa assumida. O levantamento de horários de pico deste repositório mostra que <em>não existe</em> curva oficial de comparecimento por hora, e — mais relevante — que o precedente de Dublin em 2022 não teve pico isolado: a fila de 2h30–3h nunca esvaziou e persistiu além das 17h. Se esse for o cenário, o número de painéis importa menos que a sua distribuição ao longo do corredor, porque as pessoas ficarão paradas nele por muito tempo.</li>
+    <li><b>Conflito entre pedestres e veículos.</b> O corredor da lateral leste é área de estacionamento em operação. Se ele vai receber fila e painéis, precisa de faixa balizada e de acordo formal com o RDS sobre circulação de veículos no dia.</li>
+    <li><b>Balcão “não sei minha seção”.</b> Deve ficar em P1, recuado do fluxo, com barreira própria, dois a três operadores e <strong>cópia impressa</strong> do caderno — a cobertura de Wi-Fi ao ar livre no portão não está confirmada. Colocá-lo na garganta do Ring 3, junto com os agentes de pré-triagem, recria ali o gargalo que este plano existe para evitar; colocá-lo dentro do Hall empurra os casos mais lentos para depois do checkpoint interno, onde custam o dobro.</li>
+    <li><b>Sinalizar a rota prioritária desde a rua.</b> O plano do Ring 3 já define o acesso prioritário pelo apron pavimentado, direto do desembarque à porta, para os ~296 eleitores com 60+ anos ou deficiência declarada. Falta a peça correspondente: essa rota precisa ser anunciada em P0, na Merrion Road, e no portão — se só aparecer no apron, o eleitor prioritário já terá andado os 150 m e entrado no serpenteado de 130 m.</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Fontes de dados: <span style="font-family:var(--mono)">eleitorado_local_votacao_2026_ZZ.csv</span> (TSE, 13/08/2026) e <span style="font-family:var(--mono)">Filtrado_Dublin.csv</span> (TSE, 14/07/2026), processados por <span style="font-family:var(--mono)">scripts/mapa_agregacoes.py</span>. Planta e dimensões do salão: ficha técnica RDS Hall 2 (Shelbourne Hall). Dimensões do Ring 3, do apron, papéis das aberturas S1–S9 e quantitativo de barreira: <span style="font-family:var(--mono)">saidas/plano_ring3.md</span>. Precedente de fila em Dublin 2022 e ausência de curva oficial de comparecimento por hora: <span style="font-family:var(--mono)">pesquisa_horarios_pico_votacao.md</span>. Taxas de comparecimento: 2022, por domicílio. Fator de pico de chegada (1,8×) e tempo de leitura (15 s) são premissas assumidas, não medidas. Regra de altura de letra: <a href="https://www.signknights.com/sign-visibility-and-viewing-distance-guidelines/">International Sign Association</a>; correção para condições não ideais: <a href="https://healthfacilityguidelines.com/ViewPDF/ViewIndexPDF/iHFG_part_w_wayfinding_complete">iHFG Part W — Wayfinding Guidelines</a>. Precipitação de outubro em Dublin: <a href="https://www.met.ie/climate-statement-for-october-2025">Met Éireann</a>.</p>
+</footer>
+
+</div>

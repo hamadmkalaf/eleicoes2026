@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1025" height="1153" viewBox="0 0 1025 1153" font-family="Helvetica,Arial,sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2471a3"/></marker><marker id="e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1e8449"/></marker></defs>
+<rect width="1025" height="1153" fill="#fbfbf9"/>
+<text x="84" y="36" font-size="21" font-weight="bold" fill="#1a1a1a">Ring 3 — layout base de filas</text>
+<text x="84" y="57" font-size="11" fill="#555">Entrada pelo canto sudeste · corredor de distribuição no fundo · serpenteados A/B/C descarregando em S4, S5 e S6 · saídas por S2 e S8</text>
+<rect x="36.5" y="70" width="836.0" height="26" fill="#e8eef4" stroke="#8fa6bb"/>
+<text x="49.8" y="88" font-size="16" font-weight="bold" fill="#1a1a1a">HALL 2</text>
+<rect x="88.09999999999997" y="90" width="26" height="7" fill="#bdc3c7"/>
+<text x="101.09999999999997" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S1</text>
+<rect x="163.89999999999998" y="90" width="34" height="9" fill="#1e8449"/>
+<text x="180.89999999999998" y="115" font-size="13" fill="#1e8449" text-anchor="middle" font-weight="bold">S2</text>
+<text x="180.89999999999998" y="128" font-size="10" fill="#1e8449" text-anchor="middle">saída</text>
+<rect x="243.89999999999998" y="90" width="26" height="7" fill="#bdc3c7"/>
+<text x="256.9" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S3</text>
+<rect x="319.69999999999993" y="90" width="34" height="9" fill="#2471a3"/>
+<text x="336.69999999999993" y="115" font-size="13" fill="#1a1a1a" text-anchor="middle" font-weight="bold">S4</text>
+<text x="336.69999999999993" y="128" font-size="10" fill="#2471a3" text-anchor="middle">entrada A</text>
+<rect x="437.5" y="90" width="34" height="9" fill="#2471a3"/>
+<text x="454.5" y="115" font-size="13" fill="#1a1a1a" text-anchor="middle" font-weight="bold">S5</text>
+<text x="454.5" y="128" font-size="10" fill="#2471a3" text-anchor="middle">entrada B</text>
+<rect x="555.3" y="90" width="34" height="9" fill="#2471a3"/>
+<text x="572.3" y="115" font-size="13" fill="#1a1a1a" text-anchor="middle" font-weight="bold">S6</text>
+<text x="572.3" y="128" font-size="10" fill="#2471a3" text-anchor="middle">entrada C</text>
+<rect x="641.0" y="90" width="26" height="7" fill="#bdc3c7"/>
+<text x="654.0" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S7</text>
+<rect x="713.0" y="90" width="34" height="9" fill="#1e8449"/>
+<text x="730.0" y="115" font-size="13" fill="#1e8449" text-anchor="middle" font-weight="bold">S8</text>
+<text x="730.0" y="128" font-size="10" fill="#1e8449" text-anchor="middle">saída</text>
+<rect x="796.8" y="90" width="26" height="7" fill="#bdc3c7"/>
+<text x="809.8" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S9</text>
+<rect x="84" y="132.0" width="741.0" height="665.0" fill="#fff" stroke="#333" stroke-width="2"/>
+<rect x="84" y="132.0" width="741.0" height="95.0" fill="#eef4f9" stroke="#c7d8e6" stroke-dasharray="5 3"/>
+<text x="95.4" y="147.0" font-size="11" fill="#555">faixa de descarga — 5.0 m</text>
+<rect x="84.0" y="227.0" width="133.0" height="494.0" fill="#f6f3ec" stroke="#d8cdb4" stroke-dasharray="4 4"/>
+<text x="150.5" y="474.0" font-size="11" fill="#9c8b63" text-anchor="middle" transform="rotate(-90 150.5 474.0)">reserva de flanco (sem balizas)</text>
+<rect x="692.0" y="227.0" width="133.0" height="494.0" fill="#f6f3ec" stroke="#d8cdb4" stroke-dasharray="4 4"/>
+<text x="758.5" y="474.0" font-size="11" fill="#9c8b63" text-anchor="middle" transform="rotate(-90 758.5 474.0)">reserva de flanco (sem balizas)</text>
+<rect x="84" y="721.0" width="741.0" height="47.5" fill="#fdf3e3" stroke="#dfa94a" stroke-dasharray="5 3"/>
+<text x="95.4" y="734.0" font-size="11" fill="#555">corredor de distribuição — 2.5 m</text>
+<line x1="802.2" y1="757.1" x2="106.8" y2="757.1" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<circle cx="340.5" cy="758.1" r="10" fill="#c0392b"/>
+<text x="340.5" y="762.1" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">3</text>
+<rect x="217.0" y="227.0" width="133.0" height="494.0" fill="#f3f7fa" stroke="#d5e2ec"/>
+<line x1="217.0" y1="227.0" x2="217.0" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="243.6" y1="253.6" x2="243.6" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="270.2" y1="227.0" x2="270.2" y2="694.4" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="296.8" y1="253.6" x2="296.8" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="323.4" y1="227.0" x2="323.4" y2="694.4" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="350.0" y1="227.0" x2="350.0" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<polyline points="230.3,713.4 230.3,234.6 256.9,234.6 256.9,713.4 283.5,713.4 283.5,234.6 310.1,234.6 310.1,713.4 336.7,713.4 336.7,234.6" fill="none" stroke="#2471a3" stroke-width="1.8" stroke-linejoin="round" opacity="0.9" marker-end="url(#a)"/>
+<text x="283.5" y="201.0" font-size="16" font-weight="bold" fill="#1a1a1a" text-anchor="middle">ENTRADA A</text>
+<text x="283.5" y="215.0" font-size="11" fill="#555" text-anchor="middle">5 balizas · 260 pessoas</text>
+<line x1="230.3" y1="724.8" x2="230.3" y2="703.9" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="336.7" y1="227.0" x2="336.7" y2="132.0" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="336.7" y1="132.0" x2="336.7" y2="101" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<circle cx="204.0" cy="365.3" r="10" fill="#c0392b"/>
+<text x="204.0" y="369.3" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">1</text>
+<circle cx="283.5" cy="474.0" r="10" fill="#c0392b"/>
+<text x="283.5" y="478.0" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">2</text>
+<circle cx="320.7" cy="158.6" r="10" fill="#c0392b"/>
+<text x="320.7" y="162.6" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">5</text>
+<rect x="388.0" y="227.0" width="133.0" height="494.0" fill="#f3f7fa" stroke="#d5e2ec"/>
+<line x1="521.0" y1="227.0" x2="521.0" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="494.4" y1="253.6" x2="494.4" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="467.8" y1="227.0" x2="467.8" y2="694.4" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="441.2" y1="253.6" x2="441.2" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="414.6" y1="227.0" x2="414.6" y2="694.4" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="388.0" y1="227.0" x2="388.0" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<polyline points="507.7,713.4 507.7,234.6 481.1,234.6 481.1,713.4 454.5,713.4 454.5,234.6 427.9,234.6 427.9,713.4 401.3,713.4 401.3,234.6" fill="none" stroke="#2471a3" stroke-width="1.8" stroke-linejoin="round" opacity="0.9" marker-end="url(#a)"/>
+<text x="454.5" y="201.0" font-size="16" font-weight="bold" fill="#1a1a1a" text-anchor="middle">ENTRADA B</text>
+<text x="454.5" y="215.0" font-size="11" fill="#555" text-anchor="middle">5 balizas · 260 pessoas</text>
+<line x1="507.7" y1="724.8" x2="507.7" y2="703.9" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="401.3" y1="227.0" x2="454.5" y2="132.0" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="454.5" y1="132.0" x2="454.5" y2="101" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<rect x="559.0" y="227.0" width="133.0" height="494.0" fill="#f3f7fa" stroke="#d5e2ec"/>
+<line x1="692.0" y1="227.0" x2="692.0" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="665.4" y1="253.6" x2="665.4" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="638.8" y1="227.0" x2="638.8" y2="694.4" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="612.2" y1="253.6" x2="612.2" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="585.6" y1="227.0" x2="585.6" y2="694.4" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="559.0" y1="227.0" x2="559.0" y2="721.0" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round"/>
+<polyline points="678.7,713.4 678.7,234.6 652.1,234.6 652.1,713.4 625.5,713.4 625.5,234.6 598.9,234.6 598.9,713.4 572.3,713.4 572.3,234.6" fill="none" stroke="#2471a3" stroke-width="1.8" stroke-linejoin="round" opacity="0.9" marker-end="url(#a)"/>
+<text x="625.5" y="201.0" font-size="16" font-weight="bold" fill="#1a1a1a" text-anchor="middle">ENTRADA C</text>
+<text x="625.5" y="215.0" font-size="11" fill="#555" text-anchor="middle">5 balizas · 260 pessoas</text>
+<line x1="678.7" y1="724.8" x2="678.7" y2="703.9" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="572.3" y1="227.0" x2="572.3" y2="132.0" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="572.3" y1="132.0" x2="572.3" y2="101" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="921.0" y1="744.8" x2="833.0" y2="744.8" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="833.0" y1="744.8" x2="813.6" y2="757.1" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<text x="841.0" y="732.75" font-size="15" font-weight="bold" fill="#c0392b">ENTRADA</text>
+<text x="841.0" y="774.75" font-size="11" fill="#c0392b">canto sudeste</text>
+<circle cx="833.0" cy="714.8" r="10" fill="#c0392b"/>
+<text x="833.0" y="718.8" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">4</text>
+<line x1="180.9" y1="100" x2="180.9" y2="104.0" stroke="#1e8449" stroke-width="2.2"/>
+<line x1="180.9" y1="104.0" x2="134.9" y2="104.0" stroke="#1e8449" stroke-width="2.2" fill="none" marker-end="url(#e)"/>
+<line x1="730.0" y1="100" x2="730.0" y2="104.0" stroke="#1e8449" stroke-width="2.2"/>
+<line x1="730.0" y1="104.0" x2="776.0" y2="104.0" stroke="#1e8449" stroke-width="2.2" fill="none" marker-end="url(#e)"/>
+<text x="454.5" y="821.0" font-size="11" fill="#0a7d55" text-anchor="middle">39 m (leste–oeste)</text>
+<text x="68" y="464.5" font-size="11" fill="#0a7d55" text-anchor="middle" transform="rotate(-90 68 464.5)">35 m (sul–norte)</text>
+<text x="833.0" y="474.0" font-size="11" fill="#0a7d55" text-anchor="middle" transform="rotate(-90 833.0 474.0)">serpenteado 26 m</text>
+<text x="84" y="849.0" font-size="15" font-weight="bold" fill="#1a1a1a">Separadores de barreira — Ring 3 apenas</text>
+<text x="84" y="873.0" font-size="12" font-weight="bold" fill="#555" text-anchor="start"></text>
+<text x="110" y="873.0" font-size="12" font-weight="bold" fill="#555" text-anchor="start">Componente</text>
+<text x="384" y="873.0" font-size="12" font-weight="bold" fill="#555" text-anchor="start">Cálculo</text>
+<text x="654" y="873.0" font-size="12" font-weight="bold" fill="#555" text-anchor="end">Metros</text>
+<text x="744" y="873.0" font-size="12" font-weight="bold" fill="#555" text-anchor="end">Separadores</text>
+<line x1="84" y1="879.0" x2="744" y2="879.0" stroke="#ccc"/>
+<circle cx="93.0" cy="898.0" r="10" fill="#c0392b"/>
+<text x="93.0" y="902.0" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">1</text>
+<text x="110" y="902.0" font-size="13" fill="#1a1a1a">Balizas externas dos 3 blocos</text>
+<text x="384" y="902.0" font-size="11" fill="#555">3 × 2 × 26.0 m</text>
+<text x="654" y="902.0" font-size="13" fill="#1a1a1a" text-anchor="end">156.0</text>
+<text x="744" y="902.0" font-size="13" fill="#1a1a1a" text-anchor="end">78</text>
+<circle cx="93.0" cy="919.0" r="10" fill="#c0392b"/>
+<text x="93.0" y="923.0" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">2</text>
+<text x="110" y="923.0" font-size="13" fill="#1a1a1a">Balizas internas dos 3 blocos</text>
+<text x="384" y="923.0" font-size="11" fill="#555">3 × 4 × 24.6 m</text>
+<text x="654" y="923.0" font-size="13" fill="#1a1a1a" text-anchor="end">295.2</text>
+<text x="744" y="923.0" font-size="13" fill="#1a1a1a" text-anchor="end">148</text>
+<circle cx="93.0" cy="940.0" r="10" fill="#c0392b"/>
+<text x="93.0" y="944.0" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">3</text>
+<text x="110" y="944.0" font-size="13" fill="#1a1a1a">Corredor de distribuição (fundo)</text>
+<text x="384" y="944.0" font-size="11" fill="#555">2 × 36.0 − 3 vãos de 1,5 m</text>
+<text x="654" y="944.0" font-size="13" fill="#1a1a1a" text-anchor="end">67.5</text>
+<text x="744" y="944.0" font-size="13" fill="#1a1a1a" text-anchor="end">34</text>
+<circle cx="93.0" cy="961.0" r="10" fill="#c0392b"/>
+<text x="93.0" y="965.0" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">4</text>
+<text x="110" y="965.0" font-size="13" fill="#1a1a1a">Garganta de entrada (canto sudeste)</text>
+<text x="384" y="965.0" font-size="11" fill="#555">funil de pré-triagem</text>
+<text x="654" y="965.0" font-size="13" fill="#1a1a1a" text-anchor="end">10.0</text>
+<text x="744" y="965.0" font-size="13" fill="#1a1a1a" text-anchor="end">5</text>
+<circle cx="93.0" cy="982.0" r="10" fill="#c0392b"/>
+<text x="93.0" y="986.0" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">5</text>
+<text x="110" y="986.0" font-size="13" fill="#1a1a1a">Canais de descarga até S4/S5/S6</text>
+<text x="384" y="986.0" font-size="11" fill="#555">2 lados × (5.0 + 5.7 + 5.0) m</text>
+<text x="654" y="986.0" font-size="13" fill="#1a1a1a" text-anchor="end">31.5</text>
+<text x="744" y="986.0" font-size="13" fill="#1a1a1a" text-anchor="end">16</text>
+<line x1="84" y1="998.0" x2="744" y2="998.0" stroke="#333"/>
+<text x="110" y="1018.0" font-size="13" fill="#1a1a1a" font-weight="bold">TOTAL do Ring 3</text>
+<text x="654" y="1018.0" font-size="13" fill="#1a1a1a" font-weight="bold" text-anchor="end">560.2</text>
+<text x="744" y="1018.0" font-size="13" fill="#1a1a1a" font-weight="bold" text-anchor="end">281</text>
+<text x="110" y="1038.0" font-size="11" fill="#555">Em mãos hoje (item d do orçamento)</text>
+<text x="744" y="1038.0" font-size="11" fill="#555" text-anchor="end">−100</text>
+<text x="110" y="1058.0" font-size="13" font-weight="bold" fill="#c0392b">A ADQUIRIR</text>
+<text x="744" y="1058.0" font-size="13" font-weight="bold" fill="#c0392b" text-anchor="end">181</text>
+<text x="764" y="1058.0" font-size="11" fill="#555">≈ EUR 2.357</text>
+<text x="84" y="1086.0" font-size="11" fill="#555">Capacidade: 780 pessoas nos serpenteados (260 por corredor, a 0.50 m por pessoa) + ~490 na reserva de flanco.</text>
+<text x="84" y="1103.0" font-size="11" fill="#555">Blocos a 9.0 m de eixo a eixo; portas S4/S5/S6 a 6.2 m. A baliza de saída de cada corredor caminha 0.0 m até S4, 2.8 m até S5, 0.0 m até S6 na faixa de descarga de 5 m.</text>
+<text x="84" y="1120.0" font-size="11" fill="#555">Este quantitativo cobre SOMENTE o Ring 3. O interior do Hall 2 tem necessidade própria, ainda não dimensionada.</text>
+<text x="84" y="1137.0" font-size="11" fill="#555">Posições das portas lidas na prancheta do Posto. Aferir em campo a distância do bordo oeste do Ring 3 ao canto sudoeste do Hall 2, que translada todo o conjunto.</text>
+</svg>

@@ -1,214 +1,209 @@
 # Plano base do Ring 3 — RDS Ballsbridge, 04/10/2026
 
-Escopo deste documento: **apenas o Ring 3**. O plano geral da votação está
-fora daqui; a análise que o sustenta está em `saidas/analise_gargalos.md`.
+Escopo: **apenas o Ring 3**. A análise que o sustenta está em
+`saidas/analise_gargalos.md`. Desenho em escala: `saidas/layout_ring3.svg`,
+gerado por `scripts/layout_ring3.py`.
 
 Premissas fixadas: 28 urnas / 28 mesas (1:1), identificação por **caderno
-físico**, espaço contratado **Hall 2 + Ring 3 sem cobertura**.
+físico**, **Hall 2 + Ring 3 sem cobertura**, **piso pavimentado**, espaço
+**locado desde a véspera** — não há carros estacionados a remover.
 
 ---
 
 ## 1. Dimensões adotadas
 
-Estimadas por fotogrametria sobre imagem aérea do Google Maps, com escala
-ancorada em feições de solo (carros, vagas, largura da R118, copas), não em
-telhados — a imagem é oblíqua e telhado de prédio alto não coincide com sua
-projeção no solo. Escala apurada: **0,15 m/px**, com quatro aferições
-independentes convergindo.
+Estimadas por fotogrametria sobre imagem aérea, com escala ancorada em feições
+de solo (carros, vagas, largura da R118, copas), não em telhados — a imagem é
+oblíqua e telhado de prédio alto não coincide com sua projeção no solo. Escala
+apurada: **0,15 m/px**, com quatro aferições independentes convergindo.
 
-| Área | Dimensão | Superfície | Uso previsto |
-|---|---|---|---|
-| **Ring 3 — núcleo de areia** | ~39 × 35 m | **~1.365 m²** | Retenção de fila |
-| Ring 3 — recinto até a linha de árvores | ~52 × 50 m | ~2.600 m² | Circulação perimetral |
-| Apron pavimentado (fachada sul do Hall 2 ↔ árvores) | ~60 × 14 m | ~850 m² | Rota acessível e triagem |
+| Área | Dimensão | Superfície |
+|---|---|---|
+| **Ring 3** | **~39 m (leste–oeste) × ~35 m (sul–norte)** | **~1.365 m²** |
+| Apron pavimentado entre o Ring 3 e a fachada sul do Hall 2 | ~60 × 14 m | ~850 m² |
 
-Incerteza: **±10–15% nas dimensões lineares, ±25% na área**. Suficiente para
-dimensionar; insuficiente para contrato. Aferir com a ferramenta "Medir
-distância" do Google Maps, ou pedir a planta do recinto ao RDS.
+Incerteza: **±10–15% nas dimensões lineares**. Suficiente para dimensionar,
+insuficiente para contrato. Aferir com a ferramenta "Medir distância" do Google
+Maps ou com a planta do recinto.
 
-Distância a percorrer do limite norte do Ring 3 às portas do Hall 2: **20–35 m**.
+## 2. Portas do Hall 2 — o que a planta realmente diz
 
-## 2. O que o Ring 3 é, e o que não é
+A planta `RDS_Hall_2_Floorplan_(1).pdf` **não usa rótulos S4/S5/S6**. Ela numera
+as aberturas de 2.1 a 2.23. A fachada sul, que encara o Ring 3, tem sete
+aberturas, medidas na página 2 e convertidas pela escala aferida (~9,0 pt/m,
+conferida contra os 50,2 m de largura declarados):
 
-**É** pulmão de fila, ponto de pré-triagem e área de retenção antes da entrada.
+| Porta | Distância do canto sudoeste | Papel proposto |
+|---|---|---|
+| **2.7** | 18,5 m | **ENTRADA A** |
+| 2.6 | 22,3 m | saída |
+| 2.5 | 24,4 m | saída |
+| **2.4** | 28,5 m | **ENTRADA B** |
+| 2.3 | 32,4 m | saída |
+| 2.2 | 34,5 m | saída |
+| **2.1** | 38,5 m | **ENTRADA C** |
 
-**Não é** área de votação. Nenhuma urna, nenhuma mesa receptora e nenhum
-caderno vai para fora do Hall 2 — piso de areia, sem cobertura, sem energia
-protegida e sem controle de acesso não comportam ato eleitoral.
+**Achado que simplifica o desenho:** as três aberturas isoladas — 2.7, 2.4 e
+2.1 — estão a **exatamente 10,0 m uma da outra**. Servem de entrada para os
+três corredores, e os dois pares intermediários (2.6/2.5 e 2.3/2.2) ficam
+livres como **saída dedicada**, entre as entradas. Entrada e saída deixam de se
+cruzar sem custo nenhum.
 
-## 3. Quanta fila o Ring 3 precisa absorver
+Se os rótulos S4/S5/S6 vierem de outra prancheta, é preciso confirmar a
+correspondência antes de fixar a sinalização.
 
-Da coluna FILA TOTAL de `scripts/simula_fluxo.py` (pessoas simultaneamente em
-espera nas 28 urnas, no pico):
-
-| Arranjo da mesa | t_id 45 s | t_id 55 s | t_id 65 s | t_id 75 s |
-|---|---|---|---|---|
-| Serial (fila única) | 1.058 | 1.637 | 2.240 | 2.974 |
-| Pipeline | 91 | 439 | 935 | 1.517 |
-| **Dois cadernos em paralelo** | **0** | **0** | **0** | **0** |
-
-O Hall 2 comporta internamente **~1.000–1.200 pessoas em fila** (2.238 m² menos
-~378 m² de estações, ~150 m² de sala de transmissão e WC, e ~30% de corredores
-de saída, a ~1,0 pessoa/m²).
-
-**Consequência que decide o plano:** o Ring 3 é dimensionado para ~1.050
-pessoas (item 4). Somado ao Hall 2, o sítio comporta ~2.250. No arranjo serial
-com caderno lento a fila chega a **2.974 — não cabe no RDS** e transborda para
-a Merrion Road. Isso deixa de ser logística e vira ordem pública.
-
-**O Ring 3 não salva o arranjo serial. Só o arranjo de dois cadernos em
-paralelo salva.** O Ring 3 é a apólice contra o erro de previsão, não a
-solução do gargalo.
-
-## 4. Layout base — quatro currais, não serpentina
-
-Serpentina com barreiras é ineficiente aqui: cada metro de fila comporta ~2
-pessoas, então os 200 m de unifila já orçados (item d, EUR 1.303) renderiam
-~200 pessoas em 1.365 m² de área disponível. Desperdício de espaço.
-
-Desenho adotado — **currais marshalados com liberação em lotes**:
+## 3. Layout
 
 ```
-                    ↑ Hall 2 (portas A / B)  — 20 a 35 m
-        ┌───────────────────────────────────┐
-        │   3 m livre no perímetro          │   funil de
-        │  ┌──────────┬─┬──────────┐        │   liberação
-        │  │  CURRAL  │ │  CURRAL  │        │      ↑
-        │  │    A     │4│    B     │ 12,5 m │   ═══════
-        │  │ 14,5 m   │m│  14,5 m  │        │
-        │  ├──────────┼─┼──────────┤ ← 4 m  │
-        │  │  CURRAL  │ │  CURRAL  │        │
-        │  │    C     │ │    D     │ 12,5 m │
-        │  └──────────┴─┴──────────┘        │
-        │        espinha central 4 m        │
-        └───────────────────────────────────┘
-             33 m úteis  (de 39 m brutos)
+                 HALL 2  —  fachada sul
+     ┌──────┬────────┬──────┬────────┬──────┬────────┐
+     │ 2.7  │ 2.6 2.5│ 2.4  │ 2.3 2.2│ 2.1  │        │
+     │ ENTR.│  SAÍDA │ ENTR.│  SAÍDA │ ENTR.│        │
+     └──▲───┴────────┴──▲───┴────────┴──▲───┴────────┘
+        │  10,0 m       │   10,0 m      │
+  ╔═════╪═══════════════╪═══════════════╪══════════════╗
+  ║  ┌──┴───┐        ┌──┴───┐        ┌──┴───┐          ║
+  ║  │╷╻╷╻╷ │        │╷╻╷╻╷ │        │╷╻╷╻╷ │          ║  27 m de
+  ║  │║║║║║ │        │║║║║║ │        │║║║║║ │  reserva ║  serpenteado
+  ║  │╹╵╹╵╹ │        │╹╵╹╵╹ │        │╹╵╹╵╹ │de flanco ║
+  ║  │ ENTR.│  3,0 m │ ENTR.│  3,0 m │ ENTR.│          ║
+  ║  │   A  │ egresso│   B  │ egresso│   C  │          ║
+  ║  └──────┘        └──────┘        └──────┘          ║
+  ║ ←────────── corredor de distribuição 2,5 m ────────╬══ ENTRADA
+  ╚════════════════════════════════════════════════════╝   canto sudeste
+                      39 m
 ```
+
+O eleitor entra pelo **canto sudeste**, percorre o **corredor de distribuição**
+no fundo (bordo sul) de leste para oeste, e é desviado para o serpenteado
+correspondente à sua urna — **C** primeiro, depois **B**, depois **A**. Cada
+serpenteado descarrega ao norte, direto na sua porta.
 
 | Parâmetro | Valor |
 |---|---|
-| Área bruta | 39 × 35 m = 1.365 m² |
-| Faixa livre de perímetro | 3 m em todo o contorno |
-| Área de trabalho | 33 × 29 m = 957 m² |
-| Espinha central (N–S, para liberação e emergência) | 4 m |
-| Corredor transversal (E–O) | 4 m |
-| Área líquida em currais | **725 m²** (4 × ~181 m²) |
-| **Capacidade de projeto** (1,5 pessoa/m²) | **~1.050 pessoas** (~270 por curral) |
-| Teto absoluto (2,0 pessoa/m²) | ~1.450 pessoas — só com marshal em cada curral |
+| Corredor de distribuição (fundo) | 2,5 m de largura, todo o bordo sul |
+| Profundidade útil do serpenteado | **27,0 m** (35 m menos 1,5 de recuo sul, 2,5 de corredor e 4,0 de descarga) |
+| Balizas por corredor | **5**, de **1,40 m** de largura |
+| Largura de cada bloco | 7,0 m |
+| Vão de egresso entre blocos | 3,0 m |
+| Fila por corredor | 135 m lineares |
+| **Capacidade por corredor** | **270 pessoas** (0,50 m por pessoa) |
+| **Capacidade dos três corredores** | **810 pessoas** |
 
-Nunca planejar acima de 2 pessoas/m² ao ar livre com liberação em lotes.
+**Por que 5 balizas e não mais.** O número tem de ser ímpar — entra-se pelo sul
+e a última baliza precisa correr para o norte, onde estão as portas. E o
+espaçamento de 10,0 m entre as portas limita o bloco a 7,0 m se quisermos
+manter 3,0 m de egresso entre blocos vizinhos. Com 7 balizas o bloco iria a
+9,8 m e sobrariam 0,2 m — inviável. **5 é o máximo que a geometria das portas
+permite.** Os ±15% de incerteza na largura do Ring 3 não mudam isso, porque a
+restrição vem das portas, não do terreno.
 
-**Alocação dos currais por seção**, para que a fila já chegue ordenada: um
-curral por grupo de urnas, com as três urnas críticas (**3313, 3322, 3315**)
-distribuídas em currais diferentes — concentrá-las num só cria um ponto único
-de congestionamento na liberação.
+**Reserva de flanco.** Os três blocos ocupam 27 m dos 39 m. As faixas laterais
+(~12 m × 27 m) ficam como **retenção aberta, sem balizas**, sob marshals, para
+absorver surto acima de 810: cerca de **490 pessoas** a 1,5 pessoa/m². Só se
+abre quando os serpenteados encherem.
 
-## 5. Restrição de material — o gargalo real do layout
+**Capacidade total do Ring 3: ~810 estruturadas + ~490 de flanco = ~1.300.**
 
-Barreira necessária: espinha (2 × 29 = 58 m) + transversal (2 × 33 = 66 m) +
-funil de liberação (~30 m) = **~154 m**.
+## 4. Necessidade de separadores de barreira
 
-Disponível: **200 m** (100 separadores, item d do orçamento). Sobram 46 m para
-todo o interior do Hall 2 — **insuficiente**.
+Um serpenteado de *n* balizas precisa de *n+1* corridas de separador: as duas
+externas correm a profundidade inteira, e as internas param a 1,40 m de uma das
+pontas para abrir o retorno.
 
-A linha de árvores e o meio-fio já delimitam o perímetro externo do Ring 3, o
-que dispensa barreira ali. Ainda assim:
+| Componente | Cálculo | Metros |
+|---|---|---|
+| Externas dos 3 blocos | 3 × 2 × 27,0 m | 162,0 |
+| Internas dos 3 blocos | 3 × 4 × (27,0 − 1,40) m | 307,2 |
+| Corredor de distribuição (dois lados, menos 3 vãos de acesso) | — | 57,5 |
+| Garganta de entrada no canto sudeste | — | 10,0 |
+| Descarga: 3 canais × 2 lados × 6 m | — | 36,0 |
+| **Total** | | **~573 m** |
 
-> **Pedido orçamentário específico: +200 m de unifila (~100 unidades).** Ao
-> custo unitário já contratado (EUR 1.303 / 200 m = EUR 6,51/m), são **~EUR
-> 1.300** — 8% do orçamento revisado de EUR 15.703,32, e o item mais barato do
-> plano inteiro em relação ao risco que remove.
+Ao módulo já contratado (100 separadores = 200 m, item d do orçamento):
 
-## 6. Chuva sobre areia — o risco dominante
+> **~573 m ≈ 286 separadores de 2 m.**
+> Disponíveis hoje: **100**. **Faltam 186 unidades.**
+> Ao custo unitário já praticado (EUR 1.303,00 ÷ 200 m = **EUR 6,51/m**):
+> **~EUR 2.430**.
 
-Outubro é o mês mais chuvoso de Dublin: **76–79 mm**. O número de dias de
-chuva diverge conforme a fonte e o limiar adotado — **12 dias** pelas normais
-de 30 anos (1991–2020, limiar ≥1 mm) até **17–20 dias** em fontes com limiar
-mais frouxo. Traduzindo para o dia 4: probabilidade de chuva de **~40% a
-~65%**, a depender do critério. Registre-se que as fontes não são
-metodologicamente comparáveis entre si.
+E isso consome **todo** o estoque atual no Ring 3, sem sobra para o interior do
+Hall 2. Se o Hall 2 também precisar de unifila, o pedido cresce na mesma
+proporção.
 
-Areia molhada com 1.000 pessoas em cima gera três problemas, em ordem de
-gravidade:
+**Alternativa de menor custo, para registro:** com 3 balizas por corredor a
+barreira cai para ~414 m (207 unidades, ~EUR 1.390), mas a capacidade
+estruturada cai para **486 pessoas** — insuficiente em qualquer cenário serial.
+Cada baliza adicional por corredor custa ~53 m de barreira (~27 unidades,
+~EUR 172) e rende 162 pessoas. É o metro quadrado mais barato do plano.
 
-1. **Lama arrastada para dentro do Hall 2**, sobre piso onde correm os pontos
-   elétricos das urnas (item b, EUR 5.387,40). Risco elétrico e de queda junto
-   ao equipamento de votação.
-2. **Superfície escorregadia** para uma multidão em movimento de lote.
-3. **Inacessibilidade** — areia já é intransitável para cadeira de rodas seca;
-   molhada, é intransitável para muita gente.
+## 5. O Ring 3 comporta a fila prevista?
 
-Mitigações, em ordem de custo:
+Da coluna FILA TOTAL de `scripts/simula_fluxo.py`, comparada à capacidade do
+Hall 2 (~1.000–1.200 em fila interna) somada às ~1.300 do Ring 3:
 
-- **Mínimo indispensável:** piso de proteção (trackway) na espinha central e
-  no funil de liberação — ~116 m² + funil. É a rota por onde todos passam.
-- **Barreira de limpeza:** tapete de retenção de sujeira nos 3 m antes de cada
-  porta do Hall 2, sobre o apron pavimentado.
-- **Alternativa em tempo chuvoso:** não abrir a areia. Operar a retenção só no
-  **apron pavimentado** (~850 m² brutos; com 3 m livres e a fachada do Hall 2
-  de um lado, sobram ~400–500 pessoas de capacidade). É menos da metade da
-  capacidade do Ring 3, o que reforça o item 3: sem o arranjo de cadernos
-  paralelos, a operação não fecha em dia de chuva.
+| Arranjo da mesa | Fila total no pico | Cabe? |
+|---|---|---|
+| Dois cadernos em paralelo, qualquer t_id | 0 | Sim — o Ring 3 nem abre |
+| Pipeline, t_id 55 s | 439 | Sim, só no Hall 2 |
+| Serial, t_id 45 s | 1.058 | Sim |
+| Serial, t_id 55 s | 1.637 | Sim, com flanco aberto |
+| Serial, t_id 65 s | 2.240 | No limite |
+| Serial, t_id 75 s | 2.974 | **Não — transborda para a Merrion Road** |
+
+**O Ring 3 não resolve o gargalo; ele compra tempo.** Quem resolve é o arranjo
+de dois cadernos em paralelo por urna, que fecha às 17h00 mesmo com caderno
+lento e não custa nada ao TRE.
+
+## 6. Exposição ao tempo
+
+O espaço é descoberto. Outubro é o mês mais chuvoso de Dublin (**76–79 mm**). O
+número de dias de chuva diverge conforme a fonte e o limiar: **12 dias** pelas
+normais de 30 anos (1991–2020, limiar ≥1 mm) e **17–20** em fontes de limiar
+mais frouxo — ou seja, **~40% a ~65%** de probabilidade para o dia 4. As fontes
+não são metodologicamente comparáveis entre si.
+
+Com piso pavimentado, o risco não é de lama nem de arraste para junto dos
+pontos elétricos. É de **exposição**: gente parada 20–40 minutos na chuva
+desiste. Desistência por fila é privação de voto que não aparece em nenhuma
+estatística de comparecimento — e, ironicamente, *melhora* as métricas de
+tempo por via indesejada.
+
+Mitigação proporcional ao risco: cobertura leve (tenda ou toldo) sobre os
+últimos 8–10 m de cada serpenteado, onde a espera é mais longa e a densidade
+maior; e não sobre os 27 m inteiros. Cotar como item destacado.
 
 ## 7. Acessibilidade e atendimento prioritário
 
-São **211 eleitores com 60+ anos e 85 com deficiência declarada** em toda a
-zona — ~296 pessoas ao longo de 9 horas, ~33 por hora no pico. Volume trivial,
-desde que roteado corretamente.
+**211 eleitores com 60+ anos e 85 com deficiência declarada** em toda a zona —
+~296 pessoas em 9 horas, ~33 por hora no pico. Volume trivial, desde que
+roteado à parte.
 
-**Nenhum eleitor prioritário passa pela areia, com chuva ou sem.** Rota
-dedicada pelo apron pavimentado, do ponto de desembarque direto à porta do
-Hall 2, com 1 agente designado. Sinalização própria (item c do orçamento).
+**Nenhum eleitor prioritário entra no serpenteado.** Rota dedicada pelo apron
+pavimentado, do desembarque direto à porta, com 1 agente designado. As balizas
+de 1,40 m acomodam cadeira de rodas, mas 27 m de serpenteado são 135 m de
+percurso — inaceitável para quem tem prioridade legal.
 
-## 8. Fluxo e regra de liberação
-
-1. **Chegada** → triagem na entrada norte do Ring 3: o agente identifica a
-   seção do eleitor (e-Título ou documento) e entrega **cartão de roteamento**
-   com seção, urna e porta.
-2. **Curral** conforme o cartão.
-3. **Liberação em lotes** pela espinha central, sob comando do marshal de
-   liberação, calibrada para manter a fila interna do Hall 2 em torno de
-   **800 pessoas** — abaixo da capacidade de ~1.000–1.200, com margem.
-4. **Apron** → portas A / B.
-
-A pré-triagem converte tempo morto de fila em roteamento útil e resolve
-estruturalmente o problema levantado na seção 4 do contexto (fila de cabine
-movimentada contaminando cabine calma). O risco a vigiar é a própria triagem
-virar gargalo: dimensioná-la para o pico, não para a média.
-
-## 9. Equipe do Ring 3
+## 8. Equipe
 
 | Função | Nº | Observação |
 |---|---|---|
-| Coordenador do Ring 3 | 1 | Decide abertura, ritmo de liberação e fechamento |
-| Marshals de curral | 4 | 1 por curral |
-| Agentes de pré-triagem | 3 | Dimensionar para o pico; é gargalo potencial |
-| Marshals de liberação | 2 | No funil, em contato com o interior do Hall 2 |
+| Coordenador do Ring 3 | 1 | Decide abertura do flanco e ritmo de liberação |
+| Agentes de pré-triagem (garganta sudeste) | 3 | Entregam o cartão de roteamento; gargalo potencial — dimensionar para o pico |
+| Marshals de corredor | 3 | 1 por serpenteado |
+| Marshals de descarga | 3 | 1 por porta, em contato com o interior do Hall 2 |
 | Agente de acessibilidade | 1 | Rota prioritária pelo apron |
 | Segurança | 4–6 | Dos 20 já contratados (item a) |
 | **Total** | **15–17** | dos quais 4–6 já orçados |
 
-## 10. Estacionamento — decisão que não pode ser adiada
+## 9. Pendências
 
-O Ring 3 hoje estaciona ~20–25 carros no perímetro. Convertê-lo em retenção de
-fila elimina essas vagas, justamente quando **4.213 eleitores (25% da zona)
-residem fora de Dublin** e chegam de carro.
-
-**A conversão não pode ser feita às 11h — os carros já estarão lá.** É decisão
-de véspera, ou no máximo às 07h00 do dia 4, e depende de dois fatores:
-
-| Condição | Uso do Ring 3 |
-|---|---|
-| Arranjo de cadernos paralelos aprovado **e** tempo seco | Estacionamento (fila prevista: zero) |
-| Arranjo paralelo aprovado **e** chuva | Estacionamento; apron como reserva |
-| Arranjo serial ou pipeline, qualquer tempo | **Retenção de fila** — sinalizar e vedar ao estacionamento desde D-1 |
-
-## 11. Pendências
-
-1. Aferir as dimensões do Ring 3 (Google Maps "Medir distância" ou planta do RDS).
-2. Confirmar com o RDS que o Ring 3 está de fato incluído no contrato e que a
-   vedação ao estacionamento em D-1 é possível.
-3. Obter cotação de trackway para espinha e funil (~150 m²).
-4. Submeter o pedido de +200 m de unifila (~EUR 1.300).
+1. Aferir as dimensões do Ring 3 e **a distância entre o bordo oeste do Ring 3
+   e o canto sudoeste do Hall 2** — é o número que translada todo o conjunto
+   para os eixos coincidirem com as portas 2.7, 2.4 e 2.1.
+2. Confirmar a correspondência entre os rótulos S4/S5/S6 e as aberturas
+   2.7/2.4/2.1 da planta do RDS.
+3. Submeter o pedido de **+186 separadores (~EUR 2.430)**.
+4. Cotar cobertura leve para os últimos 8–10 m de cada serpenteado.
 5. Definir o arranjo da mesa receptora com o Cartório Eleitoral — **é o que
-   determina se o Ring 3 será usado ou ficará como estacionamento**.
+   determina se o Ring 3 chega a ser usado**.

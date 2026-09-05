@@ -219,6 +219,81 @@ function mesasDoCenario(base, cen){
   }
   return orig;
 }
+/* Retangulo ocupado pelas cadeiras dos mesarios, ao lado da mesa. `lado`
+ * diz de que lado do modulo elas ficam. */
+function assentoRect(M, m){
+  const d = DIR(m.rot), p = CCW(d).map(v => v * m.lado);
+  const xs = [], ys = [];
+  for (const u of [M.prof - M.mesa[0], M.prof])
+    for (const v of [M.mesa[1] / 2, M.mesa[1] / 2 + M.assento]) {
+      xs.push(m.x + d[0] * u + p[0] * v); ys.push(m.y + d[1] * u + p[1] * v);
+    }
+  return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+}
+
+/* As 28 mesas de um arranjo {base, alteracoes}, do jeito que a prancheta
+ * grava: `alteracoes` cita so as mesas que sairam do lugar. */
+function mesasDoArranjo(base, arranjo){ return mesasDoCenario(base, {salao: arranjo}); }
+
+/* Le um cenario salvo da prancheta e devolve {nome, base, alteracoes, ...},
+ * ou null se nao for um arranjo. Aceita os dois formatos que a prancheta ja
+ * produziu: `alteracoes` (so as mesas deslocadas, formato atual) e `mrvs`
+ * (as 28, formato antigo). Campos ausentes ou tortos caem para o valor da
+ * planta original, para um arquivo editado a mao nao derrubar o simulador. */
+function normalizaArranjo(obj, base){
+  if (!obj || typeof obj !== "object") return null;
+  const cen = obj.base === "B" ? "B" : (obj.base === "A" ? "A" : null);
+  if (!cen || !base.cenarios[cen]) return null;
+  const orig = base.cenarios[cen].mrvs;
+  let brutas = null;
+  if (Array.isArray(obj.alteracoes)) brutas = obj.alteracoes;
+  else if (Array.isArray(obj.mrvs) && obj.mrvs.length === 28)
+    brutas = obj.mrvs.filter(m => {
+      const o = orig.find(q => q.n === m.n);
+      return o && (o.x !== m.x || o.y !== m.y || o.rot !== m.rot || o.lado !== m.lado);
+    });
+  if (!brutas) return null;
+
+  const num = (v, padrao) => Number.isFinite(Number(v)) ? Number(v) : padrao;
+  const porN = new Map();                     // mesa citada duas vezes: vale a ultima
+  for (const a of brutas) {
+    const n = Math.round(num(a && a.n, NaN));
+    const o = orig.find(q => q.n === n);
+    if (!o) continue;
+    porN.set(n, {n, x: num(a.x, o.x), y: num(a.y, o.y),
+                 rot: ((Math.round(num(a.rot, o.rot) / 90) * 90) % 360 + 360) % 360,
+                 lado: num(a.lado, o.lado) < 0 ? -1 : 1});
+  }
+  const alteracoes = [...porN.values()].sort((a, b) => a.n - b.n);
+  return {nome: String(obj.nome || "arranjo sem nome").slice(0, 80), base: cen,
+          alteracoes, criadoEm: typeof obj.criadoEm === "string" ? obj.criadoEm : "",
+          id: typeof obj.id === "string" ? obj.id : ""};
+}
+
+/* Conflitos geometricos de um arranjo, pelas mesmas regras que a prancheta
+ * usa para pintar a mesa de vermelho: mesa fora do salao, sobre zona
+ * protegida, sobre vao de porta ou sobre outra mesa. Vale a pena conferir
+ * aqui porque um arranjo importado pode ter sido salvo la com conflito. */
+function conflitosArranjo(base, arranjo){
+  const M = base.modulo, sal = base.salao;
+  const cenBase = base.cenarios[arranjo.base] || base.cenarios.A;
+  const mesas = mesasDoArranjo(base, arranjo);
+  const curto = rotulo => String(rotulo).split(" · ")[0];
+  const out = [];
+  for (const m of mesas) {
+    const r = corpoRect(M, m), motivos = [];
+    if (r[0] < -1e-6 || r[1] < -1e-6 || r[2] > sal.largura + 1e-6
+        || r[3] > sal.altura + 1e-6 || bate(r, sal.recorte)) motivos.push("fora do salão");
+    for (const z of cenBase.zonas) if (bate(r, z.rect)) motivos.push(curto(z.rotulo));
+    for (const v of cenBase.vaos) if (bate(r, v.rect)) motivos.push("vão " + curto(v.rotulo));
+    for (const o of mesas) if (o.n !== m.n && bate(r, corpoRect(M, o))) motivos.push("mesa " + o.n);
+    const a = assentoRect(M, m);
+    for (const z of cenBase.zonas) if (bate(a, z.rect)) motivos.push("cadeiras em " + curto(z.rotulo));
+    if (motivos.length) out.push({mesa: m.n, motivos: [...new Set(motivos)]});
+  }
+  return out;
+}
+
 function corpoRect(M, m){
   const d = DIR(m.rot), p = CCW(d), xs = [], ys = [];
   for (const u of [0, M.prof]) for (const v of [-M.larg / 2, M.larg / 2]) {
@@ -839,7 +914,8 @@ const Modelo = {
   VEL, PASSO_FILA, ABERTURA, ENCERRAMENTO, INICIO_CURVA, MEIA_HORA, CURVA_CHEGADA, COMPARECIMENTO,
   CLASSES, ROTULO_CLASSE, LIMITE_SEPARADORES, classeMesa, cenarioPadrao, cenarioClaude,
   slotsDasZonas, mapaMrv, montar, simularDia, simular, agregar, hhmm, minutos, mediana, percentil,
-  frenteMesa, caudaFila, corpoRect, centroPorta, DIR, CCW,
+  frenteMesa, caudaFila, corpoRect, assentoRect, centroPorta, DIR, CCW,
+  mesasDoArranjo, normalizaArranjo, conflitosArranjo,
 };
 if (typeof module !== "undefined" && module.exports) module.exports = Modelo;
 else raiz.Modelo = Modelo;

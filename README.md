@@ -90,27 +90,52 @@ totais ordenados e o critério de gargalo fica a cargo de quem analisa.
 
 ## Simulador de fluxo do Hall 2
 
-Segundo artefato, irmão da prancheta: recebe o arranjo das 28 mesas (cenário A
-ou B da prancheta, ou um cenário salvo nela colado como JSON) e as respostas às
-perguntas de organização do fluxo, e simula o dia de votação eleitor a eleitor.
-Três telas: **Premissas**, **Simulação** (planta minuto a minuto) e
-**Resultado** (relatório com critérios aprovados, em atenção ou reprovados).
+Segundo artefato, irmão da prancheta: recebe o arranjo das 28 mesas e as
+respostas às perguntas de organização do fluxo, e simula o dia de votação
+eleitor a eleitor. Três telas: **Premissas**, **Simulação** (planta minuto a
+minuto) e **Resultado** (relatório com critérios aprovados, em atenção ou
+reprovados).
 
 ```bash
 python3 scripts/gera_simulador.py   # gera saidas/simulador_fluxo.html
+node simulador/teste_arranjos.js    # confere a leitura dos arranjos da prancheta
 node simulador/teste_modelo.js claude 16   # roda o motor em Node e imprime o resumo
 node simulador/varredura.js 3       # varre combinações e ranqueia (demora alguns minutos)
 ```
+
+### De onde vem o arranjo das mesas
+
+O bloco **Salão** da tela de premissas lista os arranjos disponíveis, com
+miniatura da planta, quantas mesas saíram do lugar e aviso quando alguma
+invade porta, zona protegida ou vizinha. Três origens:
+
+- **planta oficial** — cenários A e B, embutidos em `data/prancheta_hall2.json`.
+  As 28 mesas estão no mesmo lugar nos dois; o que muda são as zonas
+  protegidas (B reserva vestíbulos em S1 e S9).
+- **da prancheta** — os `cenarios/*.json` do branch `cenarios-hall2`, que
+  `gera_simulador.py` lê e embute na hora de gerar, do mesmo jeito que
+  `gera_editor.py` faz para a prancheta. Não é leitura ao vivo: a sandbox do
+  artefato publicado bloqueia rede para fora do claude.ai. Cenário novo aparece
+  para todo mundo depois de gravar com `salva_cenario.py` e republicar.
+- **carregado aqui** — **Carregar arranjo…** aceita o JSON que a prancheta
+  copia (colado ou como arquivo `.json`) e guarda no `localStorage` do
+  navegador. É o caminho que não depende de republicação: desenhou na
+  prancheta, copiou, colou aqui, rodou.
+
+Os dois artefatos não conseguem se falar sozinhos — cada um roda na própria
+origem, sem rede para fora do claude.ai e sem `localStorage` em comum —, e é
+por isso que a ponte é o JSON.
 
 Arquivos:
 
 | Arquivo | Papel |
 |---|---|
 | `simulador/modelo.js` | Motor: geometria herdada da prancheta, curva de chegada, simulação por eventos discretos, vereditos e texto. Roda no navegador e em Node. |
-| `simulador/app.js` | Interface das três telas. |
+| `simulador/app.js` | Interface das três telas e a biblioteca de arranjos do bloco Salão. |
 | `simulador/template.html` | Casca HTML e CSS; o gerador embute dados, motor e interface. |
 | `data/prancheta_hall2.json` | Base da prancheta: salão, portas, módulo da mesa, posições das 28 mesas nos cenários A e B. |
 | `data/mrv_secoes.json` | MRV 1–28 → seção principal e agregada, conforme a convocação de mesários (DJE TRE-DF n. 139, 04/08/2026). MRV k é a k-ª seção principal em ordem crescente. |
+| `simulador/teste_arranjos.js` | Testes da leitura e da conferência geométrica dos arranjos, em Node. |
 | `simulador/varredura.js` | Varredura que escolheu o Cenário Claude. |
 
 ### O que é fixo e o que é premissa

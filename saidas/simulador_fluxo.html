@@ -109,6 +109,20 @@ header .dir{margin-left:auto; display:flex; gap:8px; align-items:center; flex-wr
 .kpi dd.ruim{color:var(--falha-txt); font-weight:600} .kpi dd.bom{color:var(--ok-txt)}
 .curva{display:block; width:100%; height:auto}
 .cenarios{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+.arranjos{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px}
+.arranjo{display:flex; flex-direction:column; border:1px solid var(--regua); background:var(--papel); padding:6px}
+.arranjo.sel{border-color:var(--entrada); box-shadow:inset 0 0 0 1px var(--entrada); background:var(--folha)}
+.arranjo .escolher{display:flex; flex-direction:column; gap:5px; align-items:stretch; text-align:left; background:none; border:0; padding:0; cursor:pointer; color:var(--meio); width:100%}
+.arranjo.sel .escolher{color:var(--tinta)}
+.arranjo .escolher:hover{color:var(--tinta)}
+.arranjo svg{display:block; width:100%; height:auto; background:var(--prancha); border:1px solid var(--regua2)}
+.arranjo .nome{font-size:.78rem; font-weight:600; line-height:1.25; overflow-wrap:anywhere}
+.arranjo .meta{font-family:"IBM Plex Mono",monospace; font-size:.66rem; color:var(--fraco); margin-top:3px}
+.arranjo .meta.ruim{color:var(--falha-txt); font-weight:600}
+.arranjo .rem{align-self:flex-start; margin-top:4px; background:none; border:0; padding:0; font-size:.68rem; color:var(--fraco); cursor:pointer; text-decoration:underline}
+.arranjo .rem:hover{color:var(--falha-txt)}
+.arquivo{display:inline-block; background:var(--papel); border:1px solid var(--regua); padding:3px 8px; font-size:.74rem; cursor:pointer; color:var(--meio)}
+.arquivo:hover{color:var(--tinta); border-color:var(--fraco)}
 textarea{width:100%; min-height:70px; font-family:"IBM Plex Mono",monospace; font-size:.7rem; background:var(--papel); color:var(--tinta); border:1px solid var(--regua); resize:vertical}
 .aviso{font-size:.78rem; color:var(--aviso); margin:6px 0 0}
 
@@ -207,15 +221,22 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 
   <div class="bloco">
     <h2>Salão</h2>
-    <p class="pergunta">Qual arranjo das 28 mesas da prancheta serve de base?</p>
-    <div class="linha">
-      <div class="opcoes" role="group" aria-label="Base da prancheta">
-        <button data-base="A" aria-pressed="true">Cenário A da prancheta</button>
-        <button data-base="B" aria-pressed="false">Cenário B</button>
-      </div>
+    <p class="pergunta">Qual arranjo das 28 mesas serve de base? As duas primeiras são a planta oficial; as demais vieram da prancheta. Clique para trocar — o resto das premissas fica como está.</p>
+    <div class="arranjos" id="arranjos" role="group" aria-label="Arranjo das mesas"></div>
+    <div class="linha" style="margin-top:10px">
+      <button class="acao mini" id="btnImportar">Carregar arranjo…</button>
       <span class="dica" id="alteracoesInfo"></span>
     </div>
-    <p class="dica" style="margin-top:8px">Para usar um arranjo salvo na prancheta, copie o cenário lá e cole em <strong>Colar cenário</strong> acima: o simulador lê o mesmo JSON.</p>
+    <div id="importCaixa" hidden style="margin-top:10px">
+      <p class="dica" style="margin-bottom:6px">Na prancheta, clique em <strong>Copiar cenário</strong> e cole o JSON aqui — ou escolha um arquivo <span class="mono">.json</span> da pasta <span class="mono">cenarios/</span>. O arranjo entra na lista acima e fica guardado neste navegador.</p>
+      <textarea id="importTexto" placeholder="cole aqui o JSON de um cenário salvo da prancheta" aria-label="JSON do arranjo"></textarea>
+      <div class="linha" style="margin-top:6px">
+        <button class="acao mini" id="importAplicar">Carregar</button>
+        <label class="arquivo">Escolher arquivo…<input type="file" id="importArquivo" accept=".json,application/json" multiple hidden></label>
+        <button class="acao mini" id="importCancelar">Cancelar</button>
+      </div>
+      <p class="aviso" id="importAviso" hidden></p>
+    </div>
   </div>
 
   <div class="bloco">
@@ -383,6 +404,7 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 <script>
 const BASE = {"salao":{"largura":50.3,"altura":44.4,"recorte":[0.0,0.0,7.8,7.0],"contorno":[[7.8,0.0],[50.3,0.0],[50.3,44.4],[0.0,44.4],[0.0,7.0],[7.8,7.0]]},"modulo":{"prof":4.1,"larg":0.9,"urna":0.9,"mesa":[1.7,0.8],"eleitor":0.9,"passagem":0.6,"assento":0.75,"corredor":[2.5,3.0],"entre_pares":[1.0,1.5]},"portas":[{"id":"N1","rds":"2.13","face":"norte","estado":"fechada","x1":7.41,"y1":44.4,"x2":9.44,"y2":44.4,"larg":2.03},{"id":"N2","rds":"2.14/2.15","face":"norte","estado":"catering","x1":20.66,"y1":44.4,"x2":24.22,"y2":44.4,"larg":3.56},{"id":"L1","rds":"2.16/2.17","face":"leste","estado":"emergencia","x1":50.3,"y1":38.51,"x2":50.3,"y2":41.57,"larg":3.06},{"id":"L2","rds":"2.18/2.19","face":"leste","estado":"emergencia","x1":50.3,"y1":26.66,"x2":50.3,"y2":29.72,"larg":3.06},{"id":"L3","rds":"2.20/2.21","face":"leste","estado":"emergencia","x1":50.3,"y1":14.8,"x2":50.3,"y2":17.87,"larg":3.07},{"id":"L4","rds":"2.22/2.23","face":"leste","estado":"emergencia","x1":50.3,"y1":2.95,"x2":50.3,"y2":6.01,"larg":3.06},{"id":"S1","rds":"carga oeste","face":"sul","estado":"livre","x1":7.83,"y1":0.0,"x2":11.45,"y2":0.0,"larg":3.62},{"id":"S2","rds":"sem codigo RDS","face":"sul","estado":"emergencia","x1":13.25,"y1":0.0,"x2":14.45,"y2":0.0,"larg":1.2},{"id":"S3","rds":"2.7","face":"sul","estado":"livre","x1":17.22,"y1":0.0,"x2":18.47,"y2":0.0,"larg":1.25},{"id":"S4","rds":"2.5/2.6","face":"sul","estado":"livre","x1":19.1,"y1":0.0,"x2":25.03,"y2":0.0,"larg":5.93},{"id":"S5","rds":"2.4","face":"sul","estado":"livre","x1":25.32,"y1":0.0,"x2":31.25,"y2":0.0,"larg":5.93},{"id":"S6","rds":"2.2/2.3","face":"sul","estado":"livre","x1":31.54,"y1":0.0,"x2":37.47,"y2":0.0,"larg":5.93},{"id":"S7","rds":"2.1","face":"sul","estado":"livre","x1":38.09,"y1":0.0,"x2":39.36,"y2":0.0,"larg":1.27},{"id":"S8","rds":"sem codigo RDS","face":"sul","estado":"emergencia","x1":42.12,"y1":0.0,"x2":43.32,"y2":0.0,"larg":1.2},{"id":"S9","rds":"carga leste","face":"sul","estado":"livre","x1":45.12,"y1":0.0,"x2":48.75,"y2":0.0,"larg":3.63},{"id":"O1","rds":"acesso Hall 1","face":"oeste","estado":"livre","x1":0.0,"y1":36.8,"x2":0.0,"y2":38.5,"larg":1.7},{"id":"O2","rds":"2.10/2.11","face":"oeste","estado":"livre","x1":0.0,"y1":19.36,"x2":0.0,"y2":22.43,"larg":3.07},{"id":"R1","rds":"2.8/2.9","face":"recorte_v","estado":"livre","x1":7.8,"y1":3.0,"x2":7.8,"y2":6.5,"larg":3.5}],"cenarios":{"A":{"zonas":[{"rect":[47.3,0.0,50.3,44.4],"rotulo":"fachada leste · faixa protegida de 3 m"},{"rect":[14.22,0.0,21.47,3.0],"rotulo":"S3 · recuo de emergência"},{"rect":[35.09,0.0,42.36,3.0],"rotulo":"S7 · recuo de emergência"},{"rect":[7.8,0.0,10.8,7.0],"rotulo":"R1 · recuo de emergência"}],"vaos":[{"rect":[7.41,44.1,9.44,44.4],"rotulo":"N1 vão"},{"rect":[20.66,44.1,24.22,44.4],"rotulo":"N2 vão"},{"rect":[50.0,2.95,50.3,6.01],"rotulo":"L4 vão"},{"rect":[50.0,14.8,50.3,17.87],"rotulo":"L3 vão"},{"rect":[50.0,26.66,50.3,29.72],"rotulo":"L2 vão"},{"rect":[50.0,38.51,50.3,41.57],"rotulo":"L1 vão"},{"rect":[7.83,0.0,11.45,0.3],"rotulo":"S1 vão"},{"rect":[13.25,0.0,14.45,0.3],"rotulo":"S2 vão"},{"rect":[17.22,0.0,18.47,0.3],"rotulo":"S3 vão"},{"rect":[19.1,0.0,25.03,0.3],"rotulo":"S4 vão"},{"rect":[25.32,0.0,31.25,0.3],"rotulo":"S5 vão"},{"rect":[31.54,0.0,37.47,0.3],"rotulo":"S6 vão"},{"rect":[38.09,0.0,39.36,0.3],"rotulo":"S7 vão"},{"rect":[42.12,0.0,43.32,0.3],"rotulo":"S2 vão"},{"rect":[45.12,0.0,48.75,0.3],"rotulo":"S9 vão"},{"rect":[0.0,19.36,0.3,22.43],"rotulo":"O2 vão"},{"rect":[0.0,36.8,0.3,38.5],"rotulo":"O1 vão"},{"rect":[7.8,3.0,8.1,6.5],"rotulo":"R1 vão"}],"mrvs":[{"n":1,"x":1.605,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":2,"x":5.505,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":3,"x":12.5,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":4,"x":16.4,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":5,"x":28.26,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":6,"x":32.16,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":7,"x":34.56,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":8,"x":38.46,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":9,"x":47.3,"y":39.9,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":10,"x":47.3,"y":36.0,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":11,"x":47.3,"y":33.6,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":12,"x":47.3,"y":29.7,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":13,"x":47.3,"y":27.3,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":14,"x":47.3,"y":23.4,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":15,"x":47.3,"y":21.0,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":16,"x":47.3,"y":17.1,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":17,"x":47.3,"y":14.7,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":18,"x":47.3,"y":10.8,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":19,"x":47.3,"y":8.4,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":20,"x":47.3,"y":4.5,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":21,"x":7.35,"y":7.0,"rot":90,"lado":1,"origem":"recorte_h","corredor":3.0},{"n":22,"x":3.45,"y":7.0,"rot":90,"lado":-1,"origem":"recorte_h","corredor":3.0},{"n":23,"x":0.0,"y":12.53,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":24,"x":0.0,"y":16.43,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":25,"x":0.0,"y":24.765,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":26,"x":0.0,"y":28.665,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":27,"x":0.0,"y":31.065,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":28,"x":0.0,"y":34.965,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0}]},"B":{"zonas":[{"rect":[47.3,0.0,50.3,44.4],"rotulo":"fachada leste · faixa protegida de 3 m"},{"rect":[7.8,0.0,12.45,2.0],"rotulo":"S1 · vestíbulo da divisória"},{"rect":[14.22,0.0,21.47,3.0],"rotulo":"S3 · recuo de emergência"},{"rect":[35.09,0.0,42.36,3.0],"rotulo":"S7 · recuo de emergência"},{"rect":[44.12,0.0,49.75,2.0],"rotulo":"S9 · vestíbulo da divisória"},{"rect":[7.8,0.0,10.8,7.0],"rotulo":"R1 · recuo de emergência"}],"vaos":[{"rect":[7.41,44.1,9.44,44.4],"rotulo":"N1 vão"},{"rect":[20.66,44.1,24.22,44.4],"rotulo":"N2 vão"},{"rect":[50.0,2.95,50.3,6.01],"rotulo":"L4 vão"},{"rect":[50.0,14.8,50.3,17.87],"rotulo":"L3 vão"},{"rect":[50.0,26.66,50.3,29.72],"rotulo":"L2 vão"},{"rect":[50.0,38.51,50.3,41.57],"rotulo":"L1 vão"},{"rect":[7.83,0.0,11.45,0.3],"rotulo":"S1 vão"},{"rect":[13.25,0.0,14.45,0.3],"rotulo":"S2 vão"},{"rect":[17.22,0.0,18.47,0.3],"rotulo":"S3 vão"},{"rect":[19.1,0.0,25.03,0.3],"rotulo":"S4 vão"},{"rect":[25.32,0.0,31.25,0.3],"rotulo":"S5 vão"},{"rect":[31.54,0.0,37.47,0.3],"rotulo":"S6 vão"},{"rect":[38.09,0.0,39.36,0.3],"rotulo":"S7 vão"},{"rect":[42.12,0.0,43.32,0.3],"rotulo":"S2 vão"},{"rect":[45.12,0.0,48.75,0.3],"rotulo":"S9 vão"},{"rect":[0.0,19.36,0.3,22.43],"rotulo":"O2 vão"},{"rect":[0.0,36.8,0.3,38.5],"rotulo":"O1 vão"},{"rect":[7.8,3.0,8.1,6.5],"rotulo":"R1 vão"}],"mrvs":[{"n":1,"x":1.605,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":2,"x":5.505,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":3,"x":12.5,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":4,"x":16.4,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":5,"x":28.26,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":6,"x":32.16,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":7,"x":34.56,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":8,"x":38.46,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":9,"x":47.3,"y":39.9,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":10,"x":47.3,"y":36.0,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":11,"x":47.3,"y":33.6,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":12,"x":47.3,"y":29.7,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":13,"x":47.3,"y":27.3,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":14,"x":47.3,"y":23.4,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":15,"x":47.3,"y":21.0,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":16,"x":47.3,"y":17.1,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":17,"x":47.3,"y":14.7,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":18,"x":47.3,"y":10.8,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":19,"x":47.3,"y":8.4,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":20,"x":47.3,"y":4.5,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":21,"x":7.35,"y":7.0,"rot":90,"lado":1,"origem":"recorte_h","corredor":3.0},{"n":22,"x":3.45,"y":7.0,"rot":90,"lado":-1,"origem":"recorte_h","corredor":3.0},{"n":23,"x":0.0,"y":12.53,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":24,"x":0.0,"y":16.43,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":25,"x":0.0,"y":24.765,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":26,"x":0.0,"y":28.665,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":27,"x":0.0,"y":31.065,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":28,"x":0.0,"y":34.965,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0}]}}};
 const MRVS = {"fonte":"Diário da Justiça Eletrônico do TRE-DF, ano 2026 n. 139, 04/08/2026, p. 915-921 (convocação de mesários, Irlanda/Dublin). Nomes omitidos; apenas MRV e seção.","regra":"MRV k corresponde à k-ésima seção principal em ordem crescente de número.","mrvs":[{"mrv":1,"principal":511,"agregada":1100,"aptos":582,"aptos_principal":400,"aptos_agregada":182,"origem_agregada":"ROSCOMMON","aptos_dublin":400,"aptos_interior":182},{"mrv":2,"principal":512,"agregada":2855,"aptos":476,"aptos_principal":400,"aptos_agregada":76,"origem_agregada":"LONGFORD","aptos_dublin":400,"aptos_interior":76},{"mrv":3,"principal":513,"agregada":1105,"aptos":502,"aptos_principal":400,"aptos_agregada":102,"origem_agregada":"MAYO","aptos_dublin":400,"aptos_interior":102},{"mrv":4,"principal":517,"agregada":1292,"aptos":513,"aptos_principal":400,"aptos_agregada":113,"origem_agregada":"CAVAN","aptos_dublin":400,"aptos_interior":113},{"mrv":5,"principal":1160,"agregada":3845,"aptos":473,"aptos_principal":400,"aptos_agregada":73,"origem_agregada":"LIMERICK","aptos_dublin":400,"aptos_interior":73},{"mrv":6,"principal":1352,"agregada":522,"aptos":462,"aptos_principal":400,"aptos_agregada":62,"origem_agregada":"DONEGAL","aptos_dublin":400,"aptos_interior":62},{"mrv":7,"principal":3054,"agregada":1099,"aptos":454,"aptos_principal":400,"aptos_agregada":54,"origem_agregada":"KERRY","aptos_dublin":400,"aptos_interior":54},{"mrv":8,"principal":3078,"agregada":2847,"aptos":429,"aptos_principal":400,"aptos_agregada":29,"origem_agregada":"LEITRIM","aptos_dublin":400,"aptos_interior":29},{"mrv":9,"principal":3108,"agregada":3422,"aptos":756,"aptos_principal":398,"aptos_agregada":358,"origem_agregada":"GALWAY","aptos_dublin":398,"aptos_interior":358},{"mrv":10,"principal":3142,"agregada":1278,"aptos":793,"aptos_principal":398,"aptos_agregada":395,"origem_agregada":"LIMERICK","aptos_dublin":398,"aptos_interior":395},{"mrv":11,"principal":3161,"agregada":3307,"aptos":791,"aptos_principal":397,"aptos_agregada":394,"origem_agregada":"CORK","aptos_dublin":397,"aptos_interior":394},{"mrv":12,"principal":3179,"agregada":530,"aptos":676,"aptos_principal":398,"aptos_agregada":278,"origem_agregada":"WESTMEATH","aptos_dublin":398,"aptos_interior":278},{"mrv":13,"principal":3216,"agregada":527,"aptos":571,"aptos_principal":398,"aptos_agregada":173,"origem_agregada":"CLARE","aptos_dublin":398,"aptos_interior":173},{"mrv":14,"principal":3229,"agregada":3821,"aptos":606,"aptos_principal":398,"aptos_agregada":208,"origem_agregada":"CORK","aptos_dublin":398,"aptos_interior":208},{"mrv":15,"principal":3245,"agregada":519,"aptos":781,"aptos_principal":397,"aptos_agregada":384,"origem_agregada":"CORK","aptos_dublin":397,"aptos_interior":384},{"mrv":16,"principal":3302,"agregada":3181,"aptos":771,"aptos_principal":396,"aptos_agregada":375,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos_dublin":396,"aptos_interior":375},{"mrv":17,"principal":3305,"agregada":521,"aptos":767,"aptos_principal":397,"aptos_agregada":370,"origem_agregada":"GALWAY","aptos_dublin":397,"aptos_interior":370},{"mrv":18,"principal":3306,"agregada":518,"aptos":766,"aptos_principal":396,"aptos_agregada":370,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos_dublin":396,"aptos_interior":370},{"mrv":19,"principal":3308,"agregada":null,"aptos":399,"aptos_principal":399,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":399,"aptos_interior":0},{"mrv":20,"principal":3309,"agregada":1314,"aptos":615,"aptos_principal":398,"aptos_agregada":217,"origem_agregada":"WATERFORD","aptos_dublin":398,"aptos_interior":217},{"mrv":21,"principal":3311,"agregada":3913,"aptos":630,"aptos_principal":397,"aptos_agregada":233,"origem_agregada":"DUBLIN","aptos_dublin":630,"aptos_interior":0},{"mrv":22,"principal":3313,"agregada":3889,"aptos":797,"aptos_principal":397,"aptos_agregada":400,"origem_agregada":"DUBLIN","aptos_dublin":797,"aptos_interior":0},{"mrv":23,"principal":3315,"agregada":3778,"aptos":792,"aptos_principal":395,"aptos_agregada":397,"origem_agregada":"DUBLIN","aptos_dublin":792,"aptos_interior":0},{"mrv":24,"principal":3322,"agregada":3752,"aptos":794,"aptos_principal":398,"aptos_agregada":396,"origem_agregada":"DUBLIN","aptos_dublin":794,"aptos_interior":0},{"mrv":25,"principal":3442,"agregada":null,"aptos":398,"aptos_principal":398,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":398,"aptos_interior":0},{"mrv":26,"principal":3688,"agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":400,"aptos_interior":0},{"mrv":27,"principal":3832,"agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":400,"aptos_interior":0},{"mrv":28,"principal":3862,"agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":400,"aptos_interior":0}]};
+const ARRANJOS = [{"nome":"Hamad 2","base":"A","alteracoes":[{"n":1,"x":16.5,"y":44.35,"rot":270,"lado":1},{"n":2,"x":19.9,"y":43.9,"rot":270,"lado":-1},{"n":3,"x":22.65,"y":43.95,"rot":270,"lado":1},{"n":4,"x":25.8,"y":44.25,"rot":270,"lado":-1},{"n":21,"x":0.35,"y":21.9,"rot":0,"lado":1},{"n":22,"x":0.15,"y":18.75,"rot":0,"lado":-1}],"criadoEm":"2026-09-05T15:59:49.392Z","id":"hamad-2-20260905-160048"},{"nome":"Hamad1","base":"A","alteracoes":[{"n":1,"x":16.5,"y":44.35,"rot":270,"lado":1},{"n":2,"x":19.9,"y":43.9,"rot":270,"lado":-1},{"n":3,"x":22.65,"y":43.95,"rot":270,"lado":1},{"n":4,"x":25.8,"y":44.25,"rot":270,"lado":-1},{"n":21,"x":0.35,"y":21.9,"rot":0,"lado":1},{"n":22,"x":0.15,"y":18.75,"rot":0,"lado":-1}],"criadoEm":"2026-09-05T15:51:44.607Z","id":"hamad1-20260905-155811"}];
 </script>
 <script>
 /* Simulador de fluxo do Hall 2 — motor de simulação.
@@ -606,6 +628,81 @@ function mesasDoCenario(base, cen){
   }
   return orig;
 }
+/* Retangulo ocupado pelas cadeiras dos mesarios, ao lado da mesa. `lado`
+ * diz de que lado do modulo elas ficam. */
+function assentoRect(M, m){
+  const d = DIR(m.rot), p = CCW(d).map(v => v * m.lado);
+  const xs = [], ys = [];
+  for (const u of [M.prof - M.mesa[0], M.prof])
+    for (const v of [M.mesa[1] / 2, M.mesa[1] / 2 + M.assento]) {
+      xs.push(m.x + d[0] * u + p[0] * v); ys.push(m.y + d[1] * u + p[1] * v);
+    }
+  return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+}
+
+/* As 28 mesas de um arranjo {base, alteracoes}, do jeito que a prancheta
+ * grava: `alteracoes` cita so as mesas que sairam do lugar. */
+function mesasDoArranjo(base, arranjo){ return mesasDoCenario(base, {salao: arranjo}); }
+
+/* Le um cenario salvo da prancheta e devolve {nome, base, alteracoes, ...},
+ * ou null se nao for um arranjo. Aceita os dois formatos que a prancheta ja
+ * produziu: `alteracoes` (so as mesas deslocadas, formato atual) e `mrvs`
+ * (as 28, formato antigo). Campos ausentes ou tortos caem para o valor da
+ * planta original, para um arquivo editado a mao nao derrubar o simulador. */
+function normalizaArranjo(obj, base){
+  if (!obj || typeof obj !== "object") return null;
+  const cen = obj.base === "B" ? "B" : (obj.base === "A" ? "A" : null);
+  if (!cen || !base.cenarios[cen]) return null;
+  const orig = base.cenarios[cen].mrvs;
+  let brutas = null;
+  if (Array.isArray(obj.alteracoes)) brutas = obj.alteracoes;
+  else if (Array.isArray(obj.mrvs) && obj.mrvs.length === 28)
+    brutas = obj.mrvs.filter(m => {
+      const o = orig.find(q => q.n === m.n);
+      return o && (o.x !== m.x || o.y !== m.y || o.rot !== m.rot || o.lado !== m.lado);
+    });
+  if (!brutas) return null;
+
+  const num = (v, padrao) => Number.isFinite(Number(v)) ? Number(v) : padrao;
+  const porN = new Map();                     // mesa citada duas vezes: vale a ultima
+  for (const a of brutas) {
+    const n = Math.round(num(a && a.n, NaN));
+    const o = orig.find(q => q.n === n);
+    if (!o) continue;
+    porN.set(n, {n, x: num(a.x, o.x), y: num(a.y, o.y),
+                 rot: ((Math.round(num(a.rot, o.rot) / 90) * 90) % 360 + 360) % 360,
+                 lado: num(a.lado, o.lado) < 0 ? -1 : 1});
+  }
+  const alteracoes = [...porN.values()].sort((a, b) => a.n - b.n);
+  return {nome: String(obj.nome || "arranjo sem nome").slice(0, 80), base: cen,
+          alteracoes, criadoEm: typeof obj.criadoEm === "string" ? obj.criadoEm : "",
+          id: typeof obj.id === "string" ? obj.id : ""};
+}
+
+/* Conflitos geometricos de um arranjo, pelas mesmas regras que a prancheta
+ * usa para pintar a mesa de vermelho: mesa fora do salao, sobre zona
+ * protegida, sobre vao de porta ou sobre outra mesa. Vale a pena conferir
+ * aqui porque um arranjo importado pode ter sido salvo la com conflito. */
+function conflitosArranjo(base, arranjo){
+  const M = base.modulo, sal = base.salao;
+  const cenBase = base.cenarios[arranjo.base] || base.cenarios.A;
+  const mesas = mesasDoArranjo(base, arranjo);
+  const curto = rotulo => String(rotulo).split(" · ")[0];
+  const out = [];
+  for (const m of mesas) {
+    const r = corpoRect(M, m), motivos = [];
+    if (r[0] < -1e-6 || r[1] < -1e-6 || r[2] > sal.largura + 1e-6
+        || r[3] > sal.altura + 1e-6 || bate(r, sal.recorte)) motivos.push("fora do salão");
+    for (const z of cenBase.zonas) if (bate(r, z.rect)) motivos.push(curto(z.rotulo));
+    for (const v of cenBase.vaos) if (bate(r, v.rect)) motivos.push("vão " + curto(v.rotulo));
+    for (const o of mesas) if (o.n !== m.n && bate(r, corpoRect(M, o))) motivos.push("mesa " + o.n);
+    const a = assentoRect(M, m);
+    for (const z of cenBase.zonas) if (bate(a, z.rect)) motivos.push("cadeiras em " + curto(z.rotulo));
+    if (motivos.length) out.push({mesa: m.n, motivos: [...new Set(motivos)]});
+  }
+  return out;
+}
+
 function corpoRect(M, m){
   const d = DIR(m.rot), p = CCW(d), xs = [], ys = [];
   for (const u of [0, M.prof]) for (const v of [-M.larg / 2, M.larg / 2]) {
@@ -1226,7 +1323,8 @@ const Modelo = {
   VEL, PASSO_FILA, ABERTURA, ENCERRAMENTO, INICIO_CURVA, MEIA_HORA, CURVA_CHEGADA, COMPARECIMENTO,
   CLASSES, ROTULO_CLASSE, LIMITE_SEPARADORES, classeMesa, cenarioPadrao, cenarioClaude,
   slotsDasZonas, mapaMrv, montar, simularDia, simular, agregar, hhmm, minutos, mediana, percentil,
-  frenteMesa, caudaFila, corpoRect, centroPorta, DIR, CCW,
+  frenteMesa, caudaFila, corpoRect, assentoRect, centroPorta, DIR, CCW,
+  mesasDoArranjo, normalizaArranjo, conflitosArranjo,
 };
 if (typeof module !== "undefined" && module.exports) module.exports = Modelo;
 else raiz.Modelo = Modelo;
@@ -1245,6 +1343,8 @@ const CORES_ZONA = ["var(--z1)", "var(--z2)", "var(--z3)", "var(--z4)"];
 const LETRAS = ["A", "B", "C", "D"];
 const CHAVE_RASCUNHO = "simulador-hall2-cenario-v1";
 const CHAVE_COMPARATIVO = "simulador-hall2-comparativo-v1";
+const CHAVE_ARRANJOS = "simulador-hall2-arranjos-v1";
+const AVULSO = "~atual";
 const SUL = BASE.portas.filter(p => p.face === "sul");
 const SUL_USAVEIS = SUL.filter(p => p.estado !== "emergencia").map(p => p.id);
 const ALT = BASE.salao.altura, LARG = BASE.salao.largura;
@@ -1271,6 +1371,194 @@ const fmt = n => Math.round(n).toLocaleString("pt-BR");
 const vg = (v, c = 1) => Number(v).toFixed(c).replace(".", ",");
 const pct = v => Math.round(v * 100) + " %";
 const min = seg => Math.round(seg / 60) + " min";
+
+/* ------------------------------------------------------------------ */
+/* Biblioteca de arranjos das 28 mesas                                 */
+/* ------------------------------------------------------------------ */
+/* Tres origens, na mesma lista: a planta oficial (cenarios A e B), os
+ * arranjos salvos na prancheta que o gerador embutiu (branch cenarios-hall2)
+ * e os que quem abre a pagina carrega na hora, por colar ou por arquivo.
+ * Os dois primeiros grupos sao iguais para todo mundo e so mudam quando a
+ * pagina e republicada; o terceiro fica no localStorage deste navegador, e
+ * existe justamente para nao depender de republicacao. Os dois artefatos nao
+ * conseguem se falar: cada um roda na propria origem, sem rede para fora do
+ * claude.ai e sem localStorage em comum. */
+const ARRANJOS_EMBUTIDOS = (typeof ARRANJOS !== "undefined" && Array.isArray(ARRANJOS) ? ARRANJOS : [])
+  .map(a => M.normalizaArranjo(a, BASE)).filter(Boolean)
+  .map((a, i) => ({...a, id: a.id || "prancheta-" + (i + 1)}));
+
+const slug = s => (String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase().slice(0, 40)) || "arranjo";
+/* Id estavel: recarregar o mesmo arquivo atualiza a entrada em vez de duplicar. */
+const idImportado = a => "imp:" + slug(a.id || a.nome) +
+  (a.criadoEm ? "-" + a.criadoEm.replace(/\D/g, "").slice(0, 14) : "");
+
+function leImportados(){
+  try {
+    const v = JSON.parse(localStorage.getItem(CHAVE_ARRANJOS) || "[]");
+    return Array.isArray(v) ? v : [];
+  } catch (e) { return []; }
+}
+function guardaImportados(lista){
+  try { localStorage.setItem(CHAVE_ARRANJOS, JSON.stringify(lista.slice(0, 40))); }
+  catch (e) { return false; }
+  return true;
+}
+function arranjosImportados(){
+  return leImportados().map(a => M.normalizaArranjo(a, BASE)).filter(Boolean)
+    .map(a => ({...a, id: a.id || idImportado(a)}));
+}
+function arranjosConhecidos(){
+  return [
+    {id: "A", nome: "Cenário A", origem: "planta oficial", base: "A", alteracoes: []},
+    {id: "B", nome: "Cenário B", origem: "planta oficial", base: "B", alteracoes: []},
+    ...ARRANJOS_EMBUTIDOS.map(a => ({...a, origem: "da prancheta"})),
+    ...arranjosImportados().map(a => ({...a, origem: "carregado aqui"})),
+  ];
+}
+/* Qual entrada da lista o cenario atual esta usando. Um cenario pode carregar
+ * um arranjo que nao esta em lista nenhuma -- rascunho antigo, Cenario Claude,
+ * JSON colado -- e nesse caso ele entra na lista como avulso, para continuar
+ * visivel e reversivel. */
+function idArranjoAtual(){
+  const s = cen && cen.salao ? cen.salao : {};
+  if (s.arranjo && arranjosConhecidos().some(a => a.id === s.arranjo)) return s.arranjo;
+  if (!(s.alteracoes || []).length) return s.base === "B" ? "B" : "A";
+  return AVULSO;
+}
+function listaArranjos(){
+  const L = arranjosConhecidos();
+  if (idArranjoAtual() === AVULSO) {
+    const s = cen.salao;
+    L.push({id: AVULSO, nome: s.nome || "arranjo deste cenário", origem: "do cenário",
+            base: s.base === "B" ? "B" : "A", alteracoes: s.alteracoes || []});
+  }
+  return L;
+}
+
+/* Le um ou varios arranjos de um texto JSON. Aceita um objeto, uma lista de
+ * objetos, e tambem um cenario inteiro do simulador (do qual aproveita so o
+ * salao). Devolve o que entrou e o que foi recusado, sem gravar nada. */
+function leArranjosDoTexto(bruto, rotulo){
+  let obj;
+  try { obj = JSON.parse(bruto); }
+  catch (e) { return {aceitos: [], recusados: [rotulo + ": não é um JSON válido"]}; }
+  const aceitos = [], recusados = [];
+  for (const c of (Array.isArray(obj) ? obj : [obj])) {
+    const cenarioInteiro = c && c.zonas && c.portas && c.salao;
+    const fonte = cenarioInteiro ? {...c.salao, nome: c.salao.nome || c.nome} : c;
+    const a = M.normalizaArranjo(fonte, BASE);
+    if (a) aceitos.push(a);
+    else recusados.push((c && c.nome ? "“" + c.nome + "”" : rotulo) + ": não é um arranjo da prancheta");
+  }
+  return {aceitos, recusados};
+}
+/* Grava os arranjos lidos e devolve o id do primeiro, para ja selecionar. */
+function guardaArranjos(aceitos){
+  const guardados = leImportados();
+  let primeiro = null;
+  for (const a of aceitos) {
+    const registro = {nome: a.nome, base: a.base, alteracoes: a.alteracoes,
+                      criadoEm: a.criadoEm, id: idImportado(a)};
+    const i = guardados.findIndex(g => (g.id || "") === registro.id);
+    if (i >= 0) guardados[i] = registro; else guardados.unshift(registro);
+    if (!primeiro) primeiro = registro.id;
+  }
+  return guardaImportados(guardados) ? primeiro
+    : (avisaImport("Não deu para guardar neste navegador (armazenamento cheio ou bloqueado)."), null);
+}
+function avisaImport(msg){
+  const el = $("importAviso");
+  el.textContent = msg || ""; el.hidden = !msg;
+}
+function carregaArranjosDe(textos){
+  const aceitos = [], recusados = [];
+  for (const [texto, rotulo] of textos) {
+    const r = leArranjosDoTexto(texto, rotulo);
+    aceitos.push(...r.aceitos); recusados.push(...r.recusados);
+  }
+  const id = aceitos.length ? guardaArranjos(aceitos) : null;
+  if (id) {
+    $("importCaixa").hidden = true; $("importTexto").value = ""; avisaImport("");
+    escolheArranjo(id);
+    const n = aceitos.length;
+    avisaEstado(`${n} arranjo${n > 1 ? "s" : ""} carregado${n > 1 ? "s" : ""}` +
+      (recusados.length ? ` · ${recusados.length} recusado(s)` : ""));
+  } else {
+    avisaImport(recusados.join(" · ") || "Nada para carregar.");
+  }
+}
+/* Recado curto no cabecalho, ao lado do nome do cenario. */
+let apagaEstado = null;
+function avisaEstado(msg){
+  const el = $("nomeAtual");
+  el.textContent = msg;
+  clearTimeout(apagaEstado);
+  apagaEstado = setTimeout(() => { el.textContent = cen && cen.nome ? cen.nome : ""; }, 4000);
+}
+function escolheArranjo(id){
+  const a = listaArranjos().find(x => x.id === id);
+  if (!a) return;
+  cen.salao = {base: a.base, alteracoes: a.alteracoes.map(m => ({...m})),
+               arranjo: a.id, nome: a.nome};
+  preencher(); atualizaDerivados();
+}
+function removeImportado(id){
+  const guardados = leImportados().filter(g => (g.id || "") !== id);
+  guardaImportados(guardados);
+  // se era o arranjo em uso, ele continua no cenário -- vira avulso, não some do olho
+  if (idArranjoAtual() === id && cen.salao) delete cen.salao.arranjo;
+  preencher(); atualizaDerivados();
+}
+
+/* Miniatura da planta com as 28 mesas do arranjo; as em conflito saem em
+ * vermelho, como na prancheta. */
+function miniPlanta(arranjo, conflitos){
+  const svg = el("svg", {viewBox: `-1.5 -1.5 ${LARG + 3} ${ALT + 3}`, "aria-hidden": "true"});
+  el("polygon", {points: BASE.salao.contorno.map(p => `${p[0]},${fy(p[1])}`).join(" "),
+    fill: "var(--folha)", stroke: "var(--regua)", "stroke-width": .45}, svg);
+  // as zonas protegidas sao a unica diferenca entre as plantas A e B: sem elas
+  // as duas miniaturas sairiam iguais, porque as 28 mesas estao no mesmo lugar
+  for (const z of (BASE.cenarios[arranjo.base] || BASE.cenarios.A).zonas)
+    el("rect", {class: "zona", x: z.rect[0], y: fy(z.rect[3]), width: z.rect[2] - z.rect[0],
+      height: z.rect[3] - z.rect[1], fill: "var(--emerg)", opacity: .13}, svg);
+  const ruins = new Set((conflitos || []).map(c => c.mesa));
+  for (const m of M.mesasDoArranjo(BASE, arranjo)) {
+    const r = M.corpoRect(BASE.modulo, m), ruim = ruins.has(m.n);
+    el("rect", {class: "mesa", x: r[0], y: fy(r[3]), width: r[2] - r[0], height: r[3] - r[1],
+      fill: ruim ? "var(--falha)" : "var(--mesa)", opacity: ruim ? .95 : .7}, svg);
+  }
+  return svg;
+}
+function desenhaArranjos(){
+  const G = $("arranjos"); G.innerHTML = "";
+  const atual = idArranjoAtual();
+  for (const a of listaArranjos()) {
+    const conf = M.conflitosArranjo(BASE, a), sel = a.id === atual;
+    const nd = a.alteracoes.length;
+    const resumo = `${a.nome}, ${a.origem}, ` +
+      (nd ? `${nd} mesa${nd > 1 ? "s" : ""} fora do lugar` : "planta original") +
+      (conf.length ? `, ${conf.length} em conflito` : "");
+    const bt = h("button", {class: "escolher", "aria-pressed": String(sel), "aria-label": resumo});
+    bt.appendChild(miniPlanta(a, conf));
+    bt.appendChild(h("span", {class: "nome", text: a.nome}));
+    bt.appendChild(h("span", {class: "meta",
+      text: `${a.origem} · ${nd ? nd + " fora do lugar" : "planta original"}`}));
+    if (conf.length) {
+      bt.appendChild(h("span", {class: "meta ruim",
+        text: `${conf.length} mesa${conf.length > 1 ? "s" : ""} em conflito`}));
+      tooltip(bt, () => conf.map(c => `<b>mesa ${c.mesa}</b> sobre ${c.motivos.join(", ")}`).join("<br>"));
+    }
+    bt.addEventListener("click", () => escolheArranjo(a.id));
+    const card = h("div", {class: "arranjo" + (sel ? " sel" : "")}, bt);
+    if (a.origem === "carregado aqui") {
+      const rm = h("button", {class: "rem", text: "remover"});
+      rm.addEventListener("click", () => removeImportado(a.id));
+      card.appendChild(rm);
+    }
+    G.appendChild(card);
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /* Estado                                                              */
@@ -1372,15 +1660,37 @@ function preencher(){
   $("tVoto").value = cen.tempos.voto; $("cv").value = cen.tempos.cv; $("just").value = Math.round((cen.extras.justificativas || 0) * 100);
   $("triAtend").value = cen.ring3.atendentes; $("triSeg").value = cen.ring3.seg; $("ring3Cap").value = cen.ring3.capacidade;
   $("runs").value = cen.sim.runs; $("seed").value = cen.sim.seed;
-  for (const b of document.querySelectorAll("#tela-premissas [data-base]")) b.setAttribute("aria-pressed", String(b.dataset.base === (cen.salao.base || "A")));
+  desenhaArranjos();
+  const arr = listaArranjos().find(a => a.id === idArranjoAtual());
   const na = (cen.salao.alteracoes || []).length;
-  $("alteracoesInfo").textContent = na ? `${na} mesa${na > 1 ? "s" : ""} deslocada${na > 1 ? "s" : ""} em relação à planta original` : "planta original";
+  const conf = arr ? M.conflitosArranjo(BASE, arr).length : 0;
+  $("alteracoesInfo").textContent = `${arr ? arr.nome : "arranjo"} · ` +
+    (na ? `${na} mesa${na > 1 ? "s" : ""} fora da planta original` : "planta original") +
+    (conf ? ` · ${conf} em conflito` : "");
 }
 
 function ligaControles(){
   $("nomeCenario").addEventListener("input", ev => { cen.nome = ev.target.value; $("nomeAtual").textContent = cen.nome; guardaRascunho(); });
-  for (const b of document.querySelectorAll("#tela-premissas [data-base]"))
-    b.addEventListener("click", () => { cen.salao = {base: b.dataset.base, alteracoes: []}; preencher(); atualizaDerivados(); });
+  $("btnImportar").addEventListener("click", () => {
+    const cx = $("importCaixa"); cx.hidden = !cx.hidden;
+    if (!cx.hidden) { avisaImport(""); $("importTexto").focus(); }
+  });
+  $("importCancelar").addEventListener("click", () => { $("importCaixa").hidden = true; avisaImport(""); });
+  $("importAplicar").addEventListener("click", () => {
+    const t = $("importTexto").value.trim();
+    if (!t) { avisaImport("Cole o JSON de um cenário da prancheta, ou escolha um arquivo."); return; }
+    carregaArranjosDe([[t, "o texto colado"]]);
+  });
+  $("importArquivo").addEventListener("change", async ev => {
+    const arquivos = [...ev.target.files];
+    ev.target.value = "";                       // permite reescolher o mesmo arquivo
+    const textos = [];
+    for (const f of arquivos) {
+      try { textos.push([await f.text(), f.name]); }
+      catch (e) { avisaImport(`Não deu para ler ${f.name}.`); }
+    }
+    if (textos.length) carregaArranjosDe(textos);
+  });
   for (const b of $("nZonas").querySelectorAll("button"))
     b.addEventListener("click", () => {
       const n = +b.dataset.n;
@@ -1424,24 +1734,18 @@ function ligaControles(){
   $("btnColar").addEventListener("click", () => { $("colarCaixa").hidden = false; $("colarTexto").focus(); });
   $("colarCancelar").addEventListener("click", () => { $("colarCaixa").hidden = true; });
   $("colarAplicar").addEventListener("click", () => {
+    const texto = $("colarTexto").value;
     let obj;
-    try { obj = JSON.parse($("colarTexto").value); } catch (e) { alert("Isso não é um JSON válido."); return; }
+    try { obj = JSON.parse(texto); } catch (e) { alert("Isso não é um JSON válido."); return; }
     $("colarCaixa").hidden = true; $("colarTexto").value = "";
     if (obj && obj.zonas && obj.portas) { aplica(obj); return; }
-    if (obj && (obj.base === "A" || obj.base === "B") && (Array.isArray(obj.alteracoes) || Array.isArray(obj.mrvs))) {
-      // cenário salvo da prancheta: só muda o salão
-      let alteracoes = obj.alteracoes || [];
-      if (Array.isArray(obj.mrvs) && obj.mrvs.length === 28) {
-        const orig = BASE.cenarios[obj.base].mrvs;
-        alteracoes = obj.mrvs.filter(m => { const o = orig.find(q => q.n === m.n); return o && (o.x !== m.x || o.y !== m.y || o.rot !== m.rot); })
-          .map(m => ({n: m.n, x: m.x, y: m.y, rot: m.rot, lado: m.lado}));
-      }
-      cen.salao = {base: obj.base, alteracoes};
-      if (obj.nome) cen.nome = `${cen.nome || "cenário"} · salão “${obj.nome}”`;
-      preencher(); atualizaDerivados(); guardaRascunho();
-      return;
+    // arranjo salvo da prancheta: entra na biblioteca do bloco Salão e é selecionado
+    const {aceitos, recusados} = leArranjosDoTexto(texto, "o texto colado");
+    if (aceitos.length) {
+      const id = guardaArranjos(aceitos);
+      if (id) { escolheArranjo(id); avisaEstado(`Arranjo “${aceitos[0].nome}” carregado no Salão`); return; }
     }
-    alert("JSON reconhecido nem como cenário do simulador nem como cenário salvo da prancheta.");
+    alert(recusados[0] ? recusados[0] + "." : "JSON reconhecido nem como cenário do simulador nem como arranjo da prancheta.");
   });
 
   for (const b of document.querySelectorAll(".abas button")) b.addEventListener("click", () => mostraTela(b.dataset.tela));
@@ -1578,6 +1882,9 @@ function kpisEstaticos(){
   const A = $("avisos"); A.innerHTML = "";
   const avisos = mont.avisos.slice();
   for (const c of mont.conflitos.slice(0, 4)) avisos.push(`Fila da MRV ${c.mesa} invade ${c.com}.`);
+  const arr = listaArranjos().find(a => a.id === idArranjoAtual());
+  if (arr) for (const c of M.conflitosArranjo(BASE, arr).slice(0, 4))
+    avisos.push(`Mesa ${c.mesa} do arranjo “${arr.nome}” sobrepõe ${c.motivos.join(", ")}.`);
   if (mont.mesmaPorta.length) avisos.push(`Entrada e saída pela mesma porta: ${mont.mesmaPorta.join(", ")}.`);
   if (!mont.saidas.length) avisos.push("Nenhuma porta de saída marcada: os eleitores saem pela porta em que entraram.");
   if (mont.zonas.some(z => z.dividePorta)) avisos.push("Duas zonas dividem a mesma porta de entrada; a vazão da porta é partilhada.");

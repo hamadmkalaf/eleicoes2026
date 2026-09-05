@@ -9,6 +9,8 @@ const CORES_ZONA = ["var(--z1)", "var(--z2)", "var(--z3)", "var(--z4)"];
 const LETRAS = ["A", "B", "C", "D"];
 const CHAVE_RASCUNHO = "simulador-hall2-cenario-v1";
 const CHAVE_COMPARATIVO = "simulador-hall2-comparativo-v1";
+const CHAVE_ARRANJOS = "simulador-hall2-arranjos-v1";
+const AVULSO = "~atual";
 const SUL = BASE.portas.filter(p => p.face === "sul");
 const SUL_USAVEIS = SUL.filter(p => p.estado !== "emergencia").map(p => p.id);
 const ALT = BASE.salao.altura, LARG = BASE.salao.largura;
@@ -35,6 +37,194 @@ const fmt = n => Math.round(n).toLocaleString("pt-BR");
 const vg = (v, c = 1) => Number(v).toFixed(c).replace(".", ",");
 const pct = v => Math.round(v * 100) + " %";
 const min = seg => Math.round(seg / 60) + " min";
+
+/* ------------------------------------------------------------------ */
+/* Biblioteca de arranjos das 28 mesas                                 */
+/* ------------------------------------------------------------------ */
+/* Tres origens, na mesma lista: a planta oficial (cenarios A e B), os
+ * arranjos salvos na prancheta que o gerador embutiu (branch cenarios-hall2)
+ * e os que quem abre a pagina carrega na hora, por colar ou por arquivo.
+ * Os dois primeiros grupos sao iguais para todo mundo e so mudam quando a
+ * pagina e republicada; o terceiro fica no localStorage deste navegador, e
+ * existe justamente para nao depender de republicacao. Os dois artefatos nao
+ * conseguem se falar: cada um roda na propria origem, sem rede para fora do
+ * claude.ai e sem localStorage em comum. */
+const ARRANJOS_EMBUTIDOS = (typeof ARRANJOS !== "undefined" && Array.isArray(ARRANJOS) ? ARRANJOS : [])
+  .map(a => M.normalizaArranjo(a, BASE)).filter(Boolean)
+  .map((a, i) => ({...a, id: a.id || "prancheta-" + (i + 1)}));
+
+const slug = s => (String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase().slice(0, 40)) || "arranjo";
+/* Id estavel: recarregar o mesmo arquivo atualiza a entrada em vez de duplicar. */
+const idImportado = a => "imp:" + slug(a.id || a.nome) +
+  (a.criadoEm ? "-" + a.criadoEm.replace(/\D/g, "").slice(0, 14) : "");
+
+function leImportados(){
+  try {
+    const v = JSON.parse(localStorage.getItem(CHAVE_ARRANJOS) || "[]");
+    return Array.isArray(v) ? v : [];
+  } catch (e) { return []; }
+}
+function guardaImportados(lista){
+  try { localStorage.setItem(CHAVE_ARRANJOS, JSON.stringify(lista.slice(0, 40))); }
+  catch (e) { return false; }
+  return true;
+}
+function arranjosImportados(){
+  return leImportados().map(a => M.normalizaArranjo(a, BASE)).filter(Boolean)
+    .map(a => ({...a, id: a.id || idImportado(a)}));
+}
+function arranjosConhecidos(){
+  return [
+    {id: "A", nome: "Cenário A", origem: "planta oficial", base: "A", alteracoes: []},
+    {id: "B", nome: "Cenário B", origem: "planta oficial", base: "B", alteracoes: []},
+    ...ARRANJOS_EMBUTIDOS.map(a => ({...a, origem: "da prancheta"})),
+    ...arranjosImportados().map(a => ({...a, origem: "carregado aqui"})),
+  ];
+}
+/* Qual entrada da lista o cenario atual esta usando. Um cenario pode carregar
+ * um arranjo que nao esta em lista nenhuma -- rascunho antigo, Cenario Claude,
+ * JSON colado -- e nesse caso ele entra na lista como avulso, para continuar
+ * visivel e reversivel. */
+function idArranjoAtual(){
+  const s = cen && cen.salao ? cen.salao : {};
+  if (s.arranjo && arranjosConhecidos().some(a => a.id === s.arranjo)) return s.arranjo;
+  if (!(s.alteracoes || []).length) return s.base === "B" ? "B" : "A";
+  return AVULSO;
+}
+function listaArranjos(){
+  const L = arranjosConhecidos();
+  if (idArranjoAtual() === AVULSO) {
+    const s = cen.salao;
+    L.push({id: AVULSO, nome: s.nome || "arranjo deste cenário", origem: "do cenário",
+            base: s.base === "B" ? "B" : "A", alteracoes: s.alteracoes || []});
+  }
+  return L;
+}
+
+/* Le um ou varios arranjos de um texto JSON. Aceita um objeto, uma lista de
+ * objetos, e tambem um cenario inteiro do simulador (do qual aproveita so o
+ * salao). Devolve o que entrou e o que foi recusado, sem gravar nada. */
+function leArranjosDoTexto(bruto, rotulo){
+  let obj;
+  try { obj = JSON.parse(bruto); }
+  catch (e) { return {aceitos: [], recusados: [rotulo + ": não é um JSON válido"]}; }
+  const aceitos = [], recusados = [];
+  for (const c of (Array.isArray(obj) ? obj : [obj])) {
+    const cenarioInteiro = c && c.zonas && c.portas && c.salao;
+    const fonte = cenarioInteiro ? {...c.salao, nome: c.salao.nome || c.nome} : c;
+    const a = M.normalizaArranjo(fonte, BASE);
+    if (a) aceitos.push(a);
+    else recusados.push((c && c.nome ? "“" + c.nome + "”" : rotulo) + ": não é um arranjo da prancheta");
+  }
+  return {aceitos, recusados};
+}
+/* Grava os arranjos lidos e devolve o id do primeiro, para ja selecionar. */
+function guardaArranjos(aceitos){
+  const guardados = leImportados();
+  let primeiro = null;
+  for (const a of aceitos) {
+    const registro = {nome: a.nome, base: a.base, alteracoes: a.alteracoes,
+                      criadoEm: a.criadoEm, id: idImportado(a)};
+    const i = guardados.findIndex(g => (g.id || "") === registro.id);
+    if (i >= 0) guardados[i] = registro; else guardados.unshift(registro);
+    if (!primeiro) primeiro = registro.id;
+  }
+  return guardaImportados(guardados) ? primeiro
+    : (avisaImport("Não deu para guardar neste navegador (armazenamento cheio ou bloqueado)."), null);
+}
+function avisaImport(msg){
+  const el = $("importAviso");
+  el.textContent = msg || ""; el.hidden = !msg;
+}
+function carregaArranjosDe(textos){
+  const aceitos = [], recusados = [];
+  for (const [texto, rotulo] of textos) {
+    const r = leArranjosDoTexto(texto, rotulo);
+    aceitos.push(...r.aceitos); recusados.push(...r.recusados);
+  }
+  const id = aceitos.length ? guardaArranjos(aceitos) : null;
+  if (id) {
+    $("importCaixa").hidden = true; $("importTexto").value = ""; avisaImport("");
+    escolheArranjo(id);
+    const n = aceitos.length;
+    avisaEstado(`${n} arranjo${n > 1 ? "s" : ""} carregado${n > 1 ? "s" : ""}` +
+      (recusados.length ? ` · ${recusados.length} recusado(s)` : ""));
+  } else {
+    avisaImport(recusados.join(" · ") || "Nada para carregar.");
+  }
+}
+/* Recado curto no cabecalho, ao lado do nome do cenario. */
+let apagaEstado = null;
+function avisaEstado(msg){
+  const el = $("nomeAtual");
+  el.textContent = msg;
+  clearTimeout(apagaEstado);
+  apagaEstado = setTimeout(() => { el.textContent = cen && cen.nome ? cen.nome : ""; }, 4000);
+}
+function escolheArranjo(id){
+  const a = listaArranjos().find(x => x.id === id);
+  if (!a) return;
+  cen.salao = {base: a.base, alteracoes: a.alteracoes.map(m => ({...m})),
+               arranjo: a.id, nome: a.nome};
+  preencher(); atualizaDerivados();
+}
+function removeImportado(id){
+  const guardados = leImportados().filter(g => (g.id || "") !== id);
+  guardaImportados(guardados);
+  // se era o arranjo em uso, ele continua no cenário -- vira avulso, não some do olho
+  if (idArranjoAtual() === id && cen.salao) delete cen.salao.arranjo;
+  preencher(); atualizaDerivados();
+}
+
+/* Miniatura da planta com as 28 mesas do arranjo; as em conflito saem em
+ * vermelho, como na prancheta. */
+function miniPlanta(arranjo, conflitos){
+  const svg = el("svg", {viewBox: `-1.5 -1.5 ${LARG + 3} ${ALT + 3}`, "aria-hidden": "true"});
+  el("polygon", {points: BASE.salao.contorno.map(p => `${p[0]},${fy(p[1])}`).join(" "),
+    fill: "var(--folha)", stroke: "var(--regua)", "stroke-width": .45}, svg);
+  // as zonas protegidas sao a unica diferenca entre as plantas A e B: sem elas
+  // as duas miniaturas sairiam iguais, porque as 28 mesas estao no mesmo lugar
+  for (const z of (BASE.cenarios[arranjo.base] || BASE.cenarios.A).zonas)
+    el("rect", {class: "zona", x: z.rect[0], y: fy(z.rect[3]), width: z.rect[2] - z.rect[0],
+      height: z.rect[3] - z.rect[1], fill: "var(--emerg)", opacity: .13}, svg);
+  const ruins = new Set((conflitos || []).map(c => c.mesa));
+  for (const m of M.mesasDoArranjo(BASE, arranjo)) {
+    const r = M.corpoRect(BASE.modulo, m), ruim = ruins.has(m.n);
+    el("rect", {class: "mesa", x: r[0], y: fy(r[3]), width: r[2] - r[0], height: r[3] - r[1],
+      fill: ruim ? "var(--falha)" : "var(--mesa)", opacity: ruim ? .95 : .7}, svg);
+  }
+  return svg;
+}
+function desenhaArranjos(){
+  const G = $("arranjos"); G.innerHTML = "";
+  const atual = idArranjoAtual();
+  for (const a of listaArranjos()) {
+    const conf = M.conflitosArranjo(BASE, a), sel = a.id === atual;
+    const nd = a.alteracoes.length;
+    const resumo = `${a.nome}, ${a.origem}, ` +
+      (nd ? `${nd} mesa${nd > 1 ? "s" : ""} fora do lugar` : "planta original") +
+      (conf.length ? `, ${conf.length} em conflito` : "");
+    const bt = h("button", {class: "escolher", "aria-pressed": String(sel), "aria-label": resumo});
+    bt.appendChild(miniPlanta(a, conf));
+    bt.appendChild(h("span", {class: "nome", text: a.nome}));
+    bt.appendChild(h("span", {class: "meta",
+      text: `${a.origem} · ${nd ? nd + " fora do lugar" : "planta original"}`}));
+    if (conf.length) {
+      bt.appendChild(h("span", {class: "meta ruim",
+        text: `${conf.length} mesa${conf.length > 1 ? "s" : ""} em conflito`}));
+      tooltip(bt, () => conf.map(c => `<b>mesa ${c.mesa}</b> sobre ${c.motivos.join(", ")}`).join("<br>"));
+    }
+    bt.addEventListener("click", () => escolheArranjo(a.id));
+    const card = h("div", {class: "arranjo" + (sel ? " sel" : "")}, bt);
+    if (a.origem === "carregado aqui") {
+      const rm = h("button", {class: "rem", text: "remover"});
+      rm.addEventListener("click", () => removeImportado(a.id));
+      card.appendChild(rm);
+    }
+    G.appendChild(card);
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /* Estado                                                              */
@@ -136,15 +326,37 @@ function preencher(){
   $("tVoto").value = cen.tempos.voto; $("cv").value = cen.tempos.cv; $("just").value = Math.round((cen.extras.justificativas || 0) * 100);
   $("triAtend").value = cen.ring3.atendentes; $("triSeg").value = cen.ring3.seg; $("ring3Cap").value = cen.ring3.capacidade;
   $("runs").value = cen.sim.runs; $("seed").value = cen.sim.seed;
-  for (const b of document.querySelectorAll("#tela-premissas [data-base]")) b.setAttribute("aria-pressed", String(b.dataset.base === (cen.salao.base || "A")));
+  desenhaArranjos();
+  const arr = listaArranjos().find(a => a.id === idArranjoAtual());
   const na = (cen.salao.alteracoes || []).length;
-  $("alteracoesInfo").textContent = na ? `${na} mesa${na > 1 ? "s" : ""} deslocada${na > 1 ? "s" : ""} em relação à planta original` : "planta original";
+  const conf = arr ? M.conflitosArranjo(BASE, arr).length : 0;
+  $("alteracoesInfo").textContent = `${arr ? arr.nome : "arranjo"} · ` +
+    (na ? `${na} mesa${na > 1 ? "s" : ""} fora da planta original` : "planta original") +
+    (conf ? ` · ${conf} em conflito` : "");
 }
 
 function ligaControles(){
   $("nomeCenario").addEventListener("input", ev => { cen.nome = ev.target.value; $("nomeAtual").textContent = cen.nome; guardaRascunho(); });
-  for (const b of document.querySelectorAll("#tela-premissas [data-base]"))
-    b.addEventListener("click", () => { cen.salao = {base: b.dataset.base, alteracoes: []}; preencher(); atualizaDerivados(); });
+  $("btnImportar").addEventListener("click", () => {
+    const cx = $("importCaixa"); cx.hidden = !cx.hidden;
+    if (!cx.hidden) { avisaImport(""); $("importTexto").focus(); }
+  });
+  $("importCancelar").addEventListener("click", () => { $("importCaixa").hidden = true; avisaImport(""); });
+  $("importAplicar").addEventListener("click", () => {
+    const t = $("importTexto").value.trim();
+    if (!t) { avisaImport("Cole o JSON de um cenário da prancheta, ou escolha um arquivo."); return; }
+    carregaArranjosDe([[t, "o texto colado"]]);
+  });
+  $("importArquivo").addEventListener("change", async ev => {
+    const arquivos = [...ev.target.files];
+    ev.target.value = "";                       // permite reescolher o mesmo arquivo
+    const textos = [];
+    for (const f of arquivos) {
+      try { textos.push([await f.text(), f.name]); }
+      catch (e) { avisaImport(`Não deu para ler ${f.name}.`); }
+    }
+    if (textos.length) carregaArranjosDe(textos);
+  });
   for (const b of $("nZonas").querySelectorAll("button"))
     b.addEventListener("click", () => {
       const n = +b.dataset.n;
@@ -188,24 +400,18 @@ function ligaControles(){
   $("btnColar").addEventListener("click", () => { $("colarCaixa").hidden = false; $("colarTexto").focus(); });
   $("colarCancelar").addEventListener("click", () => { $("colarCaixa").hidden = true; });
   $("colarAplicar").addEventListener("click", () => {
+    const texto = $("colarTexto").value;
     let obj;
-    try { obj = JSON.parse($("colarTexto").value); } catch (e) { alert("Isso não é um JSON válido."); return; }
+    try { obj = JSON.parse(texto); } catch (e) { alert("Isso não é um JSON válido."); return; }
     $("colarCaixa").hidden = true; $("colarTexto").value = "";
     if (obj && obj.zonas && obj.portas) { aplica(obj); return; }
-    if (obj && (obj.base === "A" || obj.base === "B") && (Array.isArray(obj.alteracoes) || Array.isArray(obj.mrvs))) {
-      // cenário salvo da prancheta: só muda o salão
-      let alteracoes = obj.alteracoes || [];
-      if (Array.isArray(obj.mrvs) && obj.mrvs.length === 28) {
-        const orig = BASE.cenarios[obj.base].mrvs;
-        alteracoes = obj.mrvs.filter(m => { const o = orig.find(q => q.n === m.n); return o && (o.x !== m.x || o.y !== m.y || o.rot !== m.rot); })
-          .map(m => ({n: m.n, x: m.x, y: m.y, rot: m.rot, lado: m.lado}));
-      }
-      cen.salao = {base: obj.base, alteracoes};
-      if (obj.nome) cen.nome = `${cen.nome || "cenário"} · salão “${obj.nome}”`;
-      preencher(); atualizaDerivados(); guardaRascunho();
-      return;
+    // arranjo salvo da prancheta: entra na biblioteca do bloco Salão e é selecionado
+    const {aceitos, recusados} = leArranjosDoTexto(texto, "o texto colado");
+    if (aceitos.length) {
+      const id = guardaArranjos(aceitos);
+      if (id) { escolheArranjo(id); avisaEstado(`Arranjo “${aceitos[0].nome}” carregado no Salão`); return; }
     }
-    alert("JSON reconhecido nem como cenário do simulador nem como cenário salvo da prancheta.");
+    alert(recusados[0] ? recusados[0] + "." : "JSON reconhecido nem como cenário do simulador nem como arranjo da prancheta.");
   });
 
   for (const b of document.querySelectorAll(".abas button")) b.addEventListener("click", () => mostraTela(b.dataset.tela));
@@ -342,6 +548,9 @@ function kpisEstaticos(){
   const A = $("avisos"); A.innerHTML = "";
   const avisos = mont.avisos.slice();
   for (const c of mont.conflitos.slice(0, 4)) avisos.push(`Fila da MRV ${c.mesa} invade ${c.com}.`);
+  const arr = listaArranjos().find(a => a.id === idArranjoAtual());
+  if (arr) for (const c of M.conflitosArranjo(BASE, arr).slice(0, 4))
+    avisos.push(`Mesa ${c.mesa} do arranjo “${arr.nome}” sobrepõe ${c.motivos.join(", ")}.`);
   if (mont.mesmaPorta.length) avisos.push(`Entrada e saída pela mesma porta: ${mont.mesmaPorta.join(", ")}.`);
   if (!mont.saidas.length) avisos.push("Nenhuma porta de saída marcada: os eleitores saem pela porta em que entraram.");
   if (mont.zonas.some(z => z.dividePorta)) avisos.push("Duas zonas dividem a mesma porta de entrada; a vazão da porta é partilhada.");

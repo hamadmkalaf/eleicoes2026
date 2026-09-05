@@ -277,14 +277,12 @@ def desenha():
             pts += [(xc, _y(y0 + 0.4) if sobe else _y(y1 - 0.4)),
                     (xc, _y(y1 - 0.4) if sobe else _y(y0 + 0.4))]
         add(f'<polyline points="{" ".join(f"{a:.1f},{b:.1f}" for a, b in pts)}" '
-            f'fill="none" stroke="#2471a3" stroke-width="1.7" '
-            f'stroke-linejoin="round" opacity="0.85"/>')
+            f'fill="none" stroke="#2471a3" stroke-width="1.8" '
+            f'stroke-linejoin="round" opacity="0.9" marker-end="url(#a)"/>')
         cx = _x(eb)
-        add(f'<rect x="{_x(xa)}" y="{_y(y1)+4}" width="{LARG_BLOCO*ESC}" '
-            f'height="36" fill="#fff" opacity="0.82"/>')
-        add(f'<text x="{cx}" y="{_y(y1)+21}" {BIG} text-anchor="middle">'
+        add(f'<text x="{cx}" y="{_y(y1)-26}" {BIG} text-anchor="middle">'
             f'ENTRADA {nome}</text>')
-        add(f'<text x="{cx}" y="{_y(y1)+35}" {SM} text-anchor="middle">'
+        add(f'<text x="{cx}" y="{_y(y1)-12}" {SM} text-anchor="middle">'
             f'{BALIZAS} balizas · {r["pessoas_bloco"]:.0f} pessoas</text>')
         # entrada no bloco
         xent = _x(base + passo * 0.5 * LARG_BALIZA)
@@ -299,7 +297,7 @@ def desenha():
         if idx == 0:
             _tag(out, "1", _x(xa) - 13, _y(y0 + PROF_SERPENTE * 0.72))
             _tag(out, "2", _x(eb), _y(y0 + PROF_SERPENTE * 0.5))
-            _tag(out, "5", (_x(xsai) + _x(ep)) / 2, _y(y1 + ZONA_DESCARGA / 2))
+            _tag(out, "5", _x(xsai) - 16, _y(y1 + ZONA_DESCARGA * 0.72))
 
     # ---- entrada no canto sudeste ----------------------------------------
     ey = _y(FOLGA_SUL + CORREDOR_FUNDO / 2)

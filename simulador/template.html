@@ -109,6 +109,20 @@ header .dir{margin-left:auto; display:flex; gap:8px; align-items:center; flex-wr
 .kpi dd.ruim{color:var(--falha-txt); font-weight:600} .kpi dd.bom{color:var(--ok-txt)}
 .curva{display:block; width:100%; height:auto}
 .cenarios{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+.arranjos{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px}
+.arranjo{display:flex; flex-direction:column; border:1px solid var(--regua); background:var(--papel); padding:6px}
+.arranjo.sel{border-color:var(--entrada); box-shadow:inset 0 0 0 1px var(--entrada); background:var(--folha)}
+.arranjo .escolher{display:flex; flex-direction:column; gap:5px; align-items:stretch; text-align:left; background:none; border:0; padding:0; cursor:pointer; color:var(--meio); width:100%}
+.arranjo.sel .escolher{color:var(--tinta)}
+.arranjo .escolher:hover{color:var(--tinta)}
+.arranjo svg{display:block; width:100%; height:auto; background:var(--prancha); border:1px solid var(--regua2)}
+.arranjo .nome{font-size:.78rem; font-weight:600; line-height:1.25; overflow-wrap:anywhere}
+.arranjo .meta{font-family:"IBM Plex Mono",monospace; font-size:.66rem; color:var(--fraco); margin-top:3px}
+.arranjo .meta.ruim{color:var(--falha-txt); font-weight:600}
+.arranjo .rem{align-self:flex-start; margin-top:4px; background:none; border:0; padding:0; font-size:.68rem; color:var(--fraco); cursor:pointer; text-decoration:underline}
+.arranjo .rem:hover{color:var(--falha-txt)}
+.arquivo{display:inline-block; background:var(--papel); border:1px solid var(--regua); padding:3px 8px; font-size:.74rem; cursor:pointer; color:var(--meio)}
+.arquivo:hover{color:var(--tinta); border-color:var(--fraco)}
 textarea{width:100%; min-height:70px; font-family:"IBM Plex Mono",monospace; font-size:.7rem; background:var(--papel); color:var(--tinta); border:1px solid var(--regua); resize:vertical}
 .aviso{font-size:.78rem; color:var(--aviso); margin:6px 0 0}
 
@@ -207,15 +221,22 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 
   <div class="bloco">
     <h2>Salão</h2>
-    <p class="pergunta">Qual arranjo das 28 mesas da prancheta serve de base?</p>
-    <div class="linha">
-      <div class="opcoes" role="group" aria-label="Base da prancheta">
-        <button data-base="A" aria-pressed="true">Cenário A da prancheta</button>
-        <button data-base="B" aria-pressed="false">Cenário B</button>
-      </div>
+    <p class="pergunta">Qual arranjo das 28 mesas serve de base? As duas primeiras são a planta oficial; as demais vieram da prancheta. Clique para trocar — o resto das premissas fica como está.</p>
+    <div class="arranjos" id="arranjos" role="group" aria-label="Arranjo das mesas"></div>
+    <div class="linha" style="margin-top:10px">
+      <button class="acao mini" id="btnImportar">Carregar arranjo…</button>
       <span class="dica" id="alteracoesInfo"></span>
     </div>
-    <p class="dica" style="margin-top:8px">Para usar um arranjo salvo na prancheta, copie o cenário lá e cole em <strong>Colar cenário</strong> acima: o simulador lê o mesmo JSON.</p>
+    <div id="importCaixa" hidden style="margin-top:10px">
+      <p class="dica" style="margin-bottom:6px">Na prancheta, clique em <strong>Copiar cenário</strong> e cole o JSON aqui — ou escolha um arquivo <span class="mono">.json</span> da pasta <span class="mono">cenarios/</span>. O arranjo entra na lista acima e fica guardado neste navegador.</p>
+      <textarea id="importTexto" placeholder="cole aqui o JSON de um cenário salvo da prancheta" aria-label="JSON do arranjo"></textarea>
+      <div class="linha" style="margin-top:6px">
+        <button class="acao mini" id="importAplicar">Carregar</button>
+        <label class="arquivo">Escolher arquivo…<input type="file" id="importArquivo" accept=".json,application/json" multiple hidden></label>
+        <button class="acao mini" id="importCancelar">Cancelar</button>
+      </div>
+      <p class="aviso" id="importAviso" hidden></p>
+    </div>
   </div>
 
   <div class="bloco">
@@ -383,6 +404,7 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 <script>
 /*__BASE__*/
 /*__MRVS__*/
+/*__ARRANJOS__*/
 </script>
 <script>
 /*__MODELO_JS__*/

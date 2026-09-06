@@ -63,6 +63,11 @@ lidas na prancheta. A aferição em campo resolve a divergência.
 
 ## 3. Layout
 
+![Layout do Ring 3](layout_ring3.png)
+
+*Desenho em escala: `saidas/layout_ring3.svg` (fonte) e `saidas/layout_ring3.png`
+(visualização), gerados por `scripts/layout_ring3.py`.*
+
 O eleitor entra pelo **canto sudeste**, percorre o **corredor de distribuição**
 no fundo (bordo sul) de leste para oeste, e é desviado para o serpenteado da
 sua urna — **C** primeiro, depois **B**, depois **A**. Cada serpenteado
@@ -75,28 +80,39 @@ descarrega ao norte, na sua porta.
 | Faixa de descarga | **5,0 m** |
 | Balizas por corredor | **5**, de **1,40 m** |
 | Largura de cada bloco | 7,0 m |
-| Passo entre blocos | 9,0 m (7,0 de bloco + 2,0 de egresso) |
+| Corredor de egresso entre blocos | **4,0 m** |
+| Passo entre blocos | 11,0 m |
 | Fila por corredor | 130 m lineares |
 | **Capacidade por corredor** | **260 pessoas** (0,50 m por pessoa) |
 | **Capacidade dos três** | **780 pessoas** |
-| Reserva de flanco (sem balizas, sob marshals) | **~490 pessoas** |
-| **Total do Ring 3** | **~1.270 pessoas** |
+| Reserva de flanco | **5,0 m de cada lado**, 260 m², **~390 pessoas** |
+| **Total do Ring 3** | **~1.170 pessoas** |
 
 **Por que 5 balizas.** O número tem de ser **ímpar** — entra-se pelo sul e a
-última baliza precisa correr para o norte, onde estão as portas. E 5 × 1,40 m
-= 7,0 m é o bloco mais largo que preserva 2,0 m de egresso entre vizinhos no
-passo de 9,0 m adotado.
+última baliza precisa correr para o norte, onde estão as portas.
 
 **O bloco A é espelhado.** Nos blocos B e C entra-se pela baliza leste e sai-se
-pela oeste. No bloco A a ordem se inverte: entra-se pela oeste, sai-se pela
-leste. Sem essa inversão, a saída de A cairia **5,6 m** a oeste da porta S4 —
-uma diagonal de 48° na faixa de descarga. Com ela, **A sai exatamente sobre S4
-e C exatamente sobre S6**, e resta um único canal em diagonal, o de B, com
-2,8 m em 5,0 m de profundidade (29°). É um ajuste de montagem que não custa
-nada e elimina dois cruzamentos.
+pela oeste; no bloco A a ordem se inverte. Sem essa inversão, a saída de A
+cairia 5,6 m a oeste de S4. Com ela, os três desvios ficam entre 2,0 e 2,8 m na
+faixa de descarga de 5,0 m — ângulos de 22° a 29°, todos caminháveis.
 
-Desenho em escala: **`saidas/layout_ring3.svg`**, com cada componente de
-barreira numerado e o quantitativo ao pé.
+### Sobre a reserva de flanco
+
+A reserva de flanco é a área **sem balizas**, sob marshals, que absorve surto
+acima das 780 pessoas dos serpenteados. Está cotada no desenho: **5,0 m × 26,0 m
+de cada lado, 260 m² no total, ~390 pessoas** a 1,5 pessoa/m².
+
+Ela encolheu de 7,0 para 5,0 m por lado ao se **alargar o corredor de egresso
+entre blocos de 2,0 para 4,0 m**. A área não se perdeu — migrou de reserva
+amorfa para evacuação dimensionada, que é o uso mais defensável de espaço livre
+com 780 pessoas em fila. O custo foi um desvio de 2,0 m nos canais de descarga
+de A e C, que antes eram retos.
+
+Encolher mais exigiria alargar os blocos, e isso é contraproducente: 7 balizas
+por corredor dariam 1.092 pessoas estruturadas e flanco quase nulo, mas custam
+**354 separadores** (72 a mais do que o desenho atual) para uma capacidade
+total **menor** — 1.092 contra 1.170. Retenção aberta é mais densa por metro
+quadrado do que serpentina, porque não gasta área com balizas nem retornos.
 
 ## 4. Necessidade de separadores de barreira
 
@@ -114,28 +130,32 @@ pontas para abrir o retorno.
 | 2 | Balizas internas dos 3 blocos | 3 × 4 × 24,6 m | 295,2 | 148 |
 | 3 | Corredor de distribuição (fundo) | 2 × 36,0 − 3 vãos de 1,5 m | 67,5 | 34 |
 | 4 | Garganta de entrada (canto sudeste) | funil de pré-triagem | 10,0 | 5 |
-| 5 | Canais de descarga até S4/S5/S6 | 2 lados × (5,0 + 5,7 + 5,0) m | 31,5 | 16 |
-| | **TOTAL DO RING 3** | | **560,2** | **281** |
-| | Em mãos hoje (item d do orçamento) | 100 separadores = 200 m | −200,0 | −100 |
-| | **A ADQUIRIR** | | **362,0** | **181** |
+| 5 | Canais de descarga até S4/S5/S6 | 2 lados × (5,4 + 5,7 + 5,4) m | 33,0 | 17 |
+| | **TOTAL DO RING 3** | | **561,7** | **282** |
+| | Fornecidos pela organizadora | 200 un. de 2 m × 1 m de altura | −400,0 | −200 |
+| | **A ADQUIRIR** | | **164,0** | **82** |
 
-> **181 separadores adicionais ≈ EUR 2.357**, ao custo unitário já praticado
-> (EUR 1.303,00 ÷ 200 m = EUR 6,51/m). São ~15% do orçamento revisado de
+> **82 separadores adicionais ≈ EUR 1.068**, ao custo unitário de referência
+> (EUR 1.303,00 ÷ 200 m = EUR 6,51/m). São ~7% do orçamento revisado de
 > EUR 15.703,32.
-
-E isso esgota o estoque atual no Ring 3, **sem sobrar um metro para dentro do
-Hall 2**. Quando o interior for dimensionado, o pedido cresce.
 
 As balizas dominam o quantitativo: os itens 1 e 2 somam 451 m, **80% do total**.
 Cada baliza a menos por corredor devolve ~53 m (27 separadores, ~EUR 344) e
 custa 156 pessoas de capacidade.
+
+**Especificação recebida:** separadores de barreira externa, **2 m de
+comprimento × 1 m de altura**, fornecidos pela empresa organizadora do evento.
+A altura de 1 m é adequada para canalizar fila, mas **não é barreira de contenção
+de multidão** — não suporta carga lateral de uma massa em pressão. Isso reforça
+que os corredores de egresso de 4,0 m e a liberação em lotes não são luxo: são
+o que impede que a barreira seja solicitada estruturalmente.
 
 ## 5. O Ring 3 comporta a fila prevista?
 
 Da coluna FILA TOTAL de `scripts/simula_fluxo.py`, comparada à capacidade do
 Hall 2 (~1.000–1.200 em fila interna) somada às ~1.300 do Ring 3:
 
-| Arranjo da mesa | Fila total no pico | Cabe em Hall 2 (~1.100) + Ring 3 (~1.270)? |
+| Arranjo da mesa | Fila total no pico | Cabe em Hall 2 (~1.100) + Ring 3 (~1.170)? |
 |---|---|---|
 | Dois cadernos em paralelo, qualquer t_id | 0 | Sim — o Ring 3 nem abre |
 | Pipeline, t_id 55 s | 439 | Sim, só no Hall 2 |
@@ -196,7 +216,7 @@ percurso** — inaceitável para quem tem prioridade legal.
    para os eixos coincidirem com as portas 2.7, 2.4 e 2.1.
 2. Conciliar a numeração S1–S9 da prancheta com a numeração 2.1–2.23 da
    planta do RDS, que dão posições divergentes para as mesmas aberturas.
-3. Submeter o pedido de **+181 separadores (~EUR 2.357)** para o Ring 3, e
+3. Submeter o pedido de **+82 separadores (~EUR 1.068)** para o Ring 3, e
    dimensionar à parte a necessidade do interior do Hall 2.
 4. Cotar cobertura leve para os últimos 8–10 m de cada serpenteado.
 5. Definir o arranjo da mesa receptora com o Cartório Eleitoral — **é o que

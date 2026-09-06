@@ -23,6 +23,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 SAIDA = RAIZ / "saidas" / "layout_ring3.svg"
+SAIDA_PNG = RAIZ / "saidas" / "layout_ring3.png"
 
 # --- fachada sul do Hall 2 -------------------------------------------------
 # metros do canto sudoeste, lidos na prancheta do Posto e convertidos pela
@@ -45,10 +46,11 @@ ZONA_DESCARGA = 5.0     # leque convergente ate as portas
 
 LARG_BALIZA = 1.40
 PASSO_PESSOA = 0.50
-CORREDOR_EGRESSO = 2.0  # vao livre entre blocos vizinhos
+CORREDOR_EGRESSO = 4.0  # vao livre entre blocos vizinhos
 METROS_POR_UNIDADE = 2.0
 EUR_POR_METRO = 6.51
-SEPARADORES_EM_MAOS = 100
+SEPARADORES_EM_MAOS = 200      # fornecidos pela organizadora do evento
+ALTURA_SEPARADOR = 1.0        # metros
 
 BALIZAS = 5             # tem de ser impar: entra-se pelo sul e a ultima
                         # baliza precisa correr para o norte
@@ -113,7 +115,12 @@ def resumo():
     metros = sum(i[3] for i in itens)
     unid = sum(i[4] for i in itens)
     fila = BALIZAS * PROF_SERPENTE
+    larg_flanco = (LARGURA - (2 * PASSO_BLOCOS + LARG_BLOCO)) / 2
+    area_flanco = 2 * larg_flanco * PROF_SERPENTE
     return {
+        "larg_flanco": larg_flanco,
+        "area_flanco": area_flanco,
+        "pessoas_flanco": area_flanco * 1.5,
         "itens": itens,
         "metros": metros,
         "unidades": unid,
@@ -233,15 +240,28 @@ def desenha():
     # ---- reserva de flanco ------------------------------------------------
     fl = eixos_bloco[0] - LARG_BLOCO / 2
     fr = eixos_bloco[2] + LARG_BLOCO / 2
+    larg_fl = fl
+    area_fl = larg_fl * PROF_SERPENTE
+    pess_fl = area_fl * 1.5
     for xa, xb in ((0.0, fl), (fr, LARGURA)):
         add(f'<rect x="{_x(xa)}" y="{_y(y1)}" width="{(xb-xa)*ESC}" '
-            f'height="{PROF_SERPENTE*ESC}" fill="#f6f3ec" stroke="#d8cdb4" '
-            f'stroke-dasharray="4 4"/>')
+            f'height="{PROF_SERPENTE*ESC}" fill="#f6f3ec" stroke="#c8b892" '
+            f'stroke-width="1.4" stroke-dasharray="6 4"/>')
         cxm = _x((xa + xb) / 2)
-        add(f'<text x="{cxm}" y="{_y(y0+PROF_SERPENTE/2)}" font-size="11" '
-            f'fill="#9c8b63" text-anchor="middle" '
-            f'transform="rotate(-90 {cxm} {_y(y0+PROF_SERPENTE/2)})">'
-            f'reserva de flanco (sem balizas)</text>')
+        ymid = _y(y0 + PROF_SERPENTE / 2)
+        for k, (txt, tam, cor) in enumerate((
+                ("RESERVA DE FLANCO", 12, "#8a7742"),
+                (f"{larg_fl:.1f} × {PROF_SERPENTE:.1f} m  ·  {area_fl:.0f} m²", 11, "#9c8b63"),
+                (f"~{pess_fl:.0f} pessoas, sem balizas", 11, "#9c8b63"))):
+            add(f'<text x="{cxm + (k-1)*15}" y="{ymid}" font-size="{tam}" '
+                f'fill="{cor}" text-anchor="middle" font-weight='
+                f'"{"bold" if k == 0 else "normal"}" '
+                f'transform="rotate(-90 {cxm + (k-1)*15} {ymid})">{txt}</text>')
+        # cota da largura do flanco
+        add(f'<line x1="{_x(xa)+2}" y1="{_y(y1)-9}" x2="{_x(xb)-2}" '
+            f'y2="{_y(y1)-9}" stroke="#8a7742" stroke-width="1.2"/>')
+        add(f'<text x="{cxm}" y="{_y(y1)-13}" font-size="11" fill="#8a7742" '
+            f'text-anchor="middle">{larg_fl:.1f} m</text>')
 
     # ---- corredor de distribuicao ----------------------------------------
     add(f'<rect x="{_x(0)}" y="{_y(y0)}" width="{LARGURA*ESC}" '
@@ -299,6 +319,14 @@ def desenha():
             _tag(out, "1", _x(xa) - 13, _y(y0 + PROF_SERPENTE * 0.72))
             _tag(out, "2", _x(eb), _y(y0 + PROF_SERPENTE * 0.5))
             _tag(out, "5", _x(xsai) - 16, _y(y1 + ZONA_DESCARGA * 0.72))
+
+    # ---- cotas dos corredores de egresso ---------------------------------
+    for ea, eb2 in zip(eixos_bloco, eixos_bloco[1:]):
+        xm = (ea + eb2) / 2
+        add(f'<text x="{_x(xm)}" y="{_y(y0 + PROF_SERPENTE/2)}" font-size="11" '
+            f'fill="#7f8c8d" text-anchor="middle" '
+            f'transform="rotate(-90 {_x(xm)} {_y(y0 + PROF_SERPENTE/2)})">'
+            f'egresso {CORREDOR_EGRESSO:.1f} m</text>')
 
     # ---- entrada no canto sudeste ----------------------------------------
     ey = _y(FOLGA_SUL + CORREDOR_FUNDO / 2)
@@ -368,8 +396,9 @@ def desenha():
     add(f'<text x="{_x(0)+cols[4]+70}" y="{ty}" {LBL} font-weight="bold" '
         f'text-anchor="end">{r["unidades"]}</text>')
     ty += 20
-    add(f'<text x="{_x(0)+cols[1]}" y="{ty}" {SM}>Em mãos hoje (item d do '
-        f'orçamento)</text>')
+    add(f'<text x="{_x(0)+cols[1]}" y="{ty}" {SM}>Fornecidos pela organizadora '
+        f'({SEPARADORES_EM_MAOS} un. de {METROS_POR_UNIDADE:.0f} m × '
+        f'{ALTURA_SEPARADOR:.0f} m de altura)</text>')
     add(f'<text x="{_x(0)+cols[4]+70}" y="{ty}" {SM} text-anchor="end">'
         f'−{SEPARADORES_EM_MAOS}</text>')
     ty += 20
@@ -383,9 +412,11 @@ def desenha():
 
     ty += 28
     for t in [
-        f'Capacidade: {r["pessoas_total"]:.0f} pessoas nos serpenteados '
+        f'Capacidade: {r["pessoas_total"]:.0f} nos serpenteados '
         f'({r["pessoas_bloco"]:.0f} por corredor, a {PASSO_PESSOA:.2f} m por '
-        f'pessoa) + ~490 na reserva de flanco.',
+        f'pessoa) + ~{r["pessoas_flanco"]:.0f} no flanco '
+        f'({r["larg_flanco"]:.1f} m de cada lado) = '
+        f'~{r["pessoas_total"]+r["pessoas_flanco"]:.0f} no total.',
         f'Blocos a {PASSO_BLOCOS:.1f} m de eixo a eixo; portas S4/S5/S6 a '
         f'{PASSO_PORTAS:.1f} m. A baliza de saída de cada corredor caminha '
         + ", ".join(f"{d:.1f} m até {pt}" for (_, pt), d in zip(ENTRADAS, desvios()))
@@ -409,7 +440,21 @@ def desenha():
         raise SystemExit(f"SVG invalido, nao gravado: {erro}") from erro
 
     SAIDA.write_text(svg, encoding="utf-8")
+    _exporta_png()
     return r
+
+
+def _exporta_png(dpi=130):
+    """Exporta um PNG do desenho, para quem le o PR ou o markdown no GitHub.
+
+    Opcional: se o pymupdf nao estiver instalado, so o SVG e gerado.
+    """
+    try:
+        import pymupdf
+    except ImportError:
+        print("pymupdf ausente: PNG nao gerado (o SVG e a fonte da verdade).")
+        return
+    pymupdf.open(SAIDA)[0].get_pixmap(dpi=dpi).save(SAIDA_PNG)
 
 
 def main():
@@ -431,15 +476,22 @@ def main():
     print("-" * len(cab))
     print(f"{'':>3} {'TOTAL DO RING 3':<40} {'':<34} {r['metros']:>8.1f} "
           f"{r['unidades']:>6}")
-    print(f"{'':>3} {'Em mãos (item d)':<40} {'':<34} {200.0:>8.1f} "
+    print(f"{'':>3} {'Fornecidos pela organizadora':<40} {'':<34} "
+          f"{SEPARADORES_EM_MAOS*METROS_POR_UNIDADE:>8.1f} "
           f"{SEPARADORES_EM_MAOS:>6}")
     print(f"{'':>3} {'A ADQUIRIR':<40} {'':<34} "
           f"{r['faltam']*METROS_POR_UNIDADE:>8.1f} {r['faltam']:>6}"
           f"   ≈ EUR {r['custo']:,.0f}")
     print(f"\nCapacidade: {r['pessoas_total']:.0f} nos serpenteados "
-          f"({r['pessoas_bloco']:.0f} por corredor) + ~490 de flanco.")
+          f"({r['pessoas_bloco']:.0f} por corredor) + "
+          f"~{r['pessoas_flanco']:.0f} no flanco "
+          f"({r['larg_flanco']:.1f} m de cada lado, {r['area_flanco']:.0f} m²) "
+          f"= ~{r['pessoas_total']+r['pessoas_flanco']:.0f} no total.")
     desenha()
     print(f"Desenho: {SAIDA.relative_to(RAIZ)}")
+    if SAIDA_PNG.exists():
+        print(f"         {SAIDA_PNG.relative_to(RAIZ)} "
+              f"({SAIDA_PNG.stat().st_size//1024} KB)")
 
 
 if __name__ == "__main__":

@@ -52,12 +52,17 @@ PROFUNDIDADE = 35.0     # sul-norte, m; o norte encara o Hall 2
 
 FOLGA_SUL = 1.5
 CORREDOR_FUNDO = 2.5    # corredor de distribuicao
-ZONA_DESCARGA = 5.0     # leque convergente ate as portas
+# Faixa ao norte. NAO e mais um leque de descarga com canais balizados: e uma
+# passagem livre, estreita, que serve de rota de maca e de acesso de socorro a
+# pe no sentido leste-oeste. Os tres fluxos saem do serpenteado e atravessam-na
+# sob orientacao de marshal, sem barreira.
+FAIXA_ACESSO = 2.5      # rota de maca / socorro, ao norte
 
 LARG_BALIZA = 1.40
 PASSO_PESSOA = 0.50
 CORREDOR_EGRESSO = 2.6  # vao livre entre blocos vizinhos
-LARG_FLANCO = 5.0       # baia de reserva dedicada, em cada flanco
+# LARG_FLANCO nao e mais escolhido: e o que sobra da largura depois dos blocos
+# e dos corredores de egresso. Assim a geometria fecha nos 39 m por construcao.
 DENS_BAIA = 1.5         # pessoas/m2 na baia, sob marshal, sem balizas
 VAO_ACESSO = 1.5        # largura de cada vao controlado
 
@@ -70,7 +75,10 @@ FLUXO_EGRESSO = 82.0        # pessoas / (m x min)
 TEMPO_ALVO_EVAC = 8.0       # minutos
 DENS_MAX_SEGURA = 2.0       # pessoas/m2
 LARG_MIN_CORREDOR = 1.2     # minimo por faixa de fluxo de pedestres
-LARG_MIN_VEICULO = 3.5      # minimo para acesso de veiculo de emergencia
+# Acesso de veiculo de emergencia ao interior do Ring 3 foi dispensado pelo
+# Posto. O que se exige e passagem de MACA a pe, que a faixa ao norte (2,5 m) e
+# os corredores de egresso (2,6 m) atendem com folga sobre o minimo de 1,2 m.
+LARG_MIN_MACA = 1.2
 SAIDAS_ATUAIS = 1.5         # so a garganta sudeste, hoje
 
 METROS_POR_UNIDADE = 2.0
@@ -80,16 +88,19 @@ SEPARADORES_EM_MAOS = 200      # fornecidos pela organizadora do evento
 
 # Balizas por bloco (A, B, C), todas impares: entra-se pelo sul e a ultima
 # baliza precisa correr para o norte, onde ficam as portas.
-# B recebe 7 por ser o unico corredor sem baia de flanco.
-BALIZAS = (5, 7, 5)
+# Iguais para as tres portas, por decisao do Posto. B continua sem baia de
+# flanco, entao sua capacidade total fica menor — o que se compensa na
+# ATRIBUICAO das urnas, nao na geometria (ver simula_fluxo.atribui_entradas).
+BALIZAS = (5, 5, 5)
 # Bloco A espelhado: entra pela baliza OESTE, encostada na sua baia de flanco,
 # e sai pela leste, que cai sobre S4.
 ESPELHADO = (True, False, False)
 # Baia de flanco de cada entrada: oeste serve A, leste serve C, B nao tem.
 BAIA_DE = ("A", None, "C")
 
-PROF_SERPENTE = PROFUNDIDADE - FOLGA_SUL - CORREDOR_FUNDO - ZONA_DESCARGA
+PROF_SERPENTE = PROFUNDIDADE - FOLGA_SUL - CORREDOR_FUNDO - FAIXA_ACESSO
 LARG_BLOCOS = tuple(n * LARG_BALIZA for n in BALIZAS)
+LARG_FLANCO = (LARGURA - sum(LARG_BLOCOS) - 2 * CORREDOR_EGRESSO) / 2
 
 
 def eixos():
@@ -155,7 +166,6 @@ def componentes():
     comp_fundo = LARGURA - 3.0
     fundo = 2 * comp_fundo - 3 * VAO_ACESSO
     garganta = 10.0
-    descarga = 2 * sum(math.hypot(ZONA_DESCARGA, d) for d in desvios())
     # Baias de flanco: fecham no bordo sul (contra o corredor de fundo, com um
     # vao controlado) e no bordo norte. O lado do bloco ja e a baliza externa
     # dele, e o lado externo e o proprio limite do Ring 3.
@@ -171,10 +181,7 @@ def componentes():
          f"2 × {comp_fundo:.1f} − 3 vãos de {VAO_ACESSO:.1f} m", fundo),
         ("4", "Garganta de entrada (canto sudeste)",
          "funil de pré-triagem", garganta),
-        ("5", "Canais de descarga até S4/S5/S6",
-         "2 lados × (" + " + ".join(f"{math.hypot(ZONA_DESCARGA, d):.1f}"
-                                    for d in desvios()) + ") m", descarga),
-        ("6", "Fechamento das baias de flanco (A e C)",
+        ("5", "Fechamento das baias de flanco (A e C)",
          f"{n_baias} × ({LARG_FLANCO-VAO_ACESSO:.1f} + {LARG_FLANCO:.1f}) m", baias),
     ]
     return [(t, n, c, m, math.ceil(m / METROS_POR_UNIDADE)) for t, n, c, m in itens]
@@ -200,7 +207,7 @@ def egresso():
         "dens_serpenteado": dens_serp,
         "dens_baia": DENS_BAIA,
         "corredor_ok": CORREDOR_EGRESSO >= LARG_MIN_CORREDOR,
-        "veiculo_ok": CORREDOR_EGRESSO >= LARG_MIN_VEICULO,
+        "maca_ok": min(CORREDOR_EGRESSO, FAIXA_ACESSO) >= LARG_MIN_MACA,
     }
 
 
@@ -253,8 +260,8 @@ def espacos():
          "leva todo mundo da garganta ate a sua fila; é passagem, nao espera"),
         ("SUL→NORTE", "Serpenteado", PROF_SERPENTE,
          "a fila ordenada; define quantos esperam COM ordem de chegada"),
-        ("SUL→NORTE", "Faixa de descarga", ZONA_DESCARGA,
-         "leque de saida ate as portas; absorve o desvio lateral"),
+        ("SUL→NORTE", "Faixa de acesso (norte)", FAIXA_ACESSO,
+         "passagem livre de maca e socorro, leste-oeste; sem barreira"),
         ("LESTE→OESTE", "Baia de reserva (×2)", LARG_FLANCO,
          "retencao sem ordem, exclusiva de A e de C; drena na baliza de entrada"),
         ("LESTE→OESTE", "Bloco A / B / C", None,
@@ -344,7 +351,8 @@ def desenha():
         f'fill="#1a1a1a">Ring 3 — layout base de filas</text>')
     add(f'<text x="{_x(0)}" y="57" {SM}>Entrada pelo canto sudeste · corredor de '
         f'distribuição no fundo · serpenteados A/B/C descarregando em S4, S5 e '
-        f'S6 · saídas por S2 e S8 · baias de reserva dedicadas a A e a C</text>')
+        f'S6 · saídas por S2 e S8 · baias de reserva dedicadas a A e a C · '
+        f'faixa de acesso de maca ao norte</text>')
 
     # ---- fachada sul do Hall 2 -------------------------------------------
     hy = M_TOPO - 62
@@ -378,12 +386,12 @@ def desenha():
     add(f'<rect x="{_x(0)}" y="{_y(PROFUNDIDADE)}" width="{LARGURA*ESC}" '
         f'height="{PROFUNDIDADE*ESC}" fill="#fff" stroke="#333" stroke-width="2"/>')
 
-    # ---- faixa de descarga ------------------------------------------------
+    # ---- faixa de acesso ao norte -----------------------------------------
     add(f'<rect x="{_x(0)}" y="{_y(PROFUNDIDADE)}" width="{LARGURA*ESC}" '
-        f'height="{ZONA_DESCARGA*ESC}" fill="#eef4f9" stroke="#c7d8e6" '
+        f'height="{FAIXA_ACESSO*ESC}" fill="#eef4f9" stroke="#c7d8e6" '
         f'stroke-dasharray="5 3"/>')
-    add(f'<text x="{_x(0.6)}" y="{_y(PROFUNDIDADE)+15}" {SM}>'
-        f'faixa de descarga — {ZONA_DESCARGA:.1f} m</text>')
+    add(f'<text x="{_x(0.4)}" y="{_y(y1)-6}" font-size="10" fill="#5b6d7d">'
+        f'acesso de maca · {FAIXA_ACESSO:.1f} m livre</text>')
 
     # ---- baias de flanco, dedicadas -------------------------------------
     drenos = []
@@ -404,10 +412,10 @@ def desenha():
               f"{LARG_FLANCO:.1f} × {PROF_SERPENTE:.1f} m · "
               f"{c['area_baia']:.0f} m² · ~{c['baia']:.0f} pessoas", 11, "#9c8b63")
         # cota da largura
-        add(f'<line x1="{_x(xa)+2}" y1="{_y(y1)-9}" x2="{_x(xb)-2}" '
-            f'y2="{_y(y1)-9}" stroke="{OCRE}" stroke-width="1.2"/>')
-        add(f'<text x="{cxm}" y="{_y(y1)-13}" font-size="11" fill="{OCRE}" '
-            f'text-anchor="middle">{LARG_FLANCO:.1f} m</text>')
+        add(f'<line x1="{_x(xa)+3}" y1="{_y(y1-1.4)}" x2="{_x(xb)-3}" '
+            f'y2="{_y(y1-1.4)}" stroke="{OCRE}" stroke-width="1.2"/>')
+        add(f'<text x="{cxm}" y="{_y(y1-2.0)}" font-size="11" fill="{OCRE}" '
+            f'text-anchor="middle">{LARG_FLANCO:.1f} m de largura</text>')
         # dreno direto para a baliza de ENTRADA do bloco vizinho: a baia
         # encosta nela, entao a seta parte de dentro da baia para ser legivel
         xent = eixos_bloco[i] + _entrada_rel(i)
@@ -420,7 +428,7 @@ def desenha():
         _giro(out, _x(xb - 1.2 if oeste else xa + 1.2),
               _y(y0 + PROF_SERPENTE * 0.5), "drena direto para a fila " + dono,
               10, OCRE)
-        _tag(out, "6", _x((xa + xb) / 2), _y(y1) - 30)
+        _tag(out, "5", _x((xa + xb) / 2), _y(y1 - 3.6))
 
     # ---- corredor de distribuicao ----------------------------------------
     add(f'<rect x="{_x(0)}" y="{_y(y0)}" width="{LARGURA*ESC}" '
@@ -462,15 +470,15 @@ def desenha():
             f'fill="none" stroke="#2471a3" stroke-width="1.8" '
             f'stroke-linejoin="round" opacity="0.9" marker-end="url(#a)"/>')
         c = caps[i]
-        add(f'<text x="{_x(eb)}" y="{_y(y1)-40}" {BIG} text-anchor="middle">'
+        add(f'<text x="{_x(eb)}" y="{_y(y1)-31}" font-size="15" '
+            f'font-weight="bold" fill="#1a1a1a" text-anchor="middle">'
             f'ENTRADA {nome}</text>')
-        add(f'<text x="{_x(eb)}" y="{_y(y1)-26}" {SM} text-anchor="middle">'
-            f'{n} balizas · {c["serpenteado"]:.0f} pessoas</text>')
-        rot = (f'+ baia {c["baia"]:.0f} = {c["total"]:.0f}' if c["baia"]
-               else "sem baia — 2 balizas a mais")
-        add(f'<text x="{_x(eb)}" y="{_y(y1)-13}" font-size="11" '
+        det = (f'{n} balizas · {c["serpenteado"]:.0f} + baia '
+               f'{c["baia"]:.0f} = {c["total"]:.0f}' if c["baia"]
+               else f'{n} balizas · {c["serpenteado"]:.0f} · sem baia')
+        add(f'<text x="{_x(eb)}" y="{_y(y1)-15}" font-size="10" '
             f'fill="{OCRE if c["baia"] else "#7f8c8d"}" text-anchor="middle">'
-            f'{rot}</text>')
+            f'{det}</text>')
         xent = _x(base + passo * 0.5 * LARG_BALIZA)
         add(f'<line x1="{xent:.1f}" y1="{_y(y0-0.2):.1f}" x2="{xent:.1f}" '
             f'y2="{_y(y0+0.9):.1f}" {FLOW}/>')
@@ -482,7 +490,7 @@ def desenha():
         if i == 0:
             _tag(out, "1", _x(xa) - 13, _y(y0 + PROF_SERPENTE * 0.90))
             _tag(out, "2", _x(eb), _y(y0 + PROF_SERPENTE * 0.5))
-            _tag(out, "5", _x(xsai) - 16, _y(y1 + ZONA_DESCARGA * 0.72))
+
 
     out.extend(drenos)
 
@@ -611,12 +619,13 @@ def desenha():
         'Cada entrada tem reserva própria: misturar as filas destruiria o '
         'roteamento da pré-triagem, já que o eleitor só vota na urna da sua seção.',
         f'As baias drenam direto para a baliza de entrada do seu bloco, sem '
-        f'passar pelo corredor de fundo. B não tem flanco e recebe '
-        f'{BALIZAS[1]-BALIZAS[0]} balizas a mais em compensação.',
+        f'passar pelo corredor de fundo. B não tem flanco, e por isso vale '
+        f'{[c["quota"] for c in caps][1]:.0%} do sítio — o ajuste é feito na '
+        f'atribuição das urnas, não na geometria.',
         'Desvio da baliza de saída até a porta: '
-        + ", ".join(f"{n} {d:.1f} m ({math.degrees(math.atan(d/ZONA_DESCARGA)):.0f}°)"
-                    for (n, _), d in zip(ENTRADAS, dv))
-        + f' na faixa de descarga de {ZONA_DESCARGA:.0f} m.',
+        + ", ".join(f"{n} {d:.1f} m" for (n, _), d in zip(ENTRADAS, dv))
+        + f' — percorrido a pe na faixa livre de {FAIXA_ACESSO:.1f} m, sem canal '
+        f'balizado.',
         'Este quantitativo cobre SOMENTE o Ring 3. O interior do Hall 2 tem '
         'necessidade própria, ainda não dimensionada.',
         'Posições das portas lidas na prancheta do Posto. Aferir em campo a '
@@ -687,11 +696,10 @@ def main():
           f"{'OK' if e['dens_serpenteado'] <= DENS_MAX_SEGURA else 'ACIMA DO LIMITE'}")
     print(f"  densidade na baia        : {e['dens_baia']:.2f} p/m2  "
           f"{'OK' if e['dens_baia'] <= DENS_MAX_SEGURA else 'ACIMA DO LIMITE'}")
-    print(f"  corredor entre blocos    : {CORREDOR_EGRESSO:.1f} m  "
-          f"{'OK como rota de pedestres' if e['corredor_ok'] else 'ABAIXO DO MINIMO'}"
-          f" (min {LARG_MIN_CORREDOR:.1f} m); "
-          f"{'admite' if e['veiculo_ok'] else 'NAO admite'} veiculo de emergencia "
-          f"(min {LARG_MIN_VEICULO:.1f} m)")
+    print(f"  rota de maca (grade)     : faixa norte {FAIXA_ACESSO:.1f} m + "
+          f"egressos {CORREDOR_EGRESSO:.1f} m + fundo {CORREDOR_FUNDO:.1f} m  "
+          f"{'OK' if e['maca_ok'] else 'ABAIXO DO MINIMO'} "
+          f"(min {LARG_MIN_MACA:.1f} m). Acesso de veiculo: dispensado.")
     print(f"  largura de saida exigida : {e['larg_exigida']:.2f} m para "
           f"{e['pessoas']:.0f} pessoas em {TEMPO_ALVO_EVAC:.0f} min")
     print(f"  largura de saida atual   : {e['larg_atual']:.2f} m "
@@ -705,7 +713,7 @@ def main():
 
     t = taxas_de_cambio()
     print(f"\nTAXAS DE CAMBIO — as duas dimensoes sao fixas, todo ajuste e troca")
-    print(f"  +1 m de PROFUNDIDADE do serpenteado (tirado da descarga ou do fundo):")
+    print(f"  +1 m de PROFUNDIDADE do serpenteado (tirado da faixa de acesso ou do fundo):")
     print(f"        +{t['prof_pessoas']:.0f} pessoas   custa "
           f"{t['prof_separadores']:.0f} separadores "
           f"(~EUR {t['prof_separadores']*METROS_POR_UNIDADE*EUR_POR_METRO:.0f})")

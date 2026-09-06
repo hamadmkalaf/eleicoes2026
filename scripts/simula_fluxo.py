@@ -144,16 +144,17 @@ if __name__ == "__main__":
 # --------------------------------------------------------------------------
 # Atribuicao das urnas as entradas A/B/C do Ring 3
 #
-# As tres entradas nao tem a mesma capacidade de fila (ver scripts/layout_ring3.py):
-# A e C tem serpenteado de 5 balizas mais uma baia de reserva no flanco; B, que
-# fica no meio e nao tem flanco, tem serpenteado de 7 balizas e nenhuma baia.
-# A carga tem de ser repartida na proporcao dessa capacidade, e nao em tercos.
+# As tres entradas tem serpenteado IGUAL (5 balizas cada), mas nao a mesma
+# capacidade total: A e C somam uma baia de reserva no flanco, e B, que fica no
+# meio, nao tem flanco nenhum. Dai A e C valerem ~40% do sitio cada e B ~20%.
+# A carga tem de ser repartida nessa proporcao, e nao em tercos — e como B nao
+# pode crescer geometricamente, e a atribuicao que faz o ajuste.
 #
 # Regra adicional: as tres urnas T1 (3313, 3322 e 3315, ~590 eleitores cada)
 # vao para entradas diferentes. Concentra-las numa so criaria um pico de fila
 # que nenhuma reserva absorve.
 
-QUOTAS = {"A": 0.357, "B": 0.286, "C": 0.357}
+QUOTAS = {"A": 0.398, "B": 0.203, "C": 0.398}
 T1 = (3313, 3322, 3315)
 
 

@@ -35,10 +35,11 @@ acordada do salão. Duas regras valem para tudo que for produzido depois:
   numeração é por fachada, na ordem de leitura do desenho: de oeste para leste
   nas paredes norte e sul, de norte para sul nas paredes leste e oeste. Ela é
   gerada por `planta_base.py`, não escrita à mão.
-- **Entrada e saída de eleitor não estão formalmente decididas.** O plano do
-  Ring 3 e a sinalização trabalham com S4/S5/S6 de entrada e S2/S8 de saída; o
-  simulador, com S1/S9 de saída. Não trate nenhuma das duas como decisão
-  fechada sem o usuário (§9.3 da documentação).
+- **Entradas de eleitor: S4, S5 e S6; saídas: S2 e S8.** Decisão do Posto
+  registrada em 06/09/2026 (§9.3 da documentação). O plano do Ring 3 e a
+  sinalização já seguem isso; o Cenário Claude do simulador ainda usa S1/S9
+  como saída e a planta-base ainda não desenha papel nenhum: ambos estão por
+  alinhar, não são fonte da decisão.
 
 ## Fontes únicas
 

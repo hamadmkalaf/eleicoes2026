@@ -1018,18 +1018,22 @@ outros dois. **Pendência transversal: congelar uma numeração única de campo
 
 ### 9.3 Papéis das portas da fachada sul
 
-| Fonte | Entradas | Saídas |
-|---|---|---|
-| Planta-base / `docs/CONTEXTO.md` / `CLAUDE.md` | nenhuma decidida ("não assumir") | nenhuma |
-| Plano do Ring 3 e plano de sinalização | S4 (A), S5 (B), S6 (C) | **S2 e S8** (1,20 m cada, emergência permanentemente aberta) |
-| Simulador, Cenário Claude | S4, S5, S6 | **S1 e S9** (portas de carga, 3,6 m cada) |
-| Prancheta, cenário B | — | S1 e S9 em uso com vestíbulo, que invade zonas protegidas |
+**Decisão do Posto (registrada em 06/09/2026, tomada durante o desenho do Ring
+3 e em conversa com um colega): entradas S4 (A), S5 (B) e S6 (C); saídas S2 e
+S8.** É o que o plano do Ring 3 e o plano de sinalização já desenham. Falta
+propagar:
 
-O Ring 3 e a sinalização já desenham S2/S8 como saída de ~11 mil pessoas por
-dois vãos de 1,20 m estimados sobre foto; o simulador considera S1/S9. A
-planta-base diz que nada está decidido. **Pendência: decidir formalmente
-entradas e saídas, medir S2/S8 no local e confirmar S1/S9 (abertas e travadas 9
-horas, soleira para pedestre) antes de fechar Ring 3, sinalização e simulação.**
+| Fonte | Entradas | Saídas | Situação |
+|---|---|---|---|
+| Plano do Ring 3 e plano de sinalização | S4, S5, S6 | S2, S8 | conforme a decisão |
+| Simulador, Cenário Claude (`simulador/modelo.js`, `cenarioClaude`) | S4, S5, S6 | **S1 e S9** | a alinhar: trocar as saídas para S2/S8 e refazer a varredura |
+| Planta-base / `docs/CONTEXTO.md` | nenhuma | nenhuma | a atualizar: registrar os papéis no `ESTADO` de `planta_base.py` |
+| Prancheta, cenário B | — | S1/S9 com vestíbulo | cenário B perde a razão de ser; manter só como registro |
+
+Pendências que a decisão não elimina: medir S2/S8 no local (posição e vão de
+1,20 m estão estimados sobre foto) e conferir a vazão de dois vãos de 1,20 m
+como saída de ~11 mil eleitores. A integração entre prancheta, simulador e
+Ring 3 para que a decisão more num lugar só está proposta em §9.9.
 
 ### 9.4 Três curvas de chegada e três modelos
 
@@ -1106,6 +1110,18 @@ separadores internos).
     Portal de Dados Abertos do TSE (§7.1).
 13. Rodar as três simulações sobre a mesma base de comparecimento e a mesma
     curva, para comparabilidade.
+
+### 9.9 Integração pendente: prancheta, simulador e Ring 3 numa fonte só
+
+Hoje cada peça carrega a sua cópia das decisões: papéis das portas (simulador
+e Ring 3), posição das portas da fachada sul (`salao.py` para a prancheta;
+tabela própria lida da prancheta manual em `layout_ring3.py` e
+`gera_plano_sinalizacao.py`, com diferenças de 0,1–0,2 m), capacidade do Ring
+3 (800 digitado no simulador contra 1.402 no plano) e atribuição de urnas a
+entradas (`simula_fluxo.py`, sem ligação com as zonas do simulador nem com
+M1–M28 da sinalização). Mudar uma decisão exige editar quatro lugares. A
+proposta de integração está na resposta da sessão de 06/09 e será detalhada
+quando aprovada.
 
 ---
 

@@ -185,7 +185,7 @@ def diagrama_rota():
       <line x1="536" y1="66" x2="536" y2="86" stroke="currentColor" stroke-width="2.5"/>
       <line x1="604" y1="66" x2="604" y2="86" stroke="currentColor" stroke-width="2.5"/>
       <text x="614" y="64" font-family="Archivo,sans-serif" font-size="10.5" font-weight="600"
-            fill="var(--alert)">placa fixa do venue: EXIT</text>
+            fill="var(--alert)">portão de entrada · placa a conferir</text>
       <line x1="880" y1="132" x2="880" y2="102" stroke="currentColor" stroke-width="1.5" marker-end="url(#arw)"/>
       <text x="880" y="94" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10"
             font-weight="700" fill="var(--muted)">N</text>
@@ -442,14 +442,15 @@ def tabela_pontos():
 
 
 SPECS = [
-    ("Portas A · B · C", "300 mm", "Altura de letra para leitura de qualquer ponto do Ring 3, a cerca de 60 m."),
-    ("Totens de cabeça de fila", "120 mm", "Leitura a 15 m, acima da linha dos guarda-chuvas."),
-    ("Setas do corredor", "120 mm", "Leitura a 25 m, em movimento."),
+    ("Portas, no vidro", "300 mm", "Vinil recortado sobre a cortina de vidro da fachada, legível de qualquer ponto do Ring 3, a cerca de 60 m. Sem estrutura e sem base."),
+    ("Totens de cabeça de fila", "120 mm", "Leitura a 15 m, acima da linha dos guarda-chuvas. Amarrado na barreira, não plantado no chão."),
+    ("Setas do corredor", "120 mm", "Leitura a 25 m, em movimento. Abraçadeira em poste já existente."),
     ("Corpo da tabela mestra", "18 mm", "Três vezes o limite de acuidade a 1,2 m — a tabela é lida em pé, sob chuva, por leitores présbitas."),
     ("Altura de montagem", "≥ 2,5 m", "Uma fila sob guarda-chuvas corta a linha de visão a 1,80 m. Peça baixa é peça invisível."),
-    ("Material", "PVC 5 mm", "Alveolar em base d'água, ou lona com ilhoses. Entre 40% e 65% de chance de chuva no dia 4, conforme o limiar da fonte."),
-    ("Idiomas", "PT + EN", "A placa do venue e a equipe do RDS são em inglês; a sinalização de rua precisa ser bilíngue."),
-    ("Código de cor", "3 tons", "Azul, âmbar e magenta. Nunca verde com vermelho, e a cor nunca aparece sem a letra."),
+    ("Regra de fixação", "sem base", "Colar no vidro, amarrar no gradil e na barreira, abraçar o poste, suspender na treliça. Totem autoportante só onde nada disso existir."),
+    ("Material externo", "lona 440 g", "Com ilhoses, para amarrar; PVC alveolar 5 mm onde a peça for plana e abraçada. Entre 40% e 65% de chance de chuva no dia 4, conforme o limiar da fonte."),
+    ("Idiomas", "PT + EN", "A sinalização do venue e a equipe do RDS são em inglês; as peças de rua precisam ser bilíngues."),
+    ("Código de cor", "3 tons", "Azul, âmbar e magenta — que passam a nomear a porta, não apenas a marcá-la. Nunca verde com vermelho."),
 ]
 
 
@@ -503,6 +504,95 @@ def bloco_mestra(mestra):
     return f'<div class="mestra">{linhas}</div>'
 
 
+SUBSTRATOS = [
+    ("Vidro da fachada do Hall 2", "toda a frente das portas S1–S9",
+     "sim", "Vinil recortado ou impresso, por dentro e por fora do vão"),
+    ("Folha lisa dos portões", "Gate G e congêneres, na Merrion Road",
+     "sim", "Vinil ou lona colada, só se o portão ficar travado no dia"),
+    ("Painel rebocado liso", "trechos da parede interna do Hall 2",
+     "sim", "Vinil removível"),
+    ("Gradil de ferro fundido", "~300 m de calçada na Merrion Road",
+     "amarra", "Lona com ilhoses e abraçadeiras — método que o próprio RDS usa"),
+    ("Barreira metálica de contenção", "Ring 3 e cruzamentos internos",
+     "amarra", "Capa de barreira impressa, sobre material já estocado no local"),
+    ("Poste de iluminação ou de placa", "calçada e vias internas",
+     "abraça", "Chapa de PVC alveolar 5 mm em abraçadeira"),
+    ("Treliça metálica do vão, a 7 m", "todo o salão do Hall 2",
+     "suspende", "Faixa suspensa em cabo de aço — a única solução com alcance visual no salão"),
+    ("Bloco de concreto aparente", "base de todas as paredes do Hall 2",
+     "não", "Poroso e rugoso: o adesivo solta. Não orçar vinil aqui"),
+    ("Chapa metálica ondulada", "parte alta das paredes do Hall 2",
+     "não", "O perfil impede contato pleno. Não orçar vinil aqui"),
+    ("Alvenaria de pedra e pilar de granito", "muro do perímetro e portões",
+     "não", "Rugoso e provável fabric protegido: nem adesivo nem furação"),
+]
+
+FOTOS = [
+    ("20260824_114831.jpg", "Gate G, na Merrion Road",
+     "Os portões do RDS já são identificados por letra, em painel azul-marinho com letra branca — "
+     "exatamente a linguagem visual que uma placa “PORTA A” usaria."),
+    ("20260824_115057.jpg", "Gradil da Merrion Road, junto ao ponto de ônibus 480",
+     "O RDS já amarra as próprias faixas no gradil. São centenas de metros de fixação pronta, "
+     "sem base, ao longo da calçada por onde o eleitor chega."),
+    ("20260824_115333.jpg", "Portão com “ENTRY” pintado no piso",
+     "A marcação de solo e a placa em bronze organizam circulação de veículos, não de pedestres. "
+     "Nenhuma das 21 fotos mostra a placa EXIT citada no briefing."),
+    ("20260824_115634.jpg", "Cruzamento interno, com o indicador azul do RDS",
+     "Sinalização permanente do venue que o eleitor lerá junto com a nossa — e, à direita, "
+     "barreiras metálicas já estocadas: suporte de faixa sem base."),
+    ("20260824_115840.jpg", "Fachada envidraçada do Hall 2",
+     "A entrada do salão é uma cortina de vidro de pé-direito inteiro, modulada pelos montantes. "
+     "É a superfície adesivável ideal, e está onde as letras das portas precisam aparecer."),
+    ("20260824_115824.jpg", "Parede interna típica do Hall 2",
+     "Bloco de concreto aparente embaixo, chapa ondulada em cima: as duas recusam adesivo. "
+     "O que resolve são as treliças a 7 m — fixação suspensa, sem base."),
+]
+
+
+def tabela_substrato():
+    marca = {
+        "sim": '<span class="chip a">cola</span>',
+        "amarra": '<span class="chip b">amarra</span>',
+        "abraça": '<span class="chip b">abraça</span>',
+        "suspende": '<span class="chip b">suspende</span>',
+        "não": '<span class="chip x">não</span>',
+    }
+    linhas = "".join(
+        f"<tr><td><strong>{sup}</strong><span class='sub'>{onde}</span></td>"
+        f"<td>{marca[modo]}</td><td>{peca}</td></tr>"
+        for sup, onde, modo, peca in SUBSTRATOS
+    )
+    return ('<div class="tscroll"><table><thead><tr><th>Superfície</th>'
+            '<th>Fixação</th><th>Peça</th></tr></thead>'
+            f"<tbody>{linhas}</tbody></table></div>")
+
+
+def figura_fotos():
+    import base64
+    import io
+
+    try:
+        from PIL import Image
+    except ModuleNotFoundError as erro:  # pragma: no cover
+        raise SystemExit("este gerador precisa de Pillow: pip install pillow") from erro
+
+    itens = []
+    for nome, titulo, texto in FOTOS:
+        caminho = RAIZ / "data" / "fotos" / nome
+        assert caminho.exists(), f"foto ausente: {caminho}"
+        imagem = Image.open(caminho)
+        imagem.thumbnail((820, 820))
+        buffer = io.BytesIO()
+        imagem.convert("RGB").save(buffer, "JPEG", quality=72, optimize=True)
+        dados = base64.b64encode(buffer.getvalue()).decode()
+        itens.append(
+            '<figure class="foto">'
+            f'<img src="data:image/jpeg;base64,{dados}" alt="{titulo}" loading="lazy">'
+            f"<figcaption><b>{titulo}</b>{texto}</figcaption></figure>"
+        )
+    return '<div class="fotos">' + "".join(itens) + "</div>"
+
+
 def main():
     dados, urnas = carrega()
     grupos = distribui(urnas)
@@ -519,6 +609,8 @@ def main():
         "LEDGER_LEITURA": ledger_leitura(total_esperado),
         "TAB_PONTOS": tabela_pontos(),
         "SPECS": specs(),
+        "TAB_SUBSTRATO": tabela_substrato(),
+        "FIG_FOTOS": figura_fotos(),
         "TAB_PORTAS": tabela_portas(grupos),
         "TAB_MESAS": tabela_mesas(urnas),
         "TAB_MESTRA": bloco_mestra(mestra),

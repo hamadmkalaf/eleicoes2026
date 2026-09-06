@@ -138,6 +138,15 @@
                        border:2px solid var(--muted);border-radius:2px}
   ul.checks li b{font-family:var(--sans);font-weight:600;font-size:15.5px}
 
+  .chip.x{background:var(--alert-soft);color:var(--alert);box-shadow:inset 0 0 0 1px var(--alert)}
+
+  .fotos{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:20px;margin:28px 0}
+  .foto{margin:0;background:var(--surface);border:1px solid var(--rule)}
+  .foto img{display:block;width:100%;height:auto;border-bottom:1px solid var(--rule)}
+  .foto figcaption{margin:0;padding:13px 15px 15px;font-size:14px;line-height:1.5;color:var(--muted)}
+  .foto figcaption b{display:block;font-family:var(--sans);font-size:13px;font-weight:600;
+                     color:var(--ink);margin-bottom:5px}
+
   footer{margin-top:64px;padding-top:22px;border-top:1px solid var(--rule);
          font-size:13.5px;color:var(--muted);font-family:var(--sans)}
   footer a{color:var(--muted)}
@@ -211,10 +220,24 @@
 </section>
 
 <section id="spec">
-  <h2><span class="num">06</span>Especificação das peças</h2>
+  <h2><span class="num">06</span>Especificação e fixação das peças</h2>
   <p>Dois condicionantes locais mandam na especificação, e os dois são fáceis de esquecer num escritório. O primeiro é a chuva: as fontes divergem conforme o limiar adotado — <strong>12 dias</strong> pelas normais de 30 anos (1991–2020, limiar ≥ 1 mm) e <strong>17 a 20 dias</strong> em fontes de limiar mais frouxo, ou seja, algo entre <strong>40% e 65%</strong> de probabilidade para o dia 4. Os números não são metodologicamente comparáveis entre si, mas qualquer ponto dessa faixa já obriga material impermeável. O segundo é geométrico: uma fila sob guarda-chuvas destrói a linha de visão a partir de 1,80 m de altura.</p>
   {{SPECS}}
   <p>A razão adotada é <strong>1 mm de altura de letra para cada 200 mm de distância de leitura</strong>. Ela fica deliberadamente entre os dois limites publicados: a regra de impacto da <em>International Sign Association</em>, de 25 mm a cada 3 m (1:120), conservadora demais para um painel que se lê parado; e o limite de acuidade visual, de 25 mm legíveis a 15 m (1:600), que só vale com visão 20/20, luz boa e leitura de frente. Fora dessas condições — ângulo oblíquo de 45°, chuva, céu encoberto — a legibilidade cai cerca de um quarto, margem já embutida nos valores acima.</p>
+
+  <h3>Onde a peça se prende</h3>
+  <p>Com orçamento apertado, a pergunta que decide o custo não é o tamanho da placa: é <strong>se ela precisa de base</strong>. Um totem autoportante exige estrutura, lastro contra vento e transporte; uma peça colada, amarrada ou suspensa exige um rolo de material e meia hora de escada. O levantamento fotográfico de 24 de agosto mostra que o RDS oferece superfície de fixação gratuita em quase todo o percurso — e, no ponto mais crítico, oferece a melhor superfície possível.</p>
+  <p>O achado que muda o orçamento é <strong>a fachada envidraçada do Hall 2</strong>. A entrada do salão não é parede: é uma cortina de vidro de pé-direito inteiro, modulada pelos montantes em painéis que já correspondem, um a um, aos vãos das portas. Vidro é o substrato adesivável perfeito — liso, plano, lavável, e o vinil sai sem resíduo. As letras das portas, que eram o item mais caro do plano por exigirem bandeirola e estrutura, viram gráfico de vitrine.</p>
+  <p>O reverso merece a mesma clareza, porque é onde um orçamento de “adesivo em parede” se perde: <strong>as paredes internas do Hall 2 não aceitam adesivo</strong>. São bloco de concreto aparente na base e chapa metálica ondulada em cima — poroso e rugoso embaixo, perfilado em cima. Nenhum dos dois segura vinil por nove horas.</p>
+  {{TAB_SUBSTRATO}}
+
+  <h3>O que as fotos mostram</h3>
+  {{FIG_FOTOS}}
+
+  <h3>Os portões do RDS já usam letras</h3>
+  <p>As fotos trouxeram um conflito que não aparece em planta nenhuma: <strong>o RDS identifica os próprios portões por letra</strong>. Gate D e Gate G estão registrados, e a série sugere pelo menos de A a G. São painéis azul-marinho com letra branca de cerca de 30 cm, permanentes, espalhados pelo perímetro.</p>
+  <p>Chamar as entradas do Hall 2 de <strong>Porta A, B e C</strong> coloca duas nomenclaturas por letra no mesmo recinto, na mesma linguagem visual, para um eleitor que nunca esteve ali. Quem for mandado à “porta A” tem chance real de procurar um <em>Gate A</em> no muro — e a placa do muro é a permanente.</p>
+  <p>A correção é barata e precisa ser tomada antes da impressão: <strong>abandonar as letras e nomear as entradas pela cor</strong> — PORTA AZUL, PORTA AMARELA, PORTA ROXA. Não colide com nada do RDS; está em português, o que por si já separa a nossa sinalização da do venue; e faz a cor, que o plano já usa como código, carregar o nome em vez de ser adorno sobre uma letra. Tudo o que vem abaixo continua valendo com a troca.</p>
 
   <h3>Código de cor das portas</h3>
   <p>Azul, âmbar e magenta — deliberadamente <strong>sem verde e sem vermelho juntos</strong>. Cerca de 8% dos homens têm alguma deficiência de visão de cores, quase sempre no eixo vermelho-verde; a tríade escolhida se mantém distinguível em deuteranopia e protanopia. A cor nunca aparece sozinha: sempre acompanhada da letra, que é a informação primária.</p>
@@ -243,10 +266,20 @@
   {{TAB_MESTRA}}
 </section>
 
+<section id="interna">
+  <h2><span class="num">09</span>Próxima etapa: a sinalização interna</h2>
+  <p class="lede">As fotos do salão já respondem à pergunta que a próxima etapa vai fazer: por mesa ou por par de mesas?</p>
+  <p><strong>Por par</strong> — e a razão é a mesma restrição de fixação. O salão é um galpão cujas treliças cobrem os 2.238 m² sem nenhum apoio no meio do piso, e é delas, a 7 m de altura, que sai a única fixação com alcance visual sobre a área inteira. Uma peça suspensa é lida de qualquer ponto do salão; um totem de chão desaparece atrás da terceira fileira de gente. E suspender dispensa base — o que atende à restrição de orçamento melhor do que colar, já que as paredes do salão não colam.</p>
+  <p>O arranjo em estudo na prancheta organiza as mesas em duplas com corredor de 3,00 m entre pares. Isso define a peça: <strong>uma faixa suspensa por dupla</strong>, com os dois números, o que dá 14 peças em vez de 28 e ainda resolve para uma mesa só a 3 m de distância. A identificação individual fica numa placa pequena na altura da mesa — que é o que o eleitor lê quando chega, e onde 20 mm de letra bastam. Se o arranjo final mudar, a regra permanece: a peça suspensa acompanha a unidade de agrupamento, não a mesa.</p>
+  <p>Três verificações antes de encomendar: a suspensão precisa de autorização de <em>rigging</em> do RDS; a plataforma elevatória que aparece nas fotos precisa estar disponível na véspera; e nenhuma faixa pode obstruir luminária de emergência, detector de fumaça ou placa verde de EXIT — todos pendurados nas mesmas treliças.</p>
+</section>
+
 <section id="riscos">
-  <h2><span class="num">09</span>Riscos e confirmações pendentes</h2>
+  <h2><span class="num">10</span>Riscos e confirmações pendentes</h2>
   <ul class="checks">
-    <li><b>A placa diz EXIT.</b> A entrada de eleitores está sinalizada, no local, com uma placa permanente que diz o oposto. Um painel temporário ao lado não vence uma placa fixa de venue: o painel de P1 precisa cobrir ou dominar visualmente a placa EXIT, e um agente humano deve ficar no portão nas duas primeiras horas. Quem erra o portão anda 400 m até o próximo e volta em contrafluxo.</li>
+    <li><b>A placa EXIT não apareceu no levantamento.</b> As 21 fotos cobrem os portões da Merrion Road e <em>não</em> mostram a placa EXIT com seta descrita no briefing. Mostram “ENTRY” pintado no piso e uma placa em bronze com “…Y IN”, ambas de circulação de veículos. Ou o portão em questão não foi fotografado, ou a referência é à marcação viária — e a diferença muda a peça: contra placa fixa de venue, o painel de P1 precisa cobri-la ou dominá-la; contra marcação de piso para carros, o problema vira pedestre seguindo seta que não é para ele. Conferir qual é o caso antes de dimensionar P1. Em qualquer cenário, um agente humano no portão nas duas primeiras horas: quem erra o portão anda 400 m até o próximo e volta em contrafluxo.</li>
+    <li><b>Colisão de nomenclatura com os portões do RDS.</b> Gate D e Gate G estão fotografados, e a série vai pelo menos de A a G, em placas permanentes de painel azul com letra branca. Manter “Porta A/B/C” coloca duas nomenclaturas por letra no mesmo recinto, na mesma linguagem visual. A recomendação é nomear as entradas pela cor; a decisão precisa sair antes de qualquer impressão, porque contamina todas as peças de P1 a P6.</li>
+    <li><b>A fila vai se formar dentro de um estacionamento em operação.</b> A fachada envidraçada do Hall 2 dá direto para vagas ocupadas por carros e vans, separadas apenas por gradil branco de pedestres. As vagas em frente às portas precisam ser bloqueadas <strong>na véspera</strong>, não na manhã do dia — às 11h os carros já estarão lá, como o plano do Ring 3 registra para o próprio Ring.</li>
     <li><b>As três entradas estão a 6,2 m uma da outra.</b> Este é o risco central da sinalização, e ele é geométrico. S4, S5 e S6 ficam tão próximas que, na fachada, a disciplina de faixa não se sustenta sozinha: quem percebe o erro no último metro simplesmente atravessa. Duas consequências de projeto — a letra na porta precisa ser lida <em>de dentro do serpenteado</em>, a 40–60 m, e não a 5 m; e a correção de rota tem de estar disponível na cabeça da fila (P4), onde ainda cabe, e não na descarga.</li>
     <li><b>Numeração das aberturas divergente.</b> A prancheta do Posto numera a fachada sul como S1–S9; a planta do RDS numera as mesmas aberturas como 2.1–2.23, com posições que não coincidem. Este plano adotou a prancheta, porque é ela que define os papéis (S4/S5/S6 entradas, S2/S8 saídas). A aferição em campo precisa fechar essa divergência antes da impressão — uma placa apontando para a abertura errada é pior que placa nenhuma.</li>
     <li><b>Fator de pico sem estatística oficial.</b> O 1,8× usado no dimensionamento de leitura é premissa assumida. O levantamento de horários de pico deste repositório mostra que <em>não existe</em> curva oficial de comparecimento por hora, e — mais relevante — que o precedente de Dublin em 2022 não teve pico isolado: a fila de 2h30–3h nunca esvaziou e persistiu além das 17h. Se esse for o cenário, o número de painéis importa menos que a sua distribuição ao longo do corredor, porque as pessoas ficarão paradas nele por muito tempo.</li>
@@ -257,7 +290,7 @@
 </section>
 
 <footer>
-  <p>Fontes de dados: <span style="font-family:var(--mono)">eleitorado_local_votacao_2026_ZZ.csv</span> (TSE, 13/08/2026) e <span style="font-family:var(--mono)">Filtrado_Dublin.csv</span> (TSE, 14/07/2026), processados por <span style="font-family:var(--mono)">scripts/mapa_agregacoes.py</span>. Planta e dimensões do salão: ficha técnica RDS Hall 2 (Shelbourne Hall). Dimensões do Ring 3, do apron, papéis das aberturas S1–S9 e quantitativo de barreira: <span style="font-family:var(--mono)">saidas/plano_ring3.md</span>. Precedente de fila em Dublin 2022 e ausência de curva oficial de comparecimento por hora: <span style="font-family:var(--mono)">pesquisa_horarios_pico_votacao.md</span>. Taxas de comparecimento: 2022, por domicílio. Fator de pico de chegada (1,8×) e tempo de leitura (15 s) são premissas assumidas, não medidas. Regra de altura de letra: <a href="https://www.signknights.com/sign-visibility-and-viewing-distance-guidelines/">International Sign Association</a>; correção para condições não ideais: <a href="https://healthfacilityguidelines.com/ViewPDF/ViewIndexPDF/iHFG_part_w_wayfinding_complete">iHFG Part W — Wayfinding Guidelines</a>. Precipitação de outubro em Dublin: <a href="https://www.met.ie/climate-statement-for-october-2025">Met Éireann</a>.</p>
+  <p>Fontes de dados: <span style="font-family:var(--mono)">eleitorado_local_votacao_2026_ZZ.csv</span> (TSE, 13/08/2026) e <span style="font-family:var(--mono)">Filtrado_Dublin.csv</span> (TSE, 14/07/2026), processados por <span style="font-family:var(--mono)">scripts/mapa_agregacoes.py</span>. Planta e dimensões do salão: ficha técnica RDS Hall 2 (Shelbourne Hall). Dimensões do Ring 3, do apron, papéis das aberturas S1–S9 e quantitativo de barreira: <span style="font-family:var(--mono)">saidas/plano_ring3.md</span>. Precedente de fila em Dublin 2022 e ausência de curva oficial de comparecimento por hora: <span style="font-family:var(--mono)">pesquisa_horarios_pico_votacao.md</span>. Superfícies de fixação, nomenclatura dos portões e condições da fachada: levantamento fotográfico de 24/08/2026, 21 imagens, em <span style="font-family:var(--mono)">data/fotos/</span>. Taxas de comparecimento: 2022, por domicílio. Fator de pico de chegada (1,8×) e tempo de leitura (15 s) são premissas assumidas, não medidas. Regra de altura de letra: <a href="https://www.signknights.com/sign-visibility-and-viewing-distance-guidelines/">International Sign Association</a>; correção para condições não ideais: <a href="https://healthfacilityguidelines.com/ViewPDF/ViewIndexPDF/iHFG_part_w_wayfinding_complete">iHFG Part W — Wayfinding Guidelines</a>. Precipitação de outubro em Dublin: <a href="https://www.met.ie/climate-statement-for-october-2025">Met Éireann</a>.</p>
 </footer>
 
 </div>

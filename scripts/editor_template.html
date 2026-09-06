@@ -27,6 +27,7 @@
   --sombra:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0; background:var(--papel); color:var(--tinta);
   font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
   font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
@@ -115,14 +116,47 @@ kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid va
 .medidas button:hover{color:var(--alerta)}
 
 .salvos li{background:var(--folha); padding:7px 2px 7px 0; font-size:.78rem}
+.salvos li.oculto{opacity:.5}
 .salvos .linha1{display:flex; align-items:baseline; gap:8px}
 .salvos .nome{font-weight:600; overflow-wrap:anywhere}
 .salvos .quando{margin-left:auto; font-size:.68rem; color:var(--fraco);
   font-family:"IBM Plex Mono",monospace; white-space:nowrap}
 .salvos .linha2{display:flex; gap:6px; margin-top:5px; align-items:center}
-.salvos .ver{margin-left:auto; color:var(--fraco); font-size:.72rem;
-  text-decoration:none}
-.salvos .ver:hover{color:var(--entrada)}
+.salvos .fonte{font-size:.68rem; color:var(--fraco);
+  font-family:"IBM Plex Mono",monospace; letter-spacing:.05em}
+.salvos .apagar{margin-left:auto; background:none; border:0; cursor:pointer;
+  color:var(--fraco); font-size:.72rem; text-decoration:underline; padding:0}
+.salvos .apagar:hover{color:var(--alerta)}
+
+/* ---- alinhar a parede ---- */
+.paredes{display:flex; gap:0; border:1px solid var(--regua); background:var(--papel);
+  margin-bottom:9px}
+.paredes button{flex:1; background:none; border:0; border-right:1px solid var(--regua);
+  padding:5px 0; font-size:.79rem; color:var(--meio); cursor:pointer}
+.paredes button:last-child{border-right:0}
+.paredes button[aria-pressed="true"]{background:var(--tinta); color:var(--folha);
+  font-weight:600}
+.paredes button:disabled{opacity:.35; cursor:default}
+.alvo{display:flex; gap:6px; align-items:center; font-size:.79rem}
+.alvo input{width:74px; padding:4px 6px; font-size:.79rem; background:var(--papel);
+  color:var(--tinta); border:1px solid var(--regua);
+  font-family:"IBM Plex Mono",monospace}
+.alvo .acao{margin-left:auto}
+
+/* ---- pares ---- */
+.pares{list-style:none; margin:0; padding:0; display:flex; flex-direction:column;
+  gap:1px; background:var(--regua2)}
+.pares li{background:var(--folha); padding:6px 2px 6px 0; font-size:.78rem;
+  cursor:pointer}
+.pares li:hover{background:var(--papel)}
+.pares .l1{display:flex; align-items:baseline; gap:8px}
+.pares .quem{font-family:"IBM Plex Mono",monospace; font-weight:600}
+.pares .marca{margin-left:auto; font-size:.7rem; font-weight:600}
+.pares .l2{font-family:"IBM Plex Mono",monospace; font-size:.7rem;
+  color:var(--fraco); margin-top:2px}
+.pares .ruim{color:var(--alerta)}
+.pares .atencao{color:var(--aviso)}
+.pares .bom{color:var(--emerg)}
 .vazio{font-size:.78rem; color:var(--fraco); margin:0}
 .salvarLinha{display:flex; gap:6px; margin-bottom:10px}
 .salvarLinha input{flex:1; min-width:0; padding:4px 8px; font-size:.79rem;
@@ -197,10 +231,32 @@ footer .estado.guia{color:var(--entrada)}
       <div id="sel"></div>
     </div>
     <div class="bloco">
+      <p class="rot">Alinhar à parede</p>
+      <div class="paredes" id="paredes" role="group" aria-label="Parede a alinhar">
+        <button data-p="N" aria-pressed="false">N</button>
+        <button data-p="L" aria-pressed="false">L</button>
+        <button data-p="O" aria-pressed="false">O</button>
+        <button data-p="S" aria-pressed="false">S</button>
+      </div>
+      <div class="alvo">
+        <label for="alvoDist">Distância</label>
+        <input type="number" id="alvoDist" step="0.05" min="0" max="12" value="0" aria-label="Distância da parede, em metros">
+        <span>m</span>
+        <button class="acao mini" id="alinhar" disabled>Alinhar</button>
+      </div>
+      <p class="dica" id="leituraParede" style="margin-top:8px">Escolha uma parede para ver a que distância dela estão as mesas encostadas nela.</p>
+    </div>
+    <div class="bloco">
+      <p class="rot">Pares <span class="direita" id="resumoPares"></span></p>
+      <ul class="pares" id="listaPares"></ul>
+      <p class="vazio" id="semPares">Nenhum par formado nesta planta.</p>
+      <p class="dica" id="soltasPares" style="margin-top:8px"></p>
+    </div>
+    <div class="bloco">
       <p class="rot">Cenários salvos <span class="direita"></span></p>
       <div class="salvarLinha">
         <input type="text" id="nomeCenario" placeholder="nome do cenário" maxlength="60" aria-label="Nome do cenário">
-        <button class="acao mini" id="salvarCenario">Copiar cenário</button>
+        <button class="acao mini" id="salvarCenario">Salvar</button>
       </div>
       <ul class="salvos" id="listaSalvos"></ul>
       <p class="vazio" id="semSalvos">Nenhum cenário salvo ainda.</p>
@@ -211,10 +267,13 @@ footer .estado.guia{color:var(--entrada)}
           <button class="acao mini" id="colarCancelar">Cancelar</button>
         </div>
       </div>
-      <div class="linha2" style="margin-top:8px">
+      <div class="linha2" style="margin-top:8px; flex-wrap:wrap">
         <button class="acao mini" id="colarCenario">Colar cenário…</button>
+        <button class="acao mini" id="copiarBiblioteca">Copiar tudo p/ o simulador</button>
+        <button class="acao mini" id="baixarBiblioteca" hidden>Baixar .json</button>
+        <button class="acao mini" id="mostrarOcultos" hidden></button>
       </div>
-      <p class="notaSalvos"><strong>Copiar cenário</strong> coloca o JSON na área de transferência — envie para quem publica a prancheta (por mensagem, e-mail, ou colando numa conversa com o Claude) para ele entrar nesta lista para todo mundo. A lista abaixo foi gravada na última vez que a prancheta foi publicada; não é uma leitura ao vivo.</p>
+      <p class="notaSalvos"><strong>Salvar</strong> guarda o cenário neste navegador e põe o JSON na área de transferência. Para levar a lista inteira ao simulador de fluxo, use <strong>Copiar tudo p/ o simulador</strong> e cole lá em <em>Carregar arranjo</em>. Para o cenário entrar na lista publicada, que todo mundo vê, mande o JSON a quem publica a prancheta.</p>
     </div>
     <div class="bloco">
       <p class="rot">Medidas <button class="acao mini direita" id="apagarMedidas">Apagar todas</button></p>
@@ -245,7 +304,8 @@ footer .estado.guia{color:var(--entrada)}
       <p class="dica">Arraste uma mesa para movê-la; <kbd>Shift</kbd>+clique soma mesas à seleção e o arrasto move o conjunto. A mesa fica <strong>vermelha</strong> quando invade zona protegida, vão de porta, outra mesa, ou sai do salão.</p>
       <p class="dica"><strong>Reparear</strong>: clique na mesa que fica parada e depois na que vai formar par — ela vem para 3,00 m de corredor e, se houver vizinha alinhada, o par encosta a 1,50 m dela.</p>
       <p class="dica"><kbd>R</kbd> gira a seleção 90°. Setas movem de um passo, com <kbd>Shift</kbd> de dez. <kbd>Ctrl+Z</kbd> desfaz. <kbd>Esc</kbd> desmarca.</p>
-      <p class="dica">Arraste o fundo para deslocar a planta; a roda do mouse aproxima e afasta. O rascunho fica neste navegador; <strong>Copiar cenário</strong> copia o JSON para você enviar a quem publica a prancheta.</p>
+        <p class="dica"><strong>Alinhar à parede</strong> põe todas as mesas encostadas numa parede à mesma distância dela, sem mexer na posição ao longo da parede nem no giro. <strong>Pares</strong> mede o corredor entre as duas mesas de cada par e a folga até o par vizinho.</p>
+      <p class="dica">Arraste o fundo para deslocar a planta; a roda do mouse aproxima e afasta. O rascunho fica neste navegador; <strong>Salvar</strong> guarda o cenário aqui e copia o JSON.</p>
     </div>
   </aside>
 </div>
@@ -383,6 +443,125 @@ function distanciaAParede(m){
   if (cx <= SAL.recorte[2] && cy >= SAL.recorte[3]) cand.push(cy - SAL.recorte[3]);
   if (cy <= SAL.recorte[3] && cx >= SAL.recorte[2]) cand.push(cx - SAL.recorte[2]);
   return Math.max(0, Math.min(...cand) - M.urna / 2);
+}
+
+/* --- parede de encosto ------------------------------------------------ */
+/* A mesa entra no salao a partir da parede em que esta encostada: a ancora
+   (x, y) fica nessa parede e DIR(rot) aponta para dentro. Entao o giro ja diz
+   qual e a parede, e a distancia ate ela e so a folga que sobrou quando a mesa
+   foi puxada para dentro -- outra coisa, e proposito, do que distanciaAParede,
+   que mede da urna ate a parede mais proxima em qualquer direcao.
+   O recorte noroeste conta como parede: quem esta dentro dele mede ate a quina
+   do recorte, nao ate a borda do salao. */
+const PAREDES = [["N", "norte"], ["L", "leste"], ["O", "oeste"], ["S", "sul"]];
+const NOME_PAREDE = Object.fromEntries(PAREDES);
+function paredeDe(m){
+  return {270: "N", 180: "L", 0: "O", 90: "S"}[((m.rot % 360) + 360) % 360] || null;
+}
+/* A coordenada da parede em que esta mesa se encosta, no eixo do seu giro. */
+function origemParede(m){
+  switch (paredeDe(m)) {
+    case "N": return ALT;
+    case "L": return LARG;
+    case "O": return m.y < SAL.recorte[3] - 1e-9 ? SAL.recorte[2] : 0;
+    case "S": return m.x < SAL.recorte[2] - 1e-9 ? SAL.recorte[3] : 0;
+  }
+  return null;
+}
+function distanciaDeEncosto(m){
+  const o = origemParede(m);
+  if (o === null) return null;
+  switch (paredeDe(m)) {
+    case "N": return o - m.y;
+    case "L": return o - m.x;
+    case "O": return m.x - o;
+    case "S": return m.y - o;
+  }
+}
+/* Move a mesa, sem girar, para ficar a `d` metros da sua parede de encosto. */
+function poeDistancia(m, d){
+  const o = origemParede(m);
+  if (o === null) return;
+  switch (paredeDe(m)) {
+    case "N": m.y = +(o - d).toFixed(3); break;
+    case "L": m.x = +(o - d).toFixed(3); break;
+    case "O": m.x = +(o + d).toFixed(3); break;
+    case "S": m.y = +(o + d).toFixed(3); break;
+  }
+}
+const naParede = par => mrvs.filter(m => paredeDe(m) === par);
+
+/* Alinha uma parede inteira: todas as mesas encostadas nela passam a ficar a
+   mesma distancia dela. So mexe no eixo perpendicular a parede -- a posicao ao
+   longo dela, o giro e o lado dos mesarios ficam onde estavam. */
+function alinhaParede(par, d){
+  const alvos = naParede(par);
+  if (!alvos.length) return 0;
+  const antes = instantanea();
+  let mexidas = 0;
+  for (const m of alvos) {
+    if (Math.abs(distanciaDeEncosto(m) - d) < 5e-4) continue;
+    poeDistancia(m, d); mexidas++;
+  }
+  if (!mexidas) return 0;
+  registra(antes); rascunho();
+  return mexidas;
+}
+
+/* --- pares ------------------------------------------------------------ */
+/* Duas mesas formam par quando se encaram atraves do corredor de servico:
+   mesmo giro, mesma distancia da parede, mesarios de lados opostos e a segunda
+   caindo do lado para onde a primeira poe os seus. O corredor e o vao livre
+   entre os dois modulos, que a planta pede de 3,00 m e nao aceita abaixo de
+   2,50 m; entre um par e o vizinho a regra e o inverso, 1,50 m de folga como
+   alvo e 1,00 m como minimo.
+   O pareamento e por proximidade, nao pela numeracao: quem arrasta na
+   prancheta desfaz a ordem 1-2, 3-4 da planta original, e o que importa e
+   quem esta de fato frente a frente. */
+const PAR_DESALINHO = 0.30;   // m de diferenca de recuo ainda aceita no par
+const PAR_ALCANCE = 6.0;      // m de corredor acima disso ja nao e par
+const perp = m => CCW(DIR(m.rot));
+const aoLongo = m => { const q = perp(m); return m.x * q[0] + m.y * q[1]; };
+
+function pares(){
+  const cand = [];
+  for (const A of mrvs) for (const B of mrvs) {
+    if (B.n <= A.n) continue;
+    if (A.rot !== B.rot || A.lado === B.lado) continue;
+    const dA = distanciaDeEncosto(A), dB = distanciaDeEncosto(B);
+    if (dA === null || dB === null || Math.abs(dA - dB) > PAR_DESALINHO) continue;
+    // o par so existe se cada uma cai do lado em que a outra poe os mesarios
+    const delta = aoLongo(B) - aoLongo(A);
+    if (Math.sign(delta) !== Math.sign(A.lado)) continue;
+    const corredor = Math.abs(delta) - M.larg;
+    if (corredor > PAR_ALCANCE) continue;
+    cand.push({a: A.n, b: B.n, corredor, parede: paredeDe(A), recuo: (dA + dB) / 2,
+               ini: Math.min(aoLongo(A), aoLongo(B)) - M.larg / 2,
+               fim: Math.max(aoLongo(A), aoLongo(B)) + M.larg / 2});
+  }
+  // mais apertado primeiro: quem esta frente a frente de perto tem prioridade
+  cand.sort((x, y) => x.corredor - y.corredor);
+  const presas = new Set(), feitos = [];
+  for (const c of cand) {
+    if (presas.has(c.a) || presas.has(c.b)) continue;
+    presas.add(c.a); presas.add(c.b); feitos.push(c);
+  }
+  // folga ate o par vizinho na mesma parede e no mesmo recuo
+  for (const c of feitos) {
+    let vizinho = null;
+    for (const o of feitos) {
+      if (o === c || o.parede !== c.parede) continue;
+      if (Math.abs(o.recuo - c.recuo) > PAR_DESALINHO) continue;
+      const folga = o.ini >= c.fim ? o.ini - c.fim
+                  : (c.ini >= o.fim ? c.ini - o.fim : -1);
+      if (folga < 0) continue;                     // sobrepostos: o conflito ja acusa
+      if (!vizinho || folga < vizinho.folga) vizinho = {folga, par: o};
+    }
+    c.vizinho = vizinho;
+  }
+  feitos.sort((x, y) => x.a - y.a);
+  const soltas = mrvs.filter(m => !presas.has(m.n)).map(m => m.n).sort((x, y) => x - y);
+  return {pares: feitos, soltas};
 }
 
 /* --- reparear --------------------------------------------------------- */
@@ -704,7 +883,108 @@ function pintaPainel(){
     b.onclick = () => { medidas.splice(i, 1); rascunho(); montaMedidas(); pintaPainel(); };
     li.appendChild(b); lista.appendChild(li);
   });
-  pintaEstado();
+  pintaParedes(); pintaPares(); pintaEstado();
+}
+
+/* --- painel: alinhar a parede ----------------------------------------- */
+let paredeSel = null;
+
+/* Distancia de referencia para a parede: a da mesa selecionada, quando ha uma
+   so e ela e dessa parede -- e o jeito de dizer "traga as outras para esta" --
+   e senao a distancia em que mais mesas ja estao, com empate na menor. */
+function referencia(par){
+  const alvos = naParede(par);
+  if (!alvos.length) return 0;
+  if (selecao.size === 1) {
+    const m = alvos.find(o => selecao.has(o.n));
+    if (m) return distanciaDeEncosto(m);
+  }
+  const conta = new Map();
+  for (const m of alvos) {
+    const k = distanciaDeEncosto(m).toFixed(2);
+    conta.set(k, (conta.get(k) || 0) + 1);
+  }
+  let melhor = null;
+  for (const [k, n] of conta)
+    if (!melhor || n > melhor.n || (n === melhor.n && +k < +melhor.k)) melhor = {k, n};
+  return +melhor.k;
+}
+function pintaParedes(){
+  for (const b of $("paredes").querySelectorAll("button")) {
+    const n = naParede(b.dataset.p).length;
+    b.disabled = !n;
+    b.setAttribute("aria-pressed", String(paredeSel === b.dataset.p));
+    b.textContent = b.dataset.p + (n ? " " + n : "");
+    b.title = n ? `${n} mesa${n > 1 ? "s" : ""} encostada${n > 1 ? "s" : ""} na parede ${NOME_PAREDE[b.dataset.p]}`
+                : `Nenhuma mesa encostada na parede ${NOME_PAREDE[b.dataset.p]}`;
+  }
+  const leitura = $("leituraParede");
+  $("alinhar").disabled = !paredeSel;
+  if (!paredeSel) {
+    leitura.textContent = "Escolha uma parede para ver a que distância dela estão as mesas encostadas nela.";
+    return;
+  }
+  const ds = naParede(paredeSel).map(distanciaDeEncosto).sort((a, b) => a - b);
+  const lo = ds[0], hi = ds[ds.length - 1];
+  const alvo = +$("alvoDist").value;
+  const fora = ds.filter(d => Math.abs(d - alvo) >= 5e-4).length;
+  leitura.innerHTML = ds.length === 0 ? "Nenhuma mesa nesta parede."
+    : `<strong>${ds.length} mesa${ds.length > 1 ? "s" : ""}</strong> na parede `
+      + `${NOME_PAREDE[paredeSel]}, hoje de <span class="mono">${vg(lo)}</span> a `
+      + `<span class="mono">${vg(hi)}</span> m da parede`
+      + (hi - lo < 5e-4 ? " — já alinhadas." :
+         ` (desalinho de <span class="mono">${vg(hi - lo)}</span> m).`)
+      + (fora ? ` <strong>Alinhar</strong> move ${fora} mesa${fora > 1 ? "s" : ""} para `
+                + `<span class="mono">${vg(alvo)}</span> m.`
+              : ` Nada a mover em <span class="mono">${vg(alvo)}</span> m.`);
+}
+function escolheParede(par){
+  paredeSel = paredeSel === par ? null : par;
+  if (paredeSel) $("alvoDist").value = referencia(paredeSel).toFixed(2);
+  pintaParedes();
+}
+
+/* --- painel: distancia entre os pares --------------------------------- */
+/* Corredor: 3,00 m e o alvo da planta e 2,50 m o minimo. Entre um par e o
+   vizinho da mesma fileira: 1,50 m de alvo, 1,00 m de minimo. */
+const classeCorredor = v => v < M.corredor[0] ? "ruim"
+                          : (v < M.corredor[1] - 5e-4 ? "atencao" : "bom");
+const classeFolga = v => v < M.entre_pares[0] ? "ruim"
+                       : (v < M.entre_pares[1] - 5e-4 ? "atencao" : "bom");
+function pintaPares(){
+  const {pares: ps, soltas} = pares();
+  const lista = $("listaPares");
+  lista.innerHTML = "";
+  $("semPares").style.display = ps.length ? "none" : "";
+  let fora = 0;
+  for (const c of ps) {
+    const cc = classeCorredor(c.corredor);
+    const cf = c.vizinho ? classeFolga(c.vizinho.folga) : null;
+    if (cc !== "bom" || cf === "ruim" || cf === "atencao") fora++;
+    const li = document.createElement("li");
+    li.innerHTML =
+      `<div class="l1"><span class="quem">${c.a}–${c.b}</span>
+         <span class="marca ${cc}">corredor ${vg(c.corredor)} m</span></div>
+       <div class="l2">parede ${c.parede} · recuo ${vg(c.recuo)} m` +
+      (c.vizinho ? ` · <span class="${cf}">${vg(c.vizinho.folga)} m do par `
+                   + `${c.vizinho.par.a}–${c.vizinho.par.b}</span>`
+                 : " · sem par vizinho na fileira") + `</div>`;
+    li.title = `Corredor entre ${c.a} e ${c.b}: ${vg(c.corredor)} m `
+      + `(alvo ${vg(M.corredor[1])} m, mínimo ${vg(M.corredor[0])} m). Clique para selecionar o par.`;
+    li.onclick = () => {
+      selecao = new Set([c.a, c.b]);
+      montaMesas(); pintaPainel();
+    };
+    lista.appendChild(li);
+  }
+  $("resumoPares").innerHTML = ps.length
+    ? `<span class="chip ${fora ? "ruim" : ""}">${ps.length} par${ps.length > 1 ? "es" : ""}`
+      + (fora ? ` · ${fora} fora da regra` : " · na regra") + `</span>`
+    : "";
+  $("soltasPares").innerHTML = soltas.length
+    ? `Sem par: <span class="mono">${soltas.join(", ")}</span>. `
+      + `Use <strong>Reparear</strong> para formar par, ou deixe assim se a mesa é avulsa de propósito.`
+    : "";
 }
 
 function giraSelecao(){
@@ -927,17 +1207,55 @@ $("copiar").onclick = async () => {
 for (const id of ["optAssentos", "optZonas", "optGrade", "optPortas"])
   $(id).onchange = () => { opcoes(); montaMesas(); };
 
-/* --- cenarios salvos -----------------------------------------------------
-   A lista vem embutida em D.cenariosSalvos, gravada na ultima vez que a
-   prancheta foi gerada e publicada: o artefato nao pode buscar dados ao
-   vivo fora do proprio claude.ai (a sandbox bloqueia fetch para qualquer
-   outro host), entao nao ha como ler o GitHub em tempo real daqui. Salvar
-   abre o GitHub com o commit pronto para confirmar; Copiar/Colar funciona
-   na hora, sem depender do GitHub. Ver cenarios/README.md no branch
-   cenarios-hall2. */
+for (const b of $("paredes").querySelectorAll("button"))
+  b.onclick = () => escolheParede(b.dataset.p);
+$("alvoDist").oninput = pintaParedes;
+$("alinhar").onclick = () => {
+  if (!paredeSel) return;
+  const d = Math.max(0, +$("alvoDist").value || 0);
+  const n = alinhaParede(paredeSel, d);
+  montaMesas(); pintaPainel();
+  avisa(n ? `Parede ${NOME_PAREDE[paredeSel]}: ${n} mesa${n > 1 ? "s" : ""} a ${vg(d)} m da parede`
+          : `Parede ${NOME_PAREDE[paredeSel]} já estava toda a ${vg(d)} m`, 4000);
+};
+
+/* --- biblioteca de cenarios ---------------------------------------------
+   Duas prateleiras na mesma lista. A publicada vem embutida em
+   D.cenariosSalvos, gravada quando a prancheta foi gerada: o artefato nao
+   alcanca rede fora do claude.ai, entao nao ha leitura ao vivo do GitHub
+   daqui. A local fica no localStorage deste navegador, e existe porque o
+   contrario -- so a publicada -- fazia o "Salvar" nao salvar nada: o cenario
+   ia para a area de transferencia e sumia se ninguem o gravasse no
+   repositorio.
+   Apagar segue a mesma divisao: cenario local sai de vez; cenario publicado
+   so pode ser ocultado aqui, porque removê-lo para todo mundo e republicar a
+   pagina. Ver cenarios/README.md no branch cenarios-hall2. */
 const GITHUB_OWNER = "hamadmkalaf", GITHUB_REPO = "eleicoes2026",
       GITHUB_BRANCH_CENARIOS = "cenarios-hall2";
-let salvos = Array.isArray(D.cenariosSalvos) ? D.cenariosSalvos : [];
+const CHAVE_LOCAIS = "prancheta-hall2-cenarios-v1";
+const CHAVE_OCULTOS = "prancheta-hall2-ocultos-v1";
+const publicados = (Array.isArray(D.cenariosSalvos) ? D.cenariosSalvos : [])
+  .map(c => ({...c, fonte: "publicado"}));
+
+function leJSON(chave, vazio){
+  try {
+    const v = JSON.parse(localStorage.getItem(chave) || "null");
+    return Array.isArray(v) ? v : vazio;
+  } catch (e) { return vazio; }
+}
+function gravaJSON(chave, valor){
+  try { localStorage.setItem(chave, JSON.stringify(valor)); return true; }
+  catch (e) { return false; }
+}
+let locais = leJSON(CHAVE_LOCAIS, []).map(c => ({...c, fonte: "local"}));
+let ocultos = new Set(leJSON(CHAVE_OCULTOS, []));
+
+/* Locais primeiro, porque sao os que quem esta na prancheta acabou de fazer. */
+const biblioteca = () => [...locais, ...publicados];
+const visiveis = () => biblioteca().filter(c => !ocultos.has(c.id));
+
+const carimbo = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase().slice(0, 40) || "cenario";
 
 function pacoteCenario(nome){
   const base = original(cenario), alteracoes = [];
@@ -949,6 +1267,11 @@ function pacoteCenario(nome){
   return {nome: nome, base: cenario, alteracoes,
           medidas: medidas.map(m => ({...m})), criadoEm: new Date().toISOString()};
 }
+/* O JSON que sai daqui e o mesmo que salva_cenario.py grava e que o simulador
+   le em "Carregar arranjo": nome, base, alteracoes, medidas, criadoEm, id. */
+const paraFora = c => ({nome: c.nome, base: c.base, alteracoes: c.alteracoes,
+                        mrvs: c.mrvs, medidas: c.medidas, criadoEm: c.criadoEm, id: c.id});
+
 function aplicaCenario(cen){
   const temAlteracoes = Array.isArray(cen && cen.alteracoes);
   const formatoAntigo = Array.isArray(cen && cen.mrvs) && cen.mrvs.length === 28;
@@ -981,56 +1304,137 @@ function aplicaCenario(cen){
   avisa(`Cenário “${cen.nome || "sem nome"}” aberto`, 3000);
 }
 
+/* --- apagar ------------------------------------------------------------ */
+function apagaLocal(cen){
+  if (!confirm(`Apagar o cenário “${cen.nome || "sem nome"}” deste navegador?\n`
+             + `Não dá para desfazer. Se quiser guardá-lo, copie o JSON antes.`)) return;
+  locais = locais.filter(c => c.id !== cen.id);
+  gravaJSON(CHAVE_LOCAIS, locais.map(paraFora));
+  pintaSalvos();
+  avisa(`Cenário “${cen.nome || "sem nome"}” apagado`, 3000);
+}
+function ocultaPublicado(cen){
+  ocultos.add(cen.id);
+  gravaJSON(CHAVE_OCULTOS, [...ocultos]);
+  pintaSalvos();
+  avisa(`“${cen.nome || "sem nome"}” oculto neste navegador — continua na lista publicada`, 5000);
+}
+function mostraOcultos(){
+  ocultos = new Set();
+  gravaJSON(CHAVE_OCULTOS, []);
+  pintaSalvos();
+}
+
+/* --- lista ------------------------------------------------------------- */
 function pintaSalvos(){
   const lista = $("listaSalvos");
+  const itens = visiveis();
   lista.innerHTML = "";
-  $("semSalvos").style.display = salvos.length ? "none" : "";
-  for (const s of salvos) {
+  $("semSalvos").style.display = itens.length ? "none" : "";
+  $("semSalvos").textContent = biblioteca().length
+    ? "Todos os cenários estão ocultos neste navegador."
+    : "Nenhum cenário salvo ainda.";
+  for (const c of itens) {
     const li = document.createElement("li");
-    const quando = (s.criadoEm || "").slice(0, 16).replace("T", " ");
-    const n = Array.isArray(s.alteracoes) ? s.alteracoes.length
-            : (Array.isArray(s.mrvs) ? s.mrvs.length : 0);
+    const quando = (c.criadoEm || "").slice(0, 16).replace("T", " ");
+    const n = Array.isArray(c.alteracoes) ? c.alteracoes.length
+            : (Array.isArray(c.mrvs) ? c.mrvs.length : 0);
+    const local = c.fonte === "local";
     li.innerHTML =
       `<div class="linha1"><span class="nome"></span>
-         <span class="quando">${quando} · ${s.base || "A"}</span></div>
+         <span class="quando">${quando} · ${c.base || "A"}</span></div>
        <div class="linha2">
          <button class="acao mini abrir">Abrir</button>
          <button class="acao mini copiarUm">Copiar</button>
-         <a class="ver" target="_blank" rel="noopener">GitHub ↗</a>
+         <span class="fonte">${local ? "neste navegador" : "publicado"}</span>
+         <button class="apagar">${local ? "apagar" : "ocultar"}</button>
        </div>`;
-    li.querySelector(".nome").textContent = (s.nome || "sem nome") +
+    li.querySelector(".nome").textContent = (c.nome || "sem nome") +
       (n ? ` · ${n} mesa${n > 1 ? "s" : ""} alterada${n > 1 ? "s" : ""}` : "");
-    li.querySelector(".abrir").onclick = () => aplicaCenario(s);
+    li.querySelector(".abrir").onclick = () => aplicaCenario(c);
     li.querySelector(".copiarUm").onclick = async ev => {
       const b = ev.target;
       try {
-        await navigator.clipboard.writeText(JSON.stringify(
-          {nome: s.nome, base: s.base, alteracoes: s.alteracoes, medidas: s.medidas,
-           criadoEm: s.criadoEm}));
+        await navigator.clipboard.writeText(JSON.stringify(paraFora(c)));
         b.textContent = "Copiado";
       } catch (e) { b.textContent = "não deu"; }
       setTimeout(() => { b.textContent = "Copiar"; }, 1500);
     };
-    const a = li.querySelector(".ver");
-    a.href = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/blob/`
-      + `${GITHUB_BRANCH_CENARIOS}/cenarios/${encodeURIComponent(s.id || "")}.json`;
+    const rm = li.querySelector(".apagar");
+    rm.title = local
+      ? "Apagar de vez deste navegador"
+      : "Sumir com ele desta lista, só aqui — na lista publicada ele continua";
+    rm.onclick = () => (local ? apagaLocal(c) : ocultaPublicado(c));
     lista.appendChild(li);
   }
+  const bt = $("mostrarOcultos");
+  bt.hidden = !ocultos.size;
+  bt.textContent = `Mostrar ${ocultos.size} oculto${ocultos.size > 1 ? "s" : ""}`;
+  bt.onclick = mostraOcultos;
 }
 
+/* --- salvar e exportar -------------------------------------------------- */
 async function salvaCenario(){
   const nome = $("nomeCenario").value.trim() || "sem nome";
   const corpo = pacoteCenario(nome);
-  const json = JSON.stringify(corpo);
-  try {
-    await navigator.clipboard.writeText(json);
-    avisa(`Cenário “${nome}” copiado — envie a quem publica a prancheta (ou cole aqui numa conversa com o Claude) para ele entrar na lista de todos`, 6000);
-    $("nomeCenario").value = "";
-  } catch (e) {
-    avisa("Não deu para copiar automaticamente — o JSON está no console (F12) para copiar à mão", 5000);
-    console.log(json);
-  }
+  corpo.id = carimbo(nome) + "-" + corpo.criadoEm.replace(/\D/g, "").slice(0, 14);
+  locais = [{...corpo, fonte: "local"}, ...locais.filter(c => c.id !== corpo.id)].slice(0, 60);
+  const guardou = gravaJSON(CHAVE_LOCAIS, locais.map(paraFora));
+  ocultos.delete(corpo.id); gravaJSON(CHAVE_OCULTOS, [...ocultos]);
+  pintaSalvos();
+  $("nomeCenario").value = "";
+  const json = JSON.stringify(paraFora(corpo));
+  let copiou = true;
+  try { await navigator.clipboard.writeText(json); }
+  catch (e) { copiou = false; console.log(json); }
+  avisa(
+    (guardou ? `Cenário “${nome}” salvo nesta prancheta` : `Cenário “${nome}” não coube no armazenamento deste navegador`)
+    + (copiou ? " e copiado — cole no simulador, ou mande a quem publica a prancheta para ele entrar na lista de todos"
+              : " — a cópia automática falhou; o JSON está no console (F12)"), 7000);
 }
+
+/* A biblioteca inteira num JSON so: e o que o simulador aceita de uma vez em
+   "Carregar arranjo", que era justamente o que faltava para levar tudo de uma
+   prancheta para o outro artefato sem ir de cenario em cenario. */
+const bibliotecaJSON = () => JSON.stringify(visiveis().map(paraFora), null, 1);
+
+$("copiarBiblioteca").onclick = async ev => {
+  const itens = visiveis();
+  if (!itens.length) { avisa("Não há cenário nenhum para levar", 3000); return; }
+  const b = ev.target, antes = b.textContent;
+  try {
+    await navigator.clipboard.writeText(bibliotecaJSON());
+    b.textContent = "Copiado";
+    avisa(`${itens.length} cenário${itens.length > 1 ? "s" : ""} na área de transferência — `
+        + `no simulador, abra “Carregar arranjo…” e cole tudo de uma vez`, 7000);
+  } catch (e) {
+    b.textContent = "não deu"; console.log(bibliotecaJSON());
+    avisa("Não deu para copiar automaticamente — o JSON está no console (F12)", 5000);
+  }
+  setTimeout(() => { b.textContent = antes; }, 2000);
+};
+
+/* Baixar depende do claude.ai conceder a capacidade de download a esta pagina;
+   quando nao concede, `use` devolve null e o botao simplesmente nao aparece --
+   Copiar continua dando conta. */
+(async () => {
+  try {
+    const downloads = window.claude && claude.use ? await claude.use("downloads") : null;
+    if (!downloads) return;
+    const b = $("baixarBiblioteca");
+    b.hidden = false;
+    b.onclick = async () => {
+      const itens = visiveis();
+      if (!itens.length) { avisa("Não há cenário nenhum para baixar", 3000); return; }
+      try {
+        await downloads.save({filename: "cenarios-hall2.json", data: bibliotecaJSON()});
+        avisa(`${itens.length} cenário${itens.length > 1 ? "s" : ""} num arquivo — `
+            + `no simulador, use “Carregar arranjo… › Escolher arquivo”`, 7000);
+      } catch (e) { avisa("O download não foi concluído", 3500); }
+    };
+  } catch (e) {}
+})();
+
 $("salvarCenario").onclick = salvaCenario;
 $("nomeCenario").addEventListener("keydown", ev => {
   if (ev.key === "Enter") salvaCenario();
@@ -1041,9 +1445,23 @@ $("colarCenario").onclick = () => {
 $("colarCancelar").onclick = () => { $("colarCaixa").style.display = "none"; };
 $("colarAplicar").onclick = () => {
   try {
-    const cen = JSON.parse($("colarTexto").value);
+    const bruto = JSON.parse($("colarTexto").value);
+    const cens = Array.isArray(bruto) ? bruto : [bruto];
+    if (!cens.length) throw new Error("lista vazia");
     $("colarCaixa").style.display = "none"; $("colarTexto").value = "";
-    aplicaCenario(cen);
+    // colar uma lista guarda todas e abre a primeira
+    if (cens.length > 1) {
+      const novas = cens.filter(c => c && (c.base === "A" || c.base === "B"));
+      for (const c of novas.slice().reverse()) {
+        const id = c.id || carimbo(c.nome) + "-" + (c.criadoEm || "").replace(/\D/g, "").slice(0, 14);
+        locais = [{...c, id, fonte: "local"}, ...locais.filter(o => o.id !== id)];
+      }
+      locais = locais.slice(0, 60);
+      gravaJSON(CHAVE_LOCAIS, locais.map(paraFora));
+      pintaSalvos();
+      avisa(`${novas.length} cenário${novas.length > 1 ? "s" : ""} guardado${novas.length > 1 ? "s" : ""} nesta prancheta`, 5000);
+    }
+    aplicaCenario(cens[0]);
   } catch (e) { avisa("Isso não é um JSON de cenário válido", 3500); }
 };
 

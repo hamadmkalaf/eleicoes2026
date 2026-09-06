@@ -347,7 +347,10 @@ Por ordem de retorno:
 | `scripts/mesas.py` | **Ideia 1 (§11):** módulo da MRV com o mobiliário novo, faixa protegida e fileira recuada da fachada leste, regras de bloqueio, empacotamento por face e divisórias exentas. Toda planta passa por `valida()` antes de ser gravada. |
 | `scripts/planta_mesas.py` | Desenhos da ideia 1: o módulo cotado, a fachada leste de perto, as réguas de parede e as plantas de ocupação. Usa as primitivas de `desenho.py`. |
 | `scripts/gera_mesas.py` + `mesas_template.html` | Grava `saidas/mesas.json`, os SVGs e `saidas/mesas.html`. |
-| `scripts/gera_editor.py` + `editor_template.html` | Grava `saidas/editor_dados.json` e `saidas/editor.html`, a prancheta: arrastar (com seleção múltipla e cotas vivas), girar de 90 em 90, reparear ao corredor de 3,00 m com encosto a 1,50 m, medir distância, desfazer/refazer e salvar cenários. Não recalcula nada — consome as MRVs já validadas por `mesas.py`. |
+| `scripts/gera_editor.py` + `editor_template.html` | Grava `saidas/editor_dados.json` e `saidas/editor.html`, a prancheta: arrastar (com seleção múltipla e cotas vivas), girar de 90 em 90, reparear ao corredor de 3,00 m com encosto a 1,50 m, **alinhar uma parede inteira**, **conferir a distância entre os pares**, medir distância, desfazer/refazer e salvar, apagar e exportar cenários. Não recalcula nada — consome as MRVs já validadas por `mesas.py`. |
+| `scripts/cenarios.py` | **Fonte única da biblioteca de cenários**, lida pelos dois geradores. Junta `cenarios/` do checkout com `cenarios/` do branch `cenarios-hall2`. |
+| `scripts/teste_prancheta.js` | Testa fora do navegador a geometria nova da prancheta — parede de encosto, alinhamento e pareamento — recortando os blocos puros do template e rodando contra `saidas/editor_dados.json`. `node scripts/teste_prancheta.js`. |
+| `scripts/gera_simulador.py` + `simulador/` | Grava `saidas/simulador_fluxo.html`, o simulador de fluxo: premissas, simulação por eventos discretos eleitor a eleitor e relatório. Consome a base geométrica de `saidas/editor_dados.json` e a mesma biblioteca de cenários da prancheta. |
 | `saidas/dados.json` | As 28 urnas apuradas (etapa anterior, não mexer). |
 
 A planta-base está publicada em
@@ -358,30 +361,71 @@ cria-se um artefato separado.
 A peça da ideia 1 está publicada em
 <https://claude.ai/code/artifact/8ea7b55b-ec3f-4dd4-baaf-7702c4d3fcce> e a
 prancheta — a mesma planta manipulável, em escala — em
-<https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0>. Mesma
+<https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0>. O
+simulador de fluxo está em
+<https://claude.ai/code/artifact/f2fea148-f618-4d3d-aa63-b0653f4139bc>. Mesma
 regra das outras: para atualizar de outra sessão, publique passando a URL em
 `url`.
 
-**Os cenários salvos moram no branch `cenarios-hall2` do repositório**, um
-arquivo `.json` por cenário em `cenarios/` (formato e por quê em
-`cenarios/README.md` desse branch). A prancheta não lê esse branch ao vivo —
+### As duas ferramentas de conferência da prancheta
+
+**Alinhar à parede.** A mesa entra no salão a partir da parede em que está
+encostada: a âncora `(x, y)` fica nessa parede e o giro aponta para dentro.
+Então a parede sai do giro, sem precisar de campo novo, e a distância até ela
+é a folga que sobrou quando a mesa foi puxada para dentro — outra coisa, e de
+propósito, da leitura "urna à parede" do painel de seleção, que mede da urna
+até a parede mais próxima em qualquer direção. Escolhida a parede, o campo
+vem preenchido com a distância em que mais mesas já estão (ou com a da mesa
+selecionada, quando há uma só); alinhar move as demais **só no eixo
+perpendicular** — posição ao longo da parede, giro e lado dos mesários ficam
+onde estavam. O recorte noroeste conta como parede: quem está dentro dele
+mede até a quina, não até a borda do salão.
+
+**Pares.** Duas mesas formam par quando se encaram através do corredor de
+serviço: mesmo giro, mesma distância da parede, mesários de lados opostos e a
+segunda caindo do lado para onde a primeira põe os seus. O pareamento é por
+proximidade, não pela numeração — quem arrasta desfaz a ordem 1-2, 3-4 da
+planta original, e o que importa é quem está de fato frente a frente. O
+painel mede o corredor de cada par (alvo 3,00 m, mínimo 2,50 m) e a folga até
+o par vizinho da mesma fileira (alvo 1,50 m, mínimo 1,00 m), lista as mesas
+que ficaram sem par, e clicar numa linha seleciona o par na planta. Na planta
+oficial dá 14 pares de 3,00 m e nenhuma mesa solta; no cenário `Hamad_3polos`
+acusa o par 5–22 com 2,45 m, abaixo do mínimo.
+
+**Os cenários salvos moram em `cenarios/`**, um arquivo `.json` por cenário,
+lidos por `scripts/cenarios.py` — que junta a pasta do checkout com a pasta
+do branch de dados `cenarios-hall2` (formato e por quê em
+`cenarios/README.md`). Os **dois** geradores chamam esse módulo, e é essa a
+correção do descasamento que existia: cada um tinha a sua cópia da leitura e
+as duas olhavam só o branch de dados, então dois cenários que ficaram num
+branch de trabalho apareciam na prancheta e não no simulador. A prancheta não
+lê nada ao vivo —
 a sandbox do artefato publicado bloqueia qualquer chamada de rede para fora
 do próprio claude.ai, então nem GitHub nem qualquer outro serviço externo dá
 para consultar em tempo real de dentro da página (só as capabilities do
 claude.ai escapam disso, e usar a `db` de novo voltaria a prender o artefato
 à organização, o que motivou essa troca).
 
-O botão **Copiar cenário** copia o JSON para a área de transferência — é o
-único passo que a página faz sozinha, sem depender de conta em nada. Quem
-desenha manda esse JSON (mensagem, e-mail, colando numa conversa com o
-Claude) para quem publica a prancheta, que roda
+O caminho tem três degraus, e os dois primeiros não dependem de ninguém.
+**Salvar** guarda o cenário no `localStorage` daquele navegador e copia o
+JSON — antes o botão só copiava, e o cenário sumia se ninguém o gravasse no
+repositório. Na lista, cenário local tem **apagar** (some de vez) e cenário
+da lista publicada tem **ocultar** (some só ali, porque tirá-lo de todo mundo
+é republicar). **Copiar tudo p/ o simulador** põe a biblioteca inteira num
+JSON só, que o `Carregar arranjo…` do simulador aceita de uma vez — é o que
+leva cenário novo de uma página à outra sem esperar republicação; quando o
+claude.ai concede a capacidade de download à página, aparece também **Baixar
+.json**, para o mesmo arquivo entrar pelo `Escolher arquivo…` de lá. Para o
+cenário entrar na lista publicada, quem desenha manda o JSON (mensagem,
+e-mail, colando numa conversa com o Claude) para quem publica a prancheta,
+que roda
 `python3 scripts/salva_cenario.py arquivo.json` (ou `-` para ler da entrada
 padrão): o script grava o arquivo no branch `cenarios-hall2` sem tocar no
 checkout local (usa um worktree temporário) e não pede nada além do JSON
-colado. Só depois disso — `scripts/gera_editor.py` lê os arquivos do branch
-e embute a lista em `saidas/editor_dados.json` **na hora de gerar e
-publicar** a página — o cenário aparece para todo mundo; salvar sozinho não
-basta, é preciso pedir a republicação. Cada cenário grava só as mesas que
+colado. Só depois disso — `gera_editor.py` e `gera_simulador.py` leem a
+biblioteca e a embutem **na hora de gerar e publicar** as páginas — o cenário
+aparece para todo mundo; salvar sozinho não basta, é preciso pedir a
+republicação das duas. Cada cenário grava só as mesas que
 mudaram da planta oficial (`alteracoes`, por número da mesa) — não as 28 —,
 o que mantém os arquivos pequenos e os diffs do git legíveis, e significa
 que mesas não citadas acompanham a planta oficial se ela mudar depois.
@@ -404,6 +448,17 @@ python3 salao.py           # confere os dados e a capacidade de parede
 python3 planta_base.py     # planta-base: salao vazio e portas numeradas
 python3 mesas.py           # as 8 combinacoes da ideia 1, com validacao
 python3 gera_mesas.py      # saidas/mesas.json, os SVGs e saidas/mesas.html
+```
+
+As duas páginas manipuláveis saem em sequência — a prancheta primeiro, porque
+o simulador consome a geometria que ela grava — e cada uma tem o seu teste:
+
+```bash
+python3 scripts/gera_editor.py      # saidas/editor_dados.json e editor.html
+python3 scripts/gera_simulador.py   # saidas/simulador_fluxo.html
+node scripts/teste_prancheta.js     # parede de encosto, alinhamento, pares
+node simulador/teste_modelo.js      # motor do simulador
+node simulador/teste_arranjos.js    # leitura de arranjo da prancheta
 ```
 
 ---

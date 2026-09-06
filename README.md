@@ -1,21 +1,57 @@
-# Agregações de seções eleitorais — Dublin, Eleições 2026
+# Eleições 2026 — posto de Dublin (RDS Ballsbridge, Hall 2)
 
-Análise do mapa de agregações que o TSE propôs para a zona eleitoral de Dublin
-(Irlanda), no 1º turno de 04/10/2026. Responde a duas perguntas: **quantos
-eleitores há em cada seção** (principal e agregada) e **onde esses eleitores
-residem**.
+Análise das seções eleitorais de Dublin e desenho da operação de votação do
+**1º turno de 04/10/2026 (8h–17h)** no **Royal Dublin Society, Hall 2** (RDS,
+Merrion Road, Ballsbridge, Dublin 4): **16.794 eleitores aptos, 51 seções, 28
+urnas**, identificação por caderno físico, Hall 2 + Ring 3 (descoberto).
 
-Todas as 51 seções da Irlanda foram concentradas em 28 urnas num único local:
-o **Royal Dublin Society – Hall 2** (RDS, Merrion Road, Ballsbridge, Dublin 4
-D04 AK83).
+**Leia primeiro [`DOCUMENTACAO_PROJETO.md`](DOCUMENTACAO_PROJETO.md)**: é a
+documentação consolidada das sete etapas, com a revisão dos dez pull requests,
+as inconsistências entre etapas e as pendências por dono. Esta branch
+(`claude/project-analysis-documentation-w49q34`) reúne a última versão de cada
+etapa; `backup/consolidado-2026-09-06` é a cópia congelada do mesmo estado.
 
-## Resultado em uma linha
+## Mapa do projeto
 
-16.794 eleitores, 51 seções, 28 urnas. As urnas variam de 398 a **797**
-eleitores. As 23 urnas que somam duas seções vão de 429 a 797; as 5 restantes
-operam com uma seção só, perto de 400.
+| # | Etapa | Entregáveis | Documento de referência |
+|---|---|---|---|
+| 1 | Agregação final: seções → MRVs, comparecimento esperado por seção (2022) | `saidas/Dublin_2026_agregacoes.xlsx`, `saidas/dados.json`, `saidas/dublin_agregacoes.html`, `saidas/mrv_secoes_comparecimento.md`, `data/mrv_secoes.json` | `DOCUMENTACAO_PROJETO.md` §1, `handoff_agregacao_dublin_2026.md`, `contexto_eleicoes_dublin_2026.md` |
+| 2 | Planta-base do Hall 2 (salão, 18 portas numeradas por fachada) | `saidas/planta_base.html`, `saidas/planta_base.svg`, `scripts/salao.py` | §2, `docs/CONTEXTO.md` |
+| 3 | Prancheta e seus cenários (planta das 28 mesas, editor em escala, biblioteca de cenários) | `saidas/editor.html`, `saidas/mesas.html`, `cenarios/*.json` | §3, `cenarios/README.md` |
+| 4 | Simulados de fluxo (simulador eleitor a eleitor; modelos de fila por urna) | `saidas/simulador_fluxo.html`, `simulador/`, `scripts/simula_fluxo.py`, `saidas/analise_gargalos.md` | §4 |
+| 5 | Dimensões e plano do Ring 3 | `saidas/plano_ring3.md`, `saidas/layout_ring3.svg/.png` | §5 |
+| 6 | Plano de sinalização externo | `saidas/plano_sinalizacao.html`, `data/fotos/` | §6 |
+| 7 | Expectativa de horários de pico | `pesquisa_horarios_pico_votacao.md` | §7 |
 
-## Fontes
+Artefatos publicados: planta-base, planta das 28 mesas, prancheta, simulador e
+plano de sinalização; URLs no §0 da documentação.
+
+## Como rodar
+
+```bash
+pip install pandas openpyxl Pillow        # pymupdf é opcional (PNG do Ring 3)
+# 1. agregação
+(cd scripts && python3 mapa_agregacoes.py && python3 gera_pagina.py && python3 gera_mrv_comparecimento.py)
+# 2 e 3. planta-base, mesas, prancheta
+(cd scripts && python3 salao.py && python3 planta_base.py && python3 mesas.py && python3 gera_mesas.py)
+python3 scripts/gera_editor.py && node scripts/teste_prancheta.js
+python3 scripts/folgas_prancheta.py [cenarios/<arquivo>.json]
+# 4. simulações (o simulador lê a geometria que gera_editor.py acabou de gravar)
+python3 scripts/gera_simulador.py && node simulador/teste_arranjos.js && node simulador/teste_modelo.js claude 16
+python3 scripts/simula_fluxo.py
+# 5. Ring 3
+python3 scripts/layout_ring3.py
+# 6. sinalização
+python3 scripts/gera_plano_sinalizacao.py
+```
+
+Toda saída em `saidas/` é gerada por script: editar HTML ou SVG à mão se perde
+na próxima geração. Os geradores falham em vez de gravar saída errada quando
+uma validação não passa.
+
+## Etapa 1 em detalhe: agregação de seções
+
+### Fontes
 
 Os três arquivos em `data/raw/` vieram da pasta do Google Drive do usuário:
 
@@ -27,50 +63,35 @@ Os três arquivos em `data/raw/` vieram da pasta do Google Drive do usuário:
 
 Ambos os CSVs estão em **latin-1**, separados por `;`. O `Filtrado_Dublin.csv`
 foi re-exportado com a linha inteira envolvida em aspas e as aspas internas
-duplicadas, então precisa de um passo de desempacotamento — tratado em
-`scripts/parse_dados.py`.
+duplicadas, então precisa de um passo de desempacotamento, tratado em
+`scripts/parse_dados.py`. `NM_LOCAL_VOTACAO` no arquivo de perfil é o local de
+votação original do eleitor e é usado como referência de onde ele reside.
 
-`NM_LOCAL_VOTACAO` no arquivo de perfil é o local de votação original do
-eleitor e é usado aqui como referência de onde ele reside.
+A designação **MRV 1–28 → seção principal** vem da convocação de mesários do
+DJE/TRE-DF (Ano 2026 n. 139, 04/08/2026), transcrita em
+`scripts/gera_mrv_comparecimento.py` e `data/mrv_secoes.json`; não está em
+nenhum CSV do TSE. `handoff_agregacao_dublin_2026.md` traz a taxa de
+comparecimento de 2022 por domicílio de origem: taxa histórica, de qualidade
+desigual entre localidades, **não** comparecimento oficial por seção.
 
-`handoff_agregacao_dublin_2026.md` (fornecido pelo usuário) traz a taxa de
-comparecimento de 2022 por domicílio de origem, usada em
-`scripts/gera_mrv_comparecimento.py` — não é um CSV do TSE, é uma taxa
-histórica com qualidade de dado desigual entre localidades (ver o arquivo
-gerado para o detalhe).
+### Resultado em uma linha
 
-## Como rodar
+16.794 eleitores, 51 seções, 28 urnas. As urnas variam de 398 a **797**
+eleitores. As 23 urnas que somam duas seções vão de 429 a 797; as 5 restantes
+operam com uma seção só, perto de 400.
 
-```bash
-pip install pandas openpyxl
-cd scripts
-python3 mapa_agregacoes.py          # gera saidas/Dublin_2026_agregacoes.xlsx e saidas/dados.json
-python3 gera_pagina.py              # gera saidas/dublin_agregacoes.html
-python3 gera_mrv_comparecimento.py  # gera saidas/mrv_secoes_comparecimento.md
-```
+### Saídas
 
-`parse_dados.py` também roda sozinho e imprime um resumo da carga.
-
-## Saídas
-
-- **`saidas/Dublin_2026_agregacoes.xlsx`** — cinco abas: `Urnas` (28 linhas,
+- **`saidas/Dublin_2026_agregacoes.xlsx`**: cinco abas, `Urnas` (28 linhas,
   ordenadas por total combinado), `Secoes` (as 51), `Residencia x Secao`,
   `Residencia x Urna` e `Inconsistencias`.
-- **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
-- **`saidas/dados.json`** — os dados estruturados que alimentam a página.
-- **`saidas/mrv_secoes_comparecimento.md`** — junta o número de MRV (fonte:
-  convocação de mesários do DJE/TRE-DF, não está nos CSVs do TSE) à seção e
-  ao eleitorado apto de cada urna. Inclui uma estimativa de comparecimento
-  por seção, calculada com a taxa de comparecimento de 2022 por domicílio de
-  origem citada em `handoff_agregacao_dublin_2026.md` — **não é
-  comparecimento oficial por seção**, que não existe em nenhum arquivo deste
-  repositório; ver aviso e coluna de qualidade do dado no próprio arquivo.
+- **`saidas/dublin_agregacoes.html`**: a mesma análise em página visual.
+- **`saidas/dados.json`**: os dados estruturados que alimentam a página e todas
+  as etapas seguintes.
+- **`saidas/mrv_secoes_comparecimento.md`**: MRV × seção × aptos × estimativa de
+  comparecimento por domicílio (não oficial; ver aviso no próprio arquivo).
 
-O desenho de fluxo do salão está em `docs/CONTEXTO.md`: geometria do Hall 2,
-premissas, e a planta-base em `saidas/planta_base.html`, que numera as portas
-por fachada. Nenhuma ideia de layout está desenhada no momento.
-
-## Validações
+### Validações
 
 `mapa_agregacoes.py` falha em vez de gravar saída errada se alguma destas não
 passar:
@@ -80,15 +101,15 @@ passar:
 2. As 51 seções sobrevivem ao processamento e o número de urnas fecha em 28.
 3. **Conferência independente:** o total calculado para cada uma das 28 urnas
    coincide com `QT_ELEITOR_ELEICAO_FEDERAL`, campo que o próprio TSE já
-   publica agregado na seção principal. Dois caminhos de cálculo, mesmo número.
+   publica agregado na seção principal.
 
-## Achados
+### Achados
 
 **Erro de digitação no PNG do TSE.** O mapa lista a seção agregada 3752 sob a
-principal **3222**. Essa seção não existe em Dublin — pertence ao PORTO. A
-seção correta é a **3322** (Dublin, 398 eleitores), como consta do CSV oficial.
-O CSV prevalece no processamento; o caso está registrado na aba
-`Inconsistencias`.
+principal **3222**, que não existe em Dublin (pertence ao Porto). A correta é a
+**3322** (Dublin, 398 eleitores), como consta do CSV oficial. O CSV prevalece;
+o caso está na aba `Inconsistencias`, e a 3322 é ao mesmo tempo uma das três
+urnas críticas.
 
 **Cada seção é de uma única localidade.** Nas 51 seções, 100% dos eleitores
 vêm de um mesmo local de origem. As 28 seções principais são todas de
@@ -98,158 +119,35 @@ interior e mais 4 seções de Dublin.
 **Duas naturezas de urna cheia.** No topo do ranking convivem urnas que somam
 duas seções de Dublin (3313, 3322, 3315) e urnas que somam uma seção de Dublin
 com uma seção inteira do interior (3142 com Limerick, 3161 e 3245 com Cork,
-3305 e 3108 com Galway). São 4.213 eleitores — 25% da zona — que residem fora
-de Dublin e passam a votar lá.
+3305 e 3108 com Galway). São 4.213 eleitores, 25% da zona, que residem fora de
+Dublin e passam a votar lá.
 
-## Escopo
+## Etapas 2 a 7, em resumo
 
-Nenhum modelo de tempo de votação foi aplicado, a pedido: as saídas entregam os
-totais ordenados e o critério de gargalo fica a cargo de quem analisa.
+- **Planta-base** (`docs/CONTEXTO.md`, `saidas/planta_base.html`): geometria
+  medida do PDF do RDS e codificada em `scripts/salao.py`, fonte única; portas
+  chamadas pelo número de fachada (N1, N2, L1–L4, S1–S9, O1, O2, R1). A
+  planta-base não atribui papel de entrada ou saída a porta nenhuma.
+- **Prancheta** (`saidas/editor.html`): as 28 mesas pareadas, com fileira
+  recuada na fachada leste, numeradas 1–28 em circuito horário; editor em
+  escala com alinhar à parede, conferência de pares, medir, salvar e exportar
+  cenários; biblioteca em `cenarios/` lida por `scripts/cenarios.py`.
+- **Simulador** (`saidas/simulador_fluxo.html`): eventos discretos, eleitor a
+  eleitor, sobre qualquer arranjo da prancheta; Cenário Claude escolhido por
+  varredura de 4.228 combinações. `scripts/simula_fluxo.py` responde à
+  pergunta do fechamento: só dois cadernos em paralelo fecham às 17h com
+  caderno físico.
+- **Ring 3** (`saidas/plano_ring3.md`): ~39 × 35 m; entradas S4/S5/S6, saídas
+  S2/S8; três serpenteados (3·9·3 balizas) e duas baias, 1.402 pessoas; 300
+  separadores, 100 a adquirir (~EUR 1.302); evacuação e pendências.
+- **Sinalização** (`saidas/plano_sinalizacao.html`): oito pontos do portão da
+  Merrion Road à urna; uma consulta só (seção → mesa → porta), replicada a
+  cada 25–30 m; portas dizem apenas ENTRADA com a cor da raia; tabela mestra
+  de 51 linhas.
+- **Horários de pico** (`pesquisa_horarios_pico_votacao.md`): não há
+  estatística oficial por hora; padrão de abertura forte, vale ao meio-dia e
+  repique às 17h; em Dublin 2022 a fila não esvaziou o dia inteiro.
 
-## Desenho de fluxo do salão (RDS Hall 2)
-
-Segunda etapa: a partir das 28 urnas apuradas acima, desenhar por onde o eleitor
-entra, caminha, vota e sai no salão do RDS. **Nenhum layout está desenhado no
-momento** — as duas ideias que existiam foram zeradas a pedido. O que está no
-repositório é a base comum a qualquer layout: a geometria do salão, as
-premissas, a carga das urnas e a planta-base com as portas numeradas.
-
-**`docs/CONTEXTO.md` é o documento de passagem** — geometria medida, premissas,
-restrições, resultados e perguntas em aberto. Leia primeiro.
-
-```bash
-cd scripts
-python3 salao.py           # confere os dados e a capacidade de parede
-python3 planta_base.py     # gera saidas/planta_base.svg e .html
-```
-
-### `scripts/salao.py` — o núcleo comum
-
-Geometria do salão medida direto dos PDFs oficiais do RDS (o que já estava no
-repositório e a versão revisada com as duas portas de carga assinaladas), com a
-escala de 8,69 pt/m aferida contra a ficha técnica impressa no próprio
-documento: 50,2 m × 44,5 m, 2.238 m². Daí saem as sete aberturas utilizáveis da
-parede sul e as saídas de emergência das outras três paredes. Traz também as
-premissas de comparecimento e mobiliário, a simulação de fila e o cálculo de
-quantas MRVs cabem no perímetro sob dadas hipóteses.
-
-| Premissa | Valor | Origem |
-|---|---|---|
-| Comparecimento, residentes em Dublin | 74% | taxa observada em 2022 |
-| Comparecimento, residentes no interior | 50% | taxa observada em 2022 |
-| Tempo por eleitor (ponto de projeto) | 55 s | escolhido; ver sensibilidade |
-| Perfil de chegada (8h–17h) | 8/13/15/14/12/11/10/9/8 % | pico de meio de manhã |
-| Módulo da MRV | 2,80 × 1,90 m | mesa de 1,60 × 0,70 m + mesa redonda de Ø 0,90 m + estrutura de sigilo |
-| Recuo das saídas de emergência | 3,0 m | nenhuma seção dentro dessa faixa |
-| Área por pessoa em fila | 1,0 m² | fila serpenteada com balizadores |
-
-### Achados que valem para qualquer layout
-
-- **11.418 eleitores esperados** dos 16.794 aptos.
-- **Três urnas críticas** — 3313, 3322 e 3315, as que somam duas seções inteiras
-  de Dublin — com 586 a 590 comparecentes cada. Depois delas há um degrau: as
-  oito seguintes ficam entre 466 e 492, e as dezessete restantes abaixo de 435.
-  Sete das oito somam um condado inteiro do interior, e esses 4.213 eleitores
-  chegam em rajada, não diluídos ao longo do dia.
-- O tempo de atendimento domina tudo. A fila de pico somada nas 28 urnas vai de
-  **33 pessoas a 45 s/eleitor** para **241 a 55 s**, **436 a 60 s** e **2.165 a
-  90 s** — fator 65.
-- **O perímetro é escasso.** Com o recuo de 3 m determinado para a parede leste
-  e o módulo de 2,80 m, a parede comporta 19 das 28 posições. A parede leste
-  some por inteiro: cada trecho livre entre os recuos mede 2,79 m, um centímetro
-  a menos que o módulo. Se o recuo valer para todas as saídas de emergência,
-  caem para 11; com o módulo em linha (1,80 m de frente), sobem para 29.
-
-### A planta-base
-
-`scripts/planta_base.py` desenha o salão vazio e é onde a numeração das portas
-é definida. O código do RDS numera folhas de porta e não localiza nada, então
-cada porta ganhou **um número por fachada**, atribuído na ordem de leitura do
-desenho: de oeste para leste nas paredes norte e sul, de norte para sul nas
-paredes leste e oeste — N1, N2, L1 a L4, S1 a S9, O1, O2, mais a R1 na parede do
-recorte. O código do RDS continua impresso abaixo de cada número.
-
-A planta registra o que já está determinado sobre as portas e nada além disso:
-
-- **Parede leste inteira em emergência**, com os 3 m de recuo desenhados em
-  torno de cada vão.
-- **N1 fechada.**
-- **N2 desbloqueada** — é a saída do catering.
-
-Entrada e saída de eleitor **não** aparecem: essa decisão vem depois.
-
-Saídas em `saidas/planta_base.svg` e `saidas/planta_base.html`.
-
-## Simulador de fluxo do Hall 2
-
-Segundo artefato, irmão da prancheta: recebe o arranjo das 28 mesas e as
-respostas às perguntas de organização do fluxo, e simula o dia de votação
-eleitor a eleitor. Três telas: **Premissas**, **Simulação** (planta minuto a
-minuto) e **Resultado** (relatório com critérios aprovados, em atenção ou
-reprovados).
-
-```bash
-python3 scripts/gera_simulador.py   # gera saidas/simulador_fluxo.html
-node simulador/teste_arranjos.js    # confere a leitura dos arranjos da prancheta
-node simulador/teste_modelo.js claude 16   # roda o motor em Node e imprime o resumo
-node simulador/varredura.js 3       # varre combinações e ranqueia (demora alguns minutos)
-```
-
-### De onde vem o arranjo das mesas
-
-O bloco **Salão** da tela de premissas lista os arranjos disponíveis, com
-miniatura da planta, quantas mesas saíram do lugar e aviso quando alguma
-invade porta, zona protegida ou vizinha. Três origens:
-
-- **planta oficial** — cenários A e B, embutidos em `data/prancheta_hall2.json`.
-  As 28 mesas estão no mesmo lugar nos dois; o que muda são as zonas
-  protegidas (B reserva vestíbulos em S1 e S9).
-- **da prancheta** — os `cenarios/*.json` do branch `cenarios-hall2`, que
-  `gera_simulador.py` lê e embute na hora de gerar, do mesmo jeito que
-  `gera_editor.py` faz para a prancheta. Não é leitura ao vivo: a sandbox do
-  artefato publicado bloqueia rede para fora do claude.ai. Cenário novo aparece
-  para todo mundo depois de gravar com `salva_cenario.py` e republicar.
-- **carregado aqui** — **Carregar arranjo…** aceita o JSON que a prancheta
-  copia (colado ou como arquivo `.json`) e guarda no `localStorage` do
-  navegador. É o caminho que não depende de republicação: desenhou na
-  prancheta, copiou, colou aqui, rodou.
-
-Os dois artefatos não conseguem se falar sozinhos — cada um roda na própria
-origem, sem rede para fora do claude.ai e sem `localStorage` em comum —, e é
-por isso que a ponte é o JSON.
-
-Arquivos:
-
-| Arquivo | Papel |
-|---|---|
-| `simulador/modelo.js` | Motor: geometria herdada da prancheta, curva de chegada, simulação por eventos discretos, vereditos e texto. Roda no navegador e em Node. |
-| `simulador/app.js` | Interface das três telas e a biblioteca de arranjos do bloco Salão. |
-| `simulador/template.html` | Casca HTML e CSS; o gerador embute dados, motor e interface. |
-| `data/prancheta_hall2.json` | Base da prancheta: salão, portas, módulo da mesa, posições das 28 mesas nos cenários A e B. |
-| `data/mrv_secoes.json` | MRV 1–28 → seção principal e agregada, conforme a convocação de mesários (DJE TRE-DF n. 139, 04/08/2026). MRV k é a k-ª seção principal em ordem crescente. |
-| `simulador/teste_arranjos.js` | Testes da leitura e da conferência geométrica dos arranjos, em Node. |
-| `simulador/varredura.js` | Varredura que escolheu o Cenário Claude. |
-
-### O que é fixo e o que é premissa
-
-Fixo em todos os cenários: identificação pelo caderno (sem biometria), liberação
-controlada na porta, curva de chegada das 7h às 17h (8 % chegam antes da
-abertura), caminhada a 1,2 m/s, 0,6 m por pessoa em fila, 200 m de fita de
-unifila contratados. Premissas escolhidas por quem simula: portas de entrada e
-saída na fachada sul, número e recorte das zonas, onde a numeração MRV começa,
-existência, distância e atendentes do checkpoint, fila por peso de mesa,
-política de liberação, comparecimento, tempos de identificação e voto, triagem
-e capacidade do Ring 3.
-
-### Cenário Claude
-
-Escolhido por varredura de 4.228 combinações: três zonas geográficas (parede
-norte, parede leste, recorte + parede oeste), entradas pelas três portas duplas
-do meio (S5 → norte, S6 → leste, S4 → oeste), saídas pelas portas de carga das
-pontas (S1 e S9), numeração começando na parede leste (MRV 1–12 leste, 13–20
-oeste, 21–28 norte), checkpoint a 14 m com 2/3/2 atendentes, filas de 4/5/8 por
-mesa leve/média/pesada, e as mesas 23 e 24 deslocadas para o norte para a fila
-da mesa do recorte não invadir a mesa vizinha. Zera cruzamentos de saída com
-corredor de entrada e mantém as mesas pesadas sem fome. O que sobra é
-estrutural: fila de abertura de ~950 pessoas às 8h e espera P90 de ~1 h, que só
-mais mesas, identificação mais rápida ou chegada mais espalhada mudam.
+As divergências entre etapas (três totais de comparecimento, quatro
+numerações de mesa, papéis das portas, curvas de chegada, números do Ring 3
+citados pela sinalização) estão listadas no §9 da documentação.

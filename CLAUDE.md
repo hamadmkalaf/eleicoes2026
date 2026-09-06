@@ -26,6 +26,13 @@ O que já está determinado sobre as portas está no §4 do contexto: parede les
 toda em emergência com recuo de 3 m, N1 fechada, N2 desbloqueada para o
 catering. O resto é "a definir", que não é o mesmo que disponível.
 
+## Fonte única dos cenários salvos
+
+`scripts/cenarios.py`. A prancheta e o simulador de fluxo mostram a **mesma**
+lista de cenários porque os dois geradores chamam esse módulo — não duplique
+a leitura num deles. A pasta `cenarios/` do checkout e a do branch de dados
+`cenarios-hall2` se juntam ali, pelo nome do arquivo; ver `cenarios/README.md`.
+
 ## Fonte única de geometria
 
 `scripts/salao.py`. As medidas saíram do PDF do RDS e da versão revisada com as

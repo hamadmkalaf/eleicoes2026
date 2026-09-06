@@ -7,7 +7,6 @@ so move o que ja foi validado aqui.
 """
 import json
 import os
-import subprocess
 import sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -16,47 +15,9 @@ sys.path.insert(0, os.path.join(RAIZ, "scripts"))
 import salao as FL                                            # noqa: E402
 import mesas as MM                                            # noqa: E402
 import planta_base as PB                                      # noqa: E402
+import cenarios as CN                                         # noqa: E402
 
 SAIDAS = os.path.join(RAIZ, "saidas")
-BRANCH_CENARIOS = "cenarios-hall2"
-
-
-def cenarios_salvos():
-    """Le os cenarios salvos do branch de dados (cenarios/*.json).
-
-    A prancheta nao le isso ao vivo -- o artefato publicado nao pode fazer
-    fetch para fora do claude.ai. A lista e embutida aqui, na hora de gerar
-    a pagina; ver cenarios/README.md no branch cenarios-hall2.
-    """
-    ref = "origin/" + BRANCH_CENARIOS
-    try:
-        subprocess.run(["git", "fetch", "-q", "origin", BRANCH_CENARIOS],
-                        cwd=RAIZ, check=True, timeout=20)
-    except Exception as e:
-        print("aviso: nao consegui atualizar", ref, "-", e, file=sys.stderr)
-    try:
-        listagem = subprocess.run(
-            ["git", "ls-tree", "-r", "--name-only", ref, "--", "cenarios/"],
-            cwd=RAIZ, check=True, capture_output=True, text=True).stdout
-    except subprocess.CalledProcessError:
-        return []
-
-    salvos = []
-    for caminho in listagem.splitlines():
-        if not caminho.endswith(".json"):
-            continue
-        conteudo = subprocess.run(
-            ["git", "show", ref + ":" + caminho],
-            cwd=RAIZ, check=True, capture_output=True, text=True).stdout
-        try:
-            cen = json.loads(conteudo)
-        except json.JSONDecodeError as e:
-            print("aviso: ignorando", caminho, "- json invalido:", e, file=sys.stderr)
-            continue
-        cen["id"] = caminho[len("cenarios/"):-len(".json")]
-        salvos.append(cen)
-    salvos.sort(key=lambda c: c.get("criadoEm", ""), reverse=True)
-    return salvos
 
 
 def _rot(dx, dy):
@@ -128,7 +89,7 @@ def main():
     saida = dict(**comum,
                  cenarios={cen: {k: pacote[cen][k] for k in ("zonas", "vaos", "mrvs")}
                            for cen in ("A", "B")},
-                 cenariosSalvos=cenarios_salvos())
+                 cenariosSalvos=CN.carrega())
 
     cam = os.path.join(SAIDAS, "editor_dados.json")
     open(cam, "w", encoding="utf-8").write(json.dumps(saida, ensure_ascii=False))

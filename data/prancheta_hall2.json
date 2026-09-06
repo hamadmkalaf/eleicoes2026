@@ -137,7 +137,7 @@
    "id": "S2",
    "rds": "sem codigo RDS",
    "face": "sul",
-   "estado": "emergencia",
+   "estado": "saida",
    "x1": 13.25,
    "y1": 0.0,
    "x2": 14.45,
@@ -159,7 +159,7 @@
    "id": "S4",
    "rds": "2.5/2.6",
    "face": "sul",
-   "estado": "livre",
+   "estado": "entrada",
    "x1": 19.1,
    "y1": 0.0,
    "x2": 25.03,
@@ -170,7 +170,7 @@
    "id": "S5",
    "rds": "2.4",
    "face": "sul",
-   "estado": "livre",
+   "estado": "entrada",
    "x1": 25.32,
    "y1": 0.0,
    "x2": 31.25,
@@ -181,7 +181,7 @@
    "id": "S6",
    "rds": "2.2/2.3",
    "face": "sul",
-   "estado": "livre",
+   "estado": "entrada",
    "x1": 31.54,
    "y1": 0.0,
    "x2": 37.47,
@@ -203,7 +203,7 @@
    "id": "S8",
    "rds": "sem codigo RDS",
    "face": "sul",
-   "estado": "emergencia",
+   "estado": "saida",
    "x1": 42.12,
    "y1": 0.0,
    "x2": 43.32,
@@ -1189,6 +1189,454 @@
      "corredor": 3.0
     }
    ]
+  }
+ },
+ "decisoes": {
+  "decididoEm": "2026-09-06",
+  "numeracao": "MRV do DJE/TRE-DF, identidade unica da mesa; nao depende da posicao",
+  "comparecimento": {
+   "base": "B",
+   "rotulo": "taxa de 2022 por domicílio de origem (base B, não oficial)",
+   "total": 11499,
+   "aptos": 16794
+  },
+  "classes": {
+   "regra": "as 3 maiores = alta; esperado >= 450 = media; abaixo = baixa",
+   "n_alta": 3,
+   "limiar_media": 450,
+   "cores": {
+    "alta": {
+     "cor": "vermelho",
+     "hex": "#c0392b",
+     "rotulo": "alto comparecimento"
+    },
+    "media": {
+     "cor": "amarelo",
+     "hex": "#d4a017",
+     "rotulo": "médio comparecimento"
+    },
+    "baixa": {
+     "cor": "verde",
+     "hex": "#1e8449",
+     "rotulo": "baixo comparecimento"
+    }
+   },
+   "contagem": {
+    "alta": 3,
+    "media": 8,
+    "baixa": 17
+   }
+  },
+  "portas": {
+   "S4": {
+    "papel": "entrada",
+    "entrada": "A",
+    "cor": "#2a78d6"
+   },
+   "S5": {
+    "papel": "entrada",
+    "entrada": "B",
+    "cor": "#e08a00"
+   },
+   "S6": {
+    "papel": "entrada",
+    "entrada": "C",
+    "cor": "#c2185b"
+   },
+   "S2": {
+    "papel": "saida"
+   },
+   "S8": {
+    "papel": "saida"
+   }
+  },
+  "saidas": [
+   "S2",
+   "S8"
+  ],
+  "nomenclaturaPortas": "em aberto: cor ou letra",
+  "entradas": [
+   {
+    "id": "A",
+    "porta": "S4",
+    "cor": "azul",
+    "hex": "#2a78d6",
+    "mrvs": [
+     3,
+     5,
+     9,
+     12,
+     15,
+     20,
+     24,
+     26,
+     28
+    ],
+    "esperado": 3642,
+    "capacidade": 445
+   },
+   {
+    "id": "B",
+    "porta": "S5",
+    "cor": "âmbar",
+    "hex": "#e08a00",
+    "mrvs": [
+     1,
+     4,
+     7,
+     8,
+     16,
+     17,
+     18,
+     21,
+     22,
+     25
+    ],
+    "esperado": 4215,
+    "capacidade": 513
+   },
+   {
+    "id": "C",
+    "porta": "S6",
+    "cor": "magenta",
+    "hex": "#c2185b",
+    "mrvs": [
+     2,
+     6,
+     10,
+     11,
+     13,
+     14,
+     19,
+     23,
+     27
+    ],
+    "esperado": 3642,
+    "capacidade": 445
+   }
+  ],
+  "mesas": {
+   "1": {
+    "principal": 511,
+    "agregada": 1100,
+    "origem_agregada": "ROSCOMMON",
+    "aptos": 582,
+    "esperado": 375,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "2": {
+    "principal": 512,
+    "agregada": 2855,
+    "origem_agregada": "LONGFORD",
+    "aptos": 476,
+    "esperado": 355,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "C",
+    "porta": "S6"
+   },
+   "3": {
+    "principal": 513,
+    "agregada": 1105,
+    "origem_agregada": "MAYO",
+    "aptos": 502,
+    "esperado": 351,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "A",
+    "porta": "S4"
+   },
+   "4": {
+    "principal": 517,
+    "agregada": 1292,
+    "origem_agregada": "CAVAN",
+    "aptos": 513,
+    "esperado": 348,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "5": {
+    "principal": 1160,
+    "agregada": 3845,
+    "origem_agregada": "LIMERICK",
+    "aptos": 473,
+    "esperado": 328,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "A",
+    "porta": "S4"
+   },
+   "6": {
+    "principal": 1352,
+    "agregada": 522,
+    "origem_agregada": "DONEGAL",
+    "aptos": 462,
+    "esperado": 328,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "C",
+    "porta": "S6"
+   },
+   "7": {
+    "principal": 3054,
+    "agregada": 1099,
+    "origem_agregada": "KERRY",
+    "aptos": 454,
+    "esperado": 325,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "8": {
+    "principal": 3078,
+    "agregada": 2847,
+    "origem_agregada": "LEITRIM",
+    "aptos": 429,
+    "esperado": 311,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "9": {
+    "principal": 3108,
+    "agregada": 3422,
+    "origem_agregada": "GALWAY",
+    "aptos": 756,
+    "esperado": 467,
+    "classe": "media",
+    "cor": "#d4a017",
+    "entrada": "A",
+    "porta": "S4"
+   },
+   "10": {
+    "principal": 3142,
+    "agregada": 1278,
+    "origem_agregada": "LIMERICK",
+    "aptos": 793,
+    "esperado": 466,
+    "classe": "media",
+    "cor": "#d4a017",
+    "entrada": "C",
+    "porta": "S6"
+   },
+   "11": {
+    "principal": 3161,
+    "agregada": 3307,
+    "origem_agregada": "CORK",
+    "aptos": 791,
+    "esperado": 504,
+    "classe": "media",
+    "cor": "#d4a017",
+    "entrada": "C",
+    "porta": "S6"
+   },
+   "12": {
+    "principal": 3179,
+    "agregada": 530,
+    "origem_agregada": "WESTMEATH",
+    "aptos": 676,
+    "esperado": 423,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "A",
+    "porta": "S4"
+   },
+   "13": {
+    "principal": 3216,
+    "agregada": 527,
+    "origem_agregada": "CLARE",
+    "aptos": 571,
+    "esperado": 407,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "C",
+    "porta": "S6"
+   },
+   "14": {
+    "principal": 3229,
+    "agregada": 3821,
+    "origem_agregada": "CORK",
+    "aptos": 606,
+    "esperado": 405,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "C",
+    "porta": "S6"
+   },
+   "15": {
+    "principal": 3245,
+    "agregada": 519,
+    "origem_agregada": "CORK",
+    "aptos": 781,
+    "esperado": 498,
+    "classe": "media",
+    "cor": "#d4a017",
+    "entrada": "A",
+    "porta": "S4"
+   },
+   "16": {
+    "principal": 3302,
+    "agregada": 3181,
+    "origem_agregada": "OUTROS LOCAIS DA IRLANDA",
+    "aptos": 771,
+    "esperado": 518,
+    "classe": "media",
+    "cor": "#d4a017",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "17": {
+    "principal": 3305,
+    "agregada": 521,
+    "origem_agregada": "GALWAY",
+    "aptos": 767,
+    "esperado": 472,
+    "classe": "media",
+    "cor": "#d4a017",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "18": {
+    "principal": 3306,
+    "agregada": 518,
+    "origem_agregada": "OUTROS LOCAIS DA IRLANDA",
+    "aptos": 766,
+    "esperado": 515,
+    "classe": "media",
+    "cor": "#d4a017",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "19": {
+    "principal": 3308,
+    "agregada": null,
+    "origem_agregada": null,
+    "aptos": 399,
+    "esperado": 295,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "C",
+    "porta": "S6"
+   },
+   "20": {
+    "principal": 3309,
+    "agregada": 1314,
+    "origem_agregada": "WATERFORD",
+    "aptos": 615,
+    "esperado": 395,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "A",
+    "porta": "S4"
+   },
+   "21": {
+    "principal": 3311,
+    "agregada": 3913,
+    "origem_agregada": "DUBLIN",
+    "aptos": 630,
+    "esperado": 466,
+    "classe": "media",
+    "cor": "#d4a017",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "22": {
+    "principal": 3313,
+    "agregada": 3889,
+    "origem_agregada": "DUBLIN",
+    "aptos": 797,
+    "esperado": 590,
+    "classe": "alta",
+    "cor": "#c0392b",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "23": {
+    "principal": 3315,
+    "agregada": 3778,
+    "origem_agregada": "DUBLIN",
+    "aptos": 792,
+    "esperado": 586,
+    "classe": "alta",
+    "cor": "#c0392b",
+    "entrada": "C",
+    "porta": "S6"
+   },
+   "24": {
+    "principal": 3322,
+    "agregada": 3752,
+    "origem_agregada": "DUBLIN",
+    "aptos": 794,
+    "esperado": 588,
+    "classe": "alta",
+    "cor": "#c0392b",
+    "entrada": "A",
+    "porta": "S4"
+   },
+   "25": {
+    "principal": 3442,
+    "agregada": null,
+    "origem_agregada": null,
+    "aptos": 398,
+    "esperado": 295,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "B",
+    "porta": "S5"
+   },
+   "26": {
+    "principal": 3688,
+    "agregada": null,
+    "origem_agregada": null,
+    "aptos": 400,
+    "esperado": 296,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "A",
+    "porta": "S4"
+   },
+   "27": {
+    "principal": 3832,
+    "agregada": null,
+    "origem_agregada": null,
+    "aptos": 400,
+    "esperado": 296,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "C",
+    "porta": "S6"
+   },
+   "28": {
+    "principal": 3862,
+    "agregada": null,
+    "origem_agregada": null,
+    "aptos": 400,
+    "esperado": 296,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "entrada": "A",
+    "porta": "S4"
+   }
+  },
+  "ring3": {
+   "largura": 39.0,
+   "profundidade": 35.0,
+   "apron": 14.0,
+   "rect": [
+    8.79,
+    -49.0,
+    47.78,
+    -14.0
+   ],
+   "eixo": "centrado em S5 (estimativa; aferir o bordo oeste em campo)",
+   "capacidade": 1402
   }
  }
 }

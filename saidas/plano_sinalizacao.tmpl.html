@@ -164,7 +164,7 @@
     <div class="fact"><dt>Aptos</dt><dd>16.794</dd></div>
     <div class="fact"><dt>Seções</dt><dd>51</dd></div>
     <div class="fact"><dt>Mesas / urnas</dt><dd>28</dd></div>
-    <div class="fact"><dt>Comparecimento esperado</dt><dd>11.418</dd></div>
+    <div class="fact"><dt>Comparecimento esperado</dt><dd>{{ESPERADO}}</dd></div>
     <div class="fact"><dt>Portas de entrada</dt><dd>3 <span>A · B · C</span></dd></div>
     <div class="fact"><dt>Hall 2 (Shelbourne)</dt><dd>50,2 <span>× 44,5 m</span></dd></div>
   </dl>
@@ -208,7 +208,7 @@
 
   <div class="note">
     <span class="tag">Onde este plano encosta no plano do Ring 3</span>
-    <p>A contagem acima é de <em>painéis de leitura</em>, não de barreira. O quantitativo de barreira já está dimensionado em <span style="font-family:var(--mono)">saidas/plano_ring3.md</span>: os três serpenteados, o corredor de distribuição, a garganta e os canais de descarga somam <strong>560,2 m (281 separadores)</strong>, contra 200 m em mãos — faltam <strong>362 m, ~EUR 2.357</strong>, e isso esgota o estoque sem sobrar metro para dentro do Hall 2. A capacidade resultante é de 780 pessoas nos serpenteados mais ~490 na reserva de flanco.</p>
+    <p>A contagem acima é de <em>painéis de leitura</em>, não de barreira. O quantitativo de barreira está dimensionado em <span style="font-family:var(--mono)">saidas/plano_ring3.md</span> e é lido aqui do mesmo script (<span style="font-family:var(--mono)">scripts/layout_ring3.py</span>): {{RING3_BARREIRA}}</p>
     <p>Os dois planos se encontram num ponto específico. O plano do Ring 3 prevê <strong>três agentes de pré-triagem na garganta sudeste</strong> entregando o cartão de roteamento, e sinaliza esses agentes como gargalo potencial. É exatamente o risco que a sinalização a montante elimina: se a consulta já aconteceu no portão e se repetiu quatro vezes ao longo do corredor, o agente da garganta deixa de fazer a busca e passa a apenas conferir uma letra — de operação de 15 segundos para operação de 2.</p>
   </div>
 </section>
@@ -246,29 +246,30 @@
   <h3>O que as fotos mostram</h3>
   {{FIG_FOTOS}}
 
-  <h3>Nomenclatura: resolvida por subtração</h3>
-  <p>O RDS já ocupa os dois espaços de nomenclatura que a nossa sinalização usaria: <strong>letra para portão</strong> — Gate D e Gate G estão fotografados, e a série vai pelo menos de A a G — e <strong>número para pavilhão</strong>, na placa “2 · Shelbourne Hall”. Ambos em painel azul-marinho com tipografia branca. Batizar as entradas de Porta A, B e C criaria uma terceira nomenclatura por letra no mesmo recinto, para um eleitor que nunca esteve ali.</p>
-  <p>A decisão tomada contorna o problema em vez de resolvê-lo: <strong>as portas não são nomeadas</strong>. O cartaz à frente de cada vão diz apenas ENTRADA. A identidade da fila deixa de morar na porta e passa a morar na própria raia — o eleitor não procura uma letra na fachada, ele segue o serpenteado em que entrou, e o serpenteado o entrega no vão certo. O cartaz carrega a faixa de cor da raia que descarrega ali, o que não custa nada e dá a confirmação no último metro.</p>
+  <h3>Nomenclatura das entradas: cor ou letra, ainda sem decisão</h3>
+  <p>O RDS já ocupa os dois espaços de nomenclatura que a nossa sinalização usaria: <strong>letra para portão</strong> — Gate D e Gate G estão fotografados, e a série vai pelo menos de A a G — e <strong>número para pavilhão</strong>, na placa “2 · Shelbourne Hall”. Ambos em painel azul-marinho com tipografia branca. Batizar as entradas de Porta A, B e C criaria uma terceira nomenclatura por letra no mesmo recinto, para um eleitor que nunca esteve ali. É o argumento a favor da <strong>cor</strong>.</p>
+  <p><strong>O Posto ainda não decidiu se a identidade da fila será uma cor ou uma letra</strong>, e essa decisão contamina todas as peças (tabela mestra, totens, cartaz das portas). As duas opções cabem no mesmo desenho: o cartaz à frente de cada vão diz ENTRADA e carrega a identidade da fila que descarrega ali — a faixa de cor, ou a letra, ou as duas. Em qualquer dos casos a identidade mora na própria raia, do Ring 3 até a soleira: o eleitor segue o serpenteado em que entrou, e o serpenteado o entrega no vão certo. As letras A, B e C aparecem neste plano como rótulos de planejamento, os mesmos do plano do Ring 3 e do simulador.</p>
   <p>Sobra uma regra de forma: <strong>nossas peças nunca em azul-marinho com tipografia branca</strong>. Esse par é a libré do venue, e qualquer painel nosso nele passa a ser lido como sinalização permanente do RDS — inclusive as placas de mesa, que carregam números. O campo das nossas peças é claro, com a cor da fila e o cabeçalho da eleição sempre presentes.</p>
 
-  <h3>Código de cor das três filas</h3>
-  <p>Azul, âmbar e magenta — deliberadamente <strong>sem verde e sem vermelho juntos</strong>. Cerca de 8% dos homens têm alguma deficiência de visão de cores, quase sempre no eixo vermelho-verde; a tríade escolhida se mantém distinguível em deuteranopia e protanopia. A cor nunca aparece sozinha: vem sempre com o número da mesa, que é a informação primária. As letras A, B e C na tabela abaixo são <strong>rótulos internos de planejamento</strong> das três filas — o eleitor nunca as vê; para ele existem a cor da raia em que entrou e o número da sua mesa.</p>
+  <h3>Código de cor das três filas (se a escolha for cor)</h3>
+  <p>Azul, âmbar e magenta — deliberadamente <strong>sem verde e sem vermelho juntos</strong>. Cerca de 8% dos homens têm alguma deficiência de visão de cores, quase sempre no eixo vermelho-verde; a tríade escolhida se mantém distinguível em deuteranopia e protanopia. A cor nunca aparece sozinha: vem sempre com o número da mesa, que é a informação primária. Estas cores não se confundem com as da prancheta e do simulador, onde vermelho, amarelo e verde marcam a <em>carga</em> de cada mesa, não a fila.</p>
   <div class="tscroll">
     <table>
-      <thead><tr><th>Porta</th><th>Cor</th><th class="num">Mesas</th><th class="num">Aptos</th><th class="num">Esperado</th><th>Mesa mais pesada</th></tr></thead>
+      <thead><tr><th>Entrada</th><th>Cor da raia</th><th class="num">Mesas (MRV)</th><th class="num">Aptos</th><th class="num">Esperado</th><th class="num">Cabe no Ring 3</th><th>Mesa mais pesada</th></tr></thead>
       <tbody>{{TAB_PORTAS}}</tbody>
     </table>
   </div>
 </section>
 
 <section id="mesas">
-  <h2><span class="num">07</span>Distribuição das mesas pelas portas</h2>
-  <p>A proposta abaixo equilibra o <strong>comparecimento esperado</strong> — não o número de aptos —, porque é o comparecimento que gera fila. As taxas usadas são as de 2022: 74% para seções domiciliadas em Dublin e 50% para as do interior, aplicadas eleitor a eleitor conforme a residência registrada em cada seção.</p>
-  <p>As três mesas mais pesadas da zona (M7, M17 e M27, com 586 a 590 comparecentes esperados cada) foram <strong>separadas uma por porta</strong>. Concentrá-las criaria um problema de vazão bruta numa porta específica e concentraria o risco operacional num único ponto; distribuídas, o pico se reparte e qualquer incidente fica geograficamente isolado.</p>
+  <h2><span class="num">07</span>Distribuição das mesas pelas entradas</h2>
+  <p>A distribuição é a do plano do Ring 3 (<span style="font-family:var(--mono)">scripts/decisoes.py</span>): reparte o <strong>comparecimento esperado</strong> — não o número de aptos, porque é o comparecimento que gera fila — na proporção da capacidade de cada serpenteado (A e C têm baia de flanco, B tem o serpenteado longo). O comparecimento esperado é a base adotada pelo Posto: taxa de 2022 por domicílio de origem de cada seção (base B), calculada em <span style="font-family:var(--mono)">scripts/comparecimento.py</span>.</p>
+  <p>As três mesas mais pesadas da zona — {{MESAS_PESADAS}} — foram <strong>separadas uma por entrada</strong>. Concentrá-las criaria um problema de vazão bruta numa fila específica e concentraria o risco operacional num único ponto; distribuídas, o pico se reparte e qualquer incidente fica geograficamente isolado.</p>
+  <p><strong>O número da mesa é o MRV do DJE/TRE-DF</strong>, a mesma numeração da prancheta e do simulador, e não depende de onde a mesa fica no salão. As mesas de cada entrada não formam blocos contíguos de números — a placa lista os MRVs da fila. Uma numeração voltada ao eleitor, por distribuição na parede, só será definida depois que o cenário da prancheta for fechado.</p>
   {{TAB_MESAS}}
   <div class="note">
     <span class="tag">Dependência</span>
-    <p>Esta distribuição é <strong>ilustrativa e ainda reversível</strong>: ela assume as 28 urnas da agregação atual do TSE. Se a contraproposta de desagregação for aceita (32 a 40 mesas), a numeração muda inteira — mas o método não, e a tabela mestra é regerada em minutos a partir do mesmo script. O que <em>não</em> pode mudar depois de impresso é a numeração das mesas: ela precisa estar congelada antes de qualquer pedido de impressão.</p>
+    <p>Esta distribuição é <strong>reversível até a impressão</strong>: ela muda se o plano do Ring 3 mudar as capacidades das entradas ou se o Posto trocar as portas. A numeração MRV, essa não muda — é a da convocação publicada. O que <em>não</em> pode mudar depois de impresso é a atribuição mesa → entrada e a identidade (cor ou letra) de cada fila: as duas precisam estar congeladas antes de qualquer pedido de impressão.</p>
   </div>
 </section>
 
@@ -303,7 +304,7 @@
 </section>
 
 <footer>
-  <p>Fontes de dados: <span style="font-family:var(--mono)">eleitorado_local_votacao_2026_ZZ.csv</span> (TSE, 13/08/2026) e <span style="font-family:var(--mono)">Filtrado_Dublin.csv</span> (TSE, 14/07/2026), processados por <span style="font-family:var(--mono)">scripts/mapa_agregacoes.py</span>. Planta e dimensões do salão: ficha técnica RDS Hall 2 (Shelbourne Hall). Dimensões do Ring 3, do apron, papéis das aberturas S1–S9 e quantitativo de barreira: <span style="font-family:var(--mono)">saidas/plano_ring3.md</span>. Precedente de fila em Dublin 2022 e ausência de curva oficial de comparecimento por hora: <span style="font-family:var(--mono)">pesquisa_horarios_pico_votacao.md</span>. Superfícies de fixação, nomenclatura dos portões e condições da fachada: levantamento fotográfico de 24/08/2026, 21 imagens, em <span style="font-family:var(--mono)">data/fotos/</span>. Taxas de comparecimento: 2022, por domicílio. Fator de pico de chegada (1,8×) e tempo de leitura (15 s) são premissas assumidas, não medidas. Regra de altura de letra: <a href="https://www.signknights.com/sign-visibility-and-viewing-distance-guidelines/">International Sign Association</a>; correção para condições não ideais: <a href="https://healthfacilityguidelines.com/ViewPDF/ViewIndexPDF/iHFG_part_w_wayfinding_complete">iHFG Part W — Wayfinding Guidelines</a>. Precipitação de outubro em Dublin: <a href="https://www.met.ie/climate-statement-for-october-2025">Met Éireann</a>.</p>
+  <p>Fontes de dados: <span style="font-family:var(--mono)">eleitorado_local_votacao_2026_ZZ.csv</span> (TSE, 13/08/2026) e <span style="font-family:var(--mono)">Filtrado_Dublin.csv</span> (TSE, 14/07/2026), processados por <span style="font-family:var(--mono)">scripts/mapa_agregacoes.py</span>. Planta e dimensões do salão: ficha técnica RDS Hall 2 (Shelbourne Hall). Dimensões do Ring 3, do apron, papéis das aberturas S1–S9 e quantitativo de barreira: <span style="font-family:var(--mono)">saidas/plano_ring3.md</span>. Precedente de fila em Dublin 2022 e ausência de curva oficial de comparecimento por hora: <span style="font-family:var(--mono)">pesquisa_horarios_pico_votacao.md</span>. Superfícies de fixação, nomenclatura dos portões e condições da fachada: levantamento fotográfico de 24/08/2026, 21 imagens, em <span style="font-family:var(--mono)">data/fotos/</span>. Comparecimento esperado: base B, taxa de 2022 por domicílio de origem (<span style="font-family:var(--mono)">scripts/comparecimento.py</span>), não oficial. Numeração das mesas: MRV do DJE/TRE-DF (<span style="font-family:var(--mono)">scripts/decisoes.py</span>). Fator de pico de chegada (1,8×) e tempo de leitura (15 s) são premissas assumidas, não medidas. Regra de altura de letra: <a href="https://www.signknights.com/sign-visibility-and-viewing-distance-guidelines/">International Sign Association</a>; correção para condições não ideais: <a href="https://healthfacilityguidelines.com/ViewPDF/ViewIndexPDF/iHFG_part_w_wayfinding_complete">iHFG Part W — Wayfinding Guidelines</a>. Precipitação de outubro em Dublin: <a href="https://www.met.ie/climate-statement-for-october-2025">Met Éireann</a>.</p>
 </footer>
 
 </div>

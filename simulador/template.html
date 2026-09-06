@@ -10,6 +10,7 @@
   --mesa:#3b4552; --pessoa:#59616d;
   --entrada:#1f6fb2; --saida:#b26a12; --emerg:#16867f; --alerta:#b23b2e; --aviso:#b26a12;
   --z1:#2a78d6; --z2:#eb6834; --z3:#1baf7a; --z4:#eda100;
+  --alta:#c0392b; --media:#d4a017; --baixa:#1e8449;
   --ok:#0ca30c; --ok-txt:#006300; --atencao:#fab219; --atencao-txt:#7a5200; --falha:#d03b3b; --falha-txt:#a12626;
   --grade:#e1e0d9; --eixo:#c3c2b7;
   --sombra:0 1px 2px rgba(23,32,43,.06), 0 6px 18px rgba(23,32,43,.06);
@@ -241,52 +242,43 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 
   <div class="bloco">
     <h2>Portas da fachada sul</h2>
-    <p class="pergunta">Perguntas 1 e 2 · Quais portas entram e quais saem? Clique numa porta para alternar entre fechada, entrada e saída. S2 e S8 são só de emergência.</p>
+    <p class="pergunta">Decisão do Posto (06/09/2026): <strong>entradas S4 (A), S5 (B) e S6 (C); saídas S2 e S8</strong>. Clique numa porta para testar outra combinação; o botão devolve a decisão.</p>
+    <p class="aviso" id="avisoPortas" hidden>As portas ou as entradas deste cenário diferem da decisão do Posto. <button class="acao mini" id="btnPortasDecisao">Voltar às portas da decisão</button></p>
     <svg class="portas" id="svgPortas" viewBox="0 0 560 74" role="group" aria-label="Portas da fachada sul"></svg>
     <div class="legenda" style="margin-top:6px"><span><span class="swatch" style="background:var(--entrada)"></span>entrada</span><span><span class="swatch" style="background:var(--saida)"></span>saída</span><span><span class="swatch" style="background:var(--regua)"></span>fechada</span><span><span class="swatch" style="background:var(--emerg)"></span>emergência</span></div>
   </div>
 
   <div class="bloco">
-    <h2>Zonas e numeração</h2>
-    <p class="pergunta">Pergunta 3 · Em quantas zonas as mesas se dividem, por que porta cada zona entra e de onde parte a numeração MRV 1 a 28. As zonas são arcos contíguos do perímetro; a numeração fica contígua dentro de cada zona para simplificar a sinalização.</p>
-    <div class="linha">
-      <div class="campo"><label for="nZonas">Zonas</label>
-        <div class="opcoes" id="nZonas" role="group"><button data-n="2">2</button><button data-n="3" aria-pressed="true">3</button><button data-n="4">4</button></div></div>
-      <div class="campo"><label for="inicioZona1">Primeiro slot da zona A</label><input type="number" id="inicioZona1" min="1" max="28" value="1"></div>
-      <div class="campo"><label>Mesas por zona</label><div class="linha" id="tamanhos" style="gap:6px"></div></div>
-    </div>
+    <h2>Entradas do Ring 3 e mesas</h2>
+    <p class="pergunta">Cada entrada do Ring 3 (A, B, C) traz as mesas que o plano do Ring 3 lhe atribuiu, na proporção da capacidade do seu serpenteado e com uma das três mesas vermelhas em cada. <strong>O número da mesa é o MRV do DJE/TRE-DF</strong> e não depende da posição no salão: a mesa 22 é a MRV 22 na parede norte, leste ou oeste. Mude o arranjo no bloco Salão; a atribuição às entradas é a das decisões.</p>
     <div class="linha" style="margin-top:12px; align-items:flex-start">
-      <svg class="zonasMini" id="svgZonas" viewBox="0 0 300 270" role="img" aria-label="Planta em miniatura com as zonas"></svg>
+      <svg class="zonasMini" id="svgZonas" viewBox="0 0 300 270" role="img" aria-label="Planta em miniatura com as entradas"></svg>
       <div style="flex:1; min-width:260px">
         <table class="tabela" id="tabZonas"></table>
       </div>
     </div>
-    <div class="linha" style="margin-top:12px">
-      <div class="campo"><label>MRV 1 começa na zona</label><div class="opcoes" id="inicioZonaMrv" role="group"></div></div>
-      <div class="campo"><label>Sentido da numeração</label><div class="opcoes" id="sentido" role="group"><button data-s="horario" aria-pressed="true">horário</button><button data-s="antihorario" aria-pressed="false">anti-horário</button></div></div>
-    </div>
-    <p class="dica" style="margin-top:8px">Horário: MRV 1 no canto noroeste seguindo a parede norte para leste. A mesa MRV k recebe a k-ª seção principal em ordem crescente, conforme a convocação publicada.</p>
+    <p class="dica" style="margin-top:8px">Cores das entradas: as das raias do plano de sinalização (azul, âmbar, magenta). Se a placa da porta vai dizer a cor ou uma letra ainda não foi decidido.</p>
   </div>
 
   <div class="bloco">
     <h2>Checkpoint interno</h2>
-    <p class="pergunta">Pergunta 5 · Há checkpoint depois da porta? A que distância? Com quantos atendentes por zona? O espaço entre porta e checkpoint é o buffer que a liberação controlada enche.</p>
+    <p class="pergunta">Há checkpoint depois da porta? A que distância? Com quantos atendentes por entrada? O espaço entre porta e checkpoint é o buffer que a liberação controlada enche.</p>
     <div class="linha">
       <div class="campo"><label>Checkpoint</label><div class="opcoes" id="cpExiste" role="group"><button data-v="1" aria-pressed="true">há checkpoint</button><button data-v="0" aria-pressed="false">sem checkpoint</button></div></div>
       <div class="campo"><label for="cpDist">Distância da porta <span class="mono" id="cpDistVal">12 m</span></label><input type="range" id="cpDist" min="4" max="24" step="1" value="12"></div>
       <div class="campo"><label for="cpFilas">Filas entre porta e checkpoint</label><input type="number" id="cpFilas" min="1" max="4" value="2"></div>
       <div class="campo"><label for="cpSeg">Segundos por eleitor</label><input type="number" id="cpSeg" min="3" max="30" value="8"></div>
     </div>
-    <div class="linha" style="margin-top:10px"><div class="campo"><label>Atendentes por zona</label><div class="linha" id="cpAtend" style="gap:6px"></div></div><span class="dica" id="cpCap"></span></div>
+    <div class="linha" style="margin-top:10px"><div class="campo"><label>Atendentes por entrada</label><div class="linha" id="cpAtend" style="gap:6px"></div></div><span class="dica" id="cpCap"></span></div>
   </div>
 
   <div class="bloco">
     <h2>Fila na frente de cada mesa</h2>
-    <p class="pergunta">Pergunta 4 · Quantas pessoas cabem na fila da mesa, por peso da mesa. A fila evita que a urna fique parada; não cria capacidade. A resposta certa aparece no resultado como “fila necessária”.</p>
+    <p class="pergunta">Quantas pessoas cabem na fila da mesa, pela classe de carga da mesa (a mesma cor da prancheta: vermelho as três de maior comparecimento esperado, amarelo as de médio, verde as de baixo). A fila evita que a urna fique parada; não cria capacidade. A resposta certa aparece no resultado como “fila necessária”.</p>
     <div class="linha">
-      <div class="campo"><label for="filaLeve">Mesas leves (≤ 500 aptos)</label><input type="number" id="filaLeve" min="1" max="12" value="3"></div>
-      <div class="campo"><label for="filaMedia">Médias (501–700)</label><input type="number" id="filaMedia" min="1" max="12" value="4"></div>
-      <div class="campo"><label for="filaPesada">Pesadas (> 700)</label><input type="number" id="filaPesada" min="1" max="12" value="6"></div>
+      <div class="campo"><label for="filaLeve"><span class="swatch" style="background:var(--baixa)"></span> Verdes (baixo)</label><input type="number" id="filaLeve" min="1" max="12" value="3"></div>
+      <div class="campo"><label for="filaMedia"><span class="swatch" style="background:var(--media)"></span> Amarelas (médio)</label><input type="number" id="filaMedia" min="1" max="12" value="4"></div>
+      <div class="campo"><label for="filaPesada"><span class="swatch" style="background:var(--alta)"></span> Vermelhas (as 3 maiores)</label><input type="number" id="filaPesada" min="1" max="12" value="6"></div>
       <span class="dica" id="filaInfo"></span>
     </div>
   </div>
@@ -304,7 +296,7 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 
   <div class="bloco">
     <h2>Comparecimento</h2>
-    <p class="pergunta">Quantos dos 16.794 aptos aparecem. As taxas separam eleitor de Dublin e do interior, como em 2022.</p>
+    <p class="pergunta">Quantos dos 16.794 aptos aparecem. A base é a decidida pelo Posto: taxa de 2022 por domicílio de origem de cada seção (base B), calculada em <span class="mono">scripts/comparecimento.py</span>. Os outros dois botões escalam essa base para testar sensibilidade.</p>
     <div class="opcoes" id="comparecimento" role="group"></div>
     <p class="dica" id="compInfo" style="margin-top:8px"></p>
   </div>
@@ -322,11 +314,11 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 
   <div class="bloco">
     <h2>Ring 3 e triagem externa</h2>
-    <p class="pergunta">Fora do salão as pessoas são separadas por zona. Com sinalização boa a triagem não limita; reduza para testar o efeito. A capacidade é o que cabe no Ring 3.</p>
+    <p class="pergunta">Fora do salão as pessoas são separadas por entrada na garganta sudeste do Ring 3. Com sinalização boa a triagem não limita; reduza para testar o efeito. A capacidade total vem do plano do Ring 3 (três serpenteados mais duas baias); a capacidade de cada entrada aparece na tabela acima e o resultado confere as duas.</p>
     <div class="linha">
       <div class="campo"><label for="triAtend">Pessoas na triagem</label><input type="number" id="triAtend" min="1" max="20" value="6"></div>
       <div class="campo"><label for="triSeg">Segundos por eleitor</label><input type="number" id="triSeg" min="2" max="40" value="6"></div>
-      <div class="campo"><label for="ring3Cap">Capacidade do Ring 3 (pessoas)</label><input type="number" id="ring3Cap" min="100" max="5000" step="50" value="800"></div>
+      <div class="campo"><label for="ring3Cap">Capacidade do Ring 3 (pessoas)</label><input type="number" id="ring3Cap" min="100" max="5000" step="1" value="1402"></div>
     </div>
   </div>
 
@@ -404,6 +396,7 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 <script>
 /*__BASE__*/
 /*__MRVS__*/
+/*__DECISOES__*/
 /*__ARRANJOS__*/
 </script>
 <script>

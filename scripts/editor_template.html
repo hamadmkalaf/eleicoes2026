@@ -7,6 +7,8 @@
   --papel:#f0ede5; --folha:#fffdf8; --tinta:#17202b; --meio:#59616d;
   --fraco:#8a919b; --regua:#d9d3c6; --regua2:#e8e3d8;
   --entrada:#1f6fb2; --emerg:#16867f; --alerta:#b23b2e; --aviso:#b26a12;
+  --saida:#b26a12; --conflito:#7d3c98;
+  --alta:#c0392b; --media:#d4a017; --baixa:#1e8449;
   --prancha:#fbfaf7; --piso:#eef1f4; --traco:#1c2733;
   --mesa:#3b4552; --pessoa:#59616d;
   --sel:#1f6fb2; --medida:#7a4c8f;
@@ -100,6 +102,9 @@ kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid va
   padding:3px 9px; border:1px solid currentColor; color:var(--emerg);
   font-weight:600; letter-spacing:.01em}
 .chip.ruim{color:var(--alerta)}
+.sw{display:inline-block; width:.7rem; height:.7rem; border-radius:2px; margin-right:.4rem; vertical-align:-1px}
+ul.carga{list-style:none; margin:0; padding:0; display:grid; gap:6px; font-size:.8rem}
+ul.carga .lista{display:block; color:var(--meio); font-size:.7rem; margin-left:1.1rem}
 .chip.neutro{color:var(--meio)}
 
 .medidas,.salvos{list-style:none; margin:0; padding:0; display:flex;
@@ -195,7 +200,7 @@ footer .estado.guia{color:var(--entrada)}
 <div class="app">
 <header>
   <h1>Prancheta do Hall&nbsp;2</h1>
-  <span class="sub">28 mesas receptoras · escala real · RDS Ballsbridge</span>
+  <span class="sub">28 mesas receptoras numeradas pelo MRV do DJE · escala real · RDS Ballsbridge</span>
   <div class="dir">
     <div class="grupo" role="group" aria-label="Cenário">
       <button id="cenA" aria-pressed="true">Cenário A</button>
@@ -222,6 +227,7 @@ footer .estado.guia{color:var(--entrada)}
       <button id="zMais" title="Aproximar" aria-label="Aproximar">+</button>
       <button id="zMenos" title="Afastar" aria-label="Afastar">−</button>
       <button id="zTudo" title="Enquadrar o salão" aria-label="Enquadrar o salão">tudo</button>
+      <button id="zRing3" title="Enquadrar o salão e o Ring 3" aria-label="Enquadrar o salão e o Ring 3">+Ring 3</button>
     </div>
   </div>
 
@@ -229,6 +235,11 @@ footer .estado.guia{color:var(--entrada)}
     <div class="bloco">
       <p class="rot">Seleção</p>
       <div id="sel"></div>
+    </div>
+    <div class="bloco">
+      <p class="rot">Carga esperada por mesa</p>
+      <div id="legendaCarga"></div>
+      <p class="dica" id="notaCarga" style="margin-top:8px"></p>
     </div>
     <div class="bloco">
       <p class="rot">Alinhar à parede</p>
@@ -285,7 +296,9 @@ footer .estado.guia{color:var(--entrada)}
         <label><input type="checkbox" id="optAssentos" checked> Cadeiras dos mesários (0,75 m)</label>
         <label><input type="checkbox" id="optZonas" checked> Zonas protegidas de 3 m</label>
         <label><input type="checkbox" id="optGrade"> Grade de 1 m</label>
-        <label><input type="checkbox" id="optPortas" checked> Nome das portas</label>
+        <label><input type="checkbox" id="optPortas" checked> Nome e papel das portas</label>
+        <label><input type="checkbox" id="optCores" checked> Cor por comparecimento esperado</label>
+        <label><input type="checkbox" id="optRing3" checked> Ring 3 e apron</label>
         <label><input type="checkbox" id="optCotas" checked> Cotas vivas ao arrastar</label>
       </div>
       <div class="passo">
@@ -300,7 +313,8 @@ footer .estado.guia{color:var(--entrada)}
     </div>
     <div class="bloco">
       <p class="rot">Como usar</p>
-      <p class="dica">Arraste uma mesa para movê-la; <kbd>Shift</kbd>+clique soma mesas à seleção e o arrasto move o conjunto. A mesa fica <strong>vermelha</strong> quando invade zona protegida, vão de porta, outra mesa, ou sai do salão.</p>
+      <p class="dica">O número da mesa é o <strong>MRV do DJE/TRE-DF</strong> e não muda quando ela se move: a mesa 22 é a 22 na parede norte, leste ou oeste. A cor é a carga esperada — <strong>vermelho</strong> as três de maior comparecimento, <strong>amarelo</strong> as de médio, <strong>verde</strong> as de baixo. As portas mostram o papel decidido: entradas S4 (A), S5 (B) e S6 (C); saídas S2 e S8.</p>
+      <p class="dica">Arraste uma mesa para movê-la; <kbd>Shift</kbd>+clique soma mesas à seleção e o arrasto move o conjunto. A mesa ganha <strong>contorno roxo tracejado</strong> quando invade zona protegida, vão de porta, outra mesa, ou sai do salão.</p>
       <p class="dica"><strong>Reparear</strong>: clique na mesa que fica parada e depois na que vai formar par — ela vem para 3,00 m de corredor e, se houver vizinha alinhada, o par encosta a 1,50 m dela.</p>
       <p class="dica"><kbd>R</kbd> gira a seleção 90°. Setas movem de um passo, com <kbd>Shift</kbd> de dez. <kbd>Ctrl+Z</kbd> desfaz. <kbd>Esc</kbd> desmarca.</p>
         <p class="dica"><strong>Alinhar à parede</strong> põe todas as mesas encostadas numa parede à mesma distância dela, sem mexer na posição ao longo da parede nem no giro. <strong>Pares</strong> mede o corredor entre as duas mesas de cada par e a folga até o par vizinho.</p>
@@ -319,6 +333,10 @@ footer .estado.guia{color:var(--entrada)}
 
 <script>
 const D = @@dados@@;
+/* Decisoes do Posto embutidas na geracao (scripts/decisoes.py): numeracao
+   MRV, comparecimento esperado e classe de cada mesa, papeis das portas,
+   entradas e contorno do Ring 3. */
+const DEC = D.decisoes || null;
 
 const M = D.modulo, SAL = D.salao;
 const ALT = SAL.altura, LARG = SAL.largura;
@@ -638,12 +656,52 @@ function montaFundo(){
   el("polygon", {points: pts, fill: "none", stroke: "var(--traco)",
     "stroke-width": .18, "stroke-linejoin": "miter"}, gFundo);
 
+  montaRing3();
+
   for (let x = 0; x <= LARG; x++)
     el("line", {x1: fx(x), y1: fy(0), x2: fx(x), y2: fy(ALT),
       stroke: "var(--traco)", "stroke-width": .015, opacity: .3}, gGrade);
   for (let y = 0; y <= ALT; y++)
     el("line", {x1: fx(0), y1: fy(y), x2: fx(LARG), y2: fy(y),
       stroke: "var(--traco)", "stroke-width": .015, opacity: .3}, gGrade);
+}
+
+/* Ring 3 e apron ao sul da fachada, so como camada de leitura: o desenho em
+   escala dos serpenteados e o de saidas/layout_ring3.svg. O contorno vem de
+   scripts/salao.py via decisoes (centrado em S5 por estimativa). */
+let gRing3 = null;
+function montaRing3(){
+  const R = DEC && DEC.ring3;
+  gRing3 = el("g", {class: "ring3"}, gFundo);
+  if (!R || !R.rect) return;
+  const [x0, y0, x1, y1] = R.rect;
+  el("rect", {x: fx(x0), y: fy(0), width: x1 - x0, height: R.apron,
+    fill: "var(--piso)", opacity: .55}, gRing3);
+  const ta = el("text", {x: fx((x0 + x1) / 2), y: fy(-R.apron / 2) + .4,
+    "font-size": .95, fill: "var(--fraco)", "text-anchor": "middle",
+    "font-family": "IBM Plex Sans, sans-serif"}, gRing3);
+  ta.textContent = `apron pavimentado · ${vg(R.apron, 0)} m`;
+  el("rect", {x: fx(x0), y: fy(y1), width: x1 - x0, height: y1 - y0,
+    fill: "var(--folha)", stroke: "var(--traco)", "stroke-width": .14,
+    "stroke-dasharray": ".8 .5"}, gRing3);
+  const t = el("text", {x: fx((x0 + x1) / 2), y: fy(y1 - 2.2),
+    "font-size": 1.4, "font-weight": 700, fill: "var(--meio)", "text-anchor": "middle",
+    "font-family": "IBM Plex Sans, sans-serif"}, gRing3);
+  t.textContent = `RING 3 · ${vg(R.largura, 0)} × ${vg(R.profundidade, 0)} m · ${R.capacidade} pessoas`;
+  const t2 = el("text", {x: fx((x0 + x1) / 2), y: fy(y1 - 4.0),
+    "font-size": .9, fill: "var(--fraco)", "text-anchor": "middle",
+    "font-family": "IBM Plex Sans, sans-serif"}, gRing3);
+  t2.textContent = "serpenteados A, B e C descarregam em S4, S5 e S6 · " + (R.eixo || "");
+  for (const e of (DEC.entradas || [])) {
+    const p = D.portas.find(q => q.id === e.porta);
+    if (!p) continue;
+    const mx = (p.x1 + p.x2) / 2;
+    el("line", {x1: fx(mx), y1: fy(y1), x2: fx(mx), y2: fy(-.4),
+      stroke: e.hex, "stroke-width": .22, "stroke-dasharray": ".6 .4"}, gRing3);
+    const te = el("text", {x: fx(mx), y: fy(y1 - 6.5), "font-size": 1.1, "font-weight": 700,
+      fill: e.hex, "text-anchor": "middle", "font-family": "IBM Plex Sans, sans-serif"}, gRing3);
+    te.textContent = `${e.id} · ${e.capacidade}`;
+  }
 }
 
 function montaZonas(){
@@ -654,12 +712,17 @@ function montaZonas(){
 }
 
 const COR_PORTA = {fechada: "var(--alerta)", catering: "var(--entrada)",
-                   emergencia: "var(--emerg)"};
+                   emergencia: "var(--emerg)", entrada: "var(--entrada)",
+                   saida: "var(--saida)"};
+/* Papel decidido de cada porta (scripts/decisoes.py): entrada A/B/C ou saida. */
+function papelPorta(id){ return (DEC && DEC.portas && DEC.portas[id]) || null; }
 function montaPortas(){
   gPortas.innerHTML = "";
   for (const p of D.portas) {
+    const papel = papelPorta(p.id);
+    const estado = papel ? papel.papel : p.estado;
     el("line", {x1: fx(p.x1), y1: fy(p.y1), x2: fx(p.x2), y2: fy(p.y2),
-      stroke: COR_PORTA[p.estado] || "var(--meio)", "stroke-width": .34,
+      stroke: COR_PORTA[estado] || "var(--meio)", "stroke-width": papel ? .5 : .34,
       "stroke-linecap": "butt"}, gPortas);
     const mx = (p.x1 + p.x2) / 2, my = (p.y1 + p.y2) / 2;
     const fora = {norte: [0, .95], sul: [0, -1.5], leste: [1.1, -.25],
@@ -671,7 +734,20 @@ function montaPortas(){
       "font-family": "IBM Plex Sans, sans-serif",
       class: "rotuloPorta"}, gPortas);
     t.textContent = p.id;
+    if (papel && p.face === "sul") {
+      const tp = el("text", {x: fx(mx), y: fy(my - 2.7), "font-size": .78,
+        "font-weight": 700, fill: COR_PORTA[estado], "text-anchor": "middle",
+        "font-family": "IBM Plex Sans, sans-serif", class: "rotuloPorta"}, gPortas);
+      tp.textContent = papel.papel === "entrada" ? `ENTRADA ${papel.entrada}` : "SAÍDA";
+    }
   }
+}
+
+/* Cor da mesa pela classe de comparecimento esperado (decisao 3). */
+function corMesa(n){
+  if (!$("optCores").checked) return "var(--mesa)";
+  const info = DEC && DEC.mesas && DEC.mesas[n];
+  return info ? `var(--${info.classe})` : "var(--mesa)";
 }
 
 function montaMesas(){
@@ -694,13 +770,19 @@ function montaMesas(){
     const c = [P(M.prof - M.mesa[0], -M.mesa[1] / 2), P(M.prof, -M.mesa[1] / 2),
                P(M.prof, M.mesa[1] / 2), P(M.prof - M.mesa[0], M.mesa[1] / 2)];
     el("polygon", {points: c.map(q => `${fx(q[0])},${fy(q[1])}`).join(" "),
-      fill: ruim ? "var(--alerta)" : "var(--mesa)", opacity: ruim ? .9 : .86}, g);
+      fill: corMesa(m.n), opacity: .88}, g);
+    if (ruim) {
+      const rc = corpoRect(m);
+      retangulo(g, [rc[0] - .1, rc[1] - .1, rc[2] + .1, rc[3] + .1],
+        {fill: "none", stroke: "var(--conflito)", "stroke-width": .16,
+         "stroke-dasharray": ".45 .3"});
+    }
 
     const cu = P(M.eleitor + M.urna / 2, 0);
     el("circle", {cx: fx(cu[0]), cy: fy(cu[1]), r: M.urna / 2, fill: "none",
-      stroke: ruim ? "var(--alerta)" : "var(--entrada)", "stroke-width": .1}, g);
+      stroke: ruim ? "var(--conflito)" : "var(--entrada)", "stroke-width": .1}, g);
     el("circle", {cx: fx(cu[0]), cy: fy(cu[1]), r: .2,
-      fill: ruim ? "var(--alerta)" : "var(--entrada)", opacity: .6}, g);
+      fill: ruim ? "var(--conflito)" : "var(--entrada)", opacity: .6}, g);
     const ce = P(M.eleitor / 2, 0);
     el("circle", {cx: fx(ce[0]), cy: fy(ce[1]), r: .22, fill: "none",
       stroke: "var(--pessoa)", "stroke-width": .07}, g);
@@ -795,8 +877,27 @@ function aplicaVista(){
 function opcoes(){
   gGrade.style.display = $("optGrade").checked ? "" : "none";
   gZonas.style.display = $("optZonas").checked ? "" : "none";
+  if (gRing3) gRing3.style.display = $("optRing3").checked ? "" : "none";
   for (const t of gPortas.querySelectorAll(".rotuloPorta"))
     t.style.display = $("optPortas").checked ? "" : "none";
+}
+
+/* Legenda das classes de carga, com a contagem e a regra das decisoes. */
+function pintaLegendaCarga(){
+  const L = $("legendaCarga"), N = $("notaCarga");
+  if (!DEC || !DEC.classes) { L.innerHTML = ""; N.textContent = ""; return; }
+  const cl = DEC.classes, cont = cl.contagem || {};
+  const item = (k) => {
+    const c = cl.cores[k];
+    const ns = Object.keys(DEC.mesas).filter(n => DEC.mesas[n].classe === k).map(Number).sort((a, b) => a - b);
+    return `<li><span class="sw" style="background:var(--${k})"></span>` +
+      `<strong>${c.cor}</strong> · ${c.rotulo} · ${cont[k] || ns.length} mesa${(cont[k] || ns.length) === 1 ? "" : "s"}` +
+      `<span class="mono lista">MRV ${ns.join(", ")}</span></li>`;
+  };
+  L.innerHTML = `<ul class="carga">${["alta", "media", "baixa"].map(item).join("")}</ul>`;
+  N.textContent = `${DEC.comparecimento.total.toLocaleString("pt-BR")} eleitores esperados de ` +
+    `${DEC.comparecimento.aptos.toLocaleString("pt-BR")} aptos (${DEC.comparecimento.rotulo}). ` +
+    `Regra: ${cl.regra}.`;
 }
 
 /* --- painel e barra de estado ----------------------------------------- */
@@ -825,6 +926,18 @@ function pintaEstado(){
     : (movidas ? `${movidas} mesa${movidas > 1 ? "s" : ""} deslocada${movidas > 1 ? "s" : ""}, todas encaixam`
                : "28 mesas na planta original");
 }
+/* Linhas do painel com o que as decisoes sabem da mesa: secoes, esperado,
+   classe e entrada do Ring 3. */
+function infoMesa(n){
+  const i = DEC && DEC.mesas && DEC.mesas[n];
+  if (!i) return "";
+  const secoes = String(i.principal) + (i.agregada ? ` + ${i.agregada}` : "");
+  const origem = i.origem_agregada ? ` (${i.origem_agregada.toLowerCase()})` : "";
+  const cl = DEC.classes.cores[i.classe];
+  return `<dt>MRV</dt><dd>${n} · seções ${secoes}${origem}</dd>` +
+    `<dt>Esperado</dt><dd><span class="sw" style="background:var(--${i.classe})"></span>${i.esperado} de ${i.aptos} aptos · ${cl.cor}</dd>` +
+    `<dt>Entrada</dt><dd>${i.entrada} · porta ${i.porta}</dd>`;
+}
 function pintaPainel(){
   const cx = $("sel");
   if (!selecao.size) {
@@ -841,6 +954,7 @@ function pintaPainel(){
          <button class="acao mini" id="girarSel" style="margin-left:auto">Girar 90°</button>
        </div>
        <dl class="leitura">
+         ${infoMesa(m.n)}
          <dt>Ancoragem</dt><dd>${vg(m.x)} ; ${vg(m.y)} m</dd>
          <dt>Ocupa</dt><dd>${vg(r[2] - r[0], 1)} × ${vg(r[3] - r[1], 1)} m</dd>
          <dt>Giro</dt><dd>${m.rot}°</dd>
@@ -861,6 +975,7 @@ function pintaPainel(){
        </div>
        <dl class="leitura">
          <dt>Mesas</dt><dd>${ns.join(", ")}</dd>
+         <dt>Esperado</dt><dd>${ns.reduce((s, n) => s + ((DEC && DEC.mesas && DEC.mesas[n]) ? DEC.mesas[n].esperado : 0), 0)} eleitores</dd>
          <dt>Conjunto ocupa</dt><dd>${vg(B[2] - B[0], 1)} × ${vg(B[3] - B[1], 1)} m</dd>
        </dl>
        <p class="dica" style="margin-top:9px">Arraste qualquer uma para mover o conjunto junto.</p>`;
@@ -1101,7 +1216,7 @@ svg.addEventListener("wheel", ev => {
   ev.preventDefault();
   const p = paraModelo(ev);
   const k = Math.exp(ev.deltaY * 0.0012);
-  const w = Math.min(Math.max(vista.w * k, 4), LARG * 3);
+  const w = Math.min(Math.max(vista.w * k, 4), LARG * 4);
   const f = w / vista.w;
   vista.x = p[0] - (p[0] - vista.x) * f;
   vista.y = p[1] - (p[1] - vista.y) * f;
@@ -1146,14 +1261,26 @@ function enquadra(){
 }
 function zoom(k){
   const cx = vista.x + vista.w / 2, cy = vista.y + vista.h / 2;
-  vista.w = Math.min(Math.max(vista.w * k, 4), LARG * 3);
+  vista.w = Math.min(Math.max(vista.w * k, 4), LARG * 4);
   vista.h = vista.h * k;
   vista.x = cx - vista.w / 2; vista.y = cy - vista.h / 2;
+  aplicaVista();
+}
+function enquadraRing3(){
+  const R = DEC && DEC.ring3 && DEC.ring3.rect;
+  if (!R) { enquadra(); return; }
+  const marg = 3, y0 = R[1] - marg, y1 = ALT + marg;
+  const x0 = Math.min(0, R[0]) - marg, x1 = Math.max(LARG, R[2]) + marg;
+  const razao = svg.clientHeight / Math.max(svg.clientWidth, 1);
+  let w = x1 - x0, h = w * razao;
+  if (h < y1 - y0) { h = y1 - y0; w = h / razao; }
+  vista = {x: (x0 + x1) / 2 - w / 2, y: (y0 + y1) / 2 - h / 2, w, h};
   aplicaVista();
 }
 $("zMais").onclick = () => zoom(1 / 1.3);
 $("zMenos").onclick = () => zoom(1.3);
 $("zTudo").onclick = enquadra;
+$("zRing3").onclick = enquadraRing3;
 $("desfazer").onclick = desfaz;
 $("refazer").onclick = refaz;
 
@@ -1203,7 +1330,7 @@ $("copiar").onclick = async () => {
   catch (e) { b.textContent = "Não deu — veja o console"; console.log(txt); }
   setTimeout(() => { b.textContent = "Copiar posições"; }, 1800);
 };
-for (const id of ["optAssentos", "optZonas", "optGrade", "optPortas"])
+for (const id of ["optAssentos", "optZonas", "optGrade", "optPortas", "optCores", "optRing3"])
   $(id).onchange = () => { opcoes(); montaMesas(); };
 
 for (const b of $("paredes").querySelectorAll("button"))
@@ -1451,7 +1578,7 @@ $("colarAplicar").onclick = () => {
 /* --- inicio ----------------------------------------------------------- */
 carregar();
 montaFundo(); montaZonas(); montaPortas(); montaMesas(); montaMedidas();
-opcoes(); pintaPainel(); pintaHistorico(); enquadra();
+opcoes(); pintaLegendaCarga(); pintaPainel(); pintaHistorico(); enquadra();
 pintaSalvos();
 addEventListener("resize", enquadra);
 </script>

@@ -1,12 +1,18 @@
 /* Interface do simulador: três telas (premissas, simulação, resultado).
- * Depende de Modelo (modelo.js), BASE e MRVS embutidos pelo gerador. */
+ * Depende de Modelo (modelo.js), BASE, MRVS e DECISOES embutidos pelo gerador. */
 (function(){
 "use strict";
 const M = Modelo;
 const $ = id => document.getElementById(id);
 const NS = "http://www.w3.org/2000/svg";
-const CORES_ZONA = ["var(--z1)", "var(--z2)", "var(--z3)", "var(--z4)"];
-const LETRAS = ["A", "B", "C", "D"];
+/* Decisões do Posto (scripts/decisoes.py): esperado e classe por mesa,
+ * portas, entradas do Ring 3. As cores das zonas são as das raias das
+ * entradas (azul, âmbar, magenta), as mesmas do plano de sinalização. */
+const DEC = (typeof DECISOES !== "undefined" && DECISOES) ? DECISOES : null;
+if (!DEC) throw new Error("DECISOES ausente: gere a página com scripts/gera_simulador.py");
+const CORES_ZONA = (DEC.entradas || []).map(e => e.hex).concat(["var(--z1)", "var(--z2)", "var(--z3)", "var(--z4)"]);
+const LETRAS = (DEC.entradas || []).map(e => e.id).concat(["A", "B", "C", "D"]);
+const COR_CLASSE = {pesada: "var(--alta)", media: "var(--media)", leve: "var(--baixa)"};
 const CHAVE_RASCUNHO = "simulador-hall2-cenario-v1";
 const CHAVE_COMPARATIVO = "simulador-hall2-comparativo-v1";
 const CHAVE_ARRANJOS = "simulador-hall2-arranjos-v1";
@@ -247,21 +253,21 @@ function carregaRascunho(){
 function guardaRascunho(){ try { localStorage.setItem(CHAVE_RASCUNHO, JSON.stringify(cen)); } catch (e) {} }
 
 function normaliza(c){
-  // garante campos e coerência (tamanhos somam 28, portas por zona válidas)
-  const nz = Math.max(2, Math.min(4, c.zonas.tamanhos.length));
-  c.zonas.tamanhos = c.zonas.tamanhos.slice(0, nz).map(v => Math.max(1, Math.round(v)));
-  while (c.zonas.tamanhos.length < nz) c.zonas.tamanhos.push(1);
-  let s = c.zonas.tamanhos.reduce((a, b) => a + b, 0);
-  if (s !== 28) { c.zonas.tamanhos[nz - 1] = Math.max(1, c.zonas.tamanhos[nz - 1] + 28 - s); }
-  s = c.zonas.tamanhos.reduce((a, b) => a + b, 0);
-  if (s !== 28) { c.zonas.tamanhos = nz === 2 ? [16, 12] : (nz === 3 ? [8, 12, 8] : [8, 6, 6, 8]); }
-  c.zonas.inicio = Math.max(1, Math.min(28, Math.round(c.zonas.inicio || 1)));
-  const entradas = SUL_USAVEIS.filter(id => c.portas[id] === "entrada");
-  if (!entradas.length) { c.portas.S5 = "entrada"; entradas.push("S5"); }
-  c.zonas.portas = c.zonas.tamanhos.map((_, z) => entradas.includes(c.zonas.portas[z]) ? c.zonas.portas[z] : entradas[Math.min(z, entradas.length - 1)]);
-  if (!Array.isArray(c.checkpoint.atendentes)) c.checkpoint.atendentes = c.zonas.tamanhos.map(() => c.checkpoint.atendentes || 2);
-  c.checkpoint.atendentes = c.zonas.tamanhos.map((_, z) => Math.max(1, Math.round(c.checkpoint.atendentes[z] || 2)));
-  c.ordem.inicioZona = Math.max(0, Math.min(nz - 1, c.ordem.inicioZona || 0));
+  // As zonas são as entradas do Ring 3 (decisão). Um cenário antigo, por arcos
+  // (tamanhos/ordem), é convertido: a numeração já é a do DJE em toda parte.
+  if (!c.zonas || c.zonas.modo !== "entradas") c.zonas = M.zonasDaDecisao(DEC);
+  delete c.ordem;
+  if (!c.portas) c.portas = M.portasDaDecisao(DEC);
+  const nz = DEC.entradas.length;
+  const usaveis = SUL_USAVEIS.filter(id => c.portas[id] === "entrada");
+  c.zonas.portas = DEC.entradas.map((e, z) => {
+    const pedida = (c.zonas.portas || [])[z];
+    if (usaveis.includes(pedida)) return pedida;
+    return usaveis.includes(e.porta) ? e.porta : (usaveis[Math.min(z, usaveis.length - 1)] || e.porta);
+  });
+  if (!Array.isArray(c.checkpoint.atendentes)) c.checkpoint.atendentes = new Array(nz).fill(c.checkpoint.atendentes || 2);
+  c.checkpoint.atendentes = DEC.entradas.map((_, z) => Math.max(1, Math.round(c.checkpoint.atendentes[z] || 2)));
+  if (!c.ring3) c.ring3 = {atendentes: 6, seg: 6, capacidade: DEC.ring3.capacidade};
   if (!c.salao) c.salao = {base: "A", alteracoes: []};
   if (!c.sim) c.sim = {runs: 12, seed: 7};
   return c;
@@ -280,38 +286,13 @@ function grupo(id, attr, valor){
 }
 function preencher(){
   $("nomeCenario").value = cen.nome || "";
-  grupo("nZonas", "n", cen.zonas.tamanhos.length);
-  $("inicioZona1").value = cen.zonas.inicio;
-  // tamanhos
-  const T = $("tamanhos"); T.innerHTML = "";
-  cen.zonas.tamanhos.forEach((v, z) => {
-    const inp = h("input", {type: "number", min: 1, max: 26, value: v, "aria-label": `Mesas na zona ${LETRAS[z]}`, style: "width:58px"});
-    inp.addEventListener("change", () => {
-      const novo = Math.max(1, Math.min(26, Math.round(+inp.value || 1)));
-      cen.zonas.tamanhos[z] = novo;
-      const outros = z === cen.zonas.tamanhos.length - 1 ? 0 : cen.zonas.tamanhos.length - 1;
-      const resto = 28 - cen.zonas.tamanhos.reduce((a, b) => a + b, 0);
-      cen.zonas.tamanhos[outros] = Math.max(1, cen.zonas.tamanhos[outros] + resto);
-      normaliza(cen); preencher(); atualizaDerivados();
-    });
-    T.appendChild(h("span", {class: "campo", style: "flex-direction:row;align-items:center;gap:4px"},
-      h("span", {class: "swatch", style: `background:${CORES_ZONA[z]}`}), h("span", {class: "mono", text: LETRAS[z]}), inp));
-  });
-  // MRV começa na zona
-  const IZ = $("inicioZonaMrv"); IZ.innerHTML = "";
-  cen.zonas.tamanhos.forEach((_, z) => {
-    const b = h("button", {"data-z": z, "aria-pressed": String(z === cen.ordem.inicioZona), text: `Zona ${LETRAS[z]}`});
-    b.addEventListener("click", () => { cen.ordem.inicioZona = z; grupo("inicioZonaMrv", "z", z); atualizaDerivados(); });
-    IZ.appendChild(b);
-  });
-  grupo("sentido", "s", cen.ordem.sentido);
   // checkpoint
   grupo("cpExiste", "v", cen.checkpoint.existe ? 1 : 0);
   $("cpDist").value = cen.checkpoint.dist; $("cpDistVal").textContent = cen.checkpoint.dist + " m";
   $("cpFilas").value = cen.checkpoint.filas; $("cpSeg").value = cen.checkpoint.seg;
   const CA = $("cpAtend"); CA.innerHTML = "";
-  cen.zonas.tamanhos.forEach((_, z) => {
-    const inp = h("input", {type: "number", min: 1, max: 8, value: cen.checkpoint.atendentes[z], "aria-label": `Atendentes na zona ${LETRAS[z]}`, style: "width:58px"});
+  DEC.entradas.forEach((_, z) => {
+    const inp = h("input", {type: "number", min: 1, max: 8, value: cen.checkpoint.atendentes[z], "aria-label": `Atendentes na entrada ${LETRAS[z]}`, style: "width:58px"});
     inp.addEventListener("change", () => { cen.checkpoint.atendentes[z] = Math.max(1, Math.round(+inp.value || 1)); atualizaDerivados(); });
     CA.appendChild(h("span", {class: "campo", style: "flex-direction:row;align-items:center;gap:4px"},
       h("span", {class: "swatch", style: `background:${CORES_ZONA[z]}`}), h("span", {class: "mono", text: LETRAS[z]}), inp));
@@ -360,17 +341,10 @@ function ligaControles(){
     }
     if (textos.length) carregaArranjosDe(textos);
   });
-  for (const b of $("nZonas").querySelectorAll("button"))
-    b.addEventListener("click", () => {
-      const n = +b.dataset.n;
-      cen.zonas.tamanhos = n === 2 ? [16, 12] : (n === 3 ? [8, 12, 8] : [8, 6, 6, 8]);
-      cen.zonas.portas = cen.zonas.tamanhos.map((_, z) => cen.zonas.portas[z] || cen.zonas.portas[0]);
-      cen.checkpoint.atendentes = cen.zonas.tamanhos.map((_, z) => cen.checkpoint.atendentes[z] || 2);
-      normaliza(cen); preencher(); atualizaDerivados();
-    });
-  $("inicioZona1").addEventListener("change", ev => { cen.zonas.inicio = Math.max(1, Math.min(28, Math.round(+ev.target.value || 1))); atualizaDerivados(); });
-  for (const b of $("sentido").querySelectorAll("button"))
-    b.addEventListener("click", () => { cen.ordem.sentido = b.dataset.s; grupo("sentido", "s", b.dataset.s); atualizaDerivados(); });
+  $("btnPortasDecisao").addEventListener("click", () => {
+    cen.portas = M.portasDaDecisao(DEC); cen.zonas = M.zonasDaDecisao(DEC);
+    normaliza(cen); preencher(); atualizaDerivados();
+  });
   for (const b of $("cpExiste").querySelectorAll("button"))
     b.addEventListener("click", () => { cen.checkpoint.existe = b.dataset.v === "1"; grupo("cpExiste", "v", b.dataset.v); atualizaDerivados(); });
   $("cpDist").addEventListener("input", ev => { cen.checkpoint.dist = +ev.target.value; $("cpDistVal").textContent = cen.checkpoint.dist + " m"; atualizaDerivados(); });
@@ -388,12 +362,12 @@ function ligaControles(){
   $("just").addEventListener("change", ev => { cen.extras.justificativas = Math.max(0, Math.min(0.5, (+ev.target.value || 0) / 100)); atualizaDerivados(); });
   $("triAtend").addEventListener("change", ev => { cen.ring3.atendentes = Math.max(1, Math.round(+ev.target.value || 1)); atualizaDerivados(); });
   $("triSeg").addEventListener("change", ev => { cen.ring3.seg = Math.max(1, +ev.target.value || 6); atualizaDerivados(); });
-  $("ring3Cap").addEventListener("change", ev => { cen.ring3.capacidade = Math.max(50, Math.round(+ev.target.value || 800)); atualizaDerivados(); });
+  $("ring3Cap").addEventListener("change", ev => { cen.ring3.capacidade = Math.max(50, Math.round(+ev.target.value || DEC.ring3.capacidade)); atualizaDerivados(); });
   $("runs").addEventListener("change", ev => { cen.sim.runs = Math.max(1, Math.min(60, Math.round(+ev.target.value || 12))); guardaRascunho(); });
   $("seed").addEventListener("change", ev => { cen.sim.seed = Math.max(1, Math.round(+ev.target.value || 7)); guardaRascunho(); });
 
-  $("btnClaude").addEventListener("click", () => aplica(M.cenarioClaude()));
-  $("btnPadrao").addEventListener("click", () => aplica(M.cenarioPadrao()));
+  $("btnClaude").addEventListener("click", () => aplica(M.cenarioClaude(DEC, ARRANJOS_EMBUTIDOS)));
+  $("btnPadrao").addEventListener("click", () => aplica(M.cenarioPadrao(DEC)));
   $("btnCopiar").addEventListener("click", async () => {
     const b = $("btnCopiar");
     try { await navigator.clipboard.writeText(JSON.stringify(cen)); b.textContent = "Copiado"; }
@@ -432,16 +406,19 @@ function mostraTela(nome){
 /* ---- derivados da tela 1 ---- */
 function atualizaDerivados(){
   normaliza(cen);
-  try { mont = M.montar(BASE, MRVS, cen); } catch (e) { console.error(e); return; }
+  try { mont = M.montar(BASE, MRVS, cen, DEC); } catch (e) { console.error(e); return; }
   $("nomeAtual").textContent = cen.nome || "";
   desenhaPortas(); desenhaZonasMini(); tabelaZonas(); kpisEstaticos(); guardaRascunho();
   $("cpCap").textContent = cen.checkpoint.existe
     ? `Cabem ${mont.zonas.map(z => `${z.capBuffer} na ${z.letra}`).join(", ")} entre porta e checkpoint (${cen.checkpoint.filas} fila${cen.checkpoint.filas > 1 ? "s" : ""}, 0,6 m por pessoa).`
     : "Sem checkpoint, a porta libera enquanto houver vaga somada nas filas das mesas da zona.";
   const n = {leve: 0, media: 0, pesada: 0}; for (const m of mont.mesas) n[m.classe]++;
-  $("filaInfo").textContent = `${n.leve} leves · ${n.media} médias · ${n.pesada} pesadas · ${vg(mont.fitaMesas, 0)} m de fita nas mesas`;
+  $("filaInfo").textContent = `${n.pesada} vermelhas · ${n.media} amarelas · ${n.leve} verdes · ${vg(mont.fitaMesas, 0)} m de fita nas mesas`;
   const tx = mont.taxa;
-  $("compInfo").textContent = `Dublin ${Math.round(tx.dublin * 100)} % · interior ${Math.round(tx.interior * 100)} % → ${fmt(mont.esperadosTotal)} eleitores esperados, mais ${Math.round((cen.extras.justificativas || 0) * 100)} % de atendimentos sem voto.`;
+  $("compInfo").textContent = `${tx.rotulo}: ${fmt(mont.esperadosTotal)} eleitores esperados de ${fmt(mont.aptosTotal)} aptos (${Math.round(100 * mont.esperadosTotal / mont.aptosTotal)} %), mais ${Math.round((cen.extras.justificativas || 0) * 100)} % de atendimentos sem voto. ${DEC.comparecimento.rotulo}.`;
+  const decisaoVale = DEC.entradas.every((e, z) => cen.zonas.portas[z] === e.porta) &&
+    Object.keys(DEC.portas).every(id => cen.portas[id] === DEC.portas[id].papel);
+  $("avisoPortas").hidden = decisaoVale;
 }
 
 function estadoPorta(id){ return cen.portas[id] || "fechada"; }
@@ -465,7 +442,7 @@ function desenhaPortas(){
     const t = el("text", {x: x + w / 2, y: 24, "font-size": 10, "font-weight": 600, fill: "var(--tinta)", "text-anchor": "middle"}, g); t.textContent = p.id;
     const zonasNaPorta = mont.zonas.filter(z => z.porta === p.id).map(z => z.letra);
     if (est === "entrada" && zonasNaPorta.length) {
-      const tz = el("text", {x: x + w / 2, y: 13, "font-size": 9, fill: "var(--meio)", "text-anchor": "middle", "font-weight": 600}, g); tz.textContent = "zona " + zonasNaPorta.join("+");
+      const tz = el("text", {x: x + w / 2, y: 13, "font-size": 9, fill: "var(--meio)", "text-anchor": "middle", "font-weight": 600}, g); tz.textContent = "entrada " + zonasNaPorta.join("+");
     }
     const tl = el("text", {x: x + w / 2, y: 70, "font-size": 8, fill: "var(--fraco)", "text-anchor": "middle"}, g); tl.textContent = vg(p.larg, 1) + " m";
     if (!emerg) {
@@ -508,28 +485,29 @@ function tabelaZonas(){
   const T = $("tabZonas"); T.innerHTML = "";
   const entradas = SUL_USAVEIS.filter(id => cen.portas[id] === "entrada");
   T.appendChild(h("thead", null, h("tr", null,
-    h("th", {text: "Zona"}), h("th", {text: "Slots"}), h("th", {text: "MRV"}), h("th", {class: "num", text: "Mesas"}),
-    h("th", {class: "num", text: "Eleitores"}), h("th", {text: "Entra por"}))));
+    h("th", {text: "Entrada"}), h("th", {text: "MRV (DJE)"}), h("th", {class: "num", text: "Mesas"}),
+    h("th", {class: "num", text: "Eleitores"}), h("th", {class: "num", text: "Cabe no Ring 3"}), h("th", {text: "Entra por"}))));
   const tb = h("tbody");
   for (const z of mont.zonas) {
-    const sel = h("select", {"aria-label": `Porta de entrada da zona ${z.letra}`});
+    const sel = h("select", {"aria-label": `Porta de entrada da ${z.nome}`});
     for (const id of entradas) sel.appendChild(h("option", {value: id, text: id, selected: id === z.porta ? "" : null}));
     if (!entradas.includes(z.porta)) sel.appendChild(h("option", {value: z.porta, text: z.porta, selected: ""}));
     sel.value = z.porta;
     sel.addEventListener("change", () => { cen.zonas.portas[z.idx] = sel.value; atualizaDerivados(); });
-    const arco = z.slots[0] === z.slots[z.slots.length - 1] ? `${z.slots[0]}` : `${z.slots[0]}→${z.slots[z.slots.length - 1]}`;
+    const lista = z.slots.slice().sort((a, b) => a - b).join(", ");
     tb.appendChild(h("tr", null,
-      h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), h("strong", {text: z.letra})),
-      h("td", {class: "mono", text: arco}), h("td", {class: "mono", text: z.faixaMrv}),
-      h("td", {class: "num", text: z.mesas.length}), h("td", {class: "num", text: fmt(z.esperados)}), h("td", null, sel)));
+      h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), h("strong", {text: z.letra}), DEC.entradas[z.idx] ? ` ${DEC.entradas[z.idx].cor}` : ""),
+      h("td", {class: "mono", text: lista}),
+      h("td", {class: "num", text: z.mesas.length}), h("td", {class: "num", text: fmt(z.esperados)}),
+      h("td", {class: "num", text: z.capRing3 ? String(z.capRing3) : "—"}), h("td", null, sel)));
   }
   T.appendChild(tb);
   // carga (lateral)
   const C = $("tabCarga"); C.innerHTML = "";
-  C.appendChild(h("thead", null, h("tr", null, h("th", {text: "Zona"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleit."}), h("th", {class: "num", text: "por mesa"}), h("th", {text: "Porta"}))));
+  C.appendChild(h("thead", null, h("tr", null, h("th", {text: "Entrada"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleit."}), h("th", {class: "num", text: "por mesa"}), h("th", {text: "Porta"}))));
   const cb = h("tbody");
   for (const z of mont.zonas) cb.appendChild(h("tr", null,
-    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), z.letra + " · MRV " + z.faixaMrv),
+    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), z.letra),
     h("td", {class: "num", text: z.mesas.length}), h("td", {class: "num", text: fmt(z.esperados)}),
     h("td", {class: "num", text: fmt(z.esperados / z.mesas.length)}), h("td", {class: "mono", text: z.porta})));
   C.appendChild(cb);
@@ -605,7 +583,7 @@ function rodar(){
   if (!mont) atualizaDerivados();
   const btn = $("rodar"); btn.disabled = true; btn.textContent = "Simulando…";
   const P = $("progresso"); P.hidden = false; P.firstElementChild.style.width = "0";
-  const montagem = M.montar(BASE, MRVS, cen);
+  const montagem = M.montar(BASE, MRVS, cen, DEC);
   const runs = cen.sim.runs, seed = cen.sim.seed, dias = [];
   let i = 0;
   const passo = () => {
@@ -668,7 +646,7 @@ function desenhaPlanta(){
     const r = m.corpo;
     el("rect", {x: r[0], y: fy(r[3]), width: r[2] - r[0], height: r[3] - r[1], fill: cor, opacity: .12}, g);
     const c = [P(Mm.prof - Mm.mesa[0], -Mm.mesa[1] / 2), P(Mm.prof, -Mm.mesa[1] / 2), P(Mm.prof, Mm.mesa[1] / 2), P(Mm.prof - Mm.mesa[0], Mm.mesa[1] / 2)];
-    const mesa = el("polygon", {points: c.map(q => `${q[0]},${fy(q[1])}`).join(" "), fill: "var(--mesa)", opacity: .85}, g);
+    const mesa = el("polygon", {points: c.map(q => `${q[0]},${fy(q[1])}`).join(" "), fill: COR_CLASSE[m.classe] || "var(--mesa)", opacity: .85}, g);
     const cu = P(Mm.eleitor + Mm.urna / 2, 0);
     const urna = el("circle", {cx: cu[0], cy: fy(cu[1]), r: Mm.urna / 2 - .1, fill: "none", stroke: cor, "stroke-width": .12}, g);
     const q = P(Mm.prof - Mm.mesa[0] / 2, 0);
@@ -687,8 +665,8 @@ function desenhaPlanta(){
     tooltip(hit, () => {
       const i = tempoIdx, idx = mo.mesas.indexOf(m), L = res.ref.linha;
       const pm = res.porMesa[idx];
-      return `<b>MRV ${m.mrv}</b> · seção ${m.secao}${m.agregada ? " + " + m.agregada : ""} · ${m.aptos} aptos (${m.classe})<br>` +
-        `zona ${mo.zonas[m.zona].letra} · fila de ${m.L} · ${fmt(m.esperados)} eleitores esperados<br>` +
+      return `<b>MRV ${m.mrv}</b> · seção ${m.secao}${m.agregada ? " + " + m.agregada : ""} · ${m.aptos} aptos · ${M.ROTULO_CLASSE[m.classe]}<br>` +
+        `entrada ${mo.zonas[m.zona].letra} · fila de ${m.L} · ${fmt(m.esperados)} eleitores esperados<br>` +
         `agora: ${L.mesaFila[idx][i]} na fila · ${["urna e mesário parados", "identificando", "identificando e votando", "votando", "mesário esperando a urna"][L.mesaEstado[idx][i]]}<br>` +
         `dia: fecha ${M.hhmm(pm.fecha)} · urna ${pct(pm.ocupUrna)} · fome ${min(pm.fome)} · fila máx ${pm.filaMax}`;
     });
@@ -925,14 +903,14 @@ function pintaResultado(){
   tab.appendChild(tb); sec.appendChild(h("div", {class: "rolagem"}, tab)); R.appendChild(sec);
 
   // por zona
-  const secZ = h("div", {class: "secao"}, h("h2", {text: "Por zona"}));
+  const secZ = h("div", {class: "secao"}, h("h2", {text: "Por entrada do Ring 3"}));
   const tz = h("table", {class: "tabela"});
-  tz.appendChild(h("thead", null, h("tr", null, h("th", {text: "Zona"}), h("th", {text: "Porta"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleitores"}),
-    h("th", {class: "num", text: "Pico fora"}), h("th", {class: "num", text: "Buffer máx / cabe"}), h("th", {class: "num", text: "Fila checkpoint"}), h("th", {class: "num", text: "Ocup. checkpoint"}), h("th", {class: "num", text: "Fecha"}))));
+  tz.appendChild(h("thead", null, h("tr", null, h("th", {text: "Entrada"}), h("th", {text: "Porta"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleitores"}),
+    h("th", {class: "num", text: "Pico fora / cabe"}), h("th", {class: "num", text: "Buffer máx / cabe"}), h("th", {class: "num", text: "Fila checkpoint"}), h("th", {class: "num", text: "Ocup. checkpoint"}), h("th", {class: "num", text: "Fecha"}))));
   const tzb = h("tbody");
   for (const z of res.porZona) tzb.appendChild(h("tr", null,
-    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), `${z.nome} · MRV ${z.faixaMrv}`), h("td", {class: "mono", text: z.porta}),
-    h("td", {class: "num", text: z.mesas}), h("td", {class: "num", text: fmt(z.esperados)}), h("td", {class: "num", text: fmt(z.ring3Max)}),
+    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), `${z.nome} · MRV ${res.mont.zonas[z.idx].slots.slice().sort((a, b) => a - b).join(", ")}`), h("td", {class: "mono", text: z.porta}),
+    h("td", {class: "num", text: z.mesas}), h("td", {class: "num", text: fmt(z.esperados)}), h("td", {class: "num", text: fmt(z.ring3Max) + (res.mont.zonas[z.idx].capRing3 ? ` / ${res.mont.zonas[z.idx].capRing3}` : "")}),
     h("td", {class: "num", text: cen.checkpoint.existe ? `${z.bufferMax} / ${z.capBuffer}` : "—"}), h("td", {class: "num", text: cen.checkpoint.existe ? String(z.cpFilaMax) : "—"}),
     h("td", {class: "num", text: cen.checkpoint.existe ? `${pct(z.cpOcupacao)} (${z.atendentesCp} atend.)` : "—"}), h("td", {class: "num", text: M.hhmm(z.fecha)})));
   tz.appendChild(tzb); secZ.appendChild(h("div", {class: "rolagem"}, tz)); R.appendChild(secZ);
@@ -941,14 +919,14 @@ function pintaResultado(){
   const secM = h("div", {class: "secao"}, h("h2", {text: "Por mesa, da que fecha mais tarde à mais cedo"}),
     h("p", {class: "dica", style: "margin-bottom:10px", text: "“Fila necessária” é o maior tamanho que a fila da mesa atingiu; se bate no que cabe, o checkpoint reteve gente. Uso da urna acima de 90 % é mesa saturada. “Fome” é tempo parada enquanto havia gente da zona no Ring 3; em mesa leve é inevitável, porque quem espera lá fora é de outra mesa."}));
   const tm = h("table", {class: "tabela"});
-  tm.appendChild(h("thead", null, h("tr", null, h("th", {text: "MRV"}), h("th", {text: "Seções"}), h("th", {class: "num", text: "Aptos"}), h("th", {text: "Zona"}), h("th", {class: "num", text: "Votos"}),
+  tm.appendChild(h("thead", null, h("tr", null, h("th", {text: "MRV"}), h("th", {text: "Seções"}), h("th", {class: "num", text: "Aptos"}), h("th", {text: "Entrada"}), h("th", {class: "num", text: "Votos"}),
     h("th", {class: "num", text: "Fecha"}), h("th", {class: "num", text: "Uso da urna"}), h("th", {class: "num", text: "Fome"}), h("th", {class: "num", text: "Fila necessária / cabe"}))));
   const tmb = h("tbody");
   const maxOc = Math.max(...res.porMesa.map(m => m.ocupUrna), .01);
   for (const m of res.porMesa.slice().sort((a, b) => b.fecha - a.fecha)) {
     const mm = res.mont.mesas.find(x => x.slot === m.slot);
     tmb.appendChild(h("tr", null,
-      h("td", {class: "mono", text: String(m.mrv)}), h("td", {class: "mono", text: `${mm.secao}${mm.agregada ? " + " + mm.agregada : ""}`}),
+      h("td", null, h("span", {class: "swatch", style: `background:${COR_CLASSE[m.classe]}`}), h("span", {class: "mono", text: String(m.mrv)})), h("td", {class: "mono", text: `${mm.secao}${mm.agregada ? " + " + mm.agregada : ""}`}),
       h("td", {class: "num", text: String(m.aptos)}), h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[m.zona]}`}), LETRAS[m.zona]),
       h("td", {class: "num", text: fmt(m.votos)}), h("td", {class: "num", text: M.hhmm(m.fecha)}),
       h("td", {class: "num"}, h("span", {class: "barraMesa", style: `width:${Math.round(m.ocupUrna / maxOc * 60)}px;margin-right:6px;background:${m.ocupUrna > .9 ? "var(--falha)" : "var(--z1)"}`}), pct(m.ocupUrna)),
@@ -998,8 +976,8 @@ function relatorioTexto(){
   l.push(...res.texto, "");
   l.push("## Critérios");
   for (const v of res.vereditos) l.push(`- [${{ok: "OK", atencao: "ATENÇÃO", falha: "FALHA"}[v.status]}] ${v.titulo}: ${v.valor} (meta ${v.meta}). ${v.porque}${v.detalhe ? " " + v.detalhe : ""}`);
-  l.push("", "## Por zona");
-  for (const z of res.porZona) l.push(`- ${z.nome} (MRV ${z.faixaMrv}, porta ${z.porta}): ${fmt(z.esperados)} eleitores, pico fora ${fmt(z.ring3Max)}, checkpoint ${pct(z.cpOcupacao)} com ${z.atendentesCp} atendente(s), fecha ${M.hhmm(z.fecha)}`);
+  l.push("", "## Por entrada do Ring 3");
+  for (const z of res.porZona) l.push(`- ${z.nome} (MRV ${res.mont.zonas[z.idx].slots.slice().sort((a, b) => a - b).join(", ")}, porta ${z.porta}): ${fmt(z.esperados)} eleitores, pico fora ${fmt(z.ring3Max)}, checkpoint ${pct(z.cpOcupacao)} com ${z.atendentesCp} atendente(s), fecha ${M.hhmm(z.fecha)}`);
   l.push("", "## Por mesa (fecha, uso da urna, fome, fila necessária/cabe)");
   for (const m of res.porMesa.slice().sort((a, b) => b.fecha - a.fecha)) l.push(`- MRV ${m.mrv} (${m.secao}, ${m.aptos} aptos): ${M.hhmm(m.fecha)}, ${pct(m.ocupUrna)}, ${min(m.fome)}, ${m.filaMax}/${m.L}`);
   l.push("", "## Premissas (JSON)", "```json", JSON.stringify(cen), "```");
@@ -1011,6 +989,6 @@ function relatorioTexto(){
 /* ------------------------------------------------------------------ */
 ligaControles();
 desenhaCurva();
-aplica(carregaRascunho() || M.cenarioClaude());
+aplica(carregaRascunho() || M.cenarioClaude(DEC, ARRANJOS_EMBUTIDOS));
 rodar();
 })();

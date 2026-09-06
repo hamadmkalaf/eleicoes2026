@@ -2,9 +2,14 @@
  *
  * Roda no navegador (global `Modelo`) e em Node (module.exports). Não depende
  * de DOM. Recebe a base da prancheta (salão, portas, módulo, posições das 28
- * mesas), o mapeamento MRV → seção e um cenário de premissas; devolve o
- * resumo estático (cargas, geometria, cruzamentos) e o resultado de N dias
- * simulados por eventos discretos, eleitor a eleitor.
+ * mesas), o mapeamento MRV → seção, as decisões do Posto (scripts/decisoes.py:
+ * comparecimento esperado e classe de cada mesa, papéis das portas, entradas
+ * do Ring 3 com as suas mesas e capacidades) e um cenário de premissas;
+ * devolve o resumo estático (cargas, geometria, cruzamentos) e o resultado de
+ * N dias simulados por eventos discretos, eleitor a eleitor.
+ *
+ * Numeração: o número da mesa na planta É o MRV do DJE/TRE-DF (decisão de
+ * 06/09/2026). Não há remapeamento: a mesa 22 é a MRV 22 onde quer que esteja.
  *
  * Estágios do eleitor:
  *   chegada ao Ring 3 → triagem → fila da área → porta (liberação controlada)
@@ -46,54 +51,79 @@ const CURVA_CHEGADA = [
   /* 16h00 */ 4.5, /* 16h30 */ 3.5,
 ];
 
-/* Taxas de comparecimento por origem do eleitor. "medio" replica 2022
- * (74 % nas seções de Dublin, ~50 % nas do interior). */
+/* Comparecimento: o esperado de cada mesa vem das decisões (base B, taxa de
+ * 2022 por domicílio de origem). Os presets só escalam essa base, para testar
+ * sensibilidade; "medio" é a base tal como está. */
 const COMPARECIMENTO = {
-  pequeno: {dublin: 0.62, interior: 0.40, rotulo: "pequeno"},
-  medio:   {dublin: 0.74, interior: 0.50, rotulo: "médio (2022)"},
-  grande:  {dublin: 0.84, interior: 0.60, rotulo: "grande"},
+  pequeno: {fator: 0.85, rotulo: "pequeno (base −15 %)"},
+  medio:   {fator: 1.00, rotulo: "base B (2022, por domicílio)"},
+  grande:  {fator: 1.15, rotulo: "grande (base +15 %)"},
 };
 
+/* Classe de carga de cada mesa: a das decisões (vermelho = as 3 de maior
+ * comparecimento, amarelo = médio, verde = baixo), nos nomes que a fila da
+ * mesa usa. */
 const CLASSES = ["leve", "media", "pesada"];
-function classeMesa(aptos){ return aptos > 700 ? "pesada" : (aptos > 500 ? "media" : "leve"); }
-const ROTULO_CLASSE = {leve: "leve (≤ 500 aptos)", media: "média (501–700)", pesada: "pesada (> 700)"};
+const CLASSE_DA_DECISAO = {baixa: "leve", media: "media", alta: "pesada"};
+const ROTULO_CLASSE = {leve: "verde · baixo comparecimento", media: "amarelo · médio comparecimento",
+                       pesada: "vermelho · as 3 de maior comparecimento"};
+
+/* Portas e zonas que valem por decisão do Posto (06/09/2026): entradas S4 (A),
+ * S5 (B) e S6 (C), saídas S2 e S8; cada zona é uma entrada do Ring 3 com as
+ * mesas que scripts/decisoes.py lhe atribuiu. `dec` é o bloco de decisões;
+ * sem ele, os cenários de referência caem nas portas da decisão e nas zonas
+ * por arcos, que só servem para comparação. */
+function portasDaDecisao(dec){
+  const p = {S1: "fechada", S3: "fechada", S7: "fechada", S9: "fechada"};
+  const decididas = (dec && dec.portas) ? dec.portas : {S4: {papel: "entrada"}, S5: {papel: "entrada"}, S6: {papel: "entrada"}, S2: {papel: "saida"}, S8: {papel: "saida"}};
+  for (const id of Object.keys(decididas)) p[id] = decididas[id].papel;
+  return p;
+}
+function zonasDaDecisao(dec){
+  if (dec && Array.isArray(dec.entradas) && dec.entradas.length)
+    return {modo: "entradas", portas: dec.entradas.map(e => e.porta)};
+  return {inicio: 1, tamanhos: [8, 12, 8], portas: ["S5", "S6", "S4"]};
+}
 
 /* ------------------------------------------------------------------ */
 /* Cenários de referência                                              */
 /* ------------------------------------------------------------------ */
-function cenarioPadrao(){
+function cenarioPadrao(dec){
+  const nz = (dec && dec.entradas) ? dec.entradas.length : 3;
   return {
     nome: "Ponto de partida",
     salao: {base: "A", alteracoes: []},
-    portas: {S1: "fechada", S3: "fechada", S4: "entrada", S5: "saida", S6: "entrada", S7: "fechada", S9: "fechada"},
-    zonas: {inicio: 1, tamanhos: [16, 12], portas: ["S4", "S6"]},
-    ordem: {inicioZona: 0, sentido: "horario"},
-    checkpoint: {existe: true, dist: 8, filas: 2, atendentes: [2, 2], seg: 8},
+    portas: portasDaDecisao(dec),
+    zonas: zonasDaDecisao(dec),
+    checkpoint: {existe: true, dist: 8, filas: 2, atendentes: new Array(nz).fill(2), seg: 8},
     filaMesa: {leve: 3, media: 4, pesada: 5},
     liberacao: "buffer",
     porta: {vazao: 30},
     comparecimento: "medio",
     tempos: {identificacao: 45, voto: 30, cv: 0.35},
-    ring3: {atendentes: 6, seg: 6, capacidade: 800},
+    ring3: {atendentes: 6, seg: 6, capacidade: (dec && dec.ring3 && dec.ring3.capacidade) || 1402},
     extras: {justificativas: 0.05},
     sim: {runs: 12, seed: 7},
   };
 }
 
-/* Escolhido por varredura em Node (simulador/varredura.js): entre 4.228
- * combinações de partição, portas, ordem e checkpoint, esta zera os
- * cruzamentos de saída com corredor de entrada, mantém as mesas pesadas sem
- * fome e cabe na fita contratada. Sobe as mesas 23 e 24 em 3,5 a 5 m para a
- * fila da mesa do recorte (slot 22) não invadir a mesa 23. */
-function cenarioClaude(){
-  const c = cenarioPadrao();
+/* Escolhido por varredura em Node (simulador/varredura.js, 06/09/2026) sobre
+ * as portas e as entradas da decisão: entre a planta oficial e os cenários
+ * salvos na prancheta, o arranjo "Três polos" (as três mesas vermelhas MRV
+ * 22, 23 e 24 separadas em áreas distintas) com checkpoint a 16 m, 3
+ * atendentes por entrada e filas 3/4/6 dá a menor espera P90 sem falha
+ * nenhuma. Ver saidas/varredura_top.json. `arranjos` é a biblioteca da
+ * prancheta (embutida na página ou lida de cenarios/ em Node); sem ela, cai
+ * na planta A com as mesas 23 e 24 subidas, o ajuste antigo. */
+const ARRANJO_CLAUDE = "tres-polos";
+function cenarioClaude(dec, arranjos){
+  const c = cenarioPadrao(dec);
   c.nome = "Cenário Claude";
-  c.salao = {base: "A", alteracoes: [{n: 23, y: 17.5}, {n: 24, y: 21.4}]};
-  c.portas = {S1: "saida", S3: "fechada", S4: "entrada", S5: "entrada", S6: "entrada", S7: "fechada", S9: "saida"};
-  c.zonas = {inicio: 1, tamanhos: [8, 12, 8], portas: ["S5", "S6", "S4"]};
-  c.ordem = {inicioZona: 1, sentido: "horario"};
-  c.checkpoint = {existe: true, dist: 14, filas: 2, atendentes: [2, 3, 2], seg: 8};
-  c.filaMesa = {leve: 4, media: 5, pesada: 8};
+  const tp = (arranjos || []).find(a => a && typeof a.id === "string" && a.id.startsWith(ARRANJO_CLAUDE));
+  c.salao = tp ? {base: tp.base, alteracoes: tp.alteracoes.map(m => ({...m})), arranjo: tp.id, nome: tp.nome}
+               : {base: "A", alteracoes: [{n: 23, y: 17.5}, {n: 24, y: 21.4}]};
+  c.checkpoint = {existe: true, dist: 16, filas: 2, atendentes: c.zonas.portas.map(() => 3), seg: 8};
+  c.filaMesa = {leve: 3, media: 4, pesada: 6};
   c.liberacao = "buffer";
   c.sim = {runs: 16, seed: 7};
   return c;
@@ -322,36 +352,36 @@ function slotsDasZonas(zonas){
   for (const tam of zonas.tamanhos) { out.push(seq.slice(k, k + tam)); k += tam; }
   return out;
 }
-/* Numeração MRV por slot: contígua dentro de cada zona, começando na zona
- * escolhida e seguindo o perímetro no sentido dado. */
-function mapaMrv(zonasSlots, ordem){
-  if (ordem.manual) return {...ordem.manual};
-  const plano = [];
-  const z0 = Math.min(ordem.inicioZona || 0, zonasSlots.length - 1);
-  const ordemZonas = [];
-  for (let i = 0; i < zonasSlots.length; i++) ordemZonas.push((z0 + i) % zonasSlots.length);
-  if (ordem.sentido === "antihorario") {
-    // percorre as zonas em ordem inversa e cada zona de trás para frente
-    const inv = [z0];
-    for (let i = 1; i < zonasSlots.length; i++) inv.push((z0 - i + zonasSlots.length) % zonasSlots.length);
-    for (const z of inv) plano.push(...zonasSlots[z].slice().reverse());
-  } else {
-    for (const z of ordemZonas) plano.push(...zonasSlots[z]);
+/* As zonas do cenário: por decisão, cada entrada do Ring 3 com as suas MRVs;
+ * por arcos (modo antigo), só para comparação. Devolve [{letra, mrvs, porta,
+ * capRing3, cor}]. */
+function zonasDoCenario(cen, dec){
+  const z = cen.zonas || {};
+  if (z.modo === "entradas" || !Array.isArray(z.tamanhos)) {
+    if (!dec || !Array.isArray(dec.entradas) || !dec.entradas.length)
+      throw new Error("cenário por entradas exige o bloco de decisões (DECISOES)");
+    return dec.entradas.map((e, i) => ({
+      letra: e.id, mrvs: e.mrvs.slice(), porta: (z.portas && z.portas[i]) || e.porta,
+      capRing3: e.capacidade, cor: e.hex, nome: `Entrada ${e.id}`,
+    }));
   }
-  const mapa = {};
-  plano.forEach((slot, i) => { mapa[slot] = i + 1; });
-  return mapa;
+  return slotsDasZonas(z).map((slots, i) => ({
+    letra: String.fromCharCode(65 + i), mrvs: slots, porta: z.portas[i],
+    capRing3: null, cor: null, nome: `Zona ${String.fromCharCode(65 + i)}`,
+  }));
 }
 
 /* ------------------------------------------------------------------ */
 /* Montagem do cenário resolvido (estático)                            */
 /* ------------------------------------------------------------------ */
-function montar(base, mrvsDados, cen){
+function montar(base, mrvsDados, cen, dec){
+  if (!dec || !dec.mesas) throw new Error("montar() precisa do bloco de decisões (comparecimento e classe por mesa)");
   const M = base.modulo;
   const mesasPos = mesasDoCenario(base, cen);
-  const zonasSlots = slotsDasZonas(cen.zonas);
-  const mapa = mapaMrv(zonasSlots, cen.ordem);
+  const zonasDef = zonasDoCenario(cen, dec);
   const porMrv = {}; for (const r of mrvsDados.mrvs) porMrv[r.mrv] = r;
+  const infoMrv = Array.isArray(dec.mesas)
+    ? Object.fromEntries(dec.mesas.map(m => [m.mrv, m])) : dec.mesas;
   const portas = {}; for (const p of base.portas) portas[p.id] = p;
   const taxa = COMPARECIMENTO[cen.comparecimento] || COMPARECIMENTO.medio;
   const avisos = [];
@@ -360,16 +390,16 @@ function montar(base, mrvsDados, cen){
   const saidas = Object.keys(cen.portas).filter(id => cen.portas[id] === "saida" && portas[id]);
   const entradas = Object.keys(cen.portas).filter(id => cen.portas[id] === "entrada" && portas[id]);
 
-  // zonas
-  const zonas = zonasSlots.map((slots, z) => {
-    let pid = cen.zonas.portas[z];
+  // zonas: uma por entrada do Ring 3 (ou por arco, no modo antigo)
+  const zonas = zonasDef.map((zd, z) => {
+    let pid = zd.porta;
     if (!pid || cen.portas[pid] !== "entrada") {
-      avisos.push(`Zona ${z + 1} sem porta de entrada válida; usando ${entradas[0] || "S5"}.`);
+      avisos.push(`${zd.nome} sem porta de entrada válida; usando ${entradas[0] || "S5"}.`);
       pid = entradas[0] || "S5";
     }
     const porta = portas[pid], cp = centroPorta(porta);
-    return {idx: z, nome: `Zona ${String.fromCharCode(65 + z)}`, letra: String.fromCharCode(65 + z),
-            slots, porta: pid, portaCentro: cp, portaLarg: porta.larg};
+    return {idx: z, nome: zd.nome, letra: zd.letra, slots: zd.mrvs.slice(), porta: pid,
+            portaCentro: cp, portaLarg: porta.larg, capRing3: zd.capRing3, cor: zd.cor};
   });
   // checkpoint de cada zona: à frente da porta, à distância escolhida.
   // Se duas zonas dividem a porta, afasta 1,5 m lateralmente.
@@ -382,14 +412,16 @@ function montar(base, mrvsDados, cen){
   }
   for (const z of zonas) if (usoPorta[z.porta] > 1) z.dividePorta = true;
 
-  // mesas
+  // mesas: o número na planta é o MRV
   const mesas = mesasPos.map(pos => {
-    const mrv = mapa[pos.n], dados = porMrv[mrv];
-    const zona = zonas.find(z => z.slots.includes(pos.n));
-    const classe = classeMesa(dados.aptos);
+    const mrv = pos.n, dados = porMrv[mrv], info = infoMrv[mrv];
+    if (!dados || !info) throw new Error(`MRV ${mrv} sem dados de seção ou de decisão`);
+    const zona = zonas.find(z => z.slots.includes(mrv));
+    if (!zona) throw new Error(`MRV ${mrv} não pertence a zona nenhuma`);
+    const classe = CLASSE_DA_DECISAO[info.classe] || "leve";
     const L = Math.max(1, Math.round(cen.filaMesa[classe] || 3));
     const frente = frenteMesa(M, pos), cauda = caudaFila(M, pos, L);
-    const esperados = dados.aptos_dublin * taxa.dublin + dados.aptos_interior * taxa.interior;
+    const esperados = info.esperado * taxa.fator;
     const saida = saidas.length
       ? saidas.map(id => ({id, d: hipot(frente, centroPorta(portas[id]))})).sort((a, b) => a.d - b.d)[0]
       : {id: zona.porta, d: hipot(frente, zona.portaCentro)};
@@ -397,7 +429,9 @@ function montar(base, mrvsDados, cen){
     return {slot: pos.n, pos, mrv, secao: dados.principal, agregada: dados.agregada,
             origemAgregada: dados.origem_agregada, aptos: dados.aptos,
             aptosDublin: dados.aptos_dublin, aptosInterior: dados.aptos_interior,
-            classe, L, zona: zona.idx, frente, cauda, esperados, saida: saida.id, distSaida: saida.d,
+            classe, classeDecisao: info.classe, cor: info.cor,
+            p: Math.min(1, esperados / Math.max(1, dados.aptos)),
+            L, zona: zona.idx, frente, cauda, esperados, saida: saida.id, distSaida: saida.d,
             distCp, corpo: corpoRect(M, pos)};
   });
   for (const z of zonas) {
@@ -405,7 +439,7 @@ function montar(base, mrvsDados, cen){
     z.esperados = soma(mesas.filter(m => m.zona === z.idx).map(m => m.esperados));
     z.aptos = soma(mesas.filter(m => m.zona === z.idx).map(m => m.aptos));
     z.mrvs = mesas.filter(m => m.zona === z.idx).map(m => m.mrv).sort((a, b) => a - b);
-    z.faixaMrv = `${z.mrvs[0]}–${z.mrvs[z.mrvs.length - 1]}`;
+    z.faixaMrv = z.mrvs.join(", ");
     z.capBuffer = cen.checkpoint.existe
       ? Math.max(1, Math.floor(cen.checkpoint.dist * Math.max(1, cen.checkpoint.filas) / PASSO_FILA))
       : soma(mesas.filter(m => m.zona === z.idx).map(m => m.L));
@@ -469,7 +503,7 @@ function montar(base, mrvsDados, cen){
   const fracaoLeque = paresTotal ? paresLeque / paresTotal : 0;
   const mesmaPorta = zonas.filter(z => saidas.includes(z.porta)).map(z => z.porta);
 
-  return {cen, base, M, zonas, mesas, mapa, portas, saidas, entradas, taxa,
+  return {cen, base, M, zonas, mesas, portas, saidas, entradas, taxa, dec,
           esperadosTotal: soma(mesas.map(m => m.esperados)),
           aptosTotal: soma(mesas.map(m => m.aptos)),
           cargaPorta, desequilibrio, separadores, fitaMesas, fitaBuffer, conflitos,
@@ -507,9 +541,8 @@ function simularDia(mont, seed){
   const porSlot = {}; mesas.forEach(m => { porSlot[m.slot] = m; });
   const eleitores = [];
   for (const m of mesas) {
-    const nD = binomial(rnd, m.aptosDublin, mont.taxa.dublin);
-    const nI = binomial(rnd, m.aptosInterior, mont.taxa.interior);
-    const n = nD + nI;
+    // sorteio do comparecimento da mesa em torno do esperado da base B
+    const n = binomial(rnd, m.aptos, m.p);
     const nJ = Math.round(n * (cen.extras.justificativas || 0));
     for (let i = 0; i < n + nJ; i++)
       eleitores.push({id: eleitores.length, mesa: m.slot, zona: m.zona, just: i >= n,
@@ -747,8 +780,8 @@ function simularDia(mont, seed){
 /* ------------------------------------------------------------------ */
 /* Vários dias, agregação e vereditos                                  */
 /* ------------------------------------------------------------------ */
-function simular(base, mrvsDados, cen, opts = {}){
-  const mont = montar(base, mrvsDados, cen);
+function simular(base, mrvsDados, cen, dec, opts = {}){
+  const mont = montar(base, mrvsDados, cen, dec);
   const runs = Math.max(1, Math.min(200, (cen.sim && cen.sim.runs) || 10));
   const seed = (cen.sim && cen.sim.seed) || 7;
   const dias = [];
@@ -812,12 +845,12 @@ function avaliar(mont, r, porMesa, porZona){
   const tardias = porMesa.filter(m => m.fecha > 17.5 * 3600).sort((a, b) => b.fecha - a.fecha);
   if (tardias.length) V[V.length - 1].detalhe = `Mesas que passam de 17h30: ${tardias.slice(0, 8).map(m => `MRV ${m.mrv} (${hhmm(m.fecha)})`).join(", ")}${tardias.length > 8 ? "…" : ""}.`;
 
-  // 2 fome nas pesadas
+  // 2 fome nas pesadas (as 3 mesas vermelhas)
   const pes = porMesa.filter(m => m.classe === "pesada");
   const fomeMedia = pes.length ? soma(pes.map(m => m.fome)) / pes.length / 60 : 0;
-  add("fome", "Mesas pesadas sem fome", nivel(fomeMedia, 10, 30), `${Math.round(fomeMedia)} min por mesa pesada`, "≤ 10 min",
-      fomeMedia <= 10 ? "As mesas de mais de 700 aptos quase nunca ficaram paradas enquanto havia gente esperando fora."
-        : "Mesas pesadas ficaram ociosas com fila no Ring 3: a fila da frente delas ou o despacho do checkpoint não alimentou a urna.");
+  add("fome", "Mesas vermelhas sem fome", nivel(fomeMedia, 10, 30), `${Math.round(fomeMedia)} min por mesa vermelha`, "≤ 10 min",
+      fomeMedia <= 10 ? "As três mesas de maior comparecimento quase nunca ficaram paradas enquanto havia gente esperando fora."
+        : "Mesas vermelhas ficaram ociosas com fila no Ring 3: a fila da frente delas ou o despacho do checkpoint não alimentou a urna.");
 
   // 3 espera total
   const t90 = r.totalP90.p50 / 60;
@@ -871,11 +904,19 @@ function avaliar(mont, r, porMesa, porZona){
       mont.conflitos.length === 0 ? "Nenhuma fila invade corredor de porta, zona protegida ou outra mesa."
         : mont.conflitos.slice(0, 6).map(c => `MRV ${c.mesa} × ${c.com}`).join("; ") + (mont.conflitos.length > 6 ? "…" : ""));
 
-  // 10 Ring 3
+  // 10 Ring 3: o total contra a capacidade informada e cada entrada contra o
+  // seu serpenteado mais baia (do plano do Ring 3, via decisões)
   const r3 = r.ring3TotalMax.p90;
-  add("ring3", "Ring 3 comporta a fila externa", nivel(r3, mont.cen.ring3.capacidade, mont.cen.ring3.capacidade * 1.3),
-      `pico de ${Math.round(r3)} pessoas fora (P90)`, `≤ ${mont.cen.ring3.capacidade}`,
-      r3 <= mont.cen.ring3.capacidade ? "A fila externa cabe no espaço previsto." : "Fila externa maior que o espaço do Ring 3; transborda para a rua.");
+  const porEntrada = porZona.filter(z => mont.zonas[z.idx].capRing3).map(z => ({z, razao: z.ring3Max / mont.zonas[z.idx].capRing3}));
+  const piorE = porEntrada.length ? porEntrada.reduce((a, b) => b.razao > a.razao ? b : a) : null;
+  const razaoTot = r3 / mont.cen.ring3.capacidade;
+  const razao = Math.max(razaoTot, piorE ? piorE.razao : 0);
+  add("ring3", "Ring 3 comporta a fila externa", razao <= 1 ? "ok" : (razao <= 1.3 ? "atencao" : "falha"),
+      `pico de ${Math.round(r3)} pessoas fora (P90)` + (piorE ? ` · ${piorE.z.nome}: ${Math.round(piorE.z.ring3Max)} de ${mont.zonas[piorE.z.idx].capRing3}` : ""),
+      `≤ ${mont.cen.ring3.capacidade} no total` + (porEntrada.length ? ", e cada entrada dentro do seu serpenteado + baia" : ""),
+      razao <= 1 ? "A fila externa cabe no espaço previsto, no total e por entrada."
+        : (razaoTot > 1 ? "Fila externa maior que o espaço do Ring 3; transborda para a rua."
+           : `A fila da ${piorE.z.nome} passa do serpenteado e da baia dela (${Math.round(piorE.z.ring3Max)} de ${mont.zonas[piorE.z.idx].capRing3}): a reserva de flanco não absorve.`));
 
   // 11 triagem
   add("triagem", "Triagem do Ring 3 dá vazão", nivel(r.triOcupacao.p50, 0.75, 0.9),
@@ -888,11 +929,11 @@ function avaliar(mont, r, porMesa, porZona){
 function narrar(mont, r, porMesa, porZona, V){
   const cen = mont.cen, p = [];
   const falhas = V.filter(v => v.status === "falha"), atencoes = V.filter(v => v.status === "atencao");
-  const zonasTxt = mont.zonas.map(z => `${z.nome} (MRV ${z.faixaMrv}, ${z.mesas.length} mesas, ${Math.round(z.esperados)} eleitores) entra por ${z.porta}`).join("; ");
+  const zonasTxt = mont.zonas.map(z => `${z.nome} (${z.mesas.length} mesas, MRV ${z.faixaMrv}, ${Math.round(z.esperados)} eleitores) entra por ${z.porta}`).join("; ");
   p.push(`${Math.round(mont.esperadosTotal)} eleitores esperados sobre ${mont.aptosTotal} aptos (comparecimento ${mont.taxa.rotulo}), ` +
-    `${mont.zonas.length} zona${mont.zonas.length > 1 ? "s" : ""}: ${zonasTxt}. ` +
+    `${mont.zonas.length} entrada${mont.zonas.length > 1 ? "s" : ""}: ${zonasTxt}. ` +
     `Saída por ${mont.saidas.length ? mont.saidas.join(" e ") : "a mesma porta de entrada"}. ` +
-    (cen.checkpoint.existe ? `Checkpoint a ${cen.checkpoint.dist} m da porta com ${mont.zonas.map(z => z.atendentesCp).join("/")} atendente(s) por zona.` : "Sem checkpoint interno: o eleitor acha a mesa pela sinalização."));
+    (cen.checkpoint.existe ? `Checkpoint a ${cen.checkpoint.dist} m da porta com ${mont.zonas.map(z => z.atendentesCp).join("/")} atendente(s) por entrada.` : "Sem checkpoint interno: o eleitor acha a mesa pela sinalização."));
   p.push(`Em ${r.runs} dias simulados, a última mesa fecha às ${hhmm(r.fechaUltima.p50)} na mediana e às ${hhmm(r.fechaUltima.p90)} num dia ruim. ` +
     `Nove em dez eleitores levam até ${Math.round(r.totalP90.p50 / 60)} min da chegada ao voto, ${Math.round(r.esperaForaP90.p50 / 60)} deles fora e ${Math.round(r.esperaDentroP90.p50 / 60)} dentro. ` +
     `O pico dentro do salão é de ${Math.round(r.dentroMax.p50)} pessoas; fora, ${Math.round(r.ring3TotalMax.p50)}.`);
@@ -912,8 +953,9 @@ function narrar(mont, r, porMesa, porZona, V){
 /* ------------------------------------------------------------------ */
 const Modelo = {
   VEL, PASSO_FILA, ABERTURA, ENCERRAMENTO, INICIO_CURVA, MEIA_HORA, CURVA_CHEGADA, COMPARECIMENTO,
-  CLASSES, ROTULO_CLASSE, LIMITE_SEPARADORES, classeMesa, cenarioPadrao, cenarioClaude,
-  slotsDasZonas, mapaMrv, montar, simularDia, simular, agregar, hhmm, minutos, mediana, percentil,
+  CLASSES, CLASSE_DA_DECISAO, ROTULO_CLASSE, LIMITE_SEPARADORES, ARRANJO_CLAUDE, cenarioPadrao, cenarioClaude,
+  portasDaDecisao, zonasDaDecisao, zonasDoCenario,
+  slotsDasZonas, montar, simularDia, simular, agregar, hhmm, minutos, mediana, percentil,
   frenteMesa, caudaFila, corpoRect, assentoRect, centroPorta, DIR, CCW,
   mesasDoArranjo, normalizaArranjo, conflitosArranjo,
 };

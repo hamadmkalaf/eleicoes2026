@@ -17,6 +17,7 @@ sys.path.insert(0, os.path.join(RAIZ, "scripts"))
 
 import salao as FL                                            # noqa: E402
 import desenho as D                                           # noqa: E402
+import decisoes as DC                                         # noqa: E402
 
 # Esta planta rotula as portas dos quatro lados, fora do salao: as margens
 # laterais precisam caber "O2 / 2.10/2.11 · 3,07 m". As primitivas leem estas
@@ -24,7 +25,7 @@ import desenho as D                                           # noqa: E402
 D.ML, D.MR = 152, 152
 MB = 230          # margem inferior: rotulos da fachada sul, cota e legenda
 
-from desenho import (AZUL, EST, H, MESA, S, VERDE, VERM,      # noqa: E402
+from desenho import (AMBAR, AZUL, EST, H, MESA, S, VERDE, VERM,  # noqa: E402
                      W, cota, esc, estilo, px, rect, txt)
 
 # As saidas 2.8/2.9 ficam na parede do recorte sudoeste. Nao entram em
@@ -41,7 +42,9 @@ SENTIDO = {"norte": 1, "sul": 1, "leste": -1, "oeste": -1}
 INICIAL = {"norte": "N", "sul": "S", "leste": "L", "oeste": "O"}
 
 # Estado conhecido de cada porta. `livre` quer dizer que ainda nao ha decisao —
-# nao que a porta esteja disponivel.
+# nao que a porta esteja disponivel. Os papeis de entrada e saida de eleitor
+# vem de scripts/decisoes.py (decisao do Posto de 06/09/2026) e sao aplicados
+# sobre esta tabela em `numera()`.
 ESTADO = {
     "N1": ("fechada", "Permanece fechada."),
     "N2": ("catering", "Desbloqueada: é a saída do catering."),
@@ -63,9 +66,23 @@ ESTADO = {
 }
 PADRAO = ("livre", "Sem papel definido.")
 COR_ESTADO = {"livre": MESA, "fechada": VERM, "catering": AZUL,
-              "emergencia": VERDE}
+              "emergencia": VERDE, "entrada": AZUL, "saida": AMBAR}
 NOME_ESTADO = {"livre": "a definir", "fechada": "fechada",
-               "catering": "catering", "emergencia": "emergência"}
+               "catering": "catering", "emergencia": "emergência",
+               "entrada": "entrada", "saida": "saída"}
+
+
+def _papel(num, estado, nota):
+    """Sobrepoe a decisao de entrada/saida ao estado conhecido da porta."""
+    papel = DC.PAPEL_PORTA.get(num)
+    if papel == "entrada":
+        letra = DC.ENTRADA_DA_PORTA[num]
+        return "entrada", (f"Entrada {letra} de eleitores (decisão do Posto, "
+                           f"{DC.DECIDIDO_EM[8:10]}/{DC.DECIDIDO_EM[5:7]}/{DC.DECIDIDO_EM[:4]}); "
+                           f"recebe o serpenteado {letra} do Ring 3.")
+    if papel == "saida":
+        return "saida", ("Saída de eleitores (decisão do Posto). " + nota)
+    return estado, nota
 
 
 def vg(v, casas=1) -> str:
@@ -84,7 +101,7 @@ def numera():
                        key=lambda p: SENTIDO[parede] * p[1])
         for i, (codigo, a, b) in enumerate(lista, 1):
             num = f"{INICIAL[parede]}{i}"
-            estado, nota = ESTADO.get(num, PADRAO)
+            estado, nota = _papel(num, *ESTADO.get(num, PADRAO))
             portas.append({"num": num, "codigo": codigo.split(" (")[0],
                            "parede": parede, "a": a, "b": b, "meio": (a + b) / 2,
                            "larg": b - a, "estado": estado, "nota": nota})
@@ -157,8 +174,8 @@ def planta(portas):
     o.append(f'<polygon points="{pts}" fill="#eef1f4"/>')
 
     # ---------- recuo de 3 m: parede leste inteira, e mais nenhuma porta —
-    # S2 e S6 sao emergencia confirmada, mas ficam permanentemente abertas e
-    # por isso nao pedem o recuo
+    # S2 e S8 sao emergencia confirmada (hoje com papel de saida), mas ficam
+    # permanentemente abertas e por isso nao pedem o recuo
     for p in portas:
         if p["estado"] == "emergencia" and p["codigo"] not in FL.SEM_RECUO:
             o.append(envelope(p))
@@ -182,6 +199,12 @@ def planta(portas):
             desce = 22 if p["num"] in ("S2", "S8") else 0
             o.append(txt(p["meio"], 0, p["num"], "cod", dy=20 + desce))
             o.append(txt(p["meio"], 0, detalhe, "sub", dy=31 + desce))
+            if p["estado"] == "entrada":
+                o.append(txt(p["meio"], 0, f"ENTRADA {DC.ENTRADA_DA_PORTA[p['num']]}",
+                             "prt", dy=45).replace('fill="#243244"', f'fill="{AZUL}"'))
+            elif p["estado"] == "saida":
+                o.append(txt(p["meio"], 0, "SAÍDA", "prt", dy=45 + desce)
+                         .replace('fill="#243244"', f'fill="{AMBAR}"'))
         elif p["parede"] == "leste":
             o.append(txt(W, p["meio"], p["num"], "cod", anchor="start",
                          dx=11, dy=-2))
@@ -211,7 +234,7 @@ def planta(portas):
                  rot=90).replace('fill="#243244"', f'fill="{VERDE}"'))
     for num in ("S2", "S8"):
         p = next(q for q in portas if q["num"] == num)
-        o.append(txt(p["meio"], 0, "sem recuo · porta aberta", "sub", dy=64)
+        o.append(txt(p["meio"], 0, "emergência · sem recuo · aberta", "sub", dy=78)
                  .replace('fill="#5c6c80"', f'fill="{VERDE}"'))
 
     # ---------- para onde levam as portas da parede oeste
@@ -235,9 +258,10 @@ def planta(portas):
 
     # ---------- legenda
     ly, cx = D.MT + H * S + 118, D.ML
-    for c, lab in ((MESA, "porta sem papel definido"),
-                   (VERM, "porta fechada"),
-                   (AZUL, "porta desbloqueada · saída do catering"),
+    for c, lab in ((MESA, "sem papel definido"),
+                   (VERM, "fechada"),
+                   (AZUL, "entrada de eleitores A/B/C · catering (N2)"),
+                   (AMBAR, "saída de eleitores"),
                    (VERDE, "saída de emergência (recuo de 3 m onde determinado)")):
         o.append(f'<rect x="{cx}" y="{ly - 8}" width="11" height="11" '
                  f'fill="{c}" opacity=".55" stroke="{c}"/>')
@@ -248,9 +272,9 @@ def planta(portas):
         "As portas são numeradas por fachada, na ordem de leitura do desenho: "
         "de oeste para leste nas paredes norte e sul, de norte para sul nas "
         "paredes leste e oeste. Abaixo de cada",
-        "número vem o código do RDS e a largura do vão. Nada aqui atribui "
-        "entrada ou saída de eleitor — essa decisão vem depois. O recuo de 3 m "
-        "está marcado só na parede leste, onde",
+        "número vem o código do RDS e a largura do vão. Entradas de eleitor "
+        "S4 (A), S5 (B) e S6 (C); saídas S2 e S8 — decisão do Posto de "
+        "06/09/2026. O recuo de 3 m está marcado só na parede leste, onde",
         f"todas as portas são saídas de emergência; sobram dela {len(nichos)} "
         f"trechos de {vg(nichos[0][1] - nichos[0][0], 2)} m entre os recuos. "
         "As portas 2.8/2.9 ficam na parede do recorte, que não é fachada.",
@@ -277,7 +301,8 @@ def planta(portas):
 NOME_PAREDE = {"norte": "norte", "leste": "leste", "sul": "sul",
                "oeste": "oeste", "recorte": "recorte"}
 CLASSE_ESTADO = {"livre": "tleve", "fechada": "tcritica",
-                 "catering": "talta", "emergencia": "tmedia"}
+                 "catering": "talta", "emergencia": "tmedia",
+                 "entrada": "talta", "saida": "tmedia"}
 
 
 def tabela_portas(portas):

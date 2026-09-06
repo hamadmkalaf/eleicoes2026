@@ -8,6 +8,12 @@ Premissas fixadas: 28 urnas / 28 mesas (1:1), identificação por **caderno
 físico**, **Hall 2 + Ring 3 sem cobertura**, **piso pavimentado**, espaço
 **locado desde a véspera** — não há carros estacionados a remover.
 
+Revisão de 06/09/2026: as posições das portas passaram a vir de
+`scripts/salao.py` (planta do RDS, numeração da planta-base) em vez da
+prancheta manual; o comparecimento esperado é a base B
+(`scripts/comparecimento.py`, 11.499); a atribuição das urnas às entradas mora
+em `scripts/decisoes.py` e usa a numeração MRV do DJE.
+
 ---
 
 ## 1. Dimensões adotadas
@@ -29,22 +35,25 @@ Maps ou com a planta do recinto.
 ## 2. Portas do Hall 2
 
 A fachada sul do Hall 2, que encara o Ring 3, tem **nove aberturas, S1 a S9**,
-conforme a prancheta do Posto. Papéis definidos:
+pela numeração de fachada da planta-base. Papéis decididos pelo Posto
+(06/09/2026, `scripts/decisoes.py`):
 
-| Porta | Distância do canto sudoeste | Papel |
+| Porta | Centro, do canto sudoeste | Papel |
 |---|---|---|
-| S1 | 9,5 m | — |
-| **S2** | **13,7 m** | **SAÍDA** |
-| S3 | 17,7 m | — |
-| **S4** | **21,9 m** | **ENTRADA A** |
-| **S5** | **28,1 m** | **ENTRADA B** |
-| **S6** | **34,3 m** | **ENTRADA C** |
-| S7 | 38,6 m | — |
-| **S8** | **42,6 m** | **SAÍDA** |
-| S9 | 46,8 m | — |
+| S1 | 9,6 m | — (porta de carga) |
+| **S2** | **13,9 m** | **SAÍDA** (emergência confirmada, permanentemente aberta) |
+| S3 | 17,8 m | — |
+| **S4** | **22,1 m** | **ENTRADA A** |
+| **S5** | **28,3 m** | **ENTRADA B** |
+| **S6** | **34,5 m** | **ENTRADA C** |
+| S7 | 38,7 m | — |
+| **S8** | **42,7 m** | **SAÍDA** (emergência confirmada, permanentemente aberta) |
+| S9 | 46,9 m | — (porta de carga) |
 
-Distâncias medidas na prancheta e convertidas pela largura declarada de 50,2 m
-(escala ~22,5 px/m) — a confirmar em campo.
+Centros lidos de `scripts/salao.py` (planta do RDS medida a 8,69 pt/m), a
+mesma fonte da planta-base, da prancheta e do simulador. S2 e S8 não constam na
+planta do RDS: posição e vão (1,20 m) estão estimados sobre foto e precisam de
+medição no local.
 
 Duas consequências de projeto:
 
@@ -53,14 +62,15 @@ de fila de 7,0 m não cabe nesse intervalo sem invadir o vizinho. Por isso os
 blocos ficam a 9,6 m de eixo e os eleitores caminham o pequeno desvio até a
 porta na faixa de acesso ao norte — 0,6 m em A e C, 2,8 m em B.
 
-**As saídas estão nos flancos, fora do vão das entradas** — S2 a 13,7 m e S8 a
-42,6 m, enquanto as entradas ocupam de 21,9 a 34,3 m. Isso é uma vantagem: quem
+**As saídas estão nos flancos, fora do vão das entradas** — S2 a 13,9 m e S8 a
+42,7 m, enquanto as entradas ocupam de 22,1 a 34,5 m. Isso é uma vantagem: quem
 sai do Hall 2 se afasta lateralmente, sem cruzar nenhuma fila de entrada. O
 fluxo se separa sozinho, sem barreira adicional.
 
-*Observação:* a planta `RDS_Hall_2_Floorplan_(1).pdf` numera as mesmas
-aberturas como 2.1 a 2.23, com posições que não coincidem exatamente com as
-lidas na prancheta. A aferição em campo resolve a divergência.
+*Observação:* a planta `RDS_Hall_2_Floorplan_(1).pdf` numera as folhas de
+porta como 2.1 a 2.23; a correspondência com S1–S9 está na planta-base
+(`saidas/planta_base.html`). A divergência de 0,1–0,2 m que existia entre a
+prancheta manual e a planta do RDS foi resolvida adotando-se a planta do RDS.
 
 ## 3. Layout
 
@@ -234,46 +244,59 @@ egresso e a liberação em lotes.
 ## 6. Atribuição das urnas às entradas
 
 As três entradas não têm a mesma capacidade, então a carga tem de ser repartida
-**na proporção dessa capacidade**, e não em terços. Reproduzível com
+**na proporção dessa capacidade**, e não em terços. A atribuição mora em
+`scripts/decisoes.py` (`atribui_entradas`), usa o comparecimento esperado da
+base B e a numeração MRV do DJE, e é a mesma que a prancheta, o simulador e o
+plano de sinalização leem. Reproduzível com
+`python3 scripts/gera_decisoes.py` ou
 `python3 -c "import sys; sys.path.insert(0,'scripts'); import simula_fluxo as m; m._relatorio_entradas()"`.
 
-| Entrada | Urnas | Comparecimento esperado | Quota obtida | Alvo | Desvio |
-|---|---|---|---|---|---|
-| **A** | 9 | 3.614 | 31,7% | 3.619 | −5 |
-| **B** | 10 | 4.185 | 36,7% | 4.178 | +7 |
-| **C** | 9 | 3.618 | 31,7% | 3.619 | −1 |
-| | 28 | 11.416 | | | |
+| Entrada | Porta | Urnas | Comparecimento esperado | Quota obtida | Alvo | Desvio |
+|---|---|---|---|---|---|---|
+| **A** | S4 | 9 | 3.642 | 31,7% | 3.646 | −4 |
+| **B** | S5 | 10 | 4.215 | 36,7% | 4.207 | +8 |
+| **C** | S6 | 9 | 3.642 | 31,7% | 3.646 | −4 |
+| | | 28 | 11.499 | | | |
 
-O desvio máximo é de **7 eleitores em 11.416 — 0,06%**. Com as capacidades já
+O desvio máximo é de **8 eleitores em 11.499 — 0,07%**. Com as capacidades já
 equilibradas na geometria, a atribuição não precisa mais corrigir distorção
 grande: reparte quase em terços (9 / 10 / 9 urnas).
 
-- **A:** 511, 513, 1352, 3108, 3161, 3302, 3305, 3308, 3309, **3313**, 3688
-- **B:** 517, 1160, 3078, 3229, **3315**, 3832
-- **C:** 512, 3054, 3142, 3179, 3216, 3245, 3306, 3311, **3322**, 3442, 3862
+- **A (S4):** MRV 3 (513), 5 (1160), 9 (3108), 12 (3179), 15 (3245), 20 (3309),
+  **24 (3322)**, 26 (3688), 28 (3862)
+- **B (S5):** MRV 1 (511), 4 (517), 7 (3054), 8 (3078), 16 (3302), 17 (3305),
+  18 (3306), 21 (3311), **22 (3313)**, 25 (3442)
+- **C (S6):** MRV 2 (512), 6 (1352), 10 (3142), 11 (3161), 13 (3216), 14 (3229),
+  19 (3308), **23 (3315)**, 27 (3832)
 
-**As três urnas T1 vão para entradas diferentes** — 3313 em A, 3315 em B, 3322
-em C. Concentrar as três (590 eleitores esperados cada) numa só entrada criaria
-um pico que nenhuma reserva absorveria, e são justamente elas que definem o
-horário de fechamento (ver `analise_gargalos.md`).
+**As três urnas de classe alta (vermelhas) vão para entradas diferentes** —
+MRV 24 (3322) em A, MRV 22 (3313) em B, MRV 23 (3315) em C. Concentrar as três
+(586 a 590 eleitores esperados cada) numa só entrada criaria um pico que
+nenhuma reserva absorveria, e são justamente elas que definem o horário de
+fechamento (ver `analise_gargalos.md`).
 
 ## 7. O Ring 3 comporta a fila prevista?
 
-Da coluna FILA TOTAL de `scripts/simula_fluxo.py`, comparada à capacidade do
-Hall 2 (~1.000–1.200 em fila interna) somada às ~1.300 do Ring 3:
+Da coluna FILA TOTAL de `scripts/simula_fluxo.py` (base B), comparada à
+capacidade do Hall 2 (~1.000–1.200 em fila interna) somada às 1.402 do Ring 3:
 
-| Arranjo da mesa | Fila total no pico | Cabe em Hall 2 (~1.100) + Ring 3 (~1.402)? |
+| Arranjo da mesa | Fila total no pico | Cabe em Hall 2 (~1.100) + Ring 3 (1.402)? |
 |---|---|---|
 | Dois cadernos em paralelo, qualquer t_id | 0 | Sim — o Ring 3 nem abre |
-| Pipeline, t_id 55 s | 439 | Sim, só no Hall 2 |
-| Serial, t_id 45 s | 1.058 | Sim, só no Hall 2 |
-| Serial, t_id 55 s | 1.637 | Sim, com os serpenteados |
-| Serial, t_id 65 s | 2.240 | Sim, com o flanco aberto |
-| Serial, t_id 75 s | 2.974 | **Não — transborda para a Merrion Road** |
+| Pipeline, t_id 55 s | 464 | Sim, só no Hall 2 |
+| Serial, t_id 45 s | 1.102 | Sim, só no Hall 2 |
+| Serial, t_id 55 s | 1.692 | Sim, com os serpenteados |
+| Serial, t_id 65 s | 2.296 | Sim, com o flanco aberto |
+| Serial, t_id 75 s | 3.039 | **Não — transborda para a Merrion Road** |
 
 **O Ring 3 não resolve o gargalo; ele compra tempo.** Quem resolve é o arranjo
 de dois cadernos em paralelo por urna, que fecha às 17h00 mesmo com caderno
 lento e não custa nada ao TRE.
+
+O simulador de fluxo (`saidas/simulador_fluxo.html`), que já usa estas
+entradas e portas, confere a fila de cada entrada contra o seu serpenteado
+mais baia: no Cenário Claude a entrada B chega a 478 pessoas em 513 no dia
+ruim (P90), e o total fora fica em ~1.000.
 
 ## 8. Evacuação e densidade
 
@@ -310,8 +333,8 @@ Duas atenuantes que não substituem a medida: os separadores têm 1 m de altura 
 são leves e autoportantes — numa emergência real são derrubados, e é assim que
 funcionam; e o Ring 3 é área aberta, sem fumaça nem risco estrutural.
 
-**Pendência que decide isto:** não sei se o perímetro do Ring 3 é fechado ou
-aberto. Se for francamente aberto, o problema se dissolve e as brechas viram
+**Pendência que decide isto:** não se sabe se o perímetro do Ring 3 é fechado
+ou aberto. Se for francamente aberto, o problema se dissolve e as brechas viram
 sinalização. Se for fechado, são obrigatórias — e passam a ser o item mais
 importante da lista, acima da barreira.
 
@@ -361,8 +384,8 @@ percurso** — inaceitável para quem tem prioridade legal.
 1. Aferir as dimensões do Ring 3 e **a distância entre o bordo oeste do Ring 3
    e o canto sudoeste do Hall 2** — é o número que translada todo o conjunto
    para os eixos coincidirem com as portas 2.7, 2.4 e 2.1.
-2. Conciliar a numeração S1–S9 da prancheta com a numeração 2.1–2.23 da
-   planta do RDS, que dão posições divergentes para as mesmas aberturas.
+2. Medir no local a posição e o vão de S2 e S8 (estimados sobre foto), que
+   são as saídas de ~11,5 mil eleitores por dois vãos de 1,20 m.
 3. Submeter o pedido de **+100 separadores (~EUR 1.302)** para o Ring 3, e
    dimensionar à parte a necessidade do interior do Hall 2.
 4. Cotar cobertura leve para os últimos 8–10 m de cada serpenteado.

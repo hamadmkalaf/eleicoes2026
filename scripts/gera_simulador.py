@@ -1,8 +1,9 @@
 """Gera saidas/simulador_fluxo.html a partir do template e dos dados.
 
 Embute no HTML: a base da prancheta, o mapeamento MRV -> secao
-(data/mrv_secoes.json), os arranjos de mesa salvos na prancheta
-(scripts/cenarios.py), o motor (simulador/modelo.js) e a interface
+(data/mrv_secoes.json), as decisoes do Posto (scripts/decisoes.py: esperado e
+classe por mesa, portas, entradas do Ring 3), os arranjos de mesa salvos na
+prancheta (scripts/cenarios.py), o motor (simulador/modelo.js) e a interface
 (simulador/app.js). O artefato publicado nao pode buscar arquivos externos,
 entao tudo vai inline.
 
@@ -24,6 +25,7 @@ SAIDAS = BASE / "saidas"
 sys.path.insert(0, str(BASE / "scripts"))
 
 import cenarios as CN                                          # noqa: E402
+import decisoes as DC                                          # noqa: E402
 
 
 def base_prancheta():
@@ -49,6 +51,8 @@ def main():
     app = (SIM / "app.js").read_text(encoding="utf-8")
     base, fonte_base = base_prancheta()
     mrvs = json.loads((DATA / "mrv_secoes.json").read_text(encoding="utf-8"))
+    # decisoes do Posto: esperado e classe por mesa, portas, entradas do Ring 3
+    decisoes = DC.montar()
     # `medidas` so serve a prancheta; nao carrega peso morto para o simulador
     arranjos = CN.carrega(com_medidas=False)
 
@@ -58,6 +62,7 @@ def main():
 
     html = (template
             .replace("/*__BASE__*/", "const BASE = " + js(base) + ";")
+            .replace("/*__DECISOES__*/", "const DECISOES = " + js(decisoes) + ";")
             .replace("/*__MRVS__*/", "const MRVS = " + js(mrvs) + ";")
             .replace("/*__ARRANJOS__*/", "const ARRANJOS = " + js(arranjos) + ";")
             .replace("/*__MODELO_JS__*/", modelo)

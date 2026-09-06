@@ -6,6 +6,8 @@ Junta a designação oficial de MRVs do DJE/TRE-DF (Ano 2026 n. 139, 04/08/2026 
 
 **Não há, em nenhum arquivo deste repositório, uma estimativa de comparecimento por seção publicada pelo TSE ou pelo Cartório Eleitoral.** O que existe é o número de **eleitores aptos** (`QT_ELEITOR_SECAO`) por seção — dado oficial — e, em `handoff_agregacao_dublin_2026.md`, uma taxa de comparecimento de **2022** por domicílio/condado (não por seção), com qualidade desigual: `direto` (dado do próprio domicílio), `proxy` (domicílio parecido usado como substituto) ou `genérico` (taxa média nacional de abstenção). A coluna **Comparecimento estimado** abaixo aplica essa taxa a cada seção conforme seu domicílio predominante — já verificado seção a seção contra os totais do handoff (bate em todas as 15 localidades). Ainda assim, é uma **taxa de 2022 aplicada a 2026**, não uma projeção validada pelo TSE/Cartório Eleitoral para este pleito — trate como estimativa de trabalho, de qualidade heterogênea entre localidades (ver coluna **Qualidade**).
 
+**Esta é a base de comparecimento adotada pelo projeto** (base B, decisão do Posto de 06/09/2026, `scripts/comparecimento.py`): prancheta, simulador, Ring 3 e sinalização leem os mesmos números. O esperado de cada MRV é o arredondamento da soma exata das suas seções; o total é a soma dos MRVs arredondados.
+
 ## Tabela
 
 | MRV | Seção principal (Dublin) | Comparecimento estimado | Seção agregada | Origem (taxa · qualidade) | Eleitores aptos (agregada) | Comparecimento estimado (agregada) | **Total aptos** | **Total comparecimento estimado** |
@@ -38,7 +40,7 @@ Junta a designação oficial de MRVs do DJE/TRE-DF (Ano 2026 n. 139, 04/08/2026 
 | MRV 26 | 3688 (400 aptos · 74% · direto) | 296 | — | — | 0 | 0 | **400** | **296** |
 | MRV 27 | 3832 (400 aptos · 74% · direto) | 296 | — | — | 0 | 0 | **400** | **296** |
 | MRV 28 | 3862 (400 aptos · 74% · direto) | 296 | — | — | 0 | 0 | **400** | **296** |
-| **Total (28 MRVs)** | | | | | | | **16.794** | **11.498** |
+| **Total (28 MRVs)** | | | | | | | **16.794** | **11.499** |
 
 ## Fontes
 

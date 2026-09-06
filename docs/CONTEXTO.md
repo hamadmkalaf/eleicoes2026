@@ -8,7 +8,14 @@ paredes e numa fileira recuada da fachada leste** (`scripts/mesas.py`, §11). As
 duas anteriores — mesas em ilhas e mesas nas paredes — tinham sido apagadas a
 pedido do usuário; esta é nova, foi desenhada sobre a planta-base e com o
 mobiliário que o usuário informou depois. **As 28 MRVs cabem**, com folga.
-Nenhuma porta recebeu papel de entrada ou de saída.
+
+**Decisões do Posto de 06/09/2026** (fonte única: `scripts/decisoes.py`):
+entradas de eleitor **S4 (A), S5 (B) e S6 (C)**, saídas **S2 e S8**; o número
+da mesa é o **MRV do DJE/TRE-DF** e não depende da posição; comparecimento
+esperado pela **base B** (`scripts/comparecimento.py`, 11.499); mesas coloridas
+por carga (vermelho as 3 maiores, amarelo médio, verde baixo). A planta-base, a
+prancheta, o simulador, o Ring 3 e a sinalização leem essas decisões do mesmo
+módulo.
 
 **A planta-base é a referência do projeto.** Toda ideia, planta, peça de leitura
 ou conversa com o RDS daqui em diante usa a numeração de portas do §3 — N1, N2,
@@ -29,8 +36,9 @@ turno de 04/10/2026 (8h–17h). São **28 MRVs** (mesa receptora + urna) para
 2. Quantas entradas.
 3. Quais portas para entrada e quais para saída.
 
-Nenhuma das três está respondida. A distinção entre porta de entrada e porta de
-saída é decisão posterior e **não deve ser assumida** em nenhum material.
+A 1 está respondida pela planta das 28 MRVs (§11); a 2 e a 3 foram decididas
+pelo Posto em 06/09/2026 durante o desenho do Ring 3: **três entradas, S4, S5 e
+S6; saídas S2 e S8** (`scripts/decisoes.py`).
 
 Critérios dados pelo usuário: fluxo fluido e ininterrupto; evitar que eleitores
 de MRVs tranquilas fiquem parados atrás de filas de MRVs cheias; entrada e
@@ -116,8 +124,7 @@ desenhadas na planta-base.
 
 | Premissa | Valor | Origem |
 |---|---|---|
-| Comparecimento, residentes em Dublin | 74% | taxa observada em 2022 |
-| Comparecimento, residentes no interior | 50% | taxa observada em 2022 |
+| Comparecimento esperado | base B: taxa de 2022 por domicílio de origem de cada seção (`scripts/comparecimento.py`), 11.499 no total | decisão de 06/09/2026; substitui a binária 74% Dublin / 50% interior usada até então |
 | Perfil de chegada (8h–17h) | 8/13/15/14/12/11/10/9/8 % | premissa de projeto, pico de meio de manhã — **não é dado observado** |
 | Tempo por eleitor (ponto de projeto) | 55 s | escolha conservadora; ver §6 |
 | Área por pessoa em fila | 1,0 m² | fila serpenteada com balizadores |
@@ -187,17 +194,20 @@ profundidade**, com passo de par de **5,80 a 6,30 m** de parede para duas MRVs.
 
 ## 5. As 28 urnas — o essencial
 
-**11.418 comparecentes esperados** de 16.794 aptos. A distribuição tem um degrau
-nítido:
+**11.499 comparecentes esperados** de 16.794 aptos (base B). A distribuição
+tem um degrau nítido, e é ela que dá as cores da prancheta:
 
-- **3 urnas críticas: 3313 (590), 3322 (588), 3315 (586).** São as únicas que
-  somam **duas seções inteiras de Dublin**.
-- **8 urnas de carga alta: 466 a 492** (3142, 3161, 3245, 3302, 3305, 3306,
-  3108, 3311). Sete delas são uma seção de Dublin somada a **um condado inteiro
-  do interior** (Cork, Galway, Limerick, Westmeath…). São **4.213 eleitores que
-  moram fora de Dublin** e vão viajar para votar — **chegam em rajada**, não
-  diluídos ao longo do dia. Precisam de piso de fila desproporcional à média.
-- **17 urnas abaixo de 435**, das quais 12 praticamente não formam fila.
+- **3 urnas críticas (vermelhas): MRV 22 = 3313 (590), MRV 24 = 3322 (588),
+  MRV 23 = 3315 (586).** São as únicas que somam **duas seções inteiras de
+  Dublin**.
+- **8 urnas de carga alta (amarelas): 466 a 518** (MRV 16 = 3302, 18 = 3306,
+  11 = 3161, 15 = 3245, 17 = 3305, 9 = 3108, 10 = 3142, 21 = 3311). Sete delas
+  são uma seção de Dublin somada a **um condado inteiro do interior** (Cork,
+  Galway, Limerick…). São **4.213 eleitores que moram fora de Dublin** e vão
+  viajar para votar — **chegam em rajada**, não diluídos ao longo do dia.
+  Precisam de piso de fila desproporcional à média.
+- **17 urnas abaixo de 425 (verdes)**, das quais 12 praticamente não formam
+  fila.
 
 > A premissa inicial da conversa era "4 MRVs com ~600 eleitores". Os dados
 > mostram **3**, e o segundo grupo é um problema de *rajada*, não de volume.
@@ -212,11 +222,11 @@ nas 28 urnas**:
 | s/eleitor | fila de pico somada | maior fila | urnas com fila > 10 | última a fechar |
 |---|---|---|---|---|
 | 45 s | 33 | 12 | 2 | 17h00 |
-| 50 s | 100 | 32 | 3 | 17h00 |
-| **55 s** | **241** | **57** | **6** | **17h20** |
-| 60 s | 436 | 84 | 11 | 18h05 |
-| 70 s | 929 | 136 | 14 | 19h35 |
-| 90 s | 2.165 | 230 | 23 | 22h45 |
+| 50 s | 114 | 32 | 3 | 17h00 |
+| **55 s** | **261** | **57** | **7** | **17h20** |
+| 60 s | 465 | 84 | 11 | 18h05 |
+| 70 s | 968 | 136 | 15 | 19h35 |
+| 90 s | 2.227 | 230 | 23 | 22h45 |
 
 Fator 65 entre 45 s e 90 s. **O método de identificação do eleitor é uma decisão
 de layout tanto quanto de procedimento.** Qualquer ideia deve ser dimensionada
@@ -275,9 +285,12 @@ definido, esse trecho não pode ser contado inteiro.
 
 **A pergunta 1 do §1 está respondida: a planta com as 28 MRVs está desenhada**
 (§11), com fileira recuada na fachada leste e folga cheia em todos os
-corredores. As perguntas 2 e 3 do §1 — quantas entradas e quais portas —
-continuam sem resposta, e nada nesta planta as antecipa: a fachada sul ficou
-inteiramente livre de mesas justamente por isso.
+corredores. As perguntas 2 e 3 — quantas entradas e quais portas — foram
+decididas em 06/09/2026: entradas S4, S5 e S6, saídas S2 e S8. A fachada sul
+continua livre de mesas, o que deixa os três vãos duplos para o eleitor. O
+plano do Ring 3 (`saidas/plano_ring3.md`), o simulador e a sinalização já
+trabalham com essa decisão; a atribuição de mesas a entradas está em
+`scripts/decisoes.py`.
 
 A base sobre a qual ela foi construída continua valendo: a planta-base (§3 e
 `saidas/planta_base.html`), as premissas (§4), a carga das urnas (§5), a
@@ -340,7 +353,9 @@ Por ordem de retorno:
 
 | Arquivo | O que é |
 |---|---|
-| `scripts/salao.py` | **Núcleo:** geometria medida, as seis faces do salão (`FACES`), premissas, carga das urnas, simulação de fila, cálculo de capacidade de parede. Rodando sozinho, imprime os cenários do §7. |
+| `scripts/salao.py` | **Núcleo:** geometria medida, as seis faces do salão (`FACES`), o Ring 3 (`RING3`, `ring3_rect()`), carga das urnas (via `comparecimento.py`), simulação de fila, cálculo de capacidade de parede. Rodando sozinho, imprime os cenários do §7. |
+| `scripts/comparecimento.py` | **Fonte única do comparecimento esperado** (base B: taxa de 2022 por domicílio de origem). |
+| `scripts/decisoes.py` + `gera_decisoes.py` | **Fonte única das decisões:** papéis das portas, numeração MRV do DJE, classes e cores de carga, atribuição das mesas às entradas do Ring 3 (quotas de `layout_ring3.py`). `gera_decisoes.py` grava `data/decisoes.json`. |
 | `scripts/desenho.py` | Primitivas de desenho das plantas: escala, paleta, `px`, `rect`, `txt`, `cota`, e a folha de estilo comum das peças de leitura. |
 | `scripts/planta_base.py` + `planta_base_template.html` | **Planta-base:** o salão vazio, as portas numeradas por fachada e o que já se sabe de cada uma. Grava `saidas/planta_base.svg` e `saidas/planta_base.html`. Fonte da numeração N/L/S/O. |
 | `scripts/estilo_plano.css` | Folha de estilo das peças de leitura. |
@@ -515,11 +530,16 @@ sem fila, inclusive a de quem já votou.
 
 ### A numeração
 
-As MRVs são numeradas de **1 a 28** por `mesas.numera_mrv()`, num circuito único
-no sentido horário a partir do canto noroeste: **1 a 8** na parede norte de oeste
-para leste, **9 a 20** descendo a fileira recuada da fachada leste, **21 e 22** na
-face norte do recorte e **23 a 28** subindo a parede oeste. É a identidade da
-mesa em campo, e sai impressa na planta.
+**O número da mesa é o MRV do DJE/TRE-DF** (decisão de 06/09/2026): MRV k é a
+k-ésima seção principal em ordem crescente, e o número acompanha a mesa quando
+ela é arrastada — a 22 é a 22 na parede norte, leste ou oeste. A **posição
+inicial** de cada MRV na planta oficial é a do circuito de `mesas.numera_mrv()`,
+horário a partir do canto noroeste: **1 a 8** na parede norte de oeste para
+leste, **9 a 20** descendo a fileira recuada da fachada leste, **21 e 22** na
+face norte do recorte e **23 a 28** subindo a parede oeste. Consequência: na
+planta oficial as três mesas vermelhas (MRV 22, 23 e 24) caem juntas no canto
+sudoeste; o cenário "Três polos" da prancheta as separa, e é o arranjo do
+Cenário Claude do simulador.
 
 ### A planta final — 28 MRVs
 

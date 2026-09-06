@@ -26,39 +26,19 @@ comparecimento oficial por secao.
 """
 
 import json
+import sys
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
 SAIDAS = BASE / "saidas"
+sys.path.insert(0, str(BASE / "scripts"))
 
-# MRV -> secao principal, transcrito do DJE/TRE-DF (ver docstring do modulo).
-MRV_SECAO_PRINCIPAL = {
-    1: 511, 2: 512, 3: 513, 4: 517, 5: 1160, 6: 1352, 7: 3054, 8: 3078,
-    9: 3108, 10: 3142, 11: 3161, 12: 3179, 13: 3216, 14: 3229, 15: 3245,
-    16: 3302, 17: 3305, 18: 3306, 19: 3308, 20: 3309, 21: 3311, 22: 3313,
-    23: 3315, 24: 3322, 25: 3442, 26: 3688, 27: 3832, 28: 3862,
-}
-
-# Taxa de comparecimento 2022 por domicilio e qualidade do dado, transcritas
-# de handoff_agregacao_dublin_2026.md secao 2. Chave = valor de
-# Residencia_predominante em saidas/dados.json (mesma grafia, maiusculas).
-TAXA_POR_DOMICILIO = {
-    "DUBLIN":                   (0.740, "direto"),
-    "CORK":                     (0.533, "direto"),
-    "OUTROS LOCAIS DA IRLANDA": (0.600, "direto"),
-    "GALWAY":                   (0.481, "direto"),
-    "LIMERICK":                 (0.434, "proxy"),
-    "WESTMEATH":                (0.461, "proxy"),
-    "WATERFORD":                (0.461, "proxy"),
-    "ROSCOMMON":                (0.434, "proxy"),
-    "CLARE":                    (0.649, "direto"),
-    "CAVAN":                    (0.461, "proxy"),
-    "MAYO":                     (0.544, "proxy"),
-    "LONGFORD":                 (0.778, "direto"),
-    "DONEGAL":                  (0.510, "genérico (0,49 abst.)"),
-    "KERRY":                    (0.544, "proxy"),
-    "LEITRIM":                  (0.510, "genérico (0,49 abst.)"),
-}
+# MRV -> secao principal (DJE/TRE-DF) e taxa por domicilio: fontes unicas em
+# scripts/decisoes.py e scripts/comparecimento.py. Desde 06/09/2026 esta e a
+# base de comparecimento adotada pelo projeto (base B), e nao mais uma
+# alternativa a binaria 74/50.
+from decisoes import MRV_SECAO_PRINCIPAL            # noqa: E402
+from comparecimento import TAXA_POR_DOMICILIO, por_urna  # noqa: E402
 
 
 def _secao_agregada(urna: dict):
@@ -86,6 +66,7 @@ def main():
         taxa, _ = TAXA_POR_DOMICILIO[s["Residencia_predominante"]]
         return s["Eleitores"] * taxa
 
+    esperado_urna = {e["principal"]: e["esperado"] for e in por_urna(dados)}
     linhas = []
     total_aptos = 0
     total_comparecimento_exato = 0.0
@@ -120,7 +101,8 @@ def main():
             "taxa_agregada": taxa_a,
             "qualidade_agregada": qual_a,
             "total_aptos": urna["Total_combinado"],
-            "comparecimento_estimado": round(comp_total),
+            # arredondado por urna, como em scripts/comparecimento.py
+            "comparecimento_estimado": esperado_urna[secao_p],
         })
 
     assert total_aptos == dados["total_eleitores"], (
@@ -128,7 +110,8 @@ def main():
         f"({dados['total_eleitores']})"
     )
 
-    total_comparecimento = round(total_comparecimento_exato)
+    # total = soma dos esperados arredondados por urna, para a tabela fechar
+    total_comparecimento = sum(l["comparecimento_estimado"] for l in linhas)
     gera_markdown(linhas, total_aptos, total_comparecimento)
     print(f"{len(linhas)} MRVs | {total_aptos:,} eleitores aptos | "
           f"~{total_comparecimento:,} comparecimento estimado (taxa por domicílio, 2022, não oficial)"
@@ -163,7 +146,12 @@ def gera_markdown(linhas, total_aptos, total_comparecimento):
         "aplicada a 2026**, não uma projeção validada pelo TSE/Cartório "
         "Eleitoral para este pleito — trate como estimativa de trabalho, "
         "de qualidade heterogênea entre localidades (ver coluna "
-        "**Qualidade**).\n"
+        "**Qualidade**).\n\n"
+        "**Esta é a base de comparecimento adotada pelo projeto** (base B, "
+        "decisão do Posto de 06/09/2026, `scripts/comparecimento.py`): "
+        "prancheta, simulador, Ring 3 e sinalização leem os mesmos números. "
+        "O esperado de cada MRV é o arredondamento da soma exata das suas "
+        "seções; o total é a soma dos MRVs arredondados.\n"
     )
     out.append(
         "## Tabela\n\n"

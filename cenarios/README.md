@@ -78,7 +78,9 @@ tem como saber se aconteceu.)
 ```
 
 `alteracoes` lista só as mesas (por número `n`, 1 a 28) que saíram da posição
-original do cenário `base` ("A" ou "B") — não as 28. Isso mantém os arquivos
+original do cenário `base` ("A" ou "B") — não as 28. **`n` é o MRV do
+DJE/TRE-DF** (decisão de 06/09/2026): a identidade da mesa, que não muda com a
+posição; é o mesmo número na prancheta, no simulador e na sinalização. Isso mantém os arquivos
 pequenos e os diffs do git legíveis: dá para ver de relance o que cada
 cenário muda. Reabrir um cenário aplica essas mudanças em cima da planta
 oficial vigente; se a planta oficial mudar depois, as mesas não citadas em
@@ -117,6 +119,11 @@ módulo, ao longo da parede) e a **fila** (profundidade livre à frente da mesa
 dos mesários, onde os eleitores se enfileiram), e compara com a planta original.
 
 ## `tres-polos-20260905-182000.json` — Três polos · 22/23/24 separadas
+
+*(Nota de 06/09/2026: com a numeração MRV do DJE como identidade da mesa, as
+posições 22, 23 e 24 são de fato as MRVs 22, 23 e 24 — as três de maior
+comparecimento esperado, vermelhas na prancheta. Este é o arranjo do Cenário
+Claude do simulador, escolhido por varredura.)*
 
 Espalha as três mesas de maior movimento — **22, 23 e 24** — em três áreas
 distintas do salão, cada uma com corredor próprio dos dois lados, em vez de

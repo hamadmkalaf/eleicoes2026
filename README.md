@@ -9,7 +9,16 @@ urnas**, identificação por caderno físico, Hall 2 + Ring 3 (descoberto).
 documentação consolidada das sete etapas, com a revisão dos dez pull requests,
 as inconsistências entre etapas e as pendências por dono. Esta branch
 (`claude/project-analysis-documentation-w49q34`) reúne a última versão de cada
-etapa; `backup/consolidado-2026-09-06` é a cópia congelada do mesmo estado.
+etapa; `backup/consolidado-2026-09-06` é a cópia congelada do estado de 06/09
+antes da integração.
+
+**Decisões do Posto (06/09/2026), fonte única em `scripts/decisoes.py`:**
+comparecimento esperado pela base B (taxa de 2022 por domicílio de origem,
+`scripts/comparecimento.py`, 11.499); o número da mesa é o **MRV do DJE** e
+não depende da posição; mesas coloridas por carga (vermelho as 3 maiores,
+amarelo médio, verde baixo); entradas **S4 (A), S5 (B), S6 (C)** e saídas **S2
+e S8**; cada entrada do Ring 3 com as suas mesas. A nomenclatura das filas para
+o eleitor (cor ou letra) está em aberto.
 
 ## Mapa do projeto
 
@@ -30,8 +39,9 @@ plano de sinalização; URLs no §0 da documentação.
 
 ```bash
 pip install pandas openpyxl Pillow        # pymupdf é opcional (PNG do Ring 3)
-# 1. agregação
+# 1. agregação e decisões
 (cd scripts && python3 mapa_agregacoes.py && python3 gera_pagina.py && python3 gera_mrv_comparecimento.py)
+python3 scripts/gera_decisoes.py          # data/decisoes.json
 # 2 e 3. planta-base, mesas, prancheta
 (cd scripts && python3 salao.py && python3 planta_base.py && python3 mesas.py && python3 gera_mesas.py)
 python3 scripts/gera_editor.py && node scripts/teste_prancheta.js
@@ -88,8 +98,10 @@ operam com uma seção só, perto de 400.
 - **`saidas/dublin_agregacoes.html`**: a mesma análise em página visual.
 - **`saidas/dados.json`**: os dados estruturados que alimentam a página e todas
   as etapas seguintes.
-- **`saidas/mrv_secoes_comparecimento.md`**: MRV × seção × aptos × estimativa de
-  comparecimento por domicílio (não oficial; ver aviso no próprio arquivo).
+- **`saidas/mrv_secoes_comparecimento.md`**: MRV × seção × aptos × comparecimento
+  esperado pela base B (não oficial; ver aviso no próprio arquivo).
+- **`data/decisoes.json`**: a tabela mestra com classe, cor e entrada de cada
+  MRV, os papéis das portas e o Ring 3, gerada por `scripts/gera_decisoes.py`.
 
 ### Validações
 
@@ -126,28 +138,30 @@ Dublin e passam a votar lá.
 
 - **Planta-base** (`docs/CONTEXTO.md`, `saidas/planta_base.html`): geometria
   medida do PDF do RDS e codificada em `scripts/salao.py`, fonte única; portas
-  chamadas pelo número de fachada (N1, N2, L1–L4, S1–S9, O1, O2, R1). A
-  planta-base não atribui papel de entrada ou saída a porta nenhuma.
+  chamadas pelo número de fachada (N1, N2, L1–L4, S1–S9, O1, O2, R1); desenha
+  as entradas A/B/C e as saídas decididas.
 - **Prancheta** (`saidas/editor.html`): as 28 mesas pareadas, com fileira
-  recuada na fachada leste, numeradas 1–28 em circuito horário; editor em
-  escala com alinhar à parede, conferência de pares, medir, salvar e exportar
-  cenários; biblioteca em `cenarios/` lida por `scripts/cenarios.py`.
+  recuada na fachada leste, numeradas pelo MRV do DJE e coloridas por carga;
+  editor em escala com alinhar à parede, conferência de pares, medir, salvar e
+  exportar cenários, papéis das portas e contorno do Ring 3; biblioteca em
+  `cenarios/` lida por `scripts/cenarios.py`.
 - **Simulador** (`saidas/simulador_fluxo.html`): eventos discretos, eleitor a
-  eleitor, sobre qualquer arranjo da prancheta; Cenário Claude escolhido por
-  varredura de 4.228 combinações. `scripts/simula_fluxo.py` responde à
-  pergunta do fechamento: só dois cadernos em paralelo fecham às 17h com
+  eleitor, sobre qualquer arranjo da prancheta, com as entradas do Ring 3 e as
+  portas da decisão; Cenário Claude (arranjo "Três polos", checkpoint a 16 m,
+  3/3/3 atendentes) escolhido por varredura. `scripts/simula_fluxo.py` responde
+  à pergunta do fechamento: só dois cadernos em paralelo fecham às 17h com
   caderno físico.
 - **Ring 3** (`saidas/plano_ring3.md`): ~39 × 35 m; entradas S4/S5/S6, saídas
   S2/S8; três serpenteados (3·9·3 balizas) e duas baias, 1.402 pessoas; 300
   separadores, 100 a adquirir (~EUR 1.302); evacuação e pendências.
 - **Sinalização** (`saidas/plano_sinalizacao.html`): oito pontos do portão da
-  Merrion Road à urna; uma consulta só (seção → mesa → porta), replicada a
-  cada 25–30 m; portas dizem apenas ENTRADA com a cor da raia; tabela mestra
-  de 51 linhas.
+  Merrion Road à urna; uma consulta só (seção → mesa → entrada), replicada a
+  cada 25–30 m; mesas pelo MRV e entradas do plano do Ring 3; cor ou letra
+  para as filas ainda em aberto; tabela mestra de 51 linhas.
 - **Horários de pico** (`pesquisa_horarios_pico_votacao.md`): não há
   estatística oficial por hora; padrão de abertura forte, vale ao meio-dia e
   repique às 17h; em Dublin 2022 a fila não esvaziou o dia inteiro.
 
-As divergências entre etapas (três totais de comparecimento, quatro
-numerações de mesa, papéis das portas, curvas de chegada, números do Ring 3
-citados pela sinalização) estão listadas no §9 da documentação.
+O que a integração de 06/09 resolveu (comparecimento, numeração, portas,
+números do Ring 3 na sinalização) e o que ficou (curvas de chegada, arranjo da
+mesa receptora, cor ou letra) está no §9 da documentação.

@@ -10,13 +10,13 @@
 <header>
   <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro · RDS Ballsbridge, Hall 2 · planta-base</p>
   <h1>O salão e as portas numeradas</h1>
-  <p class="chamada">Ponto de partida do desenho de fluxo, e só isso: o contorno medido do Hall&nbsp;2, as @@nportas@@ portas com um número por fachada e o pouco que já está decidido sobre cada uma. Nenhuma porta é entrada nem saída de eleitor aqui — essa decisão vem depois, e vem melhor se a linguagem para falar do espaço já estiver acordada.</p>
+  <p class="chamada">Ponto de partida do desenho de fluxo: o contorno medido do Hall&nbsp;2, as @@nportas@@ portas com um número por fachada e o que está decidido sobre cada uma. Desde 06/09/2026 a planta traz também os papéis de eleitor: <strong>entradas S4 (A), S5 (B) e S6 (C); saídas S2 e S8</strong>, decisão do Posto tomada com o desenho do Ring 3 e registrada em <span class="mono">scripts/decisoes.py</span>.</p>
   <dl class="faixa">
     <div><dt>Piso do salão</dt><dd>@@piso@@ m²<small>já sem o recorte de @@recorte@@ m²</small></dd></div>
     <div><dt>Dimensões</dt><dd>@@larg@@ × @@prof@@ m<small>pé-direito de 7 m, sem colunas</small></dd></div>
     <div><dt>Portas</dt><dd>@@nportas@@<small>@@vao_total@@ m de vão somado</small></dd></div>
     <div><dt>Parede leste</dt><dd>@@leste_livre@@ m<small>fora dos recuos de @@recuo@@ m</small></dd></div>
-    <div><dt>Já decidido</dt><dd>3 portas<small>N1 fechada, N2 catering, leste em emergência</small></dd></div>
+    <div><dt>Já decidido</dt><dd>8 portas<small>3 entradas, 2 saídas, N1 fechada, N2 catering, leste em emergência</small></dd></div>
   </dl>
 </header>
 
@@ -29,14 +29,15 @@
   </div>
   <figure class="prancha">
 @@svg@@
-  <figcaption>Planta-base em escala. O miolo está vazio de propósito: onde ficam as 28 mesas receptoras, e por onde o eleitor entra e sai, ainda não foi decidido.</figcaption>
+  <figcaption>Planta-base em escala. O miolo está vazio de propósito: onde ficam as 28 mesas receptoras é assunto da prancheta. Na fachada sul, as entradas A, B e C (S4, S5, S6) recebem os três serpenteados do Ring 3; as saídas S2 e S8 ficam nos flancos, fora do vão das entradas.</figcaption>
   </figure>
 </section>
 
 <section>
   <p class="rotulo">O que já está decidido</p>
-  <h2>Três coisas, e nenhuma delas é sobre eleitor</h2>
+  <h2>O que a planta registra sobre cada porta</h2>
   <div class="prosa">
+  <p><strong>Entradas de eleitor S4, S5 e S6; saídas S2 e S8.</strong> Decisão do Posto de 06/09/2026, tomada com o desenho do Ring 3: cada uma das três portas duplas do meio da fachada sul recebe um serpenteado (A, B, C), e as duas saídas de emergência junto às portas de carga, permanentemente abertas, devolvem quem já votou para fora sem cruzar fila de entrada. S2 e S8 têm 1,20 m de vão estimado sobre foto — a medição no local é pendência.</p>
   <p><strong>A parede leste é toda de emergência.</strong> As quatro portas L1 a L4 são saídas de emergência e exigem @@recuo@@ m livres à sua volta. O recuo está desenhado como uma faixa hachurada, medida para dentro do salão e para os lados de cada vão: é área onde nada pode ser montado. Ele consome quase toda a parede — sobram apenas @@nleste@@ trechos de @@nicho@@ m entre os recuos, o que efetivamente elimina a parede leste como lugar de mesa.</p>
   <p><strong>A porta N2 fica desbloqueada.</strong> É a saída do catering, e está marcada na planta em azul. Precisa de caminho livre até ela, o que restringe o que pode ser montado na metade central da parede norte — a distância exata depende do que o catering movimenta, e ainda não foi definida.</p>
   <p><strong>A porta N1 permanece fechada.</strong> Não conta como vão para nenhum efeito de fluxo.</p>
@@ -65,7 +66,8 @@
   <p class="rotulo">Antes de desenhar qualquer ideia</p>
   <h2>O que ainda falta saber sobre o espaço</h2>
   <ol class="passos">
-    <li><div><h3>As portas de carga S1 e S9 podem ficar abertas e travadas as nove horas?</h3><p>São os dois maiores vãos da fachada sul, com 3,6 m cada. Portas de carga costumam ser de enrolar e às vezes têm função corta-fogo. A resposta muda o que é possível fazer com a fachada sul inteira.</p></div></li>
+    <li><div><h3>Qual é a posição e o vão reais de S2 e S8?</h3><p>São as saídas de eleitor e estão estimadas sobre foto (1,20 m, a ~1,8 m de cada porta de carga). Dois vãos de 1,20 m para ~11,5 mil eleitores ao longo do dia pedem confirmação de largura e de que ficam mesmo abertas as nove horas.</p></div></li>
+    <li><div><h3>As portas de carga S1 e S9 podem ficar abertas e travadas as nove horas?</h3><p>Não têm papel de eleitor na decisão atual, mas são os dois maiores vãos da fachada sul, com 3,6 m cada, e a única alternativa se S2/S8 não servirem. Portas de carga costumam ser de enrolar e às vezes têm função corta-fogo.</p></div></li>
     <li><div><h3>Quanto de caminho livre a saída do catering exige?</h3><p>N2 está desbloqueada, mas “desbloqueada” não diz se o que passa por ali é uma pessoa com bandeja ou um carrinho — nem por onde ele chega até a porta. Enquanto isso não estiver definido, a metade central da parede norte não pode ser ocupada com segurança.</p></div></li>
     <li><div><h3>O recuo de 3 m vale para as saídas de emergência das outras paredes?</h3><p>Está marcado só na leste, que foi o que se determinou. As portas 2.13, 2.7, 2.1 e 2.8/2.9 também são saídas de emergência na planta do RDS; se exigirem o mesmo recuo, some parede também no norte e no sul.</p></div></li>
     <li><div><h3>Onde ficam as caixas de piso elétricas, se houver?</h3><p>Decide se as urnas podem ficar longe das paredes sem canaleta atravessando corredor.</p></div></li>

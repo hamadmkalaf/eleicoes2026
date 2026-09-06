@@ -5,29 +5,29 @@
 <text x="84" y="57" font-size="11" fill="#555">Entrada pelo canto sudeste · corredor de distribuição no fundo · serpenteados A/B/C descarregando em S4, S5 e S6 · saídas por S2 e S8 · baias de reserva dedicadas a A e a C · faixa de acesso de maca ao norte</text>
 <rect x="36.5" y="70" width="836.0" height="26" fill="#e8eef4" stroke="#8fa6bb"/>
 <text x="49.8" y="88" font-size="16" font-weight="bold" fill="#1a1a1a">HALL 2</text>
-<rect x="88.09999999999997" y="90" width="26" height="7" fill="#bdc3c7"/>
-<text x="101.09999999999997" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S1</text>
-<rect x="163.89999999999998" y="90" width="34" height="9" fill="#1e8449"/>
-<text x="180.89999999999998" y="115" font-size="13" fill="#1e8449" text-anchor="middle" font-weight="bold">S2</text>
-<text x="180.89999999999998" y="128" font-size="10" fill="#1e8449" text-anchor="middle">saída</text>
-<rect x="243.89999999999998" y="90" width="26" height="7" fill="#bdc3c7"/>
-<text x="256.9" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S3</text>
-<rect x="319.69999999999993" y="90" width="34" height="9" fill="#2471a3"/>
-<text x="336.69999999999993" y="115" font-size="13" fill="#1a1a1a" text-anchor="middle" font-weight="bold">S4</text>
-<text x="336.69999999999993" y="128" font-size="10" fill="#2471a3" text-anchor="middle">entrada A</text>
+<rect x="87.245" y="90" width="26" height="7" fill="#bdc3c7"/>
+<text x="100.245" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S1</text>
+<rect x="163.23499999999999" y="90" width="34" height="9" fill="#1e8449"/>
+<text x="180.23499999999999" y="115" font-size="13" fill="#1e8449" text-anchor="middle" font-weight="bold">S2</text>
+<text x="180.23499999999999" y="128" font-size="10" fill="#1e8449" text-anchor="middle">saída</text>
+<rect x="243.14" y="90" width="26" height="7" fill="#bdc3c7"/>
+<text x="256.14" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S3</text>
+<rect x="319.32000000000005" y="90" width="34" height="9" fill="#2471a3"/>
+<text x="336.32000000000005" y="115" font-size="13" fill="#1a1a1a" text-anchor="middle" font-weight="bold">S4</text>
+<text x="336.32000000000005" y="128" font-size="10" fill="#2471a3" text-anchor="middle">entrada A</text>
 <rect x="437.5" y="90" width="34" height="9" fill="#2471a3"/>
 <text x="454.5" y="115" font-size="13" fill="#1a1a1a" text-anchor="middle" font-weight="bold">S5</text>
 <text x="454.5" y="128" font-size="10" fill="#2471a3" text-anchor="middle">entrada B</text>
-<rect x="555.3" y="90" width="34" height="9" fill="#2471a3"/>
-<text x="572.3" y="115" font-size="13" fill="#1a1a1a" text-anchor="middle" font-weight="bold">S6</text>
-<text x="572.3" y="128" font-size="10" fill="#2471a3" text-anchor="middle">entrada C</text>
-<rect x="641.0" y="90" width="26" height="7" fill="#bdc3c7"/>
-<text x="654.0" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S7</text>
-<rect x="713.0" y="90" width="34" height="9" fill="#1e8449"/>
-<text x="730.0" y="115" font-size="13" fill="#1e8449" text-anchor="middle" font-weight="bold">S8</text>
-<text x="730.0" y="128" font-size="10" fill="#1e8449" text-anchor="middle">saída</text>
-<rect x="796.8" y="90" width="26" height="7" fill="#bdc3c7"/>
-<text x="809.8" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S9</text>
+<rect x="555.6799999999998" y="90" width="34" height="9" fill="#2471a3"/>
+<text x="572.6799999999998" y="115" font-size="13" fill="#1a1a1a" text-anchor="middle" font-weight="bold">S6</text>
+<text x="572.6799999999998" y="128" font-size="10" fill="#2471a3" text-anchor="middle">entrada C</text>
+<rect x="639.86" y="90" width="26" height="7" fill="#bdc3c7"/>
+<text x="652.86" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S7</text>
+<rect x="711.7650000000001" y="90" width="34" height="9" fill="#1e8449"/>
+<text x="728.7650000000001" y="115" font-size="13" fill="#1e8449" text-anchor="middle" font-weight="bold">S8</text>
+<text x="728.7650000000001" y="128" font-size="10" fill="#1e8449" text-anchor="middle">saída</text>
+<rect x="795.8500000000001" y="90" width="26" height="7" fill="#bdc3c7"/>
+<text x="808.8500000000001" y="115" font-size="10" fill="#95a5a6" text-anchor="middle">S9</text>
 <rect x="84" y="132.0" width="741.0" height="665.0" fill="#fff" stroke="#333" stroke-width="2"/>
 <rect x="84" y="132.0" width="741.0" height="47.5" fill="#eef4f9" stroke="#c7d8e6" stroke-dasharray="5 3"/>
 <text x="91.6" y="173.5" font-size="10" fill="#5b6d7d">acesso de maca · 2.5 m livre</text>
@@ -63,8 +63,8 @@
 <text x="245.50000000000003" y="148.5" font-size="15" font-weight="bold" fill="#1a1a1a" text-anchor="middle">ENTRADA A</text>
 <text x="245.50000000000003" y="164.5" font-size="10" fill="#8a7742" text-anchor="middle">3 balizas · 171 + baia 274 = 445</text>
 <line x1="218.9" y1="724.8" x2="218.9" y2="703.9" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
-<line x1="272.1" y1="179.5" x2="336.7" y2="132.0" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
-<line x1="336.7" y1="132.0" x2="336.7" y2="101" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="272.1" y1="179.5" x2="336.3" y2="132.0" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="336.3" y1="132.0" x2="336.3" y2="101" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
 <circle cx="192.6" cy="233.6" r="10" fill="#c0392b"/>
 <text x="192.6" y="237.6" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">1</text>
 <circle cx="245.5" cy="450.2" r="10" fill="#c0392b"/>
@@ -95,8 +95,8 @@
 <text x="663.5" y="148.5" font-size="15" font-weight="bold" fill="#1a1a1a" text-anchor="middle">ENTRADA C</text>
 <text x="663.5" y="164.5" font-size="10" fill="#8a7742" text-anchor="middle">3 balizas · 171 + baia 274 = 445</text>
 <line x1="690.1" y1="724.8" x2="690.1" y2="703.9" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
-<line x1="636.9" y1="179.5" x2="572.3" y2="132.0" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
-<line x1="572.3" y1="132.0" x2="572.3" y2="101" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="636.9" y1="179.5" x2="572.7" y2="132.0" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<line x1="572.7" y1="132.0" x2="572.7" y2="101" stroke="#2471a3" stroke-width="2.2" fill="none" stroke-dasharray="7 5" marker-end="url(#a)"/>
 <line x1="152.4" y1="601.9" x2="218.9" y2="601.9" stroke="#8a7742" stroke-width="2.2" marker-end="url(#b)"/>
 <line x1="152.4" y1="450.2" x2="218.9" y2="450.2" stroke="#8a7742" stroke-width="2.2" marker-end="url(#b)"/>
 <line x1="152.4" y1="298.6" x2="218.9" y2="298.6" stroke="#8a7742" stroke-width="2.2" marker-end="url(#b)"/>
@@ -111,10 +111,10 @@
 <text x="841.0" y="774.75" font-size="11" fill="#c0392b">canto sudeste</text>
 <circle cx="833.0" cy="714.8" r="10" fill="#c0392b"/>
 <text x="833.0" y="718.8" font-size="12" font-weight="bold" fill="#fff" text-anchor="middle">4</text>
-<line x1="180.9" y1="100" x2="180.9" y2="104" stroke="#1e8449" stroke-width="2.2"/>
-<line x1="180.9" y1="104" x2="134.9" y2="104" stroke="#1e8449" stroke-width="2.2" fill="none" marker-end="url(#e)"/>
-<line x1="730.0" y1="100" x2="730.0" y2="104" stroke="#1e8449" stroke-width="2.2"/>
-<line x1="730.0" y1="104" x2="776.0" y2="104" stroke="#1e8449" stroke-width="2.2" fill="none" marker-end="url(#e)"/>
+<line x1="180.2" y1="100" x2="180.2" y2="104" stroke="#1e8449" stroke-width="2.2"/>
+<line x1="180.2" y1="104" x2="134.2" y2="104" stroke="#1e8449" stroke-width="2.2" fill="none" marker-end="url(#e)"/>
+<line x1="728.8" y1="100" x2="728.8" y2="104" stroke="#1e8449" stroke-width="2.2"/>
+<line x1="728.8" y1="104" x2="774.8" y2="104" stroke="#1e8449" stroke-width="2.2" fill="none" marker-end="url(#e)"/>
 <text x="454.5" y="821.0" font-size="11" fill="#0a7d55" text-anchor="middle">39 m (leste–oeste)</text>
 <text x="68" y="464.5" font-size="11" fill="#0a7d55" text-anchor="middle" transform="rotate(-90 68 464.5)">35 m (sul–norte)</text>
 <text x="833.0" y="450.25" font-size="11" fill="#0a7d55" text-anchor="middle" transform="rotate(-90 833.0 450.25)">serpenteado 28 m</text>
@@ -193,5 +193,5 @@
 <text x="84" y="1247.0" font-size="11" fill="#555">As baias drenam direto para a baliza de entrada do seu bloco, sem passar pelo corredor de fundo. B não tem flanco, e por isso vale 37% do sítio — o ajuste é feito na atribuição das urnas, não na geometria.</text>
 <text x="84" y="1264.0" font-size="11" fill="#555">Desvio da baliza de saída até a porta: A 3.4 m, B 5.6 m, C 3.4 m — percorrido a pe na faixa livre de 2.5 m, sem canal balizado.</text>
 <text x="84" y="1281.0" font-size="11" fill="#555">Este quantitativo cobre SOMENTE o Ring 3. O interior do Hall 2 tem necessidade própria, ainda não dimensionada.</text>
-<text x="84" y="1298.0" font-size="11" fill="#555">Posições das portas lidas na prancheta do Posto. Aferir em campo a distância do bordo oeste do Ring 3 ao canto sudoeste do Hall 2.</text>
+<text x="84" y="1298.0" font-size="11" fill="#555">Posições das portas de scripts/salao.py (planta do RDS), Ring 3 centrado em S5 por estimativa. Aferir em campo a distância do bordo oeste do Ring 3 ao canto sudoeste do Hall 2.</text>
 </svg>

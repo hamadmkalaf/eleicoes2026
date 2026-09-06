@@ -4,6 +4,14 @@ Exporta a geometria do salao e as 28 MRVs numeradas para um editor que roda no
 navegador: arrastar mesa, girar de 90 em 90, e medir distancia entre dois
 pontos. Os numeros continuam saindo de `mesas.py`; o editor nao recalcula nada,
 so move o que ja foi validado aqui.
+
+O numero da mesa e o MRV do DJE/TRE-DF (decisao de 06/09/2026): a posicao
+inicial de cada MRV e a do circuito de `mesas.numera_mrv()`, mas o numero e a
+identidade da mesa e nao muda quando ela e arrastada. Junto vai o bloco
+`decisoes` (scripts/decisoes.py): secoes, comparecimento esperado e classe de
+cada mesa, papeis das portas, entradas do Ring 3 e o contorno do Ring 3.
+A copia congelada data/prancheta_hall2.json e reescrita aqui, para o simulador
+e o folgas_prancheta.py lerem sempre a mesma geometria.
 """
 import json
 import os
@@ -16,8 +24,27 @@ import salao as FL                                            # noqa: E402
 import mesas as MM                                            # noqa: E402
 import planta_base as PB                                      # noqa: E402
 import cenarios as CN                                         # noqa: E402
+import decisoes as DC                                         # noqa: E402
 
 SAIDAS = os.path.join(RAIZ, "saidas")
+
+
+def bloco_decisoes():
+    """O que a prancheta precisa das decisoes, com as mesas indexadas por MRV."""
+    d = DC.montar()
+    return dict(
+        decididoEm=d["decididoEm"], numeracao=d["numeracao"],
+        comparecimento={k: d["comparecimento"][k] for k in ("base", "rotulo", "total", "aptos")},
+        classes=d["classes"], portas=d["portas"], saidas=d["saidas"],
+        nomenclaturaPortas=d["nomenclatura_portas"],
+        entradas=[{k: e[k] for k in ("id", "porta", "cor", "hex", "mrvs", "esperado", "capacidade")}
+                  for e in d["entradas"]],
+        mesas={m["mrv"]: {k: m[k] for k in ("principal", "agregada", "origem_agregada", "aptos",
+                                             "esperado", "classe", "cor", "entrada", "porta")}
+               for m in d["mesas"]},
+        ring3={k: d["ring3"][k] for k in ("largura", "profundidade", "apron", "rect", "eixo",
+                                          "capacidade")},
+    )
 
 
 def _rot(dx, dy):
@@ -89,10 +116,16 @@ def main():
     saida = dict(**comum,
                  cenarios={cen: {k: pacote[cen][k] for k in ("zonas", "vaos", "mrvs")}
                            for cen in ("A", "B")},
+                 decisoes=bloco_decisoes(),
                  cenariosSalvos=CN.carrega())
 
     cam = os.path.join(SAIDAS, "editor_dados.json")
     open(cam, "w", encoding="utf-8").write(json.dumps(saida, ensure_ascii=False))
+    print("gravado", cam, os.path.getsize(cam), "bytes")
+    # a copia congelada que o simulador e o folgas_prancheta.py leem
+    congelado = {k: v for k, v in saida.items() if k != "cenariosSalvos"}
+    cam = os.path.join(RAIZ, "data", "prancheta_hall2.json")
+    open(cam, "w", encoding="utf-8").write(json.dumps(congelado, ensure_ascii=False, indent=1) + "\n")
     print("gravado", cam, os.path.getsize(cam), "bytes")
 
     modelo = open(os.path.join(RAIZ, "scripts", "editor_template.html"),

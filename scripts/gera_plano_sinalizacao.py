@@ -2,21 +2,25 @@
 """Injeta as tabelas e diagramas gerados a partir dos dados do TSE no
 template de saidas/plano_sinalizacao.html.
 
-Reexecutável: recalcula a distribuição das mesas pelas portas a partir de
-saidas/dados.json e reescreve os blocos marcados com {{PLACEHOLDER}}.
-O template com os placeholders vive em saidas/plano_sinalizacao.tmpl.html.
+Reexecutável: le a distribuicao das mesas pelas entradas, o comparecimento
+esperado (base B) e a numeracao MRV de scripts/decisoes.py, os numeros do
+Ring 3 de scripts/layout_ring3.py e as posicoes das portas de scripts/salao.py,
+e reescreve os blocos marcados com {{PLACEHOLDER}}. O template com os
+placeholders vive em saidas/plano_sinalizacao.tmpl.html.
 """
 import json
 import pathlib
+import sys
 
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 DADOS = RAIZ / "saidas" / "dados.json"
 TEMPLATE = RAIZ / "saidas" / "plano_sinalizacao.tmpl.html"
 SAIDA = RAIZ / "saidas" / "plano_sinalizacao.html"
+sys.path.insert(0, str(RAIZ / "scripts"))
 
-# Taxas de comparecimento observadas em 2022, por domicílio do eleitor.
-TAXA_DUBLIN = 0.74
-TAXA_INTERIOR = 0.50
+import decisoes as DC                                          # noqa: E402
+import layout_ring3 as R3                                      # noqa: E402
+
 # Premissas assumidas (não medidas) para o dimensionamento de leitura.
 FATOR_PICO = 1.8
 SEG_LEITURA = 15
@@ -24,48 +28,36 @@ LEITORES_POR_PAINEL = 3
 JANELA_H = 9
 
 
+DEC = DC.montar()
+
+
 def carrega():
+    """As 28 mesas pela numeracao do DJE, com a entrada (A/B/C) e o esperado
+    (base B) das decisoes. `mesa` e o MRV; `porta` e a letra da entrada."""
     d = json.loads(DADOS.read_text(encoding="utf-8"))
-    residencia = {r["Urna"]: r for r in d["residencia_urna"]}
     urnas = []
-    for u in d["urnas"]:
-        r = residencia[u["Urna"]]
-        dublin, total = r["DUBLIN"], r["TOTAL"]
-        interior = total - dublin
-        agregada = u["Secao_agregada"]
+    for m in DEC["mesas"]:
         urnas.append({
-            "urna": u["Urna"],
-            "principal": u["Secao_principal"],
-            "agregada": int(agregada) if agregada == agregada else None,
-            "aptos": total,
-            "dublin": dublin,
-            "interior": interior,
-            "esperado": round(dublin * TAXA_DUBLIN + interior * TAXA_INTERIOR),
+            "urna": m["principal"],
+            "principal": m["principal"],
+            "agregada": m["agregada"],
+            "aptos": m["aptos"],
+            "dublin": m["aptos_dublin"],
+            "interior": m["aptos_interior"],
+            "esperado": m["esperado"],
+            "classe": m["classe"],
+            "mesa": m["mrv"],
+            "porta": m["entrada"],
         })
     return d, urnas
 
 
 def distribui(urnas):
-    """Reparte as urnas em 3 portas equilibrando o comparecimento esperado.
-
-    Distribuição em serpentina sobre a lista ordenada por comparecimento
-    decrescente: equilibra os totais e, de quebra, separa as mesas mais
-    pesadas uma por porta. As mesas são numeradas em blocos contíguos por
-    porta, para que a placa possa dizer "Mesas 1-9" em vez de listar 28.
-    """
-    ordenadas = sorted(urnas, key=lambda u: -u["esperado"])
-    grupos = [[], [], []]
-    for i, u in enumerate(ordenadas):
-        volta = (i // 3) % 2 == 0
-        grupos[(i % 3) if volta else (2 - i % 3)].append(u)
-    mesa = 1
-    for indice, grupo in enumerate(grupos):
-        grupo.sort(key=lambda u: u["principal"])
-        for u in grupo:
-            u["mesa"] = mesa
-            u["porta"] = "ABC"[indice]
-            mesa += 1
-    return grupos
+    """As mesas de cada entrada, na ordem A, B, C, como scripts/decisoes.py
+    as atribuiu (na proporcao da capacidade de cada serpenteado do Ring 3,
+    com uma das tres mesas vermelhas em cada entrada)."""
+    return [sorted([u for u in urnas if u["porta"] == e["id"]], key=lambda u: u["mesa"])
+            for e in DEC["entradas"]]
 
 
 def tabela_mestra(urnas):
@@ -89,13 +81,14 @@ def chip(porta):
 # Diagrama principal da rota
 # --------------------------------------------------------------------------
 
-# Geometria do Hall 2 e do Ring 3, em metros, conforme a ficha técnica do RDS e
-# as medições de saidas/plano_ring3.md (PR #6). ESCALA converte para o viewBox.
+# Geometria do Hall 2 e do Ring 3, em metros: portas de scripts/salao.py (via
+# planta_base/layout_ring3), Ring 3 de scripts/layout_ring3.py. ESCALA converte
+# para o viewBox.
 ESCALA = 5.18          # px por metro
 X0, Y0 = 370, 155      # canto noroeste do Hall 2 no viewBox
 HALL_L, HALL_P = 50.2, 44.5
-# Aberturas da fachada sul, em metros a partir do canto sudoeste (prancheta do Posto).
-ABERTURAS = {"S2": 13.7, "S4": 21.9, "S5": 28.1, "S6": 34.3, "S8": 42.6}
+# Centro das aberturas da fachada sul, em metros a partir do canto sudoeste.
+ABERTURAS = {k: R3.PORTAS_SUL[k] for k in ("S2", "S4", "S5", "S6", "S8")}
 
 
 def mx(metros):
@@ -127,13 +120,13 @@ def diagrama_rota():
             f' font-size="9.5" font-weight="600" fill="var(--muted)">saída {nome}</text>'
         )
 
-    # Serpenteados: blocos de 7,0 m a passo de 9,0 m, descarregando nas portas.
+    # Serpenteados: blocos com a largura e o eixo do plano do Ring 3 (A e C
+    # estreitos com baia de flanco, B largo), descarregando nas portas.
     blocos = ""
-    passo = round(9 * ESCALA)
-    largura = round(7 * ESCALA)
-    centro_b = mx(ABERTURAS["S5"])
-    for desloc, cor, nome in ((-passo, "--a", "S4"), (0, "--b", "S5"), (passo, "--c", "S6")):
-        cx = centro_b + desloc
+    eixos_bloco, _ = R3.eixos()
+    for i, (cor, nome) in enumerate((("--a", "S4"), ("--b", "S5"), ("--c", "S6"))):
+        cx = ring_x + round(eixos_bloco[i] * ESCALA)
+        largura = round(R3.LARG_BLOCOS[i] * ESCALA)
         topo = ring_y + 34
         blocos += (
             f'<rect x="{cx - largura // 2}" y="{topo}" width="{largura}"'
@@ -260,7 +253,7 @@ def diagrama_rota():
       <b>7</b> saídas S2 e S8
     </p>
   </div>
-  <figcaption>Em escala, sobre as dimensões da ficha técnica do RDS e as medições do plano do Ring 3. A consulta acontece toda no trecho 1 → 3, onde as pessoas já estão paradas ou andando; da garganta em diante o eleitor só confirma a letra. As três entradas ficam a apenas 6,2 m uma da outra, e os serpenteados, a 9,0 m de passo, descarregam em diagonal sobre elas — é por isso que a disciplina de faixa precisa estar resolvida antes, e não na fachada. As saídas S2 e S8 já ficam fora do vão das entradas, então os fluxos se separam sem barreira adicional.</figcaption>
+  <figcaption>Em escala, sobre as dimensões da ficha técnica do RDS, as portas de <span style="font-family:var(--mono)">scripts/salao.py</span> e o plano do Ring 3 (blocos de {vg(R3.LARG_BLOCOS[0])}, {vg(R3.LARG_BLOCOS[1])} e {vg(R3.LARG_BLOCOS[2])} m, Ring 3 centrado em S5 por estimativa). A consulta acontece toda no trecho 1 → 3, onde as pessoas já estão paradas ou andando; da garganta em diante o eleitor só confirma a sua fila. As três entradas ficam a apenas {vg(R3.PASSO_PORTAS)} m uma da outra, e os serpenteados descarregam em diagonal sobre elas — é por isso que a disciplina de faixa precisa estar resolvida antes, e não na fachada. As saídas S2 e S8 já ficam fora do vão das entradas, então os fluxos se separam sem barreira adicional.</figcaption>
 </figure>'''
 
 
@@ -351,7 +344,7 @@ def tabela_localidade(dados, urnas):
         secoes = sorted(g["secoes"])
         destinos = sorted({por_secao[s]["mesa"] for s in secoes})
         alvo = " ".join(
-            f'M{m}&nbsp;{chip(next(u["porta"] for u in urnas if u["mesa"] == m))}'
+            f'MRV&nbsp;{m}&nbsp;{chip(next(u["porta"] for u in urnas if u["mesa"] == m))}'
             for m in destinos
         )
         rotulo = ROTULOS_LOCALIDADE.get(local, local.title())
@@ -408,14 +401,14 @@ PONTOS = [
      "Tabela mestra (última ocorrência) + três totens A · B · C com as faixas de mesas",
      "2 painéis · 3 totens de 3 m"),
     ("P4", "Cabeças dos serpenteados",
-     "No início de cada bloco de 7,0 m, ao longo do corredor de distribuição",
-     "Confirmação da letra · captura de quem errou, enquanto ainda cabe corrigir",
-     "Letra em corpo grande + faixa de mesas + “errou? volte ao corredor →”",
+     "No início de cada bloco, ao longo do corredor de distribuição",
+     "Confirmação da fila · captura de quem errou, enquanto ainda cabe corrigir",
+     "Identidade da fila (cor ou letra, a decidir) em corpo grande + lista das mesas + “errou? volte ao corredor →”",
      "3 totens · 1 faixa de correção"),
     ("P5", "Portas de entrada",
      "No vidro, à frente de cada vão de entrada da fachada sul, lidas de dentro do serpenteado",
      "Só confirmação de que ali se entra. Nenhuma informação nova",
-     "ENTRADA em 300 mm + faixa da cor da fila que descarrega naquele vão",
+     "ENTRADA em 300 mm + a identidade da fila que descarrega naquele vão (cor ou letra, a decidir)",
      "3 bandeirolas de fachada"),
     ("P6", "Checkpoint interno",
      "Logo depois das portas, dentro do salão",
@@ -462,19 +455,23 @@ def specs():
     return f'<div class="specs">{cartoes}</div>'
 
 
+CLASSE_TXT = {"alta": "vermelha", "media": "amarela", "baixa": "verde"}
+
+
 def tabela_portas(grupos):
-    cores = {"A": "Azul", "B": "Âmbar", "C": "Magenta"}
     linhas = ""
     for indice, grupo in enumerate(grupos):
-        porta = "ABC"[indice]
+        e = DEC["entradas"][indice]
+        porta = e["id"]
         pesada = max(grupo, key=lambda u: u["esperado"])
         linhas += (
-            f'<tr><td>{chip(porta)} <strong>Porta {porta}</strong></td>'
-            f'<td>{cores[porta]}</td>'
-            f'<td class="num">{len(grupo)}<span class="sub">M{grupo[0]["mesa"]}–M{grupo[-1]["mesa"]}</span></td>'
+            f'<tr><td>{chip(porta)} <strong>Entrada {porta}</strong><span class="sub">porta {e["porta"]}</span></td>'
+            f'<td>{e["cor"].capitalize()}</td>'
+            f'<td class="num">{len(grupo)}<span class="sub">MRV {", ".join(str(u["mesa"]) for u in grupo)}</span></td>'
             f'<td class="num">{br(sum(u["aptos"] for u in grupo))}</td>'
             f'<td class="num">{br(sum(u["esperado"] for u in grupo))}</td>'
-            f'<td class="pt">M{pesada["mesa"]}<span class="sub">{pesada["esperado"]} esperados</span></td></tr>'
+            f'<td class="num">{e["capacidade"]}</td>'
+            f'<td class="pt">MRV {pesada["mesa"]}<span class="sub">{pesada["esperado"]} esperados</span></td></tr>'
         )
     return linhas
 
@@ -485,23 +482,49 @@ def tabela_mesas(urnas):
         secoes = str(u["principal"]) + (f' + {u["agregada"]}' if u["agregada"] else "")
         origem = "Dublin" if u["interior"] == 0 else f'Dublin + {br(u["interior"])} do interior'
         linhas += (
-            f'<tr><td class="pt">M{u["mesa"]}</td><td>{chip(u["porta"])}</td>'
-            f'<td class="num">{u["urna"]}</td><td class="pt">{secoes}'
+            f'<tr><td class="pt">MRV {u["mesa"]}</td><td>{chip(u["porta"])}</td>'
+            f'<td class="pt">{secoes}'
             f'<span class="sub">{origem}</span></td>'
-            f'<td class="num">{br(u["aptos"])}</td><td class="num">{br(u["esperado"])}</td></tr>'
+            f'<td class="num">{br(u["aptos"])}</td><td class="num">{br(u["esperado"])}</td>'
+            f'<td>{CLASSE_TXT[u["classe"]]}</td></tr>'
         )
-    return ('<div class="tscroll"><table><thead><tr><th>Mesa</th><th>Porta</th>'
-            '<th class="num">Urna</th><th>Seções</th><th class="num">Aptos</th>'
-            '<th class="num">Esperado</th></tr></thead><tbody>' + linhas + "</tbody></table></div>")
+    return ('<div class="tscroll"><table><thead><tr><th>Mesa (MRV)</th><th>Entrada</th>'
+            '<th>Seções</th><th class="num">Aptos</th>'
+            '<th class="num">Esperado</th><th>Carga</th></tr></thead><tbody>' + linhas + "</tbody></table></div>")
 
 
 def bloco_mestra(mestra):
     linhas = "".join(
         f'<div class="mrow"><span class="sec">{secao}</span><span class="dots"></span>'
-        f'<span class="mesa">M{mesa}</span>{chip(porta)}</div>'
+        f'<span class="mesa">MRV {mesa}</span>{chip(porta)}</div>'
         for secao, mesa, porta in mestra
     )
     return f'<div class="mestra">{linhas}</div>'
+
+
+def bloco_ring3():
+    """O trecho do plano que cita o quantitativo do Ring 3, sempre do script."""
+    r = R3.resumo()
+    caps = r["caps"]
+    serp = sum(c["serpenteado"] for c in caps)
+    baia = sum(c["baia"] for c in caps)
+    return (
+        f'os três serpenteados, o corredor de distribuição, a garganta e o fechamento das '
+        f'baias de flanco somam <strong>{vg(r["metros"])} m ({r["unidades"]} separadores)</strong>, '
+        f'contra {R3.SEPARADORES_EM_MAOS} separadores de barreira ({R3.SEPARADORES_EM_MAOS * R3.METROS_POR_UNIDADE:.0f} m) '
+        f'fornecidos pela organizadora — faltam <strong>{r["faltam"]} separadores, ~EUR {br(round(r["custo"]))}</strong>. '
+        f'A capacidade resultante é de {serp:.0f} pessoas nos serpenteados mais {baia:.0f} nas duas baias de '
+        f'flanco, <strong>{r["total_pessoas"]:.0f} no total</strong> ({", ".join(f"{c[chr(101)+chr(110)+chr(116)+chr(114)+chr(97)+chr(100)+chr(97)]} {c[chr(116)+chr(111)+chr(116)+chr(97)+chr(108)]:.0f}" for c in caps)}). '
+        f'Esse estoque de barreira externa é distinto dos 100 unifilas (200 m) do orçamento, que servem ao interior do Hall 2.'
+    )
+
+
+def mesas_pesadas_txt(urnas):
+    pes = sorted([u for u in urnas if u["classe"] == "alta"], key=lambda u: u["mesa"])
+    return (", ".join(f'MRV {u["mesa"]}' for u in pes[:-1]) + f' e MRV {pes[-1]["mesa"]}'
+            + f' (seções {", ".join(str(u["principal"]) for u in pes)}, {min(u["esperado"] for u in pes)} a '
+            f'{max(u["esperado"] for u in pes)} comparecentes esperados cada), uma em cada entrada '
+            + "(" + ", ".join(f'{u["porta"]}' for u in pes) + ")")
 
 
 SUBSTRATOS = [
@@ -730,6 +753,9 @@ def main():
 
     html = TEMPLATE.read_text(encoding="utf-8")
     for chave, valor in {
+        "ESPERADO": br(total_esperado),
+        "RING3_BARREIRA": bloco_ring3(),
+        "MESAS_PESADAS": mesas_pesadas_txt(urnas),
         "DIAGRAMA": diagrama_rota(),
         "FIG_CONSULTA": figura_consulta(),
         "TAB_LOCALIDADE": tabela_localidade(dados, urnas),
@@ -751,7 +777,7 @@ def main():
     SAIDA.write_text(html, encoding="utf-8")
     print(f"gravado {SAIDA.relative_to(RAIZ)}")
     for indice, grupo in enumerate(grupos):
-        print(f"  porta {'ABC'[indice]}: {len(grupo)} mesas, "
+        print(f"  entrada {DEC['entradas'][indice]['id']} ({DEC['entradas'][indice]['porta']}): {len(grupo)} mesas, "
               f"{sum(u['esperado'] for u in grupo)} comparecentes esperados")
     print(f"  total esperado {total_esperado} · {len(mestra)} seções na tabela mestra")
 

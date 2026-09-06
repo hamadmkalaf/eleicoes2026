@@ -3,10 +3,17 @@
 > Consolidação feita em **06/09/2026** na branch
 > `claude/project-analysis-documentation-w49q34`, que reúne a **última versão de
 > cada etapa** do projeto (antes espalhadas por 12 branches e 10 pull requests
-> abertos). Uma cópia congelada do mesmo estado está na branch
-> **`backup/consolidado-2026-09-06`**, de onde qualquer arquivo ou commit de
-> qualquer etapa pode ser resgatado (ver §10). As branches originais não foram
-> apagadas nem alteradas.
+> abertos). Uma cópia congelada do estado consolidado (antes da integração
+> descrita abaixo) está na branch **`backup/consolidado-2026-09-06`**, de onde
+> qualquer arquivo ou commit de qualquer etapa pode ser resgatado (ver §10). As
+> branches originais não foram apagadas nem alteradas.
+>
+> **Integração de 06/09/2026 (tarde):** as decisões do Posto passaram a morar
+> num lugar só, `scripts/decisoes.py` (comparecimento pela base B, numeração
+> MRV do DJE como identidade da mesa, cores por carga, portas S4/S5/S6 de
+> entrada e S2/S8 de saída, entradas do Ring 3 com as suas mesas), e a
+> planta-base, a prancheta, o simulador, o Ring 3 e a sinalização leem dali.
+> O §9 registra o que isso resolveu e o que ficou.
 
 ---
 
@@ -44,8 +51,9 @@ locado desde a véspera.
 | Urnas / MRVs | **28** (23 com duas seções, 5 com uma) | mapa de agregações do TSE + DJE/TRE-DF |
 | Eleitores do interior que votam em Dublin | 4.213 (25%) | perfil do eleitorado |
 | Faixa de aptos por urna | 398 a 797 | pipeline da etapa 1 |
-| Comparecimento esperado (taxas de 2022) | **~11.416–11.498** (ver §1.4 e §9.1) | estimativa, não oficial |
-| Urnas críticas (duas seções de Dublin) | **3313 (590), 3322 (588), 3315 (586)** | etapa 1 e 5 |
+| Comparecimento esperado (base B: taxa de 2022 por domicílio de origem) | **11.499** (68,5%), `scripts/comparecimento.py` | decisão de 06/09/2026; estimativa, não oficial |
+| Urnas críticas (duas seções de Dublin; vermelhas) | **MRV 22 = 3313 (590), MRV 24 = 3322 (588), MRV 23 = 3315 (586)** | etapas 1 e 5 |
+| Portas de eleitor | entradas S4 (A), S5 (B), S6 (C); saídas S2 e S8 | decisão de 06/09/2026, `scripts/decisoes.py` |
 | Hall 2 | 50,3 × 44,4 m, 2.179 m² úteis, pé-direito 7 m, 18 portas | planta do RDS medida em `scripts/salao.py` |
 | Ring 3 | ~39 × 35 m (±10–15%), capacidade planejada 1.402 pessoas | fotogrametria, etapa 5 |
 | Orçamento revisado do 1º turno | EUR 15.703,32 | `contexto_eleicoes_dublin_2026.md` §6 |
@@ -66,6 +74,15 @@ Documentos de contexto que atravessam as etapas: `contexto_eleicoes_dublin_2026.
 (histórico da negociação, orçamento, contraproposta de agregação),
 `handoff_agregacao_dublin_2026.md` (taxas de comparecimento de 2022 por
 domicílio) e `docs/CONTEXTO.md` (documento de passagem do desenho de fluxo).
+
+**Fonte única das decisões (transversal, desde 06/09/2026):**
+`scripts/comparecimento.py` (base B) e `scripts/decisoes.py` (portas, numeração
+MRV, classes e cores de carga, atribuição das mesas às entradas do Ring 3 com
+as quotas de `layout_ring3.py`), gravados em `data/decisoes.json` por
+`scripts/gera_decisoes.py`. `gera_editor.py`, `gera_simulador.py`,
+`gera_plano_sinalizacao.py`, `planta_base.py`, `layout_ring3.py` e
+`simula_fluxo.py` chamam `decisoes.montar()` ou leem o JSON; nenhum carrega
+mais cópia própria de porta, taxa ou numeração.
 
 ### Artefatos publicados (claude.ai)
 
@@ -120,6 +137,16 @@ saídas versionadas **byte a byte**; os testes em Node passaram
 (`teste_prancheta.js` 447/447, `teste_arranjos.js` 24/24, `teste_modelo.js`
 com conservação de eleitores). As 12 branches originais são ancestrais do
 HEAD desta branch (conferido com `git merge-base --is-ancestor`).
+
+8. **Integração (06/09, tarde), a pedido do Posto:** base B como fonte única
+   de comparecimento; numeração MRV do DJE como identidade da mesa em toda
+   parte; cores por carga na prancheta e no simulador; portas S4/S5/S6 e
+   S2/S8 propagadas à planta-base, ao simulador (Cenário Claude refeito por
+   varredura) e à sinalização; Ring 3 lendo as portas de `salao.py` e
+   exportando capacidade e contorno para a prancheta e o simulador;
+   `plano_ring3.md` §6 e o trecho do Ring 3 na sinalização regerados a partir
+   dos scripts. Depois disso, geradores e testes rodaram de novo, e as duas
+   páginas foram abertas em Chromium headless sem erro de JavaScript.
 
 ---
 
@@ -180,57 +207,63 @@ seção; `assert` garante que os 28 MRVs somam 16.794.
   pico. A negociação terminou em **28 urnas**, número com o qual todas as etapas
   seguintes trabalham.
 
-### 1.4 Tabela mestra: MRV × seções × aptos × comparecimento esperado × numerações
+### 1.4 Tabela mestra: MRV × seções × aptos × comparecimento esperado × classe × entrada
 
-Duas estimativas de comparecimento convivem no repositório. **Elas não são
-intercambiáveis** (ver §9.1):
+**Base de comparecimento adotada (decisão de 06/09/2026): base B**, a taxa de
+2022 do condado de origem de cada seção, de `handoff_agregacao_dublin_2026.md`,
+implementada em `scripts/comparecimento.py`. O esperado de cada urna é o
+arredondamento da soma exata das suas seções, e o total é a soma dos
+arredondados: **11.499** (o `mrv_secoes_comparecimento.md` anterior somava as
+seções antes de arredondar e dava 11.498; a diferença é só de arredondamento).
+A base binária 74% Dublin / 50% interior, que dava 11.416–11.418 e alimentava
+`salao.py`, `simula_fluxo.py`, o simulador e a sinalização, **saiu de todos os
+scripts**; o "~12.000" de `contexto_eleicoes_dublin_2026.md` ficou como registro
+histórico, com nota.
 
-- **"74/50"**: 74% para eleitores domiciliados em Dublin e 50% para o interior,
-  aplicado urna a urna. É a premissa de `scripts/salao.py`,
-  `scripts/simula_fluxo.py`, do simulador (`medio (2022)`) e do plano de
-  sinalização. Total: **11.416** (arredondando por urna em `simula_fluxo.py` e
-  no simulador) ou **11.418** (arredondando por seção em `salao.py` e
-  `gera_plano_sinalizacao.py`).
-- **"por domicílio"**: a taxa de 2022 do condado de origem de cada seção
-  agregada, de `handoff_agregacao_dublin_2026.md`. É a de
-  `saidas/mrv_secoes_comparecimento.md`. Total: **11.498**.
+**Numeração:** a única identidade da mesa é o **MRV do DJE/TRE-DF** (MRV *k* =
+*k*-ésima seção principal em ordem crescente). Na prancheta, no simulador e na
+sinalização a mesa 22 é a MRV 22, esteja onde estiver. **Classe e cor** (regra
+em `decisoes.py`): as 3 maiores são vermelhas (alta); esperado ≥ 450, amarelas
+(média); o resto, verdes (baixa). **Entrada:** a atribuição às entradas A/B/C
+do Ring 3 (§5.5), proporcional à capacidade de cada serpenteado, com uma mesa
+vermelha em cada.
 
-| MRV (DJE) | Seção principal | Seção agregada | Origem da agregada | Aptos | Esperado 74/50 | Esperado por domicílio | Tier (§5) | Mesa/porta na sinalização (§6) |
-|---|---|---|---|---|---|---|---|---|
-| 1 | 511 | 1100 | Roscommon | 582 | 387 | 375 | T3 | M19 / C |
-| 2 | 512 | 2855 | Longford | 476 | 334 | 355 | T3 | M1 / A |
-| 3 | 513 | 1105 | Mayo | 502 | 347 | 351 | T3 | M2 / A |
-| 4 | 517 | 1292 | Cavan | 513 | 352 | 348 | T3 | M10 / B |
-| 5 | 1160 | 3845 | Limerick | 473 | 332 | 328 | T3 | M11 / B |
-| 6 | 1352 | 522 | Donegal | 462 | 327 | 328 | T3 | M20 / C |
-| 7 | 3054 | 1099 | Kerry | 454 | 323 | 325 | T3 | M21 / C |
-| 8 | 3078 | 2847 | Leitrim | 429 | 310 | 311 | T3 | M12 / B |
-| 9 | 3108 | 3422 | Galway | 756 | 474 | 467 | T2 | M22 / C |
-| 10 | 3142 | 1278 | Limerick | 793 | 492 | 466 | T2 | M23 / C |
-| 11 | 3161 | 3307 | Cork | 791 | 491 | 504 | T2 | M13 / B |
-| 12 | 3179 | 530 | Westmeath | 676 | 434 | 423 | T3 | M3 / A |
-| 13 | 3216 | 527 | Clare | 571 | 381 | 407 | T3 | M24 / C |
-| 14 | 3229 | 3821 | Cork | 606 | 399 | 405 | T3 | M14 / B |
-| 15 | 3245 | 519 | Cork | 781 | 486 | 498 | T2 | M4 / A |
-| 16 | 3302 | 3181 | Outros locais da Irlanda | 771 | 481 | 518 | T2 | M5 / A |
-| 17 | 3305 | 521 | Galway | 767 | 479 | 472 | T2 | M15 / B |
-| 18 | 3306 | 518 | Outros locais da Irlanda | 766 | 478 | 515 | T2 | M25 / C |
-| 19 | 3308 | — | — | 399 | 295 | 295 | T4 | M26 / C |
-| 20 | 3309 | 1314 | Waterford | 615 | 403 | 395 | T3 | M6 / A |
-| 21 | 3311 | 3913 | Dublin | 630 | 466 | 466 | T3 | M16 / B |
-| **22** | **3313** | 3889 | Dublin | 797 | **590** | 590 | **T1** | M7 / A |
-| **23** | **3315** | 3778 | Dublin | 792 | **586** | 586 | **T1** | M27 / C |
-| **24** | **3322** | 3752 | Dublin | 794 | **588** | 588 | **T1** | M17 / B |
-| 25 | 3442 | — | — | 398 | 295 | 295 | T4 | M28 / C |
-| 26 | 3688 | — | — | 400 | 296 | 296 | T4 | M8 / A |
-| 27 | 3832 | — | — | 400 | 296 | 296 | T4 | M18 / B |
-| 28 | 3862 | — | — | 400 | 296 | 296 | T4 | M9 / A |
-| **Total** | | | | **16.794** | **11.418** | **11.498** | | |
+| MRV (DJE) | Seção principal | Seção agregada | Origem da agregada | Aptos | Esperado (base B) | Classe | Entrada / porta |
+|---|---|---|---|---|---|---|---|
+| 1 | 511 | 1100 | Roscommon | 582 | 375 | verde | B / S5 |
+| 2 | 512 | 2855 | Longford | 476 | 355 | verde | C / S6 |
+| 3 | 513 | 1105 | Mayo | 502 | 351 | verde | A / S4 |
+| 4 | 517 | 1292 | Cavan | 513 | 348 | verde | B / S5 |
+| 5 | 1160 | 3845 | Limerick | 473 | 328 | verde | A / S4 |
+| 6 | 1352 | 522 | Donegal | 462 | 328 | verde | C / S6 |
+| 7 | 3054 | 1099 | Kerry | 454 | 325 | verde | B / S5 |
+| 8 | 3078 | 2847 | Leitrim | 429 | 311 | verde | B / S5 |
+| 9 | 3108 | 3422 | Galway | 756 | 467 | amarela | A / S4 |
+| 10 | 3142 | 1278 | Limerick | 793 | 466 | amarela | C / S6 |
+| 11 | 3161 | 3307 | Cork | 791 | 504 | amarela | C / S6 |
+| 12 | 3179 | 530 | Westmeath | 676 | 423 | verde | A / S4 |
+| 13 | 3216 | 527 | Clare | 571 | 407 | verde | C / S6 |
+| 14 | 3229 | 3821 | Cork | 606 | 405 | verde | C / S6 |
+| 15 | 3245 | 519 | Cork | 781 | 498 | amarela | A / S4 |
+| 16 | 3302 | 3181 | Outros locais da Irlanda | 771 | 518 | amarela | B / S5 |
+| 17 | 3305 | 521 | Galway | 767 | 472 | amarela | B / S5 |
+| 18 | 3306 | 518 | Outros locais da Irlanda | 766 | 515 | amarela | B / S5 |
+| 19 | 3308 | — | — | 399 | 295 | verde | C / S6 |
+| 20 | 3309 | 1314 | Waterford | 615 | 395 | verde | A / S4 |
+| 21 | 3311 | 3913 | Dublin | 630 | 466 | amarela | B / S5 |
+| **22** | **3313** | 3889 | Dublin | 797 | **590** | **vermelha** | B / S5 |
+| **23** | **3315** | 3778 | Dublin | 792 | **586** | **vermelha** | C / S6 |
+| **24** | **3322** | 3752 | Dublin | 794 | **588** | **vermelha** | A / S4 |
+| 25 | 3442 | — | — | 398 | 295 | verde | B / S5 |
+| 26 | 3688 | — | — | 400 | 296 | verde | A / S4 |
+| 27 | 3832 | — | — | 400 | 296 | verde | C / S6 |
+| 28 | 3862 | — | — | 400 | 296 | verde | A / S4 |
+| **Total** | | | | **16.794** | **11.499** | 3 / 8 / 17 | A 3.642 · B 4.215 · C 3.642 |
 
-Regra do DJE: MRV *k* é a *k*-ésima seção principal em ordem crescente de
-número. **Não há comparecimento oficial por seção em nenhuma fonte do
-repositório**; as duas colunas são taxas de 2022 aplicadas a 2026, estimativa
-de trabalho a substituir quando houver dado do Cartório.
+**Não há comparecimento oficial por seção em nenhuma fonte do repositório**; a
+coluna é uma taxa de 2022 aplicada a 2026, estimativa de trabalho a substituir
+quando houver dado do Cartório. A mesma tabela sai de
+`python3 scripts/gera_decisoes.py` e está em `data/decisoes.json`.
 
 ### 1.5 Arquivos e como rodar
 
@@ -240,6 +273,7 @@ cd scripts
 python3 mapa_agregacoes.py          # saidas/Dublin_2026_agregacoes.xlsx e saidas/dados.json
 python3 gera_pagina.py              # saidas/dublin_agregacoes.html
 python3 gera_mrv_comparecimento.py  # saidas/mrv_secoes_comparecimento.md
+python3 gera_decisoes.py            # data/decisoes.json (tabela mestra, entradas, Ring 3)
 ```
 
 - `saidas/Dublin_2026_agregacoes.xlsx`: abas `Urnas`, `Secoes`,
@@ -248,6 +282,8 @@ python3 gera_mrv_comparecimento.py  # saidas/mrv_secoes_comparecimento.md
   as etapas seguintes** (simulações, Ring 3, sinalização leem daqui).
 - `data/mrv_secoes.json`: a mesma designação MRV → seção, no formato que o
   simulador consome.
+- `scripts/comparecimento.py`: a base B; `scripts/decisoes.py`: a tabela
+  mestra com classe e entrada; `data/decisoes.json`: a mesma tabela gravada.
 
 ---
 
@@ -255,11 +291,10 @@ python3 gera_mrv_comparecimento.py  # saidas/mrv_secoes_comparecimento.md
 
 ### 2.1 O que é
 
-A leitura acordada do salão, e só isso: o contorno medido do Hall 2, as 18
-portas com um número por fachada e o pouco que já está decidido sobre cada
-uma. **Nenhuma porta recebe papel de entrada ou de saída** na planta-base; essa
-decisão é de etapas posteriores (e, como o §9.3 registra, as etapas posteriores
-tomaram decisões divergentes entre si).
+A leitura acordada do salão: o contorno medido do Hall 2, as 18 portas com um
+número por fachada e o que está decidido sobre cada uma. Desde 06/09/2026 a
+planta-base desenha também os papéis de eleitor decididos pelo Posto
+(`scripts/decisoes.py`): **entradas S4 (A), S5 (B) e S6 (C); saídas S2 e S8**.
 
 Geometria medida direto dos PDFs do RDS (`RDS_Hall_2_Floorplan_(1).pdf`, pág.
 2, e a versão revisada com as duas portas de carga assinaladas), com escala de
@@ -292,13 +327,13 @@ RDS. A numeração é gerada por `scripts/planta_base.py`, não escrita à mão.
 | L3 | leste | 2.20/2.21 | 14,80–17,87 | 3,07 m | emergência, recuo de 3 m |
 | L4 | leste | 2.22/2.23 | 2,95–6,01 | 3,06 m | emergência, recuo de 3 m |
 | S1 | sul | carga oeste | 7,83–11,45 | 3,62 m | a definir (porta de carga) |
-| S2 | sul | *sem código* | 13,25–14,45 | 1,20 m | **emergência confirmada no local (02/09), permanentemente aberta, sem recuo** |
+| S2 | sul | *sem código* | 13,25–14,45 | 1,20 m | **saída de eleitores**; emergência confirmada no local (02/09), permanentemente aberta, sem recuo; posição e vão estimados sobre foto |
 | S3 | sul | 2.7 | 17,22–18,47 | 1,25 m | a definir |
-| S4 | sul | 2.5/2.6 | 19,10–25,03 | 5,93 m | a definir |
-| S5 | sul | 2.4 | 25,32–31,25 | 5,93 m | a definir |
-| S6 | sul | 2.2/2.3 | 31,54–37,47 | 5,93 m | a definir |
+| S4 | sul | 2.5/2.6 | 19,10–25,03 | 5,93 m | **entrada A** (serpenteado A do Ring 3) |
+| S5 | sul | 2.4 | 25,32–31,25 | 5,93 m | **entrada B** (serpenteado B) |
+| S6 | sul | 2.2/2.3 | 31,54–37,47 | 5,93 m | **entrada C** (serpenteado C) |
 | S7 | sul | 2.1 | 38,09–39,36 | 1,27 m | a definir |
-| S8 | sul | *sem código* | 42,12–43,32 | 1,20 m | **emergência confirmada no local (02/09), permanentemente aberta, sem recuo** |
+| S8 | sul | *sem código* | 42,12–43,32 | 1,20 m | **saída de eleitores**; emergência confirmada no local (02/09), permanentemente aberta, sem recuo; posição e vão estimados sobre foto |
 | S9 | sul | carga leste | 45,12–48,75 | 3,63 m | a definir (porta de carga) |
 | O1 | oeste | acesso Hall 1 | 36,80–38,50 | 1,70 m | a definir |
 | O2 | oeste | 2.10/2.11 | 19,36–22,43 | 3,07 m | a definir; único acesso aos sanitários |
@@ -316,6 +351,9 @@ carga), ainda sem medição no local.
 - S2 e S8 são saídas de emergência permanentemente abertas, sem recuo
   (confirmação do chefe de segurança do RDS em 02/09/2026, a partir de fotos).
 - Recuo das demais saídas de emergência (S3, S7, R1) **não determinado**.
+- **Entradas S4, S5 e S6; saídas S2 e S8** (Posto, 06/09/2026). A planta-base
+  rotula as portas e o Ring 3 (`RING3` em `salao.py`, 39 × 35 m a 14 m da
+  fachada, centrado em S5 por estimativa) passou a fazer parte da geometria.
 
 ### 2.4 Perguntas em aberto da planta-base (ainda sem resposta)
 
@@ -332,7 +370,8 @@ carga), ainda sem medição no local.
 
 | Arquivo | Papel |
 |---|---|
-| `scripts/salao.py` | fonte única da geometria (contorno, faces, portas, recuos), premissas, carga das urnas e simulação simples de fila; `python3 salao.py` imprime a capacidade de parede |
+| `scripts/salao.py` | fonte única da geometria (contorno, faces, portas, recuos, Ring 3), carga das urnas via `comparecimento.py` e simulação simples de fila; `python3 salao.py` imprime a capacidade de parede |
+| `scripts/decisoes.py` | papéis das portas, numeração MRV, classes de carga, atribuição às entradas; lido por `planta_base.py` |
 | `scripts/planta_base.py` + `planta_base_template.html` | gera `saidas/planta_base.svg` e `saidas/planta_base.html`; define a numeração N/L/S/O/R |
 | `scripts/desenho.py`, `scripts/estilo_plano.css` | primitivas de desenho e estilo das peças de leitura |
 | `docs/CONTEXTO.md` | documento de passagem: geometria, premissas, restrições, perguntas em aberto |
@@ -375,10 +414,13 @@ ficar vazios o dia inteiro.
 **Planta final (cenários A e B, mesmas 28 posições):** 8 na parede norte, 12
 na fileira recuada da fachada leste, 2 na face norte do recorte, 6 na parede
 oeste; fachada sul sem mesa nenhuma (as nove portas fragmentam os 42,5 m).
-Numeração **1 a 28 em circuito horário a partir do canto noroeste**: 1–8 norte
-(oeste → leste), 9–20 descendo a fileira leste, 21–22 no recorte, 23–28 subindo
-a parede oeste. Capacidade com a mesma folga: 30; apertando ao mínimo: 34. As
-duas excedentes retiradas foram escolhidas sobre o desenho (`mesas.AJUSTE_28`).
+**O número da mesa é o MRV do DJE** e não muda quando ela é movida. A posição
+inicial de cada MRV na planta oficial segue o circuito horário a partir do
+canto noroeste: 1–8 norte (oeste → leste), 9–20 descendo a fileira leste, 21–22
+no recorte, 23–28 subindo a parede oeste; por isso, na planta oficial, as três
+mesas vermelhas (MRV 22, 23, 24) caem juntas no canto sudoeste. Capacidade com
+a mesma folga: 30; apertando ao mínimo: 34. As duas excedentes retiradas foram
+escolhidas sobre o desenho (`mesas.AJUSTE_28`).
 
 - **Cenário A:** S1 e S9 fechadas e sem papel.
 - **Cenário B:** S1 e S9 em uso, cada uma com vestíbulo de 2 m e divisória. A
@@ -407,7 +449,11 @@ validadas por `mesas.py`. Ferramentas, na versão final (PR #10, 06/09):
 | Desfazer / refazer | histórico |
 | **Alinhar à parede (N, L, O, S)** | move as mesas da parede escolhida só no eixo perpendicular, para a distância em que mais mesas já estão (ou a da mesa selecionada); recorte conta como parede |
 | **Pares** | detecta pares por proximidade (não pela numeração), mede corredor de cada par (alvo 3,00, mín. 2,50) e folga até o par vizinho (alvo 1,50, mín. 1,00), lista mesas sem par; na planta oficial dá 14 pares de 3,00 m |
-| Avisos de conflito | mesa fica vermelha se cair fora do salão, sobre zona protegida, sobre vão de porta ou sobre outra mesa |
+| **Cor por carga esperada** | mesa vermelha (as 3 de maior comparecimento), amarela (médio) ou verde (baixo), de `decisoes.py`; legenda com a lista de MRVs de cada classe; pode ser desligada |
+| **Papéis das portas** | S4/S5/S6 rotuladas ENTRADA A/B/C, S2/S8 SAÍDA, com as cores da decisão |
+| **Ring 3 e apron** | contorno do Ring 3 ao sul da fachada, com a capacidade de cada entrada e a linha até a sua porta; botão **+Ring 3** enquadra os dois |
+| Painel de seleção | além das cotas, mostra seções, esperado, classe e entrada da mesa |
+| Avisos de conflito | mesa ganha contorno roxo tracejado se cair fora do salão, sobre zona protegida, sobre vão de porta ou sobre outra mesa |
 | Salvar | guarda no `localStorage` do navegador **e** copia o JSON |
 | Apagar / ocultar / mostrar ocultos | cenário local pode ser apagado; cenário da lista publicada só pode ser ocultado naquele navegador |
 | Colar cenário… | abre um JSON colado |
@@ -464,21 +510,24 @@ duplas (5,6) e (7,8) recuam 2,00 m para oeste e a coluna leste (9 a 20) sobe
 2,60 m. Resultado medido por `scripts/folgas_prancheta.py`: pior folga lateral
 do salão sobe de 0,98 para 1,16 m; pior fila de 0,98 para 2,70 m; único custo
 relevante, a fila da mesa 9 encurta de 4,29 para 2,70 m. Limite: a fachada leste
-não comporta mesa isolada com 3,00 m dos dois lados (2,70 é o máximo). **Ponto
-em aberto do próprio PR:** "22, 23 e 24" são posições da prancheta (numeração
-geográfica), tomadas como as mesas de maior movimento; isso só é verdade se a
-posição *k* receber a MRV *k* do DJE (ver §9.2).
+não comporta mesa isolada com 3,00 m dos dois lados (2,70 é o máximo). O ponto
+em aberto do PR ("22, 23 e 24 são posições, não urnas verificadas") **ficou
+resolvido pela decisão de numeração**: com o MRV do DJE como identidade, as
+mesas 22, 23 e 24 são exatamente as três vermelhas (3313, 3315, 3322). Por
+isso este é o arranjo que a varredura escolheu para o Cenário Claude do
+simulador (§4.3).
 
 ### 3.4 Arquivos e como rodar
 
 ```bash
 cd scripts
+python3 gera_decisoes.py # data/decisoes.json
 python3 salao.py         # confere dados e capacidade de parede
 python3 planta_base.py   # planta-base
 python3 mesas.py         # as 8 combinações da ideia, com validação
 python3 gera_mesas.py    # saidas/mesas.json, SVGs e saidas/mesas.html
 cd ..
-python3 scripts/gera_editor.py     # saidas/editor_dados.json e editor.html (a prancheta)
+python3 scripts/gera_editor.py     # saidas/editor_dados.json, editor.html (a prancheta) e data/prancheta_hall2.json
 node scripts/teste_prancheta.js    # 447 verificações
 python3 scripts/folgas_prancheta.py [cenarios/<arquivo>.json]   # folga lateral e fila por mesa
 python3 scripts/salva_cenario.py arquivo.json                    # grava no branch cenarios-hall2
@@ -491,136 +540,145 @@ python3 scripts/salva_cenario.py arquivo.json                    # grava no bran
 | `scripts/gera_editor.py`, `editor_template.html` | a prancheta (`saidas/editor.html`, `editor_dados.json`) |
 | `scripts/cenarios.py`, `salva_cenario.py`, `cenarios/README.md` | biblioteca de cenários e seu fluxo |
 | `scripts/folgas_prancheta.py` | mede folga lateral e profundidade de fila mesa a mesa, sai com código 1 em conflito |
-| `data/prancheta_hall2.json` | a mesma geometria de `saidas/editor_dados.json` (sem a lista de cenários), congelada para o simulador e para o `folgas_prancheta.py` |
+| `data/prancheta_hall2.json` | a mesma geometria de `saidas/editor_dados.json` (sem a lista de cenários, com o bloco `decisoes`), reescrita por `gera_editor.py` para o simulador e o `folgas_prancheta.py` |
 
 ---
 
 ## 4. Simulados de fluxo
 
-Há **três modelos de simulação** no repositório, de escopo e premissas
-diferentes. Não somar nem comparar os resultados de um com os de outro sem
-olhar a tabela do §9.4.
+Há **três modelos de simulação** no repositório, de escopo diferente. Desde
+06/09/2026 os três usam o mesmo comparecimento (base B, 11.499) e a mesma
+numeração; as curvas de chegada continuam diferentes (§9.4).
 
-### 4.1 Simulação de fila por urna em `scripts/salao.py` (etapa 2, 01/09)
+### 4.1 Simulação de fila por urna em `scripts/salao.py` (etapa 2)
 
 Passos de 5 min sobre o perfil de chegada 8/13/15/14/12/11/10/9/8% (8h–17h),
 55 s por eleitor como ponto de projeto, uma urna por mesa, fila serial. Serve
 para dimensionar baias de fila na parede.
 
-| s/eleitor | fila de pico somada nas 28 | maior fila | urnas com fila > 10 | última a fechar |
+| s/eleitor | soma dos picos de fila das 28 | maior fila | urnas com fila > 10 | última a fechar |
 |---|---|---|---|---|
 | 45 | 33 | 12 | 2 | 17h00 |
-| 50 | 100 | 32 | 3 | 17h00 |
-| **55** | **241** | **57** | **6** | **17h20** |
-| 60 | 436 | 84 | 11 | 18h05 |
-| 70 | 929 | 136 | 14 | 19h35 |
-| 90 | 2.165 | 230 | 23 | 22h45 |
+| 50 | 114 | 32 | 3 | 17h00 |
+| **55** | **261** | **57** | **7** | **17h20** |
+| 60 | 465 | 84 | 11 | 18h05 |
+| 70 | 968 | 136 | 15 | 19h35 |
+| 90 | 2.227 | 230 | 23 | 22h45 |
 
-Conclusão: o tempo de atendimento domina (fator 65 entre 45 e 90 s); o método
+Conclusão: o tempo de atendimento domina (fator 67 entre 45 e 90 s); o método
 de identificação é decisão de layout tanto quanto de procedimento.
 
-### 4.2 Modelo de fila por urna em `scripts/simula_fluxo.py` (etapa 5, 05–06/09)
+### 4.2 Modelo de fila por urna em `scripts/simula_fluxo.py` (etapa 5)
 
 Separa duas perguntas com soluções diferentes: **horário de fechamento**
 (vazão pura, depende só do ciclo por eleitor) e **tamanho da fila** (curva de
 chegada, dimensiona o Ring 3). Perfil de chegada por hora .12/.15/.16/.15/.12/
-.09/.08/.07/.06 (e um "agudo" alternativo); comparecimento 74/50 = 11.416.
-Como o eleitor no exterior vota só para Presidente, o voto é curto (~22 s) e a
-busca no caderno domina.
+.09/.08/.07/.06 (e um "agudo" alternativo). Como o eleitor no exterior vota só
+para Presidente, o voto é curto (~22 s) e a busca no caderno domina.
 
-| Arranjo da mesa | t_id | ciclo nas T1 | urnas atrasadas | fila total no pico | fecha |
+| Arranjo da mesa | t_id | ciclo nas vermelhas | urnas atrasadas | fila total no pico | fecha |
 |---|---|---|---|---|---|
-| Serial (fila única, identifica depois vota) | 45 s | 67 s | 6/28 | 1.058 | 18h59 |
-| Serial | 55 s | 77 s | 12/28 | 1.637 | 20h37 |
-| Serial | 65 s | 87 s | 16/28 | 2.240 | 22h15 |
-| Serial | 75 s | 100 s | 21/28 | 2.974 | 24h23 |
-| Pipeline (identifica o próximo enquanto o anterior vota) | 55 s | 55 s | 1/28 | 439 | 17h01 |
-| Pipeline | 65 s | 65 s | 3/28 | 935 | 18h39 |
+| Serial (fila única, identifica depois vota) | 45 s | 67 s | 7/28 | 1.102 | 18h59 |
+| Serial | 55 s | 77 s | 12/28 | 1.692 | 20h37 |
+| Serial | 65 s | 87 s | 16/28 | 2.296 | 22h15 |
+| Serial | 75 s | 100 s | 22/28 | 3.039 | 24h23 |
+| Pipeline (identifica o próximo enquanto o anterior vota) | 55 s | 55 s | 1/28 | 464 | 17h01 |
+| Pipeline | 65 s | 65 s | 6/28 | 982 | 18h39 |
 | **Dois cadernos em paralelo, um por seção** | 45–75 s | 22–38 s | **0/28** | **0** | **17h00** |
 
 Achados de `saidas/analise_gargalos.md`:
 
-- Teto aritmético: 590 eleitores ÷ 540 min = **54,9 s por eleitor** na 3313. O
-  precipício está entre 50 e 60 s; a 60 s falham exatamente 3313, 3322 e 3315.
+- Teto aritmético: 590 eleitores ÷ 540 min = **54,9 s por eleitor** na MRV 22
+  (3313). O precipício está entre 50 e 60 s; a 60 s falham exatamente as três
+  vermelhas.
 - Comunicação dirigida (pedir às seções críticas que evitem o pico) reduz a
-  fila de pico (113 → 52) mas **não altera o fechamento** (17h51 vs 17h50).
+  fila de pico mas **não altera o fechamento**.
 - **O gargalo é a mesa, não a urna**: 23 das 28 urnas acumulam duas seções, logo
   dois cadernos; com os 3 mesários é possível operar duas posições de
   identificação em paralelo alimentando uma urna. Fecha às 17h00 mesmo com
   caderno lento (t_id 110 s ainda fecha 17h03). É a negociação a abrir com o
   Cartório e não custa nada ao TRE.
-- Estratificação: **T1** 3313, 3322, 3315 (586–590, 55 s disponíveis); **T2**
-  3142, 3161, 3245, 3302, 3305, 3306, 3108 (474–492, 66–68 s); **T3** 13 urnas
-  (310–466, 69–104 s); **T4** 3688, 3862, 3832, 3308, 3442 (295–296, 110 s). A
-  folga de T3/T4 não absorve carga de T1: redistribui-se recurso, nunca eleitor.
+- Estratificação = classes da prancheta: **T1 / vermelhas** MRV 22, 24, 23
+  (586–590, 55 s disponíveis); **T2 / amarelas** MRV 16, 18, 11, 15, 17, 9, 10,
+  21 (466–518, 63–70 s); **T3** 12 urnas (311–423, 77–104 s) e **T4** as 5 de
+  seção única (295–296, 110 s), ambas verdes. A folga de T3/T4 não absorve
+  carga de T1: redistribui-se recurso, nunca eleitor.
 
 ### 4.3 Simulador de fluxo do Hall 2 (`saidas/simulador_fluxo.html`, etapa 4)
 
 Simulação **por eventos discretos, eleitor a eleitor**, do dia inteiro, sobre
 o arranjo real das 28 mesas. Motor em `simulador/modelo.js` (roda no navegador
 e em Node), interface em `simulador/app.js` + `template.html`, tudo embutido
-por `scripts/gera_simulador.py`. Três telas: **Premissas**, **Simulação**
-(planta minuto a minuto) e **Resultado** (relatório com critérios aprovados, em
-atenção ou reprovados).
+por `scripts/gera_simulador.py` junto com o bloco de decisões. Três telas:
+**Premissas**, **Simulação** (planta minuto a minuto) e **Resultado**
+(relatório com critérios aprovados, em atenção ou reprovados).
 
-Estágios do eleitor: chegada ao Ring 3 → triagem → fila da área → porta com
+Estágios do eleitor: chegada ao Ring 3 → triagem → fila da entrada → porta com
 liberação controlada → buffer → checkpoint → fila da mesa → mesa (identificação
 pelo caderno) e urna em pipeline → saída.
 
-**Fixo em todos os cenários:** identificação pelo caderno; liberação controlada;
-curva de chegada em fatias de 30 min das 7h às 17h com 8% chegando antes da
+**O que vem das decisões (não é mais premissa de quem simula):** o número da
+mesa é o MRV do DJE (sem remapeamento); as zonas são as **entradas A, B e C do
+Ring 3**, cada uma com as mesas que `decisoes.py` lhe atribuiu e com a
+capacidade do seu serpenteado mais baia; as portas padrão são S4/S5/S6 de
+entrada e S2/S8 de saída (a página avisa e oferece o botão de volta se o
+cenário se afastar disso); o comparecimento de cada mesa é o da base B, com
+presets "pequeno" (−15 %) e "grande" (+15 %) só para sensibilidade; a classe
+de fila de cada mesa é a sua cor (vermelha/amarela/verde); a capacidade do
+Ring 3 é 1.402 no total e é conferida também por entrada (445/513/445).
+**Fixo em todos os cenários:** identificação pelo caderno; liberação
+controlada; curva de chegada em fatias de 30 min das 7h às 17h com 8% antes da
 abertura, vale entre 12h e 15h e repique perto das 17h (apoiada na pesquisa do
 §7); caminhada a 1,2 m/s; 0,6 m por pessoa em fila; 200 m de fita de unifila
-contratados. **Premissas de quem simula:** portas de entrada e saída na fachada
-sul; número e recorte das zonas; onde a numeração MRV começa e o sentido;
-checkpoint (existência, distância, atendentes, segundos por eleitor); fila por
-peso de mesa (leve ≤ 500 aptos, média 501–700, pesada > 700); política de
-liberação (buffer, só se a mesa tem vaga, livre); vazão da porta; comparecimento
-(pequeno 62/40, médio 74/50, grande 84/60); tempos de identificação (30/45/60/90
-s) e voto, variabilidade; justificativas; triagem e capacidade do Ring 3
-(padrão 800); dias simulados e semente.
+contratados. **Premissas de quem simula:** o arranjo das mesas (biblioteca da
+prancheta), checkpoint (existência, distância, atendentes por entrada,
+segundos por eleitor), fila por classe de mesa, política de liberação, vazão da
+porta, tempos de identificação (30/45/60/90 s) e voto, variabilidade,
+justificativas, triagem e capacidade do Ring 3, dias simulados e semente.
 
-Onze critérios de veredito: última mesa fecha até 17h30; mesas pesadas sem
+Onze critérios de veredito: última mesa fecha até 17h30; mesas vermelhas sem
 "fome" (≤ 10 min); espera P90 ≤ 45 min; fila interna não volta até a porta;
 checkpoint ≤ 80% de ocupação; portas equilibradas (≤ 1,25×); saída não corta
 corredor de entrada; fita ≤ 200 m; filas cabem no espaço; Ring 3 comporta a
-fila externa (≤ capacidade informada); triagem ≤ 75%.
+fila externa (total e por entrada); triagem ≤ 75%.
 
-**Cenário Claude**, escolhido por `simulador/varredura.js` entre **4.228
-combinações** (resultado em `saidas/varredura_top.json`): três zonas
-geográficas (parede norte 8 mesas, fachada leste 12, recorte + oeste 8);
-entradas pelas três portas duplas do meio (S5 → norte, S6 → leste, S4 → oeste);
-saídas pelas portas de carga S1 e S9; MRV 1 começa na parede leste (MRV 1–12
-leste, 13–20 oeste, 21–28 norte); checkpoint a 14 m com 2/3/2 atendentes; filas
-de 4/5/8 por classe; mesas 23 e 24 deslocadas ao norte. Resultado com 4 dias
-simulados (`node simulador/teste_modelo.js claude 4`): última mesa fecha 17h03
-(p50) / 17h05 (p90); espera P90 de 56 min (47 fora, 20 dentro); pico de 344
-pessoas dentro e ~950–990 fora; 180 m de fita; zero cruzamentos. Ficam em
-atenção a espera, o desequilíbrio entre portas (1,35×) e o Ring 3 com 800 de
-capacidade informada (o plano do §5 chegou depois a 1.402).
+**Cenário Claude (06/09/2026)**, escolhido por `simulador/varredura.js` sobre
+as portas e entradas da decisão, variando o arranjo (planta oficial e os quatro
+cenários da prancheta), a distância e a lotação do checkpoint e as filas por
+classe (resultado em `saidas/varredura_top.json`): arranjo **"Três polos"** (as
+três vermelhas separadas, MRV 24 na parede norte, 23 na fachada leste, 22 no
+recorte), checkpoint a 16 m com 3 atendentes por entrada, filas 3/4/6. Resultado
+com 16 dias (`node simulador/teste_modelo.js claude 16`): última mesa fecha
+17h03 (p50) / 17h04 (p90); espera P90 de 50 min (33 fora, 22 dentro); pico de
+318 pessoas dentro e ~970 fora (1.005 no dia ruim), com a entrada B em 478 das
+513 que cabem; 157 m de fita; zero cruzamentos; desequilíbrio 1,16×. Só a
+espera fica em atenção; todos os demais critérios passam. Os três cenários
+salvos sem conflito (Três polos, Hamad1, Hamad 2) empatam dentro de 1 min de
+espera; o Hamad_3polos tem a mesa 4 sobre o vão de N2 e fica fora.
 
-**Biblioteca de arranjos (PR #9 e #10):** o bloco *Salão* lista, com miniatura
-e conferência geométrica, três origens: planta oficial (A e B), arranjos da
+**Biblioteca de arranjos:** o bloco *Salão* lista, com miniatura e
+conferência geométrica, três origens: planta oficial (A e B), arranjos da
 prancheta embutidos pelo gerador (os quatro de `cenarios/`) e arranjos
 carregados na hora (JSON colado ou arquivo, no `localStorage`). O simulador
-consome a geometria de `saidas/editor_dados.json` (o arquivo que a prancheta
-acabou de escrever) e avisa se `data/prancheta_hall2.json` ficar para trás.
+consome a geometria de `saidas/editor_dados.json` (que a prancheta acabou de
+escrever) e avisa se `data/prancheta_hall2.json` ficar para trás.
 `simulador/teste_arranjos.js` (24 asserções) cobre leitura dos dois formatos,
-lixo, mesa repetida e detecção de conflito.
+lixo, mesa repetida e detecção de conflito; `teste_modelo.js` confere
+identidade MRV, classes, esperado e conservação de eleitores.
 
 **Rascunho superado (PR #4):** `saidas/simulador_fluxo_hall2.html`, com um
-esquema do salão desenhado à mão em vez da planta-base; o próprio PR o marca
-como não utilizável. Não está na árvore consolidada; fica no histórico
-(`git show 6e9c5d1:saidas/simulador_fluxo_hall2.html`).
+esquema do salão desenhado à mão em vez da planta-base; não está na árvore
+consolidada, fica no histórico (`git show 6e9c5d1:saidas/simulador_fluxo_hall2.html`).
 
 ### 4.4 Como rodar
 
 ```bash
+python3 scripts/gera_decisoes.py       # data/decisoes.json (os testes em Node leem daqui)
 python3 scripts/gera_editor.py         # antes, porque o simulador lê editor_dados.json
 python3 scripts/gera_simulador.py      # saidas/simulador_fluxo.html
 node simulador/teste_arranjos.js
 node simulador/teste_modelo.js claude 16
-node simulador/varredura.js 3          # demora alguns minutos
+node simulador/varredura.js 3          # alguns segundos por dia simulado
 python3 scripts/simula_fluxo.py        # tabelas do §4.2
 python3 -c "import sys; sys.path.insert(0,'scripts'); import simula_fluxo as m; m._relatorio_entradas()"
 ```
@@ -647,26 +705,26 @@ dimensões lineares**: suficiente para dimensionar, insuficiente para contrato.
 
 ### 5.2 Portas da fachada sul e seus papéis (decisão do plano do Ring 3)
 
-Distâncias medidas na prancheta manual do Posto (`PLANO COM FLUXOS
-MELHORADO.png`), convertidas pela largura declarada de 50,2 m.
+Centros das portas lidos de `scripts/salao.py` (planta do RDS), pela numeração
+da planta-base, desde 06/09/2026 (antes, a prancheta manual do Posto, com
+diferenças de 0,1–0,2 m).
 
-| Porta | Distância do canto sudoeste | Papel |
+| Porta | Centro, do canto sudoeste | Papel |
 |---|---|---|
-| S1 | 9,5 m | — |
-| **S2** | 13,7 m | **SAÍDA** |
-| S3 | 17,7 m | — |
-| **S4** | 21,9 m | **ENTRADA A** |
-| **S5** | 28,1 m | **ENTRADA B** |
-| **S6** | 34,3 m | **ENTRADA C** |
-| S7 | 38,6 m | — |
-| **S8** | 42,6 m | **SAÍDA** |
-| S9 | 46,8 m | — |
+| S1 | 9,6 m | — |
+| **S2** | 13,9 m | **SAÍDA** |
+| S3 | 17,8 m | — |
+| **S4** | 22,1 m | **ENTRADA A** |
+| **S5** | 28,3 m | **ENTRADA B** |
+| **S6** | 34,5 m | **ENTRADA C** |
+| S7 | 38,7 m | — |
+| **S8** | 42,7 m | **SAÍDA** |
+| S9 | 46,9 m | — |
 
 As três entradas estão a 6,2 m uma da outra (passo apertado, que vem do
 prédio); as saídas ficam nos flancos, fora do vão das entradas, de modo que quem
-sai não cruza fila de entrada. A planta do RDS numera as mesmas aberturas como
-2.1–2.23 com posições que não coincidem exatamente com a prancheta; a aferição
-em campo resolve.
+sai não cruza fila de entrada. S2 e S8 estão estimadas sobre foto (1,20 m de
+vão) e precisam de medição no local.
 
 ### 5.3 Layout
 
@@ -721,29 +779,29 @@ tratam como fita interna do Hall 2.
 
 ### 5.5 Atribuição das urnas às entradas
 
-Proporcional à capacidade (quotas 31,7 / 36,6 / 31,7%), com uma urna T1 em cada
-entrada. Saída atual de `simula_fluxo._relatorio_entradas()` (desvio máximo de
-7 eleitores em 11.416):
+Em `scripts/decisoes.py` (`atribui_entradas`), proporcional à capacidade das
+entradas (quotas 31,7 / 36,6 / 31,7%), com uma mesa vermelha em cada; a
+mesma lista alimenta a prancheta, o simulador e a sinalização (desvio máximo
+de 8 eleitores em 11.499):
 
-| Entrada | Urnas | Esperado | Lista |
+| Entrada | Mesas | Esperado | MRV (seção) |
 |---|---|---|---|
-| A (S4) | 9 | 3.614 | 513, 1352, 3229, 3302, 3306, 3309, **3322**, 3688, 3832 |
-| B (S5) | 10 | 4.185 | 511, 517, 3054, 3078, 3142, 3161, 3305, 3311, **3313**, 3442 |
-| C (S6) | 9 | 3.618 | 512, 1160, 3108, 3179, 3216, 3245, 3308, **3315**, 3862 |
+| A (S4) | 9 | 3.642 | 3 (513), 5 (1160), 9 (3108), 12 (3179), 15 (3245), 20 (3309), **24 (3322)**, 26 (3688), 28 (3862) |
+| B (S5) | 10 | 4.215 | 1 (511), 4 (517), 7 (3054), 8 (3078), 16 (3302), 17 (3305), 18 (3306), 21 (3311), **22 (3313)**, 25 (3442) |
+| C (S6) | 9 | 3.642 | 2 (512), 6 (1352), 10 (3142), 11 (3161), 13 (3216), 14 (3229), 19 (3308), **23 (3315)**, 27 (3832) |
 
-> As listas impressas em `plano_ring3.md` §6 (com 3313 em A, 3315 em B, 3322 em
-> C e contagens 11/6/11) estão **defasadas** em relação ao script; a tabela de
-> totais do mesmo §6 (9/10/9) já bate com o script. Ver §9.5.
+`plano_ring3.md` §6 foi regerado com esta tabela (antes trazia listas de uma
+versão anterior do script).
 
 ### 5.6 O Ring 3 comporta a fila prevista?
 
 | Arranjo da mesa | Fila total no pico | Cabe em Hall 2 (~1.100) + Ring 3 (1.402)? |
 |---|---|---|
 | Dois cadernos em paralelo | 0 | sim, o Ring 3 nem abre |
-| Pipeline, 55 s | 439 | sim, só no Hall 2 |
-| Serial, 55 s | 1.637 | sim, com os serpenteados |
-| Serial, 65 s | 2.240 | sim, com o flanco aberto |
-| Serial, 75 s | 2.974 | **não: transborda para a Merrion Road** |
+| Pipeline, 55 s | 464 | sim, só no Hall 2 |
+| Serial, 55 s | 1.692 | sim, com os serpenteados |
+| Serial, 65 s | 2.296 | sim, com o flanco aberto |
+| Serial, 75 s | 3.039 | **não: transborda para a Merrion Road** |
 
 **O Ring 3 é apólice contra erro de previsão, não solução do gargalo.** Quem
 resolve é o arranjo de dois cadernos em paralelo.
@@ -772,7 +830,8 @@ resolve é o arranjo de dois cadernos em paralelo.
 1. Aferir as dimensões do Ring 3 e a distância do seu bordo oeste ao canto
    sudoeste do Hall 2 (translada o conjunto para os eixos coincidirem com as
    portas).
-2. Conciliar S1–S9 (prancheta) com 2.1–2.23 (planta do RDS).
+2. Medir no local posição e vão de S2 e S8 (estimados sobre foto), as saídas
+   de ~11,5 mil eleitores por dois vãos de 1,20 m.
 3. Submeter o pedido de +100 separadores (~EUR 1.302) e dimensionar o interior
    do Hall 2 à parte.
 4. Cotar cobertura leve para os serpenteados.
@@ -809,8 +868,8 @@ sul → saída por S2/S8 sem reentrar no Ring 3.
 | P1 Portão de entrada | no vão do portão | entrada confirmada; primeira consulta; desvio dos sem seção | pórtico + tabela mestra completa + "não sabe sua seção? →" | 1 pórtico, 3 painéis, 1 totem do balcão |
 | P2 Corredor da lateral leste | nos três vãos entre as quatro saídas de emergência, a 10,75 / 22,50 / 33,90 m do canto norte, mais dois no gradil | nada; repete a consulta no tempo morto | a mesma tabela mestra + "Ring 3 →" | 3 painéis de 1,8 × 1,2 m + 2 lonas |
 | P3 Garganta sudeste | funil de entrada do Ring 3, junto aos 3 agentes de pré-triagem | última consulta; divisão nos três serpenteados | tabela mestra + três totens com as faixas de mesas | 2 painéis, 3 totens de 3 m |
-| P4 Cabeças dos serpenteados | início de cada bloco, no corredor de distribuição | confirmação; captura de quem errou enquanto cabe corrigir | corpo grande + faixa de mesas + "errou? volte →" | 3 totens, 1 faixa |
-| P5 Portas de entrada | no vidro da fachada sul, lidas de dentro do serpenteado | só confirmação de que ali se entra | "ENTRADA" em 300 mm + faixa da cor da fila | 3 bandeirolas de fachada (vinil no vidro) |
+| P4 Cabeças dos serpenteados | início de cada bloco, no corredor de distribuição | confirmação; captura de quem errou enquanto cabe corrigir | identidade da fila (cor ou letra, a decidir) em corpo grande + lista das mesas + "errou? volte →" | 3 totens, 1 faixa |
+| P5 Portas de entrada | no vidro da fachada sul, lidas de dentro do serpenteado | só confirmação de que ali se entra | "ENTRADA" em 300 mm + identidade da fila (cor ou letra, a decidir) | 3 bandeirolas de fachada (vinil no vidro) |
 | P6 Checkpoint interno | logo depois das portas | mesa → posição física | faixas suspensas por bloco + totem por mesa | 3 faixas, 28 totens |
 | P7 Saídas S2 e S8 | flancos da fachada sul | encaminha para a rua | "SAÍDA / WAY OUT → Merrion Road" | 2 internos, 2 externos |
 
@@ -825,14 +884,16 @@ sul → saída por S2/S8 sem reentrar no Ring 3.
   7 m, com fixação suspensa. Uma medida de trena decide o método: base lisa
   acima de 2,2 m → vinil; ~1,3 m → chapa rígida parafusada.
 - **O RDS já usa letra para portão (Gate D, Gate G) e número para pavilhão ("2
-  Shelbourne Hall")**, em azul-marinho com branco. Decisão da versão final:
-  **as portas não são nomeadas**; o cartaz diz apenas ENTRADA com a faixa de cor
-  da raia que descarrega ali; a identidade da fila mora na raia. As letras A/B/C
-  ficam como rótulo interno de planejamento. Nossas peças nunca em azul-marinho
-  com branco.
-- **Código de cor das três filas: azul, âmbar e magenta**, distinguíveis em
-  deuteranopia e protanopia; a cor nunca aparece sozinha, sempre com o número
-  da mesa.
+  Shelbourne Hall")**, em azul-marinho com branco: é o argumento a favor da
+  cor. **Se a identidade da fila será cor ou letra não está decidido** (Posto,
+  06/09/2026); o plano registra as duas opções e o cartaz diz ENTRADA mais a
+  identidade da fila que descarrega ali. As letras A/B/C são rótulos de
+  planejamento, os mesmos do Ring 3 e do simulador. Nossas peças nunca em
+  azul-marinho com branco.
+- **Código de cor das três filas, se a escolha for cor: azul, âmbar e
+  magenta**, distinguíveis em deuteranopia e protanopia; a cor nunca aparece
+  sozinha, sempre com o número da mesa. Não confundir com vermelho/amarelo/
+  verde, que na prancheta e no simulador marcam a carga da mesa.
 - **A placa EXIT** citada no briefing não aparece em nenhuma das 21 fotos (há
   "ENTRY" pintado no piso e uma placa em bronze, ambos de veículos); risco
   reescrito como dúvida.
@@ -847,26 +908,28 @@ Razão de 1 mm de letra por 200 mm de distância, entre a regra da International
 Sign Association (1:120) e o limite de acuidade (1:600), com ~25% de margem
 para chuva, ângulo e céu encoberto.
 
-### 6.5 Distribuição das mesas pelas portas (ilustrativa e reversível)
+### 6.5 Distribuição das mesas pelas entradas
 
-Equilibrada por **comparecimento esperado 74/50**, em serpentina sobre a lista
-ordenada, o que separa as três mesas pesadas uma por porta; numeração M1–M28
-contígua por porta para a placa poder dizer "Mesas 1–9".
+Desde 06/09/2026 a sinalização usa a atribuição do plano do Ring 3
+(`decisoes.py`, §5.5) e a numeração MRV do DJE, em vez de uma distribuição
+própria com numeração M1–M28 em blocos contíguos. A placa de cada fila lista
+os MRVs da entrada.
 
-| Porta | Cor | Mesas | Aptos | Esperado | Mais pesada |
-|---|---|---|---|---|---|
-| A | azul | 9 (M1–M9) | 5.418 | 3.667 | M7 = urna 3313 (590) |
-| B | âmbar | 9 (M10–M18) | 5.403 | 3.713 | M17 = urna 3322 (588) |
-| C | magenta | 10 (M19–M28) | 5.973 | 4.038 | M27 = urna 3315 (586) |
+| Entrada | Porta | Cor da raia | Mesas | Aptos | Esperado | Cabe no Ring 3 | Mais pesada |
+|---|---|---|---|---|---|---|---|
+| A | S4 | azul | 9 | 5.336 | 3.642 | 445 | MRV 24 (3322, 588) |
+| B | S5 | âmbar | 10 | 6.199 | 4.215 | 513 | MRV 22 (3313, 590) |
+| C | S6 | magenta | 9 | 5.259 | 3.642 | 445 | MRV 23 (3315, 586) |
 
-A correspondência M → urna está na tabela do §1.4. **A tabela mestra tem 51
-linhas ordenadas por seção, não 28 por mesa**: são 23 seções agregadas, e um
-eleitor da 3889 precisa encontrar "3889"; num quadro por mesa, ~7 mil
-eleitores não se acham e vão ao balcão de dúvidas.
+**A tabela mestra tem 51 linhas ordenadas por seção, não 28 por mesa**: são 23
+seções agregadas, e um eleitor da 3889 precisa encontrar "3889"; num quadro
+por mesa, ~7 mil eleitores não se acham e vão ao balcão de dúvidas.
 
 Dimensionamento de leitura: 21 chegadas/min em média, 38/min no pico (premissa
 1,8×), 15 s por leitura (premissa) → ~10 posições simultâneas → 4 painéis de
-1,2 m, ou o equivalente replicado ao longo do corredor.
+1,2 m, ou o equivalente replicado ao longo do corredor. O trecho do plano que
+cita o quantitativo do Ring 3 é gerado por `layout_ring3.py` (596,3 m, 300
+separadores, 100 a adquirir, 1.402 pessoas).
 
 ### 6.6 Riscos e confirmações pendentes
 
@@ -880,14 +943,15 @@ Dimensionamento de leitura: 21 chegadas/min em média, 38/min no pico (premissa
   vagas em frente às portas na véspera; acordo formal com o RDS sobre veículos.
 - As três entradas a 6,2 m: a correção de rota tem de estar em P4, não na
   descarga.
-- Numeração S1–S9 vs 2.1–2.23 a fechar em campo antes de imprimir.
+- Posição e vão de S2 e S8 a medir em campo antes de imprimir.
 - Fator de pico 1,8× é premissa, não medida; o precedente de Dublin 2022
   sugere fila que nunca esvazia em vez de pico isolado.
 - Balcão "não sei minha seção" em P1, recuado, com 2–3 operadores e caderno
   impresso (Wi-Fi no portão não confirmado).
 - Sinalizar a rota prioritária desde a rua (P0 e portão).
-- **A numeração das mesas precisa estar congelada antes de qualquer impressão**;
-  a decisão sobre os nomes das portas contamina todas as peças.
+- **A atribuição mesa → entrada e a identidade de cada fila (cor ou letra)
+  precisam estar congeladas antes de qualquer impressão**; a numeração MRV,
+  essa é a do DJE e não muda.
 
 Próxima etapa já encaminhada: sinalização interna **por par de mesas, suspensa
 nas treliças** (14 peças em vez de 28), condicionada a autorização de rigging
@@ -896,7 +960,7 @@ emergência, detector de fumaça ou placa de EXIT.
 
 ```bash
 pip install Pillow            # para embutir as fotos
-python3 scripts/gera_plano_sinalizacao.py   # falha se a tabela mestra não cobrir as 51 seções
+python3 scripts/gera_plano_sinalizacao.py   # lê decisoes.py e layout_ring3.py; falha se a tabela mestra não cobrir as 51 seções
 ```
 
 ---
@@ -968,112 +1032,96 @@ para o Posto.
 |---|---|---|---|---|---|
 | [#1](https://github.com/hamadmkalaf/eleicoes2026/pull/1) | Desenha o fluxo de votação do RDS Hall 2 — ideia 1, em ilhas | `deisgn-fluxo` (22 commits, 28/08–03/09) | 2, 3 | **Corpo do PR defasado**: descreve a ideia 1 "em ilhas" e a ideia 2 "nas paredes", ambas apagadas em 01/09 (`f03203b`). O head entrega a planta-base, a ideia das mesas pareadas com fileira recuada (28 MRVs), a prancheta e o fluxo de cenários. | via PR #10 (que o contém) |
 | [#2](https://github.com/hamadmkalaf/eleicoes2026/pull/2) | Pesquisa: horários de pico de comparecimento | `claude/eleicoes-brasileiras-horarios-pico-210a6l` (1 commit) | 7 | Só markdown, fontes com link; coerente com o head. | merge limpo |
-| [#3](https://github.com/hamadmkalaf/eleicoes2026/pull/3) | Junta MRVs (DJE/TRE-DF) ao eleitorado por seção | `claude/mrv-secoes-eleitorais-rjvkxf` (2 commits) | 1 | O 2º commit trocou a estimativa binária 74/50 pela taxa por domicílio (total 11.498); o corpo do PR ainda cita "~11.418". Fonte da designação MRV é PDF do DJE transcrito à mão. | merge limpo |
+| [#3](https://github.com/hamadmkalaf/eleicoes2026/pull/3) | Junta MRVs (DJE/TRE-DF) ao eleitorado por seção | `claude/mrv-secoes-eleitorais-rjvkxf` (2 commits) | 1 | A taxa por domicílio deste PR virou a **base B, adotada pelo Posto em 06/09** (`scripts/comparecimento.py`); a designação MRV virou a numeração única das mesas (`scripts/decisoes.py`). Corpo do PR atualizado nesse sentido. | merge limpo |
 | [#4](https://github.com/hamadmkalaf/eleicoes2026/pull/4) | WIP: interior flow scenario simulator | `claude/electoral-flow-simulation-c48buh` (1 commit) | 4 | Rascunho explicitamente não utilizável (esquema do salão desenhado à mão). Superado pelo #5. | `merge -s ours` (histórico preservado, arquivo fora da árvore) |
 | [#5](https://github.com/hamadmkalaf/eleicoes2026/pull/5) | Adiciona simulador de fluxo do Hall 2 | `claude/electoral-flow-simulator-5ihr5v` (2 commits) | 4 | Motor, interface, varredura de 4.228 combinações, Cenário Claude, `data/mrv_secoes.json`, `data/prancheta_hall2.json`. Coerente. | via PR #9 |
-| [#6](https://github.com/hamadmkalaf/eleicoes2026/pull/6) | Plano base do Ring 3 e análise de gargalos | `claude/ring-3-dimensions-estimate-ge0jop` (11 commits, 05–06/09) | 5, 4 | **Corpo do PR defasado** em relação ao head: cita serpenteado de 26 m, 5 balizas, 780 + 390 = 1.170 pessoas, 282 separadores, +82 ≈ EUR 1.068; o head (`8d4b3be`) tem 28,5 m, 3·9·3 balizas, 1.402 pessoas, 300 separadores, +100 ≈ EUR 1.302. Dentro do head, as listas de urnas por entrada do §6 do `plano_ring3.md` estão defasadas do script (§9.5). | merge limpo |
-| [#7](https://github.com/hamadmkalaf/eleicoes2026/pull/7) | Cenário "Três polos" | `claude/prancheta-busy-tables-scenario-h2iwgq` (2 commits) | 3 | Cenário + `folgas_prancheta.py` + `planta_hall2.json` (cópia da geometria). O próprio PR registra que "22/23/24" são posições da prancheta, não urnas verificadas. | merge com conflito em `cenarios/README.md` (juntado); duplicata da geometria retirada |
-| [#8](https://github.com/hamadmkalaf/eleicoes2026/pull/8) | Plano de sinalização | `claude/rds-ballsbridge-signage-points-kml93e` (5 commits, 05–06/09) | 6 | O corpo ainda recomenda "PORTA AZUL/AMARELA/ROXA"; o head decidiu "ENTRADA" sem nome + faixa de cor (azul/âmbar/magenta). O HTML gerado cita números do Ring 3 de uma versão anterior (560,2 m / 281 separadores / 780 + ~490 / faltam 362 m ≈ EUR 2.357), já superados pelo head do #6 (§9.6). | merge limpo |
+| [#6](https://github.com/hamadmkalaf/eleicoes2026/pull/6) | Plano base do Ring 3 e análise de gargalos | `claude/ring-3-dimensions-estimate-ge0jop` (11 commits, 05–06/09) | 5, 4 | O corpo do PR citava a geometria de uma versão anterior (26 m, 1.170 pessoas, +82 separadores); o head tem 28,5 m, 3·9·3 balizas, 1.402 pessoas, +100. As listas de urnas por entrada do §6 estavam defasadas do script; **reharmonizadas nesta branch** a partir de `decisoes.py`, com base B. Corpo do PR atualizado. | merge limpo |
+| [#7](https://github.com/hamadmkalaf/eleicoes2026/pull/7) | Cenário "Três polos" | `claude/prancheta-busy-tables-scenario-h2iwgq` (2 commits) | 3 | Cenário + `folgas_prancheta.py` + `planta_hall2.json` (cópia da geometria). O ponto em aberto ("22/23/24 são posições, não urnas verificadas") ficou resolvido pela numeração MRV como identidade: são as três vermelhas. É o arranjo do Cenário Claude. | merge com conflito em `cenarios/README.md` (juntado); duplicata da geometria retirada |
+| [#8](https://github.com/hamadmkalaf/eleicoes2026/pull/8) | Plano de sinalização | `claude/rds-ballsbridge-signage-points-kml93e` (5 commits, 05–06/09) | 6 | O corpo recomendava nomear as portas por cor e o head afirmava que "não são nomeadas"; **o Posto registra que não há decisão entre cor e letra**, e o plano foi reescrito assim. Os números do Ring 3 passaram a ser lidos de `layout_ring3.py`; a distribuição das mesas e a numeração vêm de `decisoes.py`. Corpo do PR atualizado. | merge limpo |
 | [#9](https://github.com/hamadmkalaf/eleicoes2026/pull/9) | Carrega arranjos da prancheta no simulador | `claude/simulador-fluxo-carregar-sinais-k4qxfw` (3 commits, sobre #5) | 4 | Biblioteca de arranjos, conferência geométrica, `teste_arranjos.js`. A nota "Fora deste PR" (só 2 cenários embutidos) foi resolvida pelo #10. | merge com conflitos add/add resolvidos a favor do #10 |
 | [#10](https://github.com/hamadmkalaf/eleicoes2026/pull/10) | Prancheta: alinhar parede, conferir pares, apagar cenários; junta a biblioteca com o simulador | `claude/prancheta-delete-align-fv9e5o` (2 commits sobre `deisgn-fluxo`, 06/09) | 3, 4 | Versão mais recente da prancheta e do simulador; `scripts/cenarios.py` como leitor único; os 4 cenários versionados. Base do PR é `deisgn-fluxo`, então para o GitHub o diff só mostra os 2 commits finais. | merge limpo |
 
 Observação de método: por causa da estrutura em estrela dos PRs (todos sobre a
 mesma base, sem se enxergarem), vários corpos de PR ficaram defasados em
 relação ao próprio head e entre si. **Quando houver divergência entre um corpo
-de PR e um arquivo desta branch, vale o arquivo.**
+de PR e um arquivo desta branch, vale o arquivo.** O PR #1 foi fechado em
+06/09/2026 a pedido do Posto (sua branch `deisgn-fluxo` fica, por ser a base do
+#10); o #11 é o PR desta branch consolidada.
 
 ---
 
 ## 9. Inconsistências entre etapas e pendências consolidadas
 
-### 9.1 Três totais de comparecimento esperado
+Estado depois da integração de 06/09/2026. Cada item diz o que foi decidido e o
+que ainda falta.
 
-| Total | Onde aparece | Método |
-|---|---|---|
-| 11.416 | `simula_fluxo.py`, `analise_gargalos.md`, `plano_ring3.md`, simulador ("médio (2022)") | 74/50 por urna, a partir de `residencia_urna` |
-| 11.418 | `salao.py`, `docs/CONTEXTO.md`, `plano_sinalizacao.html`, README | 74/50 por seção, arredondado por seção |
-| 11.498 | `saidas/mrv_secoes_comparecimento.md`, `dublin_agregacoes.html` | taxa de 2022 do domicílio de origem de cada seção agregada |
-| ~12.000 | `contexto_eleicoes_dublin_2026.md` (nota verbal) | base histórica, taxa única |
+### 9.1 Comparecimento esperado: resolvido (base B)
 
-A diferença entre 11.416 e 11.418 é só arredondamento. A "por domicílio" é
-mais fina (Longford 77,8%, Limerick 43,4%…), mas de qualidade desigual (proxy,
-genérico). **Nenhuma é oficial.** Ao comparar etapas, usar a mesma base; ao
-apresentar ao TRE, dizer qual foi usada.
+Conviviam 11.416 (74/50 por urna), 11.418 (74/50 por seção), 11.498 (por
+domicílio) e "~12.000" (nota verbal). **Decisão: base B**, taxa de 2022 por
+domicílio de origem de cada seção, em `scripts/comparecimento.py`; total
+**11.499** (arredondado por urna). Os scripts que carregavam 74/50 (`salao.py`,
+`simula_fluxo.py`, `gera_plano_sinalizacao.py`, `simulador/modelo.js`) passaram
+a ler dali; `contexto_eleicoes_dublin_2026.md` ganhou nota de superação.
+**Nenhuma base é oficial**: ao apresentar ao TRE, dizer que é taxa de 2022
+aplicada a 2026. Pendência que a decisão não elimina: metade das taxas por
+condado é proxy ou genérica; o dado de 2022 que existe no repositório (7.492 de
+11.946 no 2º turno, 62,7% no conjunto) merece conferência contra os 74% de
+Dublin.
 
-### 9.2 Quatro numerações para as 28 mesas
+### 9.2 Numeração das mesas: resolvido (MRV do DJE), com uma etapa futura
 
-| Sistema | Quem usa | Regra |
-|---|---|---|
-| **MRV 1–28 (DJE/TRE-DF)** | `mrv_secoes_comparecimento.md`, `data/mrv_secoes.json`, cadernos e mesários | ordem crescente da seção principal (MRV 22 = 3313, 23 = 3315, 24 = 3322) |
-| **Posição 1–28 da prancheta** | `mesas.py`, prancheta, cenários salvos, PR #7 | circuito horário a partir do canto noroeste (1–8 norte, 9–20 leste, 21–22 recorte, 23–28 oeste) |
-| **M1–M28 da sinalização** | `plano_sinalizacao.html` | blocos contíguos por porta (A: M1–M9, B: M10–M18, C: M19–M28), ordenados pela seção principal dentro do bloco |
-| **MRV sobre posição no simulador** | simulador | premissa configurável: "MRV 1 começa na zona X, sentido horário/anti-horário"; no Cenário Claude MRV 1–12 ficam na fachada leste (posições 9–20), 13–20 na oeste, 21–28 na norte |
+Conviviam a MRV do DJE, a posição 1–28 da prancheta, a M1–M28 da sinalização e o
+remapeamento configurável do simulador. **Decisão: só a numeração do DJE, como
+identidade da mesa que não depende da posição.** A prancheta mantém o número
+ao arrastar (a posição inicial ainda é a do circuito geográfico), o simulador
+perdeu o remapeamento (a mesa *n* é a MRV *n*) e a sinalização lista MRVs em vez
+de M1–M28. Consequência útil: o cenário "Três polos" separa de fato as três
+mesas de maior carga. **Etapa futura**: quando o cenário da prancheta for
+fechado, haverá uma segunda numeração, por distribuição na parede, voltada ao
+eleitor; a do DJE fica de uso interno. Até lá, uma só.
 
-Consequências: o cenário "Três polos" isola as **posições** 22/23/24, que só
-coincidem com as urnas críticas 3313/3315/3322 se a posição *k* receber a MRV
-*k*; no Cenário Claude do simulador, as MRVs 22/23/24 caem nas posições 2/3/4
-da parede norte. A sinalização impressa vai usar M1–M28, que não é nenhum dos
-outros dois. **Pendência transversal: congelar uma numeração única de campo
-(posição física → MRV → seções) antes de imprimir qualquer coisa.**
+### 9.3 Papéis das portas: resolvido e propagado
 
-### 9.3 Papéis das portas da fachada sul
-
-**Decisão do Posto (registrada em 06/09/2026, tomada durante o desenho do Ring
-3 e em conversa com um colega): entradas S4 (A), S5 (B) e S6 (C); saídas S2 e
-S8.** É o que o plano do Ring 3 e o plano de sinalização já desenham. Falta
-propagar:
-
-| Fonte | Entradas | Saídas | Situação |
-|---|---|---|---|
-| Plano do Ring 3 e plano de sinalização | S4, S5, S6 | S2, S8 | conforme a decisão |
-| Simulador, Cenário Claude (`simulador/modelo.js`, `cenarioClaude`) | S4, S5, S6 | **S1 e S9** | a alinhar: trocar as saídas para S2/S8 e refazer a varredura |
-| Planta-base / `docs/CONTEXTO.md` | nenhuma | nenhuma | a atualizar: registrar os papéis no `ESTADO` de `planta_base.py` |
-| Prancheta, cenário B | — | S1/S9 com vestíbulo | cenário B perde a razão de ser; manter só como registro |
-
+**Entradas S4 (A), S5 (B), S6 (C); saídas S2 e S8** (`decisoes.py`). A
+planta-base desenha os papéis; o Cenário Claude do simulador saiu de S1/S9 para
+S2/S8 e foi refeito por varredura; Ring 3 e sinalização já seguiam a decisão.
 Pendências que a decisão não elimina: medir S2/S8 no local (posição e vão de
-1,20 m estão estimados sobre foto) e conferir a vazão de dois vãos de 1,20 m
-como saída de ~11 mil eleitores. A integração entre prancheta, simulador e
-Ring 3 para que a decisão more num lugar só está proposta em §9.9.
+1,20 m estimados sobre foto) e confirmar a vazão de dois vãos de 1,20 m como
+saída de ~11,5 mil eleitores; S1/S9 seguem sem papel.
 
-### 9.4 Três curvas de chegada e três modelos
+### 9.4 Curvas de chegada: ainda três
 
-| Modelo | Curva | Ciclo | Comparecimento | Para quê |
-|---|---|---|---|---|
-| `salao.py` (§4.1) | 8/13/15/14/12/11/10/9/8% por hora, 8h–17h | 55 s de projeto, serial | 11.418 | baias de fila na parede |
-| `simula_fluxo.py` (§4.2) | .12/.15/.16/.15/.12/.09/.08/.07/.06 por hora (e "agudo") | t_id + t_voto por arranjo (serial/pipeline/paralelo) | 11.416 | fechamento e dimensionamento do Ring 3 |
-| simulador (§4.3) | fatias de 30 min das 7h às 17h, 8% antes das 8h, vale 12h–15h, repique 16h | log-normal (cv 0,35) sobre identificação 30–90 s e voto | 11.416 (médio) | fluxo eleitor a eleitor no salão |
+| Modelo | Curva | Ciclo | Para quê |
+|---|---|---|---|
+| `salao.py` (§4.1) | 8/13/15/14/12/11/10/9/8% por hora, 8h–17h | 55 s de projeto, serial | baias de fila na parede |
+| `simula_fluxo.py` (§4.2) | .12/.15/.16/.15/.12/.09/.08/.07/.06 por hora (e "agudo") | t_id + t_voto por arranjo | fechamento e dimensionamento do Ring 3 |
+| simulador (§4.3) | fatias de 30 min das 7h às 17h, 8% antes das 8h, vale 12h–15h, repique 16h | log-normal (cv 0,35) sobre identificação 30–90 s e voto | fluxo eleitor a eleitor no salão |
 
-Todas as três são **premissas, não medidas** (a pesquisa do §7 confirma que não
-há curva oficial). O simulador ainda usa Ring 3 = 800 como padrão; o plano do
-Ring 3 chegou a 1.402.
+Todas são premissas, não medidas (a pesquisa do §7 confirma que não há curva
+oficial). O comparecimento e a numeração já são os mesmos nos três; unificar a
+curva é trabalho pequeno e fica como pendência de análise (§9.8, item 12).
 
-### 9.5 Plano do Ring 3: listas de urnas por entrada defasadas
+### 9.5 Ring 3, listas por entrada: resolvido
 
-`plano_ring3.md` §6 imprime A com 11 urnas (3313 incluída), B com 6 (3315) e C
-com 11 (3322), mas a tabela do mesmo parágrafo diz 9/10/9 e o script produz
-3322 → A, 3313 → B, 3315 → C (§5.5). O texto não foi regerado depois da
-recalibração 3·9·3. Corrigir o markdown a partir de
-`simula_fluxo._relatorio_entradas()`.
+`plano_ring3.md` §6 foi regerado a partir de `decisoes.py` (tabela e listas
+coincidem com o script; 9/10/9 mesas, MRV 24 em A, 22 em B, 23 em C). As
+portas do Ring 3 vêm agora de `salao.py`, e o desenho foi regerado (SVG e PNG).
 
-### 9.6 Plano de sinalização cita o Ring 3 antigo
+### 9.6 Sinalização citando o Ring 3 antigo: resolvido
 
-`plano_sinalizacao.html` diz "três serpenteados… somam 560,2 m (281
-separadores), contra 200 m em mãos — faltam 362 m, ~EUR 2.357… 780 pessoas nos
-serpenteados mais ~490 na reserva" e desenha blocos de 7,0 m a passo de 9,0 m.
-O head do Ring 3 tem 596,3 m / 300 separadores, 200 unidades (400 m) em mãos,
-faltam 100 (~EUR 1.302), capacidade 1.402, blocos de 4,2 / 12,6 / 4,2 m. Os
-"200 m em mãos" da sinalização são os unifilas do orçamento (item d), não os
-separadores de barreira externa do Ring 3. Regerar o template com os números
-atuais.
+O trecho "Onde este plano encosta no plano do Ring 3" é gerado por
+`layout_ring3.py` (596,3 m, 300 separadores, 100 a adquirir, 1.402 pessoas) e
+distingue os 200 separadores de barreira externa dos 100 unifilas do orçamento.
+O diagrama usa as larguras reais dos blocos (4,2 / 12,6 / 4,2 m).
 
-### 9.7 Estado do arranjo da mesa receptora
+### 9.7 Arranjo da mesa receptora: em aberto (o item que decide o resto)
 
-`docs/CONTEXTO.md` e a prancheta modelam a mesa com 3 mesários e **uma** posição
-de identificação; `analise_gargalos.md` conclui que só **duas posições de
-identificação em paralelo** (dois cadernos) fecham às 17h com caderno físico. A
-prancheta não tem esse módulo desenhado. **É a decisão que determina todo o
-resto** (se o Ring 3 chega a ser usado, quanta fila cabe no salão, quantos
-separadores internos).
+`docs/CONTEXTO.md` e a prancheta modelam a mesa com uma posição de
+identificação; `analise_gargalos.md` conclui que só **duas posições de
+identificação em paralelo** (dois cadernos) fecham às 17h com caderno físico.
+A prancheta não tem esse módulo desenhado. É a decisão que determina se o Ring
+3 chega a ser usado, quanta fila cabe no salão e quantos separadores internos.
 
 ### 9.8 Pendências consolidadas, por dono
 
@@ -1081,47 +1129,58 @@ separadores internos).
 1. Arranjo da mesa receptora: dois cadernos em paralelo nas 23 urnas de duas
    seções (§4.2, §9.7).
 2. Conferir se o erro 3222/3322 do PNG se propagou para cadernos ou
-   configuração da urna 3322 (§1.3).
+   configuração da urna 3322 / MRV 24 (§1.3).
 3. Haverá leitor biométrico em Dublin? (54,6% da zona com biometria coletada.)
 4. Validar seção fora da parede (divisória exenta do plano B) se necessário.
 
 **RDS (medições em campo e autorizações)**
-5. Numeração S1–S9 vs 2.1–2.23; posição e vão reais de S2/S8; S1/S9 abertas e
-   travadas 9 h; caminho do catering até N2; recuo de S3/S7/R1; caixas de piso
+5. Posição e vão reais de S2/S8; S1/S9 abertas e travadas 9 h (alternativa de
+   saída); caminho do catering até N2; recuo de S3/S7/R1; caixas de piso
    elétricas; aceitação da faixa contínua de 3 m na fachada leste.
 6. Dimensões do Ring 3 e distância do seu bordo oeste ao canto sudoeste do Hall
-   2; perímetro do Ring 3 fechado ou aberto (brechas de emergência).
+   2 (o contorno está centrado em S5 por estimativa); perímetro do Ring 3
+   fechado ou aberto (brechas de emergência).
 7. Altura da base lisa e distância entre saídas na parede leste externa;
    autorização de rigging nas treliças; bloqueio das vagas na véspera;
    circulação de veículos no dia.
 
 **Posto (decisões de projeto)**
-8. Congelar entradas/saídas (§9.3), a numeração única de campo (§9.2) e a base
-   de comparecimento a apresentar (§9.1).
-9. Pedido de +100 separadores de barreira (~EUR 1.302) e dimensionamento da
-   barreira interna do Hall 2.
-10. Cotar cobertura leve para os serpenteados; sinalização interna por par de
+8. Identidade das filas para o eleitor: **cor ou letra** (§6.3), a única
+   decisão que ainda contamina todas as peças impressas.
+9. Fechar o cenário da prancheta (candidato: "Três polos", o do Cenário
+   Claude) e, a partir dele, definir a numeração voltada ao eleitor (§9.2).
+10. Pedido de +100 separadores de barreira (~EUR 1.302) e dimensionamento da
+    barreira interna do Hall 2.
+11. Cotar cobertura leve para os serpenteados; sinalização interna por par de
     mesas; balcão "não sei minha seção" em P1; rota prioritária desde a rua.
-11. Regerar `plano_ring3.md` §6 e o template da sinalização com os números
-    atuais (§9.5, §9.6); atualizar a capacidade padrão do Ring 3 no simulador.
 
 **Análise (opcional, para calibrar)**
-12. Reconstruir a curva real de chegada de 2022 a partir dos logs de urna do
-    Portal de Dados Abertos do TSE (§7.1).
-13. Rodar as três simulações sobre a mesma base de comparecimento e a mesma
-    curva, para comparabilidade.
+12. Unificar a curva de chegada dos três modelos (§9.4) e, se possível,
+    reconstruí-la a partir dos logs de urna de 2022 do Portal de Dados Abertos
+    do TSE (§7.1).
 
-### 9.9 Integração pendente: prancheta, simulador e Ring 3 numa fonte só
+### 9.9 A integração, como ficou
 
-Hoje cada peça carrega a sua cópia das decisões: papéis das portas (simulador
-e Ring 3), posição das portas da fachada sul (`salao.py` para a prancheta;
-tabela própria lida da prancheta manual em `layout_ring3.py` e
-`gera_plano_sinalizacao.py`, com diferenças de 0,1–0,2 m), capacidade do Ring
-3 (800 digitado no simulador contra 1.402 no plano) e atribuição de urnas a
-entradas (`simula_fluxo.py`, sem ligação com as zonas do simulador nem com
-M1–M28 da sinalização). Mudar uma decisão exige editar quatro lugares. A
-proposta de integração está na resposta da sessão de 06/09 e será detalhada
-quando aprovada.
+```
+saidas/dados.json ──► scripts/comparecimento.py (base B: esperado por urna)
+                                │
+scripts/salao.py (geometria, portas, RING3) ──► scripts/planta_base.py (numeração S1–S9, papéis)
+                                │                        │
+                                ▼                        ▼
+                      scripts/decisoes.py ◄──── scripts/layout_ring3.py (portas de salao; capacidades → quotas)
+      (portas, MRV, classes/cores, atribuição às entradas, Ring 3)
+                                │
+        ┌───────────────┬───────┴────────┬──────────────────┬──────────────────┐
+        ▼               ▼                ▼                  ▼                  ▼
+  gera_decisoes.py  gera_editor.py   gera_simulador.py  gera_plano_sinalizacao.py  simula_fluxo.py
+  data/decisoes.json  prancheta      simulador (DECISOES)   Rota do Eleitor        relatório de entradas
+```
+
+Mudar uma decisão é editar `decisoes.py` (ou `comparecimento.py`) e rodar o
+pipeline do §10.1; nenhum gerador carrega mais cópia própria de porta, taxa,
+numeração ou capacidade do Ring 3. A varredura do simulador
+(`simulador/varredura.js`) é a única etapa que precisa de reexecução manual
+para recalibrar o Cenário Claude depois de uma mudança.
 
 ---
 
@@ -1131,8 +1190,9 @@ quando aprovada.
 
 ```bash
 pip install pandas openpyxl Pillow        # pymupdf é opcional (PNG do Ring 3)
-# 1. agregação
+# 1. agregação e decisões
 (cd scripts && python3 mapa_agregacoes.py && python3 gera_pagina.py && python3 gera_mrv_comparecimento.py)
+python3 scripts/gera_decisoes.py
 # 2 e 3. planta-base, mesas, prancheta
 (cd scripts && python3 salao.py && python3 planta_base.py && python3 mesas.py && python3 gera_mesas.py)
 python3 scripts/gera_editor.py && node scripts/teste_prancheta.js
@@ -1147,15 +1207,16 @@ python3 scripts/gera_plano_sinalizacao.py
 ```
 
 Toda saída em `saidas/` é gerada por script; editar HTML ou SVG à mão se perde
-na próxima geração. Na consolidação de 06/09 esse pipeline reproduziu todas as
-saídas versionadas byte a byte (o `.xlsx` muda só em metadados do openpyxl).
+na próxima geração. Sem `pymupdf`, o PNG do Ring 3 pode ser regerado a partir
+do SVG com o Chromium do Playwright (foi assim em 06/09). O `.xlsx` muda só em
+metadados do openpyxl a cada geração.
 
 ### 10.2 Branches e backup
 
 | Branch | O que é |
 |---|---|
 | `claude/project-analysis-documentation-w49q34` | **esta branch**: consolidação + documentação; base de trabalho daqui em diante |
-| `backup/consolidado-2026-09-06` | cópia congelada do mesmo commit; não receber commits |
+| `backup/consolidado-2026-09-06` | cópia congelada do estado consolidado de 06/09 (manhã, antes da integração); não receber commits |
 | `claude/dublin-electoral-sections-3odh1w` | base histórica (default do repositório) |
 | `cenarios-hall2` | branch de dados dos cenários; `salva_cenario.py` continua gravando nela |
 | as 9 branches `claude/*` e `deisgn-fluxo` restantes | heads dos PRs #1–#10, intactos |

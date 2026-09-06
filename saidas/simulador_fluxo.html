@@ -10,6 +10,7 @@
   --mesa:#3b4552; --pessoa:#59616d;
   --entrada:#1f6fb2; --saida:#b26a12; --emerg:#16867f; --alerta:#b23b2e; --aviso:#b26a12;
   --z1:#2a78d6; --z2:#eb6834; --z3:#1baf7a; --z4:#eda100;
+  --alta:#c0392b; --media:#d4a017; --baixa:#1e8449;
   --ok:#0ca30c; --ok-txt:#006300; --atencao:#fab219; --atencao-txt:#7a5200; --falha:#d03b3b; --falha-txt:#a12626;
   --grade:#e1e0d9; --eixo:#c3c2b7;
   --sombra:0 1px 2px rgba(23,32,43,.06), 0 6px 18px rgba(23,32,43,.06);
@@ -241,52 +242,43 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 
   <div class="bloco">
     <h2>Portas da fachada sul</h2>
-    <p class="pergunta">Perguntas 1 e 2 · Quais portas entram e quais saem? Clique numa porta para alternar entre fechada, entrada e saída. S2 e S8 são só de emergência.</p>
+    <p class="pergunta">Decisão do Posto (06/09/2026): <strong>entradas S4 (A), S5 (B) e S6 (C); saídas S2 e S8</strong>. Clique numa porta para testar outra combinação; o botão devolve a decisão.</p>
+    <p class="aviso" id="avisoPortas" hidden>As portas ou as entradas deste cenário diferem da decisão do Posto. <button class="acao mini" id="btnPortasDecisao">Voltar às portas da decisão</button></p>
     <svg class="portas" id="svgPortas" viewBox="0 0 560 74" role="group" aria-label="Portas da fachada sul"></svg>
     <div class="legenda" style="margin-top:6px"><span><span class="swatch" style="background:var(--entrada)"></span>entrada</span><span><span class="swatch" style="background:var(--saida)"></span>saída</span><span><span class="swatch" style="background:var(--regua)"></span>fechada</span><span><span class="swatch" style="background:var(--emerg)"></span>emergência</span></div>
   </div>
 
   <div class="bloco">
-    <h2>Zonas e numeração</h2>
-    <p class="pergunta">Pergunta 3 · Em quantas zonas as mesas se dividem, por que porta cada zona entra e de onde parte a numeração MRV 1 a 28. As zonas são arcos contíguos do perímetro; a numeração fica contígua dentro de cada zona para simplificar a sinalização.</p>
-    <div class="linha">
-      <div class="campo"><label for="nZonas">Zonas</label>
-        <div class="opcoes" id="nZonas" role="group"><button data-n="2">2</button><button data-n="3" aria-pressed="true">3</button><button data-n="4">4</button></div></div>
-      <div class="campo"><label for="inicioZona1">Primeiro slot da zona A</label><input type="number" id="inicioZona1" min="1" max="28" value="1"></div>
-      <div class="campo"><label>Mesas por zona</label><div class="linha" id="tamanhos" style="gap:6px"></div></div>
-    </div>
+    <h2>Entradas do Ring 3 e mesas</h2>
+    <p class="pergunta">Cada entrada do Ring 3 (A, B, C) traz as mesas que o plano do Ring 3 lhe atribuiu, na proporção da capacidade do seu serpenteado e com uma das três mesas vermelhas em cada. <strong>O número da mesa é o MRV do DJE/TRE-DF</strong> e não depende da posição no salão: a mesa 22 é a MRV 22 na parede norte, leste ou oeste. Mude o arranjo no bloco Salão; a atribuição às entradas é a das decisões.</p>
     <div class="linha" style="margin-top:12px; align-items:flex-start">
-      <svg class="zonasMini" id="svgZonas" viewBox="0 0 300 270" role="img" aria-label="Planta em miniatura com as zonas"></svg>
+      <svg class="zonasMini" id="svgZonas" viewBox="0 0 300 270" role="img" aria-label="Planta em miniatura com as entradas"></svg>
       <div style="flex:1; min-width:260px">
         <table class="tabela" id="tabZonas"></table>
       </div>
     </div>
-    <div class="linha" style="margin-top:12px">
-      <div class="campo"><label>MRV 1 começa na zona</label><div class="opcoes" id="inicioZonaMrv" role="group"></div></div>
-      <div class="campo"><label>Sentido da numeração</label><div class="opcoes" id="sentido" role="group"><button data-s="horario" aria-pressed="true">horário</button><button data-s="antihorario" aria-pressed="false">anti-horário</button></div></div>
-    </div>
-    <p class="dica" style="margin-top:8px">Horário: MRV 1 no canto noroeste seguindo a parede norte para leste. A mesa MRV k recebe a k-ª seção principal em ordem crescente, conforme a convocação publicada.</p>
+    <p class="dica" style="margin-top:8px">Cores das entradas: as das raias do plano de sinalização (azul, âmbar, magenta). Se a placa da porta vai dizer a cor ou uma letra ainda não foi decidido.</p>
   </div>
 
   <div class="bloco">
     <h2>Checkpoint interno</h2>
-    <p class="pergunta">Pergunta 5 · Há checkpoint depois da porta? A que distância? Com quantos atendentes por zona? O espaço entre porta e checkpoint é o buffer que a liberação controlada enche.</p>
+    <p class="pergunta">Há checkpoint depois da porta? A que distância? Com quantos atendentes por entrada? O espaço entre porta e checkpoint é o buffer que a liberação controlada enche.</p>
     <div class="linha">
       <div class="campo"><label>Checkpoint</label><div class="opcoes" id="cpExiste" role="group"><button data-v="1" aria-pressed="true">há checkpoint</button><button data-v="0" aria-pressed="false">sem checkpoint</button></div></div>
       <div class="campo"><label for="cpDist">Distância da porta <span class="mono" id="cpDistVal">12 m</span></label><input type="range" id="cpDist" min="4" max="24" step="1" value="12"></div>
       <div class="campo"><label for="cpFilas">Filas entre porta e checkpoint</label><input type="number" id="cpFilas" min="1" max="4" value="2"></div>
       <div class="campo"><label for="cpSeg">Segundos por eleitor</label><input type="number" id="cpSeg" min="3" max="30" value="8"></div>
     </div>
-    <div class="linha" style="margin-top:10px"><div class="campo"><label>Atendentes por zona</label><div class="linha" id="cpAtend" style="gap:6px"></div></div><span class="dica" id="cpCap"></span></div>
+    <div class="linha" style="margin-top:10px"><div class="campo"><label>Atendentes por entrada</label><div class="linha" id="cpAtend" style="gap:6px"></div></div><span class="dica" id="cpCap"></span></div>
   </div>
 
   <div class="bloco">
     <h2>Fila na frente de cada mesa</h2>
-    <p class="pergunta">Pergunta 4 · Quantas pessoas cabem na fila da mesa, por peso da mesa. A fila evita que a urna fique parada; não cria capacidade. A resposta certa aparece no resultado como “fila necessária”.</p>
+    <p class="pergunta">Quantas pessoas cabem na fila da mesa, pela classe de carga da mesa (a mesma cor da prancheta: vermelho as três de maior comparecimento esperado, amarelo as de médio, verde as de baixo). A fila evita que a urna fique parada; não cria capacidade. A resposta certa aparece no resultado como “fila necessária”.</p>
     <div class="linha">
-      <div class="campo"><label for="filaLeve">Mesas leves (≤ 500 aptos)</label><input type="number" id="filaLeve" min="1" max="12" value="3"></div>
-      <div class="campo"><label for="filaMedia">Médias (501–700)</label><input type="number" id="filaMedia" min="1" max="12" value="4"></div>
-      <div class="campo"><label for="filaPesada">Pesadas (> 700)</label><input type="number" id="filaPesada" min="1" max="12" value="6"></div>
+      <div class="campo"><label for="filaLeve"><span class="swatch" style="background:var(--baixa)"></span> Verdes (baixo)</label><input type="number" id="filaLeve" min="1" max="12" value="3"></div>
+      <div class="campo"><label for="filaMedia"><span class="swatch" style="background:var(--media)"></span> Amarelas (médio)</label><input type="number" id="filaMedia" min="1" max="12" value="4"></div>
+      <div class="campo"><label for="filaPesada"><span class="swatch" style="background:var(--alta)"></span> Vermelhas (as 3 maiores)</label><input type="number" id="filaPesada" min="1" max="12" value="6"></div>
       <span class="dica" id="filaInfo"></span>
     </div>
   </div>
@@ -304,7 +296,7 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 
   <div class="bloco">
     <h2>Comparecimento</h2>
-    <p class="pergunta">Quantos dos 16.794 aptos aparecem. As taxas separam eleitor de Dublin e do interior, como em 2022.</p>
+    <p class="pergunta">Quantos dos 16.794 aptos aparecem. A base é a decidida pelo Posto: taxa de 2022 por domicílio de origem de cada seção (base B), calculada em <span class="mono">scripts/comparecimento.py</span>. Os outros dois botões escalam essa base para testar sensibilidade.</p>
     <div class="opcoes" id="comparecimento" role="group"></div>
     <p class="dica" id="compInfo" style="margin-top:8px"></p>
   </div>
@@ -322,11 +314,11 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 
   <div class="bloco">
     <h2>Ring 3 e triagem externa</h2>
-    <p class="pergunta">Fora do salão as pessoas são separadas por zona. Com sinalização boa a triagem não limita; reduza para testar o efeito. A capacidade é o que cabe no Ring 3.</p>
+    <p class="pergunta">Fora do salão as pessoas são separadas por entrada na garganta sudeste do Ring 3. Com sinalização boa a triagem não limita; reduza para testar o efeito. A capacidade total vem do plano do Ring 3 (três serpenteados mais duas baias); a capacidade de cada entrada aparece na tabela acima e o resultado confere as duas.</p>
     <div class="linha">
       <div class="campo"><label for="triAtend">Pessoas na triagem</label><input type="number" id="triAtend" min="1" max="20" value="6"></div>
       <div class="campo"><label for="triSeg">Segundos por eleitor</label><input type="number" id="triSeg" min="2" max="40" value="6"></div>
-      <div class="campo"><label for="ring3Cap">Capacidade do Ring 3 (pessoas)</label><input type="number" id="ring3Cap" min="100" max="5000" step="50" value="800"></div>
+      <div class="campo"><label for="ring3Cap">Capacidade do Ring 3 (pessoas)</label><input type="number" id="ring3Cap" min="100" max="5000" step="1" value="1402"></div>
     </div>
   </div>
 
@@ -402,8 +394,9 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 <div class="tip" id="tip"></div>
 
 <script>
-const BASE = {"salao":{"largura":50.3,"altura":44.4,"recorte":[0.0,0.0,7.8,7.0],"contorno":[[7.8,0.0],[50.3,0.0],[50.3,44.4],[0.0,44.4],[0.0,7.0],[7.8,7.0]]},"modulo":{"prof":4.1,"larg":0.9,"urna":0.9,"mesa":[1.7,0.8],"eleitor":0.9,"passagem":0.6,"assento":0.75,"corredor":[2.5,3.0],"entre_pares":[1.0,1.5]},"portas":[{"id":"N1","rds":"2.13","face":"norte","estado":"fechada","x1":7.41,"y1":44.4,"x2":9.44,"y2":44.4,"larg":2.03},{"id":"N2","rds":"2.14/2.15","face":"norte","estado":"catering","x1":20.66,"y1":44.4,"x2":24.22,"y2":44.4,"larg":3.56},{"id":"L1","rds":"2.16/2.17","face":"leste","estado":"emergencia","x1":50.3,"y1":38.51,"x2":50.3,"y2":41.57,"larg":3.06},{"id":"L2","rds":"2.18/2.19","face":"leste","estado":"emergencia","x1":50.3,"y1":26.66,"x2":50.3,"y2":29.72,"larg":3.06},{"id":"L3","rds":"2.20/2.21","face":"leste","estado":"emergencia","x1":50.3,"y1":14.8,"x2":50.3,"y2":17.87,"larg":3.07},{"id":"L4","rds":"2.22/2.23","face":"leste","estado":"emergencia","x1":50.3,"y1":2.95,"x2":50.3,"y2":6.01,"larg":3.06},{"id":"S1","rds":"carga oeste","face":"sul","estado":"livre","x1":7.83,"y1":0.0,"x2":11.45,"y2":0.0,"larg":3.62},{"id":"S2","rds":"sem codigo RDS","face":"sul","estado":"emergencia","x1":13.25,"y1":0.0,"x2":14.45,"y2":0.0,"larg":1.2},{"id":"S3","rds":"2.7","face":"sul","estado":"livre","x1":17.22,"y1":0.0,"x2":18.47,"y2":0.0,"larg":1.25},{"id":"S4","rds":"2.5/2.6","face":"sul","estado":"livre","x1":19.1,"y1":0.0,"x2":25.03,"y2":0.0,"larg":5.93},{"id":"S5","rds":"2.4","face":"sul","estado":"livre","x1":25.32,"y1":0.0,"x2":31.25,"y2":0.0,"larg":5.93},{"id":"S6","rds":"2.2/2.3","face":"sul","estado":"livre","x1":31.54,"y1":0.0,"x2":37.47,"y2":0.0,"larg":5.93},{"id":"S7","rds":"2.1","face":"sul","estado":"livre","x1":38.09,"y1":0.0,"x2":39.36,"y2":0.0,"larg":1.27},{"id":"S8","rds":"sem codigo RDS","face":"sul","estado":"emergencia","x1":42.12,"y1":0.0,"x2":43.32,"y2":0.0,"larg":1.2},{"id":"S9","rds":"carga leste","face":"sul","estado":"livre","x1":45.12,"y1":0.0,"x2":48.75,"y2":0.0,"larg":3.63},{"id":"O1","rds":"acesso Hall 1","face":"oeste","estado":"livre","x1":0.0,"y1":36.8,"x2":0.0,"y2":38.5,"larg":1.7},{"id":"O2","rds":"2.10/2.11","face":"oeste","estado":"livre","x1":0.0,"y1":19.36,"x2":0.0,"y2":22.43,"larg":3.07},{"id":"R1","rds":"2.8/2.9","face":"recorte_v","estado":"livre","x1":7.8,"y1":3.0,"x2":7.8,"y2":6.5,"larg":3.5}],"cenarios":{"A":{"zonas":[{"rect":[47.3,0.0,50.3,44.4],"rotulo":"fachada leste · faixa protegida de 3 m"},{"rect":[14.22,0.0,21.47,3.0],"rotulo":"S3 · recuo de emergência"},{"rect":[35.09,0.0,42.36,3.0],"rotulo":"S7 · recuo de emergência"},{"rect":[7.8,0.0,10.8,7.0],"rotulo":"R1 · recuo de emergência"}],"vaos":[{"rect":[7.41,44.1,9.44,44.4],"rotulo":"N1 vão"},{"rect":[20.66,44.1,24.22,44.4],"rotulo":"N2 vão"},{"rect":[50.0,2.95,50.3,6.01],"rotulo":"L4 vão"},{"rect":[50.0,14.8,50.3,17.87],"rotulo":"L3 vão"},{"rect":[50.0,26.66,50.3,29.72],"rotulo":"L2 vão"},{"rect":[50.0,38.51,50.3,41.57],"rotulo":"L1 vão"},{"rect":[7.83,0.0,11.45,0.3],"rotulo":"S1 vão"},{"rect":[13.25,0.0,14.45,0.3],"rotulo":"S2 vão"},{"rect":[17.22,0.0,18.47,0.3],"rotulo":"S3 vão"},{"rect":[19.1,0.0,25.03,0.3],"rotulo":"S4 vão"},{"rect":[25.32,0.0,31.25,0.3],"rotulo":"S5 vão"},{"rect":[31.54,0.0,37.47,0.3],"rotulo":"S6 vão"},{"rect":[38.09,0.0,39.36,0.3],"rotulo":"S7 vão"},{"rect":[42.12,0.0,43.32,0.3],"rotulo":"S2 vão"},{"rect":[45.12,0.0,48.75,0.3],"rotulo":"S9 vão"},{"rect":[0.0,19.36,0.3,22.43],"rotulo":"O2 vão"},{"rect":[0.0,36.8,0.3,38.5],"rotulo":"O1 vão"},{"rect":[7.8,3.0,8.1,6.5],"rotulo":"R1 vão"}],"mrvs":[{"n":1,"x":1.605,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":2,"x":5.505,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":3,"x":12.5,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":4,"x":16.4,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":5,"x":28.26,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":6,"x":32.16,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":7,"x":34.56,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":8,"x":38.46,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":9,"x":47.3,"y":39.9,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":10,"x":47.3,"y":36.0,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":11,"x":47.3,"y":33.6,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":12,"x":47.3,"y":29.7,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":13,"x":47.3,"y":27.3,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":14,"x":47.3,"y":23.4,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":15,"x":47.3,"y":21.0,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":16,"x":47.3,"y":17.1,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":17,"x":47.3,"y":14.7,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":18,"x":47.3,"y":10.8,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":19,"x":47.3,"y":8.4,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":20,"x":47.3,"y":4.5,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":21,"x":7.35,"y":7.0,"rot":90,"lado":1,"origem":"recorte_h","corredor":3.0},{"n":22,"x":3.45,"y":7.0,"rot":90,"lado":-1,"origem":"recorte_h","corredor":3.0},{"n":23,"x":0.0,"y":12.53,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":24,"x":0.0,"y":16.43,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":25,"x":0.0,"y":24.765,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":26,"x":0.0,"y":28.665,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":27,"x":0.0,"y":31.065,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":28,"x":0.0,"y":34.965,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0}]},"B":{"zonas":[{"rect":[47.3,0.0,50.3,44.4],"rotulo":"fachada leste · faixa protegida de 3 m"},{"rect":[7.8,0.0,12.45,2.0],"rotulo":"S1 · vestíbulo da divisória"},{"rect":[14.22,0.0,21.47,3.0],"rotulo":"S3 · recuo de emergência"},{"rect":[35.09,0.0,42.36,3.0],"rotulo":"S7 · recuo de emergência"},{"rect":[44.12,0.0,49.75,2.0],"rotulo":"S9 · vestíbulo da divisória"},{"rect":[7.8,0.0,10.8,7.0],"rotulo":"R1 · recuo de emergência"}],"vaos":[{"rect":[7.41,44.1,9.44,44.4],"rotulo":"N1 vão"},{"rect":[20.66,44.1,24.22,44.4],"rotulo":"N2 vão"},{"rect":[50.0,2.95,50.3,6.01],"rotulo":"L4 vão"},{"rect":[50.0,14.8,50.3,17.87],"rotulo":"L3 vão"},{"rect":[50.0,26.66,50.3,29.72],"rotulo":"L2 vão"},{"rect":[50.0,38.51,50.3,41.57],"rotulo":"L1 vão"},{"rect":[7.83,0.0,11.45,0.3],"rotulo":"S1 vão"},{"rect":[13.25,0.0,14.45,0.3],"rotulo":"S2 vão"},{"rect":[17.22,0.0,18.47,0.3],"rotulo":"S3 vão"},{"rect":[19.1,0.0,25.03,0.3],"rotulo":"S4 vão"},{"rect":[25.32,0.0,31.25,0.3],"rotulo":"S5 vão"},{"rect":[31.54,0.0,37.47,0.3],"rotulo":"S6 vão"},{"rect":[38.09,0.0,39.36,0.3],"rotulo":"S7 vão"},{"rect":[42.12,0.0,43.32,0.3],"rotulo":"S2 vão"},{"rect":[45.12,0.0,48.75,0.3],"rotulo":"S9 vão"},{"rect":[0.0,19.36,0.3,22.43],"rotulo":"O2 vão"},{"rect":[0.0,36.8,0.3,38.5],"rotulo":"O1 vão"},{"rect":[7.8,3.0,8.1,6.5],"rotulo":"R1 vão"}],"mrvs":[{"n":1,"x":1.605,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":2,"x":5.505,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":3,"x":12.5,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":4,"x":16.4,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":5,"x":28.26,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":6,"x":32.16,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":7,"x":34.56,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":8,"x":38.46,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":9,"x":47.3,"y":39.9,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":10,"x":47.3,"y":36.0,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":11,"x":47.3,"y":33.6,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":12,"x":47.3,"y":29.7,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":13,"x":47.3,"y":27.3,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":14,"x":47.3,"y":23.4,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":15,"x":47.3,"y":21.0,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":16,"x":47.3,"y":17.1,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":17,"x":47.3,"y":14.7,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":18,"x":47.3,"y":10.8,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":19,"x":47.3,"y":8.4,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":20,"x":47.3,"y":4.5,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":21,"x":7.35,"y":7.0,"rot":90,"lado":1,"origem":"recorte_h","corredor":3.0},{"n":22,"x":3.45,"y":7.0,"rot":90,"lado":-1,"origem":"recorte_h","corredor":3.0},{"n":23,"x":0.0,"y":12.53,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":24,"x":0.0,"y":16.43,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":25,"x":0.0,"y":24.765,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":26,"x":0.0,"y":28.665,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":27,"x":0.0,"y":31.065,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":28,"x":0.0,"y":34.965,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0}]}}};
+const BASE = {"salao":{"largura":50.3,"altura":44.4,"recorte":[0.0,0.0,7.8,7.0],"contorno":[[7.8,0.0],[50.3,0.0],[50.3,44.4],[0.0,44.4],[0.0,7.0],[7.8,7.0]]},"modulo":{"prof":4.1,"larg":0.9,"urna":0.9,"mesa":[1.7,0.8],"eleitor":0.9,"passagem":0.6,"assento":0.75,"corredor":[2.5,3.0],"entre_pares":[1.0,1.5]},"portas":[{"id":"N1","rds":"2.13","face":"norte","estado":"fechada","x1":7.41,"y1":44.4,"x2":9.44,"y2":44.4,"larg":2.03},{"id":"N2","rds":"2.14/2.15","face":"norte","estado":"catering","x1":20.66,"y1":44.4,"x2":24.22,"y2":44.4,"larg":3.56},{"id":"L1","rds":"2.16/2.17","face":"leste","estado":"emergencia","x1":50.3,"y1":38.51,"x2":50.3,"y2":41.57,"larg":3.06},{"id":"L2","rds":"2.18/2.19","face":"leste","estado":"emergencia","x1":50.3,"y1":26.66,"x2":50.3,"y2":29.72,"larg":3.06},{"id":"L3","rds":"2.20/2.21","face":"leste","estado":"emergencia","x1":50.3,"y1":14.8,"x2":50.3,"y2":17.87,"larg":3.07},{"id":"L4","rds":"2.22/2.23","face":"leste","estado":"emergencia","x1":50.3,"y1":2.95,"x2":50.3,"y2":6.01,"larg":3.06},{"id":"S1","rds":"carga oeste","face":"sul","estado":"livre","x1":7.83,"y1":0.0,"x2":11.45,"y2":0.0,"larg":3.62},{"id":"S2","rds":"sem codigo RDS","face":"sul","estado":"saida","x1":13.25,"y1":0.0,"x2":14.45,"y2":0.0,"larg":1.2},{"id":"S3","rds":"2.7","face":"sul","estado":"livre","x1":17.22,"y1":0.0,"x2":18.47,"y2":0.0,"larg":1.25},{"id":"S4","rds":"2.5/2.6","face":"sul","estado":"entrada","x1":19.1,"y1":0.0,"x2":25.03,"y2":0.0,"larg":5.93},{"id":"S5","rds":"2.4","face":"sul","estado":"entrada","x1":25.32,"y1":0.0,"x2":31.25,"y2":0.0,"larg":5.93},{"id":"S6","rds":"2.2/2.3","face":"sul","estado":"entrada","x1":31.54,"y1":0.0,"x2":37.47,"y2":0.0,"larg":5.93},{"id":"S7","rds":"2.1","face":"sul","estado":"livre","x1":38.09,"y1":0.0,"x2":39.36,"y2":0.0,"larg":1.27},{"id":"S8","rds":"sem codigo RDS","face":"sul","estado":"saida","x1":42.12,"y1":0.0,"x2":43.32,"y2":0.0,"larg":1.2},{"id":"S9","rds":"carga leste","face":"sul","estado":"livre","x1":45.12,"y1":0.0,"x2":48.75,"y2":0.0,"larg":3.63},{"id":"O1","rds":"acesso Hall 1","face":"oeste","estado":"livre","x1":0.0,"y1":36.8,"x2":0.0,"y2":38.5,"larg":1.7},{"id":"O2","rds":"2.10/2.11","face":"oeste","estado":"livre","x1":0.0,"y1":19.36,"x2":0.0,"y2":22.43,"larg":3.07},{"id":"R1","rds":"2.8/2.9","face":"recorte_v","estado":"livre","x1":7.8,"y1":3.0,"x2":7.8,"y2":6.5,"larg":3.5}],"cenarios":{"A":{"zonas":[{"rect":[47.3,0.0,50.3,44.4],"rotulo":"fachada leste · faixa protegida de 3 m"},{"rect":[14.22,0.0,21.47,3.0],"rotulo":"S3 · recuo de emergência"},{"rect":[35.09,0.0,42.36,3.0],"rotulo":"S7 · recuo de emergência"},{"rect":[7.8,0.0,10.8,7.0],"rotulo":"R1 · recuo de emergência"}],"vaos":[{"rect":[7.41,44.1,9.44,44.4],"rotulo":"N1 vão"},{"rect":[20.66,44.1,24.22,44.4],"rotulo":"N2 vão"},{"rect":[50.0,2.95,50.3,6.01],"rotulo":"L4 vão"},{"rect":[50.0,14.8,50.3,17.87],"rotulo":"L3 vão"},{"rect":[50.0,26.66,50.3,29.72],"rotulo":"L2 vão"},{"rect":[50.0,38.51,50.3,41.57],"rotulo":"L1 vão"},{"rect":[7.83,0.0,11.45,0.3],"rotulo":"S1 vão"},{"rect":[13.25,0.0,14.45,0.3],"rotulo":"S2 vão"},{"rect":[17.22,0.0,18.47,0.3],"rotulo":"S3 vão"},{"rect":[19.1,0.0,25.03,0.3],"rotulo":"S4 vão"},{"rect":[25.32,0.0,31.25,0.3],"rotulo":"S5 vão"},{"rect":[31.54,0.0,37.47,0.3],"rotulo":"S6 vão"},{"rect":[38.09,0.0,39.36,0.3],"rotulo":"S7 vão"},{"rect":[42.12,0.0,43.32,0.3],"rotulo":"S2 vão"},{"rect":[45.12,0.0,48.75,0.3],"rotulo":"S9 vão"},{"rect":[0.0,19.36,0.3,22.43],"rotulo":"O2 vão"},{"rect":[0.0,36.8,0.3,38.5],"rotulo":"O1 vão"},{"rect":[7.8,3.0,8.1,6.5],"rotulo":"R1 vão"}],"mrvs":[{"n":1,"x":1.605,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":2,"x":5.505,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":3,"x":12.5,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":4,"x":16.4,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":5,"x":28.26,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":6,"x":32.16,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":7,"x":34.56,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":8,"x":38.46,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":9,"x":47.3,"y":39.9,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":10,"x":47.3,"y":36.0,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":11,"x":47.3,"y":33.6,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":12,"x":47.3,"y":29.7,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":13,"x":47.3,"y":27.3,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":14,"x":47.3,"y":23.4,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":15,"x":47.3,"y":21.0,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":16,"x":47.3,"y":17.1,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":17,"x":47.3,"y":14.7,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":18,"x":47.3,"y":10.8,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":19,"x":47.3,"y":8.4,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":20,"x":47.3,"y":4.5,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":21,"x":7.35,"y":7.0,"rot":90,"lado":1,"origem":"recorte_h","corredor":3.0},{"n":22,"x":3.45,"y":7.0,"rot":90,"lado":-1,"origem":"recorte_h","corredor":3.0},{"n":23,"x":0.0,"y":12.53,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":24,"x":0.0,"y":16.43,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":25,"x":0.0,"y":24.765,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":26,"x":0.0,"y":28.665,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":27,"x":0.0,"y":31.065,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":28,"x":0.0,"y":34.965,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0}]},"B":{"zonas":[{"rect":[47.3,0.0,50.3,44.4],"rotulo":"fachada leste · faixa protegida de 3 m"},{"rect":[7.8,0.0,12.45,2.0],"rotulo":"S1 · vestíbulo da divisória"},{"rect":[14.22,0.0,21.47,3.0],"rotulo":"S3 · recuo de emergência"},{"rect":[35.09,0.0,42.36,3.0],"rotulo":"S7 · recuo de emergência"},{"rect":[44.12,0.0,49.75,2.0],"rotulo":"S9 · vestíbulo da divisória"},{"rect":[7.8,0.0,10.8,7.0],"rotulo":"R1 · recuo de emergência"}],"vaos":[{"rect":[7.41,44.1,9.44,44.4],"rotulo":"N1 vão"},{"rect":[20.66,44.1,24.22,44.4],"rotulo":"N2 vão"},{"rect":[50.0,2.95,50.3,6.01],"rotulo":"L4 vão"},{"rect":[50.0,14.8,50.3,17.87],"rotulo":"L3 vão"},{"rect":[50.0,26.66,50.3,29.72],"rotulo":"L2 vão"},{"rect":[50.0,38.51,50.3,41.57],"rotulo":"L1 vão"},{"rect":[7.83,0.0,11.45,0.3],"rotulo":"S1 vão"},{"rect":[13.25,0.0,14.45,0.3],"rotulo":"S2 vão"},{"rect":[17.22,0.0,18.47,0.3],"rotulo":"S3 vão"},{"rect":[19.1,0.0,25.03,0.3],"rotulo":"S4 vão"},{"rect":[25.32,0.0,31.25,0.3],"rotulo":"S5 vão"},{"rect":[31.54,0.0,37.47,0.3],"rotulo":"S6 vão"},{"rect":[38.09,0.0,39.36,0.3],"rotulo":"S7 vão"},{"rect":[42.12,0.0,43.32,0.3],"rotulo":"S2 vão"},{"rect":[45.12,0.0,48.75,0.3],"rotulo":"S9 vão"},{"rect":[0.0,19.36,0.3,22.43],"rotulo":"O2 vão"},{"rect":[0.0,36.8,0.3,38.5],"rotulo":"O1 vão"},{"rect":[7.8,3.0,8.1,6.5],"rotulo":"R1 vão"}],"mrvs":[{"n":1,"x":1.605,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":2,"x":5.505,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":3,"x":12.5,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":4,"x":16.4,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":5,"x":28.26,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":6,"x":32.16,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":7,"x":34.56,"y":44.4,"rot":270,"lado":1,"origem":"norte","corredor":3.0},{"n":8,"x":38.46,"y":44.4,"rot":270,"lado":-1,"origem":"norte","corredor":3.0},{"n":9,"x":47.3,"y":39.9,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":10,"x":47.3,"y":36.0,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":11,"x":47.3,"y":33.6,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":12,"x":47.3,"y":29.7,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":13,"x":47.3,"y":27.3,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":14,"x":47.3,"y":23.4,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":15,"x":47.3,"y":21.0,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":16,"x":47.3,"y":17.1,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":17,"x":47.3,"y":14.7,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":18,"x":47.3,"y":10.8,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":19,"x":47.3,"y":8.4,"rot":180,"lado":1,"origem":"leste_recuada","corredor":3.0},{"n":20,"x":47.3,"y":4.5,"rot":180,"lado":-1,"origem":"leste_recuada","corredor":3.0},{"n":21,"x":7.35,"y":7.0,"rot":90,"lado":1,"origem":"recorte_h","corredor":3.0},{"n":22,"x":3.45,"y":7.0,"rot":90,"lado":-1,"origem":"recorte_h","corredor":3.0},{"n":23,"x":0.0,"y":12.53,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":24,"x":0.0,"y":16.43,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":25,"x":0.0,"y":24.765,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":26,"x":0.0,"y":28.665,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0},{"n":27,"x":0.0,"y":31.065,"rot":0,"lado":1,"origem":"oeste","corredor":3.0},{"n":28,"x":0.0,"y":34.965,"rot":0,"lado":-1,"origem":"oeste","corredor":3.0}]}},"decisoes":{"decididoEm":"2026-09-06","numeracao":"MRV do DJE/TRE-DF, identidade unica da mesa; nao depende da posicao","comparecimento":{"base":"B","rotulo":"taxa de 2022 por domicílio de origem (base B, não oficial)","total":11499,"aptos":16794},"classes":{"regra":"as 3 maiores = alta; esperado >= 450 = media; abaixo = baixa","n_alta":3,"limiar_media":450,"cores":{"alta":{"cor":"vermelho","hex":"#c0392b","rotulo":"alto comparecimento"},"media":{"cor":"amarelo","hex":"#d4a017","rotulo":"médio comparecimento"},"baixa":{"cor":"verde","hex":"#1e8449","rotulo":"baixo comparecimento"}},"contagem":{"alta":3,"media":8,"baixa":17}},"portas":{"S4":{"papel":"entrada","entrada":"A","cor":"#2a78d6"},"S5":{"papel":"entrada","entrada":"B","cor":"#e08a00"},"S6":{"papel":"entrada","entrada":"C","cor":"#c2185b"},"S2":{"papel":"saida"},"S8":{"papel":"saida"}},"saidas":["S2","S8"],"nomenclaturaPortas":"em aberto: cor ou letra","entradas":[{"id":"A","porta":"S4","cor":"azul","hex":"#2a78d6","mrvs":[3,5,9,12,15,20,24,26,28],"esperado":3642,"capacidade":445},{"id":"B","porta":"S5","cor":"âmbar","hex":"#e08a00","mrvs":[1,4,7,8,16,17,18,21,22,25],"esperado":4215,"capacidade":513},{"id":"C","porta":"S6","cor":"magenta","hex":"#c2185b","mrvs":[2,6,10,11,13,14,19,23,27],"esperado":3642,"capacidade":445}],"mesas":{"1":{"principal":511,"agregada":1100,"origem_agregada":"ROSCOMMON","aptos":582,"esperado":375,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},"2":{"principal":512,"agregada":2855,"origem_agregada":"LONGFORD","aptos":476,"esperado":355,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},"3":{"principal":513,"agregada":1105,"origem_agregada":"MAYO","aptos":502,"esperado":351,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},"4":{"principal":517,"agregada":1292,"origem_agregada":"CAVAN","aptos":513,"esperado":348,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},"5":{"principal":1160,"agregada":3845,"origem_agregada":"LIMERICK","aptos":473,"esperado":328,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},"6":{"principal":1352,"agregada":522,"origem_agregada":"DONEGAL","aptos":462,"esperado":328,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},"7":{"principal":3054,"agregada":1099,"origem_agregada":"KERRY","aptos":454,"esperado":325,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},"8":{"principal":3078,"agregada":2847,"origem_agregada":"LEITRIM","aptos":429,"esperado":311,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},"9":{"principal":3108,"agregada":3422,"origem_agregada":"GALWAY","aptos":756,"esperado":467,"classe":"media","cor":"#d4a017","entrada":"A","porta":"S4"},"10":{"principal":3142,"agregada":1278,"origem_agregada":"LIMERICK","aptos":793,"esperado":466,"classe":"media","cor":"#d4a017","entrada":"C","porta":"S6"},"11":{"principal":3161,"agregada":3307,"origem_agregada":"CORK","aptos":791,"esperado":504,"classe":"media","cor":"#d4a017","entrada":"C","porta":"S6"},"12":{"principal":3179,"agregada":530,"origem_agregada":"WESTMEATH","aptos":676,"esperado":423,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},"13":{"principal":3216,"agregada":527,"origem_agregada":"CLARE","aptos":571,"esperado":407,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},"14":{"principal":3229,"agregada":3821,"origem_agregada":"CORK","aptos":606,"esperado":405,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},"15":{"principal":3245,"agregada":519,"origem_agregada":"CORK","aptos":781,"esperado":498,"classe":"media","cor":"#d4a017","entrada":"A","porta":"S4"},"16":{"principal":3302,"agregada":3181,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos":771,"esperado":518,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},"17":{"principal":3305,"agregada":521,"origem_agregada":"GALWAY","aptos":767,"esperado":472,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},"18":{"principal":3306,"agregada":518,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos":766,"esperado":515,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},"19":{"principal":3308,"agregada":null,"origem_agregada":null,"aptos":399,"esperado":295,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},"20":{"principal":3309,"agregada":1314,"origem_agregada":"WATERFORD","aptos":615,"esperado":395,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},"21":{"principal":3311,"agregada":3913,"origem_agregada":"DUBLIN","aptos":630,"esperado":466,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},"22":{"principal":3313,"agregada":3889,"origem_agregada":"DUBLIN","aptos":797,"esperado":590,"classe":"alta","cor":"#c0392b","entrada":"B","porta":"S5"},"23":{"principal":3315,"agregada":3778,"origem_agregada":"DUBLIN","aptos":792,"esperado":586,"classe":"alta","cor":"#c0392b","entrada":"C","porta":"S6"},"24":{"principal":3322,"agregada":3752,"origem_agregada":"DUBLIN","aptos":794,"esperado":588,"classe":"alta","cor":"#c0392b","entrada":"A","porta":"S4"},"25":{"principal":3442,"agregada":null,"origem_agregada":null,"aptos":398,"esperado":295,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},"26":{"principal":3688,"agregada":null,"origem_agregada":null,"aptos":400,"esperado":296,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},"27":{"principal":3832,"agregada":null,"origem_agregada":null,"aptos":400,"esperado":296,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},"28":{"principal":3862,"agregada":null,"origem_agregada":null,"aptos":400,"esperado":296,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"}},"ring3":{"largura":39.0,"profundidade":35.0,"apron":14.0,"rect":[8.79,-49.0,47.78,-14.0],"eixo":"centrado em S5 (estimativa; aferir o bordo oeste em campo)","capacidade":1402}}};
 const MRVS = {"fonte":"Diário da Justiça Eletrônico do TRE-DF, ano 2026 n. 139, 04/08/2026, p. 915-921 (convocação de mesários, Irlanda/Dublin). Nomes omitidos; apenas MRV e seção.","regra":"MRV k corresponde à k-ésima seção principal em ordem crescente de número.","mrvs":[{"mrv":1,"principal":511,"agregada":1100,"aptos":582,"aptos_principal":400,"aptos_agregada":182,"origem_agregada":"ROSCOMMON","aptos_dublin":400,"aptos_interior":182},{"mrv":2,"principal":512,"agregada":2855,"aptos":476,"aptos_principal":400,"aptos_agregada":76,"origem_agregada":"LONGFORD","aptos_dublin":400,"aptos_interior":76},{"mrv":3,"principal":513,"agregada":1105,"aptos":502,"aptos_principal":400,"aptos_agregada":102,"origem_agregada":"MAYO","aptos_dublin":400,"aptos_interior":102},{"mrv":4,"principal":517,"agregada":1292,"aptos":513,"aptos_principal":400,"aptos_agregada":113,"origem_agregada":"CAVAN","aptos_dublin":400,"aptos_interior":113},{"mrv":5,"principal":1160,"agregada":3845,"aptos":473,"aptos_principal":400,"aptos_agregada":73,"origem_agregada":"LIMERICK","aptos_dublin":400,"aptos_interior":73},{"mrv":6,"principal":1352,"agregada":522,"aptos":462,"aptos_principal":400,"aptos_agregada":62,"origem_agregada":"DONEGAL","aptos_dublin":400,"aptos_interior":62},{"mrv":7,"principal":3054,"agregada":1099,"aptos":454,"aptos_principal":400,"aptos_agregada":54,"origem_agregada":"KERRY","aptos_dublin":400,"aptos_interior":54},{"mrv":8,"principal":3078,"agregada":2847,"aptos":429,"aptos_principal":400,"aptos_agregada":29,"origem_agregada":"LEITRIM","aptos_dublin":400,"aptos_interior":29},{"mrv":9,"principal":3108,"agregada":3422,"aptos":756,"aptos_principal":398,"aptos_agregada":358,"origem_agregada":"GALWAY","aptos_dublin":398,"aptos_interior":358},{"mrv":10,"principal":3142,"agregada":1278,"aptos":793,"aptos_principal":398,"aptos_agregada":395,"origem_agregada":"LIMERICK","aptos_dublin":398,"aptos_interior":395},{"mrv":11,"principal":3161,"agregada":3307,"aptos":791,"aptos_principal":397,"aptos_agregada":394,"origem_agregada":"CORK","aptos_dublin":397,"aptos_interior":394},{"mrv":12,"principal":3179,"agregada":530,"aptos":676,"aptos_principal":398,"aptos_agregada":278,"origem_agregada":"WESTMEATH","aptos_dublin":398,"aptos_interior":278},{"mrv":13,"principal":3216,"agregada":527,"aptos":571,"aptos_principal":398,"aptos_agregada":173,"origem_agregada":"CLARE","aptos_dublin":398,"aptos_interior":173},{"mrv":14,"principal":3229,"agregada":3821,"aptos":606,"aptos_principal":398,"aptos_agregada":208,"origem_agregada":"CORK","aptos_dublin":398,"aptos_interior":208},{"mrv":15,"principal":3245,"agregada":519,"aptos":781,"aptos_principal":397,"aptos_agregada":384,"origem_agregada":"CORK","aptos_dublin":397,"aptos_interior":384},{"mrv":16,"principal":3302,"agregada":3181,"aptos":771,"aptos_principal":396,"aptos_agregada":375,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos_dublin":396,"aptos_interior":375},{"mrv":17,"principal":3305,"agregada":521,"aptos":767,"aptos_principal":397,"aptos_agregada":370,"origem_agregada":"GALWAY","aptos_dublin":397,"aptos_interior":370},{"mrv":18,"principal":3306,"agregada":518,"aptos":766,"aptos_principal":396,"aptos_agregada":370,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos_dublin":396,"aptos_interior":370},{"mrv":19,"principal":3308,"agregada":null,"aptos":399,"aptos_principal":399,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":399,"aptos_interior":0},{"mrv":20,"principal":3309,"agregada":1314,"aptos":615,"aptos_principal":398,"aptos_agregada":217,"origem_agregada":"WATERFORD","aptos_dublin":398,"aptos_interior":217},{"mrv":21,"principal":3311,"agregada":3913,"aptos":630,"aptos_principal":397,"aptos_agregada":233,"origem_agregada":"DUBLIN","aptos_dublin":630,"aptos_interior":0},{"mrv":22,"principal":3313,"agregada":3889,"aptos":797,"aptos_principal":397,"aptos_agregada":400,"origem_agregada":"DUBLIN","aptos_dublin":797,"aptos_interior":0},{"mrv":23,"principal":3315,"agregada":3778,"aptos":792,"aptos_principal":395,"aptos_agregada":397,"origem_agregada":"DUBLIN","aptos_dublin":792,"aptos_interior":0},{"mrv":24,"principal":3322,"agregada":3752,"aptos":794,"aptos_principal":398,"aptos_agregada":396,"origem_agregada":"DUBLIN","aptos_dublin":794,"aptos_interior":0},{"mrv":25,"principal":3442,"agregada":null,"aptos":398,"aptos_principal":398,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":398,"aptos_interior":0},{"mrv":26,"principal":3688,"agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":400,"aptos_interior":0},{"mrv":27,"principal":3832,"agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":400,"aptos_interior":0},{"mrv":28,"principal":3862,"agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"origem_agregada":null,"aptos_dublin":400,"aptos_interior":0}]};
+const DECISOES = {"decididoEm":"2026-09-06","numeracao":"MRV do DJE/TRE-DF, identidade unica da mesa; nao depende da posicao","comparecimento":{"base":"B","rotulo":"taxa de 2022 por domicílio de origem (base B, não oficial)","total":11499,"total_exato":11497.7,"aptos":16794,"taxas":{"DUBLIN":{"taxa":0.74,"qualidade":"direto"},"CORK":{"taxa":0.533,"qualidade":"direto"},"OUTROS LOCAIS DA IRLANDA":{"taxa":0.6,"qualidade":"direto"},"GALWAY":{"taxa":0.481,"qualidade":"direto"},"LIMERICK":{"taxa":0.434,"qualidade":"proxy"},"WESTMEATH":{"taxa":0.461,"qualidade":"proxy"},"WATERFORD":{"taxa":0.461,"qualidade":"proxy"},"ROSCOMMON":{"taxa":0.434,"qualidade":"proxy"},"CLARE":{"taxa":0.649,"qualidade":"direto"},"CAVAN":{"taxa":0.461,"qualidade":"proxy"},"MAYO":{"taxa":0.544,"qualidade":"proxy"},"LONGFORD":{"taxa":0.778,"qualidade":"direto"},"DONEGAL":{"taxa":0.51,"qualidade":"genérico (0,49 abst.)"},"KERRY":{"taxa":0.544,"qualidade":"proxy"},"LEITRIM":{"taxa":0.51,"qualidade":"genérico (0,49 abst.)"}}},"classes":{"regra":"as 3 maiores = alta; esperado >= 450 = media; abaixo = baixa","n_alta":3,"limiar_media":450,"cores":{"alta":{"cor":"vermelho","hex":"#c0392b","rotulo":"alto comparecimento"},"media":{"cor":"amarelo","hex":"#d4a017","rotulo":"médio comparecimento"},"baixa":{"cor":"verde","hex":"#1e8449","rotulo":"baixo comparecimento"}},"contagem":{"alta":3,"media":8,"baixa":17}},"portas":{"S4":{"papel":"entrada","entrada":"A","cor":"#2a78d6"},"S5":{"papel":"entrada","entrada":"B","cor":"#e08a00"},"S6":{"papel":"entrada","entrada":"C","cor":"#c2185b"},"S2":{"papel":"saida"},"S8":{"papel":"saida"}},"entradas":[{"id":"A","porta":"S4","cor":"azul","hex":"#2a78d6","balizas":3,"serpenteado":171,"baia":274,"capacidade":445,"quota":0.3171,"mrvs":[3,5,9,12,15,20,24,26,28],"esperado":3642,"alvo":3646},{"id":"B","porta":"S5","cor":"âmbar","hex":"#e08a00","balizas":9,"serpenteado":513,"baia":0,"capacidade":513,"quota":0.3659,"mrvs":[1,4,7,8,16,17,18,21,22,25],"esperado":4215,"alvo":4207},{"id":"C","porta":"S6","cor":"magenta","hex":"#c2185b","balizas":3,"serpenteado":171,"baia":274,"capacidade":445,"quota":0.3171,"mrvs":[2,6,10,11,13,14,19,23,27],"esperado":3642,"alvo":3646}],"saidas":["S2","S8"],"nomenclatura_portas":"em aberto: cor ou letra","mesas":[{"mrv":1,"principal":511,"agregada":1100,"origem_agregada":"ROSCOMMON","aptos":582,"aptos_principal":400,"aptos_agregada":182,"aptos_dublin":400,"aptos_interior":182,"esperado":375,"esperado_exato":374.99,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":2,"principal":512,"agregada":2855,"origem_agregada":"LONGFORD","aptos":476,"aptos_principal":400,"aptos_agregada":76,"aptos_dublin":400,"aptos_interior":76,"esperado":355,"esperado_exato":355.13,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":3,"principal":513,"agregada":1105,"origem_agregada":"MAYO","aptos":502,"aptos_principal":400,"aptos_agregada":102,"aptos_dublin":400,"aptos_interior":102,"esperado":351,"esperado_exato":351.49,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":4,"principal":517,"agregada":1292,"origem_agregada":"CAVAN","aptos":513,"aptos_principal":400,"aptos_agregada":113,"aptos_dublin":400,"aptos_interior":113,"esperado":348,"esperado_exato":348.09,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":5,"principal":1160,"agregada":3845,"origem_agregada":"LIMERICK","aptos":473,"aptos_principal":400,"aptos_agregada":73,"aptos_dublin":400,"aptos_interior":73,"esperado":328,"esperado_exato":327.68,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":6,"principal":1352,"agregada":522,"origem_agregada":"DONEGAL","aptos":462,"aptos_principal":400,"aptos_agregada":62,"aptos_dublin":400,"aptos_interior":62,"esperado":328,"esperado_exato":327.62,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":7,"principal":3054,"agregada":1099,"origem_agregada":"KERRY","aptos":454,"aptos_principal":400,"aptos_agregada":54,"aptos_dublin":400,"aptos_interior":54,"esperado":325,"esperado_exato":325.38,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":8,"principal":3078,"agregada":2847,"origem_agregada":"LEITRIM","aptos":429,"aptos_principal":400,"aptos_agregada":29,"aptos_dublin":400,"aptos_interior":29,"esperado":311,"esperado_exato":310.79,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":9,"principal":3108,"agregada":3422,"origem_agregada":"GALWAY","aptos":756,"aptos_principal":398,"aptos_agregada":358,"aptos_dublin":398,"aptos_interior":358,"esperado":467,"esperado_exato":466.72,"classe":"media","cor":"#d4a017","entrada":"A","porta":"S4"},{"mrv":10,"principal":3142,"agregada":1278,"origem_agregada":"LIMERICK","aptos":793,"aptos_principal":398,"aptos_agregada":395,"aptos_dublin":398,"aptos_interior":395,"esperado":466,"esperado_exato":465.95,"classe":"media","cor":"#d4a017","entrada":"C","porta":"S6"},{"mrv":11,"principal":3161,"agregada":3307,"origem_agregada":"CORK","aptos":791,"aptos_principal":397,"aptos_agregada":394,"aptos_dublin":397,"aptos_interior":394,"esperado":504,"esperado_exato":503.78,"classe":"media","cor":"#d4a017","entrada":"C","porta":"S6"},{"mrv":12,"principal":3179,"agregada":530,"origem_agregada":"WESTMEATH","aptos":676,"aptos_principal":398,"aptos_agregada":278,"aptos_dublin":398,"aptos_interior":278,"esperado":423,"esperado_exato":422.68,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":13,"principal":3216,"agregada":527,"origem_agregada":"CLARE","aptos":571,"aptos_principal":398,"aptos_agregada":173,"aptos_dublin":398,"aptos_interior":173,"esperado":407,"esperado_exato":406.8,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":14,"principal":3229,"agregada":3821,"origem_agregada":"CORK","aptos":606,"aptos_principal":398,"aptos_agregada":208,"aptos_dublin":398,"aptos_interior":208,"esperado":405,"esperado_exato":405.38,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":15,"principal":3245,"agregada":519,"origem_agregada":"CORK","aptos":781,"aptos_principal":397,"aptos_agregada":384,"aptos_dublin":397,"aptos_interior":384,"esperado":498,"esperado_exato":498.45,"classe":"media","cor":"#d4a017","entrada":"A","porta":"S4"},{"mrv":16,"principal":3302,"agregada":3181,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos":771,"aptos_principal":396,"aptos_agregada":375,"aptos_dublin":396,"aptos_interior":375,"esperado":518,"esperado_exato":518.04,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":17,"principal":3305,"agregada":521,"origem_agregada":"GALWAY","aptos":767,"aptos_principal":397,"aptos_agregada":370,"aptos_dublin":397,"aptos_interior":370,"esperado":472,"esperado_exato":471.75,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":18,"principal":3306,"agregada":518,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos":766,"aptos_principal":396,"aptos_agregada":370,"aptos_dublin":396,"aptos_interior":370,"esperado":515,"esperado_exato":515.04,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":19,"principal":3308,"agregada":null,"origem_agregada":null,"aptos":399,"aptos_principal":399,"aptos_agregada":0,"aptos_dublin":399,"aptos_interior":0,"esperado":295,"esperado_exato":295.26,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":20,"principal":3309,"agregada":1314,"origem_agregada":"WATERFORD","aptos":615,"aptos_principal":398,"aptos_agregada":217,"aptos_dublin":398,"aptos_interior":217,"esperado":395,"esperado_exato":394.56,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":21,"principal":3311,"agregada":3913,"origem_agregada":"DUBLIN","aptos":630,"aptos_principal":397,"aptos_agregada":233,"aptos_dublin":630,"aptos_interior":0,"esperado":466,"esperado_exato":466.2,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":22,"principal":3313,"agregada":3889,"origem_agregada":"DUBLIN","aptos":797,"aptos_principal":397,"aptos_agregada":400,"aptos_dublin":797,"aptos_interior":0,"esperado":590,"esperado_exato":589.78,"classe":"alta","cor":"#c0392b","entrada":"B","porta":"S5"},{"mrv":23,"principal":3315,"agregada":3778,"origem_agregada":"DUBLIN","aptos":792,"aptos_principal":395,"aptos_agregada":397,"aptos_dublin":792,"aptos_interior":0,"esperado":586,"esperado_exato":586.08,"classe":"alta","cor":"#c0392b","entrada":"C","porta":"S6"},{"mrv":24,"principal":3322,"agregada":3752,"origem_agregada":"DUBLIN","aptos":794,"aptos_principal":398,"aptos_agregada":396,"aptos_dublin":794,"aptos_interior":0,"esperado":588,"esperado_exato":587.56,"classe":"alta","cor":"#c0392b","entrada":"A","porta":"S4"},{"mrv":25,"principal":3442,"agregada":null,"origem_agregada":null,"aptos":398,"aptos_principal":398,"aptos_agregada":0,"aptos_dublin":398,"aptos_interior":0,"esperado":295,"esperado_exato":294.52,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":26,"principal":3688,"agregada":null,"origem_agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"aptos_dublin":400,"aptos_interior":0,"esperado":296,"esperado_exato":296.0,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":27,"principal":3832,"agregada":null,"origem_agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"aptos_dublin":400,"aptos_interior":0,"esperado":296,"esperado_exato":296.0,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":28,"principal":3862,"agregada":null,"origem_agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"aptos_dublin":400,"aptos_interior":0,"esperado":296,"esperado_exato":296.0,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"}],"ring3":{"largura":39.0,"profundidade":35.0,"apron":14.0,"rect":[8.79,-49.0,47.78,-14.0],"eixo":"centrado em S5 (estimativa; aferir o bordo oeste em campo)","serpenteado":28.5,"balizas":[3,9,3],"capacidade":1402,"separadores":300,"metros":596.3,"em_maos":200,"a_adquirir":100,"custo_eur":1302,"evacuacao_min":11.4,"largura_saida_exigida":2.14}};
 const ARRANJOS = [{"nome":"Hamad_3polos","base":"A","alteracoes":[{"n":1,"x":13.8,"y":44.2,"rot":270,"lado":1},{"n":2,"x":17.7,"y":44.2,"rot":270,"lado":-1},{"n":3,"x":20.1,"y":44.3,"rot":270,"lado":1},{"n":4,"x":24,"y":44.3,"rot":270,"lado":-1},{"n":5,"x":26.4,"y":44.3,"rot":270,"lado":1},{"n":6,"x":39.8,"y":44.15,"rot":270,"lado":-1},{"n":7,"x":32.56,"y":44.4,"rot":270,"lado":1},{"n":8,"x":36.4,"y":44.2,"rot":270,"lado":-1},{"n":9,"x":0.9,"y":14.85,"rot":0,"lado":1},{"n":10,"x":0.9,"y":12.25,"rot":0,"lado":-1},{"n":11,"x":1.05,"y":8.85,"rot":0,"lado":1},{"n":12,"x":47.3,"y":34.7,"rot":180,"lado":-1},{"n":13,"x":47.3,"y":31.8,"rot":180,"lado":1},{"n":14,"x":47.2,"y":28.95,"rot":180,"lado":-1},{"n":15,"x":47.2,"y":26.65,"rot":180,"lado":1},{"n":16,"x":47.3,"y":19.7,"rot":180,"lado":-1},{"n":17,"x":47.3,"y":17.3,"rot":180,"lado":1},{"n":18,"x":47.3,"y":13.4,"rot":180,"lado":-1},{"n":19,"x":47.3,"y":11,"rot":180,"lado":1},{"n":20,"x":47.3,"y":7.1,"rot":180,"lado":-1},{"n":21,"x":1,"y":18.3,"rot":0,"lado":1},{"n":22,"x":29.75,"y":44.35,"rot":270,"lado":-1},{"n":23,"x":47.1,"y":23.85,"rot":180,"lado":1},{"n":24,"x":0.9,"y":23.95,"rot":0,"lado":-1},{"n":25,"x":0.9,"y":27.3,"rot":0,"lado":1},{"n":26,"x":0.7,"y":31.3,"rot":0,"lado":-1},{"n":27,"x":0.4,"y":33.8,"rot":0,"lado":1},{"n":28,"x":0.3,"y":37.2,"rot":0,"lado":-1}],"criadoEm":"2026-09-05T18:45:18.238Z","id":"hamad-3polos-20260905-184518"},{"nome":"Três polos · 22/23/24 separadas","base":"A","alteracoes":[{"n":5,"x":26.26,"y":44.4,"rot":270,"lado":1},{"n":6,"x":30.16,"y":44.4,"rot":270,"lado":-1},{"n":7,"x":32.56,"y":44.4,"rot":270,"lado":1},{"n":8,"x":36.46,"y":44.4,"rot":270,"lado":-1},{"n":9,"x":47.3,"y":42.5,"rot":180,"lado":1},{"n":10,"x":47.3,"y":38.6,"rot":180,"lado":-1},{"n":11,"x":47.3,"y":36.2,"rot":180,"lado":1},{"n":12,"x":47.3,"y":32.3,"rot":180,"lado":-1},{"n":13,"x":47.3,"y":29.9,"rot":180,"lado":1},{"n":14,"x":47.3,"y":26.0,"rot":180,"lado":-1},{"n":15,"x":47.3,"y":23.6,"rot":180,"lado":1},{"n":16,"x":47.3,"y":19.7,"rot":180,"lado":-1},{"n":17,"x":47.3,"y":17.3,"rot":180,"lado":1},{"n":18,"x":47.3,"y":13.4,"rot":180,"lado":-1},{"n":19,"x":47.3,"y":11.0,"rot":180,"lado":1},{"n":20,"x":47.3,"y":7.1,"rot":180,"lado":-1},{"n":22,"x":40.05,"y":44.4,"rot":270,"lado":-1},{"n":23,"x":47.3,"y":3.5,"rot":180,"lado":1},{"n":24,"x":0.0,"y":13.2,"rot":0,"lado":-1}],"criadoEm":"2026-09-05T18:20:00.000Z","id":"tres-polos-20260905-182000"},{"nome":"Hamad 2","base":"A","alteracoes":[{"n":1,"x":16.5,"y":44.35,"rot":270,"lado":1},{"n":2,"x":19.9,"y":43.9,"rot":270,"lado":-1},{"n":3,"x":22.65,"y":43.95,"rot":270,"lado":1},{"n":4,"x":25.8,"y":44.25,"rot":270,"lado":-1},{"n":21,"x":0.35,"y":21.9,"rot":0,"lado":1},{"n":22,"x":0.15,"y":18.75,"rot":0,"lado":-1}],"criadoEm":"2026-09-05T15:59:49.392Z","id":"hamad-2-20260905-160048"},{"nome":"Hamad1","base":"A","alteracoes":[{"n":1,"x":16.5,"y":44.35,"rot":270,"lado":1},{"n":2,"x":19.9,"y":43.9,"rot":270,"lado":-1},{"n":3,"x":22.65,"y":43.95,"rot":270,"lado":1},{"n":4,"x":25.8,"y":44.25,"rot":270,"lado":-1},{"n":21,"x":0.35,"y":21.9,"rot":0,"lado":1},{"n":22,"x":0.15,"y":18.75,"rot":0,"lado":-1}],"criadoEm":"2026-09-05T15:51:44.607Z","id":"hamad1-20260905-155811"}];
 </script>
 <script>
@@ -411,9 +404,14 @@ const ARRANJOS = [{"nome":"Hamad_3polos","base":"A","alteracoes":[{"n":1,"x":13.
  *
  * Roda no navegador (global `Modelo`) e em Node (module.exports). Não depende
  * de DOM. Recebe a base da prancheta (salão, portas, módulo, posições das 28
- * mesas), o mapeamento MRV → seção e um cenário de premissas; devolve o
- * resumo estático (cargas, geometria, cruzamentos) e o resultado de N dias
- * simulados por eventos discretos, eleitor a eleitor.
+ * mesas), o mapeamento MRV → seção, as decisões do Posto (scripts/decisoes.py:
+ * comparecimento esperado e classe de cada mesa, papéis das portas, entradas
+ * do Ring 3 com as suas mesas e capacidades) e um cenário de premissas;
+ * devolve o resumo estático (cargas, geometria, cruzamentos) e o resultado de
+ * N dias simulados por eventos discretos, eleitor a eleitor.
+ *
+ * Numeração: o número da mesa na planta É o MRV do DJE/TRE-DF (decisão de
+ * 06/09/2026). Não há remapeamento: a mesa 22 é a MRV 22 onde quer que esteja.
  *
  * Estágios do eleitor:
  *   chegada ao Ring 3 → triagem → fila da área → porta (liberação controlada)
@@ -455,54 +453,79 @@ const CURVA_CHEGADA = [
   /* 16h00 */ 4.5, /* 16h30 */ 3.5,
 ];
 
-/* Taxas de comparecimento por origem do eleitor. "medio" replica 2022
- * (74 % nas seções de Dublin, ~50 % nas do interior). */
+/* Comparecimento: o esperado de cada mesa vem das decisões (base B, taxa de
+ * 2022 por domicílio de origem). Os presets só escalam essa base, para testar
+ * sensibilidade; "medio" é a base tal como está. */
 const COMPARECIMENTO = {
-  pequeno: {dublin: 0.62, interior: 0.40, rotulo: "pequeno"},
-  medio:   {dublin: 0.74, interior: 0.50, rotulo: "médio (2022)"},
-  grande:  {dublin: 0.84, interior: 0.60, rotulo: "grande"},
+  pequeno: {fator: 0.85, rotulo: "pequeno (base −15 %)"},
+  medio:   {fator: 1.00, rotulo: "base B (2022, por domicílio)"},
+  grande:  {fator: 1.15, rotulo: "grande (base +15 %)"},
 };
 
+/* Classe de carga de cada mesa: a das decisões (vermelho = as 3 de maior
+ * comparecimento, amarelo = médio, verde = baixo), nos nomes que a fila da
+ * mesa usa. */
 const CLASSES = ["leve", "media", "pesada"];
-function classeMesa(aptos){ return aptos > 700 ? "pesada" : (aptos > 500 ? "media" : "leve"); }
-const ROTULO_CLASSE = {leve: "leve (≤ 500 aptos)", media: "média (501–700)", pesada: "pesada (> 700)"};
+const CLASSE_DA_DECISAO = {baixa: "leve", media: "media", alta: "pesada"};
+const ROTULO_CLASSE = {leve: "verde · baixo comparecimento", media: "amarelo · médio comparecimento",
+                       pesada: "vermelho · as 3 de maior comparecimento"};
+
+/* Portas e zonas que valem por decisão do Posto (06/09/2026): entradas S4 (A),
+ * S5 (B) e S6 (C), saídas S2 e S8; cada zona é uma entrada do Ring 3 com as
+ * mesas que scripts/decisoes.py lhe atribuiu. `dec` é o bloco de decisões;
+ * sem ele, os cenários de referência caem nas portas da decisão e nas zonas
+ * por arcos, que só servem para comparação. */
+function portasDaDecisao(dec){
+  const p = {S1: "fechada", S3: "fechada", S7: "fechada", S9: "fechada"};
+  const decididas = (dec && dec.portas) ? dec.portas : {S4: {papel: "entrada"}, S5: {papel: "entrada"}, S6: {papel: "entrada"}, S2: {papel: "saida"}, S8: {papel: "saida"}};
+  for (const id of Object.keys(decididas)) p[id] = decididas[id].papel;
+  return p;
+}
+function zonasDaDecisao(dec){
+  if (dec && Array.isArray(dec.entradas) && dec.entradas.length)
+    return {modo: "entradas", portas: dec.entradas.map(e => e.porta)};
+  return {inicio: 1, tamanhos: [8, 12, 8], portas: ["S5", "S6", "S4"]};
+}
 
 /* ------------------------------------------------------------------ */
 /* Cenários de referência                                              */
 /* ------------------------------------------------------------------ */
-function cenarioPadrao(){
+function cenarioPadrao(dec){
+  const nz = (dec && dec.entradas) ? dec.entradas.length : 3;
   return {
     nome: "Ponto de partida",
     salao: {base: "A", alteracoes: []},
-    portas: {S1: "fechada", S3: "fechada", S4: "entrada", S5: "saida", S6: "entrada", S7: "fechada", S9: "fechada"},
-    zonas: {inicio: 1, tamanhos: [16, 12], portas: ["S4", "S6"]},
-    ordem: {inicioZona: 0, sentido: "horario"},
-    checkpoint: {existe: true, dist: 8, filas: 2, atendentes: [2, 2], seg: 8},
+    portas: portasDaDecisao(dec),
+    zonas: zonasDaDecisao(dec),
+    checkpoint: {existe: true, dist: 8, filas: 2, atendentes: new Array(nz).fill(2), seg: 8},
     filaMesa: {leve: 3, media: 4, pesada: 5},
     liberacao: "buffer",
     porta: {vazao: 30},
     comparecimento: "medio",
     tempos: {identificacao: 45, voto: 30, cv: 0.35},
-    ring3: {atendentes: 6, seg: 6, capacidade: 800},
+    ring3: {atendentes: 6, seg: 6, capacidade: (dec && dec.ring3 && dec.ring3.capacidade) || 1402},
     extras: {justificativas: 0.05},
     sim: {runs: 12, seed: 7},
   };
 }
 
-/* Escolhido por varredura em Node (simulador/varredura.js): entre 4.228
- * combinações de partição, portas, ordem e checkpoint, esta zera os
- * cruzamentos de saída com corredor de entrada, mantém as mesas pesadas sem
- * fome e cabe na fita contratada. Sobe as mesas 23 e 24 em 3,5 a 5 m para a
- * fila da mesa do recorte (slot 22) não invadir a mesa 23. */
-function cenarioClaude(){
-  const c = cenarioPadrao();
+/* Escolhido por varredura em Node (simulador/varredura.js, 06/09/2026) sobre
+ * as portas e as entradas da decisão: entre a planta oficial e os cenários
+ * salvos na prancheta, o arranjo "Três polos" (as três mesas vermelhas MRV
+ * 22, 23 e 24 separadas em áreas distintas) com checkpoint a 16 m, 3
+ * atendentes por entrada e filas 3/4/6 dá a menor espera P90 sem falha
+ * nenhuma. Ver saidas/varredura_top.json. `arranjos` é a biblioteca da
+ * prancheta (embutida na página ou lida de cenarios/ em Node); sem ela, cai
+ * na planta A com as mesas 23 e 24 subidas, o ajuste antigo. */
+const ARRANJO_CLAUDE = "tres-polos";
+function cenarioClaude(dec, arranjos){
+  const c = cenarioPadrao(dec);
   c.nome = "Cenário Claude";
-  c.salao = {base: "A", alteracoes: [{n: 23, y: 17.5}, {n: 24, y: 21.4}]};
-  c.portas = {S1: "saida", S3: "fechada", S4: "entrada", S5: "entrada", S6: "entrada", S7: "fechada", S9: "saida"};
-  c.zonas = {inicio: 1, tamanhos: [8, 12, 8], portas: ["S5", "S6", "S4"]};
-  c.ordem = {inicioZona: 1, sentido: "horario"};
-  c.checkpoint = {existe: true, dist: 14, filas: 2, atendentes: [2, 3, 2], seg: 8};
-  c.filaMesa = {leve: 4, media: 5, pesada: 8};
+  const tp = (arranjos || []).find(a => a && typeof a.id === "string" && a.id.startsWith(ARRANJO_CLAUDE));
+  c.salao = tp ? {base: tp.base, alteracoes: tp.alteracoes.map(m => ({...m})), arranjo: tp.id, nome: tp.nome}
+               : {base: "A", alteracoes: [{n: 23, y: 17.5}, {n: 24, y: 21.4}]};
+  c.checkpoint = {existe: true, dist: 16, filas: 2, atendentes: c.zonas.portas.map(() => 3), seg: 8};
+  c.filaMesa = {leve: 3, media: 4, pesada: 6};
   c.liberacao = "buffer";
   c.sim = {runs: 16, seed: 7};
   return c;
@@ -731,36 +754,36 @@ function slotsDasZonas(zonas){
   for (const tam of zonas.tamanhos) { out.push(seq.slice(k, k + tam)); k += tam; }
   return out;
 }
-/* Numeração MRV por slot: contígua dentro de cada zona, começando na zona
- * escolhida e seguindo o perímetro no sentido dado. */
-function mapaMrv(zonasSlots, ordem){
-  if (ordem.manual) return {...ordem.manual};
-  const plano = [];
-  const z0 = Math.min(ordem.inicioZona || 0, zonasSlots.length - 1);
-  const ordemZonas = [];
-  for (let i = 0; i < zonasSlots.length; i++) ordemZonas.push((z0 + i) % zonasSlots.length);
-  if (ordem.sentido === "antihorario") {
-    // percorre as zonas em ordem inversa e cada zona de trás para frente
-    const inv = [z0];
-    for (let i = 1; i < zonasSlots.length; i++) inv.push((z0 - i + zonasSlots.length) % zonasSlots.length);
-    for (const z of inv) plano.push(...zonasSlots[z].slice().reverse());
-  } else {
-    for (const z of ordemZonas) plano.push(...zonasSlots[z]);
+/* As zonas do cenário: por decisão, cada entrada do Ring 3 com as suas MRVs;
+ * por arcos (modo antigo), só para comparação. Devolve [{letra, mrvs, porta,
+ * capRing3, cor}]. */
+function zonasDoCenario(cen, dec){
+  const z = cen.zonas || {};
+  if (z.modo === "entradas" || !Array.isArray(z.tamanhos)) {
+    if (!dec || !Array.isArray(dec.entradas) || !dec.entradas.length)
+      throw new Error("cenário por entradas exige o bloco de decisões (DECISOES)");
+    return dec.entradas.map((e, i) => ({
+      letra: e.id, mrvs: e.mrvs.slice(), porta: (z.portas && z.portas[i]) || e.porta,
+      capRing3: e.capacidade, cor: e.hex, nome: `Entrada ${e.id}`,
+    }));
   }
-  const mapa = {};
-  plano.forEach((slot, i) => { mapa[slot] = i + 1; });
-  return mapa;
+  return slotsDasZonas(z).map((slots, i) => ({
+    letra: String.fromCharCode(65 + i), mrvs: slots, porta: z.portas[i],
+    capRing3: null, cor: null, nome: `Zona ${String.fromCharCode(65 + i)}`,
+  }));
 }
 
 /* ------------------------------------------------------------------ */
 /* Montagem do cenário resolvido (estático)                            */
 /* ------------------------------------------------------------------ */
-function montar(base, mrvsDados, cen){
+function montar(base, mrvsDados, cen, dec){
+  if (!dec || !dec.mesas) throw new Error("montar() precisa do bloco de decisões (comparecimento e classe por mesa)");
   const M = base.modulo;
   const mesasPos = mesasDoCenario(base, cen);
-  const zonasSlots = slotsDasZonas(cen.zonas);
-  const mapa = mapaMrv(zonasSlots, cen.ordem);
+  const zonasDef = zonasDoCenario(cen, dec);
   const porMrv = {}; for (const r of mrvsDados.mrvs) porMrv[r.mrv] = r;
+  const infoMrv = Array.isArray(dec.mesas)
+    ? Object.fromEntries(dec.mesas.map(m => [m.mrv, m])) : dec.mesas;
   const portas = {}; for (const p of base.portas) portas[p.id] = p;
   const taxa = COMPARECIMENTO[cen.comparecimento] || COMPARECIMENTO.medio;
   const avisos = [];
@@ -769,16 +792,16 @@ function montar(base, mrvsDados, cen){
   const saidas = Object.keys(cen.portas).filter(id => cen.portas[id] === "saida" && portas[id]);
   const entradas = Object.keys(cen.portas).filter(id => cen.portas[id] === "entrada" && portas[id]);
 
-  // zonas
-  const zonas = zonasSlots.map((slots, z) => {
-    let pid = cen.zonas.portas[z];
+  // zonas: uma por entrada do Ring 3 (ou por arco, no modo antigo)
+  const zonas = zonasDef.map((zd, z) => {
+    let pid = zd.porta;
     if (!pid || cen.portas[pid] !== "entrada") {
-      avisos.push(`Zona ${z + 1} sem porta de entrada válida; usando ${entradas[0] || "S5"}.`);
+      avisos.push(`${zd.nome} sem porta de entrada válida; usando ${entradas[0] || "S5"}.`);
       pid = entradas[0] || "S5";
     }
     const porta = portas[pid], cp = centroPorta(porta);
-    return {idx: z, nome: `Zona ${String.fromCharCode(65 + z)}`, letra: String.fromCharCode(65 + z),
-            slots, porta: pid, portaCentro: cp, portaLarg: porta.larg};
+    return {idx: z, nome: zd.nome, letra: zd.letra, slots: zd.mrvs.slice(), porta: pid,
+            portaCentro: cp, portaLarg: porta.larg, capRing3: zd.capRing3, cor: zd.cor};
   });
   // checkpoint de cada zona: à frente da porta, à distância escolhida.
   // Se duas zonas dividem a porta, afasta 1,5 m lateralmente.
@@ -791,14 +814,16 @@ function montar(base, mrvsDados, cen){
   }
   for (const z of zonas) if (usoPorta[z.porta] > 1) z.dividePorta = true;
 
-  // mesas
+  // mesas: o número na planta é o MRV
   const mesas = mesasPos.map(pos => {
-    const mrv = mapa[pos.n], dados = porMrv[mrv];
-    const zona = zonas.find(z => z.slots.includes(pos.n));
-    const classe = classeMesa(dados.aptos);
+    const mrv = pos.n, dados = porMrv[mrv], info = infoMrv[mrv];
+    if (!dados || !info) throw new Error(`MRV ${mrv} sem dados de seção ou de decisão`);
+    const zona = zonas.find(z => z.slots.includes(mrv));
+    if (!zona) throw new Error(`MRV ${mrv} não pertence a zona nenhuma`);
+    const classe = CLASSE_DA_DECISAO[info.classe] || "leve";
     const L = Math.max(1, Math.round(cen.filaMesa[classe] || 3));
     const frente = frenteMesa(M, pos), cauda = caudaFila(M, pos, L);
-    const esperados = dados.aptos_dublin * taxa.dublin + dados.aptos_interior * taxa.interior;
+    const esperados = info.esperado * taxa.fator;
     const saida = saidas.length
       ? saidas.map(id => ({id, d: hipot(frente, centroPorta(portas[id]))})).sort((a, b) => a.d - b.d)[0]
       : {id: zona.porta, d: hipot(frente, zona.portaCentro)};
@@ -806,7 +831,9 @@ function montar(base, mrvsDados, cen){
     return {slot: pos.n, pos, mrv, secao: dados.principal, agregada: dados.agregada,
             origemAgregada: dados.origem_agregada, aptos: dados.aptos,
             aptosDublin: dados.aptos_dublin, aptosInterior: dados.aptos_interior,
-            classe, L, zona: zona.idx, frente, cauda, esperados, saida: saida.id, distSaida: saida.d,
+            classe, classeDecisao: info.classe, cor: info.cor,
+            p: Math.min(1, esperados / Math.max(1, dados.aptos)),
+            L, zona: zona.idx, frente, cauda, esperados, saida: saida.id, distSaida: saida.d,
             distCp, corpo: corpoRect(M, pos)};
   });
   for (const z of zonas) {
@@ -814,7 +841,7 @@ function montar(base, mrvsDados, cen){
     z.esperados = soma(mesas.filter(m => m.zona === z.idx).map(m => m.esperados));
     z.aptos = soma(mesas.filter(m => m.zona === z.idx).map(m => m.aptos));
     z.mrvs = mesas.filter(m => m.zona === z.idx).map(m => m.mrv).sort((a, b) => a - b);
-    z.faixaMrv = `${z.mrvs[0]}–${z.mrvs[z.mrvs.length - 1]}`;
+    z.faixaMrv = z.mrvs.join(", ");
     z.capBuffer = cen.checkpoint.existe
       ? Math.max(1, Math.floor(cen.checkpoint.dist * Math.max(1, cen.checkpoint.filas) / PASSO_FILA))
       : soma(mesas.filter(m => m.zona === z.idx).map(m => m.L));
@@ -878,7 +905,7 @@ function montar(base, mrvsDados, cen){
   const fracaoLeque = paresTotal ? paresLeque / paresTotal : 0;
   const mesmaPorta = zonas.filter(z => saidas.includes(z.porta)).map(z => z.porta);
 
-  return {cen, base, M, zonas, mesas, mapa, portas, saidas, entradas, taxa,
+  return {cen, base, M, zonas, mesas, portas, saidas, entradas, taxa, dec,
           esperadosTotal: soma(mesas.map(m => m.esperados)),
           aptosTotal: soma(mesas.map(m => m.aptos)),
           cargaPorta, desequilibrio, separadores, fitaMesas, fitaBuffer, conflitos,
@@ -916,9 +943,8 @@ function simularDia(mont, seed){
   const porSlot = {}; mesas.forEach(m => { porSlot[m.slot] = m; });
   const eleitores = [];
   for (const m of mesas) {
-    const nD = binomial(rnd, m.aptosDublin, mont.taxa.dublin);
-    const nI = binomial(rnd, m.aptosInterior, mont.taxa.interior);
-    const n = nD + nI;
+    // sorteio do comparecimento da mesa em torno do esperado da base B
+    const n = binomial(rnd, m.aptos, m.p);
     const nJ = Math.round(n * (cen.extras.justificativas || 0));
     for (let i = 0; i < n + nJ; i++)
       eleitores.push({id: eleitores.length, mesa: m.slot, zona: m.zona, just: i >= n,
@@ -1156,8 +1182,8 @@ function simularDia(mont, seed){
 /* ------------------------------------------------------------------ */
 /* Vários dias, agregação e vereditos                                  */
 /* ------------------------------------------------------------------ */
-function simular(base, mrvsDados, cen, opts = {}){
-  const mont = montar(base, mrvsDados, cen);
+function simular(base, mrvsDados, cen, dec, opts = {}){
+  const mont = montar(base, mrvsDados, cen, dec);
   const runs = Math.max(1, Math.min(200, (cen.sim && cen.sim.runs) || 10));
   const seed = (cen.sim && cen.sim.seed) || 7;
   const dias = [];
@@ -1221,12 +1247,12 @@ function avaliar(mont, r, porMesa, porZona){
   const tardias = porMesa.filter(m => m.fecha > 17.5 * 3600).sort((a, b) => b.fecha - a.fecha);
   if (tardias.length) V[V.length - 1].detalhe = `Mesas que passam de 17h30: ${tardias.slice(0, 8).map(m => `MRV ${m.mrv} (${hhmm(m.fecha)})`).join(", ")}${tardias.length > 8 ? "…" : ""}.`;
 
-  // 2 fome nas pesadas
+  // 2 fome nas pesadas (as 3 mesas vermelhas)
   const pes = porMesa.filter(m => m.classe === "pesada");
   const fomeMedia = pes.length ? soma(pes.map(m => m.fome)) / pes.length / 60 : 0;
-  add("fome", "Mesas pesadas sem fome", nivel(fomeMedia, 10, 30), `${Math.round(fomeMedia)} min por mesa pesada`, "≤ 10 min",
-      fomeMedia <= 10 ? "As mesas de mais de 700 aptos quase nunca ficaram paradas enquanto havia gente esperando fora."
-        : "Mesas pesadas ficaram ociosas com fila no Ring 3: a fila da frente delas ou o despacho do checkpoint não alimentou a urna.");
+  add("fome", "Mesas vermelhas sem fome", nivel(fomeMedia, 10, 30), `${Math.round(fomeMedia)} min por mesa vermelha`, "≤ 10 min",
+      fomeMedia <= 10 ? "As três mesas de maior comparecimento quase nunca ficaram paradas enquanto havia gente esperando fora."
+        : "Mesas vermelhas ficaram ociosas com fila no Ring 3: a fila da frente delas ou o despacho do checkpoint não alimentou a urna.");
 
   // 3 espera total
   const t90 = r.totalP90.p50 / 60;
@@ -1280,11 +1306,19 @@ function avaliar(mont, r, porMesa, porZona){
       mont.conflitos.length === 0 ? "Nenhuma fila invade corredor de porta, zona protegida ou outra mesa."
         : mont.conflitos.slice(0, 6).map(c => `MRV ${c.mesa} × ${c.com}`).join("; ") + (mont.conflitos.length > 6 ? "…" : ""));
 
-  // 10 Ring 3
+  // 10 Ring 3: o total contra a capacidade informada e cada entrada contra o
+  // seu serpenteado mais baia (do plano do Ring 3, via decisões)
   const r3 = r.ring3TotalMax.p90;
-  add("ring3", "Ring 3 comporta a fila externa", nivel(r3, mont.cen.ring3.capacidade, mont.cen.ring3.capacidade * 1.3),
-      `pico de ${Math.round(r3)} pessoas fora (P90)`, `≤ ${mont.cen.ring3.capacidade}`,
-      r3 <= mont.cen.ring3.capacidade ? "A fila externa cabe no espaço previsto." : "Fila externa maior que o espaço do Ring 3; transborda para a rua.");
+  const porEntrada = porZona.filter(z => mont.zonas[z.idx].capRing3).map(z => ({z, razao: z.ring3Max / mont.zonas[z.idx].capRing3}));
+  const piorE = porEntrada.length ? porEntrada.reduce((a, b) => b.razao > a.razao ? b : a) : null;
+  const razaoTot = r3 / mont.cen.ring3.capacidade;
+  const razao = Math.max(razaoTot, piorE ? piorE.razao : 0);
+  add("ring3", "Ring 3 comporta a fila externa", razao <= 1 ? "ok" : (razao <= 1.3 ? "atencao" : "falha"),
+      `pico de ${Math.round(r3)} pessoas fora (P90)` + (piorE ? ` · ${piorE.z.nome}: ${Math.round(piorE.z.ring3Max)} de ${mont.zonas[piorE.z.idx].capRing3}` : ""),
+      `≤ ${mont.cen.ring3.capacidade} no total` + (porEntrada.length ? ", e cada entrada dentro do seu serpenteado + baia" : ""),
+      razao <= 1 ? "A fila externa cabe no espaço previsto, no total e por entrada."
+        : (razaoTot > 1 ? "Fila externa maior que o espaço do Ring 3; transborda para a rua."
+           : `A fila da ${piorE.z.nome} passa do serpenteado e da baia dela (${Math.round(piorE.z.ring3Max)} de ${mont.zonas[piorE.z.idx].capRing3}): a reserva de flanco não absorve.`));
 
   // 11 triagem
   add("triagem", "Triagem do Ring 3 dá vazão", nivel(r.triOcupacao.p50, 0.75, 0.9),
@@ -1297,11 +1331,11 @@ function avaliar(mont, r, porMesa, porZona){
 function narrar(mont, r, porMesa, porZona, V){
   const cen = mont.cen, p = [];
   const falhas = V.filter(v => v.status === "falha"), atencoes = V.filter(v => v.status === "atencao");
-  const zonasTxt = mont.zonas.map(z => `${z.nome} (MRV ${z.faixaMrv}, ${z.mesas.length} mesas, ${Math.round(z.esperados)} eleitores) entra por ${z.porta}`).join("; ");
+  const zonasTxt = mont.zonas.map(z => `${z.nome} (${z.mesas.length} mesas, MRV ${z.faixaMrv}, ${Math.round(z.esperados)} eleitores) entra por ${z.porta}`).join("; ");
   p.push(`${Math.round(mont.esperadosTotal)} eleitores esperados sobre ${mont.aptosTotal} aptos (comparecimento ${mont.taxa.rotulo}), ` +
-    `${mont.zonas.length} zona${mont.zonas.length > 1 ? "s" : ""}: ${zonasTxt}. ` +
+    `${mont.zonas.length} entrada${mont.zonas.length > 1 ? "s" : ""}: ${zonasTxt}. ` +
     `Saída por ${mont.saidas.length ? mont.saidas.join(" e ") : "a mesma porta de entrada"}. ` +
-    (cen.checkpoint.existe ? `Checkpoint a ${cen.checkpoint.dist} m da porta com ${mont.zonas.map(z => z.atendentesCp).join("/")} atendente(s) por zona.` : "Sem checkpoint interno: o eleitor acha a mesa pela sinalização."));
+    (cen.checkpoint.existe ? `Checkpoint a ${cen.checkpoint.dist} m da porta com ${mont.zonas.map(z => z.atendentesCp).join("/")} atendente(s) por entrada.` : "Sem checkpoint interno: o eleitor acha a mesa pela sinalização."));
   p.push(`Em ${r.runs} dias simulados, a última mesa fecha às ${hhmm(r.fechaUltima.p50)} na mediana e às ${hhmm(r.fechaUltima.p90)} num dia ruim. ` +
     `Nove em dez eleitores levam até ${Math.round(r.totalP90.p50 / 60)} min da chegada ao voto, ${Math.round(r.esperaForaP90.p50 / 60)} deles fora e ${Math.round(r.esperaDentroP90.p50 / 60)} dentro. ` +
     `O pico dentro do salão é de ${Math.round(r.dentroMax.p50)} pessoas; fora, ${Math.round(r.ring3TotalMax.p50)}.`);
@@ -1321,8 +1355,9 @@ function narrar(mont, r, porMesa, porZona, V){
 /* ------------------------------------------------------------------ */
 const Modelo = {
   VEL, PASSO_FILA, ABERTURA, ENCERRAMENTO, INICIO_CURVA, MEIA_HORA, CURVA_CHEGADA, COMPARECIMENTO,
-  CLASSES, ROTULO_CLASSE, LIMITE_SEPARADORES, classeMesa, cenarioPadrao, cenarioClaude,
-  slotsDasZonas, mapaMrv, montar, simularDia, simular, agregar, hhmm, minutos, mediana, percentil,
+  CLASSES, CLASSE_DA_DECISAO, ROTULO_CLASSE, LIMITE_SEPARADORES, ARRANJO_CLAUDE, cenarioPadrao, cenarioClaude,
+  portasDaDecisao, zonasDaDecisao, zonasDoCenario,
+  slotsDasZonas, montar, simularDia, simular, agregar, hhmm, minutos, mediana, percentil,
   frenteMesa, caudaFila, corpoRect, assentoRect, centroPorta, DIR, CCW,
   mesasDoArranjo, normalizaArranjo, conflitosArranjo,
 };
@@ -1333,14 +1368,20 @@ else raiz.Modelo = Modelo;
 </script>
 <script>
 /* Interface do simulador: três telas (premissas, simulação, resultado).
- * Depende de Modelo (modelo.js), BASE e MRVS embutidos pelo gerador. */
+ * Depende de Modelo (modelo.js), BASE, MRVS e DECISOES embutidos pelo gerador. */
 (function(){
 "use strict";
 const M = Modelo;
 const $ = id => document.getElementById(id);
 const NS = "http://www.w3.org/2000/svg";
-const CORES_ZONA = ["var(--z1)", "var(--z2)", "var(--z3)", "var(--z4)"];
-const LETRAS = ["A", "B", "C", "D"];
+/* Decisões do Posto (scripts/decisoes.py): esperado e classe por mesa,
+ * portas, entradas do Ring 3. As cores das zonas são as das raias das
+ * entradas (azul, âmbar, magenta), as mesmas do plano de sinalização. */
+const DEC = (typeof DECISOES !== "undefined" && DECISOES) ? DECISOES : null;
+if (!DEC) throw new Error("DECISOES ausente: gere a página com scripts/gera_simulador.py");
+const CORES_ZONA = (DEC.entradas || []).map(e => e.hex).concat(["var(--z1)", "var(--z2)", "var(--z3)", "var(--z4)"]);
+const LETRAS = (DEC.entradas || []).map(e => e.id).concat(["A", "B", "C", "D"]);
+const COR_CLASSE = {pesada: "var(--alta)", media: "var(--media)", leve: "var(--baixa)"};
 const CHAVE_RASCUNHO = "simulador-hall2-cenario-v1";
 const CHAVE_COMPARATIVO = "simulador-hall2-comparativo-v1";
 const CHAVE_ARRANJOS = "simulador-hall2-arranjos-v1";
@@ -1581,21 +1622,21 @@ function carregaRascunho(){
 function guardaRascunho(){ try { localStorage.setItem(CHAVE_RASCUNHO, JSON.stringify(cen)); } catch (e) {} }
 
 function normaliza(c){
-  // garante campos e coerência (tamanhos somam 28, portas por zona válidas)
-  const nz = Math.max(2, Math.min(4, c.zonas.tamanhos.length));
-  c.zonas.tamanhos = c.zonas.tamanhos.slice(0, nz).map(v => Math.max(1, Math.round(v)));
-  while (c.zonas.tamanhos.length < nz) c.zonas.tamanhos.push(1);
-  let s = c.zonas.tamanhos.reduce((a, b) => a + b, 0);
-  if (s !== 28) { c.zonas.tamanhos[nz - 1] = Math.max(1, c.zonas.tamanhos[nz - 1] + 28 - s); }
-  s = c.zonas.tamanhos.reduce((a, b) => a + b, 0);
-  if (s !== 28) { c.zonas.tamanhos = nz === 2 ? [16, 12] : (nz === 3 ? [8, 12, 8] : [8, 6, 6, 8]); }
-  c.zonas.inicio = Math.max(1, Math.min(28, Math.round(c.zonas.inicio || 1)));
-  const entradas = SUL_USAVEIS.filter(id => c.portas[id] === "entrada");
-  if (!entradas.length) { c.portas.S5 = "entrada"; entradas.push("S5"); }
-  c.zonas.portas = c.zonas.tamanhos.map((_, z) => entradas.includes(c.zonas.portas[z]) ? c.zonas.portas[z] : entradas[Math.min(z, entradas.length - 1)]);
-  if (!Array.isArray(c.checkpoint.atendentes)) c.checkpoint.atendentes = c.zonas.tamanhos.map(() => c.checkpoint.atendentes || 2);
-  c.checkpoint.atendentes = c.zonas.tamanhos.map((_, z) => Math.max(1, Math.round(c.checkpoint.atendentes[z] || 2)));
-  c.ordem.inicioZona = Math.max(0, Math.min(nz - 1, c.ordem.inicioZona || 0));
+  // As zonas são as entradas do Ring 3 (decisão). Um cenário antigo, por arcos
+  // (tamanhos/ordem), é convertido: a numeração já é a do DJE em toda parte.
+  if (!c.zonas || c.zonas.modo !== "entradas") c.zonas = M.zonasDaDecisao(DEC);
+  delete c.ordem;
+  if (!c.portas) c.portas = M.portasDaDecisao(DEC);
+  const nz = DEC.entradas.length;
+  const usaveis = SUL_USAVEIS.filter(id => c.portas[id] === "entrada");
+  c.zonas.portas = DEC.entradas.map((e, z) => {
+    const pedida = (c.zonas.portas || [])[z];
+    if (usaveis.includes(pedida)) return pedida;
+    return usaveis.includes(e.porta) ? e.porta : (usaveis[Math.min(z, usaveis.length - 1)] || e.porta);
+  });
+  if (!Array.isArray(c.checkpoint.atendentes)) c.checkpoint.atendentes = new Array(nz).fill(c.checkpoint.atendentes || 2);
+  c.checkpoint.atendentes = DEC.entradas.map((_, z) => Math.max(1, Math.round(c.checkpoint.atendentes[z] || 2)));
+  if (!c.ring3) c.ring3 = {atendentes: 6, seg: 6, capacidade: DEC.ring3.capacidade};
   if (!c.salao) c.salao = {base: "A", alteracoes: []};
   if (!c.sim) c.sim = {runs: 12, seed: 7};
   return c;
@@ -1614,38 +1655,13 @@ function grupo(id, attr, valor){
 }
 function preencher(){
   $("nomeCenario").value = cen.nome || "";
-  grupo("nZonas", "n", cen.zonas.tamanhos.length);
-  $("inicioZona1").value = cen.zonas.inicio;
-  // tamanhos
-  const T = $("tamanhos"); T.innerHTML = "";
-  cen.zonas.tamanhos.forEach((v, z) => {
-    const inp = h("input", {type: "number", min: 1, max: 26, value: v, "aria-label": `Mesas na zona ${LETRAS[z]}`, style: "width:58px"});
-    inp.addEventListener("change", () => {
-      const novo = Math.max(1, Math.min(26, Math.round(+inp.value || 1)));
-      cen.zonas.tamanhos[z] = novo;
-      const outros = z === cen.zonas.tamanhos.length - 1 ? 0 : cen.zonas.tamanhos.length - 1;
-      const resto = 28 - cen.zonas.tamanhos.reduce((a, b) => a + b, 0);
-      cen.zonas.tamanhos[outros] = Math.max(1, cen.zonas.tamanhos[outros] + resto);
-      normaliza(cen); preencher(); atualizaDerivados();
-    });
-    T.appendChild(h("span", {class: "campo", style: "flex-direction:row;align-items:center;gap:4px"},
-      h("span", {class: "swatch", style: `background:${CORES_ZONA[z]}`}), h("span", {class: "mono", text: LETRAS[z]}), inp));
-  });
-  // MRV começa na zona
-  const IZ = $("inicioZonaMrv"); IZ.innerHTML = "";
-  cen.zonas.tamanhos.forEach((_, z) => {
-    const b = h("button", {"data-z": z, "aria-pressed": String(z === cen.ordem.inicioZona), text: `Zona ${LETRAS[z]}`});
-    b.addEventListener("click", () => { cen.ordem.inicioZona = z; grupo("inicioZonaMrv", "z", z); atualizaDerivados(); });
-    IZ.appendChild(b);
-  });
-  grupo("sentido", "s", cen.ordem.sentido);
   // checkpoint
   grupo("cpExiste", "v", cen.checkpoint.existe ? 1 : 0);
   $("cpDist").value = cen.checkpoint.dist; $("cpDistVal").textContent = cen.checkpoint.dist + " m";
   $("cpFilas").value = cen.checkpoint.filas; $("cpSeg").value = cen.checkpoint.seg;
   const CA = $("cpAtend"); CA.innerHTML = "";
-  cen.zonas.tamanhos.forEach((_, z) => {
-    const inp = h("input", {type: "number", min: 1, max: 8, value: cen.checkpoint.atendentes[z], "aria-label": `Atendentes na zona ${LETRAS[z]}`, style: "width:58px"});
+  DEC.entradas.forEach((_, z) => {
+    const inp = h("input", {type: "number", min: 1, max: 8, value: cen.checkpoint.atendentes[z], "aria-label": `Atendentes na entrada ${LETRAS[z]}`, style: "width:58px"});
     inp.addEventListener("change", () => { cen.checkpoint.atendentes[z] = Math.max(1, Math.round(+inp.value || 1)); atualizaDerivados(); });
     CA.appendChild(h("span", {class: "campo", style: "flex-direction:row;align-items:center;gap:4px"},
       h("span", {class: "swatch", style: `background:${CORES_ZONA[z]}`}), h("span", {class: "mono", text: LETRAS[z]}), inp));
@@ -1694,17 +1710,10 @@ function ligaControles(){
     }
     if (textos.length) carregaArranjosDe(textos);
   });
-  for (const b of $("nZonas").querySelectorAll("button"))
-    b.addEventListener("click", () => {
-      const n = +b.dataset.n;
-      cen.zonas.tamanhos = n === 2 ? [16, 12] : (n === 3 ? [8, 12, 8] : [8, 6, 6, 8]);
-      cen.zonas.portas = cen.zonas.tamanhos.map((_, z) => cen.zonas.portas[z] || cen.zonas.portas[0]);
-      cen.checkpoint.atendentes = cen.zonas.tamanhos.map((_, z) => cen.checkpoint.atendentes[z] || 2);
-      normaliza(cen); preencher(); atualizaDerivados();
-    });
-  $("inicioZona1").addEventListener("change", ev => { cen.zonas.inicio = Math.max(1, Math.min(28, Math.round(+ev.target.value || 1))); atualizaDerivados(); });
-  for (const b of $("sentido").querySelectorAll("button"))
-    b.addEventListener("click", () => { cen.ordem.sentido = b.dataset.s; grupo("sentido", "s", b.dataset.s); atualizaDerivados(); });
+  $("btnPortasDecisao").addEventListener("click", () => {
+    cen.portas = M.portasDaDecisao(DEC); cen.zonas = M.zonasDaDecisao(DEC);
+    normaliza(cen); preencher(); atualizaDerivados();
+  });
   for (const b of $("cpExiste").querySelectorAll("button"))
     b.addEventListener("click", () => { cen.checkpoint.existe = b.dataset.v === "1"; grupo("cpExiste", "v", b.dataset.v); atualizaDerivados(); });
   $("cpDist").addEventListener("input", ev => { cen.checkpoint.dist = +ev.target.value; $("cpDistVal").textContent = cen.checkpoint.dist + " m"; atualizaDerivados(); });
@@ -1722,12 +1731,12 @@ function ligaControles(){
   $("just").addEventListener("change", ev => { cen.extras.justificativas = Math.max(0, Math.min(0.5, (+ev.target.value || 0) / 100)); atualizaDerivados(); });
   $("triAtend").addEventListener("change", ev => { cen.ring3.atendentes = Math.max(1, Math.round(+ev.target.value || 1)); atualizaDerivados(); });
   $("triSeg").addEventListener("change", ev => { cen.ring3.seg = Math.max(1, +ev.target.value || 6); atualizaDerivados(); });
-  $("ring3Cap").addEventListener("change", ev => { cen.ring3.capacidade = Math.max(50, Math.round(+ev.target.value || 800)); atualizaDerivados(); });
+  $("ring3Cap").addEventListener("change", ev => { cen.ring3.capacidade = Math.max(50, Math.round(+ev.target.value || DEC.ring3.capacidade)); atualizaDerivados(); });
   $("runs").addEventListener("change", ev => { cen.sim.runs = Math.max(1, Math.min(60, Math.round(+ev.target.value || 12))); guardaRascunho(); });
   $("seed").addEventListener("change", ev => { cen.sim.seed = Math.max(1, Math.round(+ev.target.value || 7)); guardaRascunho(); });
 
-  $("btnClaude").addEventListener("click", () => aplica(M.cenarioClaude()));
-  $("btnPadrao").addEventListener("click", () => aplica(M.cenarioPadrao()));
+  $("btnClaude").addEventListener("click", () => aplica(M.cenarioClaude(DEC, ARRANJOS_EMBUTIDOS)));
+  $("btnPadrao").addEventListener("click", () => aplica(M.cenarioPadrao(DEC)));
   $("btnCopiar").addEventListener("click", async () => {
     const b = $("btnCopiar");
     try { await navigator.clipboard.writeText(JSON.stringify(cen)); b.textContent = "Copiado"; }
@@ -1766,16 +1775,19 @@ function mostraTela(nome){
 /* ---- derivados da tela 1 ---- */
 function atualizaDerivados(){
   normaliza(cen);
-  try { mont = M.montar(BASE, MRVS, cen); } catch (e) { console.error(e); return; }
+  try { mont = M.montar(BASE, MRVS, cen, DEC); } catch (e) { console.error(e); return; }
   $("nomeAtual").textContent = cen.nome || "";
   desenhaPortas(); desenhaZonasMini(); tabelaZonas(); kpisEstaticos(); guardaRascunho();
   $("cpCap").textContent = cen.checkpoint.existe
     ? `Cabem ${mont.zonas.map(z => `${z.capBuffer} na ${z.letra}`).join(", ")} entre porta e checkpoint (${cen.checkpoint.filas} fila${cen.checkpoint.filas > 1 ? "s" : ""}, 0,6 m por pessoa).`
     : "Sem checkpoint, a porta libera enquanto houver vaga somada nas filas das mesas da zona.";
   const n = {leve: 0, media: 0, pesada: 0}; for (const m of mont.mesas) n[m.classe]++;
-  $("filaInfo").textContent = `${n.leve} leves · ${n.media} médias · ${n.pesada} pesadas · ${vg(mont.fitaMesas, 0)} m de fita nas mesas`;
+  $("filaInfo").textContent = `${n.pesada} vermelhas · ${n.media} amarelas · ${n.leve} verdes · ${vg(mont.fitaMesas, 0)} m de fita nas mesas`;
   const tx = mont.taxa;
-  $("compInfo").textContent = `Dublin ${Math.round(tx.dublin * 100)} % · interior ${Math.round(tx.interior * 100)} % → ${fmt(mont.esperadosTotal)} eleitores esperados, mais ${Math.round((cen.extras.justificativas || 0) * 100)} % de atendimentos sem voto.`;
+  $("compInfo").textContent = `${tx.rotulo}: ${fmt(mont.esperadosTotal)} eleitores esperados de ${fmt(mont.aptosTotal)} aptos (${Math.round(100 * mont.esperadosTotal / mont.aptosTotal)} %), mais ${Math.round((cen.extras.justificativas || 0) * 100)} % de atendimentos sem voto. ${DEC.comparecimento.rotulo}.`;
+  const decisaoVale = DEC.entradas.every((e, z) => cen.zonas.portas[z] === e.porta) &&
+    Object.keys(DEC.portas).every(id => cen.portas[id] === DEC.portas[id].papel);
+  $("avisoPortas").hidden = decisaoVale;
 }
 
 function estadoPorta(id){ return cen.portas[id] || "fechada"; }
@@ -1799,7 +1811,7 @@ function desenhaPortas(){
     const t = el("text", {x: x + w / 2, y: 24, "font-size": 10, "font-weight": 600, fill: "var(--tinta)", "text-anchor": "middle"}, g); t.textContent = p.id;
     const zonasNaPorta = mont.zonas.filter(z => z.porta === p.id).map(z => z.letra);
     if (est === "entrada" && zonasNaPorta.length) {
-      const tz = el("text", {x: x + w / 2, y: 13, "font-size": 9, fill: "var(--meio)", "text-anchor": "middle", "font-weight": 600}, g); tz.textContent = "zona " + zonasNaPorta.join("+");
+      const tz = el("text", {x: x + w / 2, y: 13, "font-size": 9, fill: "var(--meio)", "text-anchor": "middle", "font-weight": 600}, g); tz.textContent = "entrada " + zonasNaPorta.join("+");
     }
     const tl = el("text", {x: x + w / 2, y: 70, "font-size": 8, fill: "var(--fraco)", "text-anchor": "middle"}, g); tl.textContent = vg(p.larg, 1) + " m";
     if (!emerg) {
@@ -1842,28 +1854,29 @@ function tabelaZonas(){
   const T = $("tabZonas"); T.innerHTML = "";
   const entradas = SUL_USAVEIS.filter(id => cen.portas[id] === "entrada");
   T.appendChild(h("thead", null, h("tr", null,
-    h("th", {text: "Zona"}), h("th", {text: "Slots"}), h("th", {text: "MRV"}), h("th", {class: "num", text: "Mesas"}),
-    h("th", {class: "num", text: "Eleitores"}), h("th", {text: "Entra por"}))));
+    h("th", {text: "Entrada"}), h("th", {text: "MRV (DJE)"}), h("th", {class: "num", text: "Mesas"}),
+    h("th", {class: "num", text: "Eleitores"}), h("th", {class: "num", text: "Cabe no Ring 3"}), h("th", {text: "Entra por"}))));
   const tb = h("tbody");
   for (const z of mont.zonas) {
-    const sel = h("select", {"aria-label": `Porta de entrada da zona ${z.letra}`});
+    const sel = h("select", {"aria-label": `Porta de entrada da ${z.nome}`});
     for (const id of entradas) sel.appendChild(h("option", {value: id, text: id, selected: id === z.porta ? "" : null}));
     if (!entradas.includes(z.porta)) sel.appendChild(h("option", {value: z.porta, text: z.porta, selected: ""}));
     sel.value = z.porta;
     sel.addEventListener("change", () => { cen.zonas.portas[z.idx] = sel.value; atualizaDerivados(); });
-    const arco = z.slots[0] === z.slots[z.slots.length - 1] ? `${z.slots[0]}` : `${z.slots[0]}→${z.slots[z.slots.length - 1]}`;
+    const lista = z.slots.slice().sort((a, b) => a - b).join(", ");
     tb.appendChild(h("tr", null,
-      h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), h("strong", {text: z.letra})),
-      h("td", {class: "mono", text: arco}), h("td", {class: "mono", text: z.faixaMrv}),
-      h("td", {class: "num", text: z.mesas.length}), h("td", {class: "num", text: fmt(z.esperados)}), h("td", null, sel)));
+      h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), h("strong", {text: z.letra}), DEC.entradas[z.idx] ? ` ${DEC.entradas[z.idx].cor}` : ""),
+      h("td", {class: "mono", text: lista}),
+      h("td", {class: "num", text: z.mesas.length}), h("td", {class: "num", text: fmt(z.esperados)}),
+      h("td", {class: "num", text: z.capRing3 ? String(z.capRing3) : "—"}), h("td", null, sel)));
   }
   T.appendChild(tb);
   // carga (lateral)
   const C = $("tabCarga"); C.innerHTML = "";
-  C.appendChild(h("thead", null, h("tr", null, h("th", {text: "Zona"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleit."}), h("th", {class: "num", text: "por mesa"}), h("th", {text: "Porta"}))));
+  C.appendChild(h("thead", null, h("tr", null, h("th", {text: "Entrada"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleit."}), h("th", {class: "num", text: "por mesa"}), h("th", {text: "Porta"}))));
   const cb = h("tbody");
   for (const z of mont.zonas) cb.appendChild(h("tr", null,
-    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), z.letra + " · MRV " + z.faixaMrv),
+    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), z.letra),
     h("td", {class: "num", text: z.mesas.length}), h("td", {class: "num", text: fmt(z.esperados)}),
     h("td", {class: "num", text: fmt(z.esperados / z.mesas.length)}), h("td", {class: "mono", text: z.porta})));
   C.appendChild(cb);
@@ -1939,7 +1952,7 @@ function rodar(){
   if (!mont) atualizaDerivados();
   const btn = $("rodar"); btn.disabled = true; btn.textContent = "Simulando…";
   const P = $("progresso"); P.hidden = false; P.firstElementChild.style.width = "0";
-  const montagem = M.montar(BASE, MRVS, cen);
+  const montagem = M.montar(BASE, MRVS, cen, DEC);
   const runs = cen.sim.runs, seed = cen.sim.seed, dias = [];
   let i = 0;
   const passo = () => {
@@ -2002,7 +2015,7 @@ function desenhaPlanta(){
     const r = m.corpo;
     el("rect", {x: r[0], y: fy(r[3]), width: r[2] - r[0], height: r[3] - r[1], fill: cor, opacity: .12}, g);
     const c = [P(Mm.prof - Mm.mesa[0], -Mm.mesa[1] / 2), P(Mm.prof, -Mm.mesa[1] / 2), P(Mm.prof, Mm.mesa[1] / 2), P(Mm.prof - Mm.mesa[0], Mm.mesa[1] / 2)];
-    const mesa = el("polygon", {points: c.map(q => `${q[0]},${fy(q[1])}`).join(" "), fill: "var(--mesa)", opacity: .85}, g);
+    const mesa = el("polygon", {points: c.map(q => `${q[0]},${fy(q[1])}`).join(" "), fill: COR_CLASSE[m.classe] || "var(--mesa)", opacity: .85}, g);
     const cu = P(Mm.eleitor + Mm.urna / 2, 0);
     const urna = el("circle", {cx: cu[0], cy: fy(cu[1]), r: Mm.urna / 2 - .1, fill: "none", stroke: cor, "stroke-width": .12}, g);
     const q = P(Mm.prof - Mm.mesa[0] / 2, 0);
@@ -2021,8 +2034,8 @@ function desenhaPlanta(){
     tooltip(hit, () => {
       const i = tempoIdx, idx = mo.mesas.indexOf(m), L = res.ref.linha;
       const pm = res.porMesa[idx];
-      return `<b>MRV ${m.mrv}</b> · seção ${m.secao}${m.agregada ? " + " + m.agregada : ""} · ${m.aptos} aptos (${m.classe})<br>` +
-        `zona ${mo.zonas[m.zona].letra} · fila de ${m.L} · ${fmt(m.esperados)} eleitores esperados<br>` +
+      return `<b>MRV ${m.mrv}</b> · seção ${m.secao}${m.agregada ? " + " + m.agregada : ""} · ${m.aptos} aptos · ${M.ROTULO_CLASSE[m.classe]}<br>` +
+        `entrada ${mo.zonas[m.zona].letra} · fila de ${m.L} · ${fmt(m.esperados)} eleitores esperados<br>` +
         `agora: ${L.mesaFila[idx][i]} na fila · ${["urna e mesário parados", "identificando", "identificando e votando", "votando", "mesário esperando a urna"][L.mesaEstado[idx][i]]}<br>` +
         `dia: fecha ${M.hhmm(pm.fecha)} · urna ${pct(pm.ocupUrna)} · fome ${min(pm.fome)} · fila máx ${pm.filaMax}`;
     });
@@ -2259,14 +2272,14 @@ function pintaResultado(){
   tab.appendChild(tb); sec.appendChild(h("div", {class: "rolagem"}, tab)); R.appendChild(sec);
 
   // por zona
-  const secZ = h("div", {class: "secao"}, h("h2", {text: "Por zona"}));
+  const secZ = h("div", {class: "secao"}, h("h2", {text: "Por entrada do Ring 3"}));
   const tz = h("table", {class: "tabela"});
-  tz.appendChild(h("thead", null, h("tr", null, h("th", {text: "Zona"}), h("th", {text: "Porta"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleitores"}),
-    h("th", {class: "num", text: "Pico fora"}), h("th", {class: "num", text: "Buffer máx / cabe"}), h("th", {class: "num", text: "Fila checkpoint"}), h("th", {class: "num", text: "Ocup. checkpoint"}), h("th", {class: "num", text: "Fecha"}))));
+  tz.appendChild(h("thead", null, h("tr", null, h("th", {text: "Entrada"}), h("th", {text: "Porta"}), h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Eleitores"}),
+    h("th", {class: "num", text: "Pico fora / cabe"}), h("th", {class: "num", text: "Buffer máx / cabe"}), h("th", {class: "num", text: "Fila checkpoint"}), h("th", {class: "num", text: "Ocup. checkpoint"}), h("th", {class: "num", text: "Fecha"}))));
   const tzb = h("tbody");
   for (const z of res.porZona) tzb.appendChild(h("tr", null,
-    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), `${z.nome} · MRV ${z.faixaMrv}`), h("td", {class: "mono", text: z.porta}),
-    h("td", {class: "num", text: z.mesas}), h("td", {class: "num", text: fmt(z.esperados)}), h("td", {class: "num", text: fmt(z.ring3Max)}),
+    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), `${z.nome} · MRV ${res.mont.zonas[z.idx].slots.slice().sort((a, b) => a - b).join(", ")}`), h("td", {class: "mono", text: z.porta}),
+    h("td", {class: "num", text: z.mesas}), h("td", {class: "num", text: fmt(z.esperados)}), h("td", {class: "num", text: fmt(z.ring3Max) + (res.mont.zonas[z.idx].capRing3 ? ` / ${res.mont.zonas[z.idx].capRing3}` : "")}),
     h("td", {class: "num", text: cen.checkpoint.existe ? `${z.bufferMax} / ${z.capBuffer}` : "—"}), h("td", {class: "num", text: cen.checkpoint.existe ? String(z.cpFilaMax) : "—"}),
     h("td", {class: "num", text: cen.checkpoint.existe ? `${pct(z.cpOcupacao)} (${z.atendentesCp} atend.)` : "—"}), h("td", {class: "num", text: M.hhmm(z.fecha)})));
   tz.appendChild(tzb); secZ.appendChild(h("div", {class: "rolagem"}, tz)); R.appendChild(secZ);
@@ -2275,14 +2288,14 @@ function pintaResultado(){
   const secM = h("div", {class: "secao"}, h("h2", {text: "Por mesa, da que fecha mais tarde à mais cedo"}),
     h("p", {class: "dica", style: "margin-bottom:10px", text: "“Fila necessária” é o maior tamanho que a fila da mesa atingiu; se bate no que cabe, o checkpoint reteve gente. Uso da urna acima de 90 % é mesa saturada. “Fome” é tempo parada enquanto havia gente da zona no Ring 3; em mesa leve é inevitável, porque quem espera lá fora é de outra mesa."}));
   const tm = h("table", {class: "tabela"});
-  tm.appendChild(h("thead", null, h("tr", null, h("th", {text: "MRV"}), h("th", {text: "Seções"}), h("th", {class: "num", text: "Aptos"}), h("th", {text: "Zona"}), h("th", {class: "num", text: "Votos"}),
+  tm.appendChild(h("thead", null, h("tr", null, h("th", {text: "MRV"}), h("th", {text: "Seções"}), h("th", {class: "num", text: "Aptos"}), h("th", {text: "Entrada"}), h("th", {class: "num", text: "Votos"}),
     h("th", {class: "num", text: "Fecha"}), h("th", {class: "num", text: "Uso da urna"}), h("th", {class: "num", text: "Fome"}), h("th", {class: "num", text: "Fila necessária / cabe"}))));
   const tmb = h("tbody");
   const maxOc = Math.max(...res.porMesa.map(m => m.ocupUrna), .01);
   for (const m of res.porMesa.slice().sort((a, b) => b.fecha - a.fecha)) {
     const mm = res.mont.mesas.find(x => x.slot === m.slot);
     tmb.appendChild(h("tr", null,
-      h("td", {class: "mono", text: String(m.mrv)}), h("td", {class: "mono", text: `${mm.secao}${mm.agregada ? " + " + mm.agregada : ""}`}),
+      h("td", null, h("span", {class: "swatch", style: `background:${COR_CLASSE[m.classe]}`}), h("span", {class: "mono", text: String(m.mrv)})), h("td", {class: "mono", text: `${mm.secao}${mm.agregada ? " + " + mm.agregada : ""}`}),
       h("td", {class: "num", text: String(m.aptos)}), h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[m.zona]}`}), LETRAS[m.zona]),
       h("td", {class: "num", text: fmt(m.votos)}), h("td", {class: "num", text: M.hhmm(m.fecha)}),
       h("td", {class: "num"}, h("span", {class: "barraMesa", style: `width:${Math.round(m.ocupUrna / maxOc * 60)}px;margin-right:6px;background:${m.ocupUrna > .9 ? "var(--falha)" : "var(--z1)"}`}), pct(m.ocupUrna)),
@@ -2332,8 +2345,8 @@ function relatorioTexto(){
   l.push(...res.texto, "");
   l.push("## Critérios");
   for (const v of res.vereditos) l.push(`- [${{ok: "OK", atencao: "ATENÇÃO", falha: "FALHA"}[v.status]}] ${v.titulo}: ${v.valor} (meta ${v.meta}). ${v.porque}${v.detalhe ? " " + v.detalhe : ""}`);
-  l.push("", "## Por zona");
-  for (const z of res.porZona) l.push(`- ${z.nome} (MRV ${z.faixaMrv}, porta ${z.porta}): ${fmt(z.esperados)} eleitores, pico fora ${fmt(z.ring3Max)}, checkpoint ${pct(z.cpOcupacao)} com ${z.atendentesCp} atendente(s), fecha ${M.hhmm(z.fecha)}`);
+  l.push("", "## Por entrada do Ring 3");
+  for (const z of res.porZona) l.push(`- ${z.nome} (MRV ${res.mont.zonas[z.idx].slots.slice().sort((a, b) => a - b).join(", ")}, porta ${z.porta}): ${fmt(z.esperados)} eleitores, pico fora ${fmt(z.ring3Max)}, checkpoint ${pct(z.cpOcupacao)} com ${z.atendentesCp} atendente(s), fecha ${M.hhmm(z.fecha)}`);
   l.push("", "## Por mesa (fecha, uso da urna, fome, fila necessária/cabe)");
   for (const m of res.porMesa.slice().sort((a, b) => b.fecha - a.fecha)) l.push(`- MRV ${m.mrv} (${m.secao}, ${m.aptos} aptos): ${M.hhmm(m.fecha)}, ${pct(m.ocupUrna)}, ${min(m.fome)}, ${m.filaMax}/${m.L}`);
   l.push("", "## Premissas (JSON)", "```json", JSON.stringify(cen), "```");
@@ -2345,7 +2358,7 @@ function relatorioTexto(){
 /* ------------------------------------------------------------------ */
 ligaControles();
 desenhaCurva();
-aplica(carregaRascunho() || M.cenarioClaude());
+aplica(carregaRascunho() || M.cenarioClaude(DEC, ARRANJOS_EMBUTIDOS));
 rodar();
 })();
 

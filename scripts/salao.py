@@ -10,12 +10,16 @@ A geometria foi medida diretamente dos PDFs do RDS — `RDS_Hall_2_Floorplan_(1)
 50,2 m x 44,5 m, 2.238 m2. Origem (0,0) = canto sudoeste util do salao; x cresce
 para leste, y para norte, em metros.
 """
-import json, math, os
+import json, math, os, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(RAIZ, "scripts"))
+
+import comparecimento as CP                                   # noqa: E402
 
 # ---------------------------------------------------------------- premissas
-TAXA_DUBLIN, TAXA_INTERIOR = 0.74, 0.50   # comparecimento observado em 2022
+# Comparecimento esperado: base B (taxa de 2022 por domicilio de origem),
+# fonte unica em scripts/comparecimento.py. A antiga binaria 74/50 saiu.
 SEG_POR_VOTO = 55                          # ponto de projeto das baias de fila
 ABERTURA, FECHAMENTO = 8, 17
 PERFIL = [.08, .13, .15, .14, .12, .11, .10, .09, .08]  # chegadas por hora
@@ -114,6 +118,29 @@ SEM_RECUO = {"sem codigo RDS (oeste)", "sem codigo RDS (leste)"}
 CONTORNO = [(RECORTE[2], 0.0), (HALL_W, 0.0), (HALL_W, HALL_H), (0.0, HALL_H),
             (0.0, RECORTE[3]), (RECORTE[2], RECORTE[3])]
 
+# ------------------------------------------------------------------ Ring 3
+# Area descoberta ao sul da fachada, separada dela pelo apron pavimentado.
+# Dimensoes por fotogrametria (+-10-15% linear; ver saidas/plano_ring3.md).
+# O eixo leste-oeste e tomado no centro de S5 por estimativa: a distancia do
+# bordo oeste do Ring 3 ao canto sudoeste do Hall 2 ainda nao foi aferida.
+RING3 = {"largura": 39.0, "profundidade": 35.0, "apron": 14.0}
+
+
+def centro_porta_sul(codigo):
+    """Centro, em x, de uma porta da fachada sul pelo codigo de salao.PORTAS."""
+    for c, a, b in PORTAS["sul"]:
+        if c == codigo:
+            return (a + b) / 2
+    raise KeyError(codigo)
+
+
+def ring3_rect():
+    """(x0, y0, x1, y1) do Ring 3 nas coordenadas do salao (y negativo = sul)."""
+    cx = centro_porta_sul("2.4")           # S5
+    y1 = -RING3["apron"]
+    return (cx - RING3["largura"] / 2, y1 - RING3["profundidade"],
+            cx + RING3["largura"] / 2, y1)
+
 
 def portas_da_face(face):
     """[(codigo, a, b)] de uma face, incluida a do recorte."""
@@ -173,21 +200,20 @@ def subtrai(intervalos, corte):
 def carrega_urnas():
     with open(os.path.join(RAIZ, "saidas", "dados.json"), encoding="utf-8") as f:
         d = json.load(f)
-    res = {r["Urna"]: r for r in d["residencia_urna"]}
+    esperados = {e["urna"]: e for e in CP.por_urna(d)}
     urnas = []
     for u in d["urnas"]:
-        r = res[u["Urna"]]
-        dub, tot = r["DUBLIN"], r["TOTAL"]
-        fora = sorted(((k, v) for k, v in r.items()
-                       if k not in ("Urna", "TOTAL", "DUBLIN") and v),
+        e = esperados[u["Urna"]]
+        fora = sorted(((k, v) for k, v in e["localidades"].items() if k != "DUBLIN"),
                       key=lambda kv: -kv[1])
         urnas.append({
             "urna": u["Urna"],
             "secoes": [int(s) for s in (u["Secao_principal"], u["Secao_agregada"])
                        if s == s and s],
-            "aptos": tot, "aptos_dublin": dub, "aptos_interior": tot - dub,
+            "aptos": e["aptos"], "aptos_dublin": e["aptos_dublin"],
+            "aptos_interior": e["aptos_interior"],
             "origem_interior": fora[0][0].title() if fora else None,
-            "esperado": round(TAXA_DUBLIN * dub + TAXA_INTERIOR * (tot - dub)),
+            "esperado": e["esperado"],
         })
     return urnas
 

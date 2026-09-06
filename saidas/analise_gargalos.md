@@ -9,9 +9,10 @@ Reproduzível com `python3 scripts/simula_fluxo.py`.
 
 ## 1. O gargalo é aritmético, não de fila
 
-Comparecimento esperado pelas taxas de 2022 (74% Dublin / 50% interior):
-**11.416 eleitores** (68,0%). A urna mais carregada é a **3313, com 590
-esperados**.
+Comparecimento esperado pela base B — taxa de 2022 por domicílio de origem de
+cada seção, `scripts/comparecimento.py`, decisão do Posto de 06/09/2026:
+**11.499 eleitores** (68,5%). A urna mais carregada é a **3313 (MRV 22), com
+590 esperados**.
 
 590 eleitores ÷ 540 minutos = **54,9 segundos por eleitor, sem folga alguma**.
 É um teto de vazão. Nenhuma gestão de fila o altera.
@@ -22,7 +23,7 @@ esperados**.
 | 50 s | 0 / 28 | 17h00 |
 | 55 s | 1 / 28 | 17h01 |
 | 60 s | 3 / 28 | 17h50 |
-| 75 s | 12 / 28 | 20h17 |
+| 75 s | 11 / 28 | 20h18 |
 | 90 s | 16 / 28 | 22h45 |
 
 O precipício está entre 50 s e 60 s. E a falha é concentrada: a 60 s falham
@@ -51,8 +52,8 @@ mesa, não o equipamento**.
 
 | Arranjo | Ciclo nas urnas T1 | Urnas atrasadas | Fila total no pico | Fecha |
 |---|---|---|---|---|
-| Fila única, tudo serial (t_id 65 s) | 87 s | 16 / 28 | 2.240 | 22h15 |
-| Pipeline: identifica B enquanto A vota | 65 s | 3 / 28 | 935 | 18h39 |
+| Fila única, tudo serial (t_id 65 s) | 87 s | 16 / 28 | 2.296 | 22h15 |
+| Pipeline: identifica B enquanto A vota | 65 s | 6 / 28 | 982 | 18h39 |
 | **Dois cadernos em paralelo, um por seção** | **32 s** | **0 / 28** | **0** | **17h00** |
 
 23 das 28 urnas acumulam **duas seções**, portanto **dois cadernos**. Com os
@@ -69,12 +70,16 @@ procedimental a validar na seção 3 de `contexto_eleicoes_dublin_2026.md`.
 
 ## 4. Estratificação das 28 urnas
 
-| Tier | Urnas | Esperado | s/eleitor disponível | Postura |
+Os tiers são as classes de carga de `scripts/decisoes.py`, as mesmas cores da
+prancheta e do simulador: T1 = vermelho (as 3 maiores), T2 = amarelo
+(esperado ≥ 450), T3 e T4 = verde.
+
+| Tier | Urnas (MRV) | Esperado | s/eleitor disponível | Postura |
 |---|---|---|---|---|
-| **T1** | 3313, 3322, 3315 | 586–590 | **55 s** | Recurso máximo. Duas posições de identificação obrigatórias. |
-| **T2** | 3142, 3161, 3245, 3302, 3305, 3306, 3108 | 474–492 | 66–68 s | Duas posições recomendadas. |
-| **T3** | 13 urnas | 310–466 | 69–104 s | Padrão. |
-| **T4** | 3688, 3862, 3832, 3308, 3442 | 295–296 | 110 s | Reserva — origem de apoio redistribuível. |
+| **T1** | 3313 (22), 3322 (24), 3315 (23) | 586–590 | **55 s** | Recurso máximo. Duas posições de identificação obrigatórias. |
+| **T2** | 3302 (16), 3306 (18), 3161 (11), 3245 (15), 3305 (17), 3108 (9), 3142 (10), 3311 (21) | 466–518 | 63–70 s | Duas posições recomendadas. |
+| **T3** | 12 urnas (MRV 1–8, 12, 13, 14, 20) | 311–423 | 77–104 s | Padrão. |
+| **T4** | 3688 (26), 3862 (28), 3832 (27), 3308 (19), 3442 (25) | 295–296 | 110 s | Reserva — origem de apoio redistribuível. |
 
 **A folga de T3/T4 não absorve carga de T1**: o eleitor só vota na urna da sua
 seção. Redistribui-se *recurso*, nunca *eleitor*. O plano tem de ser cirúrgico,

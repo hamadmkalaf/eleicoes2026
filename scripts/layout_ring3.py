@@ -28,27 +28,32 @@ Uso:  python3 scripts/layout_ring3.py
 """
 
 import math
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 SAIDA = RAIZ / "saidas" / "layout_ring3.svg"
 SAIDA_PNG = RAIZ / "saidas" / "layout_ring3.png"
+sys.path.insert(0, str(RAIZ / "scripts"))
+
+import salao as FL                                            # noqa: E402
+import planta_base as PB                                      # noqa: E402
+import decisoes as DC                                         # noqa: E402
 
 # --- fachada sul do Hall 2 -------------------------------------------------
-# metros do canto sudoeste, lidos na prancheta do Posto e convertidos pela
-# largura declarada de 50,2 m (escala aferida ~22,5 px/m).
-PORTAS_SUL = {
-    "S1": 9.5, "S2": 13.7, "S3": 17.7, "S4": 21.9, "S5": 28.1,
-    "S6": 34.3, "S7": 38.6, "S8": 42.6, "S9": 46.8,
-}
-ENTRADAS = [("A", "S4"), ("B", "S5"), ("C", "S6")]
-SAIDAS_PORTAS = ["S2", "S8"]
-PASSO_PORTAS = PORTAS_SUL["S5"] - PORTAS_SUL["S4"]      # 6,2 m
+# Centro de cada porta em metros do canto sudoeste, pela numeracao de fachada
+# da planta-base e pela geometria de scripts/salao.py (fonte unica). Ate
+# 06/09/2026 esta tabela era lida a mao da prancheta manual do Posto, com
+# diferencas de 0,1-0,2 m em relacao a planta do RDS.
+PORTAS_SUL = {p["num"]: p["meio"] for p in PB.numera() if p["parede"] == "sul"}
+ENTRADAS = list(DC.ENTRADAS)
+SAIDAS_PORTAS = list(DC.SAIDAS)
+PASSO_PORTAS = PORTAS_SUL["S5"] - PORTAS_SUL["S4"]      # ~6,2 m
 
 # --- Ring 3 (fotogrametria, +-10-15% linear) -------------------------------
-LARGURA = 39.0          # leste-oeste, m
-PROFUNDIDADE = 35.0     # sul-norte, m; o norte encara o Hall 2
+LARGURA = FL.RING3["largura"]          # leste-oeste, m
+PROFUNDIDADE = FL.RING3["profundidade"]  # sul-norte, m; o norte encara o Hall 2
 
 FOLGA_SUL = 1.5
 CORREDOR_FUNDO = 2.5    # corredor de distribuicao
@@ -116,7 +121,8 @@ def eixos():
     for larg in LARG_BLOCOS:
         eb.append(x + larg / 2)
         x += larg + CORREDOR_EGRESSO
-    return eb, [centro - PASSO_PORTAS, centro, centro + PASSO_PORTAS]
+    # o Ring 3 e centrado em S5; as demais portas entram pelo seu afastamento real
+    return eb, [centro + PORTAS_SUL[p] - PORTAS_SUL["S5"] for _, p in ENTRADAS]
 
 
 def _saida_rel(i):
@@ -634,8 +640,9 @@ def desenha():
         f'balizado.',
         'Este quantitativo cobre SOMENTE o Ring 3. O interior do Hall 2 tem '
         'necessidade própria, ainda não dimensionada.',
-        'Posições das portas lidas na prancheta do Posto. Aferir em campo a '
-        'distância do bordo oeste do Ring 3 ao canto sudoeste do Hall 2.',
+        'Posições das portas de scripts/salao.py (planta do RDS), Ring 3 centrado '
+        'em S5 por estimativa. Aferir em campo a distância do bordo oeste do Ring 3 '
+        'ao canto sudoeste do Hall 2.',
     ]:
         add(f'<text x="{_x(0)}" y="{ty}" {SM}>{t}</text>')
         ty += 17

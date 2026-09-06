@@ -11,8 +11,8 @@ O modelo responde a duas perguntas distintas, que tem solucoes diferentes:
     e da organizacao fisica, e e o que dimensiona o Ring 3.
 
 Premissas explicitas (todas ajustaveis no topo do arquivo):
-  - taxas de comparecimento de 2022: 74% para residentes em Dublin, 50% para
-    residentes no interior (fonte: secao 2 de contexto_eleicoes_dublin_2026.md);
+  - comparecimento esperado pela base B, taxa de 2022 por domicilio de origem
+    (scripts/comparecimento.py; decisao do Posto de 06/09/2026);
   - perfil horario de chegada com pico de manha (premissa, nao medida);
   - eleitor no exterior vota SO para Presidente, entao o ato de votar e curto e
     a identificacao no caderno domina o ciclo.
@@ -20,16 +20,15 @@ Premissas explicitas (todas ajustaveis no topo do arquivo):
 Uso:  python3 scripts/simula_fluxo.py
 """
 
-import json
+import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-DADOS = RAIZ / "saidas" / "dados.json"
+sys.path.insert(0, str(RAIZ / "scripts"))
+
+import comparecimento as CP                                   # noqa: E402
 
 # --- premissas -------------------------------------------------------------
-
-TAXA_DUBLIN = 0.74
-TAXA_INTERIOR = 0.50
 
 # Fracao das chegadas em cada hora, das 8h as 17h.
 PERFIL_CENTRAL = [.12, .15, .16, .15, .12, .09, .08, .07, .06]
@@ -40,15 +39,10 @@ JANELA_MIN = 9 * 60
 
 def carrega_urnas():
     """Devolve [(urna, comparecimento_esperado, qtd_secoes)] ordenado por carga."""
-    dados = json.loads(DADOS.read_text(encoding="utf-8"))
-    residencia = {r["Urna"]: r for r in dados["residencia_urna"]}
-    urnas = []
-    for u in dados["urnas"]:
-        r = residencia[u["Urna"]]
-        dublin = r.get("DUBLIN", 0)
-        interior = r["TOTAL"] - dublin
-        esperado = dublin * TAXA_DUBLIN + interior * TAXA_INTERIOR
-        urnas.append((u["Urna"], esperado, u["Qtd_secoes"]))
+    dados = CP.carrega_dados()
+    esperados = {e["urna"]: e["esperado"] for e in CP.por_urna(dados)}
+    urnas = [(u["Urna"], float(esperados[u["Urna"]]), u["Qtd_secoes"])
+             for u in dados["urnas"]]
     return sorted(urnas, key=lambda x: -x[1])
 
 
@@ -144,56 +138,42 @@ if __name__ == "__main__":
 # --------------------------------------------------------------------------
 # Atribuicao das urnas as entradas A/B/C do Ring 3
 #
-# As tres entradas tem serpenteados de tamanhos DIFERENTES, calibrados para que
-# a capacidade TOTAL de cada uma fique parecida: A e C tem serpenteado curto
-# (3 balizas) mais uma baia larga no flanco; B, que nao tem flanco, tem
-# serpenteado longo (9 balizas) e nenhuma baia. Dai as quotas ficarem proximas
-# de um terco, com B ligeiramente maior.
-#
-# Regra adicional: as tres urnas T1 (3313, 3322 e 3315, ~590 eleitores cada)
-# vao para entradas diferentes. Concentra-las numa so criaria um pico de fila
-# que nenhuma reserva absorve.
-
-QUOTAS = {"A": 0.317, "B": 0.366, "C": 0.317}
-T1 = (3313, 3322, 3315)
+# Mora em scripts/decisoes.py (fonte unica): as quotas vem da capacidade de
+# cada serpenteado calculada em layout_ring3.py, e as tres mesas de classe
+# alta vao para entradas diferentes. Aqui so se imprime o relatorio.
 
 
-def atribui_entradas(quotas=QUOTAS):
-    """Reparte as 28 urnas entre A, B e C respeitando as quotas de capacidade."""
-    urnas = carrega_urnas()
-    alvo = {k: v * sum(e for _, e, _ in urnas) for k, v in quotas.items()}
-    grupos = {k: [] for k in quotas}
-    carga = {k: 0.0 for k in quotas}
-
-    # uma urna T1 em cada entrada, na ordem das quotas
-    for entrada, urna in zip(sorted(quotas, key=lambda k: -quotas[k]), T1):
-        esperado = next(e for u, e, _ in urnas if u == urna)
-        grupos[entrada].append((urna, esperado))
-        carga[entrada] += esperado
-
-    # as demais, sempre para a entrada mais distante da sua quota
-    for urna, esperado, _ in urnas:
-        if urna in T1:
-            continue
-        entrada = max(carga, key=lambda k: alvo[k] - carga[k])
-        grupos[entrada].append((urna, esperado))
-        carga[entrada] += esperado
-
+def atribui_entradas():
+    """{entrada: [mrv...]}, {entrada: esperado}, {entrada: alvo} -- de decisoes."""
+    import decisoes as DC
+    d = DC.montar()
+    grupos = {e["id"]: e["mrvs"] for e in d["entradas"]}
+    carga = {e["id"]: float(e["esperado"]) for e in d["entradas"]}
+    alvo = {e["id"]: float(e["alvo"]) for e in d["entradas"]}
     return grupos, carga, alvo
 
 
+def tabela_ciclos(ciclos=(45, 50, 55, 60, 75, 90)):
+    """Urnas ainda com fila as 17h e ultima a fechar, por ciclo puro por eleitor."""
+    out = []
+    for c in ciclos:
+        r = simula("serial", c, 0)
+        out.append((c, r["urnas_atrasadas"], _hhmm(r["fecha_as"])))
+    return out
+
+
 def _relatorio_entradas():
-    grupos, carga, alvo = atribui_entradas()
-    total = sum(carga.values())
-    print("\nATRIBUICAO DAS URNAS AS ENTRADAS DO RING 3")
-    cab = f"{'entrada':<8} {'urnas':>6} {'esperado':>9} {'quota':>7} {'alvo':>8} {'desvio':>8}"
+    import decisoes as DC
+    d = DC.montar()
+    secao = {m["mrv"]: m["principal"] for m in d["mesas"]}
+    total = sum(e["esperado"] for e in d["entradas"])
+    print("\nATRIBUICAO DAS URNAS AS ENTRADAS DO RING 3 (scripts/decisoes.py)")
+    cab = f"{'entrada':<8} {'porta':<6} {'urnas':>6} {'esperado':>9} {'quota':>7} {'alvo':>8} {'desvio':>8}"
     print(cab); print("-" * len(cab))
-    for k in ("A", "B", "C"):
-        print(f"{k:<8} {len(grupos[k]):>6} {carga[k]:>9.0f} "
-              f"{carga[k]/total:>6.1%} {alvo[k]:>8.0f} "
-              f"{carga[k]-alvo[k]:>+8.0f}")
+    for e in d["entradas"]:
+        print(f"{e['id']:<8} {e['porta']:<6} {len(e['mrvs']):>6} {e['esperado']:>9} "
+              f"{e['esperado']/total:>6.1%} {e['alvo']:>8} {e['esperado']-e['alvo']:>+8}")
     print("-" * len(cab))
-    print(f"{'TOTAL':<8} {sum(len(g) for g in grupos.values()):>6} {total:>9.0f}")
-    for k in ("A", "B", "C"):
-        us = sorted(u for u, _ in grupos[k])
-        print(f"\n  {k}: " + ", ".join(str(u) for u in us))
+    print(f"{'TOTAL':<8} {'':<6} {sum(len(e['mrvs']) for e in d['entradas']):>6} {total:>9}")
+    for e in d["entradas"]:
+        print(f"\n  {e['id']} ({e['porta']}): " + ", ".join(f"MRV {m} ({secao[m]})" for m in e["mrvs"]))

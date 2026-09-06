@@ -35,15 +35,25 @@ acordada do salão. Duas regras valem para tudo que for produzido depois:
   numeração é por fachada, na ordem de leitura do desenho: de oeste para leste
   nas paredes norte e sul, de norte para sul nas paredes leste e oeste. Ela é
   gerada por `planta_base.py`, não escrita à mão.
-- **Entradas de eleitor: S4, S5 e S6; saídas: S2 e S8.** Decisão do Posto
-  registrada em 06/09/2026 (§9.3 da documentação). O plano do Ring 3 e a
-  sinalização já seguem isso; o Cenário Claude do simulador ainda usa S1/S9
-  como saída e a planta-base ainda não desenha papel nenhum: ambos estão por
-  alinhar, não são fonte da decisão.
+- **Entradas de eleitor: S4 (A), S5 (B) e S6 (C); saídas: S2 e S8.** Decisão
+  do Posto de 06/09/2026, em `scripts/decisoes.py`; planta-base, prancheta,
+  simulador, Ring 3 e sinalização leem dali. Não altere o papel de uma porta
+  em nenhum gerador: altere em `decisoes.py` e regenere.
 
 ## Fontes únicas
 
-- Geometria: `scripts/salao.py`. As medidas saíram do PDF do RDS e da versão
+- Decisões do Posto: `scripts/decisoes.py` (portas, numeração, classes e cores
+  de carga, atribuição das mesas às entradas do Ring 3) e
+  `scripts/comparecimento.py` (base B). `gera_decisoes.py` grava
+  `data/decisoes.json`; rode-o antes dos outros geradores.
+- Numeração das mesas: **só o MRV do DJE/TRE-DF**, identidade da mesa que não
+  depende da posição. Não numere mesas por posição, por porta ou por bloco. A
+  numeração voltada ao eleitor só entra depois que o cenário da prancheta for
+  fechado.
+- Cores: vermelho/amarelo/verde marcam a **carga** da mesa (as 3 maiores, ≥ 450
+  esperados, o resto); azul/âmbar/magenta são as **raias** A/B/C da
+  sinalização. Não misturar. Cor ou letra para o eleitor: sem decisão.
+- Geometria: `scripts/salao.py`, inclusive o Ring 3 (`RING3`, `ring3_rect()`). As medidas saíram do PDF do RDS e da versão
   revisada com as portas de carga; não remeça o PDF nem duplique constantes.
   `data/prancheta_hall2.json` é a exportação congelada dessa geometria para o
   simulador e para `scripts/folgas_prancheta.py`.
@@ -63,6 +73,5 @@ acordada do salão. Duas regras valem para tudo que for produzido depois:
   errada.
 - As peças publicadas têm URL registrada no §0 de `DOCUMENTACAO_PROJETO.md` e
   no §10 de `docs/CONTEXTO.md`. Republique na mesma URL passando-a em `url`.
-- Ao citar comparecimento esperado, diga qual base (74/50 ≈ 11.416–11.418, ou
-  por domicílio ≈ 11.498); ao citar uma mesa, diga qual numeração (MRV do DJE,
-  posição da prancheta ou M da sinalização). §9.1 e §9.2 da documentação.
+- Comparecimento esperado é sempre a base B (11.499, `comparecimento.py`);
+  não reintroduza 74/50 nem "~12.000". Mesa é sempre "MRV n".

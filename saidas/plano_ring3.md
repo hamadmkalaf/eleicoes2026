@@ -65,8 +65,7 @@ lidas na prancheta. A aferição em campo resolve a divergência.
 
 ![Layout do Ring 3](layout_ring3.png)
 
-*Desenho em escala: `saidas/layout_ring3.svg` (fonte) e `saidas/layout_ring3.png`
-(visualização), gerados por `scripts/layout_ring3.py`.*
+*Fonte: `saidas/layout_ring3.svg`, gerado por `scripts/layout_ring3.py`.*
 
 O eleitor entra pelo **canto sudeste**, percorre o **corredor de distribuição**
 no fundo (bordo sul) de leste para oeste, e é desviado para o serpenteado da
@@ -75,44 +74,55 @@ descarrega ao norte, na sua porta.
 
 | Parâmetro | Valor |
 |---|---|
-| Corredor de distribuição (fundo) | 2,5 m de largura, todo o bordo sul |
-| Profundidade do serpenteado | **26,0 m** |
-| Faixa de descarga | **5,0 m** |
-| Balizas por corredor | **5**, de **1,40 m** |
-| Largura de cada bloco | 7,0 m |
-| Corredor de egresso entre blocos | **4,0 m** |
-| Passo entre blocos | 11,0 m |
-| Fila por corredor | 130 m lineares |
-| **Capacidade por corredor** | **260 pessoas** (0,50 m por pessoa) |
-| **Capacidade dos três** | **780 pessoas** |
-| Reserva de flanco | **5,0 m de cada lado**, 260 m², **~390 pessoas** |
-| **Total do Ring 3** | **~1.170 pessoas** |
+| Corredor de distribuição (fundo) | 2,5 m, todo o bordo sul |
+| Profundidade do serpenteado | 26,0 m |
+| Largura de baliza | 1,40 m |
+| Corredor de egresso entre blocos | 2,6 m |
+| Baia de reserva | 5,0 m em cada flanco |
+| Faixa de descarga | 5,0 m |
 
-**Por que 5 balizas.** O número tem de ser **ímpar** — entra-se pelo sul e a
-última baliza precisa correr para o norte, onde estão as portas.
+### Capacidade por entrada
 
-**O bloco A é espelhado.** Nos blocos B e C entra-se pela baliza leste e sai-se
-pela oeste; no bloco A a ordem se inverte. Sem essa inversão, a saída de A
-cairia 5,6 m a oeste de S4. Com ela, os três desvios ficam entre 2,0 e 2,8 m na
-faixa de descarga de 5,0 m — ângulos de 22° a 29°, todos caminháveis.
+| Entrada | Balizas | Serpenteado | Baia de reserva | **Total** | Quota |
+|---|---|---|---|---|---|
+| **A → S4** | 5 | 260 | 195 | **455** | 36% |
+| **B → S5** | 7 | 364 | — | **364** | 29% |
+| **C → S6** | 5 | 260 | 195 | **455** | 36% |
+| | | 884 | 390 | **1.274** | |
 
-### Sobre a reserva de flanco
+### A reserva é por entrada, não é um depósito comum
 
-A reserva de flanco é a área **sem balizas**, sob marshals, que absorve surto
-acima das 780 pessoas dos serpenteados. Está cotada no desenho: **5,0 m × 26,0 m
-de cada lado, 260 m² no total, ~390 pessoas** a 1,5 pessoa/m².
+Esta é a correção mais importante em relação à versão anterior do plano, que
+tratava os flancos como uma "reserva" genérica.
 
-Ela encolheu de 7,0 para 5,0 m por lado ao se **alargar o corredor de egresso
-entre blocos de 2,0 para 4,0 m**. A área não se perdeu — migrou de reserva
-amorfa para evacuação dimensionada, que é o uso mais defensável de espaço livre
-com 780 pessoas em fila. O custo foi um desvio de 2,0 m nos canais de descarga
-de A e C, que antes eram retos.
+**Reserva comum não serve.** O eleitor só vota na urna da sua seção, e a
+entrada A, B ou C é definida por essa seção. Acumular gente sem separação
+destrói o roteamento feito na pré-triagem: na hora de liberar, seria preciso
+re-triar chamando "quem é da entrada B?", o que reintroduz um gargalo no ponto
+exato onde ele não pode existir, e quebra a ordem de chegada.
 
-Encolher mais exigiria alargar os blocos, e isso é contraproducente: 7 balizas
-por corredor dariam 1.092 pessoas estruturadas e flanco quase nulo, mas custam
-**354 separadores** (72 a mais do que o desenho atual) para uma capacidade
-total **menor** — 1.092 contra 1.170. Retenção aberta é mais densa por metro
-quadrado do que serpentina, porque não gasta área com balizas nem retornos.
+Por isso as baias são **dedicadas**. A do flanco oeste serve **só a A**; a do
+flanco leste, **só a C**. Cada uma encosta na **baliza de entrada** do seu
+bloco e drena direto para dentro dele, sem devolver ninguém ao corredor de
+fundo. É o que justifica **espelhar o bloco A**: espelhado, sua baliza de
+entrada fica a oeste, encostada na baia — e, de quebra, sua baliza de saída
+cai sobre S4.
+
+### E a entrada B?
+
+**B não tem flanco, e não há como criar um.** Ela está no meio, com corredor
+de egresso dos dois lados; ocupar esses corredores anularia a evacuação, que é
+justamente o que não se pode negociar com 884 pessoas em fila atrás de barreira
+de 1 m de altura.
+
+A compensação é dar a B **profundidade de fila em vez de área de reserva**:
+**7 balizas em vez de 5**, o que leva seu serpenteado de 260 para **364
+pessoas**. Custa 2,8 m de largura, tirados dos corredores de egresso (de 4,0
+para 2,6 m — ainda acima do mínimo).
+
+Isso não iguala B a A e C (364 contra 455), e não há geometria que iguale: 9
+balizas em B deixariam os egressos em 1,2 m, o que é inaceitável. **A solução
+não é geométrica, é de atribuição** — ver seção 5.
 
 ## 4. Necessidade de separadores de barreira
 
@@ -120,42 +130,63 @@ quadrado do que serpentina, porque não gasta área com balizas nem retornos.
 junto às 28 urnas, canalização das portas para dentro, separação dos fluxos de
 saída — tem necessidade própria, ainda não dimensionada.
 
-Um serpenteado de *n* balizas exige *n+1* corridas de separador: as duas
-externas correm a profundidade inteira, e as internas param a 1,40 m de uma das
-pontas para abrir o retorno.
-
 | # | Componente | Cálculo | Metros | Separadores |
 |---|---|---|---|---|
 | 1 | Balizas externas dos 3 blocos | 3 × 2 × 26,0 m | 156,0 | 78 |
-| 2 | Balizas internas dos 3 blocos | 3 × 4 × 24,6 m | 295,2 | 148 |
+| 2 | Balizas internas dos 3 blocos | (4+6+4) × 24,6 m | 344,4 | 173 |
 | 3 | Corredor de distribuição (fundo) | 2 × 36,0 − 3 vãos de 1,5 m | 67,5 | 34 |
 | 4 | Garganta de entrada (canto sudeste) | funil de pré-triagem | 10,0 | 5 |
-| 5 | Canais de descarga até S4/S5/S6 | 2 lados × (5,4 + 5,7 + 5,4) m | 33,0 | 17 |
-| | **TOTAL DO RING 3** | | **561,7** | **282** |
+| 5 | Canais de descarga até S4/S5/S6 | 2 lados × (5,4 + 6,5 + 5,4) m | 34,6 | 18 |
+| 6 | Fechamento das baias de flanco (A e C) | 2 × (3,5 + 5,0) m | 17,0 | 9 |
+| | **TOTAL DO RING 3** | | **629,5** | **317** |
 | | Fornecidos pela organizadora | 200 un. de 2 m × 1 m de altura | −400,0 | −200 |
-| | **A ADQUIRIR** | | **164,0** | **82** |
+| | **A ADQUIRIR** | | **234,0** | **117** |
 
-> **82 separadores adicionais ≈ EUR 1.068**, ao custo unitário de referência
-> (EUR 1.303,00 ÷ 200 m = EUR 6,51/m). São ~7% do orçamento revisado de
+> **117 separadores adicionais ≈ EUR 1.523**, ao custo unitário de referência
+> (EUR 1.303,00 ÷ 200 m = EUR 6,51/m). São ~10% do orçamento revisado de
 > EUR 15.703,32.
 
-As balizas dominam o quantitativo: os itens 1 e 2 somam 451 m, **80% do total**.
-Cada baliza a menos por corredor devolve ~53 m (27 separadores, ~EUR 344) e
-custa 156 pessoas de capacidade.
+As balizas dominam: os itens 1 e 2 somam 500 m, **79% do total**. As duas
+balizas extras de B custam 49 m (25 separadores, ~EUR 320) e rendem 104
+pessoas — a capacidade mais barata do plano.
 
 **Especificação recebida:** separadores de barreira externa, **2 m de
-comprimento × 1 m de altura**, fornecidos pela empresa organizadora do evento.
-A altura de 1 m é adequada para canalizar fila, mas **não é barreira de contenção
-de multidão** — não suporta carga lateral de uma massa em pressão. Isso reforça
-que os corredores de egresso de 4,0 m e a liberação em lotes não são luxo: são
-o que impede que a barreira seja solicitada estruturalmente.
+comprimento × 1 m de altura**, fornecidos pela empresa organizadora. A altura
+de 1 m canaliza fila, mas **não é barreira de contenção de multidão** — não
+suporta carga lateral de uma massa sob pressão. É o que sustenta os corredores
+de egresso e a liberação em lotes.
 
-## 5. O Ring 3 comporta a fila prevista?
+## 5. Atribuição das urnas às entradas
+
+As três entradas não têm a mesma capacidade, então a carga tem de ser repartida
+**na proporção dessa capacidade**, e não em terços. Reproduzível com
+`python3 -c "import sys; sys.path.insert(0,'scripts'); import simula_fluxo as m; m._relatorio_entradas()"`.
+
+| Entrada | Urnas | Comparecimento esperado | Quota obtida | Alvo | Desvio |
+|---|---|---|---|---|---|
+| **A** | 10 | 4.094 | 35,9% | 4.076 | +19 |
+| **B** | 8 | 3.221 | 28,2% | 3.265 | −44 |
+| **C** | 10 | 4.101 | 35,9% | 4.076 | +25 |
+| | 28 | 11.416 | | | |
+
+O desvio máximo é de 44 eleitores em 11.416 — **0,4%**. A menor capacidade de
+B deixa de ser um problema porque B recebe menos eleitorado.
+
+- **A:** 511, 513, 1352, 3161, 3302, 3306, 3308, 3309, **3313**, 3688
+- **B:** 517, 1160, 3078, 3229, 3305, 3311, **3315**, 3832
+- **C:** 512, 3054, 3108, 3142, 3179, 3216, 3245, **3322**, 3442, 3862
+
+**As três urnas T1 vão para entradas diferentes** — 3313 em A, 3315 em B, 3322
+em C. Concentrar as três (590 eleitores esperados cada) numa só entrada criaria
+um pico que nenhuma reserva absorveria, e são justamente elas que definem o
+horário de fechamento (ver `analise_gargalos.md`).
+
+## 6. O Ring 3 comporta a fila prevista?
 
 Da coluna FILA TOTAL de `scripts/simula_fluxo.py`, comparada à capacidade do
 Hall 2 (~1.000–1.200 em fila interna) somada às ~1.300 do Ring 3:
 
-| Arranjo da mesa | Fila total no pico | Cabe em Hall 2 (~1.100) + Ring 3 (~1.170)? |
+| Arranjo da mesa | Fila total no pico | Cabe em Hall 2 (~1.100) + Ring 3 (~1.274)? |
 |---|---|---|
 | Dois cadernos em paralelo, qualquer t_id | 0 | Sim — o Ring 3 nem abre |
 | Pipeline, t_id 55 s | 439 | Sim, só no Hall 2 |
@@ -168,7 +199,7 @@ Hall 2 (~1.000–1.200 em fila interna) somada às ~1.300 do Ring 3:
 de dois cadernos em paralelo por urna, que fecha às 17h00 mesmo com caderno
 lento e não custa nada ao TRE.
 
-## 6. Exposição ao tempo
+## 7. Exposição ao tempo
 
 O espaço é descoberto. Outubro é o mês mais chuvoso de Dublin (**76–79 mm**). O
 número de dias de chuva diverge conforme a fonte e o limiar: **12 dias** pelas
@@ -186,7 +217,7 @@ Mitigação proporcional ao risco: cobertura leve (tenda ou toldo) sobre os
 últimos 8–10 m de cada serpenteado, onde a espera é mais longa e a densidade
 maior; e não sobre os 27 m inteiros. Cotar como item destacado.
 
-## 7. Acessibilidade e atendimento prioritário
+## 8. Acessibilidade e atendimento prioritário
 
 **211 eleitores com 60+ anos e 85 com deficiência declarada** em toda a zona —
 ~296 pessoas em 9 horas, ~33 por hora no pico. Volume trivial, desde que
@@ -197,7 +228,7 @@ pavimentado, do desembarque direto à porta, com 1 agente designado. As balizas
 de 1,40 m acomodam cadeira de rodas, mas 5 balizas de 26 m são **130 m de
 percurso** — inaceitável para quem tem prioridade legal.
 
-## 8. Equipe
+## 9. Equipe
 
 | Função | Nº | Observação |
 |---|---|---|
@@ -209,14 +240,14 @@ percurso** — inaceitável para quem tem prioridade legal.
 | Segurança | 4–6 | Dos 20 já contratados (item a) |
 | **Total** | **15–17** | dos quais 4–6 já orçados |
 
-## 9. Pendências
+## 10. Pendências
 
 1. Aferir as dimensões do Ring 3 e **a distância entre o bordo oeste do Ring 3
    e o canto sudoeste do Hall 2** — é o número que translada todo o conjunto
    para os eixos coincidirem com as portas 2.7, 2.4 e 2.1.
 2. Conciliar a numeração S1–S9 da prancheta com a numeração 2.1–2.23 da
    planta do RDS, que dão posições divergentes para as mesmas aberturas.
-3. Submeter o pedido de **+82 separadores (~EUR 1.068)** para o Ring 3, e
+3. Submeter o pedido de **+117 separadores (~EUR 1.523)** para o Ring 3, e
    dimensionar à parte a necessidade do interior do Hall 2.
 4. Cotar cobertura leve para os últimos 8–10 m de cada serpenteado.
 5. Definir o arranjo da mesa receptora com o Cartório Eleitoral — **é o que

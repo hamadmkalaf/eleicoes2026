@@ -139,3 +139,60 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# --------------------------------------------------------------------------
+# Atribuicao das urnas as entradas A/B/C do Ring 3
+#
+# As tres entradas nao tem a mesma capacidade de fila (ver scripts/layout_ring3.py):
+# A e C tem serpenteado de 5 balizas mais uma baia de reserva no flanco; B, que
+# fica no meio e nao tem flanco, tem serpenteado de 7 balizas e nenhuma baia.
+# A carga tem de ser repartida na proporcao dessa capacidade, e nao em tercos.
+#
+# Regra adicional: as tres urnas T1 (3313, 3322 e 3315, ~590 eleitores cada)
+# vao para entradas diferentes. Concentra-las numa so criaria um pico de fila
+# que nenhuma reserva absorve.
+
+QUOTAS = {"A": 0.357, "B": 0.286, "C": 0.357}
+T1 = (3313, 3322, 3315)
+
+
+def atribui_entradas(quotas=QUOTAS):
+    """Reparte as 28 urnas entre A, B e C respeitando as quotas de capacidade."""
+    urnas = carrega_urnas()
+    alvo = {k: v * sum(e for _, e, _ in urnas) for k, v in quotas.items()}
+    grupos = {k: [] for k in quotas}
+    carga = {k: 0.0 for k in quotas}
+
+    # uma urna T1 em cada entrada, na ordem das quotas
+    for entrada, urna in zip(sorted(quotas, key=lambda k: -quotas[k]), T1):
+        esperado = next(e for u, e, _ in urnas if u == urna)
+        grupos[entrada].append((urna, esperado))
+        carga[entrada] += esperado
+
+    # as demais, sempre para a entrada mais distante da sua quota
+    for urna, esperado, _ in urnas:
+        if urna in T1:
+            continue
+        entrada = max(carga, key=lambda k: alvo[k] - carga[k])
+        grupos[entrada].append((urna, esperado))
+        carga[entrada] += esperado
+
+    return grupos, carga, alvo
+
+
+def _relatorio_entradas():
+    grupos, carga, alvo = atribui_entradas()
+    total = sum(carga.values())
+    print("\nATRIBUICAO DAS URNAS AS ENTRADAS DO RING 3")
+    cab = f"{'entrada':<8} {'urnas':>6} {'esperado':>9} {'quota':>7} {'alvo':>8} {'desvio':>8}"
+    print(cab); print("-" * len(cab))
+    for k in ("A", "B", "C"):
+        print(f"{k:<8} {len(grupos[k]):>6} {carga[k]:>9.0f} "
+              f"{carga[k]/total:>6.1%} {alvo[k]:>8.0f} "
+              f"{carga[k]-alvo[k]:>+8.0f}")
+    print("-" * len(cab))
+    print(f"{'TOTAL':<8} {sum(len(g) for g in grupos.values()):>6} {total:>9.0f}")
+    for k in ("A", "B", "C"):
+        us = sorted(u for u, _ in grupos[k])
+        print(f"\n  {k}: " + ", ".join(str(u) for u in us))

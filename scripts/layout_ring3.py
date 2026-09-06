@@ -88,10 +88,16 @@ SEPARADORES_EM_MAOS = 200      # fornecidos pela organizadora do evento
 
 # Balizas por bloco (A, B, C), todas impares: entra-se pelo sul e a ultima
 # baliza precisa correr para o norte, onde ficam as portas.
-# Iguais para as tres portas, por decisao do Posto. B continua sem baia de
-# flanco, entao sua capacidade total fica menor — o que se compensa na
-# ATRIBUICAO das urnas, nao na geometria (ver simula_fluxo.atribui_entradas).
-BALIZAS = (5, 5, 5)
+# NAO sao iguais: B leva mais balizas justamente por nao ter baia de flanco.
+# A e C compensam com serpenteado curto mais uma baia larga; B compensa com
+# serpenteado longo e nenhuma baia. Isso equilibra a CAPACIDADE TOTAL por
+# entrada (445 / 513 / 445 contra 559 / 285 / 559 quando eram iguais), o que
+# importa mais que igualar o numero de balizas.
+#
+# O numero tem de ser impar em todos. A solucao exata para igualar as tres
+# daria 8 balizas em B, que e par; 9 e o impar mais proximo, e deixa B um pouco
+# MAIOR que A e C em vez de muito menor.
+BALIZAS = (3, 9, 3)
 # Bloco A espelhado: entra pela baliza OESTE, encostada na sua baia de flanco,
 # e sai pela leste, que cai sobre S4.
 ESPELHADO = (True, False, False)

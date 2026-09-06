@@ -144,17 +144,17 @@ if __name__ == "__main__":
 # --------------------------------------------------------------------------
 # Atribuicao das urnas as entradas A/B/C do Ring 3
 #
-# As tres entradas tem serpenteado IGUAL (5 balizas cada), mas nao a mesma
-# capacidade total: A e C somam uma baia de reserva no flanco, e B, que fica no
-# meio, nao tem flanco nenhum. Dai A e C valerem ~40% do sitio cada e B ~20%.
-# A carga tem de ser repartida nessa proporcao, e nao em tercos — e como B nao
-# pode crescer geometricamente, e a atribuicao que faz o ajuste.
+# As tres entradas tem serpenteados de tamanhos DIFERENTES, calibrados para que
+# a capacidade TOTAL de cada uma fique parecida: A e C tem serpenteado curto
+# (3 balizas) mais uma baia larga no flanco; B, que nao tem flanco, tem
+# serpenteado longo (9 balizas) e nenhuma baia. Dai as quotas ficarem proximas
+# de um terco, com B ligeiramente maior.
 #
 # Regra adicional: as tres urnas T1 (3313, 3322 e 3315, ~590 eleitores cada)
 # vao para entradas diferentes. Concentra-las numa so criaria um pico de fila
 # que nenhuma reserva absorve.
 
-QUOTAS = {"A": 0.398, "B": 0.203, "C": 0.398}
+QUOTAS = {"A": 0.317, "B": 0.366, "C": 0.317}
 T1 = (3313, 3322, 3315)
 
 

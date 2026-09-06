@@ -79,21 +79,21 @@ descarrega ao norte, atravessando a **faixa de acesso** até a sua porta.
 | Corredor de distribuição (fundo) | 2,5 m |
 | **Profundidade do serpenteado** | **28,5 m** |
 | **Faixa de acesso ao norte** | **2,5 m**, livre de barreira |
-| Balizas por corredor | **5 em cada**, de 1,40 m |
-| Largura de cada bloco | 7,0 m |
+| Balizas por corredor | **A 3 · B 9 · C 3**, de 1,40 m |
+| Largura de cada bloco | A 4,2 · B 12,6 · C 4,2 m |
 | Corredor de egresso entre blocos | 2,6 m |
 | **Baia de reserva** | **6,4 m** em cada flanco |
 
-Conferência de fechamento: 6,4 + 7,0 + 2,6 + 7,0 + 2,6 + 7,0 + 6,4 = **39,0 m**;
+Conferência de fechamento: 6,4 + 4,2 + 2,6 + 12,6 + 2,6 + 4,2 + 6,4 = **39,0 m**;
 1,5 + 2,5 + 28,5 + 2,5 = **35,0 m**. O script falha alto se deixarem de fechar.
 
 ### Capacidade por entrada
 
 | Entrada | Balizas | Serpenteado | Baia de reserva | **Total** | Quota |
 |---|---|---|---|---|---|
-| **A → S4** | 5 | 285 | 274 | **559** | 40% |
-| **B → S5** | 5 | 285 | — | **285** | 20% |
-| **C → S6** | 5 | 285 | 274 | **559** | 40% |
+| **A → S4** | 3 | 171 | 274 | **445** | 31,7% |
+| **B → S5** | **9** | **513** | — | **513** | 36,6% |
+| **C → S6** | 3 | 171 | 274 | **445** | 31,7% |
 | | | 855 | 547 | **1.402** | |
 
 ### A faixa ao norte deixou de ser leque de descarga
@@ -116,14 +116,44 @@ de acesso (2,5 m, norte), o Ring 3 fica com uma **grade contínua de circulaçã
 que alcança qualquer ponto do layout — tudo acima do mínimo de 1,2 m para maca.
 Acesso de veículo ao interior do Ring 3 foi dispensado.
 
-### Serpenteados iguais, capacidades diferentes
+### Serpenteados desiguais, capacidades equilibradas
 
-Os três serpenteados são idênticos: **5 balizas, 285 pessoas cada**. Mas A e C
-somam a baia do flanco e B não tem flanco nenhum — daí **40% / 20% / 40%**.
+O que precisa ficar parecido entre as três entradas é a **capacidade total**,
+não o número de balizas. Como só A e C têm baia de flanco, igualar as balizas
+produziria 559 / 285 / 559 — uma disparidade de 274 pessoas.
 
-Isso não é corrigível na geometria: dar baia a B exigiria ocupar os corredores
-de egresso, que são a saída lateral de quem está dentro da fila. **O ajuste é
-feito na atribuição das urnas** (seção 6), e fecha com desvio de 0,4%.
+A calibração adotada faz o contrário: **A e C recebem serpenteado curto (3
+balizas) e baia larga; B recebe serpenteado longo (9 balizas) e nenhuma baia.**
+
+| Balizas A/C · B | Baia | A e C | B | Disparidade | Total | Separadores |
+|---|---|---|---|---|---|---|
+| 5 · 5 (iguais) | 6,4 m | 559 | 285 | **274** | 1.402 | 300 |
+| **3 · 9 (adotado)** | **6,4 m** | **445** | **513** | **68** | **1.402** | **300** |
+| 1 · 9 | 9,2 m | 450 | 513 | 63 | 1.414 | 251 |
+| 3 · 7 | 7,8 m | 504 | 399 | 105 | 1.408 | 275 |
+| 5 · 9 | 3,6 m | 439 | 513 | 74 | 1.391 | 348 |
+
+**A troca 5·5 → 3·9 é gratuita:** mesma capacidade total (1.402), mesmo número
+de separadores (300), e a disparidade cai de 274 para 68 pessoas. Só se
+redistribuiu largura entre os blocos.
+
+O número de balizas tem de ser **ímpar** em todos. A solução exata para igualar
+as três daria **8 balizas em B**, que é par; 9 é o ímpar mais próximo e deixa B
+um pouco *maior* que A e C, em vez de muito menor.
+
+**A opção 1 · 9 é mais barata** — 251 separadores, ~EUR 638 a menos — mas com
+uma baliza só, A e C deixam de ter serpenteado: viram uma fila reta com uma
+baia de 9,2 m ao lado, e **96% da sua espera passa a ser sem ordem de chegada**.
+Como A e C somam 63% do eleitorado, é abrir mão de fila justa para a maioria.
+Não recomendo, mas fica registrada.
+
+### O que a mudança custou
+
+Os desvios até as portas cresceram: **A 3,4 m, B 5,6 m, C 3,4 m** (eram 0,6 /
+2,8 / 0,6). Com a faixa de acesso em 2,5 m, são diagonais de 54° a 66°,
+percorridas a pé em espaço aberto. Não há cruzamento de fluxos — A e B caminham
+para leste, C para oeste — mas o ponto onde a chegada de A (13,3 m) encosta na
+saída de B (13,9 m) fica a 0,6 m de distância e **precisa de marshal**.
 
 ## 4. Para que serve cada espaço, e como trocá-los
 
@@ -142,7 +172,7 @@ estiver cheio → **faixa de acesso** → **porta S4, S5 ou S6**.
 | S→N | **Serpenteado** | 28,5 m | a fila **ordenada** | quantos esperam **com ordem de chegada preservada** |
 | S→N | **Faixa de acesso** | 2,5 m | rota de maca leste–oeste; travessia até as portas | mínimo de 1,2 m para maca |
 | L→O | **Baia de reserva** (×2) | 6,4 m | retenção **sem ordem**, exclusiva de A e de C | drena direto na baliza de entrada do bloco |
-| L→O | **Blocos A / B / C** | 7,0 m | as balizas | número **ímpar** de balizas |
+| L→O | **Blocos A / B / C** | 4,2 / 12,6 / 4,2 m | as balizas | número **ímpar**; B maior por não ter baia |
 | L→O | **Corredor de egresso** (×2) | 2,6 m | saída lateral, marshals, socorro a pé, separação entre filas | 1,2 m mínimo de pedestre |
 
 **A distinção que organiza tudo:** o serpenteado guarda pessoas **em ordem**; a
@@ -157,6 +187,7 @@ As duas dimensões do Ring 3 são fixas (39 × 35 m). **Todo ajuste é uma troca
 |---|---|---|
 | **+1 m de profundidade** do serpenteado (da faixa de acesso ou do fundo) | **+49 pessoas** | 9 separadores (~EUR 117) |
 | **+2 balizas** num bloco (2,8 m, de baia ou egresso) | **+114 pessoas** | 27 separadores (~EUR 353) |
+| **Trocar 2 balizas de A e C por 2 de B** (largura constante) | 0 | **0** — só redistribui a disparidade |
 | **+1 m de largura** de baia (de bloco ou egresso) | **+43 pessoas** | 1 separador |
 
 Por metro de largura, a baia rende **43 pessoas** e o serpenteado **41** —
@@ -179,7 +210,7 @@ necessidade própria, ainda não dimensionada.
 | # | Componente | Cálculo | Metros | Separadores |
 |---|---|---|---|---|
 | 1 | Balizas externas dos 3 blocos | 3 × 2 × 28,5 m | 171,0 | 86 |
-| 2 | Balizas internas dos 3 blocos | (4+4+4) × 27,1 m | 325,2 | 163 |
+| 2 | Balizas internas dos 3 blocos | (2+8+2) × 27,1 m | 325,2 | 163 |
 | 3 | Corredor de distribuição (fundo) | 2 × 36,0 − 3 vãos de 1,5 m | 67,5 | 34 |
 | 4 | Garganta de entrada (canto sudeste) | funil de pré-triagem | 10,0 | 5 |
 | 5 | Fechamento das baias de flanco (A e C) | 2 × (4,9 + 6,4) m | 22,6 | 12 |
@@ -208,14 +239,14 @@ As três entradas não têm a mesma capacidade, então a carga tem de ser repart
 
 | Entrada | Urnas | Comparecimento esperado | Quota obtida | Alvo | Desvio |
 |---|---|---|---|---|---|
-| **A** | 11 | 4.569 | 40,0% | 4.544 | +25 |
-| **B** | 6 | 2.276 | 19,9% | 2.318 | −41 |
-| **C** | 11 | 4.572 | 40,0% | 4.544 | +28 |
+| **A** | 9 | 3.614 | 31,7% | 3.619 | −5 |
+| **B** | 10 | 4.185 | 36,7% | 4.178 | +7 |
+| **C** | 9 | 3.618 | 31,7% | 3.619 | −1 |
 | | 28 | 11.416 | | | |
 
-O desvio máximo é de 41 eleitores em 11.416 — **0,4%**. A menor capacidade de
-B deixa de ser um problema porque B recebe menos eleitorado: **6 urnas contra
-11 em cada uma das outras**.
+O desvio máximo é de **7 eleitores em 11.416 — 0,06%**. Com as capacidades já
+equilibradas na geometria, a atribuição não precisa mais corrigir distorção
+grande: reparte quase em terços (9 / 10 / 9 urnas).
 
 - **A:** 511, 513, 1352, 3108, 3161, 3302, 3305, 3308, 3309, **3313**, 3688
 - **B:** 517, 1160, 3078, 3229, **3315**, 3832

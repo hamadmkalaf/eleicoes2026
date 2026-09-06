@@ -44,14 +44,83 @@
   "fita_m": 2.0,
   "largura_fila": 0.9,
   "densidade_p_por_m": 2.0,
+  "profundidade_modulo": 4.1,
   "profundidade_checkpoint": 20.0,
-  "pitch_serpentina": 1.18,
   "comprimentos": {
    "alta": 10.0,
    "media": 5.0,
    "baixa": 3.0
   },
-  "reserva": 0.1
+  "reserva": 0.1,
+  "polos": [
+   22,
+   23,
+   24
+  ],
+  "regra": "uma linha no meio de cada par; uma linha por mesa sem par"
+ },
+ "pareamento": {
+  "pares": [
+   {
+    "a": 1,
+    "b": 2,
+    "corredor": 3.0
+   },
+   {
+    "a": 3,
+    "b": 4,
+    "corredor": 3.0
+   },
+   {
+    "a": 7,
+    "b": 8,
+    "corredor": 2.94
+   },
+   {
+    "a": 10,
+    "b": 11,
+    "corredor": 2.5
+   },
+   {
+    "a": 13,
+    "b": 14,
+    "corredor": 1.95
+   },
+   {
+    "a": 17,
+    "b": 18,
+    "corredor": 3.0
+   },
+   {
+    "a": 19,
+    "b": 20,
+    "corredor": 3.0
+   },
+   {
+    "a": 25,
+    "b": 26,
+    "corredor": 3.1
+   },
+   {
+    "a": 27,
+    "b": 28,
+    "corredor": 2.5
+   }
+  ],
+  "sem_par": [
+   5,
+   6,
+   9,
+   12,
+   15,
+   16,
+   21
+  ],
+  "polos": [
+   22,
+   23,
+   24
+  ]
  },
  "mesas": [
   {
@@ -65,6 +134,7 @@
    "rot": 270,
    "x": 13.8,
    "y": 44.2,
+   "lado": 1,
    "fila": 3.0
   },
   {
@@ -78,6 +148,7 @@
    "rot": 270,
    "x": 17.7,
    "y": 44.2,
+   "lado": -1,
    "fila": 3.0
   },
   {
@@ -91,6 +162,7 @@
    "rot": 270,
    "x": 20.1,
    "y": 44.3,
+   "lado": 1,
    "fila": 3.0
   },
   {
@@ -104,6 +176,7 @@
    "rot": 270,
    "x": 24,
    "y": 44.3,
+   "lado": -1,
    "fila": 3.0
   },
   {
@@ -117,6 +190,7 @@
    "rot": 270,
    "x": 26.4,
    "y": 44.3,
+   "lado": 1,
    "fila": 3.0
   },
   {
@@ -130,6 +204,7 @@
    "rot": 270,
    "x": 39.8,
    "y": 44.15,
+   "lado": -1,
    "fila": 3.0
   },
   {
@@ -143,6 +218,7 @@
    "rot": 270,
    "x": 32.56,
    "y": 44.4,
+   "lado": 1,
    "fila": 3.0
   },
   {
@@ -156,6 +232,7 @@
    "rot": 270,
    "x": 36.4,
    "y": 44.2,
+   "lado": -1,
    "fila": 3.0
   },
   {
@@ -169,6 +246,7 @@
    "rot": 0,
    "x": 0.9,
    "y": 14.85,
+   "lado": 1,
    "fila": 5.0
   },
   {
@@ -182,6 +260,7 @@
    "rot": 0,
    "x": 0.9,
    "y": 12.25,
+   "lado": -1,
    "fila": 5.0
   },
   {
@@ -195,6 +274,7 @@
    "rot": 0,
    "x": 1.05,
    "y": 8.85,
+   "lado": 1,
    "fila": 5.0
   },
   {
@@ -208,6 +288,7 @@
    "rot": 180,
    "x": 47.3,
    "y": 34.7,
+   "lado": -1,
    "fila": 3.0
   },
   {
@@ -221,6 +302,7 @@
    "rot": 180,
    "x": 47.3,
    "y": 31.8,
+   "lado": 1,
    "fila": 3.0
   },
   {
@@ -234,6 +316,7 @@
    "rot": 180,
    "x": 47.2,
    "y": 28.95,
+   "lado": -1,
    "fila": 3.0
   },
   {
@@ -247,6 +330,7 @@
    "rot": 180,
    "x": 47.2,
    "y": 26.65,
+   "lado": 1,
    "fila": 5.0
   },
   {
@@ -260,6 +344,7 @@
    "rot": 180,
    "x": 47.3,
    "y": 19.7,
+   "lado": -1,
    "fila": 5.0
   },
   {
@@ -273,6 +358,7 @@
    "rot": 180,
    "x": 47.3,
    "y": 17.3,
+   "lado": 1,
    "fila": 5.0
   },
   {
@@ -286,6 +372,7 @@
    "rot": 180,
    "x": 47.3,
    "y": 13.4,
+   "lado": -1,
    "fila": 5.0
   },
   {
@@ -299,6 +386,7 @@
    "rot": 180,
    "x": 47.3,
    "y": 11,
+   "lado": 1,
    "fila": 3.0
   },
   {
@@ -312,6 +400,7 @@
    "rot": 180,
    "x": 47.3,
    "y": 7.1,
+   "lado": -1,
    "fila": 3.0
   },
   {
@@ -325,6 +414,7 @@
    "rot": 0,
    "x": 1,
    "y": 18.3,
+   "lado": 1,
    "fila": 5.0
   },
   {
@@ -338,6 +428,7 @@
    "rot": 270,
    "x": 29.75,
    "y": 44.35,
+   "lado": -1,
    "fila": 10.0
   },
   {
@@ -351,6 +442,7 @@
    "rot": 180,
    "x": 47.1,
    "y": 23.85,
+   "lado": 1,
    "fila": 10.0
   },
   {
@@ -364,6 +456,7 @@
    "rot": 0,
    "x": 0.9,
    "y": 23.95,
+   "lado": -1,
    "fila": 10.0
   },
   {
@@ -377,6 +470,7 @@
    "rot": 0,
    "x": 0.9,
    "y": 27.3,
+   "lado": 1,
    "fila": 3.0
   },
   {
@@ -390,6 +484,7 @@
    "rot": 0,
    "x": 0.7,
    "y": 31.3,
+   "lado": -1,
    "fila": 3.0
   },
   {
@@ -403,6 +498,7 @@
    "rot": 0,
    "x": 0.4,
    "y": 33.8,
+   "lado": 1,
    "fila": 3.0
   },
   {
@@ -416,76 +512,235 @@
    "rot": 0,
    "x": 0.3,
    "y": 37.2,
+   "lado": -1,
    "fila": 3.0
   }
  ],
- "demanda": [
+ "isotempo": [
   {
-   "entrada": "A",
-   "esperado": 3642,
-   "media_h": 405,
-   "pico_h": 728,
-   "pico_min": 12.1
+   "n": 1,
+   "mrv": 511,
+   "classe": "baixa",
+   "esperado": 375,
+   "atual": 3.0,
+   "iso": 3.0
   },
   {
-   "entrada": "B",
-   "esperado": 4215,
-   "media_h": 468,
-   "pico_h": 843,
-   "pico_min": 14.1
+   "n": 2,
+   "mrv": 512,
+   "classe": "baixa",
+   "esperado": 355,
+   "atual": 3.0,
+   "iso": 3.0
   },
   {
-   "entrada": "C",
-   "esperado": 3642,
-   "media_h": 405,
-   "pico_h": 728,
-   "pico_min": 12.1
+   "n": 3,
+   "mrv": 513,
+   "classe": "baixa",
+   "esperado": 351,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 4,
+   "mrv": 517,
+   "classe": "baixa",
+   "esperado": 348,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 5,
+   "mrv": 1160,
+   "classe": "baixa",
+   "esperado": 328,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 6,
+   "mrv": 1352,
+   "classe": "baixa",
+   "esperado": 328,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 7,
+   "mrv": 3054,
+   "classe": "baixa",
+   "esperado": 325,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 8,
+   "mrv": 3078,
+   "classe": "baixa",
+   "esperado": 311,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 9,
+   "mrv": 3108,
+   "classe": "media",
+   "esperado": 467,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 10,
+   "mrv": 3142,
+   "classe": "media",
+   "esperado": 466,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 11,
+   "mrv": 3161,
+   "classe": "media",
+   "esperado": 504,
+   "atual": 5.0,
+   "iso": 7.0
+  },
+  {
+   "n": 12,
+   "mrv": 3179,
+   "classe": "baixa",
+   "esperado": 423,
+   "atual": 3.0,
+   "iso": 4.5
+  },
+  {
+   "n": 13,
+   "mrv": 3216,
+   "classe": "baixa",
+   "esperado": 407,
+   "atual": 3.0,
+   "iso": 4.0
+  },
+  {
+   "n": 14,
+   "mrv": 3229,
+   "classe": "baixa",
+   "esperado": 405,
+   "atual": 3.0,
+   "iso": 4.0
+  },
+  {
+   "n": 15,
+   "mrv": 3245,
+   "classe": "media",
+   "esperado": 498,
+   "atual": 5.0,
+   "iso": 7.0
+  },
+  {
+   "n": 16,
+   "mrv": 3302,
+   "classe": "media",
+   "esperado": 518,
+   "atual": 5.0,
+   "iso": 7.5
+  },
+  {
+   "n": 17,
+   "mrv": 3305,
+   "classe": "media",
+   "esperado": 472,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 18,
+   "mrv": 3306,
+   "classe": "media",
+   "esperado": 515,
+   "atual": 5.0,
+   "iso": 7.5
+  },
+  {
+   "n": 19,
+   "mrv": 3308,
+   "classe": "baixa",
+   "esperado": 295,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 20,
+   "mrv": 3309,
+   "classe": "baixa",
+   "esperado": 395,
+   "atual": 3.0,
+   "iso": 3.5
+  },
+  {
+   "n": 21,
+   "mrv": 3311,
+   "classe": "media",
+   "esperado": 466,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 22,
+   "mrv": 3313,
+   "classe": "alta",
+   "esperado": 590,
+   "atual": 10.0,
+   "iso": 10.0
+  },
+  {
+   "n": 23,
+   "mrv": 3315,
+   "classe": "alta",
+   "esperado": 586,
+   "atual": 10.0,
+   "iso": 10.0
+  },
+  {
+   "n": 24,
+   "mrv": 3322,
+   "classe": "alta",
+   "esperado": 588,
+   "atual": 10.0,
+   "iso": 10.0
+  },
+  {
+   "n": 25,
+   "mrv": 3442,
+   "classe": "baixa",
+   "esperado": 295,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 26,
+   "mrv": 3688,
+   "classe": "baixa",
+   "esperado": 296,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 27,
+   "mrv": 3832,
+   "classe": "baixa",
+   "esperado": 296,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 28,
+   "mrv": 3862,
+   "classe": "baixa",
+   "esperado": 296,
+   "atual": 3.0,
+   "iso": 3.0
   }
- ],
- "comparecimento_total": 11499,
- "vizinhancas": [
-  [
-   10,
-   9,
-   1.7,
-   5.0
-  ],
-  [
-   26,
-   27,
-   1.6,
-   3.0
-  ],
-  [
-   14,
-   15,
-   1.4,
-   3.0
-  ],
-  [
-   16,
-   17,
-   1.5,
-   5.0
-  ],
-  [
-   18,
-   19,
-   1.5,
-   3.0
-  ],
-  [
-   2,
-   3,
-   1.5,
-   3.0
-  ],
-  [
-   4,
-   5,
-   1.5,
-   3.0
-  ]
  ],
  "folego": [
   {
@@ -797,579 +1052,290 @@
    "minutos": null
   }
  ],
- "isotempo": [
+ "comparecimento_total": 11499,
+ "cenarios": [
   {
-   "n": 1,
-   "mrv": 511,
-   "classe": "baixa",
-   "esperado": 375,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 2,
-   "mrv": 512,
-   "classe": "baixa",
-   "esperado": 355,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 3,
-   "mrv": 513,
-   "classe": "baixa",
-   "esperado": 351,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 4,
-   "mrv": 517,
-   "classe": "baixa",
-   "esperado": 348,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 5,
-   "mrv": 1160,
-   "classe": "baixa",
-   "esperado": 328,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 6,
-   "mrv": 1352,
-   "classe": "baixa",
-   "esperado": 328,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 7,
-   "mrv": 3054,
-   "classe": "baixa",
-   "esperado": 325,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 8,
-   "mrv": 3078,
-   "classe": "baixa",
-   "esperado": 311,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 9,
-   "mrv": 3108,
-   "classe": "media",
-   "esperado": 467,
-   "atual": 5.0,
-   "iso": 6.0
-  },
-  {
-   "n": 10,
-   "mrv": 3142,
-   "classe": "media",
-   "esperado": 466,
-   "atual": 5.0,
-   "iso": 6.0
-  },
-  {
-   "n": 11,
-   "mrv": 3161,
-   "classe": "media",
-   "esperado": 504,
-   "atual": 5.0,
-   "iso": 7.0
-  },
-  {
-   "n": 12,
-   "mrv": 3179,
-   "classe": "baixa",
-   "esperado": 423,
-   "atual": 3.0,
-   "iso": 4.5
-  },
-  {
-   "n": 13,
-   "mrv": 3216,
-   "classe": "baixa",
-   "esperado": 407,
-   "atual": 3.0,
-   "iso": 4.0
-  },
-  {
-   "n": 14,
-   "mrv": 3229,
-   "classe": "baixa",
-   "esperado": 405,
-   "atual": 3.0,
-   "iso": 4.0
-  },
-  {
-   "n": 15,
-   "mrv": 3245,
-   "classe": "media",
-   "esperado": 498,
-   "atual": 5.0,
-   "iso": 7.0
-  },
-  {
-   "n": 16,
-   "mrv": 3302,
-   "classe": "media",
-   "esperado": 518,
-   "atual": 5.0,
-   "iso": 7.5
-  },
-  {
-   "n": 17,
-   "mrv": 3305,
-   "classe": "media",
-   "esperado": 472,
-   "atual": 5.0,
-   "iso": 6.0
-  },
-  {
-   "n": 18,
-   "mrv": 3306,
-   "classe": "media",
-   "esperado": 515,
-   "atual": 5.0,
-   "iso": 7.5
-  },
-  {
-   "n": 19,
-   "mrv": 3308,
-   "classe": "baixa",
-   "esperado": 295,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 20,
-   "mrv": 3309,
-   "classe": "baixa",
-   "esperado": 395,
-   "atual": 3.0,
-   "iso": 3.5
-  },
-  {
-   "n": 21,
-   "mrv": 3311,
-   "classe": "media",
-   "esperado": 466,
-   "atual": 5.0,
-   "iso": 6.0
-  },
-  {
-   "n": 22,
-   "mrv": 3313,
-   "classe": "alta",
-   "esperado": 590,
-   "atual": 10.0,
-   "iso": 10.0
-  },
-  {
-   "n": 23,
-   "mrv": 3315,
-   "classe": "alta",
-   "esperado": 586,
-   "atual": 10.0,
-   "iso": 10.0
-  },
-  {
-   "n": 24,
-   "mrv": 3322,
-   "classe": "alta",
-   "esperado": 588,
-   "atual": 10.0,
-   "iso": 10.0
-  },
-  {
-   "n": 25,
-   "mrv": 3442,
-   "classe": "baixa",
-   "esperado": 295,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 26,
-   "mrv": 3688,
-   "classe": "baixa",
-   "esperado": 296,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 27,
-   "mrv": 3832,
-   "classe": "baixa",
-   "esperado": 296,
-   "atual": 3.0,
-   "iso": 3.0
-  },
-  {
-   "n": 28,
-   "mrv": 3862,
-   "classe": "baixa",
-   "esperado": 296,
-   "atual": 3.0,
-   "iso": 3.0
-  }
- ],
- "cenarios": {
-  "Cenario 1 - canais retos ate o checkpoint + fila por mesa": {
+   "nome": "1",
+   "desc": "Canais retos até o checkpoint, uma linha no meio de cada par e uma linha por mesa sem par. A escada 10/5/3 m.",
+   "corridas": 23,
+   "fitas": 93,
+   "postes": 122,
+   "postes_reserva": 135,
+   "metros": 186.0,
    "itens": [
     {
-     "rotulo": "canais de entrada A/B/C ate o checkpoint (divisorias compartilhadas)",
-     "corridas": 4,
-     "L": 20.0,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
-     "corridas": 0,
-     "L": 0.0,
-     "fitas": 0,
-     "postes": 6,
-     "metros": 0.0
-    },
-    {
-     "rotulo": "filas de mesa - alta (3 MRVs, 10 m, 2 lados)",
-     "corridas": 6,
-     "L": 10.0,
-     "fitas": 30,
-     "postes": 36,
-     "metros": 60.0
-    },
-    {
-     "rotulo": "filas de mesa - media (8 MRVs, 5 m, 2 lados)",
-     "corridas": 16,
-     "L": 5.0,
-     "fitas": 48,
-     "postes": 64,
-     "metros": 96.0
-    },
-    {
-     "rotulo": "filas de mesa - baixa (17 MRVs, 3 m, 2 lados)",
-     "corridas": 34,
-     "L": 3.0,
-     "fitas": 68,
-     "postes": 102,
-     "metros": 136.0
-    }
-   ],
-   "corridas": 60,
-   "fitas": 186,
-   "postes": 252,
-   "postes_reserva": 278,
-   "metros": 372.0,
-   "custo": {
-    "postes": 278,
-    "lista_ex": 4250.0,
-    "lista_inc": 5227.5,
-    "ao_preco_orcado": 3622.34
-   }
-  },
-  "Cenario 1e - canais retos, 3 m com guia simples, divisorias partilhadas": {
-   "itens": [
-    {
-     "rotulo": "canais de entrada A/B/C ate o checkpoint (divisorias compartilhadas)",
-     "corridas": 4,
-     "L": 20.0,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
-     "corridas": 0,
-     "L": 0.0,
-     "fitas": 0,
-     "postes": 6,
-     "metros": 0.0
-    },
-    {
-     "rotulo": "filas de mesa - alta (3 MRVs, 10 m, 2 lados, 0 divisorias partilhadas)",
-     "corridas": 6,
-     "L": 10.0,
-     "fitas": 30,
-     "postes": 36,
-     "metros": 60.0
-    },
-    {
-     "rotulo": "filas de mesa - media (8 MRVs, 5 m, 2 lados, 2 divisorias partilhadas)",
-     "corridas": 14,
-     "L": 5.0,
-     "fitas": 42,
-     "postes": 56,
-     "metros": 84.0
-    },
-    {
-     "rotulo": "filas de mesa - baixa (17 MRVs, 3 m, guia de um lado so)",
-     "corridas": 17,
-     "L": 3.0,
-     "fitas": 34,
-     "postes": 51,
-     "metros": 68.0
-    }
-   ],
-   "corridas": 41,
-   "fitas": 146,
-   "postes": 193,
-   "postes_reserva": 213,
-   "metros": 292.0,
-   "custo": {
-    "postes": 213,
-    "lista_ex": 3275.0,
-    "lista_inc": 4028.25,
-    "ao_preco_orcado": 2775.39
-   }
-  },
-  "Cenario 1i - canais retos + fila dimensionada por folego (20 min de pico)": {
-   "itens": [
-    {
-     "rotulo": "canais de entrada A/B/C ate o checkpoint (divisorias compartilhadas)",
-     "corridas": 4,
-     "L": 20.0,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
-     "corridas": 0,
-     "L": 0.0,
-     "fitas": 0,
-     "postes": 6,
-     "metros": 0.0
-    },
-    {
-     "rotulo": "filas de mesa de 10.0 m (3 MRVs: 22, 23, 24, 2 lados)",
-     "corridas": 6,
-     "L": 10.0,
-     "fitas": 30,
-     "postes": 36,
-     "metros": 60.0
-    },
-    {
-     "rotulo": "filas de mesa de 7.5 m (2 MRVs: 16, 18, 2 lados)",
-     "corridas": 4,
-     "L": 7.5,
-     "fitas": 16,
-     "postes": 20,
-     "metros": 32.0
-    },
-    {
-     "rotulo": "filas de mesa de 7.0 m (2 MRVs: 11, 15, 2 lados)",
-     "corridas": 4,
-     "L": 7.0,
-     "fitas": 16,
-     "postes": 20,
-     "metros": 32.0
-    },
-    {
-     "rotulo": "filas de mesa de 6.0 m (4 MRVs: 9, 10, 17, 21, 2 lados)",
-     "corridas": 8,
-     "L": 6.0,
-     "fitas": 24,
-     "postes": 32,
-     "metros": 48.0
-    },
-    {
-     "rotulo": "filas de mesa de 4.5 m (1 MRVs: 12, 2 lados)",
+     "rotulo": "divisórias entre os canais A|B e B|C",
      "corridas": 2,
-     "L": 4.5,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bordas externas dos canais",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,0 m (2: 10–11, 17–18)",
+     "corridas": 2,
+     "L": 5.0,
      "fitas": 6,
      "postes": 8,
      "metros": 12.0
     },
     {
-     "rotulo": "filas de mesa de 4.0 m (2 MRVs: 13, 14, 2 lados)",
+     "rotulo": "mesa sem par · 5,0 m (4: 9, 15, 16, 21)",
      "corridas": 4,
-     "L": 4.0,
-     "fitas": 8,
-     "postes": 12,
-     "metros": 16.0
+     "L": 5.0,
+     "fitas": 12,
+     "postes": 16,
+     "metros": 24.0
     },
     {
-     "rotulo": "filas de mesa de 3.5 m (1 MRVs: 20, 2 lados)",
+     "rotulo": "linha do meio de par · 3,0 m (7: 1–2, 3–4, 7–8, 13–14, 19–20, 25–26, 27–28)",
+     "corridas": 7,
+     "L": 3.0,
+     "fitas": 14,
+     "postes": 21,
+     "metros": 28.0
+    },
+    {
+     "rotulo": "mesa sem par · 3,0 m (3: 5, 6, 12)",
+     "corridas": 3,
+     "L": 3.0,
+     "fitas": 6,
+     "postes": 9,
+     "metros": 12.0
+    }
+   ],
+   "custo": {
+    "postes": 135,
+    "lista_ex": 2105.0,
+    "lista_inc": 2589.15,
+    "ao_preco_orcado": 1759.05
+   }
+  },
+  {
+   "nome": "1e",
+   "desc": "O mesmo, sem as duas bordas externas dos canais: só as divisórias que de fato separam A de B e B de C.",
+   "corridas": 21,
+   "fitas": 73,
+   "postes": 100,
+   "postes_reserva": 111,
+   "metros": 146.0,
+   "itens": [
+    {
+     "rotulo": "divisórias entre os canais A|B e B|C",
      "corridas": 2,
-     "L": 3.5,
-     "fitas": 4,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
      "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,0 m (2: 10–11, 17–18)",
+     "corridas": 2,
+     "L": 5.0,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "mesa sem par · 5,0 m (4: 9, 15, 16, 21)",
+     "corridas": 4,
+     "L": 5.0,
+     "fitas": 12,
+     "postes": 16,
+     "metros": 24.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,0 m (7: 1–2, 3–4, 7–8, 13–14, 19–20, 25–26, 27–28)",
+     "corridas": 7,
+     "L": 3.0,
+     "fitas": 14,
+     "postes": 21,
+     "metros": 28.0
+    },
+    {
+     "rotulo": "mesa sem par · 3,0 m (3: 5, 6, 12)",
+     "corridas": 3,
+     "L": 3.0,
+     "fitas": 6,
+     "postes": 9,
+     "metros": 12.0
+    }
+   ],
+   "custo": {
+    "postes": 111,
+    "lista_ex": 1745.0,
+    "lista_inc": 2146.35,
+    "ao_preco_orcado": 1446.33
+   }
+  },
+  {
+   "nome": "1i",
+   "desc": "Mesma topologia, filas dimensionadas para que toda mesa aguente 20 minutos de pico.",
+   "corridas": 23,
+   "fitas": 97,
+   "postes": 126,
+   "postes_reserva": 139,
+   "metros": 194.0,
+   "itens": [
+    {
+     "rotulo": "divisórias entre os canais A|B e B|C",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bordas externas dos canais",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "mesa sem par · 7,5 m (1: 16)",
+     "corridas": 1,
+     "L": 7.5,
+     "fitas": 4,
+     "postes": 5,
      "metros": 8.0
     },
     {
-     "rotulo": "filas de mesa de 3.0 m (13 MRVs: 1, 2, 3, 4, 5, 6, 7, 8, 19, 25, 26, 27, 28, 2 lados)",
-     "corridas": 26,
+     "rotulo": "linha do meio de par · 7,0 m (1: 10–11)",
+     "corridas": 1,
+     "L": 7.0,
+     "fitas": 4,
+     "postes": 5,
+     "metros": 8.0
+    },
+    {
+     "rotulo": "mesa sem par · 7,0 m (1: 15)",
+     "corridas": 1,
+     "L": 7.0,
+     "fitas": 4,
+     "postes": 5,
+     "metros": 8.0
+    },
+    {
+     "rotulo": "mesa sem par · 6,0 m (2: 9, 21)",
+     "corridas": 2,
+     "L": 6.0,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,5 m (1: 17–18)",
+     "corridas": 1,
+     "L": 5.45,
+     "fitas": 3,
+     "postes": 4,
+     "metros": 6.0
+    },
+    {
+     "rotulo": "mesa sem par · 4,5 m (1: 12)",
+     "corridas": 1,
+     "L": 4.5,
+     "fitas": 3,
+     "postes": 4,
+     "metros": 6.0
+    },
+    {
+     "rotulo": "linha do meio de par · 4,0 m (1: 13–14)",
+     "corridas": 1,
+     "L": 4.0,
+     "fitas": 2,
+     "postes": 3,
+     "metros": 4.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,5 m (1: 19–20)",
+     "corridas": 1,
+     "L": 3.5,
+     "fitas": 2,
+     "postes": 3,
+     "metros": 4.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,0 m (5: 1–2, 3–4, 7–8, 25–26, 27–28)",
+     "corridas": 5,
      "L": 3.0,
-     "fitas": 52,
-     "postes": 78,
-     "metros": 104.0
-    }
-   ],
-   "corridas": 60,
-   "fitas": 196,
-   "postes": 262,
-   "postes_reserva": 289,
-   "metros": 392.0,
-   "custo": {
-    "postes": 289,
-    "lista_ex": 4415.0,
-    "lista_inc": 5430.45,
-    "ao_preco_orcado": 3765.67
-   }
-  },
-  "Cenario 2 - serpentina ate o checkpoint + 10 m so nas de alta": {
-   "itens": [
-    {
-     "rotulo": "bordas e divisas entre os tres blocos de serpentina",
-     "corridas": 4,
-     "L": 20.0,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
+     "fitas": 10,
+     "postes": 15,
+     "metros": 20.0
     },
     {
-     "rotulo": "divisorias internas da serpentina A (5 corredores)",
-     "corridas": 4,
-     "L": 18.8,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "divisorias internas da serpentina B (5 corredores)",
-     "corridas": 4,
-     "L": 18.8,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "divisorias internas da serpentina C (5 corredores)",
-     "corridas": 4,
-     "L": 18.8,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
-     "corridas": 0,
-     "L": 0.0,
-     "fitas": 0,
-     "postes": 6,
-     "metros": 0.0
-    },
-    {
-     "rotulo": "filas de mesa - alta (3 MRVs, 10 m, 2 lados)",
-     "corridas": 6,
-     "L": 10.0,
-     "fitas": 30,
-     "postes": 36,
-     "metros": 60.0
-    }
-   ],
-   "corridas": 22,
-   "fitas": 190,
-   "postes": 218,
-   "postes_reserva": 240,
-   "metros": 380.0,
-   "custo": {
-    "postes": 240,
-    "lista_ex": 3680.0,
-    "lista_inc": 4526.4,
-    "ao_preco_orcado": 3127.2
-   }
-  },
-  "Cenario 2b - serpentina + fila em todas as mesas": {
-   "itens": [
-    {
-     "rotulo": "bordas e divisas entre os tres blocos de serpentina",
-     "corridas": 4,
-     "L": 20.0,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "divisorias internas da serpentina A (5 corredores)",
-     "corridas": 4,
-     "L": 18.8,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "divisorias internas da serpentina B (5 corredores)",
-     "corridas": 4,
-     "L": 18.8,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "divisorias internas da serpentina C (5 corredores)",
-     "corridas": 4,
-     "L": 18.8,
-     "fitas": 40,
-     "postes": 44,
-     "metros": 80.0
-    },
-    {
-     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
-     "corridas": 0,
-     "L": 0.0,
-     "fitas": 0,
-     "postes": 6,
-     "metros": 0.0
-    },
-    {
-     "rotulo": "filas de mesa - alta (3 MRVs, 10 m, 2 lados)",
-     "corridas": 6,
-     "L": 10.0,
-     "fitas": 30,
-     "postes": 36,
-     "metros": 60.0
-    },
-    {
-     "rotulo": "filas de mesa - media (8 MRVs, 5 m, 2 lados)",
-     "corridas": 16,
-     "L": 5.0,
-     "fitas": 48,
-     "postes": 64,
-     "metros": 96.0
-    },
-    {
-     "rotulo": "filas de mesa - baixa (17 MRVs, 3 m, 2 lados)",
-     "corridas": 34,
+     "rotulo": "mesa sem par · 3,0 m (2: 5, 6)",
+     "corridas": 2,
      "L": 3.0,
-     "fitas": 68,
-     "postes": 102,
-     "metros": 136.0
+     "fitas": 4,
+     "postes": 6,
+     "metros": 8.0
     }
    ],
-   "corridas": 72,
-   "fitas": 306,
-   "postes": 384,
-   "postes_reserva": 423,
-   "metros": 612.0,
    "custo": {
-    "postes": 423,
-    "lista_ex": 6425.0,
-    "lista_inc": 7902.75,
-    "ao_preco_orcado": 5511.69
+    "postes": 139,
+    "lista_ex": 2165.0,
+    "lista_inc": 2662.95,
+    "ao_preco_orcado": 1811.17
    }
   }
- }
+ ]
 }

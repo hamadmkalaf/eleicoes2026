@@ -124,7 +124,78 @@ Isso não iguala B a A e C (364 contra 455), e não há geometria que iguale: 9
 balizas em B deixariam os egressos em 1,2 m, o que é inaceitável. **A solução
 não é geométrica, é de atribuição** — ver seção 5.
 
-## 4. Necessidade de separadores de barreira
+## 4. Para que serve cada espaço, e como trocá-los
+
+### O percurso do eleitor
+
+**Garganta (canto sudeste)** → **corredor de distribuição** (fundo, leste→oeste)
+→ **serpenteado** da sua entrada, ou **baia de reserva** se o serpenteado
+estiver cheio → **faixa de descarga** → **porta S4, S5 ou S6**.
+
+### O que cada faixa faz
+
+| Eixo | Espaço | Medida | Função | O que a dimensiona |
+|---|---|---|---|---|
+| S→N | Folga sul | 1,5 m | recuo do limite | não se ocupa |
+| S→N | **Corredor de distribuição** | 2,5 m | leva todos da garganta até a sua fila | é **passagem, não espera**: larga o bastante para quem vai a A passar por quem entra em C |
+| S→N | **Serpenteado** | 26,0 m | a fila **ordenada** | quantas pessoas esperam **com ordem de chegada preservada** |
+| S→N | **Faixa de descarga** | 5,0 m | leque de saída até as portas | o desvio lateral: B sai 4,2 m fora de S5, e precisa de profundidade para não virar diagonal de 50° |
+| L→O | **Baia de reserva** (×2) | 5,0 m cada | retenção **sem ordem**, exclusiva de A e de C | drena direto na baliza de entrada do seu bloco |
+| L→O | **Blocos A / B / C** | 7,0 / 9,8 / 7,0 m | as balizas | número **ímpar** de balizas; B leva 7 por não ter baia |
+| L→O | **Corredor de egresso** (×2) | 2,6 m cada | saída lateral, marshals, socorro a pé, separação entre filas | 1,2 m para pedestre; 3,5 m se tiver de admitir veículo |
+
+**A distinção que organiza tudo:** o serpenteado guarda pessoas **em ordem**; a
+baia guarda pessoas **em massa**. Quem sai da baia entra no fim do serpenteado,
+não na frente dele — a ordem se recompõe ali.
+
+### Taxas de câmbio
+
+As duas dimensões do Ring 3 são fixas (39 × 35 m). **Todo ajuste é uma troca**:
+para dar um metro a um espaço, tira-se de outro. Reproduzível em
+`scripts/layout_ring3.py`.
+
+| Movimento | Rende | Custa |
+|---|---|---|
+| **+1 m de profundidade** do serpenteado (tirado da descarga ou do fundo) | **+49 pessoas** | 10 separadores (~EUR 130) |
+| **+2 balizas** num bloco (2,8 m de largura, tirados de baia ou egresso) | **+104 pessoas** | 25 separadores (~EUR 320) |
+| **+1 m de largura** de baia (tirado de bloco ou egresso) | **+39 pessoas** | 1 separador |
+
+**O achado que vale registrar:** por metro de largura, a baia rende **39
+pessoas** e o serpenteado **37** — praticamente o mesmo. Mas a baia custa **1
+separador por metro** contra **8,8** do serpenteado. Ou seja, **o serpenteado
+não se paga em capacidade; ele se paga em ordem de chegada.** Cada metro de
+serpenteado é uma decisão de gastar ~EUR 115 para que aquelas ~37 pessoas
+esperem em fila justa em vez de aglomeradas.
+
+### Três ajustes prontos
+
+**a) Preciso reduzir a compra de barreira.** Encolha A e C de 5 para 3 balizas
+e alargue as baias de 5,0 para 7,8 m. Capacidade praticamente igual (1.284
+contra 1.274), e a compra cai de **117 para ~74 separadores (−EUR 560)**. O
+preço é que A e C passam a ter a maior parte da sua espera **sem ordem de
+chegada** — aceitável se houver marshal por baia, ruim se não houver.
+
+**b) Preciso de acesso de veículo de emergência.** Alargue os corredores de
+egresso de 2,6 para 3,5 m, tirando 0,9 m de cada baia. Custa **~70 pessoas** e
+devolve 2 separadores. Alternativa mais barata em capacidade: não passar
+veículo entre os blocos e usar a **faixa de descarga de 5,0 m** ao norte, que já
+atende ao mínimo de 3,5 m.
+
+**c) Preciso de mais capacidade sem gastar mais.** Estreite os egressos de 2,6
+para 1,6 m (o mínimo de pedestres é 1,2 m) e dê 1,0 m a cada baia:
+**+78 pessoas por 2 separadores**. Não recomendo sem antes resolver a saída
+única do perímetro (seção 8) — capacidade a mais com egresso no mínimo é a
+combinação errada.
+
+### O que não é ajustável
+
+- **Número ímpar de balizas** em cada bloco: entra-se pelo sul e a última
+  baliza tem de correr para o norte.
+- **Baia colada ao seu bloco**: se não encostar na baliza de entrada, perde o
+  sentido e vira depósito comum.
+- **Passo de 6,2 m entre S4, S5 e S6**: vem do prédio, não do desenho.
+
+## 5. Necessidade de separadores de barreira
 
 **Este quantitativo cobre somente o Ring 3.** O interior do Hall 2 — filas
 junto às 28 urnas, canalização das portas para dentro, separação dos fluxos de
@@ -156,7 +227,7 @@ de 1 m canaliza fila, mas **não é barreira de contenção de multidão** — n
 suporta carga lateral de uma massa sob pressão. É o que sustenta os corredores
 de egresso e a liberação em lotes.
 
-## 5. Atribuição das urnas às entradas
+## 6. Atribuição das urnas às entradas
 
 As três entradas não têm a mesma capacidade, então a carga tem de ser repartida
 **na proporção dessa capacidade**, e não em terços. Reproduzível com
@@ -181,7 +252,7 @@ em C. Concentrar as três (590 eleitores esperados cada) numa só entrada criari
 um pico que nenhuma reserva absorveria, e são justamente elas que definem o
 horário de fechamento (ver `analise_gargalos.md`).
 
-## 6. O Ring 3 comporta a fila prevista?
+## 7. O Ring 3 comporta a fila prevista?
 
 Da coluna FILA TOTAL de `scripts/simula_fluxo.py`, comparada à capacidade do
 Hall 2 (~1.000–1.200 em fila interna) somada às ~1.300 do Ring 3:
@@ -199,7 +270,7 @@ Hall 2 (~1.000–1.200 em fila interna) somada às ~1.300 do Ring 3:
 de dois cadernos em paralelo por urna, que fecha às 17h00 mesmo com caderno
 lento e não custa nada ao TRE.
 
-## 7. Evacuação e densidade
+## 8. Evacuação e densidade
 
 Referências de crowd safety para evento ao ar livre: escoamento de **82 pessoas
 por metro de largura por minuto**, alvo de evacuação de **8 a 10 minutos**, e
@@ -261,7 +332,7 @@ ou aberto. Pela imagem aérea há linha de árvores e meio-fio, mas não dá par
 saber se há vãos. Se o perímetro for francamente aberto, o problema se dissolve
 e as brechas viram sinalização. Se for fechado, elas são obrigatórias.
 
-## 8. Exposição ao tempo
+## 9. Exposição ao tempo
 
 O espaço é descoberto. Outubro é o mês mais chuvoso de Dublin (**76–79 mm**). O
 número de dias de chuva diverge conforme a fonte e o limiar: **12 dias** pelas
@@ -279,7 +350,7 @@ Mitigação proporcional ao risco: cobertura leve (tenda ou toldo) sobre os
 últimos 8–10 m de cada serpenteado, onde a espera é mais longa e a densidade
 maior; e não sobre os 27 m inteiros. Cotar como item destacado.
 
-## 9. Acessibilidade e atendimento prioritário
+## 10. Acessibilidade e atendimento prioritário
 
 **211 eleitores com 60+ anos e 85 com deficiência declarada** em toda a zona —
 ~296 pessoas em 9 horas, ~33 por hora no pico. Volume trivial, desde que
@@ -290,7 +361,7 @@ pavimentado, do desembarque direto à porta, com 1 agente designado. As balizas
 de 1,40 m acomodam cadeira de rodas, mas 5 balizas de 26 m são **130 m de
 percurso** — inaceitável para quem tem prioridade legal.
 
-## 10. Equipe
+## 11. Equipe
 
 | Função | Nº | Observação |
 |---|---|---|
@@ -302,7 +373,7 @@ percurso** — inaceitável para quem tem prioridade legal.
 | Segurança | 4–6 | Dos 20 já contratados (item a) |
 | **Total** | **15–17** | dos quais 4–6 já orçados |
 
-## 11. Pendências
+## 12. Pendências
 
 1. Aferir as dimensões do Ring 3 e **a distância entre o bordo oeste do Ring 3
    e o canto sudoeste do Hall 2** — é o número que translada todo o conjunto

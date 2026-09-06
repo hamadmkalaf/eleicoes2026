@@ -204,6 +204,66 @@ def egresso():
     }
 
 
+def taxas_de_cambio():
+    """Quanto vale um metro de cada espaco do Ring 3.
+
+    As duas dimensoes do Ring 3 sao fixas (39 x 35 m), entao ajustar o layout e
+    sempre uma TROCA: para dar um metro a um espaco, tira-se de outro. Esta
+    funcao diz quanto cada metro rende em pessoas e quanto custa em barreira,
+    para que a troca seja feita com numero e nao por impressao.
+    """
+    n_lanes = sum(BALIZAS)
+    n_baias = sum(1 for b in BAIA_DE if b)
+
+    # --- eixo SUL-NORTE: 1 m a mais de profundidade de serpenteado ---------
+    # ganha fila em todas as balizas e area em todas as baias, porque a baia
+    # tem a mesma profundidade do serpenteado
+    p_prof = n_lanes / PASSO_PESSOA + n_baias * LARG_FLANCO * DENS_BAIA
+    # barreira: 2 corridas externas por bloco + 1 por baliza interna
+    b_prof = 3 * 2 + sum(n - 1 for n in BALIZAS)
+
+    # --- eixo LESTE-OESTE: 1 m a mais de bloco (em balizas) ----------------
+    # balizas so entram aos pares (o numero tem de ficar impar)
+    p_baliza_m = (PROF_SERPENTE / PASSO_PESSOA) / LARG_BALIZA
+    b_baliza_m = (PROF_SERPENTE - LARG_BALIZA) / METROS_POR_UNIDADE / LARG_BALIZA
+
+    # --- eixo LESTE-OESTE: 1 m a mais de baia ------------------------------
+    p_baia_m = PROF_SERPENTE * DENS_BAIA
+    b_baia_m = 2 / METROS_POR_UNIDADE     # fecha ao norte e ao sul
+
+    return {
+        "prof_pessoas": p_prof,
+        "prof_separadores": b_prof / METROS_POR_UNIDADE,
+        "baliza_pessoas_m": p_baliza_m,
+        "baliza_separadores_m": b_baliza_m,
+        "baliza_passo": 2 * LARG_BALIZA,
+        "baliza_pessoas_passo": 2 * PROF_SERPENTE / PASSO_PESSOA,
+        "baliza_separadores_passo": 2 * (PROF_SERPENTE - LARG_BALIZA) / METROS_POR_UNIDADE,
+        "baia_pessoas_m": p_baia_m,
+        "baia_separadores_m": b_baia_m,
+    }
+
+
+def espacos():
+    """Cada faixa do Ring 3, sua medida, funcao e o que a dimensiona."""
+    return [
+        ("SUL→NORTE", "Folga sul", FOLGA_SUL,
+         "recuo do limite; nao se ocupa"),
+        ("SUL→NORTE", "Corredor de distribuição", CORREDOR_FUNDO,
+         "leva todo mundo da garganta ate a sua fila; é passagem, nao espera"),
+        ("SUL→NORTE", "Serpenteado", PROF_SERPENTE,
+         "a fila ordenada; define quantos esperam COM ordem de chegada"),
+        ("SUL→NORTE", "Faixa de descarga", ZONA_DESCARGA,
+         "leque de saida ate as portas; absorve o desvio lateral"),
+        ("LESTE→OESTE", "Baia de reserva (×2)", LARG_FLANCO,
+         "retencao sem ordem, exclusiva de A e de C; drena na baliza de entrada"),
+        ("LESTE→OESTE", "Bloco A / B / C", None,
+         "as balizas propriamente ditas"),
+        ("LESTE→OESTE", "Corredor de egresso (×2)", CORREDOR_EGRESSO,
+         "saida lateral, marshals, socorro a pe, separacao entre filas"),
+    ]
+
+
 def resumo():
     itens = componentes()
     metros = sum(i[3] for i in itens)
@@ -642,6 +702,28 @@ def main():
               f"abrir 2 brechas de emergencia de 2,0 m no perimetro sul/leste,")
         print(f"     em pontos distintos, o que leva a evacuacao a "
               f"{e['pessoas']/(FLUXO_EGRESSO*(SAIDAS_ATUAIS+4.0)):.1f} min.")
+
+    t = taxas_de_cambio()
+    print(f"\nTAXAS DE CAMBIO — as duas dimensoes sao fixas, todo ajuste e troca")
+    print(f"  +1 m de PROFUNDIDADE do serpenteado (tirado da descarga ou do fundo):")
+    print(f"        +{t['prof_pessoas']:.0f} pessoas   custa "
+          f"{t['prof_separadores']:.0f} separadores "
+          f"(~EUR {t['prof_separadores']*METROS_POR_UNIDADE*EUR_POR_METRO:.0f})")
+    print(f"  +2 balizas num bloco ({t['baliza_passo']:.1f} m de largura, "
+          f"tirados de baia ou egresso):")
+    print(f"        +{t['baliza_pessoas_passo']:.0f} pessoas   custa "
+          f"{t['baliza_separadores_passo']:.0f} separadores "
+          f"(~EUR {t['baliza_separadores_passo']*METROS_POR_UNIDADE*EUR_POR_METRO:.0f})")
+    print(f"        por metro: {t['baliza_pessoas_m']:.0f} pessoas, "
+          f"{t['baliza_separadores_m']:.1f} separadores")
+    print(f"  +1 m de LARGURA de baia (tirado de bloco ou egresso):")
+    print(f"        +{t['baia_pessoas_m']:.0f} pessoas   custa "
+          f"{t['baia_separadores_m']:.1f} separador")
+    print(f"\n  => Por metro de largura, baia ({t['baia_pessoas_m']:.0f} pessoas) e "
+          f"serpenteado ({t['baliza_pessoas_m']:.0f}) rendem quase o mesmo,")
+    print(f"     mas a baia custa {t['baia_separadores_m']:.1f} separador contra "
+          f"{t['baliza_separadores_m']:.1f}. O serpenteado se paga em ORDEM DE "
+          f"CHEGADA, nao em capacidade.")
 
     desenha()
     print(f"\nDesenho: {SAIDA.relative_to(RAIZ)}")

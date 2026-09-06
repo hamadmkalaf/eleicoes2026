@@ -398,10 +398,10 @@ PONTOS = [
      "Pórtico de boas-vindas + tabela mestra completa + “não sabe sua seção? →”",
      "1 pórtico · 3 painéis de consulta · 1 totem do balcão de dúvidas"),
     ("P2", "Corredor da lateral leste",
-     "A cada 25–30 m ao longo do percurso, alternando os lados",
+     "Sobre as folhas das portas de serviço do Hall 2, a cada 25–30 m, no padrão de montagem da placa “2 Shelbourne Hall”",
      "Nada. Repete a consulta durante o tempo morto de caminhada e de fila",
-     "A mesma tabela mestra, idêntica em todos · seta “Ring 3, 100 m”",
-     "4 painéis duplos (8 faces)"),
+     "A mesma tabela mestra, idêntica em todas · seta “Ring 3, 100 m”",
+     "4 painéis de porta (1,8 × 1,2 m) — zero base, zero estrutura"),
     ("P3", "Garganta sudeste",
      "No funil de entrada do Ring 3, junto aos três agentes de pré-triagem",
      "Última consulta possível · divisão nos três serpenteados",
@@ -505,9 +505,15 @@ def bloco_mestra(mestra):
 
 
 SUBSTRATOS = [
-    ("Vidro da fachada do Hall 2", "toda a frente das portas S1–S9",
+    ("Vidro da fachada sul", "apenas o trecho sul do Hall 2, onde ficam as portas de entrada",
      "sim", "Vinil recortado ou impresso, por dentro e por fora do vão"),
-    ("Folha lisa dos portões", "Gate G e congêneres, na Merrion Road",
+    ("Folha de porta de serviço, aço pintado", "lateral leste, ao longo de todo o corredor",
+     "sim", "Vinil sobre a folha — o suporte de P2, se a porta não for rota de fuga em uso"),
+    ("Chapa rígida sobre a chapa ondulada", "lateral leste, no padrão da placa “2 Shelbourne Hall”",
+     "parafusa", "Painel em mão-francesa preso às terças, como o RDS já faz. Exige furação e autorização"),
+    ("Porta de doca e porta de enrolar", "lateral leste, entre as portas de serviço",
+     "não", "Perfil ondulado e folha operacional: não colar nem obstruir"),
+    ("Folha lisa dos portões do perímetro", "Gate G e congêneres, na Merrion Road",
      "sim", "Vinil ou lona colada, só se o portão ficar travado no dia"),
     ("Painel rebocado liso", "trechos da parede interna do Hall 2",
      "sim", "Vinil removível"),
@@ -521,8 +527,8 @@ SUBSTRATOS = [
      "suspende", "Faixa suspensa em cabo de aço — a única solução com alcance visual no salão"),
     ("Bloco de concreto aparente", "base de todas as paredes do Hall 2",
      "não", "Poroso e rugoso: o adesivo solta. Não orçar vinil aqui"),
-    ("Chapa metálica ondulada", "parte alta das paredes do Hall 2",
-     "não", "O perfil impede contato pleno. Não orçar vinil aqui"),
+    ("Chapa metálica ondulada", "parte alta das paredes, por dentro e por fora",
+     "não", "O perfil impede contato pleno: adesivo não. Aceita painel rígido parafusado nas terças"),
     ("Alvenaria de pedra e pilar de granito", "muro do perímetro e portões",
      "não", "Rugoso e provável fabric protegido: nem adesivo nem furação"),
 ]
@@ -555,6 +561,7 @@ def tabela_substrato():
         "amarra": '<span class="chip b">amarra</span>',
         "abraça": '<span class="chip b">abraça</span>',
         "suspende": '<span class="chip b">suspende</span>',
+        "parafusa": '<span class="chip c">parafusa</span>',
         "não": '<span class="chip x">não</span>',
     }
     linhas = "".join(

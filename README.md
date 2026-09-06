@@ -52,8 +52,8 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
 - **`saidas/plano_ring3_horizontal.md`**, **`saidas/ring3.json`** e
-  **`saidas/ring3_*.svg`** — o desenho horizontal do Ring 3, os números por
-  entrada e as plantas em escala das duas geometrias.
+  **`saidas/ring3_*.svg`** — o Ring 3 girado, os números por entrada e as
+  plantas em escala das geometrias comparadas.
 
 ## Validações
 
@@ -89,31 +89,32 @@ de Dublin e passam a votar lá.
 ## Ring 3 — a fila externa
 
 `scripts/ring3.py` modela o compound de fila ao ar livre (Ring 3 do RDS,
-39,0 × 35,0 m, 14 m ao sul da fachada) em duas geometrias e mede as duas
-grandezas que decidem contrato e orçamento: capacidade de pessoas e consumo de
-separadores de fila.
+39,0 × 35,0 m, 14 m ao sul da fachada) e mede o que muda quando as serpentinas,
+**dentro das mesmas três zonas**, giram 90°: as raias passam a correr de leste
+para oeste, empilhadas em altura. Corredor de fundo, zonas, baias de flanco,
+garganta e portas ficam onde estão.
 
 ```bash
-python3 scripts/ring3.py   # gera saidas/plano_ring3_horizontal.md, ring3.json e os SVG
+python3 scripts/ring3.py            # plano, JSON e as plantas em SVG
+python3 scripts/gera_pagina_ring3.py  # a página
 ```
 
-| Desenho | Capacidade | Separadores | A comprar (estoque 200) |
-|---|---:|---:|---:|
-| Vertical (plano original, reconstruído) | 1.402 | 312 | 112 |
-| Horizontal, Ring cheio (6/6/6 raias) | 1.503 | 369 | 169 |
-| **Horizontal enxuta (4/5/4 raias)** | **1.086** | **292** | **92** |
+| Desenho | Capacidade | Separadores | A comprar (estoque 200) | Meias-voltas |
+|---|---:|---:|---:|---:|
+| Vigente — raias norte-sul (reconstruído) | 1.402 | 312 | 112 | 12 |
+| **Girado — raias leste-oeste** | **1.389** | **265** | **65** | **48** |
+| Variante de raias longas (sem baias) | 1.364 | 367 | 167 | 48 |
 
-O desenho vertical enfileira em raias norte-sul, três blocos lado a lado, e
-descarrega em diagonal sobre as portas. O horizontal empilha três decks de
-raias leste-oeste, cada um com um tubo de saída alinhado com a sua porta: a
-descarga fica perpendicular e o apron continua livre em frente às saídas S2 e
-S8. Custa mais barreira por pessoa (0,490 m contra 0,445 m), e por isso a
-recomendação é a versão enxuta — capacidade não é o gargalo desta operação.
+Girar poupa **47 separadores** (−15%, EUR 612) com a lotação praticamente igual:
+a barreira de um serpenteado é `(n+1) × comprimento − 1,2 × (n−1)`, e raias
+curtas e numerosas somam menos que raias longas e poucas. O preço é a
+meia-volta — nas zonas A e C, de 4,2 m de largura, a raia girada vira um
+ziguezague com 16 curvas.
 
-O plano vertical original (`scripts/layout_ring3.py`, `saidas/plano_ring3.md`)
-não está neste repositório: foi produzido em sessão anterior e não chegou a ser
-versionado. Aqui ele é reconstruído a partir das cotas publicadas, e a
-reconstrução reproduz exatamente os 855 dos serpenteados e os 547 das baias.
+O plano vigente (`scripts/layout_ring3.py`, `saidas/plano_ring3.md`) não está
+neste repositório: foi produzido em sessão anterior e não chegou a ser
+versionado. Aqui ele é reconstruído das cotas publicadas, e a reconstrução
+reproduz os 855 dos serpenteados e os 547 das baias.
 
 
 ## Escopo

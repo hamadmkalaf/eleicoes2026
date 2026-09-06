@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Monta a pagina do desenho horizontal do Ring 3 a partir de saidas/ring3.json.
+"""Monta a pagina do Ring 3 girado a partir de saidas/ring3.json.
 
 Todo numero da pagina vem do JSON que scripts/ring3.py gerou: a pagina nao
 guarda nenhuma conta propria. Saida: saidas/ring3_horizontal.html
@@ -13,10 +13,11 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SAIDAS = os.path.join(RAIZ, "saidas")
 
 D = json.load(open(os.path.join(SAIDAS, "ring3.json"), encoding="utf-8"))
-V, H, E = D["vertical"], D["horizontal"], D["horizontal_enxuta"]
+V, H, HL = D["vigente"], D["girado"], D["raias_longas"]
 P, CONF = D["premissas"], D["aderencia_ao_plano_original"]
 ESP = P["comparecimento_esperado"]
 PORTA = {"A": "S4", "B": "S5", "C": "S6"}
+ENTRADAS = ("A", "B", "C")
 
 
 def num(v, casas=0):
@@ -27,6 +28,10 @@ def sinal(v, casas=0):
     return ("+" if v >= 0 else "−") + num(abs(v), casas)
 
 
+def zona(d, e):
+    return next(z for z in d["zonas"] if z["entrada"] == e)
+
+
 def svg(nome):
     s = open(os.path.join(SAIDAS, nome), encoding="utf-8").read()
     s = s.replace('fill="#fbfaf7"', 'fill="var(--prancha)"', 1)
@@ -34,22 +39,33 @@ def svg(nome):
     return s.replace("<svg ", '<svg class="planta" ', 1)
 
 
-def raias(d):
-    return "/".join(str(b["raias"]) for b in d["blocos"])
+def barreira_zona(d, e):
+    """Barreira do serpenteado de uma zona, a partir das cotas do JSON."""
+    z = zona(d, e)
+    n, L = z["raias"], z["comprimento_raia_m"]
+    return 2 * L + (n - 1) * max(0.0, L - P["vao_retorno_m"])
 
 
-escada = "\n".join(
-    '<tr{cls}><td class="mono">{r}</td><td class="mono num">{cap}</td>'
-    '<td class="mono num">{a}</td><td class="mono num">{b}</td>'
-    '<td class="mono num">{c}</td><td class="mono num">{sep}</td>'
-    '<td class="mono num">{compra}</td><td class="mono num">{custo}</td></tr>'.format(
-        cls=(' class="marcada"' if tuple(l["raias"]) == tuple(b["raias"] for b in E["blocos"])
-             else (' class="cheia"' if tuple(l["raias"]) == tuple(b["raias"] for b in H["blocos"]) else "")),
-        r="/".join(str(x) for x in l["raias"]), cap=num(l["capacidade"]),
-        a=num(l["por_entrada"]["A"]), b=num(l["por_entrada"]["B"]),
-        c=num(l["por_entrada"]["C"]), sep=l["separadores"], compra=l["compra"],
-        custo=num(l["custo_compra_eur"], 2))
-    for l in D["escada_de_dimensionamento"])
+# ---- tabelas -------------------------------------------------------------
+serp = []
+for e in ENTRADAS:
+    bv, bh = barreira_zona(V, e), barreira_zona(H, e)
+    zv, zh = zona(V, e), zona(H, e)
+    serp.append(
+        f'<tr><td><span class="pin {e.lower()}">{e}</span> {PORTA[e]} · '
+        f'{num(zv["largura_m"],1)} × {num(zv["profundidade_m"],2)} m</td>'
+        f'<td class="mono num">{zv["raias"]} × {num(zv["comprimento_raia_m"],1)} m</td>'
+        f'<td class="mono num">{num(bv,1)}</td>'
+        f'<td class="mono num">{zh["raias"]} × {num(zh["comprimento_raia_m"],1)} m</td>'
+        f'<td class="mono num">{num(bh,1)}</td>'
+        f'<td class="mono num ganho">{sinal(bh-bv,1)}</td></tr>')
+tv = sum(barreira_zona(V, e) for e in ENTRADAS)
+th = sum(barreira_zona(H, e) for e in ENTRADAS)
+serp.append(f'<tr class="total"><td>Serpenteados</td><td></td>'
+            f'<td class="mono num">{num(tv,1)}</td><td></td>'
+            f'<td class="mono num">{num(th,1)}</td>'
+            f'<td class="mono num ganho">{sinal(th-tv,1)}</td></tr>')
+serp = "\n".join(serp)
 
 comp = []
 chaves = list(dict.fromkeys(list(V["barreira_por_componente_m"]) +
@@ -57,29 +73,23 @@ chaves = list(dict.fromkeys(list(V["barreira_por_componente_m"]) +
 for k in chaves:
     a = V["barreira_por_componente_m"].get(k, 0.0)
     b = H["barreira_por_componente_m"].get(k, 0.0)
-    comp.append(f'<tr><td>{k}</td><td class="mono num">{num(a,1) if a else "—"}</td>'
-                f'<td class="mono num">{num(b,1) if b else "—"}</td></tr>')
+    d = b - a
+    cls = ' class="mono num ganho"' if d < -0.05 else ' class="mono num"'
+    comp.append(f'<tr><td>{k}</td><td class="mono num">{num(a,1)}</td>'
+                f'<td class="mono num">{num(b,1)}</td>'
+                f'<td{cls}>{sinal(d,1) if abs(d) > 0.05 else "—"}</td></tr>')
 comp = "\n".join(comp)
 
-entradas = "\n".join(
+descarga = "\n".join(
     f'<tr><td><span class="pin {e.lower()}">{e}</span> {PORTA[e]}</td>'
-    f'<td class="mono num">{num(ESP[e])}</td>'
-    f'<td class="mono num">{num(V["por_entrada"][e])}</td>'
-    f'<td class="mono num">{num(V["capacidade_por_eleitor_esperado"][e],4)}</td>'
-    f'<td class="mono num">{num(H["por_entrada"][e])}</td>'
-    f'<td class="mono num">{num(H["capacidade_por_eleitor_esperado"][e],4)}</td></tr>'
-    for e in ("A", "B", "C"))
-
-decks = "\n".join(
-    f'<tr><td><span class="pin {b["entrada"].lower()}">{b["entrada"]}</span> '
-    f'deck {b["entrada"]} → {PORTA[b["entrada"]]}</td>'
-    f'<td class="mono num">{b["raias"]}</td>'
-    f'<td class="mono num">{num(b["comprimento_m"],1)} m</td>'
-    f'<td class="mono num">{num(b["profundidade_m"],1)} m</td>'
-    f'<td class="mono num">{num(b["caminhada_m"])} m</td>'
-    f'<td class="mono num">{num(b["capacidade"])}</td>'
-    f'<td class="mono num">{num(H["baias"].get(b["entrada"],{}).get("capacidade",0)) if b["entrada"] in H["baias"] else "—"}</td></tr>'
-    for b in H["blocos"])
+    f'<td class="mono num">{num(zona(V,e)["desvio_lateral_m"],2)} m</td>'
+    f'<td class="mono num">{num(zona(H,e)["desvio_lateral_m"],2)} m</td>'
+    f'<td class="mono num">{num(zona(V,e)["meias_voltas"])}</td>'
+    f'<td class="mono num{" perda" if zona(H,e)["meias_voltas"] > 20 else ""}">'
+    f'{num(zona(H,e)["meias_voltas"])}</td>'
+    f'<td class="mono num">{num(zona(V,e)["capacidade"])}</td>'
+    f'<td class="mono num">{num(zona(H,e)["capacidade"])}</td></tr>'
+    for e in ENTRADAS)
 
 HTML = f"""<title>Ring 3 na horizontal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -166,7 +176,9 @@ tbody tr:last-child td{{border-bottom:0}}
 td.num,th.num{{text-align:right}}
 tr.total td{{border-top:1.5px solid var(--regua); font-weight:600}}
 tr.marcada td{{background:var(--realce); font-weight:600}}
-tr.cheia td{{background:var(--regua2)}}
+td.ganho{{color:var(--ok); font-weight:600}}
+td.perda{{color:var(--alerta); font-weight:600}}
+.faixa dd.alerta{{color:var(--alerta)}}
 caption{{caption-side:bottom; text-align:left; font-size:.8rem; color:var(--fraco);
   padding:9px 12px}}
 
@@ -211,167 +223,155 @@ footer p{{margin:0 0 .5em; max-width:74ch}}
 <header>
   <p class="olho">Eleições 2026 · 1º turno · 4 de outubro · RDS Ballsbridge · fila externa</p>
   <h1>Ring 3 na horizontal</h1>
-  <p class="chamada">Segundo desenho para o compound de fila: três decks de raias leste-oeste
-  empilhados em profundidade, no lugar dos três blocos verticais lado a lado. Cada deck sai
-  por um tubo alinhado com a sua própria porta — e é isso, não a capacidade, que o desenho
-  compra.</p>
+  <p class="chamada">As mesmas três zonas, o mesmo corredor de fundo, as mesmas portas — só a
+  dobra da fila gira 90°: as raias passam a correr de leste para oeste, empilhadas em altura.
+  A pergunta que isso responde é de quantas barreiras o Ring precisa.</p>
   <dl class="faixa">
-    <div><dt>Capacidade</dt><dd>{num(H['capacidade'])}<small>Ring cheio · vertical: {num(V['capacidade'])}</small></dd></div>
-    <div><dt>Em raia</dt><dd>{num(H['capacidade_raias'])}<small>{num(H['capacidade_raias']/H['capacidade']*100)}% da lotação · vertical: {num(V['capacidade_raias']/V['capacidade']*100)}%</small></dd></div>
-    <div><dt>Separadores</dt><dd>{H['separadores']}<small>vertical: {V['separadores']} · estoque: {P['estoque_separadores']}</small></dd></div>
-    <div><dt>Versão enxuta</dt><dd class="delta">{E['separadores']}<small>{num(E['capacidade'])} pessoas · {V['separadores']-E['separadores']} abaixo do vertical</small></dd></div>
-    <div><dt>Raia mais longa</dt><dd>{num(max(b['comprimento_m'] for b in H['blocos']),1)} m<small>vertical: {num(max(b['comprimento_m'] for b in V['blocos']),1)} m</small></dd></div>
+    <div><dt>Separadores</dt><dd class="delta">{H['separadores']}<small>plano vigente: {V['separadores']} · {V['separadores']-H['separadores']} a menos</small></dd></div>
+    <div><dt>A comprar</dt><dd class="delta">{H['compra']}<small>vigente: {V['compra']} · estoque de {P['estoque_separadores']}</small></dd></div>
+    <div><dt>Custo da compra</dt><dd>EUR {num(H['custo_compra_eur'],0)}<small>vigente: EUR {num(V['custo_compra_eur'],0)}</small></dd></div>
+    <div><dt>Capacidade</dt><dd>{num(H['capacidade'])}<small>vigente: {num(V['capacidade'])} pessoas</small></dd></div>
+    <div><dt>Meias-voltas</dt><dd class="alerta">{H['meias_voltas']}<small>vigente: {V['meias_voltas']} · é o custo do giro</small></dd></div>
   </dl>
 </header>
 
 <section>
-  <p class="rotulo">Os dois desenhos</p>
-  <h2>A mesma área, dois modos de dobrar a fila</h2>
+  <p class="rotulo">A resposta</p>
+  <h2>{V['separadores']-H['separadores']} separadores a menos, com a mesma fila</h2>
   <div class="prosa">
-  <p>O Ring 3 é um retângulo de {num(P['largura_ring'] if 'largura_ring' in P else 39.0,1)} × 35,0 m de gradil permanente,
-  {num(D['apron_m'],0)} m ao sul da fachada do Hall 2, e a garganta de entrada fica no canto sudeste.
-  Dentro dele cabem as duas geometrias; o que muda é para onde correm as raias — e, com isso,
-  como cada fila chega à sua porta.</p>
+  <p>Girar as raias mantém a área ocupada — e, portanto, a lotação — mas troca
+  <strong>raias longas e poucas</strong> por <strong>raias curtas e muitas</strong>. A barreira de
+  um serpenteado é <span class="mono">(n+1) × comprimento − 1,2 × (n−1)</span>: são n+1 corridas
+  longitudinais, e cada divisória interna para 1,2 m antes da ponta para abrir a meia-volta. Mais
+  raias significam mais desses descontos, sobre corridas mais curtas. O total cai
+  {num((1-H['barreira_m']/V['barreira_m'])*100,0)}%.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th></th><th class="num">Vigente · raias N–S</th><th class="num">Girado · raias L–O</th><th class="num">Δ</th></tr></thead>
+    <tbody>
+      <tr><td>Barreira</td><td class="mono num">{num(V['barreira_m'],1)} m</td><td class="mono num">{num(H['barreira_m'],1)} m</td><td class="mono num ganho">{sinal(H['barreira_m']-V['barreira_m'],1)} m</td></tr>
+      <tr class="total"><td>Separadores de 2 m</td><td class="mono num">{V['separadores']}</td><td class="mono num">{H['separadores']}</td><td class="mono num ganho">{sinal(H['separadores']-V['separadores'])}</td></tr>
+      <tr><td>A comprar (estoque {P['estoque_separadores']})</td><td class="mono num">{V['compra']}</td><td class="mono num">{H['compra']}</td><td class="mono num ganho">{sinal(H['compra']-V['compra'])}</td></tr>
+      <tr><td>Custo da compra</td><td class="mono num">EUR {num(V['custo_compra_eur'],2)}</td><td class="mono num">EUR {num(H['custo_compra_eur'],2)}</td><td class="mono num ganho">EUR {sinal(H['custo_compra_eur']-V['custo_compra_eur'],2)}</td></tr>
+      <tr><td>Capacidade</td><td class="mono num">{num(V['capacidade'])}</td><td class="mono num">{num(H['capacidade'])}</td><td class="mono num">{sinal(H['capacidade']-V['capacidade'])}</td></tr>
+      <tr><td>Metros de barreira por pessoa</td><td class="mono num">{num(V['m_por_pessoa'],3)}</td><td class="mono num">{num(H['m_por_pessoa'],3)}</td><td class="mono num ganho">{sinal(H['m_por_pessoa']-V['m_por_pessoa'],3)}</td></tr>
+    </tbody>
+    <caption>Os dois desenhos medidos com o mesmo modelo — mesma densidade, mesmo módulo de raia,
+    mesma regra de barreira. A diferença é entre geometrias, não entre métodos.</caption>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Os dois desenhos</p>
+  <h2>O que exatamente mudou de lugar</h2>
+  <div class="prosa">
+  <p>Nada, além da direção das raias. O corredor de fundo continua ao sul, a garganta de
+  pré-triagem no canto sudeste, as baias nos dois flancos, e cada zona continua descarregando
+  ao norte na sua porta.</p>
   </div>
   <div class="plantas">
     <figure><div class="prancha">{svg('ring3_vertical.svg')}</div>
-      <figcaption><b>Vertical (plano vigente).</b> Três blocos lado a lado, raias norte-sul,
-      baias nos dois flancos. Nenhum bloco está alinhado com a sua porta: as três correntes
-      cruzam o apron em diagonal e convergem nos 6,2 m que separam S4, S5 e S6.</figcaption></figure>
+      <figcaption><b>Vigente.</b> Raias norte-sul de {num(zona(V,'B')['comprimento_raia_m'],2)} m.
+      A fila sobe do corredor de fundo e sai pela boca inteira do bloco — que tem a largura do
+      bloco e não coincide com o vão da porta.</figcaption></figure>
     <figure><div class="prancha">{svg('ring3_horizontal.svg')}</div>
-      <figcaption><b>Horizontal (este desenho).</b> Três decks empilhados, raias leste-oeste.
-      Cada deck sobe por um tubo no eixo da sua porta e cruza o apron perpendicularmente; o
-      degrau que sobra a leste vira baia, alimentada pela espinha que vem da garganta.</figcaption></figure>
+      <figcaption><b>Girado.</b> Raias leste-oeste empilhadas. A última raia corre rente à borda
+      norte da zona, então o portão de saída pode ficar em qualquer ponto dela — e vai para o eixo
+      da porta.</figcaption></figure>
   </div>
 </section>
 
 <section>
-  <p class="rotulo">A regra do desenho</p>
-  <h2>Por que os decks formam uma escada</h2>
-  <div class="prosa">
-  <p>Empilhar decks cria um problema que o desenho vertical não tem: o deck do fundo precisa
-  atravessar os decks da frente para chegar à fachada. A saída é <strong>alinhar cada tubo com a
-  sua porta e fazer os decks da frente pararem antes desse eixo</strong>. Daí tudo o mais decorre:
-  quanto mais ao fundo, mais largo o deck; o degrau que sobra a leste é baia de espera; e a ordem
-  dos decks deixa de ser escolha — da frente para o fundo, a porta tem de andar para leste,
-  <strong>A = S4, B = S5, C = S6</strong>, senão o tubo de um deck de trás cortaria o serpenteado
-  da frente.</p>
-  </div>
-  <ul class="marcas">
-    <li><strong>A descarga fica perpendicular.</strong> As três raias do apron ficam confinadas
-    entre x = 19,1 m e x = 37,5 m. As saídas S2 e S8, nos flancos, deixam de ter fila de entrada
-    à frente — no desenho vertical, são justamente as baias de flanco que caem ali.</li>
-    <li><strong>As baias mudam de lugar na fila.</strong> Ficam do lado da chegada, encostadas na
-    espinha: enchem como buffer de cauda, antes das raias, e não como transbordo lateral no meio
-    do serpenteado.</li>
-    <li><strong>A raia fica longa.</strong> Até {num(max(b['comprimento_m'] for b in H['blocos']),1)} m
-    de corrida contra os {num(max(b['comprimento_m'] for b in V['blocos']),1)} m do vertical: menos
-    meias-voltas por pessoa, menos pontos de atrito para fiscalizar.</li>
-    <li><strong>E há um preço, que é o tubo.</strong> Cada deck de trás gasta duas corridas de
-    barreira só para atravessar a profundidade dos decks da frente —
-    {num(H['barreira_por_componente_m'].get('tubos de saída dos decks de trás',0),1)} m que o
-    desenho vertical não gasta.</li>
-  </ul>
+  <p class="rotulo">De onde vem a economia</p>
+  <h2>Zona por zona</h2>
   <div class="rolagem"><table>
-    <thead><tr><th>Deck</th><th class="num">Raias</th><th class="num">Comprimento</th>
-    <th class="num">Profundidade</th><th class="num">Caminhada</th><th class="num">Em raia</th>
-    <th class="num">Em baia</th></tr></thead>
-    <tbody>{decks}</tbody>
-    <caption>Configuração de Ring cheio ({raias(H)} raias). Caminhada é o percurso de quem entra
-    com o deck vazio e anda até a porta.</caption>
+    <thead><tr><th>Zona</th><th class="num">Vigente</th><th class="num">Barreira (m)</th>
+    <th class="num">Girado</th><th class="num">Barreira (m)</th><th class="num">Δ</th></tr></thead>
+    <tbody>{serp}</tbody>
+    <caption>A profundidade de {num(zona(V,'A')['profundidade_m'],2)} m comporta
+    {zona(H,'A')['raias']} raias giradas, com o passo apertado de {num(P['passo_raia_m'],2)} m
+    para {num(zona(H,'A')['passo_m'],3)} m.</caption>
   </table></div>
-</section>
-
-<section>
-  <p class="rotulo">Capacidade</p>
-  <h2>Mais gente, e sobretudo mais gente em fila</h2>
   <div class="rolagem"><table>
-    <thead><tr><th></th><th class="num">Vertical</th><th class="num">Horizontal</th><th class="num">Δ</th></tr></thead>
-    <tbody>
-      <tr><td>Em raia — fila medida</td><td class="mono num">{num(V['capacidade_raias'])}</td><td class="mono num">{num(H['capacidade_raias'])}</td><td class="mono num">{sinal(H['capacidade_raias']-V['capacidade_raias'])}</td></tr>
-      <tr><td>Em baia — espera</td><td class="mono num">{num(V['capacidade_baias'])}</td><td class="mono num">{num(H['capacidade_baias'])}</td><td class="mono num">{sinal(H['capacidade_baias']-V['capacidade_baias'])}</td></tr>
-      <tr class="total"><td>Total</td><td class="mono num">{num(V['capacidade'])}</td><td class="mono num">{num(H['capacidade'])}</td><td class="mono num">{sinal(H['capacidade']-V['capacidade'])}</td></tr>
-    </tbody>
-  </table></div>
-  <div class="prosa" style="margin-top:22px">
-  <p>O total muda pouco; a natureza da lotação muda muito. No vertical,
-  {num(V['capacidade_baias']/V['capacidade']*100)}% da capacidade é massa parada nas baias de
-  flanco. No horizontal, a raia sobe para {num(H['capacidade_raias']/H['capacidade']*100)}% —
-  e fila em raia é fila contável, com ordem de chegada preservada e vazão previsível, enquanto
-  baia é aglomeração que precisa de fiscal para voltar a ser fila.</p>
-  </div>
-  <div class="rolagem"><table>
-    <thead><tr><th>Entrada</th><th class="num">Esperado</th><th class="num">Vertical</th>
-    <th class="num">por eleitor</th><th class="num">Horizontal</th><th class="num">por eleitor</th></tr></thead>
-    <tbody>{entradas}</tbody>
-    <caption>Comparecimento esperado por entrada: base B (taxa de 2022 por domicílio de origem),
-    decisão do Posto. “Por eleitor” é a capacidade dividida pelo comparecimento esperado daquela
-    entrada — quanto mais parelho entre as três, melhor distribuída está a fila.</caption>
-  </table></div>
-</section>
-
-<section>
-  <p class="rotulo">Separadores de fila</p>
-  <h2>Onde a barreira é gasta</h2>
-  <div class="prosa">
-  <p>Barreira externa, componente a componente. Não entram nesta conta o gradil permanente do
-  Ring, que os dois desenhos usam de graça, nem os 100 unifilas (200 m) do item <em>d</em> do
-  orçamento, que servem ao interior do Hall 2.</p>
-  </div>
-  <div class="rolagem"><table>
-    <thead><tr><th>Componente</th><th class="num">Vertical (m)</th><th class="num">Horizontal (m)</th></tr></thead>
+    <thead><tr><th>Componente do plano</th><th class="num">Vigente (m)</th>
+    <th class="num">Girado (m)</th><th class="num">Δ</th></tr></thead>
     <tbody>
       {comp}
-      <tr class="total"><td>Barreira</td><td class="mono num">{num(V['barreira_m'],1)}</td><td class="mono num">{num(H['barreira_m'],1)}</td></tr>
-      <tr class="total"><td>Separadores de 2 m</td><td class="mono num">{V['separadores']}</td><td class="mono num">{H['separadores']}</td></tr>
-      <tr><td>A comprar (estoque {P['estoque_separadores']})</td><td class="mono num">{V['compra']}</td><td class="mono num">{H['compra']}</td></tr>
-      <tr><td>Custo da compra</td><td class="mono num">EUR {num(V['custo_compra_eur'],2)}</td><td class="mono num">EUR {num(H['custo_compra_eur'],2)}</td></tr>
-      <tr><td>Metros por pessoa de lotação</td><td class="mono num">{num(V['m_por_pessoa'],3)}</td><td class="mono num">{num(H['m_por_pessoa'],3)}</td></tr>
+      <tr class="total"><td>Total</td><td class="mono num">{num(V['barreira_m'],1)}</td>
+      <td class="mono num">{num(H['barreira_m'],1)}</td>
+      <td class="mono num ganho">{sinal(H['barreira_m']-V['barreira_m'],1)}</td></tr>
     </tbody>
+    <caption>Fora desta conta: o gradil permanente do Ring, que os dois desenhos usam de graça, e
+    os 100 unifilas (200 m) do item <em>d</em> do orçamento, que servem ao interior do Hall 2.</caption>
   </table></div>
-  <p class="nota"><strong>O horizontal é menos econômico por pessoa</strong> — {num(H['m_por_pessoa'],3)} m
-  contra {num(V['m_por_pessoa'],3)} m — e a diferença tem nome: os tubos, mais o fato de as baias
-  do vertical serem enormes e quase gratuitas, porque usam o gradil do Ring em três lados. Os
-  serpenteados propriamente ditos são levemente mais eficientes no horizontal, já que a raia longa
-  dilui o custo das pontas.</p>
+  <p class="nota">A queda quase toda está nos serpenteados. As raias do apron encurtam de leve por
+  um motivo que vale registrar: na zona B o eixo de S5 cai dentro do bloco, e com o portão móvel a
+  descarga fica <strong>perpendicular</strong> — desvio lateral zero, contra
+  {num(zona(V,'B')['desvio_lateral_m'],2)} m no desenho vigente.</p>
 </section>
 
 <section>
-  <p class="rotulo">Dimensionamento</p>
-  <h2>A escada: quanta fila comprar</h2>
-  <div class="prosa">
-  <p>Com os decks na largura máxima, o número de raias é a única alavanca — e ela troca capacidade
-  por barreira quase linearmente. A tabela percorre as repartições que cabem na profundidade do
-  Ring; para cada total de raias, mostra a repartição que melhor equilibra as três entradas.</p>
+  <p class="rotulo">O outro lado</p>
+  <h2>O que o giro cobra: a meia-volta</h2>
+  <div class="rolagem"><table>
+    <thead><tr><th>Zona</th><th class="num">Desvio vigente</th><th class="num">Desvio girado</th>
+    <th class="num">Curvas vigente</th><th class="num">Curvas girado</th>
+    <th class="num">Fila vigente</th><th class="num">Fila girada</th></tr></thead>
+    <tbody>{descarga}</tbody>
+    <caption>“Desvio” é a distância lateral entre o ponto de descarga da zona e o eixo da sua porta;
+    “curvas” são as meias-voltas que o eleitor dá até sair.</caption>
+  </table></div>
+  <div class="prosa" style="margin-top:22px">
+  <p>Nas zonas A e C, de {num(zona(V,'A')['largura_m'],1)} m de largura, a raia girada tem
+  {num(zona(H,'A')['comprimento_raia_m'],1)} m e o eleitor dá {zona(H,'A')['meias_voltas']} curvas
+  até sair: é um ziguezague, não uma fila. Na zona B, de
+  {num(zona(V,'B')['largura_m'],1)} m, a raia girada continua confortável.</p>
+  <p>O modelo de capacidade não cobra nada pela curva. Se cada meia-volta custar
+  {num(P['perda_por_meia_volta_m'],1)} m de fila aproveitável — premissa, não medição —, a
+  paridade de lotação desaparece:</p>
   </div>
   <div class="rolagem"><table>
-    <thead><tr><th>Raias A/B/C</th><th class="num">Capacidade</th><th class="num">A</th>
-    <th class="num">B</th><th class="num">C</th><th class="num">Separadores</th>
-    <th class="num">A comprar</th><th class="num">Custo (EUR)</th></tr></thead>
-    <tbody>{escada}</tbody>
-    <caption>Linha destacada: a recomendada ({raias(E)}). Linha cinza: o Ring cheio ({raias(H)}).</caption>
+    <thead><tr><th></th><th class="num">Vigente</th><th class="num">Girado</th></tr></thead>
+    <tbody>
+      <tr><td>Capacidade nominal</td><td class="mono num">{num(V['capacidade'])}</td><td class="mono num">{num(H['capacidade'])}</td></tr>
+      <tr><td>Descontadas as meias-voltas</td><td class="mono num">{num(V['capacidade_com_perda_de_meia_volta'])}</td><td class="mono num perda">{num(H['capacidade_com_perda_de_meia_volta'])}</td></tr>
+    </tbody>
   </table></div>
+  <p class="nota"><strong>A economia de barreira é robusta; a paridade de capacidade não é.</strong>
+  Sob a premissa da curva, o girado perde cerca de
+  {num(V['capacidade_com_perda_de_meia_volta']-H['capacidade_com_perda_de_meia_volta'])} pessoas
+  para o vigente — ainda muito acima do pico plausível, mas não é empate.</p>
+</section>
 
-  <div class="veredito">
-    <p class="curta">Recomendação: {raias(E)} raias — {num(E['capacidade'])} pessoas com
-    {E['separadores']} separadores.</p>
-    <p>São {E['compra']} unidades a comprar (EUR {num(E['custo_compra_eur'],2)}), contra
-    {V['compra']} do desenho vertical: {V['separadores']-E['separadores']} separadores
-    <strong>a menos</strong>, com a geometria de descarga corrigida. O Ring nunca foi o gargalo
-    desta operação — o gargalo é a mesa —, e gastar barreira para encher o Ring é comprar
-    capacidade que não vai ser usada. Se o Posto preferir margem, a linha cinza enche o Ring por
-    mais {H['separadores']-E['separadores']} separadores.</p>
+<section>
+  <p class="rotulo">Variante</p>
+  <h2>Se o ziguezague de A e C incomodar</h2>
+  <div class="prosa">
+  <p>A saída é alargar as três zonas até a largura do Ring, o que consome as baias de flanco.
+  Toda a lotação vira fila em raia medida — e a capacidade que o plano vigente ganha de graça nas
+  baias, que usam o gradil em três lados, passa a ser paga em divisória.</p>
   </div>
+  <div class="rolagem"><table>
+    <thead><tr><th></th><th class="num">Vigente</th><th class="num">Girado</th><th class="num">Raias longas</th></tr></thead>
+    <tbody>
+      <tr><td>Raia mais curta</td><td class="mono num">{num(min(z['comprimento_raia_m'] for z in V['zonas']),1)} m</td><td class="mono num perda">{num(min(z['comprimento_raia_m'] for z in H['zonas']),1)} m</td><td class="mono num">{num(min(z['comprimento_raia_m'] for z in HL['zonas']),1)} m</td></tr>
+      <tr><td>Capacidade</td><td class="mono num">{num(V['capacidade'])}</td><td class="mono num">{num(H['capacidade'])}</td><td class="mono num">{num(HL['capacidade'])}</td></tr>
+      <tr><td>… em raia medida</td><td class="mono num">{num(V['capacidade_raias'])}</td><td class="mono num">{num(H['capacidade_raias'])}</td><td class="mono num">{num(HL['capacidade_raias'])}</td></tr>
+      <tr><td>… em baia de espera</td><td class="mono num">{num(V['capacidade_baias'])}</td><td class="mono num">{num(H['capacidade_baias'])}</td><td class="mono num">—</td></tr>
+      <tr class="total"><td>Separadores</td><td class="mono num">{V['separadores']}</td><td class="mono num">{H['separadores']}</td><td class="mono num perda">{HL['separadores']}</td></tr>
+      <tr><td>A comprar</td><td class="mono num">{V['compra']}</td><td class="mono num">{H['compra']}</td><td class="mono num">{HL['compra']}</td></tr>
+    </tbody>
+  </table></div>
 </section>
 
 <section>
   <p class="rotulo">Método</p>
-  <h2>Como as duas contas foram feitas</h2>
+  <h2>Premissas, e o que se sabe do plano original</h2>
   <div class="prosa">
-  <p>O plano vertical original não está no repositório: <span class="mono">scripts/layout_ring3.py</span>
-  e <span class="mono">saidas/plano_ring3.md</span> foram produzidos em sessão anterior e não chegaram
-  a ser versionados. Ele foi reconstruído a partir das cotas publicadas, e a reconstrução acerta os
-  números publicados na casa decimal:</p>
+  <p>O plano vigente não está no repositório: <span class="mono">scripts/layout_ring3.py</span> e
+  <span class="mono">saidas/plano_ring3.md</span> foram produzidos em sessão anterior e não chegaram
+  a ser versionados. Ele foi reconstruído das cotas publicadas, e a reconstrução acerta os números
+  publicados:</p>
   </div>
   <div class="rolagem"><table>
     <thead><tr><th>Grandeza</th><th class="num">Publicado</th><th class="num">Recalculado</th></tr></thead>
@@ -385,10 +385,10 @@ footer p{{margin:0 0 .5em; max-width:74ch}}
   </table></div>
   <p class="nota">A capacidade fecha; a barreira fica
   {num((CONF['barreira_calculada_m']/CONF['barreira_publicada_m']-1)*100,1)}% acima, porque a regra
-  de contagem de barreira do plano original não é recuperável do que foi publicado.
-  <strong>Por isso a comparação desta página usa a regra deste modelo nos dois desenhos</strong> —
-  mesma densidade, mesmo módulo de raia, mesma contagem de barreira. Comparar o número publicado de
-  um com o número calculado do outro daria uma diferença que é de método, não de desenho.</p>
+  de contagem do plano original não é recuperável do que foi publicado. Por isso a comparação usa a
+  regra deste modelo <strong>nos dois desenhos</strong>. Aplicada aos 300 separadores publicados, a
+  mesma redução de {num((1-H['separadores']/V['separadores'])*100,0)}% daria cerca de
+  <strong>{round(300*H['separadores']/V['separadores'])} unidades</strong>.</p>
   <div class="rolagem"><table>
     <thead><tr><th>Premissa</th><th class="num">Valor</th><th>Origem</th></tr></thead>
     <tbody>
@@ -396,6 +396,8 @@ footer p{{margin:0 0 .5em; max-width:74ch}}
       <tr><td>Largura livre da raia</td><td class="mono num">{num(P['raia_util_m'],2)} m</td><td>reconstruído</td></tr>
       <tr><td>Densidade em raia</td><td class="mono num">{num(P['densidade_fila_p_m2'],1)} p/m²</td><td>reconstruído</td></tr>
       <tr><td>Densidade em baia</td><td class="mono num">{num(P['densidade_baia_p_m2'],1)} p/m²</td><td>reconstruído</td></tr>
+      <tr><td>Vão de meia-volta</td><td class="mono num">{num(P['vao_retorno_m'],1)} m</td><td>premissa</td></tr>
+      <tr><td>Perda por meia-volta</td><td class="mono num">{num(P['perda_por_meia_volta_m'],1)} m</td><td>premissa (só na análise de sensibilidade)</td></tr>
       <tr><td>Separador de fila</td><td class="mono num">{num(P['separador_m'],1)} m · EUR {num(P['separador_eur'],2)}</td><td>item d do orçamento (100 un. = EUR 1.303)</td></tr>
       <tr><td>Estoque da organizadora</td><td class="mono num">{P['estoque_separadores']} un. · {num(P['estoque_separadores']*P['separador_m'])} m</td><td>plano do Ring 3</td></tr>
     </tbody>
@@ -404,21 +406,19 @@ footer p{{margin:0 0 .5em; max-width:74ch}}
 
 <section>
   <p class="rotulo">Antes de contratar</p>
-  <h2>O que este desenho ainda supõe</h2>
+  <h2>O que decidir</h2>
   <ol class="pend">
-    <li><div><h3>O bordo oeste do Ring</h3><p>O retângulo está centrado em S5 por estimativa.
-    Medir no local decide a largura real dos decks e, com ela, a capacidade de cada um — é a
-    medida que mais move os números desta página.</p></div></li>
-    <li><div><h3>Onde o gradil abre</h3><p>O desenho supõe portão no gradil permanente nos três
-    eixos de porta (x ≈ 22,1 / 28,3 / 34,5 m) e na garganta sudeste. Se o gradil não abrir onde se
-    precisa, os tubos deixam de ser retos e a vantagem principal do desenho cai.</p></div></li>
-    <li><div><h3>Piso e drenagem</h3><p>Raia leste-oeste de {num(max(b['comprimento_m'] for b in H['blocos']),0)} m
-    acompanha a declividade do Ring inteiro. Se algum trecho acumula água, as raias do fundo ficam
-    inviáveis num dia de chuva — entre 40% e 65% de probabilidade em 4 de outubro, conforme o
-    limiar da fonte.</p></div></li>
-    <li><div><h3>As densidades</h3><p>2,0 pessoas/m² em raia e 1,8 em baia são reconstrução, não
-    medição. Se a densidade real sob guarda-chuva for menor, as duas geometrias perdem capacidade
-    na mesma proporção e a comparação entre elas não muda.</p></div></li>
+    <li><div><h3>O ziguezague de A e C é aceitável?</h3><p>{num(zona(H,'A')['comprimento_raia_m'],1)} m
+    de raia com {zona(H,'A')['meias_voltas']} curvas, para um público que inclui idosos, cadeirantes
+    e carrinhos de bebê. É a única pergunta que decide entre o giro e a variante de raias longas.</p></div></li>
+    <li><div><h3>Onde o gradil abre</h3><p>A descarga perpendicular da zona B supõe portão no eixo
+    de S5. Sem isso, o giro ainda economiza barreira, mas perde a melhoria de descarga.</p></div></li>
+    <li><div><h3>A largura real das zonas</h3><p>O retângulo do Ring está centrado em S5 por
+    estimativa. Na geometria girada, a largura da zona <em>é</em> o comprimento da raia — a medição
+    de campo mexe diretamente na capacidade.</p></div></li>
+    <li><div><h3>As densidades</h3><p>{num(P['densidade_fila_p_m2'],1)} pessoas/m² em raia e
+    {num(P['densidade_baia_p_m2'],1)} em baia são reconstrução, não medição. Se a densidade real sob
+    guarda-chuva for menor, os dois desenhos perdem na mesma proporção e a comparação não muda.</p></div></li>
   </ol>
 </section>
 
@@ -426,8 +426,7 @@ footer p{{margin:0 0 .5em; max-width:74ch}}
   <p>Geometria do salão e das portas de <span class="mono">scripts/salao.py</span>; comparecimento
   esperado e papéis das portas das decisões do Posto de 06/09/2026. Modelo, plantas e todos os
   números desta página gerados por <span class="mono">scripts/ring3.py</span> e
-  <span class="mono">scripts/gera_pagina_ring3.py</span>, no repositório
-  <span class="mono">eleicoes2026</span>.</p>
+  <span class="mono">scripts/gera_pagina_ring3.py</span>.</p>
   <p>Plantas em escala real sobre o contorno medido do Hall 2 (50,3 × 44,4 m) e o retângulo do
   Ring 3 (39,0 × 35,0 m, apron de 14 m). Números de capacidade são estimativa de lotação, não
   limite de segurança homologado.</p>

@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 806 862" width="806" height="862" role="img">
 <rect width="806" height="862" fill="#fbfaf7"/>
 <defs><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
-<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Serpenteados horizontais (decks empilhados)</text>
-<rect x="60.0" y="74.0" width="685.9" height="196.0" fill="#eef1f4" stroke="none"/>
+<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Serpenteados horizontais (mesmas zonas, raias giradas)</text>
+<rect x="60.0" y="74.0" width="685.9" height="196.0" fill="#eef1f4"/>
 <rect x="130.0" y="270.0" width="545.9" height="490.0" fill="#f6f4ef" stroke="#1c2733" stroke-width="2.2"/>
 <line x1="60.0" y1="74.0" x2="745.9" y2="74.0" stroke="#1c2733" stroke-width="3"/>
 <text x="402.9" y="57.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#5c6c80">FACHADA SUL DO HALL 2</text>
@@ -17,45 +17,70 @@
 <line x1="596.6" y1="74.0" x2="613.4" y2="74.0" stroke="#b26a12" stroke-width="6"/>
 <text x="605.0" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="9.5" font-weight="400" fill="#b26a12">S8 saída</text>
 <text x="67.0" y="172.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 67.0 172.0)">apron pavimentado · 14 m</text>
-<text x="135.6" y="746.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 39,0 × 35,0 m</text>
-<rect x="130.0" y="270.0" width="258.9" height="117.6" fill="#2a78d6" fill-opacity=".13" stroke="#2a78d6" stroke-width="1.4"/>
-<line x1="130.0" y1="289.6" x2="372.1" y2="289.6" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="309.2" x2="372.1" y2="309.2" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="328.8" x2="372.1" y2="328.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="348.4" x2="372.1" y2="348.4" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="368.0" x2="372.1" y2="368.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<text x="221.0" y="328.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6">deck A · 6 raias de 18.5 m</text>
-<rect x="388.9" y="270.0" width="244.9" height="117.6" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
-<text x="511.4" y="334.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80">baia A</text>
-<rect x="130.0" y="392.5" width="346.0" height="117.6" fill="#e08a00" fill-opacity=".13" stroke="#e08a00" stroke-width="1.4"/>
-<line x1="130.0" y1="412.1" x2="459.2" y2="412.1" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="431.7" x2="459.2" y2="431.7" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="451.3" x2="459.2" y2="451.3" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="470.9" x2="459.2" y2="470.9" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="490.5" x2="459.2" y2="490.5" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<text x="221.0" y="451.3" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00">deck B · 6 raias de 24.7 m</text>
-<rect x="476.0" y="392.5" width="157.9" height="117.6" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
-<text x="554.9" y="456.9" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80">baia B</text>
-<rect x="130.0" y="515.0" width="503.9" height="117.6" fill="#c2185b" fill-opacity=".13" stroke="#c2185b" stroke-width="1.4"/>
-<line x1="130.0" y1="534.6" x2="617.1" y2="534.6" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="554.2" x2="617.1" y2="554.2" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="573.8" x2="617.1" y2="573.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="593.4" x2="617.1" y2="593.4" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="613.0" x2="617.1" y2="613.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<text x="221.0" y="573.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b">deck C · 6 raias de 36.0 m</text>
-<rect x="633.9" y="270.0" width="42.0" height="367.5" fill="#5c6c80" fill-opacity=".10" stroke="#5c6c80" stroke-width="1.2"/>
-<text x="654.9" y="453.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 654.9 453.8)">espinha de distribuição</text>
-<rect x="304.7" y="270.0" width="22.4" height="0.0" fill="#2a78d6" fill-opacity=".22" stroke="#2a78d6" stroke-width="1.2"/>
-<rect x="304.7" y="74.0" width="22.4" height="196.0" fill="#2a78d6" fill-opacity=".22" stroke="#2a78d6" stroke-width="1.2"/>
-<rect x="391.7" y="270.0" width="22.4" height="122.5" fill="#e08a00" fill-opacity=".22" stroke="#e08a00" stroke-width="1.2"/>
-<rect x="391.7" y="74.0" width="22.4" height="196.0" fill="#e08a00" fill-opacity=".22" stroke="#e08a00" stroke-width="1.2"/>
-<rect x="478.8" y="270.0" width="22.4" height="245.0" fill="#c2185b" fill-opacity=".22" stroke="#c2185b" stroke-width="1.2"/>
-<rect x="478.8" y="74.0" width="22.4" height="196.0" fill="#c2185b" fill-opacity=".22" stroke="#c2185b" stroke-width="1.2"/>
+<rect x="219.2" y="270.0" width="58.8" height="332.5" fill="#2a78d6" fill-opacity=".13" stroke="#2a78d6" stroke-width="1.4"/>
+<line x1="236.0" y1="582.9" x2="278.0" y2="582.9" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="563.4" x2="261.2" y2="563.4" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="543.8" x2="278.0" y2="543.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="524.3" x2="261.2" y2="524.3" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="504.7" x2="278.0" y2="504.7" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="485.1" x2="261.2" y2="485.1" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="465.6" x2="278.0" y2="465.6" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="446.0" x2="261.2" y2="446.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="426.5" x2="278.0" y2="426.5" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="406.9" x2="261.2" y2="406.9" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="387.4" x2="278.0" y2="387.4" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="367.8" x2="261.2" y2="367.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="348.2" x2="278.0" y2="348.2" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="328.7" x2="261.2" y2="328.7" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="309.1" x2="278.0" y2="309.1" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="289.6" x2="261.2" y2="289.6" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<text x="248.6" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">A · 17 × 4.2 m</text>
+<line x1="278.0" y1="270.0" x2="315.9" y2="79.6" stroke="#2a78d6" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="316.2" y="270.0" width="176.4" height="332.5" fill="#e08a00" fill-opacity=".13" stroke="#e08a00" stroke-width="1.4"/>
+<line x1="333.0" y1="582.9" x2="492.6" y2="582.9" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="563.4" x2="475.8" y2="563.4" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="543.8" x2="492.6" y2="543.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="524.3" x2="475.8" y2="524.3" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="504.7" x2="492.6" y2="504.7" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="485.1" x2="475.8" y2="485.1" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="465.6" x2="492.6" y2="465.6" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="446.0" x2="475.8" y2="446.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="426.5" x2="492.6" y2="426.5" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="406.9" x2="475.8" y2="406.9" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="387.4" x2="492.6" y2="387.4" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="367.8" x2="475.8" y2="367.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="348.2" x2="492.6" y2="348.2" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="328.7" x2="475.8" y2="328.7" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="309.1" x2="492.6" y2="309.1" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="289.6" x2="475.8" y2="289.6" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<text x="404.4" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">B · 17 × 12.6 m</text>
+<line x1="402.9" y1="270.0" x2="402.9" y2="79.6" stroke="#e08a00" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="527.6" y="270.0" width="58.8" height="332.5" fill="#c2185b" fill-opacity=".13" stroke="#c2185b" stroke-width="1.4"/>
+<line x1="544.4" y1="582.9" x2="586.4" y2="582.9" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="563.4" x2="569.6" y2="563.4" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="543.8" x2="586.4" y2="543.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="524.3" x2="569.6" y2="524.3" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="504.7" x2="586.4" y2="504.7" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="485.1" x2="569.6" y2="485.1" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="465.6" x2="586.4" y2="465.6" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="446.0" x2="569.6" y2="446.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="426.5" x2="586.4" y2="426.5" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="406.9" x2="569.6" y2="406.9" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="387.4" x2="586.4" y2="387.4" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="367.8" x2="569.6" y2="367.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="348.2" x2="586.4" y2="348.2" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="328.7" x2="569.6" y2="328.7" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="309.1" x2="586.4" y2="309.1" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="289.6" x2="569.6" y2="289.6" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<text x="557.0" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">C · 17 × 4.2 m</text>
+<line x1="527.6" y1="270.0" x2="490.0" y2="79.6" stroke="#c2185b" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="130.0" y="270.0" width="89.6" height="332.5" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="174.8" y="436.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 174.8 436.2)">baia oeste</text>
+<rect x="586.3" y="270.0" width="89.6" height="332.5" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="631.1" y="436.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 631.1 436.2)">baia leste</text>
+<rect x="146.0" y="619.3" width="513.8" height="42.0" fill="none" stroke="#5c6c80" stroke-width="1.2"/>
+<text x="402.9" y="645.9" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="600" fill="#5c6c80">CORREDOR DE FUNDO · 3,0 m</text>
+<line x1="661.9" y1="732.0" x2="645.8" y2="640.3" stroke="#5c6c80" stroke-width="2" marker-end="url(#seta)"/>
 <text x="591.9" y="712.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80">garganta sudeste · pré-triagem</text>
-<line x1="667.5" y1="743.2" x2="654.9" y2="676.0" stroke="#5c6c80" stroke-width="2" marker-end="url(#seta)"/>
-<line x1="654.9" y1="670.4" x2="654.9" y2="298.0" stroke="#5c6c80" stroke-width="2" marker-end="url(#seta)" stroke-dasharray="7 4"/>
-<line x1="315.9" y1="256.0" x2="315.9" y2="90.8" stroke="#2a78d6" stroke-width="2" marker-end="url(#seta)"/>
-<line x1="402.9" y1="378.5" x2="402.9" y2="90.8" stroke="#e08a00" stroke-width="2" marker-end="url(#seta)"/>
-<line x1="490.0" y1="501.0" x2="490.0" y2="90.8" stroke="#c2185b" stroke-width="2" marker-end="url(#seta)"/>
-<rect x="130.0" y="637.5" width="545.9" height="122.5" fill="none" stroke="#8a919b" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="135.6" y="746.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 39,0 × 35,0 m</text>
 </svg>

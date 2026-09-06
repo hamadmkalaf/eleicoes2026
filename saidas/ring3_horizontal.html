@@ -83,7 +83,9 @@ tbody tr:last-child td{border-bottom:0}
 td.num,th.num{text-align:right}
 tr.total td{border-top:1.5px solid var(--regua); font-weight:600}
 tr.marcada td{background:var(--realce); font-weight:600}
-tr.cheia td{background:var(--regua2)}
+td.ganho{color:var(--ok); font-weight:600}
+td.perda{color:var(--alerta); font-weight:600}
+.faixa dd.alerta{color:var(--alerta)}
 caption{caption-side:bottom; text-align:left; font-size:.8rem; color:var(--fraco);
   padding:9px 12px}
 
@@ -128,34 +130,58 @@ footer p{margin:0 0 .5em; max-width:74ch}
 <header>
   <p class="olho">Eleições 2026 · 1º turno · 4 de outubro · RDS Ballsbridge · fila externa</p>
   <h1>Ring 3 na horizontal</h1>
-  <p class="chamada">Segundo desenho para o compound de fila: três decks de raias leste-oeste
-  empilhados em profundidade, no lugar dos três blocos verticais lado a lado. Cada deck sai
-  por um tubo alinhado com a sua própria porta — e é isso, não a capacidade, que o desenho
-  compra.</p>
+  <p class="chamada">As mesmas três zonas, o mesmo corredor de fundo, as mesmas portas — só a
+  dobra da fila gira 90°: as raias passam a correr de leste para oeste, empilhadas em altura.
+  A pergunta que isso responde é de quantas barreiras o Ring precisa.</p>
   <dl class="faixa">
-    <div><dt>Capacidade</dt><dd>1.503<small>Ring cheio · vertical: 1.402</small></dd></div>
-    <div><dt>Em raia</dt><dd>1.140<small>76% da lotação · vertical: 61%</small></dd></div>
-    <div><dt>Separadores</dt><dd>369<small>vertical: 312 · estoque: 200</small></dd></div>
-    <div><dt>Versão enxuta</dt><dd class="delta">292<small>1.086 pessoas · 20 abaixo do vertical</small></dd></div>
-    <div><dt>Raia mais longa</dt><dd>36,0 m<small>vertical: 23,8 m</small></dd></div>
+    <div><dt>Separadores</dt><dd class="delta">265<small>plano vigente: 312 · 47 a menos</small></dd></div>
+    <div><dt>A comprar</dt><dd class="delta">65<small>vigente: 112 · estoque de 200</small></dd></div>
+    <div><dt>Custo da compra</dt><dd>EUR 846<small>vigente: EUR 1.458</small></dd></div>
+    <div><dt>Capacidade</dt><dd>1.389<small>vigente: 1.402 pessoas</small></dd></div>
+    <div><dt>Meias-voltas</dt><dd class="alerta">48<small>vigente: 12 · é o custo do giro</small></dd></div>
   </dl>
 </header>
 
 <section>
-  <p class="rotulo">Os dois desenhos</p>
-  <h2>A mesma área, dois modos de dobrar a fila</h2>
+  <p class="rotulo">A resposta</p>
+  <h2>47 separadores a menos, com a mesma fila</h2>
   <div class="prosa">
-  <p>O Ring 3 é um retângulo de 39,0 × 35,0 m de gradil permanente,
-  14 m ao sul da fachada do Hall 2, e a garganta de entrada fica no canto sudeste.
-  Dentro dele cabem as duas geometrias; o que muda é para onde correm as raias — e, com isso,
-  como cada fila chega à sua porta.</p>
+  <p>Girar as raias mantém a área ocupada — e, portanto, a lotação — mas troca
+  <strong>raias longas e poucas</strong> por <strong>raias curtas e muitas</strong>. A barreira de
+  um serpenteado é <span class="mono">(n+1) × comprimento − 1,2 × (n−1)</span>: são n+1 corridas
+  longitudinais, e cada divisória interna para 1,2 m antes da ponta para abrir a meia-volta. Mais
+  raias significam mais desses descontos, sobre corridas mais curtas. O total cai
+  15%.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th></th><th class="num">Vigente · raias N–S</th><th class="num">Girado · raias L–O</th><th class="num">Δ</th></tr></thead>
+    <tbody>
+      <tr><td>Barreira</td><td class="mono num">623,3 m</td><td class="mono num">528,4 m</td><td class="mono num ganho">−94,9 m</td></tr>
+      <tr class="total"><td>Separadores de 2 m</td><td class="mono num">312</td><td class="mono num">265</td><td class="mono num ganho">−47</td></tr>
+      <tr><td>A comprar (estoque 200)</td><td class="mono num">112</td><td class="mono num">65</td><td class="mono num ganho">−47</td></tr>
+      <tr><td>Custo da compra</td><td class="mono num">EUR 1.458,24</td><td class="mono num">EUR 846,30</td><td class="mono num ganho">EUR −611,94</td></tr>
+      <tr><td>Capacidade</td><td class="mono num">1.402</td><td class="mono num">1.389</td><td class="mono num">−13</td></tr>
+      <tr><td>Metros de barreira por pessoa</td><td class="mono num">0,445</td><td class="mono num">0,380</td><td class="mono num ganho">−0,065</td></tr>
+    </tbody>
+    <caption>Os dois desenhos medidos com o mesmo modelo — mesma densidade, mesmo módulo de raia,
+    mesma regra de barreira. A diferença é entre geometrias, não entre métodos.</caption>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Os dois desenhos</p>
+  <h2>O que exatamente mudou de lugar</h2>
+  <div class="prosa">
+  <p>Nada, além da direção das raias. O corredor de fundo continua ao sul, a garganta de
+  pré-triagem no canto sudeste, as baias nos dois flancos, e cada zona continua descarregando
+  ao norte na sua porta.</p>
   </div>
   <div class="plantas">
     <figure><div class="prancha"><svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 806 862" data-w="806" data-h="862" role="img">
 <rect width="806" height="862" fill="var(--prancha)"/>
 <defs><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
-<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Serpenteados verticais (plano original, reconstruido)</text>
-<rect x="60.0" y="74.0" width="685.9" height="196.0" fill="#eef1f4" stroke="none"/>
+<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Serpenteados verticais (plano vigente, reconstruído)</text>
+<rect x="60.0" y="74.0" width="685.9" height="196.0" fill="#eef1f4"/>
 <rect x="130.0" y="270.0" width="545.9" height="490.0" fill="#f6f4ef" stroke="#1c2733" stroke-width="2.2"/>
 <line x1="60.0" y1="74.0" x2="745.9" y2="74.0" stroke="#1c2733" stroke-width="3"/>
 <text x="402.9" y="57.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#5c6c80">FACHADA SUL DO HALL 2</text>
@@ -170,45 +196,46 @@ footer p{margin:0 0 .5em; max-width:74ch}
 <line x1="596.6" y1="74.0" x2="613.4" y2="74.0" stroke="#b26a12" stroke-width="6"/>
 <text x="605.0" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="9.5" font-weight="400" fill="#b26a12">S8 saída</text>
 <text x="67.0" y="172.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 67.0 172.0)">apron pavimentado · 14 m</text>
-<text x="135.6" y="746.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 39,0 × 35,0 m</text>
 <rect x="219.2" y="270.0" width="58.8" height="332.5" fill="#2a78d6" fill-opacity=".13" stroke="#2a78d6" stroke-width="1.4"/>
-<line x1="238.8" y1="585.7" x2="238.8" y2="270.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<line x1="258.4" y1="585.7" x2="258.4" y2="270.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<text x="248.6" y="292.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6">A · 3 raias</text>
-<line x1="248.6" y1="270.0" x2="315.9" y2="74.0" stroke="#2a78d6" stroke-width="2" stroke-dasharray="5 3"/>
+<line x1="238.8" y1="585.7" x2="238.8" y2="270.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="258.4" y1="602.5" x2="258.4" y2="286.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<text x="248.6" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">A · 3 raias de 23.8 m</text>
+<line x1="248.6" y1="270.0" x2="315.9" y2="79.6" stroke="#2a78d6" stroke-width="2" marker-end="url(#seta)"/>
 <rect x="316.2" y="270.0" width="176.4" height="332.5" fill="#e08a00" fill-opacity=".13" stroke="#e08a00" stroke-width="1.4"/>
-<line x1="335.8" y1="585.7" x2="335.8" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="355.4" y1="585.7" x2="355.4" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="375.0" y1="585.7" x2="375.0" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="394.6" y1="585.7" x2="394.6" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="414.2" y1="585.7" x2="414.2" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="433.8" y1="585.7" x2="433.8" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="453.4" y1="585.7" x2="453.4" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="473.0" y1="585.7" x2="473.0" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<text x="404.4" y="292.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00">B · 9 raias</text>
-<line x1="404.4" y1="270.0" x2="402.9" y2="74.0" stroke="#e08a00" stroke-width="2" stroke-dasharray="5 3"/>
+<line x1="335.8" y1="585.7" x2="335.8" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="355.4" y1="602.5" x2="355.4" y2="286.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="375.0" y1="585.7" x2="375.0" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="394.6" y1="602.5" x2="394.6" y2="286.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="414.2" y1="585.7" x2="414.2" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="433.8" y1="602.5" x2="433.8" y2="286.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="453.4" y1="585.7" x2="453.4" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="473.0" y1="602.5" x2="473.0" y2="286.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<text x="404.4" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">B · 9 raias de 23.8 m</text>
+<line x1="404.4" y1="270.0" x2="402.9" y2="79.6" stroke="#e08a00" stroke-width="2" marker-end="url(#seta)"/>
 <rect x="527.6" y="270.0" width="58.8" height="332.5" fill="#c2185b" fill-opacity=".13" stroke="#c2185b" stroke-width="1.4"/>
-<line x1="547.2" y1="585.7" x2="547.2" y2="270.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<line x1="566.8" y1="585.7" x2="566.8" y2="270.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<text x="557.0" y="292.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b">C · 3 raias</text>
-<line x1="557.0" y1="270.0" x2="490.0" y2="74.0" stroke="#c2185b" stroke-width="2" stroke-dasharray="5 3"/>
+<line x1="547.2" y1="585.7" x2="547.2" y2="270.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="566.8" y1="602.5" x2="566.8" y2="286.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<text x="557.0" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">C · 3 raias de 23.8 m</text>
+<line x1="557.0" y1="270.0" x2="490.0" y2="79.6" stroke="#c2185b" stroke-width="2" marker-end="url(#seta)"/>
 <rect x="130.0" y="270.0" width="89.6" height="332.5" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
 <text x="174.8" y="436.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 174.8 436.2)">baia oeste</text>
 <rect x="586.3" y="270.0" width="89.6" height="332.5" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
 <text x="631.1" y="436.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 631.1 436.2)">baia leste</text>
-<rect x="219.6" y="602.5" width="366.7" height="42.0" fill="none" stroke="#5c6c80" stroke-width="1.2"/>
-<text x="402.9" y="629.1" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80">corredor de distribuição · 3,0 m</text>
-<text x="591.9" y="712.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80">garganta sudeste</text>
+<rect x="146.0" y="619.3" width="513.8" height="42.0" fill="none" stroke="#5c6c80" stroke-width="1.2"/>
+<text x="402.9" y="645.9" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="600" fill="#5c6c80">CORREDOR DE FUNDO · 3,0 m</text>
+<line x1="661.9" y1="732.0" x2="645.8" y2="640.3" stroke="#5c6c80" stroke-width="2" marker-end="url(#seta)"/>
+<text x="591.9" y="712.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80">garganta sudeste · pré-triagem</text>
+<text x="135.6" y="746.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 39,0 × 35,0 m</text>
 </svg>
 </div>
-      <figcaption><b>Vertical (plano vigente).</b> Três blocos lado a lado, raias norte-sul,
-      baias nos dois flancos. Nenhum bloco está alinhado com a sua porta: as três correntes
-      cruzam o apron em diagonal e convergem nos 6,2 m que separam S4, S5 e S6.</figcaption></figure>
+      <figcaption><b>Vigente.</b> Raias norte-sul de 23,75 m.
+      A fila sobe do corredor de fundo e sai pela boca inteira do bloco — que tem a largura do
+      bloco e não coincide com o vão da porta.</figcaption></figure>
     <figure><div class="prancha"><svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 806 862" data-w="806" data-h="862" role="img">
 <rect width="806" height="862" fill="var(--prancha)"/>
 <defs><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
-<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Serpenteados horizontais (decks empilhados)</text>
-<rect x="60.0" y="74.0" width="685.9" height="196.0" fill="#eef1f4" stroke="none"/>
+<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Serpenteados horizontais (mesmas zonas, raias giradas)</text>
+<rect x="60.0" y="74.0" width="685.9" height="196.0" fill="#eef1f4"/>
 <rect x="130.0" y="270.0" width="545.9" height="490.0" fill="#f6f4ef" stroke="#1c2733" stroke-width="2.2"/>
 <line x1="60.0" y1="74.0" x2="745.9" y2="74.0" stroke="#1c2733" stroke-width="3"/>
 <text x="402.9" y="57.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#5c6c80">FACHADA SUL DO HALL 2</text>
@@ -223,205 +250,180 @@ footer p{margin:0 0 .5em; max-width:74ch}
 <line x1="596.6" y1="74.0" x2="613.4" y2="74.0" stroke="#b26a12" stroke-width="6"/>
 <text x="605.0" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="9.5" font-weight="400" fill="#b26a12">S8 saída</text>
 <text x="67.0" y="172.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 67.0 172.0)">apron pavimentado · 14 m</text>
-<text x="135.6" y="746.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 39,0 × 35,0 m</text>
-<rect x="130.0" y="270.0" width="258.9" height="117.6" fill="#2a78d6" fill-opacity=".13" stroke="#2a78d6" stroke-width="1.4"/>
-<line x1="130.0" y1="289.6" x2="372.1" y2="289.6" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="309.2" x2="372.1" y2="309.2" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="328.8" x2="372.1" y2="328.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="348.4" x2="372.1" y2="348.4" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="368.0" x2="372.1" y2="368.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".55"/>
-<text x="221.0" y="328.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6">deck A · 6 raias de 18.5 m</text>
-<rect x="388.9" y="270.0" width="244.9" height="117.6" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
-<text x="511.4" y="334.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80">baia A</text>
-<rect x="130.0" y="392.5" width="346.0" height="117.6" fill="#e08a00" fill-opacity=".13" stroke="#e08a00" stroke-width="1.4"/>
-<line x1="130.0" y1="412.1" x2="459.2" y2="412.1" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="431.7" x2="459.2" y2="431.7" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="451.3" x2="459.2" y2="451.3" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="470.9" x2="459.2" y2="470.9" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="490.5" x2="459.2" y2="490.5" stroke="#e08a00" stroke-width="1" stroke-opacity=".55"/>
-<text x="221.0" y="451.3" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00">deck B · 6 raias de 24.7 m</text>
-<rect x="476.0" y="392.5" width="157.9" height="117.6" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
-<text x="554.9" y="456.9" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80">baia B</text>
-<rect x="130.0" y="515.0" width="503.9" height="117.6" fill="#c2185b" fill-opacity=".13" stroke="#c2185b" stroke-width="1.4"/>
-<line x1="130.0" y1="534.6" x2="617.1" y2="534.6" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="554.2" x2="617.1" y2="554.2" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="573.8" x2="617.1" y2="573.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="593.4" x2="617.1" y2="593.4" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<line x1="130.0" y1="613.0" x2="617.1" y2="613.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".55"/>
-<text x="221.0" y="573.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b">deck C · 6 raias de 36.0 m</text>
-<rect x="633.9" y="270.0" width="42.0" height="367.5" fill="#5c6c80" fill-opacity=".10" stroke="#5c6c80" stroke-width="1.2"/>
-<text x="654.9" y="453.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 654.9 453.8)">espinha de distribuição</text>
-<rect x="304.7" y="270.0" width="22.4" height="0.0" fill="#2a78d6" fill-opacity=".22" stroke="#2a78d6" stroke-width="1.2"/>
-<rect x="304.7" y="74.0" width="22.4" height="196.0" fill="#2a78d6" fill-opacity=".22" stroke="#2a78d6" stroke-width="1.2"/>
-<rect x="391.7" y="270.0" width="22.4" height="122.5" fill="#e08a00" fill-opacity=".22" stroke="#e08a00" stroke-width="1.2"/>
-<rect x="391.7" y="74.0" width="22.4" height="196.0" fill="#e08a00" fill-opacity=".22" stroke="#e08a00" stroke-width="1.2"/>
-<rect x="478.8" y="270.0" width="22.4" height="245.0" fill="#c2185b" fill-opacity=".22" stroke="#c2185b" stroke-width="1.2"/>
-<rect x="478.8" y="74.0" width="22.4" height="196.0" fill="#c2185b" fill-opacity=".22" stroke="#c2185b" stroke-width="1.2"/>
+<rect x="219.2" y="270.0" width="58.8" height="332.5" fill="#2a78d6" fill-opacity=".13" stroke="#2a78d6" stroke-width="1.4"/>
+<line x1="236.0" y1="582.9" x2="278.0" y2="582.9" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="563.4" x2="261.2" y2="563.4" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="543.8" x2="278.0" y2="543.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="524.3" x2="261.2" y2="524.3" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="504.7" x2="278.0" y2="504.7" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="485.1" x2="261.2" y2="485.1" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="465.6" x2="278.0" y2="465.6" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="446.0" x2="261.2" y2="446.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="426.5" x2="278.0" y2="426.5" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="406.9" x2="261.2" y2="406.9" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="387.4" x2="278.0" y2="387.4" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="367.8" x2="261.2" y2="367.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="348.2" x2="278.0" y2="348.2" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="328.7" x2="261.2" y2="328.7" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="236.0" y1="309.1" x2="278.0" y2="309.1" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="219.2" y1="289.6" x2="261.2" y2="289.6" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<text x="248.6" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">A · 17 × 4.2 m</text>
+<line x1="278.0" y1="270.0" x2="315.9" y2="79.6" stroke="#2a78d6" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="316.2" y="270.0" width="176.4" height="332.5" fill="#e08a00" fill-opacity=".13" stroke="#e08a00" stroke-width="1.4"/>
+<line x1="333.0" y1="582.9" x2="492.6" y2="582.9" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="563.4" x2="475.8" y2="563.4" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="543.8" x2="492.6" y2="543.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="524.3" x2="475.8" y2="524.3" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="504.7" x2="492.6" y2="504.7" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="485.1" x2="475.8" y2="485.1" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="465.6" x2="492.6" y2="465.6" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="446.0" x2="475.8" y2="446.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="426.5" x2="492.6" y2="426.5" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="406.9" x2="475.8" y2="406.9" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="387.4" x2="492.6" y2="387.4" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="367.8" x2="475.8" y2="367.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="348.2" x2="492.6" y2="348.2" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="328.7" x2="475.8" y2="328.7" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="333.0" y1="309.1" x2="492.6" y2="309.1" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="316.2" y1="289.6" x2="475.8" y2="289.6" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<text x="404.4" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">B · 17 × 12.6 m</text>
+<line x1="402.9" y1="270.0" x2="402.9" y2="79.6" stroke="#e08a00" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="527.6" y="270.0" width="58.8" height="332.5" fill="#c2185b" fill-opacity=".13" stroke="#c2185b" stroke-width="1.4"/>
+<line x1="544.4" y1="582.9" x2="586.4" y2="582.9" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="563.4" x2="569.6" y2="563.4" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="543.8" x2="586.4" y2="543.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="524.3" x2="569.6" y2="524.3" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="504.7" x2="586.4" y2="504.7" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="485.1" x2="569.6" y2="485.1" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="465.6" x2="586.4" y2="465.6" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="446.0" x2="569.6" y2="446.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="426.5" x2="586.4" y2="426.5" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="406.9" x2="569.6" y2="406.9" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="387.4" x2="586.4" y2="387.4" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="367.8" x2="569.6" y2="367.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="348.2" x2="586.4" y2="348.2" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="328.7" x2="569.6" y2="328.7" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="544.4" y1="309.1" x2="586.4" y2="309.1" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="527.6" y1="289.6" x2="569.6" y2="289.6" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<text x="557.0" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">C · 17 × 4.2 m</text>
+<line x1="527.6" y1="270.0" x2="490.0" y2="79.6" stroke="#c2185b" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="130.0" y="270.0" width="89.6" height="332.5" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="174.8" y="436.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 174.8 436.2)">baia oeste</text>
+<rect x="586.3" y="270.0" width="89.6" height="332.5" fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="631.1" y="436.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 631.1 436.2)">baia leste</text>
+<rect x="146.0" y="619.3" width="513.8" height="42.0" fill="none" stroke="#5c6c80" stroke-width="1.2"/>
+<text x="402.9" y="645.9" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="600" fill="#5c6c80">CORREDOR DE FUNDO · 3,0 m</text>
+<line x1="661.9" y1="732.0" x2="645.8" y2="640.3" stroke="#5c6c80" stroke-width="2" marker-end="url(#seta)"/>
 <text x="591.9" y="712.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80">garganta sudeste · pré-triagem</text>
-<line x1="667.5" y1="743.2" x2="654.9" y2="676.0" stroke="#5c6c80" stroke-width="2" marker-end="url(#seta)"/>
-<line x1="654.9" y1="670.4" x2="654.9" y2="298.0" stroke="#5c6c80" stroke-width="2" marker-end="url(#seta)" stroke-dasharray="7 4"/>
-<line x1="315.9" y1="256.0" x2="315.9" y2="90.8" stroke="#2a78d6" stroke-width="2" marker-end="url(#seta)"/>
-<line x1="402.9" y1="378.5" x2="402.9" y2="90.8" stroke="#e08a00" stroke-width="2" marker-end="url(#seta)"/>
-<line x1="490.0" y1="501.0" x2="490.0" y2="90.8" stroke="#c2185b" stroke-width="2" marker-end="url(#seta)"/>
-<rect x="130.0" y="637.5" width="545.9" height="122.5" fill="none" stroke="#8a919b" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="135.6" y="746.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 39,0 × 35,0 m</text>
 </svg>
 </div>
-      <figcaption><b>Horizontal (este desenho).</b> Três decks empilhados, raias leste-oeste.
-      Cada deck sobe por um tubo no eixo da sua porta e cruza o apron perpendicularmente; o
-      degrau que sobra a leste vira baia, alimentada pela espinha que vem da garganta.</figcaption></figure>
+      <figcaption><b>Girado.</b> Raias leste-oeste empilhadas. A última raia corre rente à borda
+      norte da zona, então o portão de saída pode ficar em qualquer ponto dela — e vai para o eixo
+      da porta.</figcaption></figure>
   </div>
 </section>
 
 <section>
-  <p class="rotulo">A regra do desenho</p>
-  <h2>Por que os decks formam uma escada</h2>
-  <div class="prosa">
-  <p>Empilhar decks cria um problema que o desenho vertical não tem: o deck do fundo precisa
-  atravessar os decks da frente para chegar à fachada. A saída é <strong>alinhar cada tubo com a
-  sua porta e fazer os decks da frente pararem antes desse eixo</strong>. Daí tudo o mais decorre:
-  quanto mais ao fundo, mais largo o deck; o degrau que sobra a leste é baia de espera; e a ordem
-  dos decks deixa de ser escolha — da frente para o fundo, a porta tem de andar para leste,
-  <strong>A = S4, B = S5, C = S6</strong>, senão o tubo de um deck de trás cortaria o serpenteado
-  da frente.</p>
-  </div>
-  <ul class="marcas">
-    <li><strong>A descarga fica perpendicular.</strong> As três raias do apron ficam confinadas
-    entre x = 19,1 m e x = 37,5 m. As saídas S2 e S8, nos flancos, deixam de ter fila de entrada
-    à frente — no desenho vertical, são justamente as baias de flanco que caem ali.</li>
-    <li><strong>As baias mudam de lugar na fila.</strong> Ficam do lado da chegada, encostadas na
-    espinha: enchem como buffer de cauda, antes das raias, e não como transbordo lateral no meio
-    do serpenteado.</li>
-    <li><strong>A raia fica longa.</strong> Até 36,0 m
-    de corrida contra os 23,8 m do vertical: menos
-    meias-voltas por pessoa, menos pontos de atrito para fiscalizar.</li>
-    <li><strong>E há um preço, que é o tubo.</strong> Cada deck de trás gasta duas corridas de
-    barreira só para atravessar a profundidade dos decks da frente —
-    50,4 m que o
-    desenho vertical não gasta.</li>
-  </ul>
+  <p class="rotulo">De onde vem a economia</p>
+  <h2>Zona por zona</h2>
   <div class="rolagem"><table>
-    <thead><tr><th>Deck</th><th class="num">Raias</th><th class="num">Comprimento</th>
-    <th class="num">Profundidade</th><th class="num">Caminhada</th><th class="num">Em raia</th>
-    <th class="num">Em baia</th></tr></thead>
-    <tbody><tr><td><span class="pin a">A</span> deck A → S4</td><td class="mono num">6</td><td class="mono num">18,5 m</td><td class="mono num">8,4 m</td><td class="mono num">111 m</td><td class="mono num">266</td><td class="mono num">216</td></tr>
-<tr><td><span class="pin b">B</span> deck B → S5</td><td class="mono num">6</td><td class="mono num">24,7 m</td><td class="mono num">8,4 m</td><td class="mono num">148 m</td><td class="mono num">356</td><td class="mono num">146</td></tr>
-<tr><td><span class="pin c">C</span> deck C → S6</td><td class="mono num">6</td><td class="mono num">36,0 m</td><td class="mono num">8,4 m</td><td class="mono num">216 m</td><td class="mono num">518</td><td class="mono num">—</td></tr></tbody>
-    <caption>Configuração de Ring cheio (6/6/6 raias). Caminhada é o percurso de quem entra
-    com o deck vazio e anda até a porta.</caption>
+    <thead><tr><th>Zona</th><th class="num">Vigente</th><th class="num">Barreira (m)</th>
+    <th class="num">Girado</th><th class="num">Barreira (m)</th><th class="num">Δ</th></tr></thead>
+    <tbody><tr><td><span class="pin a">A</span> S4 · 4,2 × 23,75 m</td><td class="mono num">3 × 23,8 m</td><td class="mono num">92,6</td><td class="mono num">17 × 4,2 m</td><td class="mono num">56,4</td><td class="mono num ganho">−36,2</td></tr>
+<tr><td><span class="pin b">B</span> S5 · 12,6 × 23,75 m</td><td class="mono num">9 × 23,8 m</td><td class="mono num">227,9</td><td class="mono num">17 × 12,6 m</td><td class="mono num">207,6</td><td class="mono num ganho">−20,3</td></tr>
+<tr><td><span class="pin c">C</span> S6 · 4,2 × 23,75 m</td><td class="mono num">3 × 23,8 m</td><td class="mono num">92,6</td><td class="mono num">17 × 4,2 m</td><td class="mono num">56,4</td><td class="mono num ganho">−36,2</td></tr>
+<tr class="total"><td>Serpenteados</td><td></td><td class="mono num">413,1</td><td></td><td class="mono num">320,4</td><td class="mono num ganho">−92,7</td></tr></tbody>
+    <caption>A profundidade de 23,75 m comporta
+    17 raias giradas, com o passo apertado de 1,40 m
+    para 1,397 m.</caption>
   </table></div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Componente do plano</th><th class="num">Vigente (m)</th>
+    <th class="num">Girado (m)</th><th class="num">Δ</th></tr></thead>
+    <tbody>
+      <tr><td>serpenteados</td><td class="mono num">413,1</td><td class="mono num">320,4</td><td class="mono num ganho">−92,7</td></tr>
+<tr><td>corredor de fundo (2 lados)</td><td class="mono num">73,4</td><td class="mono num">73,4</td><td class="mono num">—</td></tr>
+<tr><td>fechamento das baias de flanco</td><td class="mono num">25,6</td><td class="mono num">25,6</td><td class="mono num">—</td></tr>
+<tr><td>raias do apron até as portas</td><td class="mono num">87,2</td><td class="mono num">85,0</td><td class="mono num ganho">−2,2</td></tr>
+<tr><td>funil da garganta sudeste</td><td class="mono num">24,0</td><td class="mono num">24,0</td><td class="mono num">—</td></tr>
+      <tr class="total"><td>Total</td><td class="mono num">623,3</td>
+      <td class="mono num">528,4</td>
+      <td class="mono num ganho">−94,9</td></tr>
+    </tbody>
+    <caption>Fora desta conta: o gradil permanente do Ring, que os dois desenhos usam de graça, e
+    os 100 unifilas (200 m) do item <em>d</em> do orçamento, que servem ao interior do Hall 2.</caption>
+  </table></div>
+  <p class="nota">A queda quase toda está nos serpenteados. As raias do apron encurtam de leve por
+  um motivo que vale registrar: na zona B o eixo de S5 cai dentro do bloco, e com o portão móvel a
+  descarga fica <strong>perpendicular</strong> — desvio lateral zero, contra
+  0,11 m no desenho vigente.</p>
 </section>
 
 <section>
-  <p class="rotulo">Capacidade</p>
-  <h2>Mais gente, e sobretudo mais gente em fila</h2>
+  <p class="rotulo">O outro lado</p>
+  <h2>O que o giro cobra: a meia-volta</h2>
   <div class="rolagem"><table>
-    <thead><tr><th></th><th class="num">Vertical</th><th class="num">Horizontal</th><th class="num">Δ</th></tr></thead>
-    <tbody>
-      <tr><td>Em raia — fila medida</td><td class="mono num">855</td><td class="mono num">1.140</td><td class="mono num">+285</td></tr>
-      <tr><td>Em baia — espera</td><td class="mono num">547</td><td class="mono num">362</td><td class="mono num">−185</td></tr>
-      <tr class="total"><td>Total</td><td class="mono num">1.402</td><td class="mono num">1.503</td><td class="mono num">+101</td></tr>
-    </tbody>
+    <thead><tr><th>Zona</th><th class="num">Desvio vigente</th><th class="num">Desvio girado</th>
+    <th class="num">Curvas vigente</th><th class="num">Curvas girado</th>
+    <th class="num">Fila vigente</th><th class="num">Fila girada</th></tr></thead>
+    <tbody><tr><td><span class="pin a">A</span> S4</td><td class="mono num">4,81 m</td><td class="mono num">2,71 m</td><td class="mono num">2</td><td class="mono num">16</td><td class="mono num">171</td><td class="mono num">171</td></tr>
+<tr><td><span class="pin b">B</span> S5</td><td class="mono num">0,11 m</td><td class="mono num">0,00 m</td><td class="mono num">8</td><td class="mono num">16</td><td class="mono num">513</td><td class="mono num">499</td></tr>
+<tr><td><span class="pin c">C</span> S6</td><td class="mono num">4,79 m</td><td class="mono num">2,69 m</td><td class="mono num">2</td><td class="mono num">16</td><td class="mono num">171</td><td class="mono num">171</td></tr></tbody>
+    <caption>“Desvio” é a distância lateral entre o ponto de descarga da zona e o eixo da sua porta;
+    “curvas” são as meias-voltas que o eleitor dá até sair.</caption>
   </table></div>
   <div class="prosa" style="margin-top:22px">
-  <p>O total muda pouco; a natureza da lotação muda muito. No vertical,
-  39% da capacidade é massa parada nas baias de
-  flanco. No horizontal, a raia sobe para 76% —
-  e fila em raia é fila contável, com ordem de chegada preservada e vazão previsível, enquanto
-  baia é aglomeração que precisa de fiscal para voltar a ser fila.</p>
+  <p>Nas zonas A e C, de 4,2 m de largura, a raia girada tem
+  4,2 m e o eleitor dá 16 curvas
+  até sair: é um ziguezague, não uma fila. Na zona B, de
+  12,6 m, a raia girada continua confortável.</p>
+  <p>O modelo de capacidade não cobra nada pela curva. Se cada meia-volta custar
+  0,6 m de fila aproveitável — premissa, não medição —, a
+  paridade de lotação desaparece:</p>
   </div>
   <div class="rolagem"><table>
-    <thead><tr><th>Entrada</th><th class="num">Esperado</th><th class="num">Vertical</th>
-    <th class="num">por eleitor</th><th class="num">Horizontal</th><th class="num">por eleitor</th></tr></thead>
-    <tbody><tr><td><span class="pin a">A</span> S4</td><td class="mono num">3.642</td><td class="mono num">445</td><td class="mono num">0,1221</td><td class="mono num">482</td><td class="mono num">0,1325</td></tr>
-<tr><td><span class="pin b">B</span> S5</td><td class="mono num">4.215</td><td class="mono num">513</td><td class="mono num">0,1217</td><td class="mono num">502</td><td class="mono num">0,1191</td></tr>
-<tr><td><span class="pin c">C</span> S6</td><td class="mono num">3.642</td><td class="mono num">445</td><td class="mono num">0,1221</td><td class="mono num">518</td><td class="mono num">0,1423</td></tr></tbody>
-    <caption>Comparecimento esperado por entrada: base B (taxa de 2022 por domicílio de origem),
-    decisão do Posto. “Por eleitor” é a capacidade dividida pelo comparecimento esperado daquela
-    entrada — quanto mais parelho entre as três, melhor distribuída está a fila.</caption>
-  </table></div>
-</section>
-
-<section>
-  <p class="rotulo">Separadores de fila</p>
-  <h2>Onde a barreira é gasta</h2>
-  <div class="prosa">
-  <p>Barreira externa, componente a componente. Não entram nesta conta o gradil permanente do
-  Ring, que os dois desenhos usam de graça, nem os 100 unifilas (200 m) do item <em>d</em> do
-  orçamento, que servem ao interior do Hall 2.</p>
-  </div>
-  <div class="rolagem"><table>
-    <thead><tr><th>Componente</th><th class="num">Vertical (m)</th><th class="num">Horizontal (m)</th></tr></thead>
+    <thead><tr><th></th><th class="num">Vigente</th><th class="num">Girado</th></tr></thead>
     <tbody>
-      <tr><td>serpenteados</td><td class="mono num">413,1</td><td class="mono num">536,4</td></tr>
-<tr><td>corredor de distribuição (2 lados)</td><td class="mono num">73,4</td><td class="mono num">—</td></tr>
-<tr><td>fechamento das baias de flanco</td><td class="mono num">25,6</td><td class="mono num">—</td></tr>
-<tr><td>raias do apron até as portas</td><td class="mono num">87,2</td><td class="mono num">84,0</td></tr>
-<tr><td>funil da garganta sudeste</td><td class="mono num">24,0</td><td class="mono num">24,0</td></tr>
-<tr><td>espinha de distribuição (gradil a leste)</td><td class="mono num">—</td><td class="mono num">25,2</td></tr>
-<tr><td>tubos de saída dos decks de trás</td><td class="mono num">—</td><td class="mono num">50,4</td></tr>
-<tr><td>fechamento das baias</td><td class="mono num">—</td><td class="mono num">16,8</td></tr>
-      <tr class="total"><td>Barreira</td><td class="mono num">623,3</td><td class="mono num">736,8</td></tr>
-      <tr class="total"><td>Separadores de 2 m</td><td class="mono num">312</td><td class="mono num">369</td></tr>
-      <tr><td>A comprar (estoque 200)</td><td class="mono num">112</td><td class="mono num">169</td></tr>
-      <tr><td>Custo da compra</td><td class="mono num">EUR 1.458,24</td><td class="mono num">EUR 2.200,38</td></tr>
-      <tr><td>Metros por pessoa de lotação</td><td class="mono num">0,445</td><td class="mono num">0,490</td></tr>
+      <tr><td>Capacidade nominal</td><td class="mono num">1.402</td><td class="mono num">1.389</td></tr>
+      <tr><td>Descontadas as meias-voltas</td><td class="mono num">1.385</td><td class="mono num perda">1.320</td></tr>
     </tbody>
   </table></div>
-  <p class="nota"><strong>O horizontal é menos econômico por pessoa</strong> — 0,490 m
-  contra 0,445 m — e a diferença tem nome: os tubos, mais o fato de as baias
-  do vertical serem enormes e quase gratuitas, porque usam o gradil do Ring em três lados. Os
-  serpenteados propriamente ditos são levemente mais eficientes no horizontal, já que a raia longa
-  dilui o custo das pontas.</p>
+  <p class="nota"><strong>A economia de barreira é robusta; a paridade de capacidade não é.</strong>
+  Sob a premissa da curva, o girado perde cerca de
+  65 pessoas
+  para o vigente — ainda muito acima do pico plausível, mas não é empate.</p>
 </section>
 
 <section>
-  <p class="rotulo">Dimensionamento</p>
-  <h2>A escada: quanta fila comprar</h2>
+  <p class="rotulo">Variante</p>
+  <h2>Se o ziguezague de A e C incomodar</h2>
   <div class="prosa">
-  <p>Com os decks na largura máxima, o número de raias é a única alavanca — e ela troca capacidade
-  por barreira quase linearmente. A tabela percorre as repartições que cabem na profundidade do
-  Ring; para cada total de raias, mostra a repartição que melhor equilibra as três entradas.</p>
+  <p>A saída é alargar as três zonas até a largura do Ring, o que consome as baias de flanco.
+  Toda a lotação vira fila em raia medida — e a capacidade que o plano vigente ganha de graça nas
+  baias, que usam o gradil em três lados, passa a ser paga em divisória.</p>
   </div>
   <div class="rolagem"><table>
-    <thead><tr><th>Raias A/B/C</th><th class="num">Capacidade</th><th class="num">A</th>
-    <th class="num">B</th><th class="num">C</th><th class="num">Separadores</th>
-    <th class="num">A comprar</th><th class="num">Custo (EUR)</th></tr></thead>
-    <tbody><tr><td class="mono">2/2/2</td><td class="mono num">501</td><td class="mono num">161</td><td class="mono num">167</td><td class="mono num">173</td><td class="mono num">187</td><td class="mono num">0</td><td class="mono num">0,00</td></tr>
-<tr><td class="mono">2/3/2</td><td class="mono num">585</td><td class="mono num">161</td><td class="mono num">251</td><td class="mono num">173</td><td class="mono num">201</td><td class="mono num">1</td><td class="mono num">13,02</td></tr>
-<tr><td class="mono">3/3/2</td><td class="mono num">665</td><td class="mono num">241</td><td class="mono num">251</td><td class="mono num">173</td><td class="mono num">214</td><td class="mono num">14</td><td class="mono num">182,28</td></tr>
-<tr><td class="mono">3/3/3</td><td class="mono num">751</td><td class="mono num">241</td><td class="mono num">251</td><td class="mono num">259</td><td class="mono num">232</td><td class="mono num">32</td><td class="mono num">416,64</td></tr>
-<tr><td class="mono">3/4/3</td><td class="mono num">835</td><td class="mono num">241</td><td class="mono num">335</td><td class="mono num">259</td><td class="mono num">247</td><td class="mono num">47</td><td class="mono num">611,94</td></tr>
-<tr><td class="mono">4/4/3</td><td class="mono num">916</td><td class="mono num">322</td><td class="mono num">335</td><td class="mono num">259</td><td class="mono num">260</td><td class="mono num">60</td><td class="mono num">781,20</td></tr>
-<tr><td class="mono">4/4/4</td><td class="mono num">1.002</td><td class="mono num">322</td><td class="mono num">335</td><td class="mono num">346</td><td class="mono num">278</td><td class="mono num">78</td><td class="mono num">1.015,56</td></tr>
-<tr class="marcada"><td class="mono">4/5/4</td><td class="mono num">1.086</td><td class="mono num">322</td><td class="mono num">418</td><td class="mono num">346</td><td class="mono num">292</td><td class="mono num">92</td><td class="mono num">1.197,84</td></tr>
-<tr><td class="mono">5/5/4</td><td class="mono num">1.166</td><td class="mono num">402</td><td class="mono num">418</td><td class="mono num">346</td><td class="mono num">305</td><td class="mono num">105</td><td class="mono num">1.367,10</td></tr>
-<tr><td class="mono">5/5/5</td><td class="mono num">1.252</td><td class="mono num">402</td><td class="mono num">418</td><td class="mono num">432</td><td class="mono num">323</td><td class="mono num">123</td><td class="mono num">1.601,46</td></tr>
-<tr><td class="mono">5/6/5</td><td class="mono num">1.336</td><td class="mono num">402</td><td class="mono num">502</td><td class="mono num">432</td><td class="mono num">338</td><td class="mono num">138</td><td class="mono num">1.796,76</td></tr>
-<tr><td class="mono">6/6/5</td><td class="mono num">1.417</td><td class="mono num">482</td><td class="mono num">502</td><td class="mono num">432</td><td class="mono num">351</td><td class="mono num">151</td><td class="mono num">1.966,02</td></tr>
-<tr class="cheia"><td class="mono">6/6/6</td><td class="mono num">1.503</td><td class="mono num">482</td><td class="mono num">502</td><td class="mono num">518</td><td class="mono num">369</td><td class="mono num">169</td><td class="mono num">2.200,38</td></tr></tbody>
-    <caption>Linha destacada: a recomendada (4/5/4). Linha cinza: o Ring cheio (6/6/6).</caption>
+    <thead><tr><th></th><th class="num">Vigente</th><th class="num">Girado</th><th class="num">Raias longas</th></tr></thead>
+    <tbody>
+      <tr><td>Raia mais curta</td><td class="mono num">23,8 m</td><td class="mono num perda">4,2 m</td><td class="mono num">10,7 m</td></tr>
+      <tr><td>Capacidade</td><td class="mono num">1.402</td><td class="mono num">1.389</td><td class="mono num">1.364</td></tr>
+      <tr><td>… em raia medida</td><td class="mono num">855</td><td class="mono num">842</td><td class="mono num">1.364</td></tr>
+      <tr><td>… em baia de espera</td><td class="mono num">547</td><td class="mono num">547</td><td class="mono num">—</td></tr>
+      <tr class="total"><td>Separadores</td><td class="mono num">312</td><td class="mono num">265</td><td class="mono num perda">367</td></tr>
+      <tr><td>A comprar</td><td class="mono num">112</td><td class="mono num">65</td><td class="mono num">167</td></tr>
+    </tbody>
   </table></div>
-
-  <div class="veredito">
-    <p class="curta">Recomendação: 4/5/4 raias — 1.086 pessoas com
-    292 separadores.</p>
-    <p>São 92 unidades a comprar (EUR 1.197,84), contra
-    112 do desenho vertical: 20 separadores
-    <strong>a menos</strong>, com a geometria de descarga corrigida. O Ring nunca foi o gargalo
-    desta operação — o gargalo é a mesa —, e gastar barreira para encher o Ring é comprar
-    capacidade que não vai ser usada. Se o Posto preferir margem, a linha cinza enche o Ring por
-    mais 77 separadores.</p>
-  </div>
 </section>
 
 <section>
   <p class="rotulo">Método</p>
-  <h2>Como as duas contas foram feitas</h2>
+  <h2>Premissas, e o que se sabe do plano original</h2>
   <div class="prosa">
-  <p>O plano vertical original não está no repositório: <span class="mono">scripts/layout_ring3.py</span>
-  e <span class="mono">saidas/plano_ring3.md</span> foram produzidos em sessão anterior e não chegaram
-  a ser versionados. Ele foi reconstruído a partir das cotas publicadas, e a reconstrução acerta os
-  números publicados na casa decimal:</p>
+  <p>O plano vigente não está no repositório: <span class="mono">scripts/layout_ring3.py</span> e
+  <span class="mono">saidas/plano_ring3.md</span> foram produzidos em sessão anterior e não chegaram
+  a ser versionados. Ele foi reconstruído das cotas publicadas, e a reconstrução acerta os números
+  publicados:</p>
   </div>
   <div class="rolagem"><table>
     <thead><tr><th>Grandeza</th><th class="num">Publicado</th><th class="num">Recalculado</th></tr></thead>
@@ -435,10 +437,10 @@ footer p{margin:0 0 .5em; max-width:74ch}
   </table></div>
   <p class="nota">A capacidade fecha; a barreira fica
   4,5% acima, porque a regra
-  de contagem de barreira do plano original não é recuperável do que foi publicado.
-  <strong>Por isso a comparação desta página usa a regra deste modelo nos dois desenhos</strong> —
-  mesma densidade, mesmo módulo de raia, mesma contagem de barreira. Comparar o número publicado de
-  um com o número calculado do outro daria uma diferença que é de método, não de desenho.</p>
+  de contagem do plano original não é recuperável do que foi publicado. Por isso a comparação usa a
+  regra deste modelo <strong>nos dois desenhos</strong>. Aplicada aos 300 separadores publicados, a
+  mesma redução de 15% daria cerca de
+  <strong>255 unidades</strong>.</p>
   <div class="rolagem"><table>
     <thead><tr><th>Premissa</th><th class="num">Valor</th><th>Origem</th></tr></thead>
     <tbody>
@@ -446,6 +448,8 @@ footer p{margin:0 0 .5em; max-width:74ch}
       <tr><td>Largura livre da raia</td><td class="mono num">1,20 m</td><td>reconstruído</td></tr>
       <tr><td>Densidade em raia</td><td class="mono num">2,0 p/m²</td><td>reconstruído</td></tr>
       <tr><td>Densidade em baia</td><td class="mono num">1,8 p/m²</td><td>reconstruído</td></tr>
+      <tr><td>Vão de meia-volta</td><td class="mono num">1,2 m</td><td>premissa</td></tr>
+      <tr><td>Perda por meia-volta</td><td class="mono num">0,6 m</td><td>premissa (só na análise de sensibilidade)</td></tr>
       <tr><td>Separador de fila</td><td class="mono num">2,0 m · EUR 13,02</td><td>item d do orçamento (100 un. = EUR 1.303)</td></tr>
       <tr><td>Estoque da organizadora</td><td class="mono num">200 un. · 400 m</td><td>plano do Ring 3</td></tr>
     </tbody>
@@ -454,21 +458,19 @@ footer p{margin:0 0 .5em; max-width:74ch}
 
 <section>
   <p class="rotulo">Antes de contratar</p>
-  <h2>O que este desenho ainda supõe</h2>
+  <h2>O que decidir</h2>
   <ol class="pend">
-    <li><div><h3>O bordo oeste do Ring</h3><p>O retângulo está centrado em S5 por estimativa.
-    Medir no local decide a largura real dos decks e, com ela, a capacidade de cada um — é a
-    medida que mais move os números desta página.</p></div></li>
-    <li><div><h3>Onde o gradil abre</h3><p>O desenho supõe portão no gradil permanente nos três
-    eixos de porta (x ≈ 22,1 / 28,3 / 34,5 m) e na garganta sudeste. Se o gradil não abrir onde se
-    precisa, os tubos deixam de ser retos e a vantagem principal do desenho cai.</p></div></li>
-    <li><div><h3>Piso e drenagem</h3><p>Raia leste-oeste de 36 m
-    acompanha a declividade do Ring inteiro. Se algum trecho acumula água, as raias do fundo ficam
-    inviáveis num dia de chuva — entre 40% e 65% de probabilidade em 4 de outubro, conforme o
-    limiar da fonte.</p></div></li>
-    <li><div><h3>As densidades</h3><p>2,0 pessoas/m² em raia e 1,8 em baia são reconstrução, não
-    medição. Se a densidade real sob guarda-chuva for menor, as duas geometrias perdem capacidade
-    na mesma proporção e a comparação entre elas não muda.</p></div></li>
+    <li><div><h3>O ziguezague de A e C é aceitável?</h3><p>4,2 m
+    de raia com 16 curvas, para um público que inclui idosos, cadeirantes
+    e carrinhos de bebê. É a única pergunta que decide entre o giro e a variante de raias longas.</p></div></li>
+    <li><div><h3>Onde o gradil abre</h3><p>A descarga perpendicular da zona B supõe portão no eixo
+    de S5. Sem isso, o giro ainda economiza barreira, mas perde a melhoria de descarga.</p></div></li>
+    <li><div><h3>A largura real das zonas</h3><p>O retângulo do Ring está centrado em S5 por
+    estimativa. Na geometria girada, a largura da zona <em>é</em> o comprimento da raia — a medição
+    de campo mexe diretamente na capacidade.</p></div></li>
+    <li><div><h3>As densidades</h3><p>2,0 pessoas/m² em raia e
+    1,8 em baia são reconstrução, não medição. Se a densidade real sob
+    guarda-chuva for menor, os dois desenhos perdem na mesma proporção e a comparação não muda.</p></div></li>
   </ol>
 </section>
 
@@ -476,8 +478,7 @@ footer p{margin:0 0 .5em; max-width:74ch}
   <p>Geometria do salão e das portas de <span class="mono">scripts/salao.py</span>; comparecimento
   esperado e papéis das portas das decisões do Posto de 06/09/2026. Modelo, plantas e todos os
   números desta página gerados por <span class="mono">scripts/ring3.py</span> e
-  <span class="mono">scripts/gera_pagina_ring3.py</span>, no repositório
-  <span class="mono">eleicoes2026</span>.</p>
+  <span class="mono">scripts/gera_pagina_ring3.py</span>.</p>
   <p>Plantas em escala real sobre o contorno medido do Hall 2 (50,3 × 44,4 m) e o retângulo do
   Ring 3 (39,0 × 35,0 m, apron de 14 m). Números de capacidade são estimativa de lotação, não
   limite de segurança homologado.</p>

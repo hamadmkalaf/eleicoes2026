@@ -199,7 +199,69 @@ Hall 2 (~1.000–1.200 em fila interna) somada às ~1.300 do Ring 3:
 de dois cadernos em paralelo por urna, que fecha às 17h00 mesmo com caderno
 lento e não custa nada ao TRE.
 
-## 7. Exposição ao tempo
+## 7. Evacuação e densidade
+
+Referências de crowd safety para evento ao ar livre: escoamento de **82 pessoas
+por metro de largura por minuto**, alvo de evacuação de **8 a 10 minutos**, e
+**2 pessoas/m²** como densidade de referência para cálculo de capacidade
+segura. Conferência reproduzível em `scripts/layout_ring3.py`.
+
+| Verificação | Valor | Situação |
+|---|---|---|
+| Densidade no serpenteado | 1,43 p/m² | OK (limite 2,0) |
+| Densidade na baia de reserva | 1,50 p/m² | OK (limite 2,0) |
+| Corredor entre blocos, como rota de pedestres | 2,6 m | OK (mínimo 1,2 m) |
+| Corredor entre blocos, como acesso de veículo | 2,6 m | **Não admite** (mínimo 3,5 m) |
+| Largura de saída exigida (1.274 pessoas / 8 min) | **1,94 m** | — |
+| Largura de saída designada hoje | **1,50 m** (só a garganta sudeste) | **Insuficiente — 10,4 min** |
+
+### O que o corredor entre blocos faz, e o que não faz
+
+Ele serve a **quatro** funções, e evacuação é só uma delas:
+
+1. rota de saída lateral para quem está dentro do serpenteado — sem ela, sair
+   de uma fila de 130 m de percurso significa percorrer os 130 m;
+2. circulação de marshals ao longo das filas, sem atravessá-las;
+3. acesso de socorro **a pé** — maca passa em 1,2 m;
+4. separação entre filas vizinhas, que é o que impede a fila de B de contaminar
+   a de C.
+
+Aos 2,6 m ele cumpre as quatro com folga sobre o mínimo de 1,2 m. **Mas deixou
+de admitir veículo de emergência**, que exige 3,5 m — e admitia, aos 4,0 m da
+versão anterior. Essa perda foi o preço das duas balizas extras da entrada B, e
+é uma decisão que cabe ao Posto, não ao desenho: rota de veículo até o meio do
+Ring 3 ou 104 pessoas a mais de fila em B.
+
+Se a rota de veículo for exigida, ela não precisa passar entre os blocos: a
+**faixa de descarga tem 5,0 m** e atravessa toda a largura ao norte. É por ali
+que um veículo deve entrar, não pelos corredores de fila.
+
+### A fragilidade real não são os corredores
+
+**O Ring 3 tem hoje uma única saída designada: a garganta do canto sudeste.**
+Os três canais ao norte levam para dentro do Hall 2 — inúteis se a emergência
+for justamente no Hall 2.
+
+1.274 pessoas por uma garganta de 1,5 m levam **10,4 minutos**, acima do alvo
+de 8. E é pior do que a conta sugere, porque toda a população converge para um
+ponto único: qualquer obstrução ali não deixa alternativa.
+
+**Recomendação: abrir duas brechas de emergência de 2,0 m no perímetro sul e
+leste**, em pontos distintos e distantes da garganta, sinalizadas e mantidas
+desobstruídas. Com elas a evacuação cai para **2,8 minutos**, e nenhum ponto
+isolado é crítico.
+
+Duas atenuantes que não substituem a medida: os separadores têm 1 m de altura e
+são leves e autoportantes — numa emergência real são derrubados, e é assim que
+funcionam; e o Ring 3 é área aberta, sem fumaça nem risco estrutural, o que
+torna a evacuação menos crítica do que em espaço fechado.
+
+**Pendência que decide tudo isto:** não sei se o perímetro do Ring 3 é fechado
+ou aberto. Pela imagem aérea há linha de árvores e meio-fio, mas não dá para
+saber se há vãos. Se o perímetro for francamente aberto, o problema se dissolve
+e as brechas viram sinalização. Se for fechado, elas são obrigatórias.
+
+## 8. Exposição ao tempo
 
 O espaço é descoberto. Outubro é o mês mais chuvoso de Dublin (**76–79 mm**). O
 número de dias de chuva diverge conforme a fonte e o limiar: **12 dias** pelas
@@ -217,7 +279,7 @@ Mitigação proporcional ao risco: cobertura leve (tenda ou toldo) sobre os
 últimos 8–10 m de cada serpenteado, onde a espera é mais longa e a densidade
 maior; e não sobre os 27 m inteiros. Cotar como item destacado.
 
-## 8. Acessibilidade e atendimento prioritário
+## 9. Acessibilidade e atendimento prioritário
 
 **211 eleitores com 60+ anos e 85 com deficiência declarada** em toda a zona —
 ~296 pessoas em 9 horas, ~33 por hora no pico. Volume trivial, desde que
@@ -228,7 +290,7 @@ pavimentado, do desembarque direto à porta, com 1 agente designado. As balizas
 de 1,40 m acomodam cadeira de rodas, mas 5 balizas de 26 m são **130 m de
 percurso** — inaceitável para quem tem prioridade legal.
 
-## 9. Equipe
+## 10. Equipe
 
 | Função | Nº | Observação |
 |---|---|---|
@@ -240,7 +302,7 @@ percurso** — inaceitável para quem tem prioridade legal.
 | Segurança | 4–6 | Dos 20 já contratados (item a) |
 | **Total** | **15–17** | dos quais 4–6 já orçados |
 
-## 10. Pendências
+## 11. Pendências
 
 1. Aferir as dimensões do Ring 3 e **a distância entre o bordo oeste do Ring 3
    e o canto sudoeste do Hall 2** — é o número que translada todo o conjunto
@@ -250,5 +312,9 @@ percurso** — inaceitável para quem tem prioridade legal.
 3. Submeter o pedido de **+117 separadores (~EUR 1.523)** para o Ring 3, e
    dimensionar à parte a necessidade do interior do Hall 2.
 4. Cotar cobertura leve para os últimos 8–10 m de cada serpenteado.
-5. Definir o arranjo da mesa receptora com o Cartório Eleitoral — **é o que
+5. **Verificar se o perímetro do Ring 3 é fechado ou aberto** e, se fechado,
+   abrir duas brechas de emergência de 2,0 m (ver seção 7).
+6. Decidir se a rota de veículo de emergência precisa alcançar o meio do
+   Ring 3 — hoje os corredores entre blocos têm 2,6 m e não a admitem.
+7. Definir o arranjo da mesa receptora com o Cartório Eleitoral — **é o que
    determina se o Ring 3 chega a ser usado**.

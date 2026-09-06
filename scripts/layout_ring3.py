@@ -61,6 +61,18 @@ LARG_FLANCO = 5.0       # baia de reserva dedicada, em cada flanco
 DENS_BAIA = 1.5         # pessoas/m2 na baia, sob marshal, sem balizas
 VAO_ACESSO = 1.5        # largura de cada vao controlado
 
+# --- evacuacao -------------------------------------------------------------
+# Taxa de escoamento e tempo-alvo usuais em eventos ao ar livre (Purple Guide
+# e pratica corrente de crowd safety): 82 pessoas por metro de largura por
+# minuto, com alvo de evacuacao entre 8 e 10 minutos. Densidade de referencia
+# para calculo de capacidade segura: 2 pessoas/m2.
+FLUXO_EGRESSO = 82.0        # pessoas / (m x min)
+TEMPO_ALVO_EVAC = 8.0       # minutos
+DENS_MAX_SEGURA = 2.0       # pessoas/m2
+LARG_MIN_CORREDOR = 1.2     # minimo por faixa de fluxo de pedestres
+LARG_MIN_VEICULO = 3.5      # minimo para acesso de veiculo de emergencia
+SAIDAS_ATUAIS = 1.5         # so a garganta sudeste, hoje
+
 METROS_POR_UNIDADE = 2.0
 ALTURA_SEPARADOR = 1.0
 EUR_POR_METRO = 6.51
@@ -166,6 +178,30 @@ def componentes():
          f"{n_baias} × ({LARG_FLANCO-VAO_ACESSO:.1f} + {LARG_FLANCO:.1f}) m", baias),
     ]
     return [(t, n, c, m, math.ceil(m / METROS_POR_UNIDADE)) for t, n, c, m in itens]
+
+
+def egresso():
+    """Confere a evacuacao do Ring 3 contra as referencias de crowd safety.
+
+    O que se testa aqui nao sao os corredores entre blocos — esses cumprem o
+    minimo de pedestres com folga — e sim a LARGURA TOTAL DE SAIDA do Ring 3,
+    que hoje se resume a garganta do canto sudeste.
+    """
+    pessoas = sum(c["total"] for c in capacidades())
+    exigida = pessoas / (FLUXO_EGRESSO * TEMPO_ALVO_EVAC)
+    tempo_atual = pessoas / (FLUXO_EGRESSO * SAIDAS_ATUAIS)
+    dens_serp = 1.0 / (LARG_BALIZA * PASSO_PESSOA)
+    return {
+        "pessoas": pessoas,
+        "larg_exigida": exigida,
+        "larg_atual": SAIDAS_ATUAIS,
+        "tempo_atual": tempo_atual,
+        "falta": max(0.0, exigida - SAIDAS_ATUAIS),
+        "dens_serpenteado": dens_serp,
+        "dens_baia": DENS_BAIA,
+        "corredor_ok": CORREDOR_EGRESSO >= LARG_MIN_CORREDOR,
+        "veiculo_ok": CORREDOR_EGRESSO >= LARG_MIN_VEICULO,
+    }
 
 
 def resumo():
@@ -583,6 +619,29 @@ def main():
     print(f"{'':>3} {'A ADQUIRIR':<40} {'':<32} "
           f"{r['faltam']*METROS_POR_UNIDADE:>8.1f} {r['faltam']:>6}"
           f"   ≈ EUR {r['custo']:,.0f}")
+
+    e = egresso()
+    print(f"\nEVACUACAO (referencias: {FLUXO_EGRESSO:.0f} pessoas/m/min, "
+          f"alvo de {TEMPO_ALVO_EVAC:.0f} min, densidade max {DENS_MAX_SEGURA:.0f}/m2)")
+    print(f"  densidade no serpenteado : {e['dens_serpenteado']:.2f} p/m2  "
+          f"{'OK' if e['dens_serpenteado'] <= DENS_MAX_SEGURA else 'ACIMA DO LIMITE'}")
+    print(f"  densidade na baia        : {e['dens_baia']:.2f} p/m2  "
+          f"{'OK' if e['dens_baia'] <= DENS_MAX_SEGURA else 'ACIMA DO LIMITE'}")
+    print(f"  corredor entre blocos    : {CORREDOR_EGRESSO:.1f} m  "
+          f"{'OK como rota de pedestres' if e['corredor_ok'] else 'ABAIXO DO MINIMO'}"
+          f" (min {LARG_MIN_CORREDOR:.1f} m); "
+          f"{'admite' if e['veiculo_ok'] else 'NAO admite'} veiculo de emergencia "
+          f"(min {LARG_MIN_VEICULO:.1f} m)")
+    print(f"  largura de saida exigida : {e['larg_exigida']:.2f} m para "
+          f"{e['pessoas']:.0f} pessoas em {TEMPO_ALVO_EVAC:.0f} min")
+    print(f"  largura de saida atual   : {e['larg_atual']:.2f} m "
+          f"(so a garganta sudeste) -> {e['tempo_atual']:.1f} min  "
+          f"{'OK' if e['falta'] <= 0 else 'INSUFICIENTE'}")
+    if e["falta"] > 0:
+        print(f"  >> FALTAM {e['falta']:.2f} m de saida designada. Recomenda-se "
+              f"abrir 2 brechas de emergencia de 2,0 m no perimetro sul/leste,")
+        print(f"     em pontos distintos, o que leva a evacuacao a "
+              f"{e['pessoas']/(FLUXO_EGRESSO*(SAIDAS_ATUAIS+4.0)):.1f} min.")
 
     desenha()
     print(f"\nDesenho: {SAIDA.relative_to(RAIZ)}")

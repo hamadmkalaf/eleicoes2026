@@ -1,0 +1,498 @@
+{
+  "gerado_por": "scripts/ring3.py",
+  "ring": {
+    "x0": 8.79,
+    "x1": 47.78,
+    "y0": -49.0,
+    "y1": -14.0
+  },
+  "apron_m": 14.0,
+  "premissas": {
+    "passo_raia_m": 1.4,
+    "raia_util_m": 1.2,
+    "densidade_fila_p_m2": 2.0,
+    "densidade_baia_p_m2": 1.8,
+    "vao_retorno_m": 1.2,
+    "largura_tubo_m": 1.6,
+    "largura_espinha_m": 3.0,
+    "faixa_triagem_m": 8.75,
+    "separador_m": 2.0,
+    "separador_eur": 13.02,
+    "estoque_separadores": 200,
+    "comparecimento_esperado": {
+      "A": 3642,
+      "B": 4215,
+      "C": 3642
+    }
+  },
+  "aderencia_ao_plano_original": {
+    "raias_calculado": 855.0,
+    "raias_publicado": 855,
+    "baias_calculado": 547.2,
+    "baias_publicado": 547,
+    "total_calculado": 1402,
+    "total_publicado": 1402,
+    "barreira_calculada_m": 623.3,
+    "barreira_publicada_m": 596.3,
+    "separadores_calculado": 312,
+    "separadores_publicado": 300
+  },
+  "vertical": {
+    "codigo": "V",
+    "nome": "Serpenteados verticais (plano original, reconstruido)",
+    "capacidade": 1402,
+    "capacidade_raias": 855,
+    "capacidade_baias": 547,
+    "por_entrada": {
+      "A": 445,
+      "B": 513,
+      "C": 445
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1221,
+      "B": 0.1217,
+      "C": 0.1221
+    },
+    "barreira_m": 623.3,
+    "barreira_por_componente_m": {
+      "serpenteados": 413.1,
+      "corredor de distribuição (2 lados)": 73.4,
+      "fechamento das baias de flanco": 25.6,
+      "raias do apron até as portas": 87.2,
+      "funil da garganta sudeste": 24.0
+    },
+    "separadores": 312,
+    "estoque": 200,
+    "compra": 112,
+    "custo_compra_eur": 1458.24,
+    "m_por_pessoa": 0.445,
+    "blocos": [
+      {
+        "entrada": "A",
+        "raias": 3,
+        "comprimento_m": 23.75,
+        "profundidade_m": 4.2,
+        "caminhada_m": 71.2,
+        "capacidade": 171
+      },
+      {
+        "entrada": "B",
+        "raias": 9,
+        "comprimento_m": 23.75,
+        "profundidade_m": 12.6,
+        "caminhada_m": 213.8,
+        "capacidade": 513
+      },
+      {
+        "entrada": "C",
+        "raias": 3,
+        "comprimento_m": 23.75,
+        "profundidade_m": 4.2,
+        "caminhada_m": 71.2,
+        "capacidade": 171
+      }
+    ],
+    "baias": {
+      "A": {
+        "rotulo": "baia do flanco oeste",
+        "area_m2": 152.0,
+        "capacidade": 274
+      },
+      "C": {
+        "rotulo": "baia do flanco leste",
+        "area_m2": 152.0,
+        "capacidade": 274
+      }
+    },
+    "notas": [
+      "Descarga em diagonal: nenhum dos três blocos está alinhado com a sua porta, então as três correntes cruzam o apron obliquamente e se aproximam entre si até os 6,2 m que separam as portas na fachada.",
+      "As baias de flanco caem em frente às portas de saída S2 (oeste) e S8 (leste): a área de espera fica no caminho de quem já votou."
+    ]
+  },
+  "horizontal": {
+    "codigo": "H",
+    "nome": "Serpenteados horizontais (decks empilhados)",
+    "capacidade": 1503,
+    "capacidade_raias": 1140,
+    "capacidade_baias": 362,
+    "por_entrada": {
+      "A": 482,
+      "B": 502,
+      "C": 518
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1325,
+      "B": 0.1191,
+      "C": 0.1423
+    },
+    "barreira_m": 736.8,
+    "barreira_por_componente_m": {
+      "serpenteados": 536.4,
+      "espinha de distribuição (gradil a leste)": 25.2,
+      "tubos de saída dos decks de trás": 50.4,
+      "fechamento das baias": 16.8,
+      "raias do apron até as portas": 84.0,
+      "funil da garganta sudeste": 24.0
+    },
+    "separadores": 369,
+    "estoque": 200,
+    "compra": 169,
+    "custo_compra_eur": 2200.38,
+    "m_por_pessoa": 0.49,
+    "blocos": [
+      {
+        "entrada": "A",
+        "raias": 6,
+        "comprimento_m": 18.5,
+        "profundidade_m": 8.4,
+        "caminhada_m": 111.0,
+        "capacidade": 266
+      },
+      {
+        "entrada": "B",
+        "raias": 6,
+        "comprimento_m": 24.71,
+        "profundidade_m": 8.4,
+        "caminhada_m": 148.3,
+        "capacidade": 356
+      },
+      {
+        "entrada": "C",
+        "raias": 6,
+        "comprimento_m": 35.99,
+        "profundidade_m": 8.4,
+        "caminhada_m": 215.9,
+        "capacidade": 518
+      }
+    ],
+    "baias": {
+      "A": {
+        "rotulo": "baia leste do deck A",
+        "area_m2": 120.1,
+        "capacidade": 216
+      },
+      "B": {
+        "rotulo": "baia leste do deck B",
+        "area_m2": 81.3,
+        "capacidade": 146
+      }
+    },
+    "notas": [
+      "Cada deck sai por um portão dentro do vão da sua própria porta e cruza o apron em linha reta: as três correntes nunca se aproximam, e o apron fica livre a oeste de x = 19,1 m e a leste de x = 37,5 m, que é onde desembocam as saídas S2 e S8.",
+      "As baias ficam do lado da chegada, encostadas na espinha, e não ao lado do meio da fila: enchem como buffer de cauda, antes das raias, e não como transbordo lateral.",
+      "O preço da geometria é o tubo: cada deck de trás gasta duas corridas de barreira só para atravessar a profundidade dos decks da frente.",
+      "A ordem dos decks é imposta, não escolhida: da frente para o fundo, a porta de cada deck tem de andar para leste (A=S4, B=S5, C=S6), senão o tubo de um deck de trás cortaria o serpenteado da frente."
+    ]
+  },
+  "escada_de_dimensionamento": [
+    {
+      "raias": [
+        2,
+        2,
+        2
+      ],
+      "raias_total": 6,
+      "capacidade": 501,
+      "por_entrada": {
+        "A": 161,
+        "B": 167,
+        "C": 173
+      },
+      "separadores": 187,
+      "barreira_m": 374.0,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "raias": [
+        2,
+        3,
+        2
+      ],
+      "raias_total": 7,
+      "capacidade": 585,
+      "por_entrada": {
+        "A": 161,
+        "B": 251,
+        "C": 173
+      },
+      "separadores": 201,
+      "barreira_m": 402.0,
+      "compra": 1,
+      "custo_compra_eur": 13.02
+    },
+    {
+      "raias": [
+        3,
+        3,
+        2
+      ],
+      "raias_total": 8,
+      "capacidade": 665,
+      "por_entrada": {
+        "A": 241,
+        "B": 251,
+        "C": 173
+      },
+      "separadores": 214,
+      "barreira_m": 428.0,
+      "compra": 14,
+      "custo_compra_eur": 182.28
+    },
+    {
+      "raias": [
+        3,
+        3,
+        3
+      ],
+      "raias_total": 9,
+      "capacidade": 751,
+      "por_entrada": {
+        "A": 241,
+        "B": 251,
+        "C": 259
+      },
+      "separadores": 232,
+      "barreira_m": 464.0,
+      "compra": 32,
+      "custo_compra_eur": 416.64
+    },
+    {
+      "raias": [
+        3,
+        4,
+        3
+      ],
+      "raias_total": 10,
+      "capacidade": 835,
+      "por_entrada": {
+        "A": 241,
+        "B": 335,
+        "C": 259
+      },
+      "separadores": 247,
+      "barreira_m": 494.0,
+      "compra": 47,
+      "custo_compra_eur": 611.94
+    },
+    {
+      "raias": [
+        4,
+        4,
+        3
+      ],
+      "raias_total": 11,
+      "capacidade": 916,
+      "por_entrada": {
+        "A": 322,
+        "B": 335,
+        "C": 259
+      },
+      "separadores": 260,
+      "barreira_m": 520.0,
+      "compra": 60,
+      "custo_compra_eur": 781.2
+    },
+    {
+      "raias": [
+        4,
+        4,
+        4
+      ],
+      "raias_total": 12,
+      "capacidade": 1002,
+      "por_entrada": {
+        "A": 322,
+        "B": 335,
+        "C": 346
+      },
+      "separadores": 278,
+      "barreira_m": 556.0,
+      "compra": 78,
+      "custo_compra_eur": 1015.56
+    },
+    {
+      "raias": [
+        4,
+        5,
+        4
+      ],
+      "raias_total": 13,
+      "capacidade": 1086,
+      "por_entrada": {
+        "A": 322,
+        "B": 418,
+        "C": 346
+      },
+      "separadores": 292,
+      "barreira_m": 584.0,
+      "compra": 92,
+      "custo_compra_eur": 1197.84
+    },
+    {
+      "raias": [
+        5,
+        5,
+        4
+      ],
+      "raias_total": 14,
+      "capacidade": 1166,
+      "por_entrada": {
+        "A": 402,
+        "B": 418,
+        "C": 346
+      },
+      "separadores": 305,
+      "barreira_m": 610.0,
+      "compra": 105,
+      "custo_compra_eur": 1367.1
+    },
+    {
+      "raias": [
+        5,
+        5,
+        5
+      ],
+      "raias_total": 15,
+      "capacidade": 1252,
+      "por_entrada": {
+        "A": 402,
+        "B": 418,
+        "C": 432
+      },
+      "separadores": 323,
+      "barreira_m": 646.0,
+      "compra": 123,
+      "custo_compra_eur": 1601.46
+    },
+    {
+      "raias": [
+        5,
+        6,
+        5
+      ],
+      "raias_total": 16,
+      "capacidade": 1336,
+      "por_entrada": {
+        "A": 402,
+        "B": 502,
+        "C": 432
+      },
+      "separadores": 338,
+      "barreira_m": 676.0,
+      "compra": 138,
+      "custo_compra_eur": 1796.76
+    },
+    {
+      "raias": [
+        6,
+        6,
+        5
+      ],
+      "raias_total": 17,
+      "capacidade": 1417,
+      "por_entrada": {
+        "A": 482,
+        "B": 502,
+        "C": 432
+      },
+      "separadores": 351,
+      "barreira_m": 702.0,
+      "compra": 151,
+      "custo_compra_eur": 1966.02
+    },
+    {
+      "raias": [
+        6,
+        6,
+        6
+      ],
+      "raias_total": 18,
+      "capacidade": 1503,
+      "por_entrada": {
+        "A": 482,
+        "B": 502,
+        "C": 518
+      },
+      "separadores": 369,
+      "barreira_m": 738.0,
+      "compra": 169,
+      "custo_compra_eur": 2200.38
+    }
+  ],
+  "horizontal_enxuta": {
+    "codigo": "H",
+    "nome": "Serpenteados horizontais (decks empilhados)",
+    "capacidade": 1086,
+    "capacidade_raias": 820,
+    "capacidade_baias": 266,
+    "por_entrada": {
+      "A": 322,
+      "B": 418,
+      "C": 346
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.0883,
+      "B": 0.0993,
+      "C": 0.0949
+    },
+    "barreira_m": 583.9,
+    "barreira_por_componente_m": {
+      "serpenteados": 408.7,
+      "espinha de distribuição (gradil a leste)": 18.2,
+      "tubos de saída dos decks de trás": 36.4,
+      "fechamento das baias": 12.6,
+      "raias do apron até as portas": 84.0,
+      "funil da garganta sudeste": 24.0
+    },
+    "separadores": 292,
+    "estoque": 200,
+    "compra": 92,
+    "custo_compra_eur": 1197.84,
+    "m_por_pessoa": 0.538,
+    "blocos": [
+      {
+        "entrada": "A",
+        "raias": 4,
+        "comprimento_m": 18.5,
+        "profundidade_m": 5.6,
+        "caminhada_m": 74.0,
+        "capacidade": 178
+      },
+      {
+        "entrada": "B",
+        "raias": 5,
+        "comprimento_m": 24.71,
+        "profundidade_m": 7.0,
+        "caminhada_m": 123.6,
+        "capacidade": 297
+      },
+      {
+        "entrada": "C",
+        "raias": 4,
+        "comprimento_m": 35.99,
+        "profundidade_m": 5.6,
+        "caminhada_m": 144.0,
+        "capacidade": 346
+      }
+    ],
+    "baias": {
+      "A": {
+        "rotulo": "baia leste do deck A",
+        "area_m2": 80.1,
+        "capacidade": 144
+      },
+      "B": {
+        "rotulo": "baia leste do deck B",
+        "area_m2": 67.7,
+        "capacidade": 122
+      }
+    },
+    "notas": [
+      "Cada deck sai por um portão dentro do vão da sua própria porta e cruza o apron em linha reta: as três correntes nunca se aproximam, e o apron fica livre a oeste de x = 19,1 m e a leste de x = 37,5 m, que é onde desembocam as saídas S2 e S8.",
+      "As baias ficam do lado da chegada, encostadas na espinha, e não ao lado do meio da fila: enchem como buffer de cauda, antes das raias, e não como transbordo lateral.",
+      "O preço da geometria é o tubo: cada deck de trás gasta duas corridas de barreira só para atravessar a profundidade dos decks da frente.",
+      "A ordem dos decks é imposta, não escolhida: da frente para o fundo, a porta de cada deck tem de andar para leste (A=S4, B=S5, C=S6), senão o tubo de um deck de trás cortaria o serpenteado da frente."
+    ]
+  }
+}

@@ -398,10 +398,10 @@ PONTOS = [
      "Pórtico de boas-vindas + tabela mestra completa + “não sabe sua seção? →”",
      "1 pórtico · 3 painéis de consulta · 1 totem do balcão de dúvidas"),
     ("P2", "Corredor da lateral leste",
-     "Sobre as folhas das portas de serviço do Hall 2, a cada 25–30 m, no padrão de montagem da placa “2 Shelbourne Hall”",
+     "Nos três vãos de parede entre as quatro saídas de emergência, a 10,75 m, 22,50 m e 33,90 m do canto norte; mais dois no gradil, na aproximação",
      "Nada. Repete a consulta durante o tempo morto de caminhada e de fila",
-     "A mesma tabela mestra, idêntica em todas · seta “Ring 3, 100 m”",
-     "4 painéis de porta (1,8 × 1,2 m) — zero base, zero estrutura"),
+     "A mesma tabela mestra, idêntica em todas · seta “Ring 3 →”",
+     "3 painéis de 1,8 × 1,2 m na parede + 2 em lona no gradil"),
     ("P3", "Garganta sudeste",
      "No funil de entrada do Ring 3, junto aos três agentes de pré-triagem",
      "Última consulta possível · divisão nos três serpenteados",
@@ -412,10 +412,10 @@ PONTOS = [
      "Confirmação da letra · captura de quem errou, enquanto ainda cabe corrigir",
      "Letra em corpo grande + faixa de mesas + “errou? volte ao corredor →”",
      "3 totens · 1 faixa de correção"),
-    ("P5", "Portas S4 · S5 · S6",
-     "Sobre cada vão de entrada da fachada sul, lidas de dentro do serpenteado",
-     "Só confirmação. Nenhuma informação nova",
-     "Letra de 300 mm + lista das mesas atendidas",
+    ("P5", "Portas de entrada",
+     "No vidro, à frente de cada vão de entrada da fachada sul, lidas de dentro do serpenteado",
+     "Só confirmação de que ali se entra. Nenhuma informação nova",
+     "ENTRADA em 300 mm + faixa da cor da fila que descarrega naquele vão",
      "3 bandeirolas de fachada"),
     ("P6", "Checkpoint interno",
      "Logo depois das portas, dentro do salão",
@@ -555,6 +555,126 @@ FOTOS = [
 ]
 
 
+# Parede leste do Hall 2, medida em campo: 44,0 m com quatro saídas de
+# emergência. Os centros vêm da planta do RDS (vãos 2.16 a 2.23) reescalados
+# para o comprimento informado; a conferência final é com trena no local.
+PAREDE_LESTE = 44.0
+SAIDAS_LESTE = [4.7, 16.8, 28.2, 39.6]
+VAO_SAIDA = 2.0        # largura do vão de emergência
+FOLGA_SAIDA = 2.0      # faixa livre exigida de cada lado do vão
+PAINEL_L, PAINEL_A = 1.8, 1.2   # painel de consulta, em metros
+PAINEL_BASE = 1.0      # altura da borda inferior acima do piso
+BASE_LISA = 1.3        # altura presumida do topo da base lisa — a medir
+
+
+def vaos_leste():
+    """Vãos de parede úteis entre as saídas, e onde cabe painel."""
+    bordas = [0.0] + SAIDAS_LESTE + [PAREDE_LESTE]
+    vaos = []
+    for i in range(len(bordas) - 1):
+        inicio = FOLGA_SAIDA if i == 0 else bordas[i] + VAO_SAIDA / 2 + FOLGA_SAIDA
+        fim = (PAREDE_LESTE - FOLGA_SAIDA if i == len(bordas) - 2
+               else bordas[i + 1] - VAO_SAIDA / 2 - FOLGA_SAIDA)
+        vaos.append({"inicio": inicio, "fim": fim, "util": fim - inicio,
+                     "centro": (inicio + fim) / 2, "extremo": i in (0, len(bordas) - 2)})
+    return vaos
+
+
+def vg(x, casas=1):
+    """Número com vírgula decimal, para os rótulos dos desenhos."""
+    return f"{x:.{casas}f}".replace(".", ",")
+
+
+def elevacao_leste():
+    x0, larg, solo, topo = 50, 820, 195, 60
+    ex, ey = larg / PAREDE_LESTE, 30.0        # px por metro
+    def px(m): return x0 + m * ex
+    def py(m): return solo - m * ey
+
+    y_base = py(BASE_LISA)
+    ribs = "".join(
+        f'<line x1="{x0}" y1="{y}" x2="{x0 + larg}" y2="{y}"'
+        f' stroke="currentColor" stroke-width="0.7" opacity="0.16"/>'
+        for y in range(topo + 9, int(y_base) - 4, 9)
+    )
+
+    saidas = ""
+    for i, c in enumerate(SAIDAS_LESTE, 1):
+        meia, folga = VAO_SAIDA / 2 * ex, FOLGA_SAIDA * ex
+        saidas += (
+            f'<rect x="{px(c) - meia - folga:.1f}" y="{py(2.1):.1f}"'
+            f' width="{(VAO_SAIDA + 2 * FOLGA_SAIDA) * ex:.1f}" height="{2.1 * ey:.1f}"'
+            f' fill="var(--alert-soft)"/>'
+            f'<rect x="{px(c) - meia:.1f}" y="{py(2.1):.1f}" width="{VAO_SAIDA * ex:.1f}"'
+            f' height="{2.1 * ey:.1f}" fill="var(--alert)" fill-opacity="0.55"'
+            f' stroke="var(--alert)" stroke-width="1.4"/>'
+            f'<text x="{px(c):.1f}" y="{solo + 16}" text-anchor="middle"'
+            f' font-family="Archivo,sans-serif" font-size="10.5" font-weight="600"'
+            f' fill="var(--alert)">saída {i}</text>'
+            f'<text x="{px(c):.1f}" y="{solo + 28}" text-anchor="middle"'
+            f' font-family="ui-monospace,monospace" font-size="9"'
+            f' fill="var(--muted)">{vg(c)} m</text>'
+        )
+
+    paineis, n = "", 0
+    for v in vaos_leste():
+        if v["extremo"] or v["util"] < PAINEL_L + 0.6:
+            continue
+        n += 1
+        w = PAINEL_L * ex
+        paineis += (
+            f'<rect x="{px(v["centro"]) - w / 2:.1f}" y="{py(PAINEL_BASE + PAINEL_A):.1f}"'
+            f' width="{w:.1f}" height="{PAINEL_A * ey:.1f}" fill="var(--a-soft)"'
+            f' stroke="var(--a)" stroke-width="1.8" rx="1.5"/>'
+            f'<text x="{px(v["centro"]):.1f}" y="{py(PAINEL_BASE + PAINEL_A) - 7:.1f}"'
+            f' text-anchor="middle" font-family="Archivo,sans-serif" font-size="11"'
+            f' font-weight="700" fill="var(--a)">P2·{n}</text>'
+            f'<text x="{px(v["centro"]):.1f}" y="{py(PAINEL_BASE) + 13:.1f}"'
+            f' text-anchor="middle" font-family="ui-monospace,monospace" font-size="9"'
+            f' fill="var(--muted)">{vg(v["centro"], 2)} m</text>'
+        )
+
+    itens = [
+        ("var(--surface-2)", "var(--rule)", "chapa metálica ondulada · adesivo não cola", 236),
+        ("var(--surface)", "var(--c)", f"base lisa até ~{vg(BASE_LISA)} m · medir", 158),
+        ("var(--alert-soft)", "var(--alert)", f"{vg(FOLGA_SAIDA)} m livres de cada lado do escape", 210),
+    ]
+    legenda, lx = "", x0
+    for preenche, borda, texto, avanco in itens:
+        legenda += (
+            f'<rect x="{lx}" y="26" width="13" height="10" fill="{preenche}"'
+            f' stroke="{borda}" stroke-width="1.2"/>'
+            f'<text x="{lx + 19}" y="35" font-family="Archivo,sans-serif" font-size="10.5"'
+            f' fill="var(--muted)">{texto}</text>'
+        )
+        lx += avanco
+
+    return f'''<figure>
+  <div class="figbox">
+    <svg class="diagram" viewBox="0 0 920 262" role="img" style="min-width:700px"
+         aria-label="Elevação da parede leste do Hall 2: 44 metros com quatro saídas de emergência, cada uma com faixa livre de 2 metros de cada lado, e três painéis de consulta de 1,8 por 1,2 metro centrados nos vãos entre elas. Uma linha tracejada marca o topo da base lisa, altura que precisa ser medida porque decide se o painel cola ou precisa ser parafusado.">
+      <rect x="{x0}" y="{topo}" width="{larg}" height="{y_base - topo:.1f}"
+            fill="var(--surface-2)" stroke="var(--rule)" stroke-width="1"/>
+      {ribs}
+      <rect x="{x0}" y="{y_base:.1f}" width="{larg}" height="{solo - y_base:.1f}"
+            fill="var(--surface)" stroke="var(--rule)" stroke-width="1"/>
+      {saidas}
+      {paineis}
+      <line x1="{x0}" y1="{y_base:.1f}" x2="{x0 + larg}" y2="{y_base:.1f}"
+            stroke="var(--c)" stroke-width="1.8" stroke-dasharray="7 4"/>
+      {legenda}
+      <line x1="{x0}" y1="{solo}" x2="{x0 + larg}" y2="{solo}" stroke="currentColor" stroke-width="2.2"/>
+      <line x1="{x0}" y1="{solo + 42}" x2="{x0 + larg}" y2="{solo + 42}" stroke="currentColor" stroke-width="1"/>
+      <line x1="{x0}" y1="{solo + 37}" x2="{x0}" y2="{solo + 47}" stroke="currentColor" stroke-width="1"/>
+      <line x1="{x0 + larg}" y1="{solo + 37}" x2="{x0 + larg}" y2="{solo + 47}" stroke="currentColor" stroke-width="1"/>
+      <text x="{x0 + larg / 2}" y="{solo + 58}" text-anchor="middle" font-family="ui-monospace,monospace"
+            font-size="10.5" font-weight="600" fill="currentColor">{vg(PAREDE_LESTE)} m · parede leste do Hall 2</text>
+    </svg>
+  </div>
+  <figcaption>Três painéis de 1,8 × 1,2 m, um por vão entre saídas, com a borda inferior a 1,0 m do piso — centrados a 10,75 m, 22,50 m e 33,90 m do canto norte, ~11,5 m um do outro. Os dois vãos de extremidade não recebem peça: as saídas 1 e 4 ficam a menos de 5 m dos cantos e a folga de 2,0 m consome o trecho inteiro. A linha tracejada é o que decide o método de fixação — se a base lisa subir acima de 2,2 m, o painel cola; se parar em ~1,3 m como parece, ele atravessa a chapa ondulada e tem de ser rígido, parafusado nas terças.</figcaption>
+</figure>'''
+
+
 def tabela_substrato():
     marca = {
         "sim": '<span class="chip a">cola</span>',
@@ -618,6 +738,7 @@ def main():
         "SPECS": specs(),
         "TAB_SUBSTRATO": tabela_substrato(),
         "FIG_FOTOS": figura_fotos(),
+        "ELEVACAO": elevacao_leste(),
         "TAB_PORTAS": tabela_portas(grupos),
         "TAB_MESAS": tabela_mesas(urnas),
         "TAB_MESTRA": bloco_mestra(mestra),

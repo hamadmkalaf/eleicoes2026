@@ -98,13 +98,13 @@ desenho); o simulador as descarta ao embutir a lista.
 
 ## Conferir um cenário fora do navegador
 
-`planta_hall2.json` guarda a planta em si — salão, módulo, portas e os
-cenários-base A e B — para que a análise não dependa do artefato publicado.
-É cópia idêntica de `data/prancheta_hall2.json` e da geometria de
-`saidas/editor_dados.json` (conferido na consolidação de 06/09/2026).
-`x`/`y` em metros, na ancoragem do módulo (o ponto onde ele encosta na parede),
-com x para leste e y para norte. `rot` é o giro do módulo e `lado` diz de que
-lado ficam as cadeiras dos mesários.
+A planta em si — salão, módulo, portas e os cenários-base A e B — está em
+`data/prancheta_hall2.json`, a mesma geometria que `saidas/editor_dados.json`
+carrega (conferido na consolidação de 06/09/2026; o PR #7 trazia uma cópia
+idêntica como `cenarios/planta_hall2.json`, retirada daqui para não ser lida
+como cenário pela biblioteca). `x`/`y` em metros, na ancoragem do módulo (o
+ponto onde ele encosta na parede), com x para leste e y para norte. `rot` é o
+giro do módulo e `lado` diz de que lado ficam as cadeiras dos mesários.
 
 Para conferir um cenário:
 

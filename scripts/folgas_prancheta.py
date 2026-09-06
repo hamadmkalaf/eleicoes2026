@@ -16,7 +16,7 @@ Uso:
 import json, math, os, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-D = json.load(open(os.path.join(RAIZ, "cenarios", "planta_hall2.json"), encoding="utf-8"))
+D = json.load(open(os.path.join(RAIZ, "data", "prancheta_hall2.json"), encoding="utf-8"))
 M, SAL = D["modulo"], D["salao"]
 LARG, ALT = SAL["largura"], SAL["altura"]
 CAP = 20.0                     # teto das medidas: alem disso o salao esta aberto

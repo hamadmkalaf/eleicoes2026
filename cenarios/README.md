@@ -38,9 +38,12 @@ três degraus, e os dois primeiros não dependem de ninguém:
 2. **Copiar tudo p/ o simulador** põe a biblioteca inteira num JSON só.
    No simulador, `Carregar arranjo… › colar` aceita a lista de uma vez e
    guarda tudo no navegador de lá. É o caminho para levar cenário novo de
-   uma página à outra sem esperar republicação. (Quando o claude.ai concede
-   a capacidade de download à página, aparece também **Baixar .json**, para
-   o mesmo arquivo entrar pelo `Escolher arquivo…` do simulador.)
+   uma página à outra sem esperar republicação. (Não há botão de baixar
+   arquivo: a sandbox do artefato torna inerte qualquer download que a
+   própria página dispare, e a capacidade que faria isso é recusada em
+   artefato compartilhado por link — que é como a prancheta precisa ficar.
+   O `Escolher arquivo…` do simulador continua servindo para os `.json`
+   desta pasta.)
 3. Para o cenário entrar na **lista publicada**, que todo mundo vê, o JSON
    vai para quem publica a prancheta (mensagem, e-mail, colado numa conversa
    com o Claude), que roda:

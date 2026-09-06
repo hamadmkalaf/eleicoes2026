@@ -413,10 +413,12 @@ repositório. Na lista, cenário local tem **apagar** (some de vez) e cenário
 da lista publicada tem **ocultar** (some só ali, porque tirá-lo de todo mundo
 é republicar). **Copiar tudo p/ o simulador** põe a biblioteca inteira num
 JSON só, que o `Carregar arranjo…` do simulador aceita de uma vez — é o que
-leva cenário novo de uma página à outra sem esperar republicação; quando o
-claude.ai concede a capacidade de download à página, aparece também **Baixar
-.json**, para o mesmo arquivo entrar pelo `Escolher arquivo…` de lá. Para o
-cenário entrar na lista publicada, quem desenha manda o JSON (mensagem,
+leva cenário novo de uma página à outra sem esperar republicação. Não há
+botão de baixar arquivo: a sandbox torna inerte qualquer download que a
+própria página dispare, e a capability `downloads`, que resolveria isso, é
+recusada em artefato compartilhado por link — a prancheta precisa continuar
+compartilhável, então fica a área de transferência. Para o cenário entrar na
+lista publicada, quem desenha manda o JSON (mensagem,
 e-mail, colando numa conversa com o Claude) para quem publica a prancheta,
 que roda
 `python3 scripts/salva_cenario.py arquivo.json` (ou `-` para ler da entrada

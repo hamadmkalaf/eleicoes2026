@@ -270,10 +270,9 @@ footer .estado.guia{color:var(--entrada)}
       <div class="linha2" style="margin-top:8px; flex-wrap:wrap">
         <button class="acao mini" id="colarCenario">Colar cenário…</button>
         <button class="acao mini" id="copiarBiblioteca">Copiar tudo p/ o simulador</button>
-        <button class="acao mini" id="baixarBiblioteca" hidden>Baixar .json</button>
         <button class="acao mini" id="mostrarOcultos" hidden></button>
       </div>
-      <p class="notaSalvos"><strong>Salvar</strong> guarda o cenário neste navegador e põe o JSON na área de transferência. Para levar a lista inteira ao simulador de fluxo, use <strong>Copiar tudo p/ o simulador</strong> e cole lá em <em>Carregar arranjo</em>. Para o cenário entrar na lista publicada, que todo mundo vê, mande o JSON a quem publica a prancheta.</p>
+      <p class="notaSalvos"><strong>Salvar</strong> guarda o cenário neste navegador e põe o JSON na área de transferência. Para levar a lista inteira ao simulador de fluxo, use <strong>Copiar tudo p/ o simulador</strong> e cole lá em <em>Carregar arranjo…</em>. Para o cenário entrar na lista publicada, que todo mundo vê, mande o JSON a quem publica a prancheta.</p>
     </div>
     <div class="bloco">
       <p class="rot">Medidas <button class="acao mini direita" id="apagarMedidas">Apagar todas</button></p>
@@ -1414,26 +1413,10 @@ $("copiarBiblioteca").onclick = async ev => {
   setTimeout(() => { b.textContent = antes; }, 2000);
 };
 
-/* Baixar depende do claude.ai conceder a capacidade de download a esta pagina;
-   quando nao concede, `use` devolve null e o botao simplesmente nao aparece --
-   Copiar continua dando conta. */
-(async () => {
-  try {
-    const downloads = window.claude && claude.use ? await claude.use("downloads") : null;
-    if (!downloads) return;
-    const b = $("baixarBiblioteca");
-    b.hidden = false;
-    b.onclick = async () => {
-      const itens = visiveis();
-      if (!itens.length) { avisa("Não há cenário nenhum para baixar", 3000); return; }
-      try {
-        await downloads.save({filename: "cenarios-hall2.json", data: bibliotecaJSON()});
-        avisa(`${itens.length} cenário${itens.length > 1 ? "s" : ""} num arquivo — `
-            + `no simulador, use “Carregar arranjo… › Escolher arquivo”`, 7000);
-      } catch (e) { avisa("O download não foi concluído", 3500); }
-    };
-  } catch (e) {}
-})();
+/* Nao ha botao de baixar arquivo: a sandbox do artefato publicado torna inerte
+   qualquer download que a propria pagina dispare, e a capability que faria isso
+   -- `downloads` -- e recusada em artefato compartilhado por link, que e como
+   esta prancheta precisa ficar. A area de transferencia da conta do recado. */
 
 $("salvarCenario").onclick = salvaCenario;
 $("nomeCenario").addEventListener("keydown", ev => {

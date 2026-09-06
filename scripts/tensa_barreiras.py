@@ -287,7 +287,7 @@ def tabela(c):
         cor = str(i["corridas"]) if i["corridas"] else "—"
         met = f"{i['metros']:.0f}".replace(".", ",") if i["metros"] else "—"
         out.append(f"| {i['rotulo']} | {cor} | {comp} | {i['fitas']} | {i['postes']} | {met} |")
-    out.append(f"| **Total** | | | **{c.total('fitas')}** | **{c.total('postes')}** | "
+    out.append(f"| **Total** | **{c.total('corridas')}** | | **{c.total('fitas')}** | **{c.total('postes')}** | "
                f"**{c.total('metros'):.0f}** |".replace(".0 ", " "))
     return "\n".join(out)
 
@@ -311,7 +311,8 @@ def main():
     for c in todos:
         p = c.total("postes")
         pr = math.ceil(p * (1 + RESERVA))
-        res[c.nome] = dict(fitas=c.total("fitas"), postes=p, postes_reserva=pr,
+        res[c.nome] = dict(corridas=c.total("corridas"), fitas=c.total("fitas"),
+                           postes=p, postes_reserva=pr,
                            metros=c.total("metros"), custo=custo(pr))
 
     total, dem = demanda(dec, portas)
@@ -336,7 +337,7 @@ def main():
         print(tabela(c)); print()
     for c in todos:
         r = res[c.nome]
-        print(f"{c.nome}\n  fitas {r['fitas']} | postes {r['postes']} "
+        print(f"{c.nome}\n  corridas {r['corridas']} | fitas {r['fitas']} | postes {r['postes']} "
               f"| com reserva de 10% {r['postes_reserva']} | metros {r['metros']:.0f}")
         k = r["custo"]
         print(f"  EUR {k['lista_ex']:,.2f} ex-VAT | EUR {k['lista_inc']:,.2f} inc-VAT "

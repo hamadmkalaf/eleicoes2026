@@ -89,8 +89,8 @@ corridas longas. É a aritmética das corridas outra vez.
 | Cenário | Corridas | Fitas | Postes | +10% | EUR ex-VAT¹ |
 |---|--:|--:|--:|--:|--:|
 | 1 — canais retos + fila em toda mesa | 60 | 186 | 252 | **278** | 4.250 |
-| 1e — 3 m com guia de um lado só, divisórias partilhadas | 47 | 146 | 193 | **213** | 3.275 |
-| 1i — canais retos + fila dimensionada por fôlego | 62 | 196 | 262 | **289** | 4.415 |
+| 1e — 3 m com guia de um lado só, divisórias partilhadas | 41 | 146 | 193 | **213** | 3.275 |
+| 1i — canais retos + fila dimensionada por fôlego | 60 | 196 | 262 | **289** | 4.415 |
 | 2 — serpentina + 10 m só nas de alta | 22 | 190 | 218 | **240** | 3.680 |
 | 2b — serpentina + fila em todas as mesas | 72 | 306 | 384 | **423** | 6.425 |
 
@@ -221,3 +221,8 @@ economia — e nesse caso o número certo é 240.
    externa vira o problema principal e o desenho interno perde relevância.
 5. Largura de 5,93 m nos três vãos e os 0,29 m entre eles — medidos na planta do
    RDS, conferir em campo antes de encomendar.
+
+---
+
+Página com a planta e os cinco cenários lado a lado:
+<https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981>

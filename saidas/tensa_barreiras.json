@@ -1067,6 +1067,7 @@
      "metros": 136.0
     }
    ],
+   "corridas": 60,
    "fitas": 186,
    "postes": 252,
    "postes_reserva": 278,
@@ -1121,6 +1122,7 @@
      "metros": 68.0
     }
    ],
+   "corridas": 41,
    "fitas": 146,
    "postes": 193,
    "postes_reserva": 213,
@@ -1215,6 +1217,7 @@
      "metros": 104.0
     }
    ],
+   "corridas": 60,
    "fitas": 196,
    "postes": 262,
    "postes_reserva": 289,
@@ -1277,6 +1280,7 @@
      "metros": 60.0
     }
    ],
+   "corridas": 22,
    "fitas": 190,
    "postes": 218,
    "postes_reserva": 240,
@@ -1355,6 +1359,7 @@
      "metros": 136.0
     }
    ],
+   "corridas": 72,
    "fitas": 306,
    "postes": 384,
    "postes_reserva": 423,

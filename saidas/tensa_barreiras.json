@@ -1,0 +1,1370 @@
+{
+ "fonte": {
+  "cenario": "Hamad_3polos",
+  "criadoEm": "2026-09-05T18:45:18.238Z",
+  "base": "A",
+  "salao": {
+   "largura": 50.3,
+   "altura": 44.4,
+   "recorte": [
+    0.0,
+    0.0,
+    7.8,
+    7.0
+   ],
+   "contorno": [
+    [
+     7.8,
+     0.0
+    ],
+    [
+     50.3,
+     0.0
+    ],
+    [
+     50.3,
+     44.4
+    ],
+    [
+     0.0,
+     44.4
+    ],
+    [
+     0.0,
+     7.0
+    ],
+    [
+     7.8,
+     7.0
+    ]
+   ]
+  }
+ },
+ "premissas": {
+  "fita_m": 2.0,
+  "largura_fila": 0.9,
+  "densidade_p_por_m": 2.0,
+  "profundidade_checkpoint": 20.0,
+  "pitch_serpentina": 1.18,
+  "comprimentos": {
+   "alta": 10.0,
+   "media": 5.0,
+   "baixa": 3.0
+  },
+  "reserva": 0.1
+ },
+ "mesas": [
+  {
+   "n": 1,
+   "mrv": 511,
+   "classe": "baixa",
+   "esperado": 375,
+   "aptos": 582,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 13.8,
+   "y": 44.2,
+   "fila": 3.0
+  },
+  {
+   "n": 2,
+   "mrv": 512,
+   "classe": "baixa",
+   "esperado": 355,
+   "aptos": 476,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 270,
+   "x": 17.7,
+   "y": 44.2,
+   "fila": 3.0
+  },
+  {
+   "n": 3,
+   "mrv": 513,
+   "classe": "baixa",
+   "esperado": 351,
+   "aptos": 502,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 270,
+   "x": 20.1,
+   "y": 44.3,
+   "fila": 3.0
+  },
+  {
+   "n": 4,
+   "mrv": 517,
+   "classe": "baixa",
+   "esperado": 348,
+   "aptos": 513,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 24,
+   "y": 44.3,
+   "fila": 3.0
+  },
+  {
+   "n": 5,
+   "mrv": 1160,
+   "classe": "baixa",
+   "esperado": 328,
+   "aptos": 473,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 270,
+   "x": 26.4,
+   "y": 44.3,
+   "fila": 3.0
+  },
+  {
+   "n": 6,
+   "mrv": 1352,
+   "classe": "baixa",
+   "esperado": 328,
+   "aptos": 462,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 270,
+   "x": 39.8,
+   "y": 44.15,
+   "fila": 3.0
+  },
+  {
+   "n": 7,
+   "mrv": 3054,
+   "classe": "baixa",
+   "esperado": 325,
+   "aptos": 454,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 32.56,
+   "y": 44.4,
+   "fila": 3.0
+  },
+  {
+   "n": 8,
+   "mrv": 3078,
+   "classe": "baixa",
+   "esperado": 311,
+   "aptos": 429,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 36.4,
+   "y": 44.2,
+   "fila": 3.0
+  },
+  {
+   "n": 9,
+   "mrv": 3108,
+   "classe": "media",
+   "esperado": 467,
+   "aptos": 756,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 0,
+   "x": 0.9,
+   "y": 14.85,
+   "fila": 5.0
+  },
+  {
+   "n": 10,
+   "mrv": 3142,
+   "classe": "media",
+   "esperado": 466,
+   "aptos": 793,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 0,
+   "x": 0.9,
+   "y": 12.25,
+   "fila": 5.0
+  },
+  {
+   "n": 11,
+   "mrv": 3161,
+   "classe": "media",
+   "esperado": 504,
+   "aptos": 791,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 0,
+   "x": 1.05,
+   "y": 8.85,
+   "fila": 5.0
+  },
+  {
+   "n": 12,
+   "mrv": 3179,
+   "classe": "baixa",
+   "esperado": 423,
+   "aptos": 676,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 180,
+   "x": 47.3,
+   "y": 34.7,
+   "fila": 3.0
+  },
+  {
+   "n": 13,
+   "mrv": 3216,
+   "classe": "baixa",
+   "esperado": 407,
+   "aptos": 571,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 180,
+   "x": 47.3,
+   "y": 31.8,
+   "fila": 3.0
+  },
+  {
+   "n": 14,
+   "mrv": 3229,
+   "classe": "baixa",
+   "esperado": 405,
+   "aptos": 606,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 180,
+   "x": 47.2,
+   "y": 28.95,
+   "fila": 3.0
+  },
+  {
+   "n": 15,
+   "mrv": 3245,
+   "classe": "media",
+   "esperado": 498,
+   "aptos": 781,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 180,
+   "x": 47.2,
+   "y": 26.65,
+   "fila": 5.0
+  },
+  {
+   "n": 16,
+   "mrv": 3302,
+   "classe": "media",
+   "esperado": 518,
+   "aptos": 771,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 180,
+   "x": 47.3,
+   "y": 19.7,
+   "fila": 5.0
+  },
+  {
+   "n": 17,
+   "mrv": 3305,
+   "classe": "media",
+   "esperado": 472,
+   "aptos": 767,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 180,
+   "x": 47.3,
+   "y": 17.3,
+   "fila": 5.0
+  },
+  {
+   "n": 18,
+   "mrv": 3306,
+   "classe": "media",
+   "esperado": 515,
+   "aptos": 766,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 180,
+   "x": 47.3,
+   "y": 13.4,
+   "fila": 5.0
+  },
+  {
+   "n": 19,
+   "mrv": 3308,
+   "classe": "baixa",
+   "esperado": 295,
+   "aptos": 399,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 180,
+   "x": 47.3,
+   "y": 11,
+   "fila": 3.0
+  },
+  {
+   "n": 20,
+   "mrv": 3309,
+   "classe": "baixa",
+   "esperado": 395,
+   "aptos": 615,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 180,
+   "x": 47.3,
+   "y": 7.1,
+   "fila": 3.0
+  },
+  {
+   "n": 21,
+   "mrv": 3311,
+   "classe": "media",
+   "esperado": 466,
+   "aptos": 630,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 0,
+   "x": 1,
+   "y": 18.3,
+   "fila": 5.0
+  },
+  {
+   "n": 22,
+   "mrv": 3313,
+   "classe": "alta",
+   "esperado": 590,
+   "aptos": 797,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 29.75,
+   "y": 44.35,
+   "fila": 10.0
+  },
+  {
+   "n": 23,
+   "mrv": 3315,
+   "classe": "alta",
+   "esperado": 586,
+   "aptos": 792,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 180,
+   "x": 47.1,
+   "y": 23.85,
+   "fila": 10.0
+  },
+  {
+   "n": 24,
+   "mrv": 3322,
+   "classe": "alta",
+   "esperado": 588,
+   "aptos": 794,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 0,
+   "x": 0.9,
+   "y": 23.95,
+   "fila": 10.0
+  },
+  {
+   "n": 25,
+   "mrv": 3442,
+   "classe": "baixa",
+   "esperado": 295,
+   "aptos": 398,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 0,
+   "x": 0.9,
+   "y": 27.3,
+   "fila": 3.0
+  },
+  {
+   "n": 26,
+   "mrv": 3688,
+   "classe": "baixa",
+   "esperado": 296,
+   "aptos": 400,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 0,
+   "x": 0.7,
+   "y": 31.3,
+   "fila": 3.0
+  },
+  {
+   "n": 27,
+   "mrv": 3832,
+   "classe": "baixa",
+   "esperado": 296,
+   "aptos": 400,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 0,
+   "x": 0.4,
+   "y": 33.8,
+   "fila": 3.0
+  },
+  {
+   "n": 28,
+   "mrv": 3862,
+   "classe": "baixa",
+   "esperado": 296,
+   "aptos": 400,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 0,
+   "x": 0.3,
+   "y": 37.2,
+   "fila": 3.0
+  }
+ ],
+ "demanda": [
+  {
+   "entrada": "A",
+   "esperado": 3642,
+   "media_h": 405,
+   "pico_h": 728,
+   "pico_min": 12.1
+  },
+  {
+   "entrada": "B",
+   "esperado": 4215,
+   "media_h": 468,
+   "pico_h": 843,
+   "pico_min": 14.1
+  },
+  {
+   "entrada": "C",
+   "esperado": 3642,
+   "media_h": 405,
+   "pico_h": 728,
+   "pico_min": 12.1
+  }
+ ],
+ "comparecimento_total": 11499,
+ "vizinhancas": [
+  [
+   10,
+   9,
+   1.7,
+   5.0
+  ],
+  [
+   26,
+   27,
+   1.6,
+   3.0
+  ],
+  [
+   14,
+   15,
+   1.4,
+   3.0
+  ],
+  [
+   16,
+   17,
+   1.5,
+   5.0
+  ],
+  [
+   18,
+   19,
+   1.5,
+   3.0
+  ],
+  [
+   2,
+   3,
+   1.5,
+   3.0
+  ],
+  [
+   4,
+   5,
+   1.5,
+   3.0
+  ]
+ ],
+ "folego": [
+  {
+   "n": 1,
+   "mrv": 511,
+   "classe": "baixa",
+   "esperado": 375,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.25,
+   "liquido_min": 0.25,
+   "minutos": 24
+  },
+  {
+   "n": 2,
+   "mrv": 512,
+   "classe": "baixa",
+   "esperado": 355,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.18,
+   "liquido_min": 0.18,
+   "minutos": 33
+  },
+  {
+   "n": 3,
+   "mrv": 513,
+   "classe": "baixa",
+   "esperado": 351,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.17,
+   "liquido_min": 0.17,
+   "minutos": 35
+  },
+  {
+   "n": 4,
+   "mrv": 517,
+   "classe": "baixa",
+   "esperado": 348,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.16,
+   "liquido_min": 0.16,
+   "minutos": 38
+  },
+  {
+   "n": 5,
+   "mrv": 1160,
+   "classe": "baixa",
+   "esperado": 328,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.09,
+   "liquido_min": 0.09,
+   "minutos": 64
+  },
+  {
+   "n": 6,
+   "mrv": 1352,
+   "classe": "baixa",
+   "esperado": 328,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.09,
+   "liquido_min": 0.09,
+   "minutos": 64
+  },
+  {
+   "n": 7,
+   "mrv": 3054,
+   "classe": "baixa",
+   "esperado": 325,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.08,
+   "liquido_min": 0.08,
+   "minutos": 72
+  },
+  {
+   "n": 8,
+   "mrv": 3078,
+   "classe": "baixa",
+   "esperado": 311,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.04,
+   "liquido_min": 0.04,
+   "minutos": 164
+  },
+  {
+   "n": 9,
+   "mrv": 3108,
+   "classe": "media",
+   "esperado": 467,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.56,
+   "liquido_min": 0.56,
+   "minutos": 18
+  },
+  {
+   "n": 10,
+   "mrv": 3142,
+   "classe": "media",
+   "esperado": 466,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.55,
+   "liquido_min": 0.55,
+   "minutos": 18
+  },
+  {
+   "n": 11,
+   "mrv": 3161,
+   "classe": "media",
+   "esperado": 504,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.68,
+   "liquido_min": 0.68,
+   "minutos": 15
+  },
+  {
+   "n": 12,
+   "mrv": 3179,
+   "classe": "baixa",
+   "esperado": 423,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.41,
+   "liquido_min": 0.41,
+   "minutos": 15
+  },
+  {
+   "n": 13,
+   "mrv": 3216,
+   "classe": "baixa",
+   "esperado": 407,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.36,
+   "liquido_min": 0.36,
+   "minutos": 17
+  },
+  {
+   "n": 14,
+   "mrv": 3229,
+   "classe": "baixa",
+   "esperado": 405,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.35,
+   "liquido_min": 0.35,
+   "minutos": 17
+  },
+  {
+   "n": 15,
+   "mrv": 3245,
+   "classe": "media",
+   "esperado": 498,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.66,
+   "liquido_min": 0.66,
+   "minutos": 15
+  },
+  {
+   "n": 16,
+   "mrv": 3302,
+   "classe": "media",
+   "esperado": 518,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.73,
+   "liquido_min": 0.73,
+   "minutos": 14
+  },
+  {
+   "n": 17,
+   "mrv": 3305,
+   "classe": "media",
+   "esperado": 472,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.57,
+   "liquido_min": 0.57,
+   "minutos": 17
+  },
+  {
+   "n": 18,
+   "mrv": 3306,
+   "classe": "media",
+   "esperado": 515,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.72,
+   "liquido_min": 0.72,
+   "minutos": 14
+  },
+  {
+   "n": 19,
+   "mrv": 3308,
+   "classe": "baixa",
+   "esperado": 295,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.98,
+   "liquido_min": -0.02,
+   "minutos": null
+  },
+  {
+   "n": 20,
+   "mrv": 3309,
+   "classe": "baixa",
+   "esperado": 395,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.32,
+   "liquido_min": 0.32,
+   "minutos": 19
+  },
+  {
+   "n": 21,
+   "mrv": 3311,
+   "classe": "media",
+   "esperado": 466,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.55,
+   "liquido_min": 0.55,
+   "minutos": 18
+  },
+  {
+   "n": 22,
+   "mrv": 3313,
+   "classe": "alta",
+   "esperado": 590,
+   "fila": 10.0,
+   "cap": 20,
+   "chega_min": 1.97,
+   "liquido_min": 0.97,
+   "minutos": 21
+  },
+  {
+   "n": 23,
+   "mrv": 3315,
+   "classe": "alta",
+   "esperado": 586,
+   "fila": 10.0,
+   "cap": 20,
+   "chega_min": 1.95,
+   "liquido_min": 0.95,
+   "minutos": 21
+  },
+  {
+   "n": 24,
+   "mrv": 3322,
+   "classe": "alta",
+   "esperado": 588,
+   "fila": 10.0,
+   "cap": 20,
+   "chega_min": 1.96,
+   "liquido_min": 0.96,
+   "minutos": 21
+  },
+  {
+   "n": 25,
+   "mrv": 3442,
+   "classe": "baixa",
+   "esperado": 295,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.98,
+   "liquido_min": -0.02,
+   "minutos": null
+  },
+  {
+   "n": 26,
+   "mrv": 3688,
+   "classe": "baixa",
+   "esperado": 296,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.99,
+   "liquido_min": -0.01,
+   "minutos": null
+  },
+  {
+   "n": 27,
+   "mrv": 3832,
+   "classe": "baixa",
+   "esperado": 296,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.99,
+   "liquido_min": -0.01,
+   "minutos": null
+  },
+  {
+   "n": 28,
+   "mrv": 3862,
+   "classe": "baixa",
+   "esperado": 296,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.99,
+   "liquido_min": -0.01,
+   "minutos": null
+  }
+ ],
+ "isotempo": [
+  {
+   "n": 1,
+   "mrv": 511,
+   "classe": "baixa",
+   "esperado": 375,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 2,
+   "mrv": 512,
+   "classe": "baixa",
+   "esperado": 355,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 3,
+   "mrv": 513,
+   "classe": "baixa",
+   "esperado": 351,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 4,
+   "mrv": 517,
+   "classe": "baixa",
+   "esperado": 348,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 5,
+   "mrv": 1160,
+   "classe": "baixa",
+   "esperado": 328,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 6,
+   "mrv": 1352,
+   "classe": "baixa",
+   "esperado": 328,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 7,
+   "mrv": 3054,
+   "classe": "baixa",
+   "esperado": 325,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 8,
+   "mrv": 3078,
+   "classe": "baixa",
+   "esperado": 311,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 9,
+   "mrv": 3108,
+   "classe": "media",
+   "esperado": 467,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 10,
+   "mrv": 3142,
+   "classe": "media",
+   "esperado": 466,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 11,
+   "mrv": 3161,
+   "classe": "media",
+   "esperado": 504,
+   "atual": 5.0,
+   "iso": 7.0
+  },
+  {
+   "n": 12,
+   "mrv": 3179,
+   "classe": "baixa",
+   "esperado": 423,
+   "atual": 3.0,
+   "iso": 4.5
+  },
+  {
+   "n": 13,
+   "mrv": 3216,
+   "classe": "baixa",
+   "esperado": 407,
+   "atual": 3.0,
+   "iso": 4.0
+  },
+  {
+   "n": 14,
+   "mrv": 3229,
+   "classe": "baixa",
+   "esperado": 405,
+   "atual": 3.0,
+   "iso": 4.0
+  },
+  {
+   "n": 15,
+   "mrv": 3245,
+   "classe": "media",
+   "esperado": 498,
+   "atual": 5.0,
+   "iso": 7.0
+  },
+  {
+   "n": 16,
+   "mrv": 3302,
+   "classe": "media",
+   "esperado": 518,
+   "atual": 5.0,
+   "iso": 7.5
+  },
+  {
+   "n": 17,
+   "mrv": 3305,
+   "classe": "media",
+   "esperado": 472,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 18,
+   "mrv": 3306,
+   "classe": "media",
+   "esperado": 515,
+   "atual": 5.0,
+   "iso": 7.5
+  },
+  {
+   "n": 19,
+   "mrv": 3308,
+   "classe": "baixa",
+   "esperado": 295,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 20,
+   "mrv": 3309,
+   "classe": "baixa",
+   "esperado": 395,
+   "atual": 3.0,
+   "iso": 3.5
+  },
+  {
+   "n": 21,
+   "mrv": 3311,
+   "classe": "media",
+   "esperado": 466,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 22,
+   "mrv": 3313,
+   "classe": "alta",
+   "esperado": 590,
+   "atual": 10.0,
+   "iso": 10.0
+  },
+  {
+   "n": 23,
+   "mrv": 3315,
+   "classe": "alta",
+   "esperado": 586,
+   "atual": 10.0,
+   "iso": 10.0
+  },
+  {
+   "n": 24,
+   "mrv": 3322,
+   "classe": "alta",
+   "esperado": 588,
+   "atual": 10.0,
+   "iso": 10.0
+  },
+  {
+   "n": 25,
+   "mrv": 3442,
+   "classe": "baixa",
+   "esperado": 295,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 26,
+   "mrv": 3688,
+   "classe": "baixa",
+   "esperado": 296,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 27,
+   "mrv": 3832,
+   "classe": "baixa",
+   "esperado": 296,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 28,
+   "mrv": 3862,
+   "classe": "baixa",
+   "esperado": 296,
+   "atual": 3.0,
+   "iso": 3.0
+  }
+ ],
+ "cenarios": {
+  "Cenario 1 - canais retos ate o checkpoint + fila por mesa": {
+   "itens": [
+    {
+     "rotulo": "canais de entrada A/B/C ate o checkpoint (divisorias compartilhadas)",
+     "corridas": 4,
+     "L": 20.0,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "filas de mesa - alta (3 MRVs, 10 m, 2 lados)",
+     "corridas": 6,
+     "L": 10.0,
+     "fitas": 30,
+     "postes": 36,
+     "metros": 60.0
+    },
+    {
+     "rotulo": "filas de mesa - media (8 MRVs, 5 m, 2 lados)",
+     "corridas": 16,
+     "L": 5.0,
+     "fitas": 48,
+     "postes": 64,
+     "metros": 96.0
+    },
+    {
+     "rotulo": "filas de mesa - baixa (17 MRVs, 3 m, 2 lados)",
+     "corridas": 34,
+     "L": 3.0,
+     "fitas": 68,
+     "postes": 102,
+     "metros": 136.0
+    }
+   ],
+   "fitas": 186,
+   "postes": 252,
+   "postes_reserva": 278,
+   "metros": 372.0,
+   "custo": {
+    "postes": 278,
+    "lista_ex": 4250.0,
+    "lista_inc": 5227.5,
+    "ao_preco_orcado": 3622.34
+   }
+  },
+  "Cenario 1e - canais retos, 3 m com guia simples, divisorias partilhadas": {
+   "itens": [
+    {
+     "rotulo": "canais de entrada A/B/C ate o checkpoint (divisorias compartilhadas)",
+     "corridas": 4,
+     "L": 20.0,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "filas de mesa - alta (3 MRVs, 10 m, 2 lados, 0 divisorias partilhadas)",
+     "corridas": 6,
+     "L": 10.0,
+     "fitas": 30,
+     "postes": 36,
+     "metros": 60.0
+    },
+    {
+     "rotulo": "filas de mesa - media (8 MRVs, 5 m, 2 lados, 2 divisorias partilhadas)",
+     "corridas": 14,
+     "L": 5.0,
+     "fitas": 42,
+     "postes": 56,
+     "metros": 84.0
+    },
+    {
+     "rotulo": "filas de mesa - baixa (17 MRVs, 3 m, guia de um lado so)",
+     "corridas": 17,
+     "L": 3.0,
+     "fitas": 34,
+     "postes": 51,
+     "metros": 68.0
+    }
+   ],
+   "fitas": 146,
+   "postes": 193,
+   "postes_reserva": 213,
+   "metros": 292.0,
+   "custo": {
+    "postes": 213,
+    "lista_ex": 3275.0,
+    "lista_inc": 4028.25,
+    "ao_preco_orcado": 2775.39
+   }
+  },
+  "Cenario 1i - canais retos + fila dimensionada por folego (20 min de pico)": {
+   "itens": [
+    {
+     "rotulo": "canais de entrada A/B/C ate o checkpoint (divisorias compartilhadas)",
+     "corridas": 4,
+     "L": 20.0,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "filas de mesa de 10.0 m (3 MRVs: 22, 23, 24, 2 lados)",
+     "corridas": 6,
+     "L": 10.0,
+     "fitas": 30,
+     "postes": 36,
+     "metros": 60.0
+    },
+    {
+     "rotulo": "filas de mesa de 7.5 m (2 MRVs: 16, 18, 2 lados)",
+     "corridas": 4,
+     "L": 7.5,
+     "fitas": 16,
+     "postes": 20,
+     "metros": 32.0
+    },
+    {
+     "rotulo": "filas de mesa de 7.0 m (2 MRVs: 11, 15, 2 lados)",
+     "corridas": 4,
+     "L": 7.0,
+     "fitas": 16,
+     "postes": 20,
+     "metros": 32.0
+    },
+    {
+     "rotulo": "filas de mesa de 6.0 m (4 MRVs: 9, 10, 17, 21, 2 lados)",
+     "corridas": 8,
+     "L": 6.0,
+     "fitas": 24,
+     "postes": 32,
+     "metros": 48.0
+    },
+    {
+     "rotulo": "filas de mesa de 4.5 m (1 MRVs: 12, 2 lados)",
+     "corridas": 2,
+     "L": 4.5,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "filas de mesa de 4.0 m (2 MRVs: 13, 14, 2 lados)",
+     "corridas": 4,
+     "L": 4.0,
+     "fitas": 8,
+     "postes": 12,
+     "metros": 16.0
+    },
+    {
+     "rotulo": "filas de mesa de 3.5 m (1 MRVs: 20, 2 lados)",
+     "corridas": 2,
+     "L": 3.5,
+     "fitas": 4,
+     "postes": 6,
+     "metros": 8.0
+    },
+    {
+     "rotulo": "filas de mesa de 3.0 m (13 MRVs: 1, 2, 3, 4, 5, 6, 7, 8, 19, 25, 26, 27, 28, 2 lados)",
+     "corridas": 26,
+     "L": 3.0,
+     "fitas": 52,
+     "postes": 78,
+     "metros": 104.0
+    }
+   ],
+   "fitas": 196,
+   "postes": 262,
+   "postes_reserva": 289,
+   "metros": 392.0,
+   "custo": {
+    "postes": 289,
+    "lista_ex": 4415.0,
+    "lista_inc": 5430.45,
+    "ao_preco_orcado": 3765.67
+   }
+  },
+  "Cenario 2 - serpentina ate o checkpoint + 10 m so nas de alta": {
+   "itens": [
+    {
+     "rotulo": "bordas e divisas entre os tres blocos de serpentina",
+     "corridas": 4,
+     "L": 20.0,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "divisorias internas da serpentina A (5 corredores)",
+     "corridas": 4,
+     "L": 18.8,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "divisorias internas da serpentina B (5 corredores)",
+     "corridas": 4,
+     "L": 18.8,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "divisorias internas da serpentina C (5 corredores)",
+     "corridas": 4,
+     "L": 18.8,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "filas de mesa - alta (3 MRVs, 10 m, 2 lados)",
+     "corridas": 6,
+     "L": 10.0,
+     "fitas": 30,
+     "postes": 36,
+     "metros": 60.0
+    }
+   ],
+   "fitas": 190,
+   "postes": 218,
+   "postes_reserva": 240,
+   "metros": 380.0,
+   "custo": {
+    "postes": 240,
+    "lista_ex": 3680.0,
+    "lista_inc": 4526.4,
+    "ao_preco_orcado": 3127.2
+   }
+  },
+  "Cenario 2b - serpentina + fila em todas as mesas": {
+   "itens": [
+    {
+     "rotulo": "bordas e divisas entre os tres blocos de serpentina",
+     "corridas": 4,
+     "L": 20.0,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "divisorias internas da serpentina A (5 corredores)",
+     "corridas": 4,
+     "L": 18.8,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "divisorias internas da serpentina B (5 corredores)",
+     "corridas": 4,
+     "L": 18.8,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "divisorias internas da serpentina C (5 corredores)",
+     "corridas": 4,
+     "L": 18.8,
+     "fitas": 40,
+     "postes": 44,
+     "metros": 80.0
+    },
+    {
+     "rotulo": "bochechas de portao no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "filas de mesa - alta (3 MRVs, 10 m, 2 lados)",
+     "corridas": 6,
+     "L": 10.0,
+     "fitas": 30,
+     "postes": 36,
+     "metros": 60.0
+    },
+    {
+     "rotulo": "filas de mesa - media (8 MRVs, 5 m, 2 lados)",
+     "corridas": 16,
+     "L": 5.0,
+     "fitas": 48,
+     "postes": 64,
+     "metros": 96.0
+    },
+    {
+     "rotulo": "filas de mesa - baixa (17 MRVs, 3 m, 2 lados)",
+     "corridas": 34,
+     "L": 3.0,
+     "fitas": 68,
+     "postes": 102,
+     "metros": 136.0
+    }
+   ],
+   "fitas": 306,
+   "postes": 384,
+   "postes_reserva": 423,
+   "metros": 612.0,
+   "custo": {
+    "postes": 423,
+    "lista_ex": 6425.0,
+    "lista_inc": 7902.75,
+    "ao_preco_orcado": 5511.69
+   }
+  }
+ }
+}

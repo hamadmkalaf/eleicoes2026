@@ -12,12 +12,14 @@ correr leste-oeste, empilhadas em altura -- o corredor de fundo, as zonas, as
 baias de flanco, a garganta e as portas ficam onde estao. So a dobra da fila
 gira 90 graus.
 
-  original     raias norte-sul  (plano vigente, reconstruido)
-  rotacionado  raias leste-oeste nos mesmos retangulos
-  raias longas variante: sem baias, as tres zonas ocupando a largura toda
+  vigente        raias norte-sul, com as baias de flanco (plano vigente)
+  girado         raias leste-oeste, sem baias: as tres zonas ocupam a largura
+                 toda do Ring e toda a lotacao e fila em raia medida
+  girado c/baia  o passo intermediario: so girar, mantendo as baias
 
 Saidas: saidas/ring3.json, saidas/plano_ring3_horizontal.md,
-        saidas/ring3_vertical.svg, saidas/ring3_horizontal.svg
+        saidas/ring3_vigente.svg, saidas/ring3_girado.svg,
+        saidas/ring3_girado_com_baias.svg
 """
 
 from __future__ import annotations
@@ -282,7 +284,7 @@ def desenho_original() -> Desenho:
     return d
 
 
-def desenho_rotacionado() -> Desenho:
+def desenho_girado_com_baias() -> Desenho:
     """As mesmas zonas, com as raias giradas para leste-oeste."""
     z = [Zona(e, *BLOCOS_ORIG[e], PROF_SERP, "horizontal") for e in ("A", "B", "C")]
     d = Desenho("H", "Serpenteados horizontais (mesmas zonas, raias giradas)",
@@ -304,31 +306,63 @@ def desenho_rotacionado() -> Desenho:
     return d
 
 
-def desenho_raias_longas() -> Desenho:
-    """Variante: raias leste-oeste, mas sem baias — as zonas ocupam tudo.
+VAO_ENTRE_ZONAS = 2.60
 
-    Resolve o ziguezague de 4,2 m das zonas A e C alargando os blocos ate a
-    largura do Ring, ao custo das baias de flanco.
+
+def desenho_girado(raias: int | None = None) -> Desenho:
+    """O desenho: raias leste-oeste, sem baias, zonas na largura toda do Ring.
+
+    Tirar as baias devolve os 12,8 m dos dois flancos as tres zonas. Cada zona
+    fica com a largura proporcional ao comparecimento que ela espera — e essa
+    largura e, agora, o comprimento da raia. `raias` fixa quantas raias cada
+    zona tem (a profundidade sai disso); sem argumento, usa a faixa inteira de
+    23,75 m do plano vigente.
     """
-    vao = 2.60                                     # folga entre zonas
-    util = (RING["x1"] - RING["x0"]) - 2 * vao
+    prof = PROF_SERP if raias is None else raias * PASSO_RAIA
+    util = (RING["x1"] - RING["x0"]) - 2 * VAO_ENTRE_ZONAS
     larg = {e: util * ESPERADO[e] / ESPERADO_TOTAL for e in ESPERADO}
     x = RING["x0"]
     z = []
     for e in ("A", "B", "C"):
-        z.append(Zona(e, x, x + larg[e], PROF_SERP, "horizontal"))
-        x += larg[e] + vao
-    d = Desenho("HL", "Serpenteados horizontais com raias longas (sem baias)",
-                "As três zonas ocupam a largura toda do Ring; toda a lotação "
-                "fica em raia medida, nenhuma em baia.",
+        z.append(Zona(e, x, x + larg[e], prof, "horizontal"))
+        x += larg[e] + VAO_ENTRE_ZONAS
+    d = Desenho("H", "Serpenteados horizontais, sem baias (o desenho)",
+                "Raias leste-oeste empilhadas; as três zonas ocupam a largura "
+                "toda do Ring e toda a lotação é fila em raia medida.",
                 z, {}, {"corredor de fundo (2 lados)": 2 * CORREDOR["comp"]})
     d.notas = [
-        "Sem baias de flanco: toda a lotação é fila em raia, contável e com "
-        "ordem de chegada preservada.",
-        "Custa mais barreira do que os dois outros, porque a capacidade que o "
-        "plano vigente ganha de graça nas baias passa a ser paga em divisória.",
+        "Sem baias: toda a lotação é fila em raia — contável, com ordem de "
+        "chegada preservada e vazão previsível. No plano vigente, 39% da "
+        "lotação é massa parada nas baias de flanco.",
+        "A raia mais curta passa de 4,2 m (o ziguezague das zonas A e C quando "
+        "só se gira, mantendo as baias) para mais de 10 m.",
+        "A largura de cada zona é proporcional ao comparecimento que ela "
+        "espera — e, nesta geometria, largura da zona é comprimento de raia.",
+        "Custa mais barreira que o plano vigente: a lotação que ele ganha de "
+        "graça nas baias, que usam o gradil do Ring em três lados, passa a ser "
+        "paga em divisória.",
     ]
     return d
+
+
+def escada_de_raias() -> list:
+    """Capacidade contra separadores, variando o numero de raias por zona."""
+    fora = []
+    for n in range(6, int(PROF_SERP / (PASSO_RAIA - TOL_PASSO)) + 1):
+        d = desenho_girado(n)
+        if sum(z.prof for z in d.zonas) / 3 > PROF_SERP + 0.01:
+            break
+        fora.append({
+            "raias_por_zona": n,
+            "profundidade_m": round(n * PASSO_RAIA, 2),
+            "capacidade": round(d.capacidade),
+            "por_entrada": {e: round(x) for e, x in d.cap_por_entrada().items()},
+            "barreira_m": round(d.barreira_total, 1),
+            "separadores": d.separadores,
+            "compra": d.compra,
+            "custo_compra_eur": round(d.custo_compra, 2),
+        })
+    return fora
 
 
 def confere_original(v: Desenho) -> dict:
@@ -502,113 +536,155 @@ def bloco_json(d: Desenho) -> dict:
     }
 
 
-def markdown(v: Desenho, h: Desenho, hl: Desenho) -> str:
+def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list) -> str:
     conf = confere_original(v)
-    L, A = [], None
+    L = []
     A = L.append
-    A("# Ring 3 — serpentinas giradas para leste-oeste\n")
+    A("# Ring 3 — serpentinas giradas, sem baias\n")
     A("O plano vigente da fila externa (Ring 3, 39,0 × 35,0 m, 14 m ao sul da "
       "fachada) tem três zonas lado a lado — A, B e C —, alimentadas por um "
       "**corredor de fundo** ao sul e descarregando ao norte nas portas S4, S5 "
-      "e S6. Dentro de cada zona, as raias correm norte-sul. Este documento "
-      "mede o que muda quando, **nas mesmas zonas**, as raias passam a correr "
-      "leste-oeste, empilhadas em altura. Corredor, zonas, baias de flanco, "
-      "garganta e portas ficam exatamente onde estão: só a dobra da fila gira "
-      "90°.\n")
+      "e S6. Dentro de cada zona as raias correm norte-sul, e os dois flancos "
+      "do Ring são baias de espera.\n")
+    A("Este desenho faz duas coisas: **gira as raias** para leste-oeste, "
+      "empilhadas em altura, e **preenche as baias de flanco com serpenteado**. "
+      "As três zonas passam a ocupar a largura toda do Ring, com largura "
+      "proporcional ao comparecimento que cada uma espera — e nesta geometria "
+      "largura de zona é comprimento de raia. Corredor de fundo, garganta e "
+      "portas ficam onde estão.\n")
 
-    A("## A resposta\n")
-    A(f"**{h.separadores} separadores contra {v.separadores}** — "
-      f"{v.separadores - h.separadores} a menos, {n((1-h.separadores/v.separadores)*100,0)}% "
-      f"de economia — com a lotação praticamente igual "
-      f"({n(h.capacidade)} contra {n(v.capacidade)} pessoas). Sobre o estoque "
-      f"de {ESTOQUE_SEPARADORES} unidades da organizadora, a compra cai de "
-      f"{v.compra} para {h.compra} unidades: EUR {n(h.custo_compra,2)} no lugar "
-      f"de EUR {n(v.custo_compra,2)}.\n")
-    A("| | Vigente (raias N–S) | Girado (raias L–O) | Δ |")
+    A("## O que muda\n")
+    A("| | Plano vigente | Este desenho | Δ |")
     A("|---|---:|---:|---:|")
+    A(f"| Lotação total | {n(v.capacidade)} | {n(h.capacidade)} | "
+      f"{sinal(h.capacidade-v.capacidade)} |")
+    A(f"| … em raia medida | {n(v.cap_raias)} | {n(h.cap_raias)} | "
+      f"{sinal(h.cap_raias-v.cap_raias)} |")
+    A(f"| … em baia de espera | {n(v.cap_baias)} | 0 | {sinal(-v.cap_baias)} |")
+    A(f"| Raia mais curta | {n(min(z.comp for z in v.zonas),1)} m | "
+      f"{n(min(z.comp for z in h.zonas),1)} m | "
+      f"{sinal(min(z.comp for z in h.zonas)-min(z.comp for z in v.zonas),1)} m |")
+    A(f"| Meias-voltas | {v.meias_voltas} | {h.meias_voltas} | "
+      f"{sinal(h.meias_voltas-v.meias_voltas)} |")
     A(f"| Barreira | {n(v.barreira_total,1)} m | {n(h.barreira_total,1)} m | "
       f"{sinal(h.barreira_total-v.barreira_total,1)} m |")
-    A(f"| Separadores de 2 m | {v.separadores} | {h.separadores} | "
-      f"{sinal(h.separadores-v.separadores)} |")
+    A(f"| **Separadores de 2 m** | **{v.separadores}** | **{h.separadores}** | "
+      f"**{sinal(h.separadores-v.separadores)}** |")
     A(f"| A comprar (estoque {ESTOQUE_SEPARADORES}) | {v.compra} | {h.compra} | "
       f"{sinal(h.compra-v.compra)} |")
-    A(f"| Custo da compra | EUR {n(v.custo_compra,2)} | EUR {n(h.custo_compra,2)} | "
-      f"EUR {sinal(h.custo_compra-v.custo_compra,2)} |")
-    A(f"| Capacidade | {n(v.capacidade)} | {n(h.capacidade)} | "
-      f"{sinal(h.capacidade-v.capacidade)} |")
-    A(f"| Metros de barreira por pessoa | {n(v.m_por_pessoa,3)} | "
-      f"{n(h.m_por_pessoa,3)} | {sinal(h.m_por_pessoa-v.m_por_pessoa,3)} |")
+    A(f"| Custo da compra | EUR {n(v.custo_compra,2)} | EUR {n(h.custo_compra,2)} "
+      f"| EUR {sinal(h.custo_compra-v.custo_compra,2)} |")
     A("")
+    A(f"A lotação cai {n(abs(h.capacidade-v.capacidade))} pessoas "
+      f"({n(abs(h.capacidade/v.capacidade-1)*100,1)}%), mas **toda ela vira fila "
+      f"em raia**: {n(h.cap_raias)} contra {n(v.cap_raias)} do plano vigente, um "
+      f"aumento de {n((h.cap_raias/v.cap_raias-1)*100,0)}%. Fila em raia é fila "
+      "contável, com ordem de chegada preservada e vazão previsível; baia é "
+      "aglomeração que precisa de fiscal para voltar a ser fila.\n")
+    A(f"O preço está na barreira: **{h.separadores} separadores** contra "
+      f"{v.separadores}. Sobre as {ESTOQUE_SEPARADORES} unidades da "
+      f"organizadora, faltam **{h.compra}** — contra as {v.compra} que o plano "
+      f"vigente já precisava comprar. São {h.compra - v.compra} unidades a mais, "
+      f"EUR {n(h.custo_compra - v.custo_compra,2)}. A razão é direta: a lotação "
+      "que o plano vigente ganha de graça nas baias — que usam o gradil do Ring "
+      "em três lados e não gastam divisória nenhuma — passa a ser paga em "
+      "barreira.\n")
 
-    A("## De onde vem a economia\n")
-    A("A barreira de um serpenteado é `(n+1) × comprimento da raia − 1,2 × "
-      "(n−1)`: são n+1 corridas longitudinais, e cada divisória interna para "
-      "1,2 m antes da ponta para abrir a meia-volta. Girar as raias mantém a "
-      "área — e, portanto, a fila — mas **troca raias longas por raias curtas e "
-      "numerosas**. Como o número de raias multiplica o desconto da "
-      "meia-volta e divide o comprimento, o total cai.\n")
-    A("| Zona | Vigente | Girado | Barreira vigente | Barreira girada | Δ |")
-    A("|---|---|---|---:|---:|---:|")
-    for e in ("A", "B", "C"):
-        zv, zh = v.zona(e), h.zona(e)
-        A(f"| {e} ({PORTAS[e]['porta']}) | {zv.raias} raias de "
-          f"{n(zv.comp,1)} m | {zh.raias} raias de {n(zh.comp,1)} m | "
-          f"{n(zv.barreira,1)} m | {n(zh.barreira,1)} m | "
-          f"{sinal(zh.barreira-zv.barreira,1)} m |")
-    A(f"| **Total** | | | **{n(sum(z.barreira for z in v.zonas),1)} m** | "
-      f"**{n(sum(z.barreira for z in h.zonas),1)} m** | "
-      f"**{sinal(sum(z.barreira for z in h.zonas)-sum(z.barreira for z in v.zonas),1)} m** |")
+    A("## As três zonas\n")
+    A("| Zona | Porta | Largura = raia | Raias | Profundidade | Caminhada | "
+      "Lotação | Esperado | por eleitor |")
+    A("|---|---|---:|---:|---:|---:|---:|---:|---:|")
+    for z in h.zonas:
+        A(f"| {z.nome} | {PORTAS[z.nome]['porta']} | {n(z.comp,2)} m | "
+          f"{z.raias} | {n(z.prof,2)} m | {n(z.caminhada)} m | "
+          f"{n(z.capacidade)} | {n(ESPERADO[z.nome])} | "
+          f"{n(h.equilibrio()[z.nome],4)} |")
     A("")
-    A("O resto do plano — corredor de fundo, fechamento das baias, funil da "
-      "garganta — não muda. As raias do apron encurtam de leve, e por um "
-      "motivo que vale registrar: com as raias na horizontal, **a última raia "
-      "corre rente à borda norte da zona**, então o portão de saída pode ficar "
-      "em qualquer ponto dessa borda. Na zona B, o eixo de S5 cai dentro do "
-      "bloco, e a descarga fica perpendicular — desvio lateral zero, contra "
-      f"{n(abs(eixo_porta('B') - v.zona('B').portao),1)} m no desenho vigente.\n")
-    A("| Zona | Desvio lateral vigente | Desvio girado |")
+    A("As larguras saem do comparecimento esperado de cada entrada (base B de "
+      "2022), então a lotação de cada zona fica proporcional à fila que ela "
+      "vai receber. Entre as zonas ficam "
+      f"{n(VAO_ENTRE_ZONAS,1)} m de folga, para circulação de fiscal e passagem "
+      "de prioritário.\n")
+    A("**Descarga.** Com as raias na horizontal, a última raia corre rente à "
+      "borda norte da zona, então o portão de saída pode ficar em qualquer "
+      "ponto dela — e vai para o eixo da porta. Na zona B o eixo de S5 cai "
+      "dentro do bloco e a descarga fica perpendicular.\n")
+    A("| Zona | Desvio lateral no plano vigente | Neste desenho |")
     A("|---|---:|---:|")
     for e in ("A", "B", "C"):
         A(f"| {e} | {n(abs(eixo_porta(e)-v.zona(e).portao),2)} m | "
           f"{n(abs(eixo_porta(e)-h.zona(e).portao),2)} m |")
     A("")
 
-    A("## O que a rotação custa\n")
-    A(f"**Meias-voltas: {h.meias_voltas} contra {v.meias_voltas}.** Nas zonas A "
-      f"e C, de {n(v.zona('A').larg,1)} m de largura, a raia girada tem "
-      f"{n(h.zona('A').comp,1)} m e o eleitor dá "
-      f"{h.zona('A').meias_voltas} curvas até sair. É um ziguezague, não uma "
-      "fila. Na zona B, de 12,6 m, a raia girada continua confortável.\n")
-    A("O modelo de capacidade acima não cobra nada pela curva. Se cada "
-      f"meia-volta custar {n(PERDA_MEIA_VOLTA,1)} m de fila aproveitável — "
-      "premissa, não medição —, a conta fica:\n")
-    A("| | Vigente | Girado |")
+    A("## Barreira, componente a componente\n")
+    A("Fora desta conta: o gradil permanente do Ring, que os dois desenhos usam "
+      "de graça, e os 100 unifilas (200 m) do item *d* do orçamento, que servem "
+      "ao interior do Hall 2.\n")
+    A("| Componente | Plano vigente (m) | Este desenho (m) |")
     A("|---|---:|---:|")
-    A(f"| Capacidade nominal | {n(v.capacidade)} | {n(h.capacidade)} |")
-    A(f"| Descontadas as meias-voltas | {n(v.capacidade_com_perda)} | "
-      f"{n(h.capacidade_com_perda)} |")
+    chaves = list(dict.fromkeys(list(v.barreira) + list(h.barreira)))
+    for k in chaves:
+        a, b = v.barreira.get(k, 0.0), h.barreira.get(k, 0.0)
+        A(f"| {k} | {n(a,1) if a else '—'} | {n(b,1) if b else '—'} |")
+    A(f"| **Total** | **{n(v.barreira_total,1)}** | **{n(h.barreira_total,1)}** |")
+    A(f"| **Separadores** | **{v.separadores}** | **{h.separadores}** |")
     A("")
-    A("Ou seja: a economia de barreira é robusta, a paridade de capacidade "
-      "não. Sob a premissa da curva, o girado perde cerca de "
-      f"{n(v.capacidade_com_perda - h.capacidade_com_perda)} pessoas para o "
-      "vigente — ainda dentro do que a operação suporta, mas não é empate.\n")
+    A("A barreira de um serpenteado é `(n+1) × comprimento da raia − 1,2 × "
+      "(n−1)`: n+1 corridas longitudinais, e cada divisória interna para 1,2 m "
+      "antes da ponta para abrir a meia-volta. O que encarece aqui não é o "
+      "giro — é a área nova. O flanco que era baia virou serpenteado, e "
+      "serpenteado se paga em divisória.\n")
 
-    A("## Variante: raias longas, sem baias\n")
-    A("Se o ziguezague de A e C incomodar, a saída é alargar as três zonas até "
-      "a largura do Ring, o que consome as baias de flanco:\n")
-    A("| | Vigente | Girado | Raias longas |")
-    A("|---|---:|---:|---:|")
-    A(f"| Raia mais curta | {n(min(z.comp for z in v.zonas),1)} m | "
-      f"{n(min(z.comp for z in h.zonas),1)} m | "
-      f"{n(min(z.comp for z in hl.zonas),1)} m |")
-    A(f"| Capacidade | {n(v.capacidade)} | {n(h.capacidade)} | {n(hl.capacidade)} |")
-    A(f"| … em raia medida | {n(v.cap_raias)} | {n(h.cap_raias)} | {n(hl.cap_raias)} |")
-    A(f"| Separadores | {v.separadores} | {h.separadores} | {hl.separadores} |")
-    A(f"| A comprar | {v.compra} | {h.compra} | {hl.compra} |")
+    A("## Quanta barreira comprar\n")
+    A("O número de raias por zona é a alavanca: ele troca lotação por barreira "
+      "quase linearmente, sem mexer na largura das zonas nem na descarga. A "
+      "profundidade sobrante do Ring fica livre.\n")
+    A("| Raias por zona | Profundidade | Lotação | A | B | C | Separadores | "
+      "A comprar | Custo |")
+    A("|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
+    for r in escada:
+        marca = " ←" if r["raias_por_zona"] == h.zonas[0].raias else ""
+        pe = r["por_entrada"]
+        A(f"| {r['raias_por_zona']}{marca} | {n(r['profundidade_m'],1)} m | "
+          f"{n(r['capacidade'])} | {n(pe['A'])} | {n(pe['B'])} | {n(pe['C'])} | "
+          f"{r['separadores']} | {r['compra']} | EUR {n(r['custo_compra_eur'],2)} |")
     A("")
-    A("Toda a lotação vira fila medida, e o preço aparece na barreira: a "
-      "capacidade que o plano vigente ganha de graça nas baias — que usam o "
-      "gradil do Ring em três lados — passa a ser paga em divisória.\n")
+    cabe_v = [r for r in escada if r["separadores"] <= v.separadores]
+    cabe_e = [r for r in escada if r["separadores"] <= ESTOQUE_SEPARADORES]
+    fixa = h.barreira_total - sum(z.barreira for z in h.zonas)
+    A(f"`←` o desenho: a faixa inteira de {n(PROF_SERP,2)} m do plano vigente.")
+    if cabe_v:
+        A(f"Se a compra de {h.compra} separadores não sair inteira, "
+          f"{cabe_v[-1]['raias_por_zona']} raias por zona cabem dentro dos "
+          f"mesmos {v.separadores} separadores do plano vigente, com "
+          f"{n(cabe_v[-1]['capacidade'])} pessoas.")
+    if not cabe_e:
+        A(f"Nenhuma linha cabe nas {ESTOQUE_SEPARADORES} unidades da "
+          f"organizadora: o corredor de fundo, as raias do apron e o funil da "
+          f"garganta já consomem {n(fixa,1)} m — {unidades(fixa)} separadores "
+          "— antes da primeira raia. A menor configuração da escada pede "
+          f"{escada[0]['separadores']}.")
+    A("")
+
+    A("## O passo intermediário, para registro\n")
+    A("Girar as raias **mantendo** as baias de flanco é o desenho mais barato "
+      f"dos três — {hb.separadores} separadores, {v.separadores - hb.separadores} "
+      "a menos que o plano vigente — porque as zonas A e C, de "
+      f"{n(v.zona('A').larg,1)} m de largura, viram raias de "
+      f"{n(hb.zona('A').comp,1)} m com {hb.zona('A').meias_voltas} meias-voltas. "
+      "É barato e é um ziguezague. Preencher os flancos resolve isso: a raia "
+      f"mais curta passa de {n(min(z.comp for z in hb.zonas),1)} m para "
+      f"{n(min(z.comp for z in h.zonas),1)} m.\n")
+    A("| | Vigente | Só girar (com baias) | Girar e preencher os flancos |")
+    A("|---|---:|---:|---:|")
+    A(f"| Lotação | {n(v.capacidade)} | {n(hb.capacidade)} | {n(h.capacidade)} |")
+    A(f"| … em raia | {n(v.cap_raias)} | {n(hb.cap_raias)} | {n(h.cap_raias)} |")
+    A(f"| Raia mais curta | {n(min(z.comp for z in v.zonas),1)} m | "
+      f"{n(min(z.comp for z in hb.zonas),1)} m | "
+      f"{n(min(z.comp for z in h.zonas),1)} m |")
+    A(f"| Separadores | {v.separadores} | {hb.separadores} | {h.separadores} |")
+    A(f"| A comprar | {v.compra} | {hb.compra} | {h.compra} |")
+    A("")
 
     A("## Premissas e aderência ao plano original\n")
     A("| Parâmetro | Valor | Origem |")
@@ -618,9 +694,10 @@ def markdown(v: Desenho, h: Desenho, hl: Desenho) -> str:
     A(f"| Densidade em raia | {n(DENS_FILA,1)} pessoas/m² | reconstruído |")
     A(f"| Densidade em baia | {n(DENS_BAIA,1)} pessoas/m² | reconstruído |")
     A(f"| Vão de meia-volta | {n(VAO_RETORNO,1)} m | premissa |")
+    A(f"| Folga entre zonas | {n(VAO_ENTRE_ZONAS,1)} m | premissa |")
     A(f"| Separador | {n(SEPARADOR_M,1)} m · EUR {n(SEPARADOR_EUR,2)} | "
       "item d do orçamento (100 un. = EUR 1.303) |")
-    A(f"| Estoque da organizadora | {ESTOQUE_SEPARADORES} un. | plano do Ring 3 |")
+    A(f"| Estoque da organizadora | {ESTOQUE_SEPARADORES} un. | informado pelo Posto |")
     A("")
     A("`scripts/layout_ring3.py` e `saidas/plano_ring3.md` foram produzidos em "
       "sessão anterior e não chegaram a este repositório; o plano vigente foi "
@@ -638,29 +715,35 @@ def markdown(v: Desenho, h: Desenho, hl: Desenho) -> str:
     A("A capacidade fecha; a barreira fica "
       f"{n((conf['barreira_calculada_m']/conf['barreira_publicada_m']-1)*100,1)}% "
       "acima, porque a regra de contagem do plano original não é recuperável do "
-      "que foi publicado. **A comparação usa a regra deste script nos dois "
-      "desenhos** — a diferença de −"
-      f"{v.separadores - h.separadores} separadores é entre geometrias, não "
-      "entre métodos. Aplicada aos 300 separadores publicados, a mesma redução "
-      f"de {n((1-h.separadores/v.separadores)*100,0)}% daria cerca de "
+      "que foi publicado. **A comparação usa a regra deste modelo nos dois "
+      "desenhos.** Ancorando nos 300 separadores publicados em vez dos "
+      f"{v.separadores} recalculados, este desenho daria cerca de "
       f"{round(300*h.separadores/v.separadores)} unidades.\n")
 
     A("## Pendências de campo\n")
-    A("1. **Largura real das zonas.** O retângulo do Ring está centrado em S5 "
-      "por estimativa; medir no local muda o comprimento das raias giradas — "
-      "que, nesta geometria, é a largura da zona.\n")
+    A("1. **Largura real do Ring.** O retângulo está centrado em S5 por "
+      "estimativa. Nesta geometria a largura da zona *é* o comprimento da "
+      "raia: a medição de campo mexe direto na lotação.\n")
     A("2. **Onde o gradil abre.** A descarga perpendicular da zona B supõe "
-      f"portão no eixo de S5 (x ≈ {n(eixo_porta('B'),1)} m).\n")
-    A("3. **Ziguezague de A e C.** Antes de fechar, decidir se 4,2 m de raia "
-      "com 16 curvas é aceitável para o público do posto — inclusive idosos, "
-      "cadeirantes e carrinhos de bebê — ou se a variante de raias longas "
-      "compensa a barreira a mais.\n")
+      f"portão no eixo de S5 (x ≈ {n(eixo_porta('B'),1)} m). Sem isso, o "
+      "desenho continua de pé, mas a descarga volta a ser oblíqua.\n")
+    A("3. **Piso e drenagem.** Raia leste-oeste de até "
+      f"{n(max(z.comp for z in h.zonas),1)} m atravessa a declividade do Ring "
+      "de lado a lado; verificar se algum trecho acumula água (40% a 65% de "
+      "probabilidade de chuva em 4 de outubro, conforme o limiar da fonte).\n")
+    A("4. **Compra dos separadores.** O desenho pede "
+      f"{h.compra} unidades além das {ESTOQUE_SEPARADORES} da organizadora. "
+      "Confirmar prazo e preço antes de fechar a profundidade das zonas — a "
+      "escada acima é o que dá para recuar.\n")
     return "\n".join(L) + "\n"
 
 
 def main() -> None:
     os.makedirs(SAIDAS, exist_ok=True)
-    v, h, hl = desenho_original(), desenho_rotacionado(), desenho_raias_longas()
+    v = desenho_original()
+    h = desenho_girado()
+    hb = desenho_girado_com_baias()
+    escada = escada_de_raias()
 
     with open(os.path.join(SAIDAS, "ring3.json"), "w", encoding="utf-8") as f:
         json.dump({
@@ -669,6 +752,7 @@ def main() -> None:
                 "passo_raia_m": PASSO_RAIA, "raia_util_m": RAIA_UTIL,
                 "densidade_fila_p_m2": DENS_FILA, "densidade_baia_p_m2": DENS_BAIA,
                 "vao_retorno_m": VAO_RETORNO,
+                "vao_entre_zonas_m": VAO_ENTRE_ZONAS,
                 "perda_por_meia_volta_m": PERDA_MEIA_VOLTA,
                 "profundidade_serpenteado_m": PROF_SERP,
                 "largura_baia_m": LARG_BAIA, "corredor_de_fundo": CORREDOR,
@@ -678,17 +762,18 @@ def main() -> None:
             },
             "aderencia_ao_plano_original": confere_original(v),
             "vigente": bloco_json(v), "girado": bloco_json(h),
-            "raias_longas": bloco_json(hl),
+            "girado_com_baias": bloco_json(hb),
+            "escada_de_raias": escada,
         }, f, ensure_ascii=False, indent=2)
     with open(os.path.join(SAIDAS, "plano_ring3_horizontal.md"), "w",
               encoding="utf-8") as f:
-        f.write(markdown(v, h, hl))
-    for d, nome in ((v, "ring3_vertical.svg"), (h, "ring3_horizontal.svg"),
-                    (hl, "ring3_raias_longas.svg")):
+        f.write(markdown(v, h, hb, escada))
+    for d, nome in ((v, "ring3_vigente.svg"), (h, "ring3_girado.svg"),
+                    (hb, "ring3_girado_com_baias.svg")):
         with open(os.path.join(SAIDAS, nome), "w", encoding="utf-8") as f:
             f.write(svg(d))
 
-    for d in (v, h, hl):
+    for d in (v, hb, h):
         print(f"{d.codigo:<3} {d.capacidade:>6.0f} pessoas · {d.separadores:>3} "
               f"separadores · {d.barreira_total:6.1f} m · "
               f"{d.meias_voltas:>2} meias-voltas")

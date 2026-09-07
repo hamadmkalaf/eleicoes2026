@@ -51,9 +51,10 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
   `Residencia x Urna` e `Inconsistencias`.
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
-- **`saidas/plano_ring3_horizontal.md`**, **`saidas/ring3.json`** e
-  **`saidas/ring3_*.svg`** — o Ring 3 girado, os números por entrada e as
-  plantas em escala das geometrias comparadas.
+- **`saidas/plano_ring3_horizontal.md`**, **`saidas/ring3.json`**,
+  **`saidas/ring3_horizontal.html`** e **`saidas/ring3_*.svg`** — o Ring 3
+  girado, os números por entrada e as plantas em escala das geometrias
+  comparadas.
 
 ## Validações
 
@@ -89,27 +90,30 @@ de Dublin e passam a votar lá.
 ## Ring 3 — a fila externa
 
 `scripts/ring3.py` modela o compound de fila ao ar livre (Ring 3 do RDS,
-39,0 × 35,0 m, 14 m ao sul da fachada) e mede o que muda quando as serpentinas,
-**dentro das mesmas três zonas**, giram 90°: as raias passam a correr de leste
-para oeste, empilhadas em altura. Corredor de fundo, zonas, baias de flanco,
-garganta e portas ficam onde estão.
+39,0 × 35,0 m, 14 m ao sul da fachada). O plano vigente tem três zonas lado a
+lado com raias norte-sul e duas baias de espera nos flancos. O desenho deste
+diretório faz duas coisas: **gira as raias** para leste-oeste, empilhadas em
+altura, e **preenche as baias de flanco com serpenteado** — as três zonas
+passam a ocupar a largura toda do Ring, com largura proporcional à fila que
+cada uma espera. Corredor de fundo, garganta e portas ficam onde estão.
 
 ```bash
-python3 scripts/ring3.py            # plano, JSON e as plantas em SVG
+python3 scripts/ring3.py              # plano, JSON e as plantas em SVG
 python3 scripts/gera_pagina_ring3.py  # a página
 ```
 
-| Desenho | Capacidade | Separadores | A comprar (estoque 200) | Meias-voltas |
-|---|---:|---:|---:|---:|
-| Vigente — raias norte-sul (reconstruído) | 1.402 | 312 | 112 | 12 |
-| **Girado — raias leste-oeste** | **1.389** | **265** | **65** | **48** |
-| Variante de raias longas (sem baias) | 1.364 | 367 | 167 | 48 |
+| Desenho | Lotação | em raia | Raia mais curta | Separadores | A comprar |
+|---|---:|---:|---:|---:|---:|
+| Vigente — raias N–S, com baias | 1.402 | 855 | 23,8 m | 312 | 112 |
+| Só girar — raias L–O, com baias | 1.389 | 842 | 4,2 m | 265 | 65 |
+| **Girar e preencher os flancos** | **1.364** | **1.364** | **10,7 m** | **367** | **167** |
 
-Girar poupa **47 separadores** (−15%, EUR 612) com a lotação praticamente igual:
-a barreira de um serpenteado é `(n+1) × comprimento − 1,2 × (n−1)`, e raias
-curtas e numerosas somam menos que raias longas e poucas. O preço é a
-meia-volta — nas zonas A e C, de 4,2 m de largura, a raia girada vira um
-ziguezague com 16 curvas.
+A lotação cai 2,7%, mas **toda ela vira fila medida** (+60% de raia). O preço é
+a barreira: a lotação que o plano vigente ganha de graça nas baias — que usam o
+gradil do Ring em três lados — passa a ser paga em divisória. O estoque da
+organizadora é de 200 separadores; a escada de dimensionamento em
+`saidas/plano_ring3_horizontal.md` mostra o que cabe em cada orçamento de
+barreira.
 
 O plano vigente (`scripts/layout_ring3.py`, `saidas/plano_ring3.md`) não está
 neste repositório: foi produzido em sessão anterior e não chegou a ser

@@ -57,6 +57,7 @@
    23,
    24
   ],
+  "adotado": "1e",
   "regra": "uma linha no meio de cada par; uma linha por mesa sem par"
  },
  "pareamento": {
@@ -1053,10 +1054,86 @@
   }
  ],
  "comparecimento_total": 11499,
+ "adotado": "1e",
  "cenarios": [
   {
+   "adotado": true,
+   "nome": "1e",
+   "desc": "ADOTADO. Uma linha no meio de cada par, uma linha por mesa sem par, e só as duas divisórias que separam A de B e B de C. O limite externo dos canais fica com sinalização e equipe.",
+   "corridas": 21,
+   "fitas": 73,
+   "postes": 100,
+   "postes_reserva": 111,
+   "metros": 146.0,
+   "itens": [
+    {
+     "rotulo": "divisórias entre os canais A|B e B|C",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,0 m (2: 10–11, 17–18)",
+     "corridas": 2,
+     "L": 5.0,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "mesa sem par · 5,0 m (4: 9, 15, 16, 21)",
+     "corridas": 4,
+     "L": 5.0,
+     "fitas": 12,
+     "postes": 16,
+     "metros": 24.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,0 m (7: 1–2, 3–4, 7–8, 13–14, 19–20, 25–26, 27–28)",
+     "corridas": 7,
+     "L": 3.0,
+     "fitas": 14,
+     "postes": 21,
+     "metros": 28.0
+    },
+    {
+     "rotulo": "mesa sem par · 3,0 m (3: 5, 6, 12)",
+     "corridas": 3,
+     "L": 3.0,
+     "fitas": 6,
+     "postes": 9,
+     "metros": 12.0
+    }
+   ],
+   "custo": {
+    "postes": 111,
+    "lista_ex": 1745.0,
+    "lista_inc": 2146.35,
+    "ao_preco_orcado": 1446.33
+   }
+  },
+  {
+   "adotado": false,
    "nome": "1",
-   "desc": "Canais retos até o checkpoint, uma linha no meio de cada par e uma linha por mesa sem par. A escada 10/5/3 m.",
+   "desc": "Descartado. O mesmo, mais as duas bordas externas dos canais de entrada.",
    "corridas": 23,
    "fitas": 93,
    "postes": 122,
@@ -1136,81 +1213,9 @@
    }
   },
   {
-   "nome": "1e",
-   "desc": "O mesmo, sem as duas bordas externas dos canais: só as divisórias que de fato separam A de B e B de C.",
-   "corridas": 21,
-   "fitas": 73,
-   "postes": 100,
-   "postes_reserva": 111,
-   "metros": 146.0,
-   "itens": [
-    {
-     "rotulo": "divisórias entre os canais A|B e B|C",
-     "corridas": 2,
-     "L": 20.0,
-     "fitas": 20,
-     "postes": 22,
-     "metros": 40.0
-    },
-    {
-     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
-     "corridas": 0,
-     "L": 0.0,
-     "fitas": 0,
-     "postes": 6,
-     "metros": 0.0
-    },
-    {
-     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
-     "corridas": 3,
-     "L": 10.0,
-     "fitas": 15,
-     "postes": 18,
-     "metros": 30.0
-    },
-    {
-     "rotulo": "linha do meio de par · 5,0 m (2: 10–11, 17–18)",
-     "corridas": 2,
-     "L": 5.0,
-     "fitas": 6,
-     "postes": 8,
-     "metros": 12.0
-    },
-    {
-     "rotulo": "mesa sem par · 5,0 m (4: 9, 15, 16, 21)",
-     "corridas": 4,
-     "L": 5.0,
-     "fitas": 12,
-     "postes": 16,
-     "metros": 24.0
-    },
-    {
-     "rotulo": "linha do meio de par · 3,0 m (7: 1–2, 3–4, 7–8, 13–14, 19–20, 25–26, 27–28)",
-     "corridas": 7,
-     "L": 3.0,
-     "fitas": 14,
-     "postes": 21,
-     "metros": 28.0
-    },
-    {
-     "rotulo": "mesa sem par · 3,0 m (3: 5, 6, 12)",
-     "corridas": 3,
-     "L": 3.0,
-     "fitas": 6,
-     "postes": 9,
-     "metros": 12.0
-    }
-   ],
-   "custo": {
-    "postes": 111,
-    "lista_ex": 1745.0,
-    "lista_inc": 2146.35,
-    "ao_preco_orcado": 1446.33
-   }
-  },
-  {
+   "adotado": false,
    "nome": "1i",
-   "desc": "Mesma topologia, filas dimensionadas para que toda mesa aguente 20 minutos de pico.",
+   "desc": "Descartado. Mesma topologia, filas redimensionadas para que toda mesa aguente 20 minutos de pico.",
    "corridas": 23,
    "fitas": 97,
    "postes": 126,

@@ -4,10 +4,15 @@ Le o cenario `Hamad_3polos` da Prancheta do Hall 2 (posicoes das 28 mesas,
 papel das portas, comparecimento esperado e classe de cada MRV) e converte
 geometria em quantidade de postes e de fitas.
 
-Regra de fila adotada: **uma unica linha por par**, no meio, separando as
-duas filas do par. Mesa sem par ganha a sua propria linha, de um lado so.
-Cada fila fica entao com exatamente uma linha ao lado -- compartilhada
-quando ha par, propria quando nao ha.
+DESENHO ADOTADO PELO POSTO: **cenario 1e**. Uma unica linha por par, no
+meio, separando as duas filas do par; mesa sem par ganha a sua propria
+linha, de um lado so; e, dos quatro traçados possiveis no canal de entrada,
+so as duas divisorias do meio -- as que de fato separam A de B e B de C.
+Sao 100 postes, 111 com reserva de 10%.
+
+Os cenarios 1 e 1i continuam calculados como alternativas descartadas, para
+a decisao ficar auditavel: 1 acrescenta as duas bordas externas do canal;
+1i redimensiona as filas por folego de pico. Nao sao o que sera montado.
 
 Convencao de contagem, valida para o poste Tensa de fita retratil de 2,00 m:
 uma corrida reta de L metros gasta ceil(L/2) fitas e ceil(L/2)+1 postes -- o
@@ -29,6 +34,8 @@ LARG_FILA = 0.90     # m de largura util da fila, igual ao modulo da mesa
 DENSIDADE = 2.0      # pessoas por metro de fila simples (0,50 m por pessoa)
 PROF = 4.10          # m do modulo: a fila comeca onde o modulo termina
 COMPRIMENTO = {"alta": 10.0, "media": 5.0, "baixa": 3.0}
+
+ADOTADO = "1e"       # o desenho que o Posto vai montar
 
 # Os tres polos do cenario Hamad_3polos: as mesas de maior comparecimento,
 # postas de proposito longe uma da outra e sem par.
@@ -318,14 +325,15 @@ def cenarios(D, dec, mesas):
     escada = linhas_de_fila(mesas, S, lambda m: COMPRIMENTO[m["classe"]], faixa)
     porfol = linhas_de_fila(mesas, S, lambda m: iso[m["n"]], faixa)
     return [
-        monta("1", "Canais retos até o checkpoint, uma linha no meio de cada par "
-              "e uma linha por mesa sem par. A escada 10/5/3 m.",
-              portas, escada),
-        monta("1e", "O mesmo, sem as duas bordas externas dos canais: só as "
-              "divisórias que de fato separam A de B e B de C.",
+        monta("1e", "ADOTADO. Uma linha no meio de cada par, uma linha por mesa "
+              "sem par, e só as duas divisórias que separam A de B e B de C. "
+              "O limite externo dos canais fica com sinalização e equipe.",
               portas, escada, bordas=False),
-        monta("1i", "Mesma topologia, filas dimensionadas para que toda mesa "
-              "aguente 20 minutos de pico.",
+        monta("1", "Descartado. O mesmo, mais as duas bordas externas dos "
+              "canais de entrada.",
+              portas, escada),
+        monta("1i", "Descartado. Mesma topologia, filas redimensionadas para "
+              "que toda mesa aguente 20 minutos de pico.",
               portas, porfol),
     ], dict(escada=escada, porfolego=porfol, iso=iso)
 
@@ -352,7 +360,8 @@ def resumo(c):
 
 
 def tabela(c):
-    out = [f"### Cenário {c.nome}", "", c.desc, "",
+    marca = " — **adotado**" if c.nome == ADOTADO else ""
+    out = [f"### Cenário {c.nome}{marca}", "", c.desc, "",
            "| Item | Corridas | Comp. | Fitas | Postes |",
            "|---|--:|--:|--:|--:|"]
     for i in c.itens:
@@ -390,7 +399,8 @@ def main():
         print(tabela(c)); print()
     for c in cs:
         r = resumo(c)
-        print(f"Cenário {r['nome']}: corridas {r['corridas']} | fitas {r['fitas']} "
+        print(f"{'>>' if c.nome == ADOTADO else '  '} "
+              f"Cenário {r['nome']}: corridas {r['corridas']} | fitas {r['fitas']} "
               f"| postes {r['postes']} | com reserva de 10% {r['postes_reserva']} "
               f"| metros {r['metros']:.0f}")
         k = r["custo"]
@@ -404,12 +414,13 @@ def main():
         premissas=dict(fita_m=FITA, largura_fila=LARG_FILA,
                        densidade_p_por_m=DENSIDADE, profundidade_modulo=PROF,
                        profundidade_checkpoint=20.0, comprimentos=COMPRIMENTO,
-                       reserva=RESERVA, polos=sorted(POLOS),
+                       reserva=RESERVA, polos=sorted(POLOS), adotado=ADOTADO,
                        regra="uma linha no meio de cada par; uma linha por mesa sem par"),
         pareamento=dict(pares=ps, sem_par=soltas, polos=polos),
         mesas=mesas, isotempo=isotempo(mesas), folego=folego(mesas),
         comparecimento_total=dec["comparecimento"]["total"],
-        cenarios=[resumo(c) for c in cs])
+        adotado=ADOTADO,
+        cenarios=[dict(adotado=(c.nome == ADOTADO), **resumo(c)) for c in cs])
     with open(os.path.join(RAIZ, "saidas", "tensa_barreiras.json"), "w",
               encoding="utf-8") as f:
         json.dump(saida, f, ensure_ascii=False, indent=1)

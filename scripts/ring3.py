@@ -70,12 +70,22 @@ ESTOQUE_SEPARADORES = 200
 
 POR_METRO_RAIA = RAIA_UTIL * DENS_FILA     # pessoas por metro de raia
 
-# geometria do plano vigente
-PROF_SERP = 23.75      # profundidade da faixa de serpenteados
+# geometria
 LARG_BAIA = 6.40       # baia de flanco, cada lado
-CORREDOR = {"comp": 36.70, "larg": 3.00}   # corredor de fundo, ao sul
-FUNIL_GARGANTA = 12.0
+LARG_CORREDOR = 3.00   # corredor de fundo, encostado no gradil sul do Ring
 BLOCOS_ORIG = {"A": (15.16, 19.36), "B": (22.09, 34.69), "C": (37.19, 41.39)}
+
+# Sem faixa de garganta: o corredor de fundo vai para o limite sul do Ring e os
+# serpenteados comecam logo acima dele. Sobra para fila tudo o que nao e
+# corredor.
+PROF_SERP = (RING["y1"] - RING["y0"]) - LARG_CORREDOR
+
+# O plano vigente, que serve de aferição, tinha outra reparticao: 23,75 m de
+# serpenteado, 3,0 m de corredor com barreira nos dois lados e 8,25 m de faixa
+# de garganta ao sul. Esses numeros ficam so na reconstrucao.
+PROF_PLANO_ORIGINAL = 23.75
+CORREDOR_ORIGINAL = 36.70
+FUNIL_GARGANTA = 12.0
 
 
 def eixo_porta(e: str) -> float:
@@ -256,7 +266,6 @@ class Desenho:
              "divisórias entre as raias": sum(z.divisorias for z in self.zonas)}
         b.update(self.barreira_extra)
         b["raias do apron até as portas"] = sum(2 * z.diagonal for z in self.zonas)
-        b["funil da garganta sudeste"] = 2 * FUNIL_GARGANTA
         return b
 
     @property
@@ -280,34 +289,61 @@ class Desenho:
         return self.barreira_total / self.capacidade
 
 
-def _baias_de_flanco() -> dict:
-    return {"A": ("baia do flanco oeste", LARG_BAIA * PROF_SERP),
-            "C": ("baia do flanco leste", LARG_BAIA * PROF_SERP)}
+def _baias_de_flanco(prof: float | None = None) -> dict:
+    p = PROF_SERP if prof is None else prof
+    return {"A": ("baia do flanco oeste", LARG_BAIA * p),
+            "C": ("baia do flanco leste", LARG_BAIA * p)}
 
 
-def _extra_do_plano_vigente() -> dict:
-    return {"corredor de fundo (2 lados)": 2 * CORREDOR["comp"],
-            "fechamento das baias de flanco": 2 * LARG_BAIA}
+def _corredor_de_fundo(n_entradas: int = 3) -> dict:
+    """Corredor encostado no gradil sul: so a parede norte e barreira.
+
+    A parede sul do corredor e o proprio gradil permanente do Ring, e a parede
+    norte e a que fecha o lado sul das zonas — descontadas as aberturas por
+    onde a fila entra em cada zona.
+    """
+    larg_ring = RING["x1"] - RING["x0"]
+    return {"corredor de fundo (parede norte)":
+            larg_ring - n_entradas * VAO_SAIDA}
 
 
-def desenho_original() -> Desenho:
-    """Plano vigente: raias norte-sul, tres blocos lado a lado.
+def _extra_com_baias() -> dict:
+    return _corredor_de_fundo() | {"fechamento das baias de flanco": 2 * LARG_BAIA}
+
+
+def desenho_plano_vigente() -> Desenho:
+    """Reconstrucao do plano vigente, com a faixa de garganta que ele tinha.
 
     Cotas lidas do diagrama publicado na pagina "Rota do Eleitor": blocos de
     4,2 / 12,6 / 4,2 m (3 / 9 / 3 raias), 23,75 m de raia, corredor de fundo de
-    3,0 m ao sul e baias de 6,4 m nos flancos.
+    3,0 m com barreira dos dois lados, baias de 6,4 m nos flancos e 8,25 m de
+    faixa de garganta ao sul. Serve so de aferição — os quatro desenhos usam a
+    reparticao nova, sem garganta.
     """
+    z = [Zona(e, *BLOCOS_ORIG[e], PROF_PLANO_ORIGINAL, "vertical")
+         for e in ("A", "B", "C")]
+    d = Desenho("PV", "Plano vigente, reconstruído",
+                "Raias norte-sul de 23,75 m, baias nos flancos e faixa de "
+                "garganta ao sul.",
+                z, _baias_de_flanco(PROF_PLANO_ORIGINAL),
+                {"corredor de fundo (2 lados)": 2 * CORREDOR_ORIGINAL,
+                 "fechamento das baias de flanco": 2 * LARG_BAIA,
+                 "funil da garganta sudeste": 2 * FUNIL_GARGANTA})
+    return d
+
+
+def desenho_vertical_com_baias() -> Desenho:
+    """Raias norte-sul nos blocos do plano vigente, sem faixa de garganta."""
     z = [Zona(e, *BLOCOS_ORIG[e], PROF_SERP, "vertical") for e in ("A", "B", "C")]
-    d = Desenho("V", "Serpenteados verticais (plano vigente, reconstruído)",
-                "Raias norte-sul; a fila sobe do corredor de fundo até a boca do "
-                "bloco e atravessa o apron em diagonal.",
-                z, _baias_de_flanco(), _extra_do_plano_vigente())
+    d = Desenho("V", "Serpenteados verticais, com baias",
+                "Raias norte-sul; a fila sobe do corredor de fundo, encostado "
+                "no gradil sul, e sai pelo fim da última raia.",
+                z, _baias_de_flanco(), _extra_com_baias())
     d.notas = [
-        "Cada bloco descarrega pela sua boca inteira, que tem a largura do "
-        "bloco e não coincide com o vão da porta: as três correntes cruzam o "
-        "apron em diagonal.",
-        "As raias de 23,75 m são longas e com poucas meias-voltas — o ponto "
-        "forte deste desenho.",
+        "A fila sai pelo fim da última raia, num canto do bloco — na vertical "
+        "as meias-voltas abrem a borda norte, então o portão não pode ser "
+        "movido para o eixo da porta.",
+        "Raias de 32,00 m: longas, com poucas meias-voltas.",
     ]
     return d
 
@@ -317,9 +353,8 @@ def desenho_girado_com_baias() -> Desenho:
     z = [Zona(e, *BLOCOS_ORIG[e], PROF_SERP, "horizontal") for e in ("A", "B", "C")]
     d = Desenho("H", "Serpenteados horizontais (mesmas zonas, raias giradas)",
                 "Raias leste-oeste empilhadas em altura, dentro dos mesmos "
-                "retângulos; corredor de fundo, baias, garganta e portas "
-                "no lugar.",
-                z, _baias_de_flanco(), _extra_do_plano_vigente())
+                "retângulos; corredor de fundo, baias e portas no lugar.",
+                z, _baias_de_flanco(), _extra_com_baias())
     d.notas = [
         "A última raia corre rente à borda norte da zona, então o portão de "
         "saída pode ficar em qualquer ponto dela — e vai para o eixo da porta. "
@@ -359,7 +394,7 @@ def desenho_girado(raias: int | None = None) -> Desenho:
     d = Desenho("H", "Serpenteados horizontais, sem baias (o desenho)",
                 "Raias leste-oeste empilhadas; as três zonas ocupam a largura "
                 "toda do Ring e toda a lotação é fila em raia medida.",
-                z, {}, {"corredor de fundo (2 lados)": 2 * CORREDOR["comp"]})
+                z, {}, _corredor_de_fundo())
     d.notas = [
         "Sem baias: toda a lotação é fila em raia — contável, com ordem de "
         "chegada preservada e vazão previsível. No plano vigente, 39% da "
@@ -409,9 +444,7 @@ def desenho_vertical_sem_baias(vao: float = 2.00) -> Desenho:
     d = Desenho("VS", "Serpenteados verticais, sem baias",
                 "Raias norte-sul, as três zonas ocupando a largura toda do "
                 "Ring; toda a lotação é fila em raia medida.",
-                z, {}, _extra_do_plano_vigente() |
-                {"fechamento das baias de flanco": 0.0})
-    d.barreira_extra = {"corredor de fundo (2 lados)": 2 * CORREDOR["comp"]}
+                z, {}, _corredor_de_fundo())
     d.notas = [
         "Sem baias: os 12,8 m dos dois flancos viram serpenteado, e toda a "
         "lotação é fila em raia medida.",
@@ -430,12 +463,12 @@ def desenho_vertical_sem_baias(vao: float = 2.00) -> Desenho:
 def escada_de_profundidade() -> list:
     """Para o desenho vertical sem baias, a alavanca e a profundidade da raia."""
     fora = []
-    for prof in (12.0, 14.0, 16.0, 18.0, 20.0, 22.0, PROF_SERP):
+    for prof in (12.0, 16.0, 20.0, 24.0, 28.0, PROF_SERP):
         base = desenho_vertical_sem_baias()
         z = [Zona(k.nome, k.x0, k.x1, prof, "vertical", k.oeste_no_gradil,
                   k.leste_no_gradil) for k in base.zonas]
         d = Desenho(base.codigo, base.nome, base.resumo, z, {},
-                    {"corredor de fundo (2 lados)": 2 * CORREDOR["comp"]})
+                    _corredor_de_fundo())
         fora.append({
             "profundidade_m": round(prof, 2),
             "capacidade": round(d.capacidade),
@@ -469,6 +502,7 @@ def escada_de_raias() -> list:
 
 
 def confere_original(v: Desenho) -> dict:
+    """`v` aqui e o desenho_plano_vigente(), nao um dos quatro."""
     return {
         "raias_calculado": round(v.cap_raias, 1), "raias_publicado": 855,
         "baias_calculado": round(v.cap_baias, 1), "baias_publicado": 547,
@@ -550,7 +584,8 @@ def svg(d: Desenho) -> str:
                                 y_topo if i % 2 else y_topo - VAO_RETORNO,
                                 stroke=c, stroke_width="1", stroke_opacity=".6"))
             p.append(_txt((z.x0 + z.x1) / 2, y_topo + 1.3,
-                          f"{z.nome} · {z.raias} raias de {z.comp:.1f} m", 11,
+                          f"{z.nome} · {z.raias} raias de "
+                          f"{z.comp:.1f} m".replace(".", ","), 11,
                           peso=700, cor=c, halo="#eef1f4"))
         else:
             for i in range(1, z.raias):
@@ -560,7 +595,8 @@ def svg(d: Desenho) -> str:
                 p.append(_linha(a, y, b, y, stroke=c, stroke_width="1",
                                 stroke_opacity=".6"))
             p.append(_txt((z.x0 + z.x1) / 2, y_topo + 1.3,
-                          f"{z.nome} · {z.raias} × {z.comp:.1f} m", 11, peso=700,
+                          f"{z.nome} · {z.raias} × {z.comp:.1f} m".replace(".", ","),
+                          11, peso=700,
                           cor=c, halo="#eef1f4"))
         p.append(_linha(z.portao, y_topo, eixo_porta(z.nome), -0.4, stroke=c,
                         stroke_width="2", marker_end="url(#seta)"))
@@ -571,20 +607,19 @@ def svg(d: Desenho) -> str:
                           stroke="#8a919b", stroke_width="1.2", stroke_dasharray="4 3"))
             p.append(_txt((x0 + x1) / 2, (y_base + y_topo) / 2, nome, 10,
                           cor="#5c6c80", rot=-90))
-    cy1 = y_base - 1.2
-    cy0 = cy1 - CORREDOR["larg"]
-    p.append(_ret((RING["x0"] + RING["x1"]) / 2 - CORREDOR["comp"] / 2, cy0,
-                  (RING["x0"] + RING["x1"]) / 2 + CORREDOR["comp"] / 2, cy1,
-                  fill="none", stroke="#5c6c80", stroke_width="1.2"))
+    cy0 = RING["y0"]
+    cy1 = cy0 + LARG_CORREDOR
+    p.append(_ret(RING["x0"], cy0, RING["x1"], cy1, fill="none",
+                  stroke="#5c6c80", stroke_width="1.2"))
     p.append(_txt((RING["x0"] + RING["x1"]) / 2, (cy0 + cy1) / 2 - 0.4,
-                  "CORREDOR DE FUNDO · 3,0 m", 10, peso=600, cor="#5c6c80"))
-    p.append(_linha(RING["x1"] - 1.0, RING["y0"] + 2.0,
-                    (RING["x0"] + RING["x1"]) / 2 + CORREDOR["comp"] / 2 - 1,
-                    (cy0 + cy1) / 2, stroke="#5c6c80", stroke_width="2",
+                  f"CORREDOR DE FUNDO · {LARG_CORREDOR:.1f} m".replace(".", ","),
+                  10, peso=600, cor="#5c6c80"))
+    p.append(_linha(RING["x1"] + 3.0, cy0 + LARG_CORREDOR / 2, RING["x1"] - 0.6,
+                    cy0 + LARG_CORREDOR / 2, stroke="#5c6c80", stroke_width="2",
                     marker_end="url(#seta)"))
-    p.append(_txt(RING["x1"] - 6, RING["y0"] + 3.4, "garganta sudeste · pré-triagem",
-                  10, anchor="end", cor="#5c6c80"))
-    p.append(_txt(RING["x0"] + 0.4, RING["y0"] + 1.0,
+    p.append(_txt(RING["x1"] + 0.8, cy0 + LARG_CORREDOR + 1.4,
+                  "entrada sudeste", 10, anchor="start", cor="#5c6c80"))
+    p.append(_txt(RING["x0"] - 0.4, RING["y0"] - 1.6,
                   "gradil permanente do Ring 3 · 39,0 × 35,0 m", 10,
                   anchor="start", cor="#8a919b"))
     corpo = "\n".join(p)
@@ -640,8 +675,8 @@ def bloco_json(d: Desenho) -> dict:
 
 
 def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
-             vs: Desenho, escada_v: list) -> str:
-    conf = confere_original(v)
+             vs: Desenho, escada_v: list, pv: Desenho) -> str:
+    conf = confere_original(pv)
     L = []
     A = L.append
     quatro = [("Vigente", v), ("Sem baias", vs), ("Girado", hb),
@@ -650,9 +685,9 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
     A("# Ring 3 — quatro desenhos na mesma moldura\n")
     A("O compound de fila ao ar livre (Ring 3, 39,0 × 35,0 m, 14 m ao sul da "
       "fachada) tem três zonas — A, B e C —, alimentadas por um **corredor de "
-      "fundo** ao sul, com a garganta de pré-triagem no canto sudeste, e "
-      "descarregando ao norte nas portas S4, S5 e S6. Isso não muda em nenhum "
-      "dos desenhos. Mudam duas decisões, independentes uma da outra:\n")
+      "fundo** e descarregando ao norte nas portas S4, S5 e S6. Isso não muda "
+      "em nenhum dos desenhos. Mudam duas decisões, independentes uma da "
+      "outra:\n")
     A("1. **A direção das raias** — norte-sul, como no plano vigente, ou "
       "leste-oeste, empilhadas em altura.")
     A("2. **As baias de flanco** — manter as duas áreas de espera de "
@@ -662,6 +697,18 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
       "escape.\n")
     A("Duas decisões, quatro desenhos. Todos medidos com o mesmo modelo — mesma "
       "densidade, mesmo módulo de raia, mesma regra de barreira.\n")
+    A(f"**Sem faixa de garganta.** O corredor de fundo, de "
+      f"{n(LARG_CORREDOR,1)} m, foi para o limite sul do Ring, encostado no "
+      "gradil, e as filas começam logo acima dele. Os quatro desenhos usam "
+      f"portanto {n(PROF_SERP,2)} m de profundidade de raia, contra os "
+      f"{n(PROF_PLANO_ORIGINAL,2)} m do plano vigente, que reservava "
+      f"{n((RING['y1']-RING['y0']) - PROF_PLANO_ORIGINAL - LARG_CORREDOR,2)} m "
+      "ao sul para a garganta e a pré-triagem. São "
+      f"{n(PROF_SERP - PROF_PLANO_ORIGINAL,2)} m a mais de fila em cada raia — "
+      "e é de onde vem quase toda a lotação a mais destes desenhos. Duas "
+      "consequências de barreira: o funil da garganta desaparece da conta, e a "
+      "parede sul do corredor passa a ser o próprio gradil do Ring, então só a "
+      "parede norte é barreira.\n")
 
     A("## Os quatro, lado a lado\n")
     A("| | Raias N–S, com baias | **Raias N–S, sem baias** | Raias L–O, com baias | Raias L–O, sem baias |")
@@ -736,10 +783,9 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
     A("|---|" + "---:|" * len(quatro))
     for rot, chave in (("Perímetro das zonas", "perímetro das zonas"),
                        ("Divisórias entre as raias", "divisórias entre as raias"),
-                       ("Corredor de fundo", "corredor de fundo (2 lados)"),
+                       ("Corredor de fundo", "corredor de fundo (parede norte)"),
                        ("Fechamento das baias", "fechamento das baias de flanco"),
-                       ("Raias do apron", "raias do apron até as portas"),
-                       ("Funil da garganta", "funil da garganta sudeste")):
+                       ("Raias do apron", "raias do apron até as portas")):
         A(f"| {rot} | " + " | ".join(
             (n(d.barreira[chave], 1) + " m") if d.barreira.get(chave) else "—"
             for _, d in quatro) + " |")
@@ -780,7 +826,7 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
     A(f"O estoque da organizadora é de {ESTOQUE_SEPARADORES} separadores "
       f"({n(ESTOQUE_SEPARADORES*SEPARADOR_M)} m) e o que faltar pode ser "
       "adquirido. Nenhum dos quatro desenhos cabe no estoque: o corredor de "
-      "fundo, as raias do apron e o funil da garganta consomem sozinhos "
+      "fundo e as raias do apron consomem sozinhos "
       f"{n(vs.barreira_total - sum(z.barreira for z in vs.zonas),1)} m — "
       f"{unidades(vs.barreira_total - sum(z.barreira for z in vs.zonas))} "
       "separadores — antes da primeira raia de fila.\n")
@@ -795,13 +841,15 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
           f"{n(pe['A'])} | {n(pe['B'])} | {n(pe['C'])} | {r['separadores']} | "
           f"{r['compra']} | EUR {n(r['custo_compra_eur'],2)} |")
     A("")
-    cabe = [r for r in escada_v if r["separadores"] <= v.separadores]
+    cabe = [r for r in escada_v if r["separadores"] <= pv.separadores]
     if cabe:
-        A(f"`←` a faixa inteira. Dentro dos mesmos {v.separadores} separadores "
-          f"do plano vigente cabem {n(cabe[-1]['profundidade_m'],1)} m de raia, "
-          f"com {n(cabe[-1]['capacidade'])} pessoas — ainda "
-          f"{n(cabe[-1]['capacidade']-v.cap_raias)} a mais de **fila medida** "
-          f"que o plano vigente, que só tem {n(v.cap_raias)} em raia.\n")
+        A(f"`←` a faixa inteira, do corredor até a fachada norte do Ring. "
+          f"Dentro dos {pv.separadores} separadores do plano vigente "
+          f"reconstruído cabem {n(cabe[-1]['profundidade_m'],1)} m de raia, com "
+          f"{n(cabe[-1]['capacidade'])} pessoas — "
+          f"{n(cabe[-1]['capacidade']-pv.cap_raias)} a mais de **fila medida** "
+          f"que o plano vigente, que tem {n(pv.cap_raias)} em raia e "
+          f"{n(pv.cap_baias)} em baia.\n")
     A("No desenho girado sem baias, a alavanca é o número de raias por zona:\n")
     A("| Raias por zona | Profundidade | Lotação | Separadores | A comprar |")
     A("|---:|---:|---:|---:|---:|")
@@ -866,7 +914,8 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
 
 def main() -> None:
     os.makedirs(SAIDAS, exist_ok=True)
-    v = desenho_original()
+    pv = desenho_plano_vigente()
+    v = desenho_vertical_com_baias()
     vs = desenho_vertical_sem_baias()
     h = desenho_girado()
     hb = desenho_girado_com_baias()
@@ -884,13 +933,16 @@ def main() -> None:
                 "vao_entre_zonas_m": VAO_ENTRE_ZONAS,
                 "perda_por_meia_volta_m": PERDA_MEIA_VOLTA,
                 "profundidade_serpenteado_m": PROF_SERP,
-                "largura_baia_m": LARG_BAIA, "corredor_de_fundo": CORREDOR,
+                "largura_baia_m": LARG_BAIA,
+                "largura_corredor_m": LARG_CORREDOR,
+                "profundidade_plano_vigente_m": PROF_PLANO_ORIGINAL,
                 "separador_m": SEPARADOR_M, "separador_eur": SEPARADOR_EUR,
                 "estoque_separadores": ESTOQUE_SEPARADORES,
                 "comparecimento_esperado": ESPERADO,
             },
-            "aderencia_ao_plano_original": confere_original(v),
-            "vigente": bloco_json(v), "girado": bloco_json(h),
+            "aderencia_ao_plano_original": confere_original(pv),
+            "plano_vigente_reconstruido": bloco_json(pv),
+            "vertical_com_baias": bloco_json(v), "girado": bloco_json(h),
             "girado_com_baias": bloco_json(hb),
             "vertical_sem_baias": bloco_json(vs),
             "escada_de_raias": escada,
@@ -898,10 +950,11 @@ def main() -> None:
         }, f, ensure_ascii=False, indent=2)
     with open(os.path.join(SAIDAS, "plano_ring3_horizontal.md"), "w",
               encoding="utf-8") as f:
-        f.write(markdown(v, h, hb, escada, vs, escada_v))
-    for d, nome in ((v, "ring3_vigente.svg"), (h, "ring3_girado.svg"),
+        f.write(markdown(v, h, hb, escada, vs, escada_v, pv))
+    for d, nome in ((v, "ring3_vertical_com_baias.svg"), (h, "ring3_girado.svg"),
                     (hb, "ring3_girado_com_baias.svg"),
-                    (vs, "ring3_vertical_sem_baias.svg")):
+                    (vs, "ring3_vertical_sem_baias.svg"),
+                    (pv, "ring3_plano_vigente.svg")):
         with open(os.path.join(SAIDAS, nome), "w", encoding="utf-8") as f:
             f.write(svg(d))
 

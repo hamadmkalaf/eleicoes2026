@@ -90,40 +90,42 @@ de Dublin e passam a votar lá.
 ## Ring 3 — a fila externa
 
 `scripts/ring3.py` modela o compound de fila ao ar livre (Ring 3 do RDS,
-39,0 × 35,0 m, 14 m ao sul da fachada). A moldura é sempre a mesma — três
-zonas, corredor de fundo ao sul, garganta no canto sudeste, descarga ao norte
-em S4, S5 e S6. Mudam duas decisões independentes: **a direção das raias**
-(norte-sul ou leste-oeste) e **o que ocupa os flancos** (as duas baias de
-espera de 6,4 m, ou serpenteado). Duas decisões, quatro desenhos.
+39,0 × 35,0 m, 14 m ao sul da fachada). **Sem faixa de garganta:** o corredor de
+fundo de 3,0 m vai para o limite sul, encostado no gradil, e as filas começam
+logo acima dele — 32,00 m de raia contra os 23,75 m do plano vigente, que
+reservava 8,25 m ao sul para a pré-triagem. Sobre essa moldura, duas decisões
+independentes: **a direção das raias** (norte-sul ou leste-oeste) e **o que
+ocupa os flancos** (as duas baias de espera de 6,4 m, ou serpenteado).
 
 ```bash
-python3 scripts/ring3.py              # plano, JSON e as quatro plantas em SVG
+python3 scripts/ring3.py              # plano, JSON e as plantas em SVG
 python3 scripts/gera_pagina_ring3.py  # a página
 ```
 
 | | N–S com baias | **N–S sem baias** | L–O com baias | L–O sem baias |
 |---|---:|---:|---:|---:|
-| Lotação | 1.402 | **1.425** | 1.389 | 1.364 |
-| … em raia medida | 855 | **1.425** | 842 | 1.364 |
-| Raia mais curta | 23,8 m | 23,8 m | 4,2 m | 10,7 m |
-| Separadores | 314 | **404** | 317 | 395 |
-| A comprar (estoque 200) | 114 | **204** | 117 | 195 |
+| Lotação | 1.889 | **1.920** | 1.882 | 1.850 |
+| … em raia medida | 1.152 | **1.920** | 1.144 | 1.850 |
+| Raia mais curta | 32,0 m | 32,0 m | 4,2 m | 10,7 m |
+| Separadores | 357 | **480** | 363 | 471 |
+| A comprar (estoque 200) | 157 | **280** | 163 | 271 |
 
 **Quem decide a barreira são as baias, não a direção das raias.** A barreira de
 uma zona tem duas parcelas: o *perímetro*, que fecha o retângulo e é o mesmo nas
-duas orientações, e as *divisórias internas*, que separam raia de raia. Só a
-segunda muda ao girar, e a diferença é `0,14 × (profundidade − largura)` por
-zona — menos de 3 m numa zona de 4,2 × 23,75 m. Preencher os flancos, esse sim,
-custa 78 a 90 separadores, e paga com fila medida: 1.425 pessoas em raia contra
-855 do plano vigente.
+duas orientações, e as *divisórias internas*. Só a segunda muda ao girar, e a
+diferença é `0,14 × (profundidade − largura)` por zona. Eliminar a garganta
+devolveu 8,25 m a cada raia — de onde vem quase toda a lotação a mais — e
+baratearam-se duas linhas: o funil da garganta sai da conta e a parede sul do
+corredor passa a ser o próprio gradil.
 
 A evacuação não depende das baias: as barreiras laterais são removíveis e o
 escape sai pelos vãos de 2,0 m entre as zonas e pelo gradil.
 
 O plano vigente (`scripts/layout_ring3.py`, `saidas/plano_ring3.md`) não está
 neste repositório: foi produzido em sessão anterior e não chegou a ser
-versionado. Aqui ele é reconstruído das cotas publicadas, e a reconstrução
-reproduz os 855 dos serpenteados e os 547 das baias.
+versionado. Aqui ele é reconstruído das cotas publicadas — 1.402 pessoas, 314
+separadores — e a reconstrução reproduz os 855 dos serpenteados e os 547 das
+baias.
 
 
 ## Escopo

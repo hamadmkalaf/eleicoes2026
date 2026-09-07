@@ -14,7 +14,8 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SAIDAS = os.path.join(RAIZ, "saidas")
 
 D = json.load(open(os.path.join(SAIDAS, "ring3.json"), encoding="utf-8"))
-V, VS = D["vigente"], D["vertical_sem_baias"]
+V, VS = D["vertical_com_baias"], D["vertical_sem_baias"]
+PV = D["plano_vigente_reconstruido"]
 HB, H = D["girado_com_baias"], D["girado"]
 ESCADA_V, ESCADA_H = D["escada_de_profundidade"], D["escada_de_raias"]
 P, CONF = D["premissas"], D["aderencia_ao_plano_original"]
@@ -22,7 +23,7 @@ ESP = P["comparecimento_esperado"]
 PORTA = {"A": "S4", "B": "S5", "C": "S6"}
 ENTRADAS = ("A", "B", "C")
 
-QUATRO = [("Vigente", "raias N–S, com baias", V, "ring3_vigente.svg"),
+QUATRO = [("Com baias", "raias N–S, com baias", V, "ring3_vertical_com_baias.svg"),
           ("O desenho pedido", "raias N–S, sem baias", VS, "ring3_vertical_sem_baias.svg"),
           ("Girado", "raias L–O, com baias", HB, "ring3_girado_com_baias.svg"),
           ("Girado sem baias", "raias L–O, sem baias", H, "ring3_girado.svg")]
@@ -71,10 +72,9 @@ tabela4 = "\n".join([
 
 COMPONENTES = [("Perímetro das zonas", "perímetro das zonas"),
                ("Divisórias entre as raias", "divisórias entre as raias"),
-               ("Corredor de fundo", "corredor de fundo (2 lados)"),
+               ("Corredor de fundo (parede norte)", "corredor de fundo (parede norte)"),
                ("Fechamento das baias", "fechamento das baias de flanco"),
-               ("Raias do apron", "raias do apron até as portas"),
-               ("Funil da garganta", "funil da garganta sudeste")]
+               ("Raias do apron", "raias do apron até as portas")]
 
 componentes_tab = "\n".join(
     f'<tr><td>{rot}</td>' + "".join(
@@ -275,15 +275,16 @@ td.marca{{background:var(--realce); font-weight:600}}
 <header>
   <p class="olho">Eleições 2026 · 1º turno · 4 de outubro · RDS Ballsbridge · fila externa</p>
   <h1>Ring 3, quatro desenhos</h1>
-  <p class="chamada">A moldura não muda: três zonas, corredor de fundo ao sul, garganta no canto
-  sudeste, descarga ao norte em S4, S5 e S6. Mudam duas decisões — a direção das raias e o que
-  ocupa os flancos. Duas decisões, quatro desenhos, um modelo só para medir os quatro.</p>
+  <p class="chamada">Sem faixa de garganta: o corredor de fundo foi para o limite sul do Ring e as
+  filas começam logo acima dele — {num(P['profundidade_serpenteado_m'],2)} m de raia contra os
+  {num(P['profundidade_plano_vigente_m'],2)} m do plano vigente. Sobre essa moldura, duas decisões:
+  a direção das raias e o que ocupa os flancos.</p>
   <dl class="faixa">
     <div><dt>O desenho pedido</dt><dd>N–S sem baias<small>{raias_vs} raias de {num(P['profundidade_serpenteado_m'],2)} m</small></dd></div>
     <div><dt>Lotação</dt><dd class="delta">{num(VS['capacidade'])}<small>toda em raia · a maior dos quatro</small></dd></div>
-    <div><dt>Separadores</dt><dd class="alerta">{VS['separadores']}<small>a mais cara das quatro · vigente: {V['separadores']}</small></dd></div>
+    <div><dt>Separadores</dt><dd class="alerta">{VS['separadores']}<small>a mais cara das quatro · com baias: {V['separadores']}</small></dd></div>
     <div><dt>A comprar</dt><dd>{VS['compra']}<small>sobre os {P['estoque_separadores']} da organizadora · EUR {num(VS['custo_compra_eur'],0)}</small></dd></div>
-    <div><dt>Vão entre zonas</dt><dd>{num(folga,2)} m<small>rota de evacuação lateral</small></dd></div>
+    <div><dt>Profundidade da raia</dt><dd class="delta">{num(P['profundidade_serpenteado_m'],2)} m<small>plano vigente: {num(P['profundidade_plano_vigente_m'],2)} m + garganta</small></dd></div>
   </dl>
 </header>
 
@@ -309,6 +310,36 @@ td.marca{{background:var(--realce); font-weight:600}}
     <tbody>{tabela4}</tbody>
     <caption>Coluna destacada: o desenho pedido. Todos medidos com o mesmo modelo — mesma
     densidade, mesmo módulo de raia, mesma regra de barreira.</caption>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">O que a garganta custava</p>
+  <h2>Oito metros e um quarto, devolvidos à fila</h2>
+  <div class="prosa">
+  <p>O plano vigente reservava uma faixa de
+  {num(35 - P['profundidade_plano_vigente_m'] - P['largura_corredor_m'],2)} m ao sul do Ring para
+  a garganta e a pré-triagem, e punha o corredor de fundo acima dela. Sem essa faixa, o corredor
+  encosta no gradil sul e a raia cresce de {num(P['profundidade_plano_vigente_m'],2)} m para
+  {num(P['profundidade_serpenteado_m'],2)} m — <strong>{num(P['profundidade_serpenteado_m']-P['profundidade_plano_vigente_m'],2)} m
+  a mais em cada raia</strong>, que é de onde vem quase toda a lotação a mais destes quatro
+  desenhos.</p>
+  <p>Na barreira, duas consequências: o funil da garganta sai da conta, e a <strong>parede sul do
+  corredor passa a ser o próprio gradil</strong> do Ring — só a parede norte é barreira, e é ela
+  que fecha o lado sul das três zonas.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Faixa (norte → sul)</th><th class="num">Plano vigente</th><th class="num">Estes desenhos</th></tr></thead>
+    <tbody>
+      <tr><td>Serpenteado</td><td class="mono num">{num(P['profundidade_plano_vigente_m'],2)} m</td><td class="mono num ganho">{num(P['profundidade_serpenteado_m'],2)} m</td></tr>
+      <tr><td>Corredor de fundo</td><td class="mono num">{num(P['largura_corredor_m'],2)} m</td><td class="mono num">{num(P['largura_corredor_m'],2)} m</td></tr>
+      <tr><td>Garganta e pré-triagem</td><td class="mono num">{num(35 - P['profundidade_plano_vigente_m'] - P['largura_corredor_m'],2)} m</td><td class="mono num">—</td></tr>
+      <tr class="total"><td>Profundidade do Ring</td><td class="mono num">35,00 m</td><td class="mono num">35,00 m</td></tr>
+    </tbody>
+    <caption>A faixa de {num(35 - P['profundidade_plano_vigente_m'] - P['largura_corredor_m'],2)} m
+    da garganta era, no modelo, uma área livre de {num((35 - P['profundidade_plano_vigente_m'] - P['largura_corredor_m']) * (D['ring']['x1']-D['ring']['x0']),0)} m²
+    mais um funil de 12 m. Onde a pré-triagem passa a acontecer é uma decisão em aberto — ver as
+    pendências.</caption>
   </table></div>
 </section>
 
@@ -407,9 +438,9 @@ td.marca{{background:var(--realce); font-weight:600}}
     <th class="num">A comprar</th><th class="num">Custo</th></tr></thead>
     <tbody>{escada_v_tab}</tbody>
     <caption>Linha destacada: a faixa inteira de {num(P['profundidade_serpenteado_m'],2)} m do
-    plano vigente.</caption>
+    o Ring inteiro acima do corredor.</caption>
   </table></div>
-  {"<p class='nota'>Dentro dos mesmos " + str(V['separadores']) + " separadores do plano vigente cabem " + num(cabe_v[-1]['profundidade_m'],1) + " m de raia, com " + num(cabe_v[-1]['capacidade']) + " pessoas — ainda " + num(cabe_v[-1]['capacidade']-V['capacidade_raias']) + " a mais de <strong>fila medida</strong> que o plano vigente, que só tem " + num(V['capacidade_raias']) + " em raia.</p>" if cabe_v else ""}
+  {"<p class='nota'>Dentro dos " + str(PV['separadores']) + " separadores do plano vigente reconstruído cabem " + num(cabe_v[-1]['profundidade_m'],1) + " m de raia, com " + num(cabe_v[-1]['capacidade']) + " pessoas — ainda " + num(cabe_v[-1]['capacidade']-PV['capacidade_raias']) + " a mais de <strong>fila medida</strong> que o plano vigente, que tem " + num(PV['capacidade_raias']) + " em raia e " + num(PV['capacidade_baias']) + " em baia.</p>" if cabe_v else ""}
   <h3 style="margin-top:34px">No desenho girado sem baias, a alavanca é o número de raias</h3>
   <div class="rolagem"><table>
     <thead><tr><th class="num">Raias por zona</th><th class="num">Profundidade</th>
@@ -441,8 +472,8 @@ td.marca{{background:var(--realce); font-weight:600}}
   {num((CONF['barreira_calculada_m']/CONF['barreira_publicada_m']-1)*100,1)}% acima, porque a regra
   de contagem do plano original não é recuperável do que foi publicado. Por isso a comparação usa a
   regra deste modelo <strong>nos quatro desenhos</strong>. Ancorando nos 300 separadores publicados
-  em vez dos {V['separadores']} recalculados, o desenho pedido daria cerca de
-  <strong>{round(300*VS['separadores']/V['separadores'])} unidades</strong>.</p>
+  em vez dos {PV['separadores']} recalculados, o desenho pedido daria cerca de
+  <strong>{round(300*VS['separadores']/PV['separadores'])} unidades</strong>.</p>
   <div class="rolagem"><table>
     <thead><tr><th>Premissa</th><th class="num">Valor</th><th>Origem</th></tr></thead>
     <tbody>
@@ -451,7 +482,7 @@ td.marca{{background:var(--realce); font-weight:600}}
       <tr><td>Densidade em raia</td><td class="mono num">{num(P['densidade_fila_p_m2'],1)} p/m²</td><td>reconstruído</td></tr>
       <tr><td>Densidade em baia</td><td class="mono num">{num(P['densidade_baia_p_m2'],1)} p/m²</td><td>reconstruído</td></tr>
       <tr><td>Vão de meia-volta</td><td class="mono num">{num(P['vao_retorno_m'],1)} m</td><td>premissa</td></tr>
-      <tr><td>Profundidade da faixa</td><td class="mono num">{num(P['profundidade_serpenteado_m'],2)} m</td><td>plano vigente</td></tr>
+      <tr><td>Profundidade da raia</td><td class="mono num">{num(P['profundidade_serpenteado_m'],2)} m</td><td>Ring (35,00 m) menos o corredor de fundo</td></tr>
       <tr><td>Separador de fila</td><td class="mono num">{num(P['separador_m'],1)} m · EUR {num(P['separador_eur'],2)}</td><td>item d do orçamento (100 un. = EUR 1.303)</td></tr>
       <tr><td>Estoque da organizadora</td><td class="mono num">{P['estoque_separadores']} un. · {num(P['estoque_separadores']*P['separador_m'])} m</td><td>informado pelo Posto</td></tr>
     </tbody>
@@ -468,6 +499,11 @@ td.marca{{background:var(--realce); font-weight:600}}
     <li><div><h3>A compra dos separadores</h3><p>O desenho pedido precisa de {VS['compra']} unidades
     além das {P['estoque_separadores']} da organizadora, EUR {num(VS['custo_compra_eur'],2)}. A
     escada de profundidade é o que dá para recuar sem mexer no resto do desenho.</p></div></li>
+    <li><div><h3>Onde a pré-triagem acontece agora</h3><p>A faixa da garganta saiu do Ring: a
+    entrega do cartão de roteamento tem de migrar para o percurso a montante — o portão da Merrion
+    Road e o corredor da lateral leste — ou para o próprio corredor de fundo, que passa a ser a
+    única área de manobra dentro do Ring. Sem isso, a triagem vira um ponto de parada dentro de uma
+    fila já formada.</p></div></li>
     <li><div><h3>Os vãos entre as zonas como rota de escape</h3><p>O desenho conta com
     {num(folga,2)} m de vão livre entre zonas e com a remoção rápida das barreiras laterais. Vale
     confirmar com quem assina o plano de evacuação do RDS antes de fechar.</p></div></li>

@@ -90,12 +90,7 @@ escada_tab = "\n".join(
         b=num(l["por_entrada"]["B"]), c=num(l["por_entrada"]["C"]),
         sep=l["separadores"], compra=l["compra"],
         custo="EUR " + num(l["custo_compra_eur"], 2))
-    for l in ESCADA + [{"raias_por_zona": H["zonas"][0]["raias"],
-                        "profundidade_m": H["zonas"][0]["profundidade_m"],
-                        "capacidade": H["capacidade"],
-                        "por_entrada": H["por_entrada"],
-                        "separadores": H["separadores"], "compra": H["compra"],
-                        "custo_compra_eur": H["custo_compra_eur"]}])
+    for l in ESCADA)
 
 cabe_v = [l for l in ESCADA if l["separadores"] <= V["separadores"]]
 

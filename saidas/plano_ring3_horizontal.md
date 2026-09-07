@@ -73,6 +73,7 @@ O número de raias por zona é a alavanca: ele troca lotação por barreira quas
 | 14 | 19,6 m | 1.120 | 360 | 401 | 360 | 322 | 122 | EUR 1.588,44 |
 | 15 | 21,0 m | 1.202 | 385 | 431 | 385 | 337 | 137 | EUR 1.783,74 |
 | 16 | 22,4 m | 1.283 | 411 | 461 | 411 | 352 | 152 | EUR 1.979,04 |
+| 17 ← | 23,8 m | 1.364 | 437 | 490 | 437 | 367 | 167 | EUR 2.174,34 |
 
 `←` o desenho: a faixa inteira de 23,75 m do plano vigente.
 Se a compra de 167 separadores não sair inteira, 13 raias por zona cabem dentro dos mesmos 312 separadores do plano vigente, com 1.039 pessoas.

@@ -481,6 +481,20 @@
       "separadores": 352,
       "compra": 152,
       "custo_compra_eur": 1979.04
+    },
+    {
+      "raias_por_zona": 17,
+      "profundidade_m": 23.75,
+      "capacidade": 1364,
+      "por_entrada": {
+        "A": 437,
+        "B": 490,
+        "C": 437
+      },
+      "barreira_m": 733.0,
+      "separadores": 367,
+      "compra": 167,
+      "custo_compra_eur": 2174.34
     }
   ]
 }

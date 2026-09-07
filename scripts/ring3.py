@@ -318,7 +318,7 @@ def desenho_girado(raias: int | None = None) -> Desenho:
     zona tem (a profundidade sai disso); sem argumento, usa a faixa inteira de
     23,75 m do plano vigente.
     """
-    prof = PROF_SERP if raias is None else raias * PASSO_RAIA
+    prof = PROF_SERP if raias is None else min(raias * PASSO_RAIA, PROF_SERP)
     util = (RING["x1"] - RING["x0"]) - 2 * VAO_ENTRE_ZONAS
     larg = {e: util * ESPERADO[e] / ESPERADO_TOTAL for e in ESPERADO}
     x = RING["x0"]
@@ -350,11 +350,11 @@ def escada_de_raias() -> list:
     fora = []
     for n in range(6, int(PROF_SERP / (PASSO_RAIA - TOL_PASSO)) + 1):
         d = desenho_girado(n)
-        if sum(z.prof for z in d.zonas) / 3 > PROF_SERP + 0.01:
+        if d.zonas[0].raias != n:
             break
         fora.append({
             "raias_por_zona": n,
-            "profundidade_m": round(n * PASSO_RAIA, 2),
+            "profundidade_m": round(d.zonas[0].prof, 2),
             "capacidade": round(d.capacidade),
             "por_entrada": {e: round(x) for e, x in d.cap_por_entrada().items()},
             "barreira_m": round(d.barreira_total, 1),

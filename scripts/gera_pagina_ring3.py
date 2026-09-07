@@ -69,6 +69,25 @@ tabela4 = "\n".join([
     linha("Metros por pessoa", lambda d: num(d["m_por_pessoa"], 3)),
 ])
 
+COMPONENTES = [("Perímetro das zonas", "perímetro das zonas"),
+               ("Divisórias entre as raias", "divisórias entre as raias"),
+               ("Corredor de fundo", "corredor de fundo (2 lados)"),
+               ("Fechamento das baias", "fechamento das baias de flanco"),
+               ("Raias do apron", "raias do apron até as portas"),
+               ("Funil da garganta", "funil da garganta sudeste")]
+
+componentes_tab = "\n".join(
+    f'<tr><td>{rot}</td>' + "".join(
+        f'<td class="mono num">'
+        f'{num(d["barreira_por_componente_m"][ch],1) + " m" if d["barreira_por_componente_m"].get(ch) else "—"}'
+        f'</td>' for _, _, d, _ in QUATRO) + "</tr>"
+    for rot, ch in COMPONENTES) + "\n" + (
+    '<tr class="total"><td>Total</td>' + "".join(
+        f'<td class="mono num">{num(d["barreira_m"],1)} m</td>' for _, _, d, _ in QUATRO) +
+    "</tr>\n" +
+    '<tr class="total"><td>Separadores de 2 m</td>' + "".join(
+        f'<td class="mono num">{d["separadores"]}</td>' for _, _, d, _ in QUATRO) + "</tr>")
+
 plantas4 = "\n".join(
     f'<figure><div class="prancha">{svg(arq)}</div>'
     f'<figcaption><b>{rot}.</b> {sub} · {num(d["capacidade"])} pessoas '
@@ -277,9 +296,11 @@ td.marca{{background:var(--realce); font-weight:600}}
   {num(P['largura_baia_m'],1)} m — ficam como estão ou viram serpenteado. Como as barreiras
   laterais são removíveis e a evacuação sai pelos vãos entre as zonas e pelo gradil, a baia não
   precisa existir como reserva de escape.</p>
-  <p>As duas decisões são independentes, e cada uma empurra para um lado: <strong>tirar as baias
-  aumenta a fila medida e a barreira</strong>; <strong>girar as raias reduz a barreira</strong>,
-  porque divisória curta e numerosa soma menos que divisória longa.</p>
+  <p>As duas decisões são independentes, e só uma delas mexe no orçamento de barreira:
+  <strong>quem decide a barreira são as baias</strong>. Preencher os flancos custa
+  {VS['separadores']-V['separadores']} separadores na vertical e {H['separadores']-HB['separadores']}
+  na horizontal; girar as raias custa {HB['separadores']-V['separadores']} com as baias e poupa
+  {VS['separadores']-H['separadores']} sem elas — ruído.</p>
   </div>
   <div class="rolagem"><table>
     <thead><tr><th></th>
@@ -321,6 +342,32 @@ td.marca{{background:var(--realce); font-weight:600}}
   <p class="nota"><strong>Onde se evacua.</strong> Os {num(folga,2)} m entre as zonas, mais o
   gradil: como as barreiras laterais são removíveis, nenhuma área precisa ficar vazia à espera de
   uma emergência — que era a função que sobrava para as baias.</p>
+</section>
+
+<section>
+  <p class="rotulo">De onde vem a barreira</p>
+  <h2>Perímetro e divisórias respondem a decisões diferentes</h2>
+  <div class="prosa">
+  <p>A barreira de uma zona tem duas parcelas. O <strong>perímetro</strong> fecha o retângulo — o
+  lado norte, de frente para o apron, menos o portão de {num(P['vao_saida_m'],1)} m; os lados leste
+  e oeste, exceto onde coincidem com o gradil permanente do Ring; o lado sul não entra porque a
+  parede norte do corredor de fundo já o fecha. As <strong>divisórias</strong> separam raia de
+  raia: (n−1) corridas, cada uma {num(P['vao_retorno_m'],1)} m mais curta que a raia para abrir a
+  meia-volta.</p>
+  <p>O perímetro é o mesmo nas duas orientações — é o mesmo retângulo. Só as divisórias mudam ao
+  girar, e a diferença é <span class="mono">(profundidade − largura) × (1 −
+  {num(P['vao_retorno_m'],1)}/{num(P['passo_raia_m'],2)})</span>, ou seja 0,14 × (profundidade −
+  largura) por zona: menos de 3 m numa zona de 4,2 × 23,75 m. É por isso que girar não move o
+  orçamento.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Componente</th>
+      <th class="num">N–S<br>com baias</th><th class="num">N–S<br>sem baias</th>
+      <th class="num">L–O<br>com baias</th><th class="num">L–O<br>sem baias</th></tr></thead>
+    <tbody>{componentes_tab}</tbody>
+    <caption>Fora desta conta: o gradil permanente do Ring, que os quatro desenhos usam de graça, e
+    os 100 unifilas (200 m) do item <em>d</em> do orçamento, que servem ao interior do Hall 2.</caption>
+  </table></div>
 </section>
 
 <section>

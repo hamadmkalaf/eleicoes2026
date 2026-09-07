@@ -61,6 +61,7 @@ RAIA_UTIL = 1.20       # largura livre de caminhada
 DENS_FILA = 2.00       # pessoas/m2 em raia, em pe, sob guarda-chuva
 DENS_BAIA = 1.80       # pessoas/m2 em baia de espera
 VAO_RETORNO = 1.20     # folga de meia-volta na ponta de cada raia
+VAO_SAIDA = 1.40       # abertura do portao de saida, na borda norte da zona
 PERDA_MEIA_VOLTA = 0.60   # fila perdida em cada meia-volta (analise de sensibilidade)
 
 SEPARADOR_M = 2.00     # 1 separador = 2 m de barreira
@@ -103,6 +104,8 @@ class Zona:
     x1: float
     prof: float
     orientacao: str          # "vertical" (raias N-S) ou "horizontal" (raias L-O)
+    oeste_no_gradil: bool = False   # o lado oeste coincide com o gradil do Ring
+    leste_no_gradil: bool = False   # idem, a leste
 
     @property
     def larg(self) -> float:
@@ -157,12 +160,32 @@ class Zona:
     def capacidade(self) -> float:
         return (self.raias * self.comp - self.toco) * POR_METRO_RAIA
 
+    # -- barreira ---------------------------------------------------------
+    # A conta tem duas parcelas, e a primeira e a que fecha o perimetro da
+    # zona: sem ela a fila vaza pelos lados. Sao quatro lados:
+    #   norte  — de frente para o apron, precisa de barreira menos o portao;
+    #   sul    — encosta no corredor de fundo, cuja parede norte ja fecha;
+    #   oeste/leste — de barreira, exceto onde coincidem com o gradil do Ring.
+    # A segunda parcela sao as divisorias internas, que separam raia de raia.
+    @property
+    def perimetro(self) -> float:
+        lados = (self.larg - VAO_SAIDA)                       # norte, menos o portao
+        if not self.oeste_no_gradil:
+            lados += self.prof
+        if not self.leste_no_gradil:
+            lados += self.prof
+        return lados
+
+    @property
+    def divisorias(self) -> float:
+        n, L = self.raias, self.comp
+        if n <= 1:
+            return 0.0
+        return (n - 1) * max(0.0, L - VAO_RETORNO)
+
     @property
     def barreira(self) -> float:
-        n, L = self.raias, self.comp
-        if n <= 0:
-            return 0.0
-        return 2 * L + (n - 1) * max(0.0, L - VAO_RETORNO)
+        return self.perimetro + self.divisorias
 
     @property
     def meias_voltas(self) -> int:
@@ -229,7 +252,8 @@ class Desenho:
     # -- barreira ---------------------------------------------------------
     @property
     def barreira(self) -> dict:
-        b = {"serpenteados": sum(z.barreira for z in self.zonas)}
+        b = {"perímetro das zonas": sum(z.perimetro for z in self.zonas),
+             "divisórias entre as raias": sum(z.divisorias for z in self.zonas)}
         b.update(self.barreira_extra)
         b["raias do apron até as portas"] = sum(2 * z.diagonal for z in self.zonas)
         b["funil da garganta sudeste"] = 2 * FUNIL_GARGANTA
@@ -263,7 +287,7 @@ def _baias_de_flanco() -> dict:
 
 def _extra_do_plano_vigente() -> dict:
     return {"corredor de fundo (2 lados)": 2 * CORREDOR["comp"],
-            "fechamento das baias de flanco": 2 * (2 * LARG_BAIA)}
+            "fechamento das baias de flanco": 2 * LARG_BAIA}
 
 
 def desenho_original() -> Desenho:
@@ -301,9 +325,9 @@ def desenho_girado_com_baias() -> Desenho:
         "saída pode ficar em qualquer ponto dela — e vai para o eixo da porta. "
         "Na zona B o eixo de S5 cai dentro do bloco: a descarga fica "
         "perpendicular, sem diagonal nenhuma.",
-        "A barreira cai porque cada divisória passa a ter o comprimento da "
-        "zona, não a profundidade dela — e porque cada meia-volta a mais "
-        "encurta a divisória em 1,2 m.",
+        "A barreira quase não muda: o perímetro da zona é o mesmo nas duas "
+        "orientações, e só as divisórias internas mudam de comprimento — a "
+        "diferença é de 0,14 × (profundidade − largura) por zona.",
         "O preço é a meia-volta: nas zonas A e C, de 4,2 m de largura, a raia "
         "vira um ziguezague de 4,2 m com 16 curvas.",
     ]
@@ -328,7 +352,9 @@ def desenho_girado(raias: int | None = None) -> Desenho:
     x = RING["x0"]
     z = []
     for e in ("A", "B", "C"):
-        z.append(Zona(e, x, x + larg[e], prof, "horizontal"))
+        z.append(Zona(e, x, x + larg[e], prof, "horizontal",
+                      oeste_no_gradil=abs(x - RING["x0"]) < 0.05,
+                      leste_no_gradil=abs(x + larg[e] - RING["x1"]) < 0.05))
         x += larg[e] + VAO_ENTRE_ZONAS
     d = Desenho("H", "Serpenteados horizontais, sem baias (o desenho)",
                 "Raias leste-oeste empilhadas; as três zonas ocupam a largura "
@@ -376,7 +402,9 @@ def desenho_vertical_sem_baias(vao: float = 2.00) -> Desenho:
     z = []
     for e in ("A", "B", "C"):
         w = n[e] * PASSO_RAIA
-        z.append(Zona(e, x, x + w, PROF_SERP, "vertical"))
+        z.append(Zona(e, x, x + w, PROF_SERP, "vertical",
+                      oeste_no_gradil=abs(x - RING["x0"]) < 0.05,
+                      leste_no_gradil=abs(x + w - RING["x1"]) < 0.05))
         x += w + folga
     d = Desenho("VS", "Serpenteados verticais, sem baias",
                 "Raias norte-sul, as três zonas ocupando a largura toda do "
@@ -404,7 +432,8 @@ def escada_de_profundidade() -> list:
     fora = []
     for prof in (12.0, 14.0, 16.0, 18.0, 20.0, 22.0, PROF_SERP):
         base = desenho_vertical_sem_baias()
-        z = [Zona(k.nome, k.x0, k.x1, prof, "vertical") for k in base.zonas]
+        z = [Zona(k.nome, k.x0, k.x1, prof, "vertical", k.oeste_no_gradil,
+                  k.leste_no_gradil) for k in base.zonas]
         d = Desenho(base.codigo, base.nome, base.resumo, z, {},
                     {"corredor de fundo (2 lados)": 2 * CORREDOR["comp"]})
         fora.append({
@@ -656,11 +685,21 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
     A("| " + " | ".join(["Metros por pessoa"] +
                         [n(d.m_por_pessoa,3) for _, d in quatro]) + " |")
     A("")
-    A("Lê-se assim: **tirar as baias sempre aumenta a fila medida e a "
-      "barreira**; **girar as raias sempre reduz a barreira**, porque divisória "
-      "curta e numerosa soma menos que divisória longa. O desenho pedido — N–S "
-      f"sem baias — é o de maior lotação dos quatro ({n(vs.capacidade)}) e o "
-      f"mais caro em barreira ({vs.separadores} separadores).\n")
+    A("Lê-se assim: **quem decide a barreira são as baias, não a direção das "
+      "raias**. Preencher os flancos custa "
+      f"{vs.separadores - v.separadores} separadores na vertical e "
+      f"{h.separadores - hb.separadores} na horizontal; girar as raias custa "
+      f"{hb.separadores - v.separadores} separadores com as baias e poupa "
+      f"{vs.separadores - h.separadores} sem elas — ruído. O desenho pedido — "
+      f"N–S sem baias — é o de maior lotação dos quatro ({n(vs.capacidade)}) e "
+      f"um dos dois mais caros ({vs.separadores} separadores).\n")
+    A("A razão é geométrica. A barreira de uma zona tem duas parcelas: o "
+      "**perímetro**, que fecha o retângulo e é o mesmo nas duas orientações, "
+      "e as **divisórias internas**, que separam raia de raia. Só a segunda "
+      "muda ao girar, e muda pouco: a diferença é "
+      f"`(profundidade − largura) × (1 − {n(VAO_RETORNO,1)}/{n(PASSO_RAIA,2)})` "
+      "= 0,14 × (profundidade − largura) por zona. Numa zona de "
+      f"{n(v.zona('A').larg,1)} × {n(PROF_SERP,2)} m isso dá menos de 3 m.\n")
 
     A("## O desenho pedido: raias norte-sul, sem baias\n")
     A(f"Os {n(2*LARG_BAIA,1)} m dos dois flancos viram serpenteado. Como na "
@@ -689,6 +728,35 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
       "esperado, contra "
       f"{n(min(v.equilibrio().values()),4)}–{n(max(v.equilibrio().values()),4)} "
       "do plano vigente.\n")
+
+    A("## De onde vem a barreira\n")
+    A("Duas parcelas por zona, e vale distinguir porque elas respondem a "
+      "decisões diferentes.\n")
+    A("| Componente | " + " | ".join(k for k, _ in quatro) + " |")
+    A("|---|" + "---:|" * len(quatro))
+    for rot, chave in (("Perímetro das zonas", "perímetro das zonas"),
+                       ("Divisórias entre as raias", "divisórias entre as raias"),
+                       ("Corredor de fundo", "corredor de fundo (2 lados)"),
+                       ("Fechamento das baias", "fechamento das baias de flanco"),
+                       ("Raias do apron", "raias do apron até as portas"),
+                       ("Funil da garganta", "funil da garganta sudeste")):
+        A(f"| {rot} | " + " | ".join(
+            (n(d.barreira[chave], 1) + " m") if d.barreira.get(chave) else "—"
+            for _, d in quatro) + " |")
+    A("| **Total** | " + " | ".join(f"**{n(d.barreira_total,1)} m**"
+                                    for _, d in quatro) + " |")
+    A("| **Separadores** | " + " | ".join(f"**{d.separadores}**"
+                                          for _, d in quatro) + " |")
+    A("")
+    A("**O perímetro fecha o retângulo da zona** — o lado norte, de frente para "
+      f"o apron, menos o portão de {n(VAO_SAIDA,1)} m; os lados leste e oeste, "
+      "exceto onde coincidem com o gradil permanente do Ring; o lado sul não "
+      "entra porque a parede norte do corredor de fundo já o fecha. É a parcela "
+      "que some quando a zona encosta no gradil: nos desenhos sem baias, as "
+      "zonas A e C ganham um lado de graça.\n")
+    A("**As divisórias** separam raia de raia: são (n−1) corridas, cada uma "
+      f"{n(VAO_RETORNO,1)} m mais curta que a raia, para abrir a meia-volta. É "
+      "aqui, e só aqui, que a orientação pesa — e pesa pouco.\n")
 
     A("## Onde cada desenho descarrega\n")
     A("A topologia da barreira decide, e é diferente nas duas orientações. Na "
@@ -812,6 +880,7 @@ def main() -> None:
                 "passo_raia_m": PASSO_RAIA, "raia_util_m": RAIA_UTIL,
                 "densidade_fila_p_m2": DENS_FILA, "densidade_baia_p_m2": DENS_BAIA,
                 "vao_retorno_m": VAO_RETORNO,
+                "vao_saida_m": VAO_SAIDA,
                 "vao_entre_zonas_m": VAO_ENTRE_ZONAS,
                 "perda_por_meia_volta_m": PERDA_MEIA_VOLTA,
                 "profundidade_serpenteado_m": PROF_SERP,

@@ -106,15 +106,19 @@ python3 scripts/gera_pagina_ring3.py  # a página
 | Lotação | 1.402 | **1.425** | 1.389 | 1.364 |
 | … em raia medida | 855 | **1.425** | 842 | 1.364 |
 | Raia mais curta | 23,8 m | 23,8 m | 4,2 m | 10,7 m |
-| Separadores | 312 | **412** | 265 | 367 |
-| A comprar (estoque 200) | 112 | **212** | 65 | 167 |
+| Separadores | 314 | **404** | 317 | 395 |
+| A comprar (estoque 200) | 114 | **204** | 117 | 195 |
 
-Cada decisão empurra para um lado: **tirar as baias aumenta a fila medida e a
-barreira**; **girar as raias reduz a barreira**, porque a barreira de um
-serpenteado é `(n+1) × comprimento da raia − 1,2 × (n−1)` e divisória curta e
-numerosa soma menos que divisória longa. A evacuação não depende das baias: as
-barreiras laterais são removíveis e o escape sai pelos vãos de 2,0 m entre as
-zonas e pelo gradil.
+**Quem decide a barreira são as baias, não a direção das raias.** A barreira de
+uma zona tem duas parcelas: o *perímetro*, que fecha o retângulo e é o mesmo nas
+duas orientações, e as *divisórias internas*, que separam raia de raia. Só a
+segunda muda ao girar, e a diferença é `0,14 × (profundidade − largura)` por
+zona — menos de 3 m numa zona de 4,2 × 23,75 m. Preencher os flancos, esse sim,
+custa 78 a 90 separadores, e paga com fila medida: 1.425 pessoas em raia contra
+855 do plano vigente.
+
+A evacuação não depende das baias: as barreiras laterais são removíveis e o
+escape sai pelos vãos de 2,0 m entre as zonas e pelo gradil.
 
 O plano vigente (`scripts/layout_ring3.py`, `saidas/plano_ring3.md`) não está
 neste repositório: foi produzido em sessão anterior e não chegou a ser

@@ -13,6 +13,7 @@
     "densidade_fila_p_m2": 2.0,
     "densidade_baia_p_m2": 1.8,
     "vao_retorno_m": 1.2,
+    "vao_saida_m": 1.4,
     "vao_entre_zonas_m": 2.6,
     "perda_por_meia_volta_m": 0.6,
     "profundidade_serpenteado_m": 23.75,
@@ -37,9 +38,9 @@
     "baias_publicado": 547,
     "total_calculado": 1402,
     "total_publicado": 1402,
-    "barreira_calculada_m": 623.7,
+    "barreira_calculada_m": 627.7,
     "barreira_publicada_m": 596.3,
-    "separadores_calculado": 312,
+    "separadores_calculado": 314,
     "separadores_publicado": 300
   },
   "vigente": {
@@ -60,19 +61,20 @@
       "B": 0.1217,
       "C": 0.1221
     },
-    "barreira_m": 623.7,
+    "barreira_m": 627.7,
     "barreira_por_componente_m": {
-      "serpenteados": 413.1,
+      "perímetro das zonas": 159.3,
+      "divisórias entre as raias": 270.6,
       "corredor de fundo (2 lados)": 73.4,
-      "fechamento das baias de flanco": 25.6,
+      "fechamento das baias de flanco": 12.8,
       "raias do apron até as portas": 87.6,
       "funil da garganta sudeste": 24.0
     },
-    "separadores": 312,
+    "separadores": 314,
     "estoque": 200,
-    "compra": 112,
-    "custo_compra_eur": 1458.24,
-    "m_por_pessoa": 0.445,
+    "compra": 114,
+    "custo_compra_eur": 1484.28,
+    "m_por_pessoa": 0.448,
     "zonas": [
       {
         "entrada": "A",
@@ -158,18 +160,19 @@
       "B": 0.1164,
       "C": 0.1199
     },
-    "barreira_m": 733.0,
+    "barreira_m": 790.0,
     "barreira_por_componente_m": {
-      "serpenteados": 550.6,
+      "perímetro das zonas": 124.6,
+      "divisórias entre as raias": 483.0,
       "corredor de fundo (2 lados)": 73.4,
       "raias do apron até as portas": 84.9,
       "funil da garganta sudeste": 24.0
     },
-    "separadores": 367,
+    "separadores": 395,
     "estoque": 200,
-    "compra": 167,
-    "custo_compra_eur": 2174.34,
-    "m_por_pessoa": 0.537,
+    "compra": 195,
+    "custo_compra_eur": 2538.9,
+    "m_por_pessoa": 0.579,
     "zonas": [
       {
         "entrada": "A",
@@ -246,19 +249,20 @@
       "B": 0.1184,
       "C": 0.1222
     },
-    "barreira_m": 528.4,
+    "barreira_m": 632.9,
     "barreira_por_componente_m": {
-      "serpenteados": 320.4,
+      "perímetro das zonas": 159.3,
+      "divisórias entre as raias": 278.4,
       "corredor de fundo (2 lados)": 73.4,
-      "fechamento das baias de flanco": 25.6,
+      "fechamento das baias de flanco": 12.8,
       "raias do apron até as portas": 85.0,
       "funil da garganta sudeste": 24.0
     },
-    "separadores": 265,
+    "separadores": 317,
     "estoque": 200,
-    "compra": 65,
-    "custo_compra_eur": 846.3,
-    "m_por_pessoa": 0.38,
+    "compra": 117,
+    "custo_compra_eur": 1523.34,
+    "m_por_pessoa": 0.456,
     "zonas": [
       {
         "entrada": "A",
@@ -323,7 +327,7 @@
     },
     "notas": [
       "A última raia corre rente à borda norte da zona, então o portão de saída pode ficar em qualquer ponto dela — e vai para o eixo da porta. Na zona B o eixo de S5 cai dentro do bloco: a descarga fica perpendicular, sem diagonal nenhuma.",
-      "A barreira cai porque cada divisória passa a ter o comprimento da zona, não a profundidade dela — e porque cada meia-volta a mais encurta a divisória em 1,2 m.",
+      "A barreira quase não muda: o perímetro da zona é o mesmo nas duas orientações, e só as divisórias internas mudam de comprimento — a diferença é de 0,14 × (profundidade − largura) por zona.",
       "O preço é a meia-volta: nas zonas A e C, de 4,2 m de largura, a raia vira um ziguezague de 4,2 m com 16 curvas."
     ]
   },
@@ -345,18 +349,19 @@
       "B": 0.1217,
       "C": 0.1252
     },
-    "barreira_m": 823.3,
+    "barreira_m": 806.6,
     "barreira_por_componente_m": {
-      "serpenteados": 638.6,
+      "perímetro das zonas": 125.8,
+      "divisórias entre as raias": 496.1,
       "corredor de fundo (2 lados)": 73.4,
       "raias do apron até as portas": 87.3,
       "funil da garganta sudeste": 24.0
     },
-    "separadores": 412,
+    "separadores": 404,
     "estoque": 200,
-    "compra": 212,
-    "custo_compra_eur": 2760.24,
-    "m_por_pessoa": 0.578,
+    "compra": 204,
+    "custo_compra_eur": 2656.08,
+    "m_por_pessoa": 0.566,
     "zonas": [
       {
         "entrada": "A",
@@ -425,10 +430,10 @@
         "B": 163,
         "C": 154
       },
-      "barreira_m": 400.9,
-      "separadores": 201,
-      "compra": 1,
-      "custo_compra_eur": 13.02
+      "barreira_m": 396.5,
+      "separadores": 199,
+      "compra": 0,
+      "custo_compra_eur": 0.0
     },
     {
       "raias_por_zona": 7,
@@ -439,10 +444,10 @@
         "B": 193,
         "C": 180
       },
-      "barreira_m": 431.1,
-      "separadores": 216,
-      "compra": 16,
-      "custo_compra_eur": 208.32
+      "barreira_m": 432.3,
+      "separadores": 217,
+      "compra": 17,
+      "custo_compra_eur": 221.34
     },
     {
       "raias_por_zona": 8,
@@ -453,10 +458,10 @@
         "B": 223,
         "C": 205
       },
-      "barreira_m": 461.2,
-      "separadores": 231,
-      "compra": 31,
-      "custo_compra_eur": 403.62
+      "barreira_m": 468.1,
+      "separadores": 235,
+      "compra": 35,
+      "custo_compra_eur": 455.7
     },
     {
       "raias_por_zona": 9,
@@ -467,10 +472,10 @@
         "B": 253,
         "C": 231
       },
-      "barreira_m": 491.4,
-      "separadores": 246,
-      "compra": 46,
-      "custo_compra_eur": 598.92
+      "barreira_m": 503.8,
+      "separadores": 252,
+      "compra": 52,
+      "custo_compra_eur": 677.04
     },
     {
       "raias_por_zona": 10,
@@ -481,10 +486,10 @@
         "B": 282,
         "C": 257
       },
-      "barreira_m": 521.6,
-      "separadores": 261,
-      "compra": 61,
-      "custo_compra_eur": 794.22
+      "barreira_m": 539.6,
+      "separadores": 270,
+      "compra": 70,
+      "custo_compra_eur": 911.4
     },
     {
       "raias_por_zona": 11,
@@ -495,10 +500,10 @@
         "B": 312,
         "C": 283
       },
-      "barreira_m": 551.8,
-      "separadores": 276,
-      "compra": 76,
-      "custo_compra_eur": 989.52
+      "barreira_m": 575.4,
+      "separadores": 288,
+      "compra": 88,
+      "custo_compra_eur": 1145.76
     },
     {
       "raias_por_zona": 12,
@@ -509,10 +514,10 @@
         "B": 342,
         "C": 308
       },
-      "barreira_m": 582.0,
-      "separadores": 292,
-      "compra": 92,
-      "custo_compra_eur": 1197.84
+      "barreira_m": 611.2,
+      "separadores": 306,
+      "compra": 106,
+      "custo_compra_eur": 1380.12
     },
     {
       "raias_por_zona": 13,
@@ -523,10 +528,10 @@
         "B": 372,
         "C": 334
       },
-      "barreira_m": 612.2,
-      "separadores": 307,
-      "compra": 107,
-      "custo_compra_eur": 1393.14
+      "barreira_m": 647.0,
+      "separadores": 324,
+      "compra": 124,
+      "custo_compra_eur": 1614.48
     },
     {
       "raias_por_zona": 14,
@@ -537,10 +542,10 @@
         "B": 401,
         "C": 360
       },
-      "barreira_m": 642.4,
-      "separadores": 322,
-      "compra": 122,
-      "custo_compra_eur": 1588.44
+      "barreira_m": 682.8,
+      "separadores": 342,
+      "compra": 142,
+      "custo_compra_eur": 1848.84
     },
     {
       "raias_por_zona": 15,
@@ -551,10 +556,10 @@
         "B": 431,
         "C": 385
       },
-      "barreira_m": 672.6,
-      "separadores": 337,
-      "compra": 137,
-      "custo_compra_eur": 1783.74
+      "barreira_m": 718.6,
+      "separadores": 360,
+      "compra": 160,
+      "custo_compra_eur": 2083.2
     },
     {
       "raias_por_zona": 16,
@@ -565,10 +570,10 @@
         "B": 461,
         "C": 411
       },
-      "barreira_m": 702.8,
-      "separadores": 352,
-      "compra": 152,
-      "custo_compra_eur": 1979.04
+      "barreira_m": 754.4,
+      "separadores": 378,
+      "compra": 178,
+      "custo_compra_eur": 2317.56
     },
     {
       "raias_por_zona": 17,
@@ -579,10 +584,10 @@
         "B": 490,
         "C": 437
       },
-      "barreira_m": 733.0,
-      "separadores": 367,
-      "compra": 167,
-      "custo_compra_eur": 2174.34
+      "barreira_m": 790.0,
+      "separadores": 395,
+      "compra": 195,
+      "custo_compra_eur": 2538.9
     }
   ],
   "escada_de_profundidade": [
@@ -594,10 +599,10 @@
         "B": 259,
         "C": 230
       },
-      "barreira_m": 494.3,
-      "separadores": 248,
-      "compra": 48,
-      "custo_compra_eur": 624.96
+      "barreira_m": 501.1,
+      "separadores": 251,
+      "compra": 51,
+      "custo_compra_eur": 664.02
     },
     {
       "profundidade_m": 14.0,
@@ -607,10 +612,10 @@
         "B": 302,
         "C": 269
       },
-      "barreira_m": 550.3,
-      "separadores": 276,
-      "compra": 76,
-      "custo_compra_eur": 989.52
+      "barreira_m": 553.1,
+      "separadores": 277,
+      "compra": 77,
+      "custo_compra_eur": 1002.54
     },
     {
       "profundidade_m": 16.0,
@@ -620,10 +625,10 @@
         "B": 346,
         "C": 307
       },
-      "barreira_m": 606.3,
-      "separadores": 304,
-      "compra": 104,
-      "custo_compra_eur": 1354.08
+      "barreira_m": 605.1,
+      "separadores": 303,
+      "compra": 103,
+      "custo_compra_eur": 1341.06
     },
     {
       "profundidade_m": 18.0,
@@ -633,10 +638,10 @@
         "B": 389,
         "C": 346
       },
-      "barreira_m": 662.3,
-      "separadores": 332,
-      "compra": 132,
-      "custo_compra_eur": 1718.64
+      "barreira_m": 657.1,
+      "separadores": 329,
+      "compra": 129,
+      "custo_compra_eur": 1679.58
     },
     {
       "profundidade_m": 20.0,
@@ -646,10 +651,10 @@
         "B": 432,
         "C": 384
       },
-      "barreira_m": 718.3,
-      "separadores": 360,
-      "compra": 160,
-      "custo_compra_eur": 2083.2
+      "barreira_m": 709.1,
+      "separadores": 355,
+      "compra": 155,
+      "custo_compra_eur": 2018.1
     },
     {
       "profundidade_m": 22.0,
@@ -659,10 +664,10 @@
         "B": 475,
         "C": 422
       },
-      "barreira_m": 774.3,
-      "separadores": 388,
-      "compra": 188,
-      "custo_compra_eur": 2447.76
+      "barreira_m": 761.1,
+      "separadores": 381,
+      "compra": 181,
+      "custo_compra_eur": 2356.62
     },
     {
       "profundidade_m": 23.75,
@@ -672,10 +677,10 @@
         "B": 513,
         "C": 456
       },
-      "barreira_m": 823.3,
-      "separadores": 412,
-      "compra": 212,
-      "custo_compra_eur": 2760.24
+      "barreira_m": 806.6,
+      "separadores": 404,
+      "compra": 204,
+      "custo_compra_eur": 2656.08
     }
   ]
 }

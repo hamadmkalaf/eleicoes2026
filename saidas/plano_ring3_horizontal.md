@@ -1,97 +1,91 @@
-# Ring 3 — serpentinas giradas, sem baias
+# Ring 3 — quatro desenhos na mesma moldura
 
-O plano vigente da fila externa (Ring 3, 39,0 × 35,0 m, 14 m ao sul da fachada) tem três zonas lado a lado — A, B e C —, alimentadas por um **corredor de fundo** ao sul e descarregando ao norte nas portas S4, S5 e S6. Dentro de cada zona as raias correm norte-sul, e os dois flancos do Ring são baias de espera.
+O compound de fila ao ar livre (Ring 3, 39,0 × 35,0 m, 14 m ao sul da fachada) tem três zonas — A, B e C —, alimentadas por um **corredor de fundo** ao sul, com a garganta de pré-triagem no canto sudeste, e descarregando ao norte nas portas S4, S5 e S6. Isso não muda em nenhum dos desenhos. Mudam duas decisões, independentes uma da outra:
 
-Este desenho faz duas coisas: **gira as raias** para leste-oeste, empilhadas em altura, e **preenche as baias de flanco com serpenteado**. As três zonas passam a ocupar a largura toda do Ring, com largura proporcional ao comparecimento que cada uma espera — e nesta geometria largura de zona é comprimento de raia. Corredor de fundo, garganta e portas ficam onde estão.
+1. **A direção das raias** — norte-sul, como no plano vigente, ou leste-oeste, empilhadas em altura.
+2. **As baias de flanco** — manter as duas áreas de espera de 6,4 m nos flancos, ou preenchê-las com serpenteado. As barreiras laterais são removíveis e a evacuação sai pelos vãos entre as zonas e pelo gradil, então a baia não é necessária como reserva de escape.
 
-## O que muda
+Duas decisões, quatro desenhos. Todos medidos com o mesmo modelo — mesma densidade, mesmo módulo de raia, mesma regra de barreira.
 
-| | Plano vigente | Este desenho | Δ |
-|---|---:|---:|---:|
-| Lotação total | 1.402 | 1.364 | −38 |
-| … em raia medida | 855 | 1.364 | +509 |
-| … em baia de espera | 547 | 0 | −547 |
-| Raia mais curta | 23,8 m | 10,7 m | −13,0 m |
-| Meias-voltas | 12 | 48 | +36 |
-| Barreira | 623,3 m | 733,0 m | +109,7 m |
-| **Separadores de 2 m** | **312** | **367** | **+55** |
-| A comprar (estoque 200) | 112 | 167 | +55 |
-| Custo da compra | EUR 1.458,24 | EUR 2.174,34 | EUR +716,10 |
+## Os quatro, lado a lado
 
-A lotação cai 38 pessoas (2,7%), mas **toda ela vira fila em raia**: 1.364 contra 855 do plano vigente, um aumento de 60%. Fila em raia é fila contável, com ordem de chegada preservada e vazão previsível; baia é aglomeração que precisa de fiscal para voltar a ser fila.
+| | Raias N–S, com baias | **Raias N–S, sem baias** | Raias L–O, com baias | Raias L–O, sem baias |
+|---|---:|---:|---:|---:|
+| Lotação | 1.402 | **1.425** | 1.389 | 1.364 |
+| … em raia medida | 855 | 1.425 | 842 | 1.364 |
+| … em baia de espera | 547 | — | 547 | — |
+| Raia | 3×23,8 m … 9×23,8 m | 8×23,8 m … 9×23,8 m | 17×4,2 m … 17×12,6 m | 17×10,7 m … 17×12,4 m |
+| Meias-voltas | 12 | 22 | 48 | 48 |
+| Barreira | 623,7 m | 823,3 m | 528,4 m | 733,0 m |
+| **Separadores** | **312** | **412** | **265** | **367** |
+| A comprar (estoque 200) | 112 | 212 | 65 | 167 |
+| Custo da compra | EUR 1.458,24 | EUR 2.760,24 | EUR 846,30 | EUR 2.174,34 |
+| Metros por pessoa | 0,445 | 0,578 | 0,380 | 0,537 |
 
-O preço está na barreira: **367 separadores** contra 312. Sobre as 200 unidades da organizadora, faltam **167** — contra as 112 que o plano vigente já precisava comprar. São 55 unidades a mais, EUR 716,10. A razão é direta: a lotação que o plano vigente ganha de graça nas baias — que usam o gradil do Ring em três lados e não gastam divisória nenhuma — passa a ser paga em barreira.
+Lê-se assim: **tirar as baias sempre aumenta a fila medida e a barreira**; **girar as raias sempre reduz a barreira**, porque divisória curta e numerosa soma menos que divisória longa. O desenho pedido — N–S sem baias — é o de maior lotação dos quatro (1.425) e o mais caro em barreira (412 separadores).
 
-## As três zonas
+## O desenho pedido: raias norte-sul, sem baias
 
-| Zona | Porta | Largura = raia | Raias | Profundidade | Caminhada | Lotação | Esperado | por eleitor |
+Os 12,8 m dos dois flancos viram serpenteado. Como na vertical a largura da zona é um número inteiro de raias, as larguras são arredondadas para o módulo de 1,40 m e a sobra vai para os vãos entre as zonas.
+
+| Zona | Porta | Largura | Raias | Raia | Caminhada | Lotação | Esperado | por eleitor |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| A | S4 | 10,70 m | 17 | 23,75 m | 182 m | 437 | 3.642 | 0,1199 |
-| B | S5 | 12,39 m | 17 | 23,75 m | 204 m | 490 | 4.215 | 0,1164 |
-| C | S6 | 10,70 m | 17 | 23,75 m | 182 m | 437 | 3.642 | 0,1199 |
+| A | S4 | 11,20 m | 8 | 23,75 m | 190 m | 456 | 3.642 | 0,1252 |
+| B | S5 | 12,60 m | 9 | 23,75 m | 214 m | 513 | 4.215 | 0,1217 |
+| C | S6 | 11,20 m | 8 | 23,75 m | 190 m | 456 | 3.642 | 0,1252 |
 
-As larguras saem do comparecimento esperado de cada entrada (base B de 2022), então a lotação de cada zona fica proporcional à fila que ela vai receber. Entre as zonas ficam 2,6 m de folga, para circulação de fiscal e passagem de prioritário.
+São 25 raias de 23,75 m ocupando 35,00 m dos 38,99 m de largura do Ring, com **2,00 m de vão entre as zonas**. Esse vão é a rota de evacuação lateral, junto com o gradil: como as barreiras laterais são removíveis, nenhuma área precisa ficar vazia à espera de uma emergência.
 
-**Descarga.** Com as raias na horizontal, a última raia corre rente à borda norte da zona, então o portão de saída pode ficar em qualquer ponto dela — e vai para o eixo da porta. Na zona B o eixo de S5 cai dentro do bloco e a descarga fica perpendicular.
+A lotação de cada zona sai proporcional ao comparecimento que ela espera — 0,1217 a 0,1252 pessoa de lotação por eleitor esperado, contra 0,1217–0,1221 do plano vigente.
 
-| Zona | Desvio lateral no plano vigente | Neste desenho |
-|---|---:|---:|
-| A | 4,81 m | 2,57 m |
-| B | 0,11 m | 0,00 m |
-| C | 4,79 m | 2,57 m |
+## Onde cada desenho descarrega
 
-## Barreira, componente a componente
+A topologia da barreira decide, e é diferente nas duas orientações. Na **vertical**, as divisórias correm norte-sul e as meias-voltas abrem a borda norte de duas em duas raias: a fila só pode sair pelo fim da última raia, num dos dois cantos do bloco — escolhe-se o canto mais perto da porta. Na **horizontal**, a última raia corre rente à borda norte, que é barreira contínua: o portão pode ser aberto em qualquer ponto dela, e vai para o eixo da porta.
 
-Fora desta conta: o gradil permanente do Ring, que os dois desenhos usam de graça, e os 100 unifilas (200 m) do item *d* do orçamento, que servem ao interior do Hall 2.
+| Zona | Vigente | Sem baias | Girado | Girado sem baias |
+|---|---:|---:|---:|---:|
+| A | 2,71 m | 2,08 m | 2,71 m | 2,57 m |
+| B | 6,20 m | 6,30 m | 0,00 m | 0,00 m |
+| C | 2,69 m | 2,08 m | 2,69 m | 2,57 m |
 
-| Componente | Plano vigente (m) | Este desenho (m) |
-|---|---:|---:|
-| serpenteados | 413,1 | 550,6 |
-| corredor de fundo (2 lados) | 73,4 | 73,4 |
-| fechamento das baias de flanco | 25,6 | — |
-| raias do apron até as portas | 87,2 | 84,9 |
-| funil da garganta sudeste | 24,0 | 24,0 |
-| **Total** | **623,3** | **733,0** |
-| **Separadores** | **312** | **367** |
-
-A barreira de um serpenteado é `(n+1) × comprimento da raia − 1,2 × (n−1)`: n+1 corridas longitudinais, e cada divisória interna para 1,2 m antes da ponta para abrir a meia-volta. O que encarece aqui não é o giro — é a área nova. O flanco que era baia virou serpenteado, e serpenteado se paga em divisória.
+Desvio lateral entre o ponto de descarga da zona e o eixo da sua porta. O caso que separa os desenhos é o da zona B: girada, ela descarrega exatamente em cima de S5.
 
 ## Quanta barreira comprar
 
-O número de raias por zona é a alavanca: ele troca lotação por barreira quase linearmente, sem mexer na largura das zonas nem na descarga. A profundidade sobrante do Ring fica livre.
+O estoque da organizadora é de 200 separadores (400 m) e o que faltar pode ser adquirido. Nenhum dos quatro desenhos cabe no estoque: o corredor de fundo, as raias do apron e o funil da garganta consomem sozinhos 184,7 m — 93 separadores — antes da primeira raia de fila.
 
-| Raias por zona | Profundidade | Lotação | A | B | C | Separadores | A comprar | Custo |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 6 | 8,4 m | 472 | 154 | 163 | 154 | 201 | 1 | EUR 13,02 |
-| 7 | 9,8 m | 553 | 180 | 193 | 180 | 216 | 16 | EUR 208,32 |
-| 8 | 11,2 m | 634 | 205 | 223 | 205 | 231 | 31 | EUR 403,62 |
-| 9 | 12,6 m | 715 | 231 | 253 | 231 | 246 | 46 | EUR 598,92 |
-| 10 | 14,0 m | 796 | 257 | 282 | 257 | 261 | 61 | EUR 794,22 |
-| 11 | 15,4 m | 877 | 283 | 312 | 283 | 276 | 76 | EUR 989,52 |
-| 12 | 16,8 m | 958 | 308 | 342 | 308 | 292 | 92 | EUR 1.197,84 |
-| 13 | 18,2 m | 1.039 | 334 | 372 | 334 | 307 | 107 | EUR 1.393,14 |
-| 14 | 19,6 m | 1.120 | 360 | 401 | 360 | 322 | 122 | EUR 1.588,44 |
-| 15 | 21,0 m | 1.202 | 385 | 431 | 385 | 337 | 137 | EUR 1.783,74 |
-| 16 | 22,4 m | 1.283 | 411 | 461 | 411 | 352 | 152 | EUR 1.979,04 |
-| 17 ← | 23,8 m | 1.364 | 437 | 490 | 437 | 367 | 167 | EUR 2.174,34 |
+**No desenho pedido, a alavanca é a profundidade da raia** — encurtá-la não mexe na largura das zonas, no número de raias nem na descarga:
 
-`←` o desenho: a faixa inteira de 23,75 m do plano vigente.
-Se a compra de 167 separadores não sair inteira, 13 raias por zona cabem dentro dos mesmos 312 separadores do plano vigente, com 1.039 pessoas.
-Nenhuma linha cabe nas 200 unidades da organizadora: o corredor de fundo, as raias do apron e o funil da garganta já consomem 182,3 m — 92 separadores — antes da primeira raia. A menor configuração da escada pede 201.
+| Profundidade | Lotação | A | B | C | Separadores | A comprar | Custo |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 12,00 m | 720 | 230 | 259 | 230 | 248 | 48 | EUR 624,96 |
+| 14,00 m | 840 | 269 | 302 | 269 | 276 | 76 | EUR 989,52 |
+| 16,00 m | 960 | 307 | 346 | 307 | 304 | 104 | EUR 1.354,08 |
+| 18,00 m | 1.080 | 346 | 389 | 346 | 332 | 132 | EUR 1.718,64 |
+| 20,00 m | 1.200 | 384 | 432 | 384 | 360 | 160 | EUR 2.083,20 |
+| 22,00 m | 1.320 | 422 | 475 | 422 | 388 | 188 | EUR 2.447,76 |
+| 23,75 m ← | 1.425 | 456 | 513 | 456 | 412 | 212 | EUR 2.760,24 |
 
-## O passo intermediário, para registro
+`←` a faixa inteira. Dentro dos mesmos 312 separadores do plano vigente cabem 16,0 m de raia, com 960 pessoas — ainda 105 a mais de **fila medida** que o plano vigente, que só tem 855 em raia.
 
-Girar as raias **mantendo** as baias de flanco é o desenho mais barato dos três — 265 separadores, 47 a menos que o plano vigente — porque as zonas A e C, de 4,2 m de largura, viram raias de 4,2 m com 16 meias-voltas. É barato e é um ziguezague. Preencher os flancos resolve isso: a raia mais curta passa de 4,2 m para 10,7 m.
+No desenho girado sem baias, a alavanca é o número de raias por zona:
 
-| | Vigente | Só girar (com baias) | Girar e preencher os flancos |
-|---|---:|---:|---:|
-| Lotação | 1.402 | 1.389 | 1.364 |
-| … em raia | 855 | 842 | 1.364 |
-| Raia mais curta | 23,8 m | 4,2 m | 10,7 m |
-| Separadores | 312 | 265 | 367 |
-| A comprar | 112 | 65 | 167 |
+| Raias por zona | Profundidade | Lotação | Separadores | A comprar |
+|---:|---:|---:|---:|---:|
+| 6 | 8,4 m | 472 | 201 | 1 |
+| 7 | 9,8 m | 553 | 216 | 16 |
+| 8 | 11,2 m | 634 | 231 | 31 |
+| 9 | 12,6 m | 715 | 246 | 46 |
+| 10 | 14,0 m | 796 | 261 | 61 |
+| 11 | 15,4 m | 877 | 276 | 76 |
+| 12 | 16,8 m | 958 | 292 | 92 |
+| 13 | 18,2 m | 1.039 | 307 | 107 |
+| 14 | 19,6 m | 1.120 | 322 | 122 |
+| 15 | 21,0 m | 1.202 | 337 | 137 |
+| 16 | 22,4 m | 1.283 | 352 | 152 |
+| 17 ← | 23,8 m | 1.364 | 367 | 167 |
 
-## Premissas e aderência ao plano original
+## Premissas e aderência ao plano vigente
 
 | Parâmetro | Valor | Origem |
 |---|---|---|
@@ -100,7 +94,7 @@ Girar as raias **mantendo** as baias de flanco é o desenho mais barato dos trê
 | Densidade em raia | 2,0 pessoas/m² | reconstruído |
 | Densidade em baia | 1,8 pessoas/m² | reconstruído |
 | Vão de meia-volta | 1,2 m | premissa |
-| Folga entre zonas | 2,6 m | premissa |
+| Profundidade da faixa | 23,75 m | plano vigente |
 | Separador | 2,0 m · EUR 13,02 | item d do orçamento (100 un. = EUR 1.303) |
 | Estoque da organizadora | 200 un. | informado pelo Posto |
 
@@ -111,18 +105,18 @@ Girar as raias **mantendo** as baias de flanco é o desenho mais barato dos trê
 | Serpenteados | 855 | 855,0 |
 | Baias | 547 | 547,2 |
 | Total | 1.402 | 1.402 |
-| Barreira | 596,3 m | 623,3 m |
+| Barreira | 596,3 m | 623,7 m |
 | Separadores | 300 | 312 |
 
-A capacidade fecha; a barreira fica 4,5% acima, porque a regra de contagem do plano original não é recuperável do que foi publicado. **A comparação usa a regra deste modelo nos dois desenhos.** Ancorando nos 300 separadores publicados em vez dos 312 recalculados, este desenho daria cerca de 353 unidades.
+A capacidade fecha; a barreira fica 4,6% acima, porque a regra de contagem do plano original não é recuperável do que foi publicado. **A comparação usa a regra deste modelo nos quatro desenhos.** Ancorando nos 300 separadores publicados em vez dos 312 recalculados, o desenho pedido daria cerca de 396 unidades.
 
 ## Pendências de campo
 
-1. **Largura real do Ring.** O retângulo está centrado em S5 por estimativa. Nesta geometria a largura da zona *é* o comprimento da raia: a medição de campo mexe direto na lotação.
+1. **Largura real do Ring.** O retângulo está centrado em S5 por estimativa. Com 25 raias encostadas umas nas outras, um erro de meio metro na largura já muda o número de raias que cabem.
 
-2. **Onde o gradil abre.** A descarga perpendicular da zona B supõe portão no eixo de S5 (x ≈ 28,3 m). Sem isso, o desenho continua de pé, mas a descarga volta a ser oblíqua.
+2. **A compra dos separadores.** O desenho pedido precisa de 212 unidades além das 200 da organizadora (EUR 2.760,24). A escada de profundidade é o que dá para recuar sem mexer no resto.
 
-3. **Piso e drenagem.** Raia leste-oeste de até 12,4 m atravessa a declividade do Ring de lado a lado; verificar se algum trecho acumula água (40% a 65% de probabilidade de chuva em 4 de outubro, conforme o limiar da fonte).
+3. **Os vãos entre as zonas como rota de escape.** O desenho conta com 2,00 m de vão livre entre zonas e com a remoção rápida das barreiras laterais. Vale confirmar isso com quem assina o plano de evacuação do RDS antes de fechar.
 
-4. **Compra dos separadores.** O desenho pede 167 unidades além das 200 da organizadora. Confirmar prazo e preço antes de fechar a profundidade das zonas — a escada acima é o que dá para recuar.
+4. **Densidades.** 2,0 pessoas/m² em raia e 1,8 em baia são reconstrução, não medição. Se a densidade real sob guarda-chuva for menor, os quatro desenhos perdem na mesma proporção.
 

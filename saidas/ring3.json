@@ -37,7 +37,7 @@
     "baias_publicado": 547,
     "total_calculado": 1402,
     "total_publicado": 1402,
-    "barreira_calculada_m": 623.3,
+    "barreira_calculada_m": 623.7,
     "barreira_publicada_m": 596.3,
     "separadores_calculado": 312,
     "separadores_publicado": 300
@@ -60,12 +60,12 @@
       "B": 0.1217,
       "C": 0.1221
     },
-    "barreira_m": 623.3,
+    "barreira_m": 623.7,
     "barreira_por_componente_m": {
       "serpenteados": 413.1,
       "corredor de fundo (2 lados)": 73.4,
       "fechamento das baias de flanco": 25.6,
-      "raias do apron até as portas": 87.2,
+      "raias do apron até as portas": 87.6,
       "funil da garganta sudeste": 24.0
     },
     "separadores": 312,
@@ -85,9 +85,9 @@
         "meias_voltas": 2,
         "caminhada_m": 71.2,
         "toco_perdido_m": 0.0,
-        "portao_x_m": 17.26,
-        "descarga_m": 14.8,
-        "desvio_lateral_m": 4.81,
+        "portao_x_m": 19.36,
+        "descarga_m": 14.26,
+        "desvio_lateral_m": 2.71,
         "capacidade": 171
       },
       {
@@ -101,9 +101,9 @@
         "meias_voltas": 8,
         "caminhada_m": 213.8,
         "toco_perdido_m": 0.0,
-        "portao_x_m": 28.39,
-        "descarga_m": 14.0,
-        "desvio_lateral_m": 0.11,
+        "portao_x_m": 22.09,
+        "descarga_m": 15.31,
+        "desvio_lateral_m": 6.2,
         "capacidade": 513
       },
       {
@@ -117,9 +117,9 @@
         "meias_voltas": 2,
         "caminhada_m": 71.2,
         "toco_perdido_m": 0.0,
-        "portao_x_m": 39.29,
-        "descarga_m": 14.8,
-        "desvio_lateral_m": 4.79,
+        "portao_x_m": 37.19,
+        "descarga_m": 14.26,
+        "desvio_lateral_m": 2.69,
         "capacidade": 171
       }
     ],
@@ -327,6 +327,94 @@
       "O preço é a meia-volta: nas zonas A e C, de 4,2 m de largura, a raia vira um ziguezague de 4,2 m com 16 curvas."
     ]
   },
+  "vertical_sem_baias": {
+    "codigo": "VS",
+    "nome": "Serpenteados verticais, sem baias",
+    "capacidade": 1425,
+    "capacidade_raias": 1425,
+    "capacidade_baias": 0,
+    "capacidade_com_perda_de_meia_volta": 1393,
+    "meias_voltas": 22,
+    "por_entrada": {
+      "A": 456,
+      "B": 513,
+      "C": 456
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1252,
+      "B": 0.1217,
+      "C": 0.1252
+    },
+    "barreira_m": 823.3,
+    "barreira_por_componente_m": {
+      "serpenteados": 638.6,
+      "corredor de fundo (2 lados)": 73.4,
+      "raias do apron até as portas": 87.3,
+      "funil da garganta sudeste": 24.0
+    },
+    "separadores": 412,
+    "estoque": 200,
+    "compra": 212,
+    "custo_compra_eur": 2760.24,
+    "m_por_pessoa": 0.578,
+    "zonas": [
+      {
+        "entrada": "A",
+        "orientacao": "vertical",
+        "largura_m": 11.2,
+        "profundidade_m": 23.75,
+        "raias": 8,
+        "comprimento_raia_m": 23.75,
+        "passo_m": 1.4,
+        "meias_voltas": 7,
+        "caminhada_m": 190.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 19.99,
+        "descarga_m": 14.15,
+        "desvio_lateral_m": 2.08,
+        "capacidade": 456
+      },
+      {
+        "entrada": "B",
+        "orientacao": "vertical",
+        "largura_m": 12.6,
+        "profundidade_m": 23.75,
+        "raias": 9,
+        "comprimento_raia_m": 23.75,
+        "passo_m": 1.4,
+        "meias_voltas": 8,
+        "caminhada_m": 213.8,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 21.98,
+        "descarga_m": 15.35,
+        "desvio_lateral_m": 6.3,
+        "capacidade": 513
+      },
+      {
+        "entrada": "C",
+        "orientacao": "vertical",
+        "largura_m": 11.2,
+        "profundidade_m": 23.75,
+        "raias": 8,
+        "comprimento_raia_m": 23.75,
+        "passo_m": 1.4,
+        "meias_voltas": 7,
+        "caminhada_m": 190.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 36.58,
+        "descarga_m": 14.15,
+        "desvio_lateral_m": 2.08,
+        "capacidade": 456
+      }
+    ],
+    "baias": {},
+    "notas": [
+      "Sem baias: os 12,8 m dos dois flancos viram serpenteado, e toda a lotação é fila em raia medida.",
+      "A evacuação sai pelos vãos de 2.00 m entre as zonas e pelo gradil, porque as barreiras laterais são removíveis — não é preciso reservar baia para isso.",
+      "É o desenho de maior lotação dos quatro, e o mais caro em barreira: raia norte-sul de 23,75 m é longa, e divisória longa é divisória cara.",
+      "A saída continua presa a um canto do bloco: na vertical a borda norte é aberta pelas meias-voltas, então o portão não pode ser movido para o eixo da porta como na horizontal."
+    ]
+  },
   "escada_de_raias": [
     {
       "raias_por_zona": 6,
@@ -495,6 +583,99 @@
       "separadores": 367,
       "compra": 167,
       "custo_compra_eur": 2174.34
+    }
+  ],
+  "escada_de_profundidade": [
+    {
+      "profundidade_m": 12.0,
+      "capacidade": 720,
+      "por_entrada": {
+        "A": 230,
+        "B": 259,
+        "C": 230
+      },
+      "barreira_m": 494.3,
+      "separadores": 248,
+      "compra": 48,
+      "custo_compra_eur": 624.96
+    },
+    {
+      "profundidade_m": 14.0,
+      "capacidade": 840,
+      "por_entrada": {
+        "A": 269,
+        "B": 302,
+        "C": 269
+      },
+      "barreira_m": 550.3,
+      "separadores": 276,
+      "compra": 76,
+      "custo_compra_eur": 989.52
+    },
+    {
+      "profundidade_m": 16.0,
+      "capacidade": 960,
+      "por_entrada": {
+        "A": 307,
+        "B": 346,
+        "C": 307
+      },
+      "barreira_m": 606.3,
+      "separadores": 304,
+      "compra": 104,
+      "custo_compra_eur": 1354.08
+    },
+    {
+      "profundidade_m": 18.0,
+      "capacidade": 1080,
+      "por_entrada": {
+        "A": 346,
+        "B": 389,
+        "C": 346
+      },
+      "barreira_m": 662.3,
+      "separadores": 332,
+      "compra": 132,
+      "custo_compra_eur": 1718.64
+    },
+    {
+      "profundidade_m": 20.0,
+      "capacidade": 1200,
+      "por_entrada": {
+        "A": 384,
+        "B": 432,
+        "C": 384
+      },
+      "barreira_m": 718.3,
+      "separadores": 360,
+      "compra": 160,
+      "custo_compra_eur": 2083.2
+    },
+    {
+      "profundidade_m": 22.0,
+      "capacidade": 1320,
+      "por_entrada": {
+        "A": 422,
+        "B": 475,
+        "C": 422
+      },
+      "barreira_m": 774.3,
+      "separadores": 388,
+      "compra": 188,
+      "custo_compra_eur": 2447.76
+    },
+    {
+      "profundidade_m": 23.75,
+      "capacidade": 1425,
+      "por_entrada": {
+        "A": 456,
+        "B": 513,
+        "C": 456
+      },
+      "barreira_m": 823.3,
+      "separadores": 412,
+      "compra": 212,
+      "custo_compra_eur": 2760.24
     }
   ]
 }

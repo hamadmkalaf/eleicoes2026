@@ -90,30 +90,31 @@ de Dublin e passam a votar lá.
 ## Ring 3 — a fila externa
 
 `scripts/ring3.py` modela o compound de fila ao ar livre (Ring 3 do RDS,
-39,0 × 35,0 m, 14 m ao sul da fachada). O plano vigente tem três zonas lado a
-lado com raias norte-sul e duas baias de espera nos flancos. O desenho deste
-diretório faz duas coisas: **gira as raias** para leste-oeste, empilhadas em
-altura, e **preenche as baias de flanco com serpenteado** — as três zonas
-passam a ocupar a largura toda do Ring, com largura proporcional à fila que
-cada uma espera. Corredor de fundo, garganta e portas ficam onde estão.
+39,0 × 35,0 m, 14 m ao sul da fachada). A moldura é sempre a mesma — três
+zonas, corredor de fundo ao sul, garganta no canto sudeste, descarga ao norte
+em S4, S5 e S6. Mudam duas decisões independentes: **a direção das raias**
+(norte-sul ou leste-oeste) e **o que ocupa os flancos** (as duas baias de
+espera de 6,4 m, ou serpenteado). Duas decisões, quatro desenhos.
 
 ```bash
-python3 scripts/ring3.py              # plano, JSON e as plantas em SVG
+python3 scripts/ring3.py              # plano, JSON e as quatro plantas em SVG
 python3 scripts/gera_pagina_ring3.py  # a página
 ```
 
-| Desenho | Lotação | em raia | Raia mais curta | Separadores | A comprar |
-|---|---:|---:|---:|---:|---:|
-| Vigente — raias N–S, com baias | 1.402 | 855 | 23,8 m | 312 | 112 |
-| Só girar — raias L–O, com baias | 1.389 | 842 | 4,2 m | 265 | 65 |
-| **Girar e preencher os flancos** | **1.364** | **1.364** | **10,7 m** | **367** | **167** |
+| | N–S com baias | **N–S sem baias** | L–O com baias | L–O sem baias |
+|---|---:|---:|---:|---:|
+| Lotação | 1.402 | **1.425** | 1.389 | 1.364 |
+| … em raia medida | 855 | **1.425** | 842 | 1.364 |
+| Raia mais curta | 23,8 m | 23,8 m | 4,2 m | 10,7 m |
+| Separadores | 312 | **412** | 265 | 367 |
+| A comprar (estoque 200) | 112 | **212** | 65 | 167 |
 
-A lotação cai 2,7%, mas **toda ela vira fila medida** (+60% de raia). O preço é
-a barreira: a lotação que o plano vigente ganha de graça nas baias — que usam o
-gradil do Ring em três lados — passa a ser paga em divisória. O estoque da
-organizadora é de 200 separadores; a escada de dimensionamento em
-`saidas/plano_ring3_horizontal.md` mostra o que cabe em cada orçamento de
-barreira.
+Cada decisão empurra para um lado: **tirar as baias aumenta a fila medida e a
+barreira**; **girar as raias reduz a barreira**, porque a barreira de um
+serpenteado é `(n+1) × comprimento da raia − 1,2 × (n−1)` e divisória curta e
+numerosa soma menos que divisória longa. A evacuação não depende das baias: as
+barreiras laterais são removíveis e o escape sai pelos vãos de 2,0 m entre as
+zonas e pelo gradil.
 
 O plano vigente (`scripts/layout_ring3.py`, `saidas/plano_ring3.md`) não está
 neste repositório: foi produzido em sessão anterior e não chegou a ser

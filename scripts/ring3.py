@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Ring 3 — girar as serpentinas 90 graus dentro das mesmas tres zonas.
+"""Ring 3 — a fila externa do Hall 2, em quatro desenhos.
 
-O plano vigente da fila externa (Ring 3 do RDS, 39,0 x 35,0 m, 14 m ao sul da
+O plano vigente da fila externa (Ring 3 do RDS, 44,0 x 35,0 m medidos, 14 m ao sul da
 fachada do Hall 2) tem tres zonas lado a lado, A, B e C, alimentadas por um
 corredor de fundo ao sul e descarregando ao norte nas portas S4, S5 e S6.
 Dentro de cada zona as raias correm norte-sul.
@@ -38,7 +38,13 @@ SAIDAS = os.path.join(RAIZ, "saidas")
 #    Metros, origem no canto sudoeste do salao, y para o norte. A fachada sul
 #    do Hall 2 e y = 0; o Ring 3 fica ao sul dela (y negativo).
 # --------------------------------------------------------------------------
-RING = {"x0": 8.79, "x1": 47.78, "y0": -49.0, "y1": -14.0}   # 39,0 x 35,0 m
+# Medida oficial do Ring 3: 44,0 x 35,0 m. A posicao lateral continua sendo
+# estimativa — o retangulo esta centrado no eixo de S5, e o bordo oeste ainda
+# precisa ser aferido em campo.
+LARG_RING, PROF_RING = 44.0, 35.0
+_EIXO_S5 = 28.285
+RING = {"x0": _EIXO_S5 - LARG_RING / 2, "x1": _EIXO_S5 + LARG_RING / 2,
+        "y0": -49.0, "y1": -49.0 + PROF_RING}
 APRON = 14.0
 
 PORTAS = {
@@ -73,7 +79,10 @@ POR_METRO_RAIA = RAIA_UTIL * DENS_FILA     # pessoas por metro de raia
 # geometria
 LARG_BAIA = 6.40       # baia de flanco, cada lado
 LARG_CORREDOR = 3.00   # corredor de fundo, encostado no gradil sul do Ring
+# Blocos do plano vigente, medidos do diagrama publicado — usados so na
+# reconstrucao que serve de aferição.
 BLOCOS_ORIG = {"A": (15.16, 19.36), "B": (22.09, 34.69), "C": (37.19, 41.39)}
+LARG_RING_ORIGINAL = 38.99   # a largura estimada com que aquele plano foi feito
 
 # Sem faixa de garganta: o corredor de fundo vai para o limite sul do Ring e os
 # serpenteados comecam logo acima dele. Sobra para fila tudo o que nao e
@@ -289,6 +298,65 @@ class Desenho:
         return self.barreira_total / self.capacidade
 
 
+def _largura_equivalente_da_baia() -> float:
+    """Quantos metros de serpenteado valem uma baia de flanco, em lotacao.
+
+    A baia guarda LARG_BAIA x prof x DENS_BAIA pessoas; um metro de largura de
+    serpenteado guarda prof x POR_METRO_RAIA / PASSO_RAIA. A profundidade
+    cancela, entao a equivalencia nao depende dela.
+    """
+    return LARG_BAIA * DENS_BAIA / (POR_METRO_RAIA / PASSO_RAIA)
+
+
+def _reparte_largura(disponivel: float, snap: bool, com_baias: bool) -> dict:
+    """Reparte a largura entre as tres zonas.
+
+    O criterio nao e a largura, e a lotacao: cada entrada deve ficar com
+    lotacao proporcional ao comparecimento que espera. Onde ha baia de flanco,
+    ela ja entrega lotacao as zonas A e C — entao essas duas recebem menos
+    largura de serpenteado, exatamente o equivalente da baia.
+
+    `snap` arredonda para um numero inteiro de raias, o que a orientacao
+    vertical exige: ali a largura da zona e feita de raias.
+    """
+    baia = _largura_equivalente_da_baia() if com_baias else 0.0
+    equivalente = disponivel + 2 * baia
+    alvo = {e: equivalente * ESPERADO[e] / ESPERADO_TOTAL - (baia if e != "B" else 0.0)
+            for e in ESPERADO}
+    if not snap:
+        return alvo
+    total = int(disponivel / PASSO_RAIA + 0.02)
+    exato = {e: max(0.0, alvo[e]) / PASSO_RAIA for e in alvo}
+    n = {e: int(exato[e]) for e in exato}
+    sobra = total - sum(n.values())
+    ordem = sorted(exato, key=lambda k: exato[k] - n[k], reverse=True)
+    for i in range(max(0, sobra)):
+        n[ordem[i % 3]] += 1
+    return {e: n[e] * PASSO_RAIA for e in n}
+
+
+def _zonas(orientacao: str, com_baias: bool, prof: float,
+           vao_min: float = 2.00) -> tuple:
+    """Monta as tres zonas dentro do Ring, com ou sem as baias de flanco.
+
+    Devolve (zonas, vao) — o vao entre zonas absorve a sobra do arredondamento,
+    e nunca fica menor que `vao_min`.
+    """
+    borda = LARG_BAIA if com_baias else 0.0
+    disponivel = LARG_RING - 2 * borda - 2 * vao_min
+    larg = _reparte_largura(disponivel, orientacao == "vertical", com_baias)
+    vao = (LARG_RING - 2 * borda - sum(larg.values())) / 2
+    x = RING["x0"] + borda
+    z = []
+    for e in ("A", "B", "C"):
+        z.append(Zona(e, x, x + larg[e], prof, orientacao,
+                      oeste_no_gradil=(not com_baias and abs(x - RING["x0"]) < 0.05),
+                      leste_no_gradil=(not com_baias
+                                       and abs(x + larg[e] - RING["x1"]) < 0.05)))
+        x += larg[e] + vao
+    return z, vao
+
+
 def _baias_de_flanco(prof: float | None = None) -> dict:
     p = PROF_SERP if prof is None else prof
     return {"A": ("baia do flanco oeste", LARG_BAIA * p),
@@ -333,8 +401,8 @@ def desenho_plano_vigente() -> Desenho:
 
 
 def desenho_vertical_com_baias() -> Desenho:
-    """Raias norte-sul nos blocos do plano vigente, sem faixa de garganta."""
-    z = [Zona(e, *BLOCOS_ORIG[e], PROF_SERP, "vertical") for e in ("A", "B", "C")]
+    """Raias norte-sul, baias de flanco mantidas, sem faixa de garganta."""
+    z, _ = _zonas("vertical", com_baias=True, prof=PROF_SERP)
     d = Desenho("V", "Serpenteados verticais, com baias",
                 "Raias norte-sul; a fila sobe do corredor de fundo, encostado "
                 "no gradil sul, e sai pelo fim da última raia.",
@@ -350,7 +418,7 @@ def desenho_vertical_com_baias() -> Desenho:
 
 def desenho_girado_com_baias() -> Desenho:
     """As mesmas zonas, com as raias giradas para leste-oeste."""
-    z = [Zona(e, *BLOCOS_ORIG[e], PROF_SERP, "horizontal") for e in ("A", "B", "C")]
+    z, _ = _zonas("horizontal", com_baias=True, prof=PROF_SERP)
     d = Desenho("H", "Serpenteados horizontais (mesmas zonas, raias giradas)",
                 "Raias leste-oeste empilhadas em altura, dentro dos mesmos "
                 "retângulos; corredor de fundo, baias e portas no lugar.",
@@ -378,19 +446,12 @@ def desenho_girado(raias: int | None = None) -> Desenho:
     Tirar as baias devolve os 12,8 m dos dois flancos as tres zonas. Cada zona
     fica com a largura proporcional ao comparecimento que ela espera — e essa
     largura e, agora, o comprimento da raia. `raias` fixa quantas raias cada
-    zona tem (a profundidade sai disso); sem argumento, usa a faixa inteira de
-    23,75 m do plano vigente.
+    zona tem (a profundidade sai disso); sem argumento, usa a faixa inteira,
+    do corredor de fundo ate a borda norte do Ring.
     """
     prof = PROF_SERP if raias is None else min(raias * PASSO_RAIA, PROF_SERP)
-    util = (RING["x1"] - RING["x0"]) - 2 * VAO_ENTRE_ZONAS
-    larg = {e: util * ESPERADO[e] / ESPERADO_TOTAL for e in ESPERADO}
-    x = RING["x0"]
-    z = []
-    for e in ("A", "B", "C"):
-        z.append(Zona(e, x, x + larg[e], prof, "horizontal",
-                      oeste_no_gradil=abs(x - RING["x0"]) < 0.05,
-                      leste_no_gradil=abs(x + larg[e] - RING["x1"]) < 0.05))
-        x += larg[e] + VAO_ENTRE_ZONAS
+    z, _ = _zonas("horizontal", com_baias=False, prof=prof,
+                  vao_min=VAO_ENTRE_ZONAS)
     d = Desenho("H", "Serpenteados horizontais, sem baias (o desenho)",
                 "Raias leste-oeste empilhadas; as três zonas ocupam a largura "
                 "toda do Ring e toda a lotação é fila em raia medida.",
@@ -429,18 +490,7 @@ def desenho_vertical_sem_baias(vao: float = 2.00) -> Desenho:
     zona e um numero inteiro de raias, as larguras sao arredondadas para o
     modulo de 1,4 m e a sobra vai para os vaos entre zonas.
     """
-    larg_ring = RING["x1"] - RING["x0"]
-    total = int((larg_ring - 2 * vao) / PASSO_RAIA + 0.02)   # 2 cm de tolerância
-    n = _reparte_raias(total)
-    folga = (larg_ring - total * PASSO_RAIA) / 2
-    x = RING["x0"]
-    z = []
-    for e in ("A", "B", "C"):
-        w = n[e] * PASSO_RAIA
-        z.append(Zona(e, x, x + w, PROF_SERP, "vertical",
-                      oeste_no_gradil=abs(x - RING["x0"]) < 0.05,
-                      leste_no_gradil=abs(x + w - RING["x1"]) < 0.05))
-        x += w + folga
+    z, folga = _zonas("vertical", com_baias=False, prof=PROF_SERP, vao_min=vao)
     d = Desenho("VS", "Serpenteados verticais, sem baias",
                 "Raias norte-sul, as três zonas ocupando a largura toda do "
                 "Ring; toda a lotação é fila em raia medida.",
@@ -449,7 +499,7 @@ def desenho_vertical_sem_baias(vao: float = 2.00) -> Desenho:
         "Sem baias: os 12,8 m dos dois flancos viram serpenteado, e toda a "
         "lotação é fila em raia medida.",
         "A evacuação sai pelos vãos de "
-        f"{vao:.2f} m entre as zonas e pelo gradil, porque as barreiras "
+        f"{folga:.2f} m entre as zonas e pelo gradil, porque as barreiras "
         "laterais são removíveis — não é preciso reservar baia para isso.",
         "É o desenho de maior lotação dos quatro, e o mais caro em barreira: "
         "raia norte-sul de 23,75 m é longa, e divisória longa é divisória cara.",
@@ -620,7 +670,8 @@ def svg(d: Desenho) -> str:
     p.append(_txt(RING["x1"] + 0.8, cy0 + LARG_CORREDOR + 1.4,
                   "entrada sudeste", 10, anchor="start", cor="#5c6c80"))
     p.append(_txt(RING["x0"] - 0.4, RING["y0"] - 1.6,
-                  "gradil permanente do Ring 3 · 39,0 × 35,0 m", 10,
+                  f"gradil permanente do Ring 3 · {LARG_RING:.1f} × "
+                  f"{PROF_RING:.1f} m".replace(".", ","), 10,
                   anchor="start", cor="#8a919b"))
     corpo = "\n".join(p)
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {larg:.0f} '
@@ -683,7 +734,8 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
               ("Girado sem baias", h)]
 
     A("# Ring 3 — quatro desenhos na mesma moldura\n")
-    A("O compound de fila ao ar livre (Ring 3, 39,0 × 35,0 m, 14 m ao sul da "
+    A(f"O compound de fila ao ar livre (Ring 3, {n(LARG_RING,1)} × "
+      f"{n(PROF_RING,1)} m, medidos, 14 m ao sul da "
       "fachada) tem três zonas — A, B e C —, alimentadas por um **corredor de "
       "fundo** e descarregando ao norte nas portas S4, S5 e S6. Isso não muda "
       "em nenhum dos desenhos. Mudam duas decisões, independentes uma da "
@@ -894,10 +946,12 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
       f"{round(300*vs.separadores/v.separadores)} unidades.\n")
 
     A("## Pendências de campo\n")
-    A("1. **Largura real do Ring.** O retângulo está centrado em S5 por "
-      f"estimativa. Com {sum(z.raias for z in vs.zonas)} raias encostadas umas "
-      "nas outras, um erro de meio metro na largura já muda o número de raias "
-      "que cabem.\n")
+    A(f"1. **Onde o Ring começa.** A largura é medida — {n(LARG_RING,1)} m "
+      "oficiais —, mas a posição lateral do retângulo ainda é estimativa: ele "
+      "está centrado no eixo de S5. Se o bordo oeste real estiver deslocado, "
+      "as três zonas se deslocam com ele e as diagonais de descarga mudam; o "
+      f"número de raias ({sum(z.raias for z in vs.zonas)} nesta configuração) "
+      "não muda.\n")
     A("2. **A compra dos separadores.** O desenho pedido precisa de "
       f"{vs.compra} unidades além das {ESTOQUE_SEPARADORES} da organizadora "
       f"(EUR {n(vs.custo_compra,2)}). A escada de profundidade é o que dá para "
@@ -953,8 +1007,7 @@ def main() -> None:
         f.write(markdown(v, h, hb, escada, vs, escada_v, pv))
     for d, nome in ((v, "ring3_vertical_com_baias.svg"), (h, "ring3_girado.svg"),
                     (hb, "ring3_girado_com_baias.svg"),
-                    (vs, "ring3_vertical_sem_baias.svg"),
-                    (pv, "ring3_plano_vigente.svg")):
+                    (vs, "ring3_vertical_sem_baias.svg")):
         with open(os.path.join(SAIDAS, nome), "w", encoding="utf-8") as f:
             f.write(svg(d))
 

@@ -493,9 +493,10 @@ td.marca{{background:var(--realce); font-weight:600}}
   <p class="rotulo">Antes de contratar</p>
   <h2>O que decidir</h2>
   <ol class="pend">
-    <li><div><h3>A largura real do Ring</h3><p>O retângulo está centrado em S5 por estimativa. Com
-    {raias_vs} raias encostadas umas nas outras, meio metro de erro na largura já muda quantas
-    raias cabem — e a lotação vai junto.</p></div></li>
+    <li><div><h3>Onde o Ring começa</h3><p>A largura é medida — {num(D['ring']['x1']-D['ring']['x0'],1)} m
+    oficiais —, mas a posição lateral do retângulo ainda é estimativa: ele está centrado no eixo de
+    S5. Se o bordo oeste real estiver deslocado, as três zonas andam com ele e as diagonais de
+    descarga mudam; o número de raias ({raias_vs} nesta configuração) não muda.</p></div></li>
     <li><div><h3>A compra dos separadores</h3><p>O desenho pedido precisa de {VS['compra']} unidades
     além das {P['estoque_separadores']} da organizadora, EUR {num(VS['custo_compra_eur'],2)}. A
     escada de profundidade é o que dá para recuar sem mexer no resto do desenho.</p></div></li>
@@ -520,7 +521,8 @@ td.marca{{background:var(--realce); font-weight:600}}
   números desta página gerados por <span class="mono">scripts/ring3.py</span> e
   <span class="mono">scripts/gera_pagina_ring3.py</span>.</p>
   <p>Plantas em escala real sobre o contorno medido do Hall 2 (50,3 × 44,4 m) e o retângulo do
-  Ring 3 (39,0 × 35,0 m, apron de 14 m). Números de lotação são estimativa, não limite de segurança
+  Ring 3 ({num(D['ring']['x1']-D['ring']['x0'],1)} × {num(D['ring']['y1']-D['ring']['y0'],1)} m
+  medidos, apron de 14 m). Números de lotação são estimativa, não limite de segurança
   homologado.</p>
 </footer>
 </div>

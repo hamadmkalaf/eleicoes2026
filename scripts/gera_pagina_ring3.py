@@ -88,6 +88,11 @@ componentes_tab = "\n".join(
     '<tr class="total"><td>Separadores de 2 m</td>' + "".join(
         f'<td class="mono num">{d["separadores"]}</td>' for _, _, d, _ in QUATRO) + "</tr>")
 
+mapas4 = "\n".join(
+    f'<figure><div class="prancha">{svg(arq.replace("ring3_", "ring3_barreiras_"))}</div>'
+    f'<figcaption><b>{rot}.</b> {sub} · {d["separadores"]} separadores</figcaption>'
+    f'</figure>' for rot, sub, d, arq in QUATRO)
+
 plantas4 = "\n".join(
     f'<figure><div class="prancha">{svg(arq)}</div>'
     f'<figcaption><b>{rot}.</b> {sub} · {num(d["capacidade"])} pessoas '
@@ -225,6 +230,7 @@ td.num,th.num{{text-align:right}}
 tr.total td{{border-top:1.5px solid var(--regua); font-weight:600}}
 tr.marcada td{{background:var(--realce); font-weight:600}}
 td.ganho{{color:var(--ok); font-weight:600}}
+span.sub{{display:block; font-size:.72rem; color:var(--fraco); font-weight:400}}
 td.perda{{color:var(--alerta); font-weight:600}}
 .faixa dd.alerta{{color:var(--alerta)}}
 caption{{caption-side:bottom; text-align:left; font-size:.8rem; color:var(--fraco);
@@ -399,6 +405,55 @@ td.marca{{background:var(--realce); font-weight:600}}
     <caption>Fora desta conta: o gradil permanente do Ring, que os quatro desenhos usam de graça, e
     os 100 unifilas (200 m) do item <em>d</em> do orçamento, que servem ao interior do Hall 2.</caption>
   </table></div>
+</section>
+
+<section>
+  <p class="rotulo">O mapa das barreiras</p>
+  <h2>Onde cada metro é gasto, e o que ele segura</h2>
+  <div class="prosa">
+  <p>Cada corrida de barreira que a conta soma está desenhada aqui, colorida pelo seu componente —
+  o mapa <em>é</em> a conta, gerado dos mesmos segmentos, e o script recusa a gerar a planta se os
+  dois não fecharem. O gradil permanente do Ring aparece tracejado, em cinza: ele fecha o
+  compound de graça. Os portões de {num(P['vao_saida_m'],1)} m aparecem como interrupções — são
+  descontados de cada corrida que atravessam.</p>
+  </div>
+  <div class="plantas">{mapas4}</div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Componente</th><th class="num">N–S sem baias</th><th>O que ele segura</th><th>Dá para cortar?</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pin" style="color:#1f6fb2">▬</span> Perímetro das zonas</td>
+        <td class="mono num">{num(VS['barreira_por_componente_m']['perímetro das zonas'],1)} m<span class="sub">{math.ceil(VS['barreira_por_componente_m']['perímetro das zonas']/P['separador_m'])} sep.</span></td>
+        <td>Impede a fila de vazar de lado — para a zona vizinha, para o vão de circulação ou para o apron. É o que mantém as três entradas separadas, que é a razão de existir da pré-triagem.</td>
+        <td><strong>Não.</strong> Só encurta: o lado que encosta no gradil já não é contado, e cada metro a mais de portão de saída tira um metro do lado norte.</td></tr>
+      <tr><td><span class="pin" style="color:#7a8794">▬</span> Divisórias entre as raias</td>
+        <td class="mono num">{num(VS['barreira_por_componente_m']['divisórias entre as raias'],1)} m<span class="sub">{math.ceil(VS['barreira_por_componente_m']['divisórias entre as raias']/P['separador_m'])} sep.</span></td>
+        <td>São o serpenteado. Sem elas não há fila: há uma massa de gente dentro de um retângulo cercado, sem ordem de chegada nem vazão previsível.</td>
+        <td><strong>Só encurtando a raia.</strong> É o maior item e a alavanca real: cada 4 m a menos de profundidade tiram cerca de 29 separadores — é a escada de dimensionamento abaixo.</td></tr>
+      <tr><td><span class="pin" style="color:#16867f">▬</span> Corredor de fundo (parede norte)</td>
+        <td class="mono num">{num(VS['barreira_por_componente_m']['corredor de fundo (parede norte)'],1)} m<span class="sub">{math.ceil(VS['barreira_por_componente_m']['corredor de fundo (parede norte)']/P['separador_m'])} sep.</span></td>
+        <td>Separa quem está chegando de quem já está na fila, e é o fechamento sul das três zonas — por isso o lado sul das zonas não entra na conta.</td>
+        <td><strong>Não, sem perder o controle da entrada.</strong> Se o corredor não for barrado, as zonas ficam abertas ao sul e qualquer um entra por qualquer ponto.</td></tr>
+      <tr><td><span class="pin" style="color:#8b5cf6">▬</span> Fechamento das baias</td>
+        <td class="mono num">—</td>
+        <td>Fecha o lado norte das baias de espera, para a aglomeração não transbordar no apron. Só existe nos dois desenhos com baias ({num(V['barreira_por_componente_m'].get('fechamento das baias de flanco',0),1)} m).</td>
+        <td><strong>Some junto com as baias.</strong> Nos desenhos sem baias, o item nem existe.</td></tr>
+      <tr><td><span class="pin" style="color:#b23b2e">▬</span> Raias do apron</td>
+        <td class="mono num">{num(VS['barreira_por_componente_m']['raias do apron até as portas'],1)} m<span class="sub">{math.ceil(VS['barreira_por_componente_m']['raias do apron até as portas']/P['separador_m'])} sep.</span></td>
+        <td>Mantêm as três correntes separadas nos 14 m entre o gradil do Ring e a porta — o trecho onde elas convergem e podem se misturar.</td>
+        <td><strong>É o candidato mais óbvio.</strong> Cerca de 45 separadores que podem virar marcação no chão mais fiscal, com o risco de troca de fila bem na soleira. No desenho girado, a corrente de B já sai perpendicular e nem precisaria de raia.</td></tr>
+      <tr><td><span class="pin" style="color:#8a919b">┄</span> Gradil do Ring</td>
+        <td class="mono num">0</td>
+        <td>Fecha o compound inteiro e serve de lado oeste da zona A e de lado leste da zona C nos desenhos sem baias.</td>
+        <td><strong>Já é de graça</strong> — desde que a organizadora confirme que ele fica montado e íntegro no dia.</td></tr>
+    </tbody>
+    <caption>Metragens da coluna do desenho pedido (N–S sem baias). A leitura vale para os quatro:
+    muda a proporção, não a função de cada componente.</caption>
+  </table></div>
+  <p class="nota"><strong>O piso da conta.</strong> Corredor de fundo e raias do apron somam
+  {num(VS['barreira_por_componente_m']['corredor de fundo (parede norte)'] + VS['barreira_por_componente_m']['raias do apron até as portas'],1)} m —
+  {math.ceil((VS['barreira_por_componente_m']['corredor de fundo (parede norte)'] + VS['barreira_por_componente_m']['raias do apron até as portas'])/P['separador_m'])} separadores — antes
+  da primeira raia de fila, em qualquer dos quatro desenhos. Tudo o que passa disso é fila: perímetro
+  e divisórias crescem juntos com a lotação.</p>
 </section>
 
 <section>

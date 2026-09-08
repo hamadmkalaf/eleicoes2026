@@ -117,6 +117,12 @@ uma zona tem duas parcelas: o *perímetro*, que fecha o retângulo e é o mesmo 
 duas orientações, e as *divisórias internas*. Só a segunda muda ao girar, e a
 diferença é `0,14 × (profundidade − largura)` por zona.
 
+Cada corrida de barreira que a conta soma está desenhada em
+`saidas/ring3_barreiras_*.svg`, colorida pelo componente — o mapa **é** a conta,
+gerado dos mesmos segmentos, e `scripts/ring3.py` recusa a gerar a planta se os
+dois não fecharem (`confere_mapa`). Piso da conta, antes da primeira raia de
+fila: corredor de fundo (39,8 m) mais raias do apron (~88 m) = 65 separadores.
+
 A evacuação não depende das baias: as barreiras laterais são removíveis e o
 escape sai pelos vãos entre as zonas e pelo gradil.
 

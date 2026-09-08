@@ -966,6 +966,100 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
     return "\n".join(L) + "\n"
 
 
+def svg_mapa(d: Desenho) -> str:
+    """Planta com cada corrida de barreira colorida pelo seu componente."""
+    legenda_alt = 16.0
+    larg = (RING["x1"] - RING["x0"] + 12) * ESCALA + 2 * MARGEM
+    alt = (RING["y1"] - RING["y0"] + APRON + 6 + legenda_alt) * ESCALA + 2 * MARGEM
+    p = []
+    # fundo: apron, gradil do Ring, fachada e portas
+    p.append(_ret(RING["x0"] - 5, -APRON, RING["x1"] + 5, 0, fill="#eef1f4"))
+    p.append(_ret(RING["x0"], RING["y0"], RING["x1"], RING["y1"], fill="#faf9f5",
+                  stroke=GRADIL["cor"], stroke_width=str(GRADIL["traco"]),
+                  stroke_dasharray="7 4"))
+    p.append(_linha(RING["x0"] - 5, 0, RING["x1"] + 5, 0, stroke="#1c2733",
+                    stroke_width="3"))
+    p.append(_txt((RING["x0"] + RING["x1"]) / 2, 1.2, "FACHADA SUL DO HALL 2", 11,
+                  peso=700, cor="#5c6c80"))
+    for e, dd in PORTAS.items():
+        p.append(_linha(dd["x0"], 0, dd["x1"], 0, stroke=CORES[e], stroke_width="6"))
+        p.append(_txt(eixo_porta(e), -1.6, f'{dd["porta"]} · {e}', 11, peso=700,
+                      cor=CORES[e]))
+    for nome, (a, b) in SAIDAS_FACHADA.items():
+        p.append(_linha(a, 0, b, 0, stroke="#b26a12", stroke_width="6"))
+    # fundo das zonas, so para localizar
+    for z in d.zonas:
+        p.append(_ret(z.x0, RING["y1"] - z.prof, z.x1, RING["y1"],
+                      fill=CORES[z.nome], fill_opacity=".07"))
+        p.append(_txt((z.x0 + z.x1) / 2, RING["y1"] - z.prof / 2,
+                      f"zona {z.nome}", 12, peso=700, cor=CORES[z.nome],
+                      halo="#faf9f5"))
+    if d.baias:
+        for x0 in (RING["x0"], RING["x1"] - LARG_BAIA):
+            p.append(_ret(x0, RING["y1"] - PROF_SERP, x0 + LARG_BAIA, RING["y1"],
+                          fill="#8a919b", fill_opacity=".10"))
+            p.append(_txt(x0 + LARG_BAIA / 2, RING["y1"] - PROF_SERP / 2, "baia",
+                          11, cor="#5c6c80", rot=-90, halo="#faf9f5"))
+    # as barreiras, uma cor por componente
+    seg = segmentos_do_desenho(d)
+    for comp, p1, p2 in seg:
+        e = COMPONENTES[comp]
+        p.append(_linha(p1[0], p1[1], p2[0], p2[1], stroke=e["cor"],
+                        stroke_width=str(e["traco"]), stroke_linecap="round"))
+    # portoes: as aberturas que a conta desconta
+    for z in d.zonas:
+        for y in (RING["y1"], RING["y0"] + LARG_CORREDOR):
+            p.append(_linha(z.portao - VAO_SAIDA / 2, y, z.portao + VAO_SAIDA / 2, y,
+                            stroke="#faf9f5", stroke_width="5"))
+            p.append(_linha(z.portao - VAO_SAIDA / 2, y, z.portao + VAO_SAIDA / 2, y,
+                            stroke="#b26a12", stroke_width="1.6",
+                            stroke_dasharray="2 2"))
+    p.append(_txt(RING["x0"], RING["y0"] - 1.6,
+                  f"gradil permanente do Ring 3 · {LARG_RING:.1f} × "
+                  f"{PROF_RING:.1f} m · não entra na conta".replace(".", ","),
+                  10, anchor="start", cor=GRADIL["cor"]))
+    p.append(_txt(RING["x1"], RING["y0"] - 1.6,
+                  f"portões de {VAO_SAIDA:.1f} m, descontados".replace(".", ","),
+                  10, anchor="end", cor="#b26a12"))
+    # legenda: o mesmo total que a conta soma
+    soma = soma_dos_segmentos(seg)
+    y = RING["y0"] - 4.0
+    p.append(_txt(RING["x0"], y, "O QUE CADA COR CUSTA", 11, anchor="start",
+                  peso=700, cor="#1f2c3c"))
+    y -= 2.4
+    for comp, e in COMPONENTES.items():
+        if not soma.get(comp):
+            continue
+        p.append(_linha(RING["x0"], y + 0.4, RING["x0"] + 2.2, y + 0.4,
+                        stroke=e["cor"], stroke_width=str(max(3.0, e["traco"])),
+                        stroke_linecap="round"))
+        p.append(_txt(RING["x0"] + 3.0, y + 0.9, comp, 11, anchor="start",
+                      cor="#243244"))
+        p.append(_txt(RING["x0"] + 30.0, y + 0.9,
+                      f"{soma[comp]:.1f} m".replace(".", ","), 11, anchor="end",
+                      cor="#243244"))
+        p.append(_txt(RING["x0"] + 41.0, y + 0.9,
+                      f"{unidades(soma[comp])} separadores", 11, anchor="end",
+                      cor="#5c6c80"))
+        y -= 2.2
+    p.append(_linha(RING["x0"], y + 1.4, RING["x0"] + 41.0, y + 1.4,
+                    stroke="#c6cfc8", stroke_width="1"))
+    p.append(_txt(RING["x0"] + 3.0, y + 0.6, "total", 11, anchor="start",
+                  peso=700, cor="#1f2c3c"))
+    p.append(_txt(RING["x0"] + 30.0, y + 0.6,
+                  f"{d.barreira_total:.1f} m".replace(".", ","), 11, anchor="end",
+                  peso=700, cor="#1f2c3c"))
+    p.append(_txt(RING["x0"] + 41.0, y + 0.6, f"{d.separadores} separadores", 11,
+                  anchor="end", peso=700, cor="#1f2c3c"))
+    corpo = "\n".join(p)
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {larg:.0f} '
+            f'{alt:.0f}" width="{larg:.0f}" height="{alt:.0f}" role="img">\n'
+            f'<rect width="{larg:.0f}" height="{alt:.0f}" fill="#fbfaf7"/>\n'
+            f'{MARCADOR}\n'
+            f'{_txt(RING["x0"], 3.4, "Mapa das barreiras · " + d.nome, 15, anchor="start", peso=700)}\n'
+            f'{corpo}\n</svg>\n')
+
+
 def main() -> None:
     os.makedirs(SAIDAS, exist_ok=True)
     pv = desenho_plano_vigente()
@@ -1010,6 +1104,13 @@ def main() -> None:
                     (vs, "ring3_vertical_sem_baias.svg")):
         with open(os.path.join(SAIDAS, nome), "w", encoding="utf-8") as f:
             f.write(svg(d))
+        mapa = nome.replace("ring3_", "ring3_barreiras_")
+        with open(os.path.join(SAIDAS, mapa), "w", encoding="utf-8") as f:
+            f.write(svg_mapa(d))
+        divergencia = {c: v for c, v in confere_mapa(d).items()
+                       if abs(v[0] - v[1]) > 0.05}
+        if divergencia:
+            raise SystemExit(f"mapa nao bate com a conta em {d.codigo}: {divergencia}")
 
     for d in (v, vs, hb, h):
         print(f"{d.codigo:<3} {d.capacidade:>6.0f} pessoas · {d.separadores:>3} "
@@ -1018,6 +1119,106 @@ def main() -> None:
     print(f"girado contra vigente: {h.separadores - v.separadores} separadores, "
           f"{h.capacidade - v.capacidade:+.0f} pessoas")
 
+
+
+# --------------------------------------------------------------------------
+# 8. Mapa das barreiras
+#
+# Cada corrida de barreira que a conta soma vira um segmento desenhado, e o
+# total de cada componente sai da soma dos proprios segmentos: o mapa e a
+# conta, nao uma ilustracao dela. `confere_mapa()` garante isso.
+# --------------------------------------------------------------------------
+COMPONENTES = {
+    "perímetro das zonas":              {"cor": "#1f6fb2", "traco": 3.0},
+    "divisórias entre as raias":        {"cor": "#7a8794", "traco": 1.6},
+    "corredor de fundo (parede norte)": {"cor": "#16867f", "traco": 3.0},
+    "fechamento das baias de flanco":   {"cor": "#8b5cf6", "traco": 3.0},
+    "raias do apron até as portas":     {"cor": "#b23b2e", "traco": 2.4},
+}
+GRADIL = {"cor": "#8a919b", "traco": 2.0}
+
+
+def _y_faixa() -> tuple:
+    """Borda sul e borda norte da faixa de serpenteado."""
+    return RING["y1"] - PROF_SERP, RING["y1"]
+
+
+def segmentos_da_zona(z: Zona) -> list:
+    """Toda a barreira que a zona `z` pede, segmento a segmento."""
+    y0, y1 = RING["y1"] - z.prof, RING["y1"]
+    seg = []
+    # perimetro norte, com o portao de saida aberto
+    g0 = min(max(z.portao - VAO_SAIDA / 2, z.x0), z.x1 - VAO_SAIDA)
+    g1 = g0 + VAO_SAIDA
+    for a, b in ((z.x0, g0), (g1, z.x1)):
+        if b - a > 1e-6:
+            seg.append(("perímetro das zonas", (a, y1), (b, y1)))
+    # perimetro leste e oeste, onde nao e o gradil do Ring
+    if not z.oeste_no_gradil:
+        seg.append(("perímetro das zonas", (z.x0, y0), (z.x0, y1)))
+    if not z.leste_no_gradil:
+        seg.append(("perímetro das zonas", (z.x1, y0), (z.x1, y1)))
+    # divisorias internas, cada uma encurtada de VAO_RETORNO numa ponta
+    for i in range(1, z.raias):
+        if z.orientacao == "vertical":
+            x = z.x0 + i * z.passo
+            a, b = (y0 + VAO_RETORNO, y1) if i % 2 else (y0, y1 - VAO_RETORNO)
+            seg.append(("divisórias entre as raias", (x, a), (x, b)))
+        else:
+            y = y0 + i * z.passo
+            a, b = (z.x0 + VAO_RETORNO, z.x1) if i % 2 else (z.x0, z.x1 - VAO_RETORNO)
+            seg.append(("divisórias entre as raias", (a, y), (b, y)))
+    return seg
+
+
+def segmentos_do_desenho(d: Desenho) -> list:
+    seg = []
+    for z in d.zonas:
+        seg += segmentos_da_zona(z)
+    # parede norte do corredor de fundo, com uma abertura por zona
+    y = RING["y0"] + LARG_CORREDOR
+    cortes = sorted((z.portao - VAO_SAIDA / 2, z.portao + VAO_SAIDA / 2)
+                    for z in d.zonas)
+    x = RING["x0"]
+    for a, b in cortes:
+        if a - x > 1e-6:
+            seg.append(("corredor de fundo (parede norte)", (x, y), (a, y)))
+        x = b
+    if RING["x1"] - x > 1e-6:
+        seg.append(("corredor de fundo (parede norte)", (x, y), (RING["x1"], y)))
+    # fechamento norte das baias de flanco
+    if d.baias:
+        y1 = RING["y1"]
+        for x0 in (RING["x0"], RING["x1"] - LARG_BAIA):
+            seg.append(("fechamento das baias de flanco",
+                        (x0, y1), (x0 + LARG_BAIA, y1)))
+    # raias do apron: duas corridas paralelas por zona, do portao ao eixo da porta
+    for z in d.zonas:
+        ax, ay = z.portao, RING["y1"]
+        bx, by = eixo_porta(z.nome), 0.0
+        dx, dy = bx - ax, by - ay
+        comp = math.hypot(dx, dy)
+        nx, ny = -dy / comp, dx / comp          # normal unitaria
+        for lado in (-1, 1):
+            o = lado * VAO_SAIDA / 2
+            seg.append(("raias do apron até as portas",
+                        (ax + nx * o, ay + ny * o), (bx + nx * o, by + ny * o)))
+    return seg
+
+
+def soma_dos_segmentos(seg: list) -> dict:
+    fora = {}
+    for comp, p1, p2 in seg:
+        fora[comp] = fora.get(comp, 0.0) + math.dist(p1, p2)
+    return fora
+
+
+def confere_mapa(d: Desenho) -> dict:
+    """O mapa desenhado tem de somar o mesmo que a conta de barreira."""
+    mapa = soma_dos_segmentos(segmentos_do_desenho(d))
+    conta = d.barreira
+    return {c: (round(conta.get(c, 0.0), 2), round(mapa.get(c, 0.0), 2))
+            for c in set(conta) | set(mapa)}
 
 if __name__ == "__main__":
     main()

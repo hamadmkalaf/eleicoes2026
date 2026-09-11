@@ -366,6 +366,36 @@ function resolve(estado, ctx){
   return out;
 }
 
+/* O bloco de decisoes com o estado vivo aplicado: portas, entradas, mesas e
+ * Ring 3 substituidos; o resto (classes, comparecimento) igual. Serve tanto
+ * ao simulador (mesas em lista) quanto a prancheta (mesas por MRV). Com a
+ * decisao e o desenho vigente devolve o proprio `dec`. */
+function decisaoViva(dec, res){
+  if (!dec || !res || !res.ring3) return dec;
+  if (res.igualDecisao && res.desenho === "vigente") return dec;
+  const portas = {};
+  for (const id of SUL) {
+    if (res.estado[id] === "saida") portas[id] = {papel: "saida"};
+    else if (res.estado[id] === "entrada") {
+      const e = res.entradas.find(z => z.porta === id);
+      portas[id] = {papel: "entrada", entrada: e.id, cor: e.hex};
+    }
+  }
+  const entradas = res.entradas.map(e => ({id: e.id, porta: e.porta, cor: e.cor, hex: e.hex,
+    mrvs: e.mrvs.slice(), esperado: e.esperado, capacidade: e.capacidade, quota: e.quota}));
+  let mesas;
+  if (Array.isArray(dec.mesas)) mesas = dec.mesas.map(m => Object.assign({}, m, res.mesas[m.mrv] ? {entrada: res.mesas[m.mrv].entrada, porta: res.mesas[m.mrv].porta} : {}));
+  else { mesas = {}; for (const k of Object.keys(dec.mesas)) mesas[k] = Object.assign({}, dec.mesas[k], res.mesas[k] ? {entrada: res.mesas[k].entrada, porta: res.mesas[k].porta} : {}); }
+  const r = res.ring3;
+  const ring3 = Object.assign({}, dec.ring3 || {}, {
+    largura: r.ring.x1 - r.ring.x0, profundidade: R3.PROF_RING, apron: r.apron, rect: r.rect,
+    capacidade: Math.round(r.capacidade), separadores: r.separadores, metros: Math.round(r.barreiraTotal * 10) / 10,
+    a_adquirir: r.compra, custo_eur: Math.round(r.custoCompra), desenho: res.desenho, nome_desenho: r.nome,
+    eixo: "centrado em S5 (estimativa; aferir o bordo oeste em campo)",
+  });
+  return Object.assign({}, dec, {portas, entradas, saidas: res.saidas.slice(), mesas, ring3, vivo: true});
+}
+
 /* ------------------------------------------------------------------ */
 /* SVG do Ring 3 (porte de ring3.svg), em escala                       */
 /* ------------------------------------------------------------------ */
@@ -492,7 +522,7 @@ const Portas = {
   SUL, PAPEIS, PALETA, DECISAO, R3, DESENHOS,
   estadoDaDecisao, normalizaEstado, igual, centros, entradas, saidas, valida,
   ring, raiasQueCabem, desenho, desenhoPlanoVigente, desenhoPorId, atribuiEntradas,
-  mesasDaDecisao, resolve, svgRing3,
+  mesasDaDecisao, resolve, decisaoViva, svgRing3,
   CHAVE, CANAL, publica, assina, le, paraHash, deHash,
 };
 if (typeof module !== "undefined" && module.exports) module.exports = Portas;

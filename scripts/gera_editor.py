@@ -130,7 +130,9 @@ def main():
 
     modelo = open(os.path.join(RAIZ, "scripts", "editor_template.html"),
                   encoding="utf-8").read()
-    html = modelo.replace("@@dados@@", json.dumps(saida, ensure_ascii=False))
+    portas_js = open(os.path.join(RAIZ, "simulador", "portas.js"), encoding="utf-8").read()
+    html = (modelo.replace("@@portas_js@@", portas_js)
+                  .replace("@@dados@@", json.dumps(saida, ensure_ascii=False)))
     if "@@" in html:
         raise SystemExit("placeholder nao substituido: " + html.split("@@")[1])
     cam = os.path.join(SAIDAS, "editor.html")

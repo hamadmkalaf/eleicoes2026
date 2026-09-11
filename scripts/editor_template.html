@@ -201,6 +201,7 @@ footer .estado.guia{color:var(--entrada)}
 <header>
   <h1>Prancheta do Hall&nbsp;2</h1>
   <span class="sub">28 mesas receptoras numeradas pelo MRV do DJE · escala real · RDS Ballsbridge</span>
+  <span class="sub" id="portasVivas" hidden style="color:var(--aviso);font-weight:600"></span>
   <div class="dir">
     <div class="grupo" role="group" aria-label="Cenário">
       <button id="cenA" aria-pressed="true">Cenário A</button>
@@ -332,11 +333,21 @@ footer .estado.guia{color:var(--entrada)}
 </div>
 
 <script>
+@@portas_js@@
+</script>
+<script>
 const D = @@dados@@;
 /* Decisoes do Posto embutidas na geracao (scripts/decisoes.py): numeracao
    MRV, comparecimento esperado e classe de cada mesa, papeis das portas,
    entradas e contorno do Ring 3. */
-const DEC = D.decisoes || null;
+const DEC0 = D.decisoes || null;
+/* DEC e a decisao em vigor nesta pagina: a do Posto, ou a decisao viva que
+   simulador/portas.js deriva das portas clicadas no Simulador (publicadas por
+   localStorage e BroadcastChannel na mesma origem, ou pelo hash da URL). Aqui
+   so mudam os papeis das portas, as entradas, a entrada de cada mesa e o
+   contorno do Ring 3; as posicoes das mesas nao se movem. */
+let DEC = DEC0;
+const PT = (typeof Portas !== "undefined") ? Portas : null;
 
 const M = D.modulo, SAL = D.salao;
 const ALT = SAL.altura, LARG = SAL.largura;
@@ -691,7 +702,8 @@ function montaRing3(){
   const t2 = el("text", {x: fx((x0 + x1) / 2), y: fy(y1 - 4.0),
     "font-size": .9, fill: "var(--fraco)", "text-anchor": "middle",
     "font-family": "IBM Plex Sans, sans-serif"}, gRing3);
-  t2.textContent = "serpenteados A, B e C descarregam em S4, S5 e S6 · " + (R.eixo || "");
+  const ents = DEC.entradas || [];
+  t2.textContent = (ents.length ? `serpenteado${ents.length > 1 ? "s" : ""} ${ents.map(e => e.id).join(", ")} descarrega${ents.length > 1 ? "m" : ""} em ${ents.map(e => e.porta).join(", ")}` : "") + (R.nome_desenho ? ` · ${R.nome_desenho}` : "") + " · " + (R.eixo || "");
   for (const e of (DEC.entradas || [])) {
     const p = D.portas.find(q => q.id === e.porta);
     if (!p) continue;
@@ -1579,6 +1591,28 @@ $("colarAplicar").onclick = () => {
 carregar();
 montaFundo(); montaZonas(); montaPortas(); montaMesas(); montaMedidas();
 opcoes(); pintaLegendaCarga(); pintaPainel(); pintaHistorico(); enquadra();
+
+/* ---- portas vivas: segue o que o Simulador publicou ------------------ */
+function aplicaPortasVivas(msg){
+  if (!PT || !DEC0) return;
+  const res = PT.resolve(msg.estado, {portas: D.portas, dec: DEC0, desenho: msg.desenho || "vigente"});
+  if (res.erros.length) return;
+  DEC = PT.decisaoViva(DEC0, res);
+  if (gRing3) gRing3.remove();
+  montaRing3(); montaPortas(); montaMesas(); pintaLegendaCarga(); pintaPainel();
+  const b = $("portasVivas");
+  if (DEC === DEC0) { b.hidden = true; b.textContent = ""; }
+  else {
+    b.hidden = false;
+    b.textContent = "Portas vivas (do Simulador): entradas " + res.entradas.map(e => `${e.porta} (${e.id})`).join(", ") +
+      " · saídas " + res.saidas.join(", ") + " · difere da decisão de 06/09";
+  }
+}
+if (PT) {
+  const guardado = PT.le();
+  if (guardado && guardado.estado) aplicaPortasVivas(guardado);
+  PT.assina(msg => { if (msg.origem !== "prancheta") aplicaPortasVivas(msg); });
+}
 pintaSalvos();
 addEventListener("resize", enquadra);
 </script>

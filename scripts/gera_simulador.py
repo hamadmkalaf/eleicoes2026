@@ -49,6 +49,7 @@ def main():
     template = (SIM / "template.html").read_text(encoding="utf-8")
     modelo = (SIM / "modelo.js").read_text(encoding="utf-8")
     app = (SIM / "app.js").read_text(encoding="utf-8")
+    portas = (SIM / "portas.js").read_text(encoding="utf-8")
     base, fonte_base = base_prancheta()
     mrvs = json.loads((DATA / "mrv_secoes.json").read_text(encoding="utf-8"))
     # decisoes do Posto: esperado e classe por mesa, portas, entradas do Ring 3
@@ -65,6 +66,7 @@ def main():
             .replace("/*__DECISOES__*/", "const DECISOES = " + js(decisoes) + ";")
             .replace("/*__MRVS__*/", "const MRVS = " + js(mrvs) + ";")
             .replace("/*__ARRANJOS__*/", "const ARRANJOS = " + js(arranjos) + ";")
+            .replace("/*__PORTAS_JS__*/", portas)
             .replace("/*__MODELO_JS__*/", modelo)
             .replace("/*__APP_JS__*/", app))
     SAIDAS.mkdir(exist_ok=True)

@@ -8,10 +8,33 @@ const NS = "http://www.w3.org/2000/svg";
 /* Decisões do Posto (scripts/decisoes.py): esperado e classe por mesa,
  * portas, entradas do Ring 3. As cores das zonas são as das raias das
  * entradas (azul, âmbar, magenta), as mesmas do plano de sinalização. */
-const DEC = (typeof DECISOES !== "undefined" && DECISOES) ? DECISOES : null;
-if (!DEC) throw new Error("DECISOES ausente: gere a página com scripts/gera_simulador.py");
-const CORES_ZONA = (DEC.entradas || []).map(e => e.hex).concat(["var(--z1)", "var(--z2)", "var(--z3)", "var(--z4)"]);
-const LETRAS = (DEC.entradas || []).map(e => e.id).concat(["A", "B", "C", "D"]);
+const DEC0 = (typeof DECISOES !== "undefined" && DECISOES) ? DECISOES : null;
+if (!DEC0) throw new Error("DECISOES ausente: gere a página com scripts/gera_simulador.py");
+/* DEC e a decisao em vigor NESTA pagina: a do Posto, ou a decisao viva que
+ * simulador/portas.js deriva das portas que quem simula clicou (N entradas,
+ * N zonas do Ring 3, cada mesa numa entrada). As portas clicaveis desta
+ * pagina sao o controle mestre: cada mudanca e publicada para a prancheta, o
+ * Ring 3 vivo e o dashboard, quando abertos na mesma origem. */
+let DEC = DEC0;
+const CORES_ZONA = [], LETRAS = [];
+function recalculaCores(){
+  CORES_ZONA.length = 0; LETRAS.length = 0;
+  for (const e of (DEC.entradas || [])) { CORES_ZONA.push(e.hex); LETRAS.push(e.id); }
+  CORES_ZONA.push("var(--z1)", "var(--z2)", "var(--z3)", "var(--z4)"); LETRAS.push("A", "B", "C", "D");
+}
+recalculaCores();
+const PT = (typeof Portas !== "undefined") ? Portas : null;
+let resolvido = null;          // ultima resolucao das portas (Portas.resolve)
+let publicando = true;         // false enquanto se aplica um estado recebido de outra pagina
+function recalculaDecisao(){
+  if (!PT) return;
+  const desenho = (cen.ring3 && cen.ring3.desenho) || "vigente";
+  resolvido = PT.resolve(cen.portas, {portas: BASE.portas, dec: DEC0, desenho});
+  DEC = resolvido.erros.length ? DEC0 : PT.decisaoViva(DEC0, resolvido);
+  recalculaCores();
+  if (cen.ring3 && !cen.ring3.capManual) cen.ring3.capacidade = DEC.ring3.capacidade;
+  if (publicando) PT.publica(cen.portas, {desenho: resolvido.desenho, origem: "simulador"});
+}
 const COR_CLASSE = {pesada: "var(--alta)", media: "var(--media)", leve: "var(--baixa)"};
 const CHAVE_RASCUNHO = "simulador-hall2-cenario-v1";
 const CHAVE_COMPARATIVO = "simulador-hall2-comparativo-v1";
@@ -268,6 +291,7 @@ function normaliza(c){
   if (!Array.isArray(c.checkpoint.atendentes)) c.checkpoint.atendentes = new Array(nz).fill(c.checkpoint.atendentes || 2);
   c.checkpoint.atendentes = DEC.entradas.map((_, z) => Math.max(1, Math.round(c.checkpoint.atendentes[z] || 2)));
   if (!c.ring3) c.ring3 = {atendentes: 6, seg: 6, capacidade: DEC.ring3.capacidade};
+  if (!c.ring3.desenho) c.ring3.desenho = "vigente";
   if (!c.salao) c.salao = {base: "A", alteracoes: []};
   if (!c.sim) c.sim = {runs: 12, seed: 7};
   return c;
@@ -342,7 +366,8 @@ function ligaControles(){
     if (textos.length) carregaArranjosDe(textos);
   });
   $("btnPortasDecisao").addEventListener("click", () => {
-    cen.portas = M.portasDaDecisao(DEC); cen.zonas = M.zonasDaDecisao(DEC);
+    cen.portas = M.portasDaDecisao(DEC0); cen.ring3.desenho = "vigente"; cen.ring3.capManual = false;
+    recalculaDecisao(); cen.zonas = M.zonasDaDecisao(DEC);
     normaliza(cen); preencher(); atualizaDerivados();
   });
   for (const b of $("cpExiste").querySelectorAll("button"))
@@ -362,12 +387,17 @@ function ligaControles(){
   $("just").addEventListener("change", ev => { cen.extras.justificativas = Math.max(0, Math.min(0.5, (+ev.target.value || 0) / 100)); atualizaDerivados(); });
   $("triAtend").addEventListener("change", ev => { cen.ring3.atendentes = Math.max(1, Math.round(+ev.target.value || 1)); atualizaDerivados(); });
   $("triSeg").addEventListener("change", ev => { cen.ring3.seg = Math.max(1, +ev.target.value || 6); atualizaDerivados(); });
-  $("ring3Cap").addEventListener("change", ev => { cen.ring3.capacidade = Math.max(50, Math.round(+ev.target.value || DEC.ring3.capacidade)); atualizaDerivados(); });
+  $("ring3Cap").addEventListener("change", ev => { cen.ring3.capManual = true; cen.ring3.capacidade = Math.max(50, Math.round(+ev.target.value || DEC.ring3.capacidade)); atualizaDerivados(); });
+  if ($("ring3Desenho") && PT) {
+    const sel = $("ring3Desenho");
+    for (const d of PT.DESENHOS) sel.appendChild(h("option", {value: d.id, text: d.nome}));
+    sel.addEventListener("change", () => { cen.ring3.desenho = sel.value; cen.ring3.capManual = false; atualizaDerivados(); });
+  }
   $("runs").addEventListener("change", ev => { cen.sim.runs = Math.max(1, Math.min(60, Math.round(+ev.target.value || 12))); guardaRascunho(); });
   $("seed").addEventListener("change", ev => { cen.sim.seed = Math.max(1, Math.round(+ev.target.value || 7)); guardaRascunho(); });
 
-  $("btnClaude").addEventListener("click", () => aplica(M.cenarioClaude(DEC, ARRANJOS_EMBUTIDOS)));
-  $("btnPadrao").addEventListener("click", () => aplica(M.cenarioPadrao(DEC)));
+  $("btnClaude").addEventListener("click", () => aplica(M.cenarioClaude(DEC0, ARRANJOS_EMBUTIDOS)));
+  $("btnPadrao").addEventListener("click", () => aplica(M.cenarioPadrao(DEC0)));
   $("btnCopiar").addEventListener("click", async () => {
     const b = $("btnCopiar");
     try { await navigator.clipboard.writeText(JSON.stringify(cen)); b.textContent = "Copiado"; }
@@ -405,7 +435,8 @@ function mostraTela(nome){
 
 /* ---- derivados da tela 1 ---- */
 function atualizaDerivados(){
-  normaliza(cen);
+  normaliza(cen); recalculaDecisao();
+  cen.zonas = M.zonasDaDecisao(DEC); normaliza(cen);
   try { mont = M.montar(BASE, MRVS, cen, DEC); } catch (e) { console.error(e); return; }
   $("nomeAtual").textContent = cen.nome || "";
   desenhaPortas(); desenhaZonasMini(); tabelaZonas(); kpisEstaticos(); guardaRascunho();
@@ -416,9 +447,23 @@ function atualizaDerivados(){
   $("filaInfo").textContent = `${n.pesada} vermelhas · ${n.media} amarelas · ${n.leve} verdes · ${vg(mont.fitaMesas, 0)} m de fita nas mesas`;
   const tx = mont.taxa;
   $("compInfo").textContent = `${tx.rotulo}: ${fmt(mont.esperadosTotal)} eleitores esperados de ${fmt(mont.aptosTotal)} aptos (${Math.round(100 * mont.esperadosTotal / mont.aptosTotal)} %), mais ${Math.round((cen.extras.justificativas || 0) * 100)} % de atendimentos sem voto. ${DEC.comparecimento.rotulo}.`;
-  const decisaoVale = DEC.entradas.every((e, z) => cen.zonas.portas[z] === e.porta) &&
-    Object.keys(DEC.portas).every(id => cen.portas[id] === DEC.portas[id].papel);
+  const decisaoVale = !resolvido || (resolvido.igualDecisao && resolvido.desenho === "vigente");
   $("avisoPortas").hidden = decisaoVale;
+  if ($("ring3Desenho")) {
+    const sel = $("ring3Desenho"); sel.value = (resolvido && resolvido.desenho) || "vigente";
+    const so3 = (resolvido && resolvido.entradas.length !== 3);
+    for (const o of sel.options) o.disabled = so3 && o.value === "vigente";
+  }
+  if ($("ring3Cap")) $("ring3Cap").value = cen.ring3.capacidade;
+  if ($("ring3Info") && resolvido) {
+    const r = resolvido.ring3, ents = resolvido.entradas;
+    $("ring3Info").innerHTML = "";
+    const partes = [`${ents.length} entrada${ents.length > 1 ? "s" : ""}: ${ents.map(e => `${e.id} por ${e.porta}`).join(", ")}`,
+      `saída${resolvido.saidas.length > 1 ? "s" : ""} ${resolvido.saidas.join(", ")}`,
+      `${r.nome}: ${fmt(r.capacidade)} pessoas (${ents.map(e => `${e.id} ${fmt(e.capacidade)}`).join(" · ")}), ${r.separadores} separadores`];
+    $("ring3Info").appendChild(h("span", {text: partes.join(" · ") + ". "}));
+    for (const a of resolvido.avisos.concat(resolvido.erros)) $("ring3Info").appendChild(h("span", {class: "aviso", text: a + " "}));
+  }
 }
 
 function estadoPorta(id){ return cen.portas[id] || "fechada"; }
@@ -489,11 +534,7 @@ function tabelaZonas(){
     h("th", {class: "num", text: "Eleitores"}), h("th", {class: "num", text: "Cabe no Ring 3"}), h("th", {text: "Entra por"}))));
   const tb = h("tbody");
   for (const z of mont.zonas) {
-    const sel = h("select", {"aria-label": `Porta de entrada da ${z.nome}`});
-    for (const id of entradas) sel.appendChild(h("option", {value: id, text: id, selected: id === z.porta ? "" : null}));
-    if (!entradas.includes(z.porta)) sel.appendChild(h("option", {value: z.porta, text: z.porta, selected: ""}));
-    sel.value = z.porta;
-    sel.addEventListener("change", () => { cen.zonas.portas[z.idx] = sel.value; atualizaDerivados(); });
+    const sel = h("span", {class: "mono", text: z.porta});
     const lista = z.slots.slice().sort((a, b) => a - b).join(", ");
     tb.appendChild(h("tr", null,
       h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), h("strong", {text: z.letra}), DEC.entradas[z.idx] ? ` ${DEC.entradas[z.idx].cor}` : ""),
@@ -989,6 +1030,21 @@ function relatorioTexto(){
 /* ------------------------------------------------------------------ */
 ligaControles();
 desenhaCurva();
-aplica(carregaRascunho() || M.cenarioClaude(DEC, ARRANJOS_EMBUTIDOS));
+{
+  const inicial = carregaRascunho() || M.cenarioClaude(DEC0, ARRANJOS_EMBUTIDOS);
+  const doHash = PT ? PT.deHash(location.hash) : null;
+  if (doHash) { inicial.portas = doHash.estado; inicial.ring3 = inicial.ring3 || {}; inicial.ring3.desenho = doHash.desenho || "vigente"; }
+  aplica(inicial);
+  if (PT) PT.assina(msg => {
+    if (msg.origem === "simulador") return;
+    publicando = false;
+    try {
+      cen.portas = PT.normalizaEstado(msg.estado);
+      if (msg.desenho) cen.ring3.desenho = msg.desenho;
+      cen.ring3.capManual = false;
+      preencher(); atualizaDerivados();
+    } finally { publicando = true; }
+  });
+}
 rodar();
 })();

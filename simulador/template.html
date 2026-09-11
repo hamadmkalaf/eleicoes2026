@@ -319,7 +319,10 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
       <div class="campo"><label for="triAtend">Pessoas na triagem</label><input type="number" id="triAtend" min="1" max="20" value="6"></div>
       <div class="campo"><label for="triSeg">Segundos por eleitor</label><input type="number" id="triSeg" min="2" max="40" value="6"></div>
       <div class="campo"><label for="ring3Cap">Capacidade do Ring 3 (pessoas)</label><input type="number" id="ring3Cap" min="100" max="5000" step="1" value="1402"></div>
+      <div class="campo"><label for="ring3Desenho">Desenho da fila externa</label><select id="ring3Desenho" aria-label="Desenho do Ring 3"></select></div>
     </div>
+    <p class="dica" id="ring3Info" style="margin-top:8px"></p>
+    <p class="dica" style="margin-top:6px">As portas clicadas no bloco <strong>Portas da fachada sul</strong> mandam aqui: cada entrada vira um serpenteado do Ring 3 (com N entradas, N serpenteados), as letras seguem a ordem de oeste para leste e as 28 mesas são repartidas entre as entradas na proporção da capacidade de cada serpenteado, uma mesa vermelha em cada. O desenho "plano vigente" só existe com três entradas; com outro número a fila externa é redesenhada nas dimensões oficiais do Ring 3 (44 × 35 m). A prancheta e o Ring 3 vivo, abertos no dashboard, seguem o que for decidido aqui.</p>
   </div>
 
   <div class="bloco fixa">
@@ -398,6 +401,9 @@ figure canvas{display:block; width:100%; height:auto; image-rendering:pixelated}
 /*__MRVS__*/
 /*__DECISOES__*/
 /*__ARRANJOS__*/
+</script>
+<script>
+/*__PORTAS_JS__*/
 </script>
 <script>
 /*__MODELO_JS__*/

@@ -103,5 +103,14 @@ ok(P.deHash("#nada") === null, "hash sem portas");
 const svg = P.svgRing3(P.resolve(est5, Object.assign({desenho: "VS"}, ctx)), {portas: BASE.portas});
 ok(svg.startsWith("<svg") && (svg.match(/<rect/g) || []).length > 5 && /S9 · E/.test(svg), "svg com cinco zonas");
 
+// 10. decisao viva
+ok(P.decisaoViva(DEC, rd) === DEC, "decisao viva com a decisao e o proprio bloco");
+const dv = P.decisaoViva(DEC, P.resolve(est5, Object.assign({desenho: "VS"}, ctx)));
+ok(dv.entradas.length === 5 && dv.portas.S1.papel === "entrada" && dv.portas.S1.entrada === "A" && dv.saidas.join() === "S2,S8", "decisao viva: portas e entradas");
+ok(Array.isArray(dv.mesas) && dv.mesas.every(m => /^[A-E]$/.test(m.entrada)) && dv.ring3.capacidade > 1000 && dv.ring3.rect.length === 4, "decisao viva: mesas e ring3");
+const decObj = Object.assign({}, DEC, {mesas: Object.fromEntries(DEC.mesas.map(m => [m.mrv, m]))});
+const dvo = P.decisaoViva(decObj, P.resolve(est5, {portas: BASE.portas, dec: decObj, desenho: "H"}));
+ok(!Array.isArray(dvo.mesas) && Object.keys(dvo.mesas).length === 28 && dvo.mesas["22"].entrada.length === 1, "decisao viva com mesas por MRV (prancheta)");
+
 console.log(`${n - falhas}/${n} verificações passaram`);
 process.exit(falhas ? 1 : 0);

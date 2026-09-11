@@ -66,6 +66,7 @@ class Conta:
 
     def __init__(self, nome, desc=""):
         self.nome, self.desc, self.itens = nome, desc, []
+        self.familia = "cenário"
 
     def add(self, rotulo, n_corridas, L):
         if not n_corridas:
@@ -270,14 +271,24 @@ NOME_TIPO = {"par": "linha do meio de par", "solta": "mesa sem par",
              "polo": "polo isolado"}
 
 
-def monta(nome, desc, portas, linhas, bordas=True):
+def monta(nome, desc, portas, linhas, canal="meio", tipos=None, familia="cenário"):
+    """Monta uma conta a partir de duas escolhas independentes.
+
+    `canal` diz o que vai na entrada -- "meio" so as duas divisorias entre as
+    portas, "completo" com as duas bordas externas tambem, "nenhum" para as
+    hipoteses que nao gastam barreira ali. `tipos` filtra as linhas de mesa por
+    papel ("par", "solta", "polo"); None aceita todas.
+    """
     c = Conta(nome, desc)
+    c.familia = familia
     d = divisas(portas)
-    c.add("divisórias entre os canais A|B e B|C", len(d["meio"]), 20.0)
-    if bordas:
-        c.add("bordas externas dos canais", len(d["bordas"]), 20.0)
-    c.avulso("bochechas de portão no checkpoint (2 por canal)", PORTOES)
-    for (tipo, L), g in agrupa(linhas):
+    if canal != "nenhum":
+        c.add("divisórias entre os canais A|B e B|C", len(d["meio"]), 20.0)
+        if canal == "completo":
+            c.add("bordas externas dos canais", len(d["bordas"]), 20.0)
+        c.avulso("bochechas de portão no checkpoint (2 por canal)", PORTOES)
+    alvo = [l for l in linhas if tipos is None or l["tipo"] in tipos]
+    for (tipo, L), g in agrupa(alvo):
         quem = ", ".join("–".join(str(n) for n in l["quem"]) for l in g)
         c.add(f"{NOME_TIPO[tipo]} · {L:.1f} m".replace(".", ",")
               + f" ({len(g)}: {quem})", len(g), L)
@@ -324,18 +335,42 @@ def cenarios(D, dec, mesas):
     faixa = (portas[0]["x1"], 0.0, portas[-1]["x2"], 20.0)
     escada = linhas_de_fila(mesas, S, lambda m: COMPRIMENTO[m["classe"]], faixa)
     porfol = linhas_de_fila(mesas, S, lambda m: iso[m["n"]], faixa)
+    # As mesas de média que ficaram sem par: grandes o bastante para entrarem
+    # na variante B2, pequenas o bastante para ficarem de fora da B.
+    media_solta = {l["quem"][0] for l in escada
+                   if l["tipo"] == "solta" and l["classe"] == "media"}
+    escada_B2 = [l for l in escada
+                 if l["tipo"] in ("par", "polo") or l["quem"][0] in media_solta]
     return [
         monta("1e", "ADOTADO. Uma linha no meio de cada par, uma linha por mesa "
               "sem par, e só as duas divisórias que separam A de B e B de C. "
               "O limite externo dos canais fica com sinalização e equipe.",
-              portas, escada, bordas=False),
+              portas, escada, canal="meio"),
         monta("1", "Descartado. O mesmo, mais as duas bordas externas dos "
               "canais de entrada.",
-              portas, escada),
+              portas, escada, canal="completo"),
         monta("1i", "Descartado. Mesma topologia, filas redimensionadas para "
               "que toda mesa aguente 20 minutos de pico.",
-              portas, porfol),
-    ], dict(escada=escada, porfolego=porfol, iso=iso)
+              portas, porfol, canal="completo"),
+        monta("A", "HIPÓTESE. Unifila só para separar as três correntes da porta "
+              "até o checkpoint. Nenhuma barreira nas mesas: da triagem em diante "
+              "o eleitor circula solto e a ordem nas mesas fica com a equipe.",
+              portas, escada, canal="meio", tipos=(), familia="hipótese"),
+        monta("B", "HIPÓTESE. Unifila só nas mesas pareadas e nas grandes — a "
+              "linha do meio de cada par e os três polos. Nada na entrada: as "
+              "três correntes chegam juntas ao checkpoint.",
+              portas, escada, canal="nenhum", tipos=("par", "polo"),
+              familia="hipótese"),
+        monta("B2", "HIPÓTESE, variante larga da B: as de média que ficaram sem "
+              "par (9, 15, 16, 21) contam como grandes e também ganham linha.",
+              portas, escada_B2, canal="nenhum", tipos=("par", "polo", "solta"),
+              familia="hipótese"),
+        monta("C", "SÍNTESE das duas hipóteses: as duas divisórias do checkpoint "
+              "mais a linha do meio de cada par e os três polos. É o 1e sem as "
+              "sete linhas das mesas soltas.",
+              portas, escada, canal="meio", tipos=("par", "polo"),
+              familia="síntese"),
+    ], dict(escada=escada, porfolego=porfol, iso=iso, escada_B2=escada_B2)
 
 
 # --- saida ----------------------------------------------------------------
@@ -361,7 +396,8 @@ def resumo(c):
 
 def tabela(c):
     marca = " — **adotado**" if c.nome == ADOTADO else ""
-    out = [f"### Cenário {c.nome}{marca}", "", c.desc, "",
+    titulo = c.familia[0].upper() + c.familia[1:]
+    out = [f"### {titulo} {c.nome}{marca}", "", c.desc, "",
            "| Item | Corridas | Comp. | Fitas | Postes |",
            "|---|--:|--:|--:|--:|"]
     for i in c.itens:

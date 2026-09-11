@@ -1341,6 +1341,190 @@
     "lista_inc": 2662.95,
     "ao_preco_orcado": 1811.17
    }
+  },
+  {
+   "adotado": false,
+   "nome": "A",
+   "desc": "HIPÓTESE. Unifila só para separar as três correntes da porta até o checkpoint. Nenhuma barreira nas mesas: da triagem em diante o eleitor circula solto e a ordem nas mesas fica com a equipe.",
+   "corridas": 2,
+   "fitas": 20,
+   "postes": 28,
+   "postes_reserva": 31,
+   "metros": 40.0,
+   "itens": [
+    {
+     "rotulo": "divisórias entre os canais A|B e B|C",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    }
+   ],
+   "custo": {
+    "postes": 31,
+    "lista_ex": 545.0,
+    "lista_inc": 670.35,
+    "ao_preco_orcado": 403.93
+   }
+  },
+  {
+   "adotado": false,
+   "nome": "B",
+   "desc": "HIPÓTESE. Unifila só nas mesas pareadas e nas grandes — a linha do meio de cada par e os três polos. Nada na entrada: as três correntes chegam juntas ao checkpoint.",
+   "corridas": 12,
+   "fitas": 35,
+   "postes": 47,
+   "postes_reserva": 52,
+   "metros": 70.0,
+   "itens": [
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,0 m (2: 10–11, 17–18)",
+     "corridas": 2,
+     "L": 5.0,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,0 m (7: 1–2, 3–4, 7–8, 13–14, 19–20, 25–26, 27–28)",
+     "corridas": 7,
+     "L": 3.0,
+     "fitas": 14,
+     "postes": 21,
+     "metros": 28.0
+    }
+   ],
+   "custo": {
+    "postes": 52,
+    "lista_ex": 860.0,
+    "lista_inc": 1057.8,
+    "ao_preco_orcado": 677.56
+   }
+  },
+  {
+   "adotado": false,
+   "nome": "B2",
+   "desc": "HIPÓTESE, variante larga da B: as de média que ficaram sem par (9, 15, 16, 21) contam como grandes e também ganham linha.",
+   "corridas": 16,
+   "fitas": 47,
+   "postes": 63,
+   "postes_reserva": 70,
+   "metros": 94.0,
+   "itens": [
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,0 m (2: 10–11, 17–18)",
+     "corridas": 2,
+     "L": 5.0,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "mesa sem par · 5,0 m (4: 9, 15, 16, 21)",
+     "corridas": 4,
+     "L": 5.0,
+     "fitas": 12,
+     "postes": 16,
+     "metros": 24.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,0 m (7: 1–2, 3–4, 7–8, 13–14, 19–20, 25–26, 27–28)",
+     "corridas": 7,
+     "L": 3.0,
+     "fitas": 14,
+     "postes": 21,
+     "metros": 28.0
+    }
+   ],
+   "custo": {
+    "postes": 70,
+    "lista_ex": 1130.0,
+    "lista_inc": 1389.9,
+    "ao_preco_orcado": 912.1
+   }
+  },
+  {
+   "adotado": false,
+   "nome": "C",
+   "desc": "SÍNTESE das duas hipóteses: as duas divisórias do checkpoint mais a linha do meio de cada par e os três polos. É o 1e sem as sete linhas das mesas soltas.",
+   "corridas": 14,
+   "fitas": 55,
+   "postes": 75,
+   "postes_reserva": 83,
+   "metros": 110.0,
+   "itens": [
+    {
+     "rotulo": "divisórias entre os canais A|B e B|C",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,0 m (2: 10–11, 17–18)",
+     "corridas": 2,
+     "L": 5.0,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,0 m (7: 1–2, 3–4, 7–8, 13–14, 19–20, 25–26, 27–28)",
+     "corridas": 7,
+     "L": 3.0,
+     "fitas": 14,
+     "postes": 21,
+     "metros": 28.0
+    }
+   ],
+   "custo": {
+    "postes": 83,
+    "lista_ex": 1325.0,
+    "lista_inc": 1629.75,
+    "ao_preco_orcado": 1081.49
+   }
   }
  ]
 }

@@ -120,6 +120,10 @@ python3 scripts/tensa_barreiras.py   # lê saidas/prancheta_hall2.json,
 
 - **`saidas/tensa_barreiras.md`** — o registro da decisão, com o desenho adotado,
   as alternativas descartadas e os riscos aceitos.
+- **`saidas/propostas_alternativas.md`** — duas hipóteses de corte, com plano e
+  desenho cada: **A**, unifila só para separar até o checkpoint; **B**, unifila só
+  nas mesas pareadas e nas grandes. Mais a síntese **C**, o único corte que o
+  documento recomenda.
 - **`saidas/tensa_barreiras.json`** — os números estruturados, cenário a cenário.
 - **`saidas/barreiras_hall2.html`** — a planta em escala com os três cenários
   ([publicada](https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981)).

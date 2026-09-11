@@ -90,48 +90,38 @@ de Dublin e passam a votar lá.
 ## Ring 3 — a fila externa
 
 `scripts/ring3.py` modela o compound de fila ao ar livre do RDS, **44,0 × 35,0 m
-(medida oficial)**, 14 m ao sul da fachada do Hall 2. O corredor de fundo de
-3,0 m fica no limite sul, encostado no gradil, e as filas começam logo acima
-dele: 32,00 m de raia. Sobre essa moldura, duas decisões independentes: **a
-direção das raias** (norte-sul ou leste-oeste) e **o que ocupa os flancos** (as
-duas baias de espera de 6,4 m, ou serpenteado).
+(medida oficial)**, 14 m ao sul da fachada do Hall 2. O eleitor entra pelo
+**canto nordeste**, desce rente ao gradil leste e vira no fundo: o corredor de
+chegada é um **L** de 3,0 m, e as três zonas são alimentadas pelo trecho de
+fundo. Restam dois desenhos, pela direção das raias.
 
 ```bash
 python3 scripts/ring3.py              # plano, JSON e as plantas em SVG
 python3 scripts/gera_pagina_ring3.py  # a página
 ```
 
-| | N–S com baias | **N–S sem baias** | L–O com baias | L–O sem baias |
-|---|---:|---:|---:|---:|
-| Lotação | 2.196 | **2.150** | 2.221 | 2.125 |
-| … em raia medida | 1.459 | **2.150** | 1.484 | 2.125 |
-| Separadores | 425 | **531** | 437 | 532 |
-| A comprar (estoque 200) | 225 | **331** | 237 | 332 |
+| | Raias N–S | Raias L–O |
+|---|---:|---:|
+| Lotação (toda em raia) | 1.997 | 1.964 |
+| Raias por zona | 8/10/8 | 23/23/23 |
+| Meias-voltas | 23 | 66 |
+| Separadores | 371 | 371 |
+| A comprar (estoque 200) | 171 | 171 |
 
-A largura das zonas sai da lotação que cada entrada precisa, não da largura
-disponível: onde há baia de flanco, ela já entrega lotação a A e a C, então
-essas duas recebem menos serpenteado — exatamente o equivalente da baia, 6,72 m.
+**Só duas coisas são separador**, por decisão do Posto: as divisórias entre as
+raias (708,4 m) e a parede que separa a zona C da corrente que desce pelo
+corredor lateral (32,0 m). Saíram da conta o contorno das zonas — que passa a
+ser fita, 160,2 m —, a parede do corredor de chegada (39,8 m) e as raias do
+apron até as portas (87,7 m): 288 m, 144 separadores a menos.
 
-**Quem decide a barreira são as baias, não a direção das raias.** A barreira de
-uma zona tem duas parcelas: o *perímetro*, que fecha o retângulo e é o mesmo nas
-duas orientações, e as *divisórias internas*. Só a segunda muda ao girar, e a
-diferença é `0,14 × (profundidade − largura)` por zona.
-
-Cada corrida de barreira que a conta soma está desenhada em
-`saidas/ring3_barreiras_*.svg`, colorida pelo componente — o mapa **é** a conta,
-gerado dos mesmos segmentos, e `scripts/ring3.py` recusa a gerar a planta se os
-dois não fecharem (`confere_mapa`). Piso da conta, antes da primeira raia de
-fila: corredor de fundo (39,8 m) mais raias do apron (~88 m) = 65 separadores.
-
-A evacuação não depende das baias: as barreiras laterais são removíveis e o
-escape sai pelos vãos entre as zonas e pelo gradil.
+Cada corrida que a conta soma está desenhada em `saidas/ring3_barreiras_*.svg`,
+colorida pelo componente; o mapa **é** a conta, e `scripts/ring3.py` recusa a
+gerar a planta se os dois não fecharem (`confere_mapa`).
 
 O plano vigente (`scripts/layout_ring3.py`, `saidas/plano_ring3.md`) não está
 neste repositório: foi produzido em sessão anterior e não chegou a ser
-versionado. Aqui ele é reconstruído das cotas publicadas — 39 m de Ring
-estimados, 23,75 m de raia, faixa de garganta ao sul, 1.402 pessoas, 314
-separadores — e a reconstrução reproduz os 855 dos serpenteados e os 547 das
-baias.
+versionado. Reconstruído das cotas publicadas, continua servindo de aferição do
+modelo de densidade — reproduz os 855 dos serpenteados e os 547 das baias.
 
 
 ## Escopo

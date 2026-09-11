@@ -31,6 +31,7 @@ o eleitor (cor ou letra) está em aberto.
 | 5 | Dimensões e plano do Ring 3 | `saidas/plano_ring3.md`, `saidas/layout_ring3.svg/.png` | §5 |
 | 6 | Plano de sinalização externo | `saidas/plano_sinalizacao.html`, `data/fotos/` | §6 |
 | 7 | Expectativa de horários de pico | `pesquisa_horarios_pico_votacao.md` | §7 |
+| 9 | Ring 3 nas dimensões oficiais (44 × 35 m): quatro desenhos de fila comparados | `saidas/ring3_horizontal.html`, `saidas/ring3.json`, `saidas/plano_ring3_horizontal.md`, `scripts/ring3.py` | `saidas/plano_ring3_horizontal.md` |
 | 8 | Separadores de fila do salão (cenário 1e adotado: 100 postes, 146 m de fita) | `saidas/barreiras_hall2.html`, `saidas/tensa_barreiras.md`, `saidas/tensa_barreiras.json`, `scripts/tensa_barreiras.py` | `saidas/tensa_barreiras.md` |
 
 Artefatos publicados: planta-base, planta das 28 mesas, prancheta, simulador e

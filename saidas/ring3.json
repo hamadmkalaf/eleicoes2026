@@ -322,6 +322,206 @@
       "A saída continua presa a um canto do bloco: na vertical a borda norte é aberta pelas meias-voltas, então o portão não pode ser movido para o eixo da porta como na horizontal."
     ]
   },
+  "vertical_ccb_na_ponta": {
+    "codigo": "VSP",
+    "nome": "Serpenteados verticais (raias norte-sul) · CCB só na ponta",
+    "capacidade": 1997,
+    "capacidade_raias": 1997,
+    "capacidade_baias": 0,
+    "capacidade_com_perda_de_meia_volta": 1964,
+    "meias_voltas": 23,
+    "por_entrada": {
+      "A": 614,
+      "B": 768,
+      "C": 614
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1687,
+      "B": 0.1822,
+      "C": 0.1687
+    },
+    "barreira_m": 78.0,
+    "barreira_por_componente_m": {
+      "CCB na ponta das divisórias": 46.0,
+      "separação entre a zona C e o corredor": 32.0
+    },
+    "fora_da_conta": {
+      "contorno das zonas (hoje, fita)": 160.2,
+      "parede do corredor de chegada": 39.8,
+      "raias do apron até as portas": 87.7,
+      "fita grossa nas divisórias": 662.4
+    },
+    "separadores": 39,
+    "estoque": 200,
+    "compra": 0,
+    "custo_compra_eur": 0.0,
+    "m_por_pessoa": 0.039,
+    "zonas": [
+      {
+        "entrada": "A",
+        "orientacao": "vertical",
+        "largura_m": 11.2,
+        "profundidade_m": 32.0,
+        "raias": 8,
+        "comprimento_raia_m": 32.0,
+        "passo_m": 1.4,
+        "meias_voltas": 7,
+        "caminhada_m": 256.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 17.48,
+        "descarga_m": 14.73,
+        "desvio_lateral_m": 4.58,
+        "capacidade": 614
+      },
+      {
+        "entrada": "B",
+        "orientacao": "vertical",
+        "largura_m": 14.0,
+        "profundidade_m": 32.0,
+        "raias": 10,
+        "comprimento_raia_m": 32.0,
+        "passo_m": 1.4,
+        "meias_voltas": 9,
+        "caminhada_m": 320.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 33.78,
+        "descarga_m": 15.04,
+        "desvio_lateral_m": 5.5,
+        "capacidade": 768
+      },
+      {
+        "entrada": "C",
+        "orientacao": "vertical",
+        "largura_m": 11.2,
+        "profundidade_m": 32.0,
+        "raias": 8,
+        "comprimento_raia_m": 32.0,
+        "passo_m": 1.4,
+        "meias_voltas": 7,
+        "caminhada_m": 256.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 36.09,
+        "descarga_m": 14.09,
+        "desvio_lateral_m": 1.58,
+        "capacidade": 614
+      }
+    ],
+    "baias": {},
+    "notas": [
+      "A conta de CCB cai para o número de divisórias mais a separação da zona C: a barreira deixa de ser proporcional ao comprimento da raia e passa a ser proporcional ao número de raias.",
+      "O CCB fica na ponta livre da divisória, no vão da meia-volta — o ponto onde o eleitor encosta e onde a fila empurra.",
+      "Fita não se sustenta sozinha: entre dois apoios ela cede. Com um CCB só na ponta, cada divisória fica com um vão livre do comprimento inteiro dela — ver `apoios_da_fita`."
+    ],
+    "fita_grossa_m": 662.4,
+    "n_divisorias": 23,
+    "apoios_da_fita": {
+      "espacamento_m": 5.0,
+      "vao_livre_m": 28.8,
+      "apoios_por_divisoria": 5,
+      "apoios": 115,
+      "separadores_se_forem_ccb": 154
+    }
+  },
+  "girado_ccb_na_ponta": {
+    "codigo": "HP",
+    "nome": "Serpenteados horizontais (raias leste-oeste) · CCB só na ponta",
+    "capacidade": 1964,
+    "capacidade_raias": 1964,
+    "capacidade_baias": 0,
+    "capacidade_com_perda_de_meia_volta": 1869,
+    "meias_voltas": 66,
+    "por_entrada": {
+      "A": 626,
+      "B": 712,
+      "C": 626
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1719,
+      "B": 0.169,
+      "C": 0.1719
+    },
+    "barreira_m": 164.0,
+    "barreira_por_componente_m": {
+      "CCB na ponta das divisórias": 132.0,
+      "separação entre a zona C e o corredor": 32.0
+    },
+    "fora_da_conta": {
+      "contorno das zonas (hoje, fita)": 159.6,
+      "parede do corredor de chegada": 39.8,
+      "raias do apron até as portas": 85.5,
+      "fita grossa nas divisórias": 576.4
+    },
+    "separadores": 82,
+    "estoque": 200,
+    "compra": 0,
+    "custo_compra_eur": 0.0,
+    "m_por_pessoa": 0.084,
+    "zonas": [
+      {
+        "entrada": "A",
+        "orientacao": "horizontal",
+        "largura_m": 11.34,
+        "profundidade_m": 32.0,
+        "raias": 23,
+        "comprimento_raia_m": 11.34,
+        "passo_m": 1.391,
+        "meias_voltas": 22,
+        "caminhada_m": 260.8,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 17.62,
+        "descarga_m": 14.69,
+        "desvio_lateral_m": 4.44,
+        "capacidade": 626
+      },
+      {
+        "entrada": "B",
+        "orientacao": "horizontal",
+        "largura_m": 13.12,
+        "profundidade_m": 32.0,
+        "raias": 23,
+        "comprimento_raia_m": 13.12,
+        "passo_m": 1.391,
+        "meias_voltas": 22,
+        "caminhada_m": 296.8,
+        "toco_perdido_m": 5.06,
+        "portao_x_m": 28.29,
+        "descarga_m": 14.0,
+        "desvio_lateral_m": 0.0,
+        "capacidade": 712
+      },
+      {
+        "entrada": "C",
+        "orientacao": "horizontal",
+        "largura_m": 11.34,
+        "profundidade_m": 32.0,
+        "raias": 23,
+        "comprimento_raia_m": 11.34,
+        "passo_m": 1.391,
+        "meias_voltas": 22,
+        "caminhada_m": 260.8,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 35.95,
+        "descarga_m": 14.07,
+        "desvio_lateral_m": 1.44,
+        "capacidade": 626
+      }
+    ],
+    "baias": {},
+    "notas": [
+      "A conta de CCB cai para o número de divisórias mais a separação da zona C: a barreira deixa de ser proporcional ao comprimento da raia e passa a ser proporcional ao número de raias.",
+      "O CCB fica na ponta livre da divisória, no vão da meia-volta — o ponto onde o eleitor encosta e onde a fila empurra.",
+      "Fita não se sustenta sozinha: entre dois apoios ela cede. Com um CCB só na ponta, cada divisória fica com um vão livre do comprimento inteiro dela — ver `apoios_da_fita`."
+    ],
+    "fita_grossa_m": 576.4,
+    "n_divisorias": 66,
+    "apoios_da_fita": {
+      "espacamento_m": 5.0,
+      "vao_livre_m": 8.7,
+      "apoios_por_divisoria": 1,
+      "apoios": 66,
+      "separadores_se_forem_ccb": 148
+    }
+  },
   "escada_de_raias": [
     {
       "raias_por_zona": 6,

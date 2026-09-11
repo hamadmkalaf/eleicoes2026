@@ -15,6 +15,8 @@ SAIDAS = os.path.join(RAIZ, "saidas")
 
 D = json.load(open(os.path.join(SAIDAS, "ring3.json"), encoding="utf-8"))
 VS, H, PV = D["vertical_sem_baias"], D["girado"], D["plano_vigente_reconstruido"]
+VP, HP = D["vertical_ccb_na_ponta"], D["girado_ccb_na_ponta"]
+AP = VP["apoios_da_fita"]
 ESCADA_V, ESCADA_H = D["escada_de_profundidade"], D["escada_de_raias"]
 P, CONF = D["premissas"], D["aderencia_ao_plano_original"]
 ESP = P["comparecimento_esperado"]
@@ -99,6 +101,13 @@ plantas = "\n".join(
     f'{d["separadores"]} separadores · {num(d["meias_voltas"])} meias-voltas'
     f'</figcaption></figure>' for rot, d, arq in DOIS)
 
+mapas_ponta = "\n".join(
+    f'<figure><div class="prancha">{svg(arq)}</div>'
+    f'<figcaption><b>{rot}.</b> {d["separadores"]} separadores · '
+    f'{num(d["fita_grossa_m"],0)} m de fita grossa</figcaption></figure>'
+    for rot, d, arq in (("Raias norte-sul", VP, "ring3_barreiras_vertical_ponta.svg"),
+                        ("Raias leste-oeste", HP, "ring3_barreiras_girado_ponta.svg")))
+
 mapas = "\n".join(
     f'<figure><div class="prancha">{svg(arq.replace("ring3_", "ring3_barreiras_"))}</div>'
     f'<figcaption><b>{rot}.</b> o que é separador, o que é fita, o que já existe'
@@ -126,7 +135,7 @@ sem_compra = [r for r in ESCADA_V if r["compra"] == 0]
 FORA = VS["fora_da_conta"]
 retirado = sum(FORA.values())
 
-HTML = f"""<title>Ring 3, dois desenhos</title>
+HTML = f"""<title>Ring 3, cenários de fila</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
@@ -258,7 +267,7 @@ footer p{{margin:0 0 .5em; max-width:74ch}}
 <div class="folha">
 <header>
   <p class="olho">Eleições 2026 · 1º turno · 4 de outubro · RDS Ballsbridge · fila externa</p>
-  <h1>Ring 3, dois desenhos</h1>
+  <h1>Ring 3, cenários de fila</h1>
   <p class="chamada">O eleitor entra pelo canto nordeste, desce rente ao gradil leste e vira no
   fundo: o corredor de chegada é um L. As três zonas são alimentadas pelo trecho de fundo e
   descarregam ao norte em S4, S5 e S6. Só duas coisas são separador — as divisórias das raias e a
@@ -268,7 +277,7 @@ footer p{{margin:0 0 .5em; max-width:74ch}}
     <div><dt>Separadores</dt><dd class="delta">{VS['separadores']}<small>{num(VS['barreira_por_componente_m']['divisórias entre as raias'],0)} m de divisória + {num(VS['barreira_por_componente_m']['separação entre a zona C e o corredor'],0)} m na zona C</small></dd></div>
     <div><dt>A comprar</dt><dd>{VS['compra']}<small>sobre os {P['estoque_separadores']} da organizadora · EUR {num(VS['custo_compra_eur'],0)}</small></dd></div>
     <div><dt>Fora da conta</dt><dd class="ganho">−{sep(retirado)}<small>{num(retirado,0)} m que saíram por decisão do Posto</small></dd></div>
-    <div><dt>Lotação</dt><dd>{num(VS['capacidade'])}<small>toda em raia medida</small></dd></div>
+    <div><dt>CCB só na ponta</dt><dd class="ganho">{VP['separadores']}<small>cenário 3 · {num(VP['fita_grossa_m'],0)} m de fita grossa</small></dd></div>
   </dl>
 </header>
 
@@ -372,6 +381,53 @@ footer p{{margin:0 0 .5em; max-width:74ch}}
     <caption>Desenho norte-sul, zona a zona. A largura sai da lotação que cada entrada precisa, não
     da largura disponível.</caption>
   </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Cenário 3</p>
+  <h2>CCB só na ponta, fita grossa no resto</h2>
+  <div class="prosa">
+  <p>A divisória deixa de ser barreira de ponta a ponta. Vira <strong>fita grossa</strong> — do
+  tipo que a polícia usa para isolar — ancorada por <strong>um único CCB na ponta livre</strong>,
+  no vão da meia-volta, que é por onde a pessoa passa e onde a fila empurra. A separação da zona C
+  continua sendo barreira inteira: ali são dois fluxos encostados, e fita não segura isso.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th></th><th class="num">N–S · barreira inteira</th><th class="num">N–S · CCB na ponta</th><th class="num">L–O · CCB na ponta</th></tr></thead>
+    <tbody>
+      <tr><td>Divisórias (uma por vão de raia)</td><td class="mono num">{VS['meias_voltas']}</td><td class="mono num">{VP['n_divisorias']}</td><td class="mono num">{HP['n_divisorias']}</td></tr>
+      <tr><td>Barreira</td><td class="mono num">{num(VS['barreira_m'],1)} m</td><td class="mono num">{num(VP['barreira_m'],1)} m</td><td class="mono num">{num(HP['barreira_m'],1)} m</td></tr>
+      <tr class="total"><td>Separadores</td><td class="mono num">{VS['separadores']}</td><td class="mono num ganho">{VP['separadores']}</td><td class="mono num">{HP['separadores']}</td></tr>
+      <tr><td>A comprar (estoque {P['estoque_separadores']})</td><td class="mono num">{VS['compra']}</td><td class="mono num ganho">{VP['compra']}</td><td class="mono num">{HP['compra']}</td></tr>
+      <tr><td>Fita grossa</td><td class="mono num">—</td><td class="mono num">{num(VP['fita_grossa_m'],1)} m</td><td class="mono num">{num(HP['fita_grossa_m'],1)} m</td></tr>
+      <tr><td>Lotação</td><td class="mono num">{num(VS['capacidade'])}</td><td class="mono num">{num(VP['capacidade'])}</td><td class="mono num">{num(HP['capacidade'])}</td></tr>
+    </tbody>
+    <caption>A lotação não muda: as raias são as mesmas, só o material que as separa é outro.</caption>
+  </table></div>
+  <p class="nota"><strong>A inversão.</strong> A barreira deixa de ser proporcional ao
+  <em>comprimento</em> da raia e passa a ser proporcional ao <em>número</em> de raias. Por isso o
+  girado, com {HP['n_divisorias']} divisórias curtas, custa mais ({HP['separadores']}) que o N–S com
+  {VP['n_divisorias']} longas ({VP['separadores']}) — o contrário do que acontecia antes.</p>
+  <div class="plantas">{mapas_ponta}</div>
+
+  <h3 style="margin-top:34px">O que a fita pede, e o modelo não cobra</h3>
+  <div class="prosa">
+  <p>Cada divisória do desenho N–S fica com <strong>{num(AP['vao_livre_m'],1)} m de vão livre</strong>
+  depois do CCB da ponta. Fita não se sustenta nesse vão: ela cede, e uma fila encostada atravessa.
+  Mantendo o vão em {num(AP['espacamento_m'],0)} m, seriam <strong>{AP['apoios_por_divisoria']}
+  apoios por divisória</strong>, {AP['apoios']} no total.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Se o apoio for…</th><th>Consequência</th></tr></thead>
+    <tbody>
+      <tr><td>Um CCB</td><td class="mono">{AP['separadores_se_forem_ccb']} separadores no total — {AP['separadores_se_forem_ccb']-P['estoque_separadores']} além do estoque; ainda bem abaixo dos {VS['separadores']} do regime inteiro, mas {AP['separadores_se_forem_ccb']//VP['separadores']}× o do cenário como pedido</td></tr>
+      <tr><td>Um poste leve com base</td><td>Outro item de orçamento, mais barato e mais leve: {AP['apoios']} postes</td></tr>
+      <tr><td>Nada</td><td>A fita cede entre as pontas e a raia deixa de existir na prática, justamente quando a fila enche</td></tr>
+    </tbody>
+  </table></div>
+  <p class="nota"><strong>A decisão não é entre fita e barreira — é sobre quantos apoios a fita vai
+  ter.</strong> O número de CCB cai de verdade só se os apoios intermediários forem outro
+  material.</p>
 </section>
 
 <section>

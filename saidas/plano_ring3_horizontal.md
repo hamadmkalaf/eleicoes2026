@@ -98,6 +98,35 @@ Dentro do estoque, sem comprar nada: 16,0 m de raia, 998 pessoas.
 | 22 | 30,8 m | 1.878 | 354 | 154 |
 | 23 ← | 32,0 m | 1.964 | 371 | 171 |
 
+## Cenário novo: CCB só na ponta, fita grossa no resto
+
+A divisória deixa de ser barreira de ponta a ponta. Vira **fita grossa** — do tipo que a polícia usa para isolar — ancorada por **um único CCB na ponta livre**, no vão da meia-volta, que é por onde a pessoa passa e onde a fila empurra. A separação da zona C continua sendo barreira inteira: ali são dois fluxos encostados, e fita não segura isso.
+
+| | Raias N–S | Raias L–O |
+|---|---:|---:|
+| Divisórias (uma por vão de raia) | 23 | 66 |
+| CCB nas pontas | 46,0 m | 132,0 m |
+| Separação da zona C | 32,0 m | 32,0 m |
+| **Separadores** | **39** | **82** |
+| A comprar (estoque 200) | 0 | 0 |
+| Fita grossa | 662,4 m | 576,4 m |
+
+Contra os 371 separadores do regime de barreira inteira, o desenho N–S cai para **39** — 332 a menos, e **0 a comprar** sobre as 200 unidades da organizadora. A lotação não muda: as raias são as mesmas, só o material que as separa é outro.
+
+Repare na inversão: a barreira deixa de ser proporcional ao **comprimento** da raia e passa a ser proporcional ao **número** de raias. Por isso o girado, com 66 divisórias curtas, custa mais (82) que o N–S com 23 longas (39) — exatamente o contrário do que acontecia antes.
+
+### O que a fita pede, e o modelo não cobra
+
+Cada divisória do desenho N–S tem **28,8 m de vão livre** depois do CCB da ponta. Fita não se sustenta nesse vão: ela cede, e uma fila encostada atravessa. Mantendo o vão em 5 m, seriam **5 apoios por divisória**, 115 no total.
+
+| Se o apoio for… | Consequência |
+|---|---|
+| Um CCB | 154 separadores no total — -46 além do estoque; ainda bem abaixo dos 371 do regime inteiro, mas 3× o do cenário como pedido |
+| Um poste leve com base | Outro item de orçamento, mais barato e mais leve: 115 postes |
+| Nada | A fita cede entre as pontas e a raia deixa de existir na prática, justamente quando a fila enche |
+
+**A decisão não é entre fita e barreira — é sobre quantos apoios a fita vai ter.** O número de CCB cai de verdade só se os apoios intermediários forem outro material.
+
 ## Premissas e aderência
 
 | Parâmetro | Valor | Origem |

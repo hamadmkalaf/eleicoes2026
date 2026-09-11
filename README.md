@@ -114,6 +114,24 @@ corredor lateral (32,0 m). Saíram da conta o contorno das zonas — que passa a
 ser fita, 160,2 m —, a parede do corredor de chegada (39,8 m) e as raias do
 apron até as portas (87,7 m): 288 m, 144 separadores a menos.
 
+### Cenário 3 — CCB só na ponta, fita grossa no resto
+
+A divisória vira fita do tipo de isolamento, ancorada por **um CCB na ponta
+livre** (o vão da meia-volta). A separação da zona C continua barreira inteira.
+
+| | N–S barreira inteira | N–S CCB na ponta | L–O CCB na ponta |
+|---|---:|---:|---:|
+| Separadores | 371 | **39** | 82 |
+| A comprar (estoque 200) | 171 | **0** | 0 |
+| Fita grossa | — | 662,4 m | 576,4 m |
+| Lotação | 1.997 | 1.997 | 1.964 |
+
+A barreira deixa de ser proporcional ao *comprimento* da raia e passa a ser
+proporcional ao *número* de raias — por isso o girado, com 66 divisórias curtas,
+custa mais que o N–S com 23 longas. Ressalva registrada no plano: cada divisória
+fica com 28,8 m de vão livre de fita; com apoio a cada 5 m seriam 115 apoios, e
+se forem CCB o total volta a 154.
+
 Cada corrida que a conta soma está desenhada em `saidas/ring3_barreiras_*.svg`,
 colorida pelo componente; o mapa **é** a conta, e `scripts/ring3.py` recusa a
 gerar a planta se os dois não fecharem (`confere_mapa`).

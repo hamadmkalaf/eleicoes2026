@@ -1,0 +1,2000 @@
+[
+ {
+  "arranjo": "tres-polos-20260905-182000",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 5,
+      "x": 26.26,
+      "y": 44.4,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 6,
+      "x": 30.16,
+      "y": 44.4,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 7,
+      "x": 32.56,
+      "y": 44.4,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 8,
+      "x": 36.46,
+      "y": 44.4,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 9,
+      "x": 47.3,
+      "y": 42.5,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 10,
+      "x": 47.3,
+      "y": 38.6,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 11,
+      "x": 47.3,
+      "y": 36.2,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 12,
+      "x": 47.3,
+      "y": 32.3,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 13,
+      "x": 47.3,
+      "y": 29.9,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 14,
+      "x": 47.3,
+      "y": 26,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 15,
+      "x": 47.3,
+      "y": 23.6,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 16,
+      "x": 47.3,
+      "y": 19.7,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 17,
+      "x": 47.3,
+      "y": 17.3,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 18,
+      "x": 47.3,
+      "y": 13.4,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 19,
+      "x": 47.3,
+      "y": 11,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 20,
+      "x": 47.3,
+      "y": 7.1,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 22,
+      "x": 40.05,
+      "y": 44.4,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 23,
+      "x": 47.3,
+      "y": 3.5,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 24,
+      "x": 0,
+      "y": 13.2,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     3,
+     3,
+     3
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 54,
+  "fecha90": "17h03",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad-2-20260905-160048",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     3,
+     3,
+     3
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 54,
+  "fecha90": "17h04",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad1-20260905-155811",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     3,
+     3,
+     3
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 54,
+  "fecha90": "17h04",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad-2-20260905-160048",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     3,
+     3,
+     3
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 5
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h04",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad1-20260905-155811",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     3,
+     3,
+     3
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 5
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h04",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad-2-20260905-160048",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 12,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     2,
+     2,
+     2
+    ]
+   },
+   "filaMesa": {
+    "leve": 4,
+    "media": 5,
+    "pesada": 8
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h04",
+  "ring3p90": 1035
+ },
+ {
+  "arranjo": "hamad1-20260905-155811",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 12,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     2,
+     2,
+     2
+    ]
+   },
+   "filaMesa": {
+    "leve": 4,
+    "media": 5,
+    "pesada": 8
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h04",
+  "ring3p90": 1035
+ },
+ {
+  "arranjo": "hamad-2-20260905-160048",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     2,
+     2,
+     2
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 5
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h04",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad1-20260905-155811",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     2,
+     2,
+     2
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 5
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h04",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad-2-20260905-160048",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     2,
+     2,
+     2
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h03",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad1-20260905-155811",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     2,
+     2,
+     2
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h03",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "tres-polos-20260905-182000",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 5,
+      "x": 26.26,
+      "y": 44.4,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 6,
+      "x": 30.16,
+      "y": 44.4,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 7,
+      "x": 32.56,
+      "y": 44.4,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 8,
+      "x": 36.46,
+      "y": 44.4,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 9,
+      "x": 47.3,
+      "y": 42.5,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 10,
+      "x": 47.3,
+      "y": 38.6,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 11,
+      "x": 47.3,
+      "y": 36.2,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 12,
+      "x": 47.3,
+      "y": 32.3,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 13,
+      "x": 47.3,
+      "y": 29.9,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 14,
+      "x": 47.3,
+      "y": 26,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 15,
+      "x": 47.3,
+      "y": 23.6,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 16,
+      "x": 47.3,
+      "y": 19.7,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 17,
+      "x": 47.3,
+      "y": 17.3,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 18,
+      "x": 47.3,
+      "y": 13.4,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 19,
+      "x": 47.3,
+      "y": 11,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 20,
+      "x": 47.3,
+      "y": 7.1,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 22,
+      "x": 40.05,
+      "y": 44.4,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 23,
+      "x": 47.3,
+      "y": 3.5,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 24,
+      "x": 0,
+      "y": 13.2,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     2,
+     2,
+     2
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h03",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad-2-20260905-160048",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     3,
+     3,
+     3
+    ]
+   },
+   "filaMesa": {
+    "leve": 4,
+    "media": 5,
+    "pesada": 8
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h04",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "hamad1-20260905-155811",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 1,
+      "x": 16.5,
+      "y": 44.35,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 2,
+      "x": 19.9,
+      "y": 43.9,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 3,
+      "x": 22.65,
+      "y": 43.95,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 4,
+      "x": 25.8,
+      "y": 44.25,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 21,
+      "x": 0.35,
+      "y": 21.9,
+      "rot": 0,
+      "lado": 1
+     },
+     {
+      "n": 22,
+      "x": 0.15,
+      "y": 18.75,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 16,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     3,
+     3,
+     3
+    ]
+   },
+   "filaMesa": {
+    "leve": 4,
+    "media": 5,
+    "pesada": 8
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 55,
+  "fecha90": "17h04",
+  "ring3p90": 971
+ },
+ {
+  "arranjo": "tres-polos-20260905-182000",
+  "cen": {
+   "nome": "Ponto de partida",
+   "salao": {
+    "base": "A",
+    "alteracoes": [
+     {
+      "n": 5,
+      "x": 26.26,
+      "y": 44.4,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 6,
+      "x": 30.16,
+      "y": 44.4,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 7,
+      "x": 32.56,
+      "y": 44.4,
+      "rot": 270,
+      "lado": 1
+     },
+     {
+      "n": 8,
+      "x": 36.46,
+      "y": 44.4,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 9,
+      "x": 47.3,
+      "y": 42.5,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 10,
+      "x": 47.3,
+      "y": 38.6,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 11,
+      "x": 47.3,
+      "y": 36.2,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 12,
+      "x": 47.3,
+      "y": 32.3,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 13,
+      "x": 47.3,
+      "y": 29.9,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 14,
+      "x": 47.3,
+      "y": 26,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 15,
+      "x": 47.3,
+      "y": 23.6,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 16,
+      "x": 47.3,
+      "y": 19.7,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 17,
+      "x": 47.3,
+      "y": 17.3,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 18,
+      "x": 47.3,
+      "y": 13.4,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 19,
+      "x": 47.3,
+      "y": 11,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 20,
+      "x": 47.3,
+      "y": 7.1,
+      "rot": 180,
+      "lado": -1
+     },
+     {
+      "n": 22,
+      "x": 40.05,
+      "y": 44.4,
+      "rot": 270,
+      "lado": -1
+     },
+     {
+      "n": 23,
+      "x": 47.3,
+      "y": 3.5,
+      "rot": 180,
+      "lado": 1
+     },
+     {
+      "n": 24,
+      "x": 0,
+      "y": 13.2,
+      "rot": 0,
+      "lado": -1
+     }
+    ]
+   },
+   "portas": {
+    "S1": "fechada",
+    "S3": "fechada",
+    "S7": "fechada",
+    "S9": "fechada",
+    "S4": "entrada",
+    "S5": "entrada",
+    "S6": "entrada",
+    "S2": "saida",
+    "S8": "saida"
+   },
+   "zonas": {
+    "modo": "entradas",
+    "portas": [
+     "S4",
+     "S5",
+     "S6"
+    ]
+   },
+   "checkpoint": {
+    "existe": true,
+    "dist": 12,
+    "filas": 2,
+    "seg": 8,
+    "atendentes": [
+     2,
+     2,
+     2
+    ]
+   },
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 5
+   },
+   "liberacao": "buffer",
+   "porta": {
+    "vazao": 30
+   },
+   "comparecimento": "medio",
+   "tempos": {
+    "identificacao": 45,
+    "voto": 30,
+    "cv": 0.35
+   },
+   "ring3": {
+    "atendentes": 6,
+    "seg": 6,
+    "capacidade": 1402
+   },
+   "extras": {
+    "justificativas": 0.05
+   },
+   "sim": {
+    "runs": 2,
+    "seed": 7
+   }
+  },
+  "falhas": 0,
+  "atencoes": 1,
+  "P90min": 56,
+  "fecha90": "17h03",
+  "ring3p90": 1149
+ }
+]

@@ -88,6 +88,12 @@ mais cópia própria de porta, taxa ou numeração.
 
 | Peça | URL |
 |---|---|
+| **Dashboard do plano** (integra tudo; portas vivas) | https://claude.ai/code/artifact/1c434ede-3d79-439c-b97b-a8121979bd03 |
+| Urnas de Dublin | https://claude.ai/code/artifact/3d1b9ff8-458d-42c9-b1b6-8aacf15dfd9f |
+| Barreiras do Hall 2 | https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981 |
+| Ring 3, quatro desenhos | https://claude.ai/code/artifact/c1257b13-e450-4bc1-b801-439a32bddb87 |
+| Fluxo do Posto de Dublin (superado, 28/08) | https://claude.ai/code/artifact/bdf8a5b8-2fdd-4b00-a409-9fe4af2bf3f2 |
+| As 28 Mesas nas Paredes (superado, 31/08) | https://claude.ai/code/artifact/1193fccf-effa-49ca-8ac5-5f4946fe4788 |
 | Planta-base do Hall 2 | https://claude.ai/code/artifact/48817634-cbe1-426e-829f-5b5c674a688c |
 | "Quantas mesas cabem no Hall 2" (planta das 28 mesas) | https://claude.ai/code/artifact/8ea7b55b-ec3f-4dd4-baaf-7702c4d3fcce |
 | Prancheta do Hall 2 | https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0 |
@@ -1242,3 +1248,36 @@ Para voltar tudo ao estado do backup numa branch nova:
 ```bash
 git checkout -b resgate backup/consolidado-2026-09-06
 ```
+
+---
+
+## 11. Dashboard do plano e portas vivas (11/09/2026)
+
+**O que é.** `saidas/dashboard/index.html`, gerado por `scripts/gera_dashboard.py`,
+conta o plano na ordem do percurso do eleitor (quem vota, o salão, as mesas, a
+fila externa, a rota e as placas, as barreiras, o dia simulado, o caminho até
+aqui, fontes), com os números lidos de `data/decisoes.json`, `saidas/dados.json`,
+`mesas.json`, `ring3.json` e `tensa_barreiras.json`. Embute a Prancheta, o
+Simulador e o Ring 3 ao vivo em iframes da mesma origem e copia todas as peças
+para `ferramentas/`, `pecas/` e `historico/` (os dois artefatos superados). A
+pasta inteira é publicável como artefato multi-arquivo ou por qualquer servidor
+estático. Sem orçamento nem lista de pendências, a pedido do Posto.
+
+**Portas vivas.** `simulador/portas.js` (navegador e Node) deriva de um estado
+das portas S1–S9 as entradas em ordem de x com letra e cor, o Ring 3 com N
+zonas (porte de `scripts/ring3.py`, 44 × 35 m, cinco desenhos: plano vigente
+reconstruído e os quatro sem garganta) e a atribuição mesa → entrada (porte de
+`decisoes.atribui_entradas`, iterada até a repartição das mesas e a largura das
+zonas concordarem). As portas clicáveis do Simulador são o controle mestre e
+publicam o estado por `localStorage` + `BroadcastChannel`; a Prancheta (só
+papéis das portas, entradas, entrada de cada mesa e contorno do Ring 3, sem
+mover mesas), `saidas/ring3_vivo.html` e o dashboard assinam. Sem outra página
+aberta, o hash `#portas=S4:A,S5:B,S6:C,S2:x,S8:x&desenho=VS` carrega um estado.
+`node simulador/teste_portas.js` confere que a decisão de 06/09 reproduz
+`decisoes.json` e que os desenhos reproduzem `ring3.json`.
+
+**Divergência registrada.** As capacidades do plano vigente (445/513/445,
+1.402) foram calculadas por `layout_ring3.py` com o Ring 3 a 39 × 35 m
+(fotogrametria); `ring3.py` e o módulo vivo usam a medida oficial de 44 × 35 m e
+reconstroem o plano vigente a 314 separadores (contra 300 publicados). A escolha
+entre o plano com garganta e os desenhos sem garganta continua pendente.

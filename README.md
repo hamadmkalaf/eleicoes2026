@@ -7,10 +7,11 @@ urnas**, identificação por caderno físico, Hall 2 + Ring 3 (descoberto).
 
 **Leia primeiro [`DOCUMENTACAO_PROJETO.md`](DOCUMENTACAO_PROJETO.md)**: é a
 documentação consolidada das sete etapas, com a revisão dos dez pull requests,
-as inconsistências entre etapas e as pendências por dono. Esta branch
-(`claude/project-analysis-documentation-w49q34`) reúne a última versão de cada
-etapa; `backup/consolidado-2026-09-06` é a cópia congelada do estado de 06/09
-antes da integração.
+as inconsistências entre etapas e as pendências por dono; o §11 documenta o
+dashboard e as portas vivas (11/09). Esta branch reúne a última versão de cada
+etapa (consolidação de 06/09 mais barreiras, Ring 3 oficial, cenário
+Equitativo e cotações); `backup/consolidado-2026-09-06` é a cópia congelada do
+estado de 06/09 antes da integração.
 
 **Decisões do Posto (06/09/2026), fonte única em `scripts/decisoes.py`:**
 comparecimento esperado pela base B (taxa de 2022 por domicílio de origem,
@@ -31,11 +32,22 @@ o eleitor (cor ou letra) está em aberto.
 | 5 | Dimensões e plano do Ring 3 | `saidas/plano_ring3.md`, `saidas/layout_ring3.svg/.png` | §5 |
 | 6 | Plano de sinalização externo | `saidas/plano_sinalizacao.html`, `data/fotos/` | §6 |
 | 7 | Expectativa de horários de pico | `pesquisa_horarios_pico_votacao.md` | §7 |
-| 9 | Ring 3 nas dimensões oficiais (44 × 35 m): quatro desenhos de fila comparados | `saidas/ring3_horizontal.html`, `saidas/ring3.json`, `saidas/plano_ring3_horizontal.md`, `scripts/ring3.py` | `saidas/plano_ring3_horizontal.md` |
 | 8 | Separadores de fila do salão (cenário 1e adotado: 100 postes, 146 m de fita) | `saidas/barreiras_hall2.html`, `saidas/tensa_barreiras.md`, `saidas/tensa_barreiras.json`, `scripts/tensa_barreiras.py` | `saidas/tensa_barreiras.md` |
+| 9 | Ring 3 nas dimensões oficiais (44 × 35 m): quatro desenhos de fila comparados | `saidas/ring3_horizontal.html`, `saidas/ring3.json`, `saidas/plano_ring3_horizontal.md`, `scripts/ring3.py` | `saidas/plano_ring3_horizontal.md` |
+| 10 | Dashboard do plano (narrativa única, ferramentas embutidas, portas vivas) | `saidas/dashboard/index.html`, `saidas/ring3_vivo.html`, `simulador/portas.js`, `scripts/gera_dashboard.py`, `scripts/gera_ring3_vivo.py` | §0 e §11 de `DOCUMENTACAO_PROJETO.md` |
 
-Artefatos publicados: planta-base, planta das 28 mesas, prancheta, simulador e
-plano de sinalização; URLs no §0 da documentação.
+Artefatos publicados: o **dashboard do plano**
+(https://claude.ai/code/artifact/1c434ede-3d79-439c-b97b-a8121979bd03), que
+integra todas as peças, e cada peça em separado; URLs no §0 da documentação.
+
+**Portas vivas (11/09/2026).** As portas clicáveis do Simulador são o controle
+mestre: mudar uma entrada ou uma saída da fachada sul redesenha a Prancheta
+(só papéis das portas, entradas e a entrada de cada mesa), o Ring 3 ao vivo
+(N entradas, N serpenteados) e a faixa do dashboard. A lógica está em
+`simulador/portas.js` (porte de `scripts/ring3.py` e de
+`decisoes.atribui_entradas`), testada por `node simulador/teste_portas.js`.
+A decisão de 06/09 continua em `scripts/decisoes.py`; o estado vivo é uma
+exploração no navegador e não a altera.
 
 ## Como rodar
 
@@ -55,6 +67,11 @@ python3 scripts/simula_fluxo.py
 python3 scripts/layout_ring3.py
 # 6. sinalização
 python3 scripts/gera_plano_sinalizacao.py
+# 7. barreiras internas e Ring 3 nas dimensões oficiais
+python3 scripts/tensa_barreiras.py && python3 scripts/ring3.py
+# 8. portas vivas, Ring 3 ao vivo e dashboard (por último: copia as peças)
+node simulador/teste_portas.js
+python3 scripts/gera_ring3_vivo.py && python3 scripts/gera_dashboard.py
 ```
 
 Toda saída em `saidas/` é gerada por script: editar HTML ou SVG à mão se perde

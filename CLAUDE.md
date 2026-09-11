@@ -15,8 +15,12 @@ posto do RDS Ballsbridge, Hall 2, para o 1º turno de 04/10/2026.
 
 ## Branches
 
+- `claude/integrated-artifacts-dashboard-cmfi4l` (PR para o branch padrão):
+  consolida a branch de 06/09 mais barreiras, Ring 3 oficial, cenário
+  Equitativo e cotações, e acrescenta o dashboard. Base de trabalho a partir
+  de 11/09/2026.
 - `claude/project-analysis-documentation-w49q34`: última versão de todas as
-  etapas, consolidada em 06/09/2026. Base de trabalho.
+  etapas, consolidada em 06/09/2026.
 - `backup/consolidado-2026-09-06`: cópia congelada do mesmo estado. Não
   receber commits; serve para resgatar arquivos e histórico (§10 da
   documentação).
@@ -63,6 +67,15 @@ acordada do salão. Duas regras valem para tudo que for produzido depois:
 - Dados das urnas: `saidas/dados.json` (etapa 1); todas as etapas seguintes
   leem daqui.
 - Desenho: `scripts/desenho.py` e `scripts/estilo_plano.css`.
+- Portas vivas: `simulador/portas.js` é o único lugar que deriva N entradas,
+  N zonas do Ring 3 e mesa → entrada a partir de um estado de portas; o
+  Simulador publica, a Prancheta, o Ring 3 ao vivo e o dashboard assinam
+  (localStorage + BroadcastChannel na mesma origem; hash `#portas=` para
+  links). Não reimplemente a regra nas páginas. Alterar a decisão continua
+  sendo em `decisoes.py`.
+- Dashboard: `scripts/gera_dashboard.py` monta `saidas/dashboard/` (index +
+  cópias das ferramentas e peças) e roda por último. Sem orçamento nem lista
+  de pendências na página, a pedido do Posto (foram para o Planner).
 
 ## Convenções
 

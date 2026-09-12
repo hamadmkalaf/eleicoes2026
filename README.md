@@ -87,3 +87,16 @@ de Dublin e passam a votar lá.
 
 Nenhum modelo de tempo de votação foi aplicado, a pedido: as saídas entregam os
 totais ordenados e o critério de gargalo fica a cargo de quem analisa.
+
+## Entrada: triagem central × fitas no piso
+
+`docs/alternativa_fitas_no_piso.md` discute a sugestão de trocar o ponto de
+triagem no meio do salão por fitas no piso que levem o eleitor da porta à
+sua mesa. `scripts/modelo_fluxo_entrada.py` (só biblioteca padrão) modela as
+duas organizações na geometria real do Hall 2: fila na triagem, pessoal,
+caminho médio, cruzamentos entrada × saída e metragem de fita. Saídas em
+`saidas/fluxo_entrada_comparacao.{md,json,html}` e `saidas/fluxo_*.svg`.
+
+```bash
+python3 scripts/modelo_fluxo_entrada.py
+```

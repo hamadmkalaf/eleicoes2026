@@ -1,0 +1,440 @@
+<meta charset="utf-8">
+<title>Posto de Dublin 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --papel:#f1efe7; --folha:#fffdf7; --prancha:#fbfaf7; --piso:#eef1f4;
+  --tinta:#16202b; --meio:#57616c; --fraco:#8b9099; --regua:#dbd5c7; --regua2:#eae5d9; --traco:#1c2733;
+  --a:#1f6fb2; --aviso:#b26a12; --alerta:#b23b2e; --ok:#1a7f6b; --realce:rgba(31,111,178,.10);
+  --alta:#c0392b; --media:#d4a017; --baixa:#1e8449; --neutra:#75808e;
+  --ra:#2a78d6; --rb:#e08a00; --rc:#c2185b;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --papel:#101418; --folha:#181d23; --prancha:#1d232b; --piso:#232a33;
+  --tinta:#e6eaee; --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931; --traco:#c9d1da;
+  --a:#63a6e0; --aviso:#dda257; --alerta:#e0796a; --ok:#4fc0a8; --realce:rgba(99,166,224,.14);
+  --alta:#cb454a; --media:#bd8200; --baixa:#33a36d; --neutra:#8a95a3;
+  --ra:#63a6e0; --rb:#e0a13c; --rc:#e2688f;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --papel:#101418; --folha:#181d23; --prancha:#1d232b; --piso:#232a33;
+  --tinta:#e6eaee; --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931; --traco:#c9d1da;
+  --a:#63a6e0; --aviso:#dda257; --alerta:#e0796a; --ok:#4fc0a8; --realce:rgba(99,166,224,.14);
+  --alta:#cb454a; --media:#bd8200; --baixa:#33a36d; --neutra:#8a95a3;
+  --ra:#63a6e0; --rb:#e0a13c; --rc:#e2688f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased}
+.folha{max-width:1080px; margin:0 auto; padding:0 24px 88px}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,"Times New Roman",serif; margin:0; font-weight:700; letter-spacing:-.01em; text-wrap:balance}
+h1{font-size:clamp(2rem,4.6vw,3.1rem); line-height:1.06}
+h2{font-size:clamp(1.4rem,2.4vw,1.85rem); line-height:1.2}
+h3{font-size:1.02rem; font-weight:600; line-height:1.3; margin:26px 0 8px}
+p{margin:0 0 1em; max-width:68ch}
+a{color:var(--a)}
+strong{font-weight:600}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums}
+.b{font-weight:600}
+:focus-visible{outline:2px solid var(--a); outline-offset:2px}
+
+/* ---- navegacao ---- */
+nav.topo{position:sticky; top:0; z-index:8; background:var(--folha); border-bottom:1px solid var(--regua)}
+nav.topo .in{max-width:1080px; margin:0 auto; padding:0 24px; display:flex; align-items:center; gap:4px 18px; overflow-x:auto; scrollbar-width:none}
+nav.topo .in::-webkit-scrollbar{display:none}
+nav.topo .marca{font-family:"Source Serif 4",Georgia,serif; font-weight:700; white-space:nowrap; padding:12px 0; margin-right:6px}
+nav.topo a{color:var(--meio); text-decoration:none; font-size:.82rem; white-space:nowrap; padding:12px 0; border-bottom:2px solid transparent}
+nav.topo a:hover{color:var(--tinta)}
+nav.topo a.ativa{color:var(--tinta); border-bottom-color:var(--a)}
+
+/* ---- cabecalho ---- */
+header{padding:56px 0 0}
+.olho{font-family:"IBM Plex Mono",monospace; font-size:.71rem; letter-spacing:.15em; text-transform:uppercase; color:var(--meio); margin:0 0 16px}
+.chamada{font-family:"Source Serif 4",Georgia,serif; font-size:clamp(1.05rem,1.9vw,1.28rem); line-height:1.5; color:var(--meio); max-width:62ch; margin:18px 0 0}
+.faixa{display:grid; grid-template-columns:repeat(auto-fit,minmax(138px,1fr)); gap:1px; background:var(--regua); border:1px solid var(--regua); margin:34px 0 0}
+.faixa div{background:var(--papel); padding:13px 15px}
+.faixa dt{font-size:.68rem; letter-spacing:.09em; text-transform:uppercase; color:var(--meio); margin:0 0 4px}
+.faixa dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.34rem; font-weight:500; line-height:1.15; font-variant-numeric:tabular-nums}
+.faixa dd small{display:block; font-family:"IBM Plex Sans",sans-serif; font-size:.72rem; font-weight:400; color:var(--fraco); margin-top:3px}
+
+/* ---- portas em vigor ---- */
+.vivo{margin:18px 0 0; border:1px solid var(--regua); border-left:3px solid var(--a); background:var(--folha); padding:12px 18px; display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; font-size:.88rem}
+.vivo.difere{border-left-color:var(--aviso)}
+.vivo .rot{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.13em; text-transform:uppercase; color:var(--meio)}
+.chip{display:inline-block; font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.78rem; padding:0 7px; border:1px solid currentColor; border-radius:2px; margin-right:3px; line-height:1.5}
+.vivo .aviso{color:var(--aviso)}
+.vivo .mini{margin-left:auto; max-width:260px; flex:1 1 200px}
+.vivo .mini svg{display:block; width:100%; height:auto}
+
+/* ---- secoes ---- */
+section{margin:68px 0 0}
+.rotulo{font-family:"IBM Plex Mono",monospace; font-size:.71rem; letter-spacing:.15em; text-transform:uppercase; color:var(--meio); margin:0 0 10px; padding-bottom:9px; border-bottom:1px solid var(--regua); display:flex; gap:12px; align-items:baseline}
+.rotulo .passo{color:var(--a)}
+section>h2{margin-bottom:14px}
+.lede{font-size:1.06rem; color:var(--meio); max-width:62ch}
+.duas{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:26px; align-items:start}
+@media (max-width:820px){ .duas{grid-template-columns:minmax(0,1fr)} }
+
+/* ---- pecas ---- */
+.pecas{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin:22px 0 0; padding:12px 0 0; border-top:1px dashed var(--regua); font-size:.86rem}
+.pecas .rot{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.13em; text-transform:uppercase; color:var(--meio); margin-right:4px}
+.peca{display:inline-flex; align-items:stretch; border:1px solid var(--regua); background:var(--folha)}
+.peca a{padding:5px 11px; text-decoration:none; color:var(--tinta); font-weight:500}
+.peca a.ext{border-left:1px solid var(--regua); color:var(--meio); font-weight:400; font-size:.8rem}
+.peca a:hover{background:var(--realce)}
+
+/* ---- figuras e tabelas ---- */
+figure{margin:22px 0 0}
+figcaption{font-size:.84rem; color:var(--meio); margin-top:12px; max-width:74ch}
+.prancha{background:var(--prancha); border:1px solid var(--regua); padding:8px; overflow-x:auto}
+.prancha svg{display:block; min-width:560px; width:100%; height:auto}
+.rolagem{overflow-x:auto; border:1px solid var(--regua); background:var(--folha); margin:18px 0 0}
+table{border-collapse:collapse; width:100%; font-size:.85rem}
+th,td{text-align:left; padding:7px 11px; border-bottom:1px solid var(--regua2); white-space:nowrap; vertical-align:top}
+thead th{font-size:.67rem; letter-spacing:.08em; text-transform:uppercase; color:var(--meio); font-weight:500; background:var(--folha)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+td.mesas{white-space:normal; font-size:.78rem; color:var(--meio); max-width:34ch}
+tr.marcada td{background:var(--realce); font-weight:600}
+td .sub{display:block; white-space:normal; font-size:.76rem; color:var(--meio); font-weight:400; max-width:44ch}
+.sw{display:inline-block; width:.7rem; height:.7rem; border-radius:2px; margin-right:6px; vertical-align:-1px}
+.tag{display:inline-block; font-size:.7rem; letter-spacing:.04em; padding:1px 7px; border:1px solid currentColor; color:var(--meio)}
+.t-entrada{color:var(--a); font-weight:600} .t-saida{color:var(--aviso); font-weight:600}
+.t-emerg{color:var(--ok)} .t-fechada{color:var(--alerta)} .t-livre{opacity:.7}
+
+/* ---- barras ---- */
+.grafico{background:var(--folha); border:1px solid var(--regua); padding:18px 20px 14px; margin-top:20px}
+.linha{display:grid; grid-template-columns:38px 1fr 40px; align-items:center; gap:10px; padding:1.5px 0; position:relative; outline:none}
+.linha .cod{font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--meio); text-align:right; font-variant-numeric:tabular-nums}
+.linha .trilho{height:11px; background:var(--regua2)}
+.linha .barra{display:block; height:100%; border-radius:0 3px 3px 0}
+.c-alta{background:var(--alta)} .c-media{background:var(--media)} .c-baixa{background:var(--baixa)} .c-neutra{background:var(--neutra)}
+.linha .val{font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--meio); font-variant-numeric:tabular-nums}
+.linha .dica{position:absolute; left:50px; bottom:100%; z-index:5; opacity:0; pointer-events:none; background:var(--tinta); color:var(--papel);
+  font-family:"IBM Plex Mono",monospace; font-size:.7rem; line-height:1.45; padding:5px 9px; max-width:min(380px,70vw); white-space:normal; transition:opacity .12s}
+.linha:hover .dica,.linha:focus .dica{opacity:1}
+.linha:focus .trilho{outline:2px solid var(--a); outline-offset:2px}
+.legenda{display:flex; flex-wrap:wrap; gap:14px; font-size:.78rem; color:var(--meio); margin:10px 0 0}
+.legenda span{display:inline-flex; align-items:center; gap:6px}
+
+/* ---- respostas e notas ---- */
+.respostas{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); margin-top:22px}
+.resposta{background:var(--folha); border:1px solid var(--regua); padding:18px 20px; display:flex; flex-direction:column; gap:8px}
+.resposta .num{font-family:"IBM Plex Mono",monospace; font-size:.68rem; color:var(--a); letter-spacing:.1em; text-transform:uppercase}
+.resposta .curta{font-family:"Source Serif 4",Georgia,serif; font-size:1.14rem; font-weight:700; line-height:1.28}
+.resposta p{margin:0; font-size:.9rem; color:var(--meio)}
+.nota{border-left:2px solid var(--aviso); padding:2px 0 2px 18px; margin:22px 0 0; color:var(--meio); font-size:.92rem; max-width:70ch}
+.nota strong{color:var(--tinta)}
+.nota.pendente{border-left-color:var(--alerta)}
+.nota.pendente strong{color:var(--alerta)}
+
+/* ---- ferramentas embutidas ---- */
+.ferramenta{margin:22px 0 0; border:1px solid var(--regua); background:var(--folha)}
+.ferramenta .barra-f{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; padding:9px 14px; border-bottom:1px solid var(--regua); font-size:.82rem; color:var(--meio)}
+.ferramenta .barra-f strong{color:var(--tinta)}
+.ferramenta .barra-f a{margin-left:auto}
+.ferramenta iframe{display:block; width:100%; height:720px; border:0; background:var(--papel)}
+@media (max-width:640px){ .ferramenta iframe{height:560px} }
+
+/* ---- linha do tempo ---- */
+ol.tempo{list-style:none; padding:0; margin:22px 0 0; display:grid; gap:0; border-left:2px solid var(--regua)}
+ol.tempo li{display:grid; grid-template-columns:82px 1fr; gap:14px; padding:10px 0 10px 18px; position:relative}
+ol.tempo li::before{content:""; position:absolute; left:-6px; top:19px; width:10px; height:10px; border-radius:50%; background:var(--papel); border:2px solid var(--fraco)}
+ol.tempo li.marco::before{background:var(--a); border-color:var(--a)}
+ol.tempo .data{font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--meio); padding-top:3px}
+ol.tempo .o{font-size:.93rem; max-width:68ch}
+ol.tempo .o b{font-weight:600}
+ol.tempo .o small{display:block; color:var(--meio); font-size:.82rem; margin-top:2px}
+ul.fontes{padding-left:1.1em; margin:16px 0 0; max-width:74ch; font-size:.92rem; color:var(--meio)}
+ul.fontes li{margin-bottom:6px}
+ul.fontes b{color:var(--tinta); font-weight:600}
+footer{margin:72px 0 0; padding-top:18px; border-top:1px solid var(--regua); font-size:.8rem; color:var(--fraco)}
+footer p{max-width:76ch}
+@media (max-width:640px){ .folha{padding:0 16px 60px} header{padding-top:36px} .prancha svg{min-width:480px} }
+</style>
+
+<nav class="topo" aria-label="Seções"><div class="in">
+  <span class="marca">Posto de Dublin 2026</span>
+  <a href="#eleitorado">Quem vota</a><a href="#salao">O salão</a><a href="#mesas">As mesas</a>
+  <a href="#ring3">Fila externa</a><a href="#rota">Rota e placas</a><a href="#barreiras">Barreiras</a>
+  <a href="#simulacao">O dia simulado</a><a href="#caminho">Caminho até aqui</a><a href="#fontes">Fontes</a>
+</div></nav>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro, 8h às 17h · RDS Ballsbridge, Hall 2 e Ring 3</p>
+  <h1>O plano de votação do posto de Dublin</h1>
+  <p class="chamada">Como {{ESPERADOS}} eleitores previstos chegam ao Royal Dublin Society, esperam no Ring 3, entram por três portas da fachada sul, votam em 28 mesas e saem sem cruzar a fila de quem entra. Um só lugar para o que as análises decidiram, o que ficou pendente e as ferramentas para testar alternativas.</p>
+  <dl class="faixa">
+    <div><dt>Eleitores aptos</dt><dd>{{APTOS}}<small>{{SECOES}} seções, todas em Dublin</small></dd></div>
+    <div><dt>Comparecimento previsto</dt><dd>{{ESPERADOS}}<small>{{TAXA}}% · taxa de 2022 por origem, estimativa</small></dd></div>
+    <div><dt>Mesas receptoras</dt><dd>{{URNAS}}<small>uma urna por mesa · MRV do DJE</small></dd></div>
+    <div><dt>Portas de eleitor</dt><dd>3 + 2<small>entradas S4 A · S5 B · S6 C; saídas S2 e S8</small></dd></div>
+    <div><dt>Hall 2</dt><dd>50,3 × 44,4 m<small>2.179 m², pé-direito 7 m</small></dd></div>
+    <div><dt>Ring 3</dt><dd>44 × 35 m<small>fila externa, 14 m ao sul da fachada</small></dd></div>
+  </dl>
+  <div class="vivo" id="vivo"><span class="rot">Portas em vigor</span><span>carregando…</span></div>
+</header>
+
+<!-- ============================ 1 · QUEM VOTA ============================ -->
+<section id="eleitorado">
+  <p class="rotulo"><span class="passo">1</span>Quem vota</p>
+  <h2>{{URNAS}} mesas, de {{URNA_MIN}} a {{URNA_MAX}} eleitores, e três que pesam mais</h2>
+  <p class="lede">O TSE concentrou as {{SECOES}} seções da Irlanda em {{URNAS}} urnas num único local. Vinte e três urnas somam duas seções; cinco operam com uma só. A carga esperada de cada mesa decide tudo o que vem depois: onde ela fica, quanto de fila tem à frente e por qual porta os seus eleitores entram.</p>
+  <div class="duas">
+    <div>
+      <figure>
+        <div class="grafico">{{BARRAS_MESAS}}</div>
+        <div class="legenda"><span><i class="sw" style="background:var(--alta)"></i>alta: as {{N_ALTA}} maiores</span><span><i class="sw" style="background:var(--media)"></i>média: {{N_MEDIA}} mesas com 450 ou mais</span><span><i class="sw" style="background:var(--baixa)"></i>baixa: {{N_BAIXA}} mesas</span></div>
+        <figcaption>Comparecimento esperado por mesa receptora (MRV), da maior para a menor. Passe o cursor ou foque uma linha para ver as seções e a entrada. A cor é a classe de carga usada na prancheta, nas barreiras e no simulador.</figcaption>
+      </figure>
+    </div>
+    <div>
+      <h3 style="margin-top:22px">O que os números mostram</h3>
+      <p><strong>Três mesas críticas, não quatro.</strong> {{ALTAS}}. São as únicas que somam duas seções inteiras de Dublin; abaixo delas há um degrau nítido.</p>
+      <p><strong>Um quarto do eleitorado vem do interior.</strong> {{FORA_DUBLIN}} eleitores ({{FORA_PCT}}%) moram em Cork, Galway, Limerick e outros condados e passam a votar em Dublin. Chegam em grupo e procuram o nome do condado, não o número da seção.</p>
+      <p><strong>Um erro no mapa do TSE.</strong> O PNG oficial lista a seção agregada 3752 sob a principal 3222, que pertence ao Porto. A correta é a 3322, uma das três críticas. O CSV oficial prevalece.</p>
+      <div class="rolagem"><table>
+        <thead><tr><th>Localidade de origem</th><th class="num">Eleitores</th><th class="num">Parcela</th></tr></thead>
+        <tbody>{{TABELA_RESIDENCIA}}</tbody>
+      </table></div>
+    </div>
+  </div>
+  {{PECAS_URNAS}}
+</section>
+
+<!-- ============================ 2 · O SALAO ============================ -->
+<section id="salao">
+  <p class="rotulo"><span class="passo">2</span>O salão</p>
+  <h2>O Hall 2 e as suas 18 portas, numeradas por fachada</h2>
+  <p class="lede">Um retângulo de 50,3 por 44,4 m com o canto sudoeste recortado, sem colunas. As portas ganharam um número por fachada (N, L, S, O e R para o recorte), na ordem de leitura do desenho, porque o código do RDS numera folhas e não localiza nada. A parede leste é toda de emergência e exige 3 m livres em torno de cada vão.</p>
+  <figure>
+    <div class="prancha">{{PLANTA_SVG}}</div>
+    <figcaption>Planta-base em escala, medida da planta oficial do RDS (escala aferida contra a ficha técnica: 50,2 × 44,5 m, 2.238 m²). Entradas de eleitor S4 (A), S5 (B) e S6 (C); saídas S2 e S8, decisão do Posto de 06/09/2026. S2 e S8 não constam da planta do RDS: foram confirmadas no local como saídas de emergência permanentemente abertas, com posição e vão estimados sobre foto.</figcaption>
+  </figure>
+  <div class="rolagem"><table>
+    <thead><tr><th>Nº</th><th>Parede</th><th>Código RDS</th><th class="num">Vão</th><th>Papel</th></tr></thead>
+    <tbody>{{TABELA_PORTAS}}</tbody>
+  </table></div>
+  <p class="nota"><strong>"A definir" não quer dizer disponível.</strong> Quer dizer que nada foi decidido sobre a porta. As portas de carga S1 e S9, por exemplo, dependem de poderem ficar abertas e travadas as nove horas e de a soleira servir a pedestre.</p>
+  {{PECAS_PLANTA}}
+</section>
+
+<!-- ============================ 3 · AS MESAS ============================ -->
+<section id="mesas">
+  <p class="rotulo"><span class="passo">3</span>As mesas</p>
+  <h2>Um módulo de {{MODULO_FRENTE}} m de frente por {{MODULO_PROF}} m de fundo, em pares contra as paredes</h2>
+  <p class="lede">A mesa receptora é um conjunto: a mesa de identificação com três mesários, a mesa redonda da urna e o eleitor votando entre a urna e a parede, de costas para o salão. Dois módulos formam um par com corredor de 3,00 m; pares vizinhos ficam a 1,50 m. A fachada leste, que os recuos de emergência inutilizavam, passou a render 12 mesas quando a fileira foi recuada 3 m e a faixa protegida se tornou contínua.</p>
+  <div class="duas">
+    <figure>
+      <div class="prancha">{{MODULO_SVG}}</div>
+      <figcaption>O módulo em escala e o passo do par. Cotas de eleitor votando (0,90 m) e passagem (0,60 m) são premissas de trabalho; o mobiliário é o informado pelo Posto.</figcaption>
+    </figure>
+    <div>
+      <div class="respostas" style="grid-template-columns:1fr; margin-top:22px">
+        <div class="resposta"><span class="num">Planta oficial</span><span class="curta">28 mesas: 8 na parede norte, 12 na fileira recuada da fachada leste, 2 no recorte, 6 na parede oeste.</span><p>A fachada sul não recebe mesa nenhuma: as nove portas fragmentam os 42,5 m e ela fica inteira para o fluxo do eleitor. Com a mesma folga o salão comporta 30 mesas.</p></div>
+        <div class="resposta"><span class="num">Cenários da prancheta</span><span class="curta">Hamad_3polos é o arranjo de trabalho: as três mesas críticas em três áreas distintas do salão.</span><p>Hamad1, Hamad 2, Três polos e Equitativo estão salvos na biblioteca. O simulador escolheu Três polos por varredura; as barreiras foram contadas sobre o Hamad_3polos.</p></div>
+        <div class="resposta"><span class="num">Identidade da mesa</span><span class="curta">O número é o MRV do DJE/TRE-DF e não muda quando a mesa se move.</span><p>A mesa 22 é a 22 na parede norte, leste ou oeste. A cor é a carga: vermelho as três de maior comparecimento, amarelo médio, verde baixo.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="ferramenta">
+    <div class="barra-f"><strong>Prancheta do Hall 2</strong><span>arraste, gire, meça, repareie; salve cenários. Portas, entradas e o Ring 3 seguem o que for clicado no Simulador.</span><a href="{{LINK_PRANCHETA}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+    <iframe src="{{LINK_PRANCHETA}}" title="Prancheta do Hall 2" loading="lazy"></iframe>
+  </div>
+  {{PECAS_MESAS}}
+</section>
+
+<!-- ============================ 4 · FILA EXTERNA ============================ -->
+<section id="ring3">
+  <p class="rotulo"><span class="passo">4</span>A fila externa</p>
+  <h2>O Ring 3 guarda a fila em ordem, uma zona por entrada</h2>
+  <p class="lede">Ao sul da fachada, depois de um apron pavimentado de 14 m, o Ring 3 é a apólice contra erro de previsão: quem chega antes de haver vaga no salão espera ali, já separado pela entrada que vai usar. Cada entrada tem o seu serpenteado, e as 28 mesas são repartidas entre as entradas na proporção da capacidade de cada zona, com uma mesa vermelha em cada.</p>
+  <div class="rolagem"><table>
+    <thead><tr><th>Entrada</th><th>Porta</th><th class="num">Mesas</th><th class="num">Esperados</th><th class="num">Cabe no Ring 3</th><th>MRV</th></tr></thead>
+    <tbody>{{TABELA_ENTRADAS}}</tbody>
+  </table></div>
+  <p class="nota pendente"><strong>Decisão pendente: o desenho da fila.</strong> O plano vigente mantém uma faixa de garganta ao sul para a pré-triagem e guarda {{PV_CAP}} pessoas com {{PV_SEP}} separadores ({{PV_COMPRA}} a comprar, cerca de EUR {{PV_EUR}}). Sem a garganta, cada raia ganha 8,25 m: o desenho norte-sul sem baias guarda {{VS_CAP}} pessoas, mas custa {{VS_SEP}} separadores ({{VS_COMPRA}} a comprar, EUR {{VS_EUR}}). A tabela compara os cinco; onde a pré-triagem passa a acontecer nos desenhos sem garganta ainda não foi definido.</p>
+  <div class="rolagem"><table>
+    <thead><tr><th>Desenho</th><th class="num">Lotação</th><th class="num">Em raia</th><th class="num">Em baia</th><th class="num">Separadores</th><th class="num">A comprar</th><th class="num">Custo</th></tr></thead>
+    <tbody>{{TABELA_RING3}}</tbody>
+  </table></div>
+  <div class="ferramenta">
+    <div class="barra-f"><strong>Ring 3 ao vivo</strong><span>redesenhado para as portas em vigor: com N entradas, N serpenteados. Escolha o desenho aqui ou no Simulador.</span><a href="{{LINK_RING3VIVO}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+    <iframe src="{{LINK_RING3VIVO}}" title="Ring 3 ao vivo" loading="lazy"></iframe>
+  </div>
+  {{PECAS_RING3}}
+</section>
+
+<!-- ============================ 5 · ROTA E PLACAS ============================ -->
+<section id="rota">
+  <p class="rotulo"><span class="passo">5</span>A rota e as placas</p>
+  <h2>O eleitor decide no corredor, não na porta</h2>
+  <p class="lede">Entre o portão da Merrion Road e a fachada sul há cerca de 150 m de caminhada pela lateral leste do Hall 2, e no pico muito mais tempo do que isso parado em fila. Toda a consulta ("qual é a minha mesa, qual é a minha porta") cabe nesse trecho. Quando o eleitor chega à bifurcação A, B e C, só confirma uma letra que já sabe.</p>
+  <div class="respostas">
+    <div class="resposta"><span class="num">Regra 1</span><span class="curta">Uma consulta só.</span><p>Seção, mesa e porta no mesmo painel, ordenado pela única coisa que o eleitor traz de casa: o número da seção. Cinquenta e uma linhas, não 28; um eleitor da seção 3889 procura 3889.</p></div>
+    <div class="resposta"><span class="num">Regra 2</span><span class="curta">Consulta replicada.</span><p>O mesmo painel repetido a cada 25 a 30 m ao longo do corredor, colado nas portas de serviço da parede leste, entre as saídas de emergência. Quatro painéis simultâneos no pico, a 15 s por leitura.</p></div>
+    <div class="resposta"><span class="num">Regra 3</span><span class="curta">Bifurcação sem informação nova.</span><p>Na porta, só a letra em vinil de 300 mm no vidro da fachada, legível de 60 m. Tudo bilíngue, em lona de 440 g com ilhoses, montado acima de 2,5 m por causa dos guarda-chuvas.</p></div>
+  </div>
+  <h3>Os oito pontos, do portão à rua</h3>
+  <div class="rolagem"><table>
+    <thead><tr><th>Ponto</th><th>Onde fica</th><th>O que decide</th><th>Peças</th></tr></thead>
+    <tbody>
+      <tr><td class="mono b">P0</td><td>Calçada da Merrion Road, pontos de ônibus, demais portões do RDS</td><td>Se está no lugar certo e por qual portão entra</td><td>4 painéis</td></tr>
+      <tr><td class="mono b">P1</td><td>Portão de entrada</td><td>Primeira consulta seção → mesa → porta; desvio dos casos sem seção</td><td>pórtico, 3 painéis, 1 totem do balcão de dúvidas</td></tr>
+      <tr><td class="mono b">P2</td><td>Corredor da lateral leste, a 10,75, 22,50 e 33,90 m do canto norte</td><td>Nada novo: repete a consulta no tempo morto</td><td>3 painéis de 1,8 × 1,2 m + 2 lonas no gradil</td></tr>
+      <tr><td class="mono b">P3</td><td>Garganta sudeste do Ring 3, junto aos agentes de pré-triagem</td><td>Última consulta; divisão nos serpenteados</td><td>2 painéis, 3 totens de 3 m</td></tr>
+      <tr><td class="mono b">P4</td><td>Cabeça de cada serpenteado</td><td>Confirmação da fila; captura de quem errou</td><td>3 totens, 1 faixa de correção</td></tr>
+      <tr><td class="mono b">P5</td><td>Vidro das portas S4, S5 e S6</td><td>Só que ali se entra; nenhuma informação nova</td><td>3 vinis de fachada</td></tr>
+      <tr><td class="mono b">P6</td><td>Logo depois das portas, dentro do salão</td><td>Mesa → posição física</td><td>3 faixas suspensas, 28 totens de mesa</td></tr>
+      <tr><td class="mono b">P7</td><td>Saídas S2 e S8, nos flancos</td><td>Encaminha para a rua sem reentrar no Ring 3</td><td>2 painéis internos, 2 externos</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Índice por condado, para quem procura o nome de onde mora</h3>
+  <div class="rolagem"><table>
+    <thead><tr><th>Localidade de origem</th><th class="num">Eleitores</th><th>Seções</th><th>Mesa e entrada</th></tr></thead>
+    <tbody>{{INDICE_CONDADOS}}</tbody>
+  </table></div>
+  {{PECAS_ROTA}}
+</section>
+
+<!-- ============================ 6 · BARREIRAS ============================ -->
+<section id="barreiras">
+  <p class="rotulo"><span class="passo">6</span>Barreiras internas</p>
+  <h2>{{B_POSTES}} postes de fita retrátil, contados corrida a corrida</h2>
+  <p class="lede">Dentro do salão a fila de cada mesa é guiada por postes Tensa de fita de 2 m. O desenho adotado, cenário 1e, põe uma linha no meio de cada par de mesas, uma linha por mesa sem par e só as duas divisórias que separam as entradas A de B e B de C. Uma corrida de L metros gasta L÷2 fitas e uma a mais de postes; por isso o número de corridas, e não a metragem, manda no consumo.</p>
+  <dl class="faixa">
+    <div><dt>Postes</dt><dd>{{B_POSTES}}<small>{{B_RESERVA}} com reserva de 10%</small></dd></div>
+    <div><dt>Fitas de 2 m</dt><dd>{{B_FITAS}}<small>{{B_METROS}} m de barreira</small></dd></div>
+    <div><dt>Corridas</dt><dd>{{B_CORRIDAS}}<small>9 pares, 7 mesas sem par, 3 polos</small></dd></div>
+    <div><dt>Já contratados</dt><dd>100<small>folga de fita, folga nenhuma de poste</small></dd></div>
+  </dl>
+  <div class="rolagem"><table>
+    <thead><tr><th>Cenário</th><th class="num">Corridas</th><th class="num">Fitas</th><th class="num">Postes</th><th class="num">Com reserva</th><th class="num">Barreira</th></tr></thead>
+    <tbody>{{TABELA_BARREIRAS}}</tbody>
+  </table></div>
+  <div class="duas">
+    <figure>
+      <div class="grafico">{{FOLEGO}}</div>
+      <figcaption>Minutos que a fila de cada mesa aguenta antes de transbordar, a 60 s por voto e pico de 1,8× a média, com filas de 3, 5 e 10 m por classe. Em vermelho as que lotam em menos de 20 minutos. Não lotam: MRV {{FOLEGO_NUNCA}}.</figcaption>
+    </figure>
+    <div>
+      <h3 style="margin-top:22px">O risco que a escolha aceita</h3>
+      <p>A escada de 3, 5 e 10 m não equaliza resiliência: a fila de uma mesa de carga média aguenta 14 minutos de pico; a de uma crítica, 21. Sem as bordas externas dos canais, o que mantém o eleitor entre a porta e o checkpoint é sinalização e equipe de piso, que deixa de ser conveniência e vira parte do desenho.</p>
+      <p>O reservatório do surto das 8h não está dentro do salão: é o Ring 3. A fila externa e a interna foram desenhadas juntas por isso.</p>
+    </div>
+  </div>
+  {{PECAS_BARREIRAS}}
+</section>
+
+<!-- ============================ 7 · O DIA SIMULADO ============================ -->
+<section id="simulacao">
+  <p class="rotulo"><span class="passo">7</span>O dia simulado</p>
+  <h2>Eleitor a eleitor, das 7h ao fechamento da última mesa</h2>
+  <p class="lede">O simulador percorre o dia inteiro por eventos discretos sobre o arranjo real das 28 mesas: chegada ao Ring 3, triagem, fila da entrada, porta com liberação controlada, checkpoint, fila da mesa, identificação pelo caderno e urna. Onze critérios dão o veredito. As portas clicáveis do bloco "Portas da fachada sul" são o controle mestre deste dashboard: mudar uma entrada ou uma saída redesenha a Prancheta e o Ring 3 acima.</p>
+  <div class="respostas">
+    <div class="resposta"><span class="num">Cenário Claude</span><span class="curta">Última mesa fecha às {{SIM_FECHA}} no dia ruim (P90); espera P90 de {{SIM_P90}} minutos.</span><p>Arranjo {{SIM_ARRANJO}}, checkpoint a 16 m com 3 atendentes por entrada, filas 3/4/6 por classe. Pico de cerca de {{SIM_RING3}} pessoas fora, dentro da capacidade do Ring 3. Só a espera fica em atenção; os demais critérios passam.</p></div>
+    <div class="resposta"><span class="num">O gargalo é a mesa</span><span class="curta">A 60 s por eleitor falham exatamente as três mesas vermelhas; 590 eleitores em 540 minutos dão 54,9 s cada.</span><p>Vinte e três das 28 urnas acumulam duas seções, logo dois cadernos: com os três mesários é possível identificar em paralelo e fechar às 17h mesmo com caderno lento. É a negociação a abrir com o Cartório.</p></div>
+    <div class="resposta"><span class="num">Fixo em todos os cenários</span><span class="curta">Caderno físico, liberação controlada, curva de chegada com pico de manhã e repique perto das 17h.</span><p>Comparecimento pela base B (taxa de 2022 por domicílio de origem), com presets de sensibilidade de −15% e +15%. Cada dia simulado sorteia horários e tempos; o resultado mostra a mediana e o dia ruim.</p></div>
+  </div>
+  <div class="ferramenta">
+    <div class="barra-f"><strong>Simulador do Hall 2</strong><span>clique numa porta da fachada sul para testar outra combinação; "Rodar simulação" refaz o dia.</span><a href="{{LINK_SIMULADOR}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+    <iframe src="{{LINK_SIMULADOR}}" title="Simulador do Hall 2" loading="lazy"></iframe>
+  </div>
+  {{PECAS_SIM}}
+</section>
+
+<!-- ============================ 8 · CAMINHO ATE AQUI ============================ -->
+<section id="caminho">
+  <p class="rotulo"><span class="passo">8</span>Caminho até aqui</p>
+  <h2>O que foi testado e descartado antes deste desenho</h2>
+  <p class="lede">O plano atual é a quarta ideia de layout e a segunda de portas. As anteriores continuam disponíveis, porque explicam por que o desenho vigente é o que é.</p>
+  <ol class="tempo">
+    <li><span class="data">jul–ago</span><span class="o"><b>Contraproposta ao TSE.</b> A proposta original tinha 20 mesas e 25 urnas sobre 14.626 aptos; por "casa dos pombos", com menos de 32 mesas há pares Dublin-Dublin forçados de quase 590 comparecentes. A negociação fechou em 28 urnas.</span></li>
+    <li class="marco"><span class="data">13/08</span><span class="o"><b>Agregação das seções.</b> Cruzamento do mapa de agregações do TSE com o eleitorado por seção: 16.794 aptos, 51 seções, 28 urnas, e o erro 3222 → 3322 registrado.</span></li>
+    <li><span class="data">28/08</span><span class="o"><b>Ideia 1, ilhas no meio do salão.</b> Duas entradas pelas portas de carga nas pontas e saída no meio; três fileiras de ilhas com a carga crescendo para o fundo. Descartada: o módulo lado a lado de 2,80 m não cabia nas paredes e as portas de carga dependem de ficarem abertas.<small>Peça: Fluxo do Posto de Dublin.</small></span></li>
+    <li><span class="data">31/08</span><span class="o"><b>Ideia 2, as 28 mesas encostadas nas paredes.</b> Só fecha com três condições ao mesmo tempo (recuo só na parede leste, módulo em linha e setor reforçado com quatro mesários). Descartada pela folga de 6,3 m em 68,2.<small>Peça: As 28 Mesas nas Paredes.</small></span></li>
+    <li class="marco"><span class="data">01/09</span><span class="o"><b>Planta-base fixada e mesas pareadas com fileira recuada.</b> A fachada leste passa de zero a 12 mesas; o salão fecha em 28 com folga para 30.<small>Peça: Quantas mesas cabem no Hall 2.</small></span></li>
+    <li><span class="data">02–05/09</span><span class="o"><b>Prancheta, MRVs do DJE, simulador, Ring 3 e sinalização.</b> S2 e S8 confirmadas no local; cenário Três polos; plano de sinalização com levantamento fotográfico.</span></li>
+    <li class="marco"><span class="data">06/09</span><span class="o"><b>Decisão das portas e fonte única.</b> Entradas S4, S5 e S6; saídas S2 e S8; comparecimento pela base B; numeração MRV; cores por carga. Tudo passa a ser gerado de <span class="mono">scripts/decisoes.py</span>.</span></li>
+    <li><span class="data">07–08/09</span><span class="o"><b>Barreiras internas (1e) e Ring 3 nas dimensões oficiais.</b> Quatro desenhos de fila externa comparados; a escolha entre eles é a decisão pendente.</span></li>
+  </ol>
+  {{PECAS_HISTORICO}}
+</section>
+
+<!-- ============================ 9 · FONTES ============================ -->
+<section id="fontes">
+  <p class="rotulo"><span class="passo">9</span>Fontes e método</p>
+  <h2>De onde vêm os números</h2>
+  <ul class="fontes">
+    <li><b>Eleitorado.</b> CSV do TSE de seções do exterior (13/08/2026) e perfil do eleitorado de Dublin (14/07/2026). O processamento falha em vez de gravar saída errada se a soma por seção, por urna e do perfil não fecharem em 16.794 ou se algum total de urna divergir do campo que o TSE publica agregado.</li>
+    <li><b>MRV × seção.</b> Diário da Justiça Eletrônico do TRE-DF, ano 2026 n. 139 (04/08/2026), convocação de mesários de Dublin.</li>
+    <li><b>Comparecimento.</b> Taxa de 2022 por domicílio de origem de cada seção (base B). É uma estimativa de trabalho, não um dado oficial por seção; substitui-se quando houver dado do Cartório. Todos os cenários usam a mesma base.</li>
+    <li><b>Geometria.</b> Planta oficial do RDS (Hall 2, térreo) com escala aferida contra a ficha técnica; Ring 3 nas dimensões oficiais de 44 × 35 m, posição lateral centrada em S5 por estimativa. As capacidades do plano vigente foram calculadas com a fotogrametria anterior (39 × 35 m).</li>
+    <li><b>Modelos.</b> Fila por urna a 55 s de projeto; simulador por eventos discretos com 11 critérios; Ring 3 com raias de 1,40 m a 2 pessoas por m²; barreira Tensa de 2 m por poste. Premissas e sensibilidades estão em cada peça completa.</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Gerado por <span class="mono">scripts/gera_dashboard.py</span> a partir das saídas versionadas do repositório <span class="mono">eleicoes2026</span>. As ferramentas embutidas partilham a mesma origem: as portas clicadas no Simulador valem para a Prancheta e para o Ring 3 ao vivo nesta página.</p>
+</footer>
+</div>
+
+<script>
+{{BASE_JS}}
+{{DECISOES_JS}}
+</script>
+<script>
+{{PORTAS_JS}}
+</script>
+<script>
+(function(){
+"use strict";
+const PT = Portas, $ = id => document.getElementById(id);
+const fmt = n => Math.round(n).toLocaleString("pt-BR");
+function h(tag, attrs, ...filhos){
+  const e = document.createElement(tag);
+  for (const k in (attrs || {})) { if (k === "class") e.className = attrs[k]; else if (k === "text") e.textContent = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  for (const f of filhos) if (f != null) e.appendChild(typeof f === "string" ? document.createTextNode(f) : f);
+  return e;
+}
+let estado = PT.estadoDaDecisao(DECISOES), desenho = "vigente";
+function pinta(){
+  const r = PT.resolve(estado, {portas: BASE.portas, dec: DECISOES, desenho});
+  const difere = !(r.igualDecisao && r.desenho === "vigente");
+  const V = $("vivo"); V.innerHTML = ""; V.classList.toggle("difere", difere);
+  V.appendChild(h("span", {class: "rot", text: "Portas em vigor"}));
+  const ent = h("span"); for (const e of r.entradas) ent.appendChild(h("span", {class: "chip", style: `color:${e.hex}`, text: `${e.porta} ${e.id}`}));
+  V.appendChild(h("span", null, "entradas ", ent));
+  const sai = h("span"); for (const s of r.saidas) sai.appendChild(h("span", {class: "chip", style: "color:var(--aviso)", text: s}));
+  V.appendChild(h("span", null, "saídas ", sai));
+  if (r.ring3) V.appendChild(h("span", {text: `${r.ring3.nome}: ${fmt(r.ring3.capacidade)} pessoas, ${r.ring3.separadores} separadores`}));
+  V.appendChild(h("span", {class: difere ? "aviso" : "", text: difere ? "difere da decisão de 06/09; mude no Simulador, na seção 7" : "decisão do Posto de 06/09/2026"}));
+  for (const a of r.avisos) V.appendChild(h("span", {class: "aviso", text: a}));
+  if (r.ring3) { const m = h("span", {class: "mini"}); m.innerHTML = PT.svgRing3(r, {portas: BASE.portas, escala: 6}); V.appendChild(m); }
+}
+const guardado = PT.le();
+if (guardado && guardado.estado) { estado = PT.normalizaEstado(guardado.estado); if (guardado.desenho) desenho = guardado.desenho; }
+pinta();
+PT.assina(msg => { estado = PT.normalizaEstado(msg.estado); if (msg.desenho) desenho = msg.desenho; pinta(); });
+
+// navegacao: marca a secao visivel
+const links = [...document.querySelectorAll("nav.topo a")];
+const secoes = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+if ("IntersectionObserver" in window) {
+  const obs = new IntersectionObserver(ents => {
+    for (const en of ents) if (en.isIntersecting) for (const a of links) a.classList.toggle("ativa", a.getAttribute("href") === "#" + en.target.id);
+  }, {rootMargin: "-40% 0px -55% 0px"});
+  for (const s of secoes) obs.observe(s);
+}
+})();
+</script>

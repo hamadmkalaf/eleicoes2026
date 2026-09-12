@@ -1,167 +1,173 @@
-# Entrada no RDS Hall 2: triagem central × fitas no piso
+# Fitas no piso em vez do checkpoint
 
-Documento de discussão. Compara a organização de entrada prevista no esboço
-atual (`PLANO COM FLUXOS MELHORADO.png`) com a sugestão de um colega:
-eliminar o ponto de triagem no meio do salão e levar o eleitor da porta
-direto à sua mesa por fitas no piso com sinalização.
+Documento de discussão. Examina a sugestão de um colega: **tirar o checkpoint
+do salão e guiar o eleitor da porta direto à sua mesa por fitas no piso, com
+sinalização**, em contraste com o plano vigente, em que cada entrada tem um
+corredor de unifila até um ponto de triagem onde a equipe despacha o eleitor à
+mesa.
 
-Os números vêm de `scripts/modelo_fluxo_entrada.py`, que lê
-`saidas/dados.json` (28 urnas, 16.794 aptos) e grava
-`saidas/fluxo_entrada_comparacao.{md,json,html}` e as plantas
-`saidas/fluxo_hub.svg` e `saidas/fluxo_fitas.svg`. Todas as premissas estão
-no bloco `PREMISSAS` do script e são marcadas como tais aqui.
+Tudo aqui foi medido no material do próprio projeto: a planta-base
+(`scripts/salao.py`), o arranjo **Três polos** da prancheta (o do Cenário
+Claude), as decisões de 06/09 (`scripts/decisoes.py`: entradas S4/S5/S6,
+saídas S2/S8, mesas atribuídas às entradas por quota do Ring 3, base B) e o
+motor do simulador (`simulador/modelo.js`), que já sabe simular "sem
+checkpoint". A varredura está em `simulador/fitas.js`; o desenho e a página em
+`scripts/fitas_piso.py`; os números em `saidas/fitas_piso.{json,md,html}`.
 
-## 1. As duas organizações
+> Nota sobre o esboço `PLANO COM FLUXOS MELHORADO.png` (28/08): ali havia duas
+> portas e um hub no **meio** do salão. O plano vigente já não é esse: são três
+> entradas, um checkpoint a **16 m** da porta (não no centro) e a consulta
+> "qual é a minha mesa" acontece **fora**, no percurso do portão ao Hall 2
+> (plano de sinalização, PR #8). Este documento compara a sugestão com o plano
+> vigente, não com o esboço.
 
-| | HUB (esboço atual) | FITAS (sugestão) |
+## 1. O que o checkpoint faz, de fato
+
+No plano vigente o checkpoint tem dois papéis:
+
+1. **Informar**: confirmar a mesa e apontar o caminho. Como a consulta já é
+   feita no Ring 3 e no percurso externo, dentro do salão esse papel é de
+   confirmação, não de descoberta.
+2. **Regular**: o eleitor só é despachado à mesa quando há vaga na fila dela;
+   senão fica retido no checkpoint. Junto com a liberação controlada na porta,
+   é isso que mantém a fila dentro do comprimento previsto (3/4/6 pessoas) e o
+   salão com ~320 pessoas no pico.
+
+As fitas substituem o papel 1. Não substituem o papel 2. É essa distinção que
+o simulador torna visível.
+
+## 2. O que o simulador diz
+
+Cenário de referência: Cenário Claude (Três polos, checkpoint a 16 m, 3
+atendentes por entrada, liberação por buffer, filas 3/4/6, identificação 45 s,
+voto 30 s), 8 dias simulados. "Sem checkpoint" = o eleitor liberado na porta
+lê a sinalização (10 s) e caminha direto à mesa.
+
+| Cenário | Fecha (p50) | Espera P90 | fora / dentro | Pico dentro | Pico Ring 3 | Chegadas a fila cheia | Veredito |
+|---|---|---|---|---|---|---|---|
+| **Referência, com checkpoint** | 17h03 | 49 min | 33 / 20 | 321 | 962 | 0 | atenção (só a espera) |
+| Fitas, porta libera enquanto cabe na zona | 17h03 | 68 min | 63 / 7 | 121 | 1.516 | 2.216 | falha |
+| Fitas, porta livre | 17h03 | 50 min | 5 / 44 | **950** | 962 | **5.795** | falha |
+| Fitas, porta só libera quem tem vaga na mesa | 17h28 | 103 min | 100 / 3 | 110 | 2.283 | 0 | falha |
+| Fitas, buffer, filas de mesa 5/8/12 | 17h03 | 52 min | 42 / 17 | 206 | 1.001 | 2.188 | falha (1 conflito de fila) |
+
+Quatro leituras.
+
+**O horário de fechamento não muda.** Com ou sem checkpoint, a última mesa
+fecha às 17h03 a 45 s por eleitor, e às 18h50–19h00 a 60 s. O gargalo é a mesa
+receptora (dois cadernos em paralelo, pendência §9.7 da documentação), não a
+triagem. Tirar o checkpoint não ganha vazão; mantê-lo não custa vazão.
+
+**O que muda é onde a fila fica.** Sem checkpoint e com porta livre, a espera
+total é a mesma (50 min) mas migra de fora para dentro: 950 pessoas no salão
+no pico em vez de 321, e 5.795 chegadas a mesas com a fila já além do
+comprimento previsto. É a fila do Ring 3, desenhada com barreira para 1.402
+pessoas, transportada para dentro de um salão com 61 m de unifila.
+
+**Se a porta tenta regular sem ver as mesas, regula mal.** Liberando enquanto
+"cabe na zona" (a soma das filas das 9–10 mesas da entrada), o salão fica
+vazio (121) mas 2.216 eleitores ainda chegam a filas cheias, porque a porta não
+sabe *qual* mesa está cheia, e a espera fora sobe para 63 min com o Ring 3
+acima da capacidade. Liberando só quem tem vaga na própria mesa, a fila
+externa trava: quem está na frente espera a sua mesa e segura todos atrás
+(bloqueio de cabeça de fila), e a espera vai a 103 min com as vermelhas
+ociosas 123 min. O checkpoint resolve exatamente isso: retém por mesa, dentro,
+sem travar a porta.
+
+**Perder-se custa pouco em tempo.** Com 10 % ou 25 % dos eleitores errando o
+caminho e andando 30–40 m a mais, a espera P90 muda 1–3 min. O custo da má
+sinalização não é em minutos: é em gente circulando no meio do salão sem
+destino, o que a simulação não pune e o Cartório sim.
+
+## 3. As fitas sobre a planta
+
+A sugestão literal, uma fita por mesa, dá 906 m de fita e 103 cruzamentos
+entre fitas de entradas diferentes. A versão executável é por **tronco**: uma
+fita por parede servida por cada entrada, rente à parede, passando pela ponta
+da fila de cada mesa, com o número da mesa em placa alta.
+
+| Atribuição mesa → entrada | Fita (troncos) | Cruzamentos entre entradas | Porta mais carregada ÷ menos | Ring 3 |
+|---|---|---|---|---|
+| **A da decisão** (por quota do Ring 3) | 463 m em 10 troncos | 18 | 1,16× | cabe |
+| **Por parede** (oeste → A, norte → B, leste → C) | 214 m em 4 troncos | 1 | **3,36×** | C estoura |
+
+A atribuição da decisão foi feita para equilibrar as três raias do Ring 3 e
+separar as três mesas vermelhas, e para isso mistura paredes: cada entrada
+serve mesas nas paredes norte, leste e oeste. No piso, isso vira três feixes
+que se cruzam no meio do salão, o lugar por onde também passa quem sai. A
+atribuição por parede elimina os cruzamentos, mas no Três polos a fachada
+leste tem 13 mesas e a oeste 5: a porta C receberia 5.951 eleitores para uma
+raia de 445, e a A 1.771.
+
+Ou seja: **fitas só funcionam com um arranjo desenhado para elas**, com um
+terço da carga em cada parede e as vermelhas uma por parede. O Hamad_3polos
+chega mais perto (9 / 9 / 10 mesas por parede, 3.674 / 3.311 / 4.514
+esperados, 1,36×), mas tem a mesa 4 sobre o vão de N2. É uma iteração de
+prancheta, não de fita.
+
+## 4. Organização no dia, lado a lado
+
+| | Plano vigente (checkpoint) | Sugestão (fitas, sem checkpoint) |
 |---|---|---|
-| Onde o eleitor descobre a mesa | no hub, perguntando à equipe | antes da porta: painel "seção → mesa" e, para quem não sabe, balcão de apoio fora da porta |
-| Quem faz a triagem | equipe do Posto, para 100% dos eleitores | o próprio eleitor; equipe só para quem não sabe a seção |
-| Guia física até a mesa | corredor de unifila até o hub; depois indicação verbal + banner | fita colorida no piso da porta até a zona; dentro da zona, número alto na mesa |
-| Onde a fila de triagem se forma | no corredor, dentro do salão (buffer ≈ 42 pessoas por porta) | fora da porta, no pátio do RDS |
-| Ponto único de falha | os dois hubs | o painel "seção → mesa" e a comunicação prévia |
-| Material específico | banners (já contratados, EUR 1.961) + 200 m de unifila (já contratados) | fita de piso (≈ EUR 100–300, premissa) + placas numeradas de mesa + painel de consulta por porta |
+| Onde o eleitor descobre a mesa | fora, nos painéis do percurso; confirma no checkpoint | fora, nos painéis do percurso; confirma na soleira (placa "cor da fita → mesas") |
+| Quem regula a entrada na fila da mesa | checkpoint (retém por mesa) + liberação na porta | ninguém, ou a porta às cegas |
+| Guia física até a mesa | corredor de unifila + indicação da equipe | fita colorida rente à parede + placa alta na mesa |
+| Pessoal dentro do salão | 3 por entrada no checkpoint (9) + orientadores | 0 no checkpoint; 2–3 orientadores volantes por entrada para a fila que estourou (6–9) |
+| Barreira | 28 postes do 1e presos ao checkpoint (22 nas divisórias, 6 nas bochechas) | esses 28 postes liberam ~56 m, o bastante para alongar as filas de mesa para 5/8/12 (+50 m) |
+| Material específico | banners (contratados) | ~460 m de fita (~14 rolos, EUR 150–250, premissa) + 28 placas altas + 3 placas de soleira |
+| Pico de gente dentro | ~320 | 120 (porta regulando) a 950 (porta livre) |
+| O que acontece quando uma fila estoura | o checkpoint retém; a mesa vizinha não é invadida | a ponta da fila espalha pelo corredor de serviço e encosta na vizinha |
 
-A sugestão literal ("uma fita por mesa") não é executável: 28 linhas
-saindo de uma porta formam um feixe de quase 3 m de largura, não há 28
-cores distinguíveis e ninguém segue a linha certa numa multidão. A versão
-que modelamos usa **6 troncos por zona (3 por porta)**, cada tronco com uma
-cor, e numera as mesas de 1 a 28 em sentido horário. O eleitor precisa
-guardar duas informações na porta: cor da zona e número da mesa.
+## 5. Efeitos de segunda e terceira ordem
 
-## 2. O que o modelo diz
+- **2ª ordem, fitas:** o Ring 3 foi dimensionado para segurar 1.402 pessoas
+  fora porque o salão segura ~320. Se a porta for livre, o Ring 3 fica vazio e
+  o salão cheio; se a porta regular às cegas, o Ring 3 passa da capacidade (1.516
+  a 1.551 no pico). O desenho do Ring 3 e o do interior são um sistema só.
+- **2ª ordem, barreira:** o 1e foi contado com o checkpoint. Sem ele, 28
+  postes mudam de lugar, e as filas de mesa passam a ser a única contenção:
+  precisam ser mais longas (5/8/12), o que gera 1 conflito geométrico no
+  Três polos (fila que bate em módulo ou faixa protegida) e pede outra rodada
+  de prancheta.
+- **3ª ordem, sinalização:** com 950 pessoas dentro, a fita no piso deixa de
+  ser visível justamente onde mais importa, junto às paredes com fila. A guia
+  passa a ser a placa alta, e a fita vira redundância. Investir na placa alta
+  vale nos dois cenários; investir na fita só vale no salão vazio.
+- **3ª ordem, procedimento:** o Cartório vê no checkpoint um ponto de
+  controle documentado (quem entrou, para onde foi). Sem ele, a resposta a
+  "por que essa mesa tem 40 pessoas na fila?" passa a ser dos orientadores
+  volantes, sem registro.
+- **Ambos os cenários:** o 60 s por eleitor derruba tudo (fecha 18h50–19h07).
+  A conversa hub × fitas é de segunda ordem diante da decisão dos dois
+  cadernos.
 
-Base comum: 11.416 comparecentes esperados (74% Dublin, 50% interior, taxas
-de 2022), 9 h de votação, fator de pico 1,5 → 31,7 chegadas/min no pico,
-15,9/min por porta. Premissa central: 25% dos eleitores chegam sem saber a
-própria seção; quem sabe leva 8 s para ser apontado, quem não sabe leva 45 s
-de consulta.
+## 6. Recomendação para a discussão
 
-| Indicador | HUB | FITAS |
-|---|---|---|
-| Chegadas na triagem no pico, por porta | 15,9/min (todos) | 4,0/min (só quem não sabe) |
-| Triadores por porta/hub para a fila não explodir | 5 | 3 |
-| Triadores por porta/hub com folga (ocupação < 80%) | 6 | 4 |
-| Total de triadores nas duas portas, com folga | 12 | 8 |
-| Caminho médio porta → mesa | 37 m | 26 m |
-| Cruzamentos entrada × saída com a saída no meio da parede sul | 451 | 186 |
-| Cruzamentos entrada × saída usando as saídas laterais (portas 2.8/2.9 e 2.22/2.23) | 70 | 70 |
+1. **Manter o checkpoint como válvula**, não como balcão. Sua função
+   insubstituível é reter por mesa; a de informar já está resolvida fora. Pode
+   ser mais leve (2 atendentes por entrada dão 37 % de ocupação no pico).
+2. **Adotar a fita como guia a partir do checkpoint**, não a partir da
+   porta: três troncos por entrada, do checkpoint às paredes que ela serve,
+   com placa alta numerada em cada mesa. Isso pega o que a sugestão tem de
+   melhor (o eleitor não depende de indicação verbal) sem perder a regulação.
+   Fitas e checkpoint não são excludentes.
+3. Se a ideia for levada ao limite (sem checkpoint), **exigir junto**: um
+   arranjo com um terço da carga por parede, atribuição por parede, filas de
+   mesa 5/8/12 com os 28 postes do checkpoint, e 6–9 orientadores volantes.
+   Sem esses quatro, o simulador reprova.
+4. Testar na própria página do simulador: *Checkpoint → não* e *Liberação →
+   livre* mostram o salão a 950 pessoas; *Liberação → buffer* mostra o Ring 3
+   estourando. O motor em Node (`node simulador/fitas.js`) reproduz as tabelas.
 
-Três leituras:
+## 7. Premissas específicas deste estudo
 
-**O hub é um servidor obrigatório em série para 100% do fluxo.** Com 4
-pessoas por hub a ocupação passa de 100% e a fila cresce sem limite na hora
-de pico; com 5 estabiliza mas com 79% de chance de esperar; só com 6 por
-hub (12 no total) a espera fica desprezível. O corredor de 21 m absorve
-cerca de 42 pessoas; a partir daí a fila transborda para a porta e o pátio,
-e o hub passa a comandar o ritmo de entrada do salão inteiro.
+Tudo o mais é o do simulador. Aqui, além disso:
 
-**As fitas não eliminam a triagem; movem-na para antes da porta e reduzem-na
-a uma fração.** A economia de pessoal é real mas menor do que parece (8 em
-vez de 12), e depende inteiramente da fração que não sabe a seção. A tabela
-de sensibilidade é o dado que decide:
-
-| Não sabe a seção | HUB, por hub | FITAS, por porta |
-|---|---|---|
-| 10% | 4 | 2 |
-| 25% | 6 | 4 |
-| 40% | 8 | 6 |
-| 60% | 10 | 9 |
-
-A 60% as duas organizações custam o mesmo em pessoal, e a de FITAS é pior,
-porque a fila de apoio se forma na rua e não num corredor coberto. Ou seja:
-**a sugestão só vale a pena se o plano de comunicação conseguir que a
-maioria chegue sabendo a seção** (e-Título com print, post "confira sua
-seção antes de sair de casa", consulta pelo nome na fila externa).
-
-**O ganho mais robusto está fora da disputa hub × fitas: a saída.** Com a
-saída no meio da parede sul, entre A e B, quem sai de qualquer mesa atravessa
-o leque de quem entra: 451 pares de trajetos em conflito no HUB, 186 no
-FITAS. Mandando a saída para as portas laterais do RDS (2.8/2.9 a oeste,
-2.22/2.23 a leste), ambos caem a 70 e o miolo do salão deixa de ser
-cruzado em contrafluxo. Isso vale para qualquer das duas organizações e
-custa uma placa e um segurança por porta.
-
-Achado lateral: as posições do esboço dão 12 mesas ao lado A e 16 ao lado
-B. Mesmo mandando as urnas mais cheias para A, a porta B recebe 55% do
-fluxo (6.305 contra 5.111 esperados). Vale mover duas posições do lado
-leste para o lado oeste, ou rotular as portas de forma que as filas
-externas se equilibrem.
-
-## 3. Organização no dia, lado a lado
-
-### HUB
-- **Antes da porta:** segurança separa a fila em A e B (critério: número da
-  mesa, informado por painel na fila).
-- **Corredor:** unifila até o hub; sem parada.
-- **Hub:** 5–6 pessoas por hub em pé, com lista impressa seção → mesa e
-  consulta por nome para quem não sabe; apontam a mesa. Precisam de voz,
-  banner alto atrás de si e revezamento (9 h em pé falando).
-- **Dispersão:** o eleitor atravessa até 25 m de piso aberto sem guia
-  física, cruzando quem sai. Precisa de 1–2 "orientadores volantes" no
-  miolo.
-- **Falhas típicas:** hub sobrecarregado bloqueia a porta; eleitor esquece
-  a indicação no meio do caminho e volta ao hub (retrabalho não modelado);
-  aglomeração no centro do salão dificulta a passagem de quem sai.
-
-### FITAS
-- **Antes da porta:** painel grande "SUA SEÇÃO → COR E NÚMERO DA MESA" (51
-  linhas, ordenadas por seção; as 23 seções agregadas apontam para a mesa da
-  principal). Balcão de apoio com 3–4 pessoas por porta, **na fila externa
-  e não na porta**, consultando por nome quem não sabe a seção: o tempo de
-  consulta é absorvido pela espera que já existe.
-- **Porta:** o eleitor entra sabendo "verde, mesa 15". Segurança na porta
-  só confere que ele está na porta certa.
-- **Piso:** 3 fitas coloridas por porta, cada uma para uma zona; ao chegar
-  na zona, o eleitor segue a fita ao longo da parede até o número.
-- **Mesa:** placa numerada alta (acima da cabeça, visível por sobre a fila)
-  na cor da zona. Os banners já contratados servem para isso.
-- **Miolo do salão:** vazio, exceto pela fita. 1–2 orientadores volantes
-  por lado para quem perde a linha.
-- **Falhas típicas:** eleitor que não leu o painel entra sem saber para onde
-  ir (o orientador volante resolve, mas se forem muitos vira um hub
-  informal); fita escondida sob a multidão nos trechos onde a fila da mesa
-  invade o piso; fita solta ou levantada pelos cabos elétricos que o
-  eletricista vai passar pelo piso (validar com o RDS o tipo de piso e a
-  fita permitida).
-
-## 4. Efeitos de segunda e terceira ordem
-
-- **HUB, 2ª ordem:** a fila da triagem é interna e visível, o que dá a
-  impressão de controle, mas concentra no centro do salão exatamente o
-  público que mais precisa de espaço (idosos, crianças no colo). Se um hub
-  trava, a única resposta é tirar gente das mesas para reforçá-lo.
-- **HUB, 3ª ordem:** por ser o passo que dita o ritmo, o hub define a hora
-  em que a última pessoa entra; um hub lento às 16h30 é a mesma coisa que
-  fechar mesas de madrugada, o risco já descrito no contexto (seção 2.4).
-- **FITAS, 2ª ordem:** desloca custo do dia para a comunicação prévia. Cada
-  ponto percentual a mais de eleitores que chegam sabendo a seção tira gente
-  do balcão de apoio. Isso transforma o plano de comunicação (pendência 3)
-  de "divulgação" em peça operacional com meta mensurável.
-- **FITAS, 3ª ordem:** o painel "seção → mesa" e as placas numeradas viram
-  um artefato reutilizável para o 2º turno e para o funcionamento das MRVs
-  (pendência 5): se as mesas têm número e cor, os cadernos e os mesários
-  podem ser organizados na mesma chave.
-- **Ambas:** trocar a saída central por laterais reduz cruzamentos em
-  75% no HUB e 60% no FITAS. É a decisão de maior efeito por euro.
-
-## 5. Recomendação para a discussão
-
-Não é "hub ou fitas": é **híbrido, com a triagem antes da porta**.
-
-1. Adotar a lógica de zona por cor + número de mesa em qualquer cenário.
-   Ela serve ao hub (o triador diz "verde 15" em vez de apontar) e às fitas.
-2. Levar a consulta "não sei minha seção" para a fila externa, com 3–4
-   pessoas por porta e listas por nome. Isso tira o pior do hub e é o que
-   faz as fitas funcionarem.
-3. Manter um hub **reduzido** (1–2 pessoas por porta) como rede de
-   segurança para quem entra perdido, em vez de servidor obrigatório.
-4. Fitas por zona no piso (6 troncos, ≈ 240 m, custo baixo) mais placas
-   altas nas mesas. Validar com o RDS a fita e o piso.
-5. Saída pelas portas laterais, não pela porta central.
-6. Rebalancear as posições entre os lados A e B (hoje 12 × 16).
-
-O que precisa ser medido antes de decidir: a fração de eleitores que sabe
-a própria seção. Uma enquete simples nas redes do Posto ("você sabe sua
-seção? abra o e-Título") ou a contagem na fila do 1º turno de 2022, se
-houver registro, muda a tabela de sensibilidade de premissa para dado.
+- Sem checkpoint, 10 s para ler a sinalização na soleira e caminhada direta
+  a 1,2 m/s (constante do motor).
+- Erro de sinalização: parâmetro novo `cen.sinalizacao = {erro, desvio}` em
+  `modelo.js`, aplicado só sem checkpoint; padrão zero (não muda nenhum
+  cenário existente).
+- Fita: reta da soleira à ponta da fila (por mesa) ou tronco rente à parede;
+  33 m por rolo e EUR 12 por rolo são premissas de compra, não cotação.
+- Os 28 postes "do checkpoint" são os do desenho 1e (`saidas/tensa_barreiras.md`).

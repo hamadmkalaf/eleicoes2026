@@ -676,7 +676,23 @@ identidade MRV, classes, esperado e conservação de eleitores.
 esquema do salão desenhado à mão em vez da planta-base; não está na árvore
 consolidada, fica no histórico (`git show 6e9c5d1:saidas/simulador_fluxo_hall2.html`).
 
-### 4.4 Como rodar
+### 4.4 Fitas no piso em vez do checkpoint (12/09/2026)
+
+Sugestão de um colega, examinada em `docs/alternativa_fitas_no_piso.md`:
+tirar o checkpoint e guiar o eleitor da porta à mesa por fitas no piso.
+`simulador/fitas.js` roda o motor do simulador sobre o Cenário Claude com e
+sem checkpoint, sob as três políticas de liberação, com filas mais longas,
+com erro de sinalização (parâmetro novo `cen.sinalizacao = {erro, desvio}` no
+motor, padrão zero) e com uma atribuição de mesas por parede; mede também a
+metragem e os cruzamentos das fitas sobre o arranjo. `scripts/fitas_piso.py`
+desenha e monta `saidas/fitas_piso.html`. Achado: o checkpoint não custa
+vazão (fecha 17h03 com ou sem), mas é o que retém o eleitor por mesa; sem
+ele a fila migra do Ring 3 para dentro do salão (950 pessoas no pico com
+porta livre) ou a porta regula às cegas. Fitas com a atribuição da decisão
+cruzam o salão (18 cruzamentos entre troncos); por parede não cruzam, mas
+desequilibram as portas em 3,36× no Três polos.
+
+### 4.5 Como rodar
 
 ```bash
 python3 scripts/gera_decisoes.py       # data/decisoes.json (os testes em Node leem daqui)
@@ -685,6 +701,7 @@ python3 scripts/gera_simulador.py      # saidas/simulador_fluxo.html
 node simulador/teste_arranjos.js
 node simulador/teste_modelo.js claude 16
 node simulador/varredura.js 3          # alguns segundos por dia simulado
+node simulador/fitas.js 8 && python3 scripts/fitas_piso.py   # fitas no piso × checkpoint
 python3 scripts/simula_fluxo.py        # tabelas do §4.2
 python3 -c "import sys; sys.path.insert(0,'scripts'); import simula_fluxo as m; m._relatorio_entradas()"
 ```

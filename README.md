@@ -185,15 +185,15 @@ O que a integração de 06/09 resolveu (comparecimento, numeração, portas,
 números do Ring 3 na sinalização) e o que ficou (curvas de chegada, arranjo da
 mesa receptora, cor ou letra) está no §9 da documentação.
 
-## Entrada: triagem central × fitas no piso
+## Fitas no piso em vez do checkpoint
 
-`docs/alternativa_fitas_no_piso.md` discute a sugestão de trocar o ponto de
-triagem no meio do salão por fitas no piso que levem o eleitor da porta à
-sua mesa. `scripts/modelo_fluxo_entrada.py` (só biblioteca padrão) modela as
-duas organizações na geometria real do Hall 2: fila na triagem, pessoal,
-caminho médio, cruzamentos entrada × saída e metragem de fita. Saídas em
-`saidas/fluxo_entrada_comparacao.{md,json,html}` e `saidas/fluxo_*.svg`.
+`docs/alternativa_fitas_no_piso.md` examina a sugestão de tirar o checkpoint e
+guiar o eleitor da porta à mesa por fitas no piso. `simulador/fitas.js` roda o
+motor oficial do simulador com e sem checkpoint sobre o arranjo Três polos e
+mede a geometria das fitas; `scripts/fitas_piso.py` desenha as fitas sobre a
+planta e monta `saidas/fitas_piso.html`.
 
 ```bash
-python3 scripts/modelo_fluxo_entrada.py
+node simulador/fitas.js 8          # saidas/fitas_piso.json
+python3 scripts/fitas_piso.py      # saidas/fitas_piso.{md,html} e fitas_piso_*.svg
 ```

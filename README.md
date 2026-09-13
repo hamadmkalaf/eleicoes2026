@@ -35,6 +35,8 @@ o eleitor (cor ou letra) está em aberto.
 | 8 | Separadores de fila do salão (cenário 1e adotado: 100 postes, 146 m de fita) | `saidas/barreiras_hall2.html`, `saidas/tensa_barreiras.md`, `saidas/tensa_barreiras.json`, `scripts/tensa_barreiras.py` | `saidas/tensa_barreiras.md` |
 | 9 | Ring 3 nas dimensões oficiais (44 × 35 m): quatro desenhos de fila comparados | `saidas/ring3_horizontal.html`, `saidas/ring3.json`, `saidas/plano_ring3_horizontal.md`, `scripts/ring3.py` | `saidas/plano_ring3_horizontal.md` |
 | 10 | Dashboard do plano (narrativa única, ferramentas embutidas, portas vivas) | `saidas/dashboard/index.html`, `saidas/ring3_vivo.html`, `simulador/portas.js`, `scripts/gera_dashboard.py`, `scripts/gera_ring3_vivo.py` | §0 e §11 de `DOCUMENTACAO_PROJETO.md` |
+| 11 | Fitas no piso em vez do checkpoint (simulação no motor oficial) | `saidas/fitas_piso.html`, `saidas/fitas_piso.json`, `simulador/fitas.js`, `scripts/fitas_piso.py` | `docs/alternativa_fitas_no_piso.md`, `docs/registro_fitas_no_piso_2026-09-12.md` |
+| 12 | Decisões de fluxo em aberto, com dependências, e instruções de fluxo para o treinamento (geradas das decisões vigentes) | `data/decisoes_abertas.json`, `docs/decisoes_em_aberto.md`, `docs/instrucoes_fluxo.md`, `saidas/instrucoes_fluxo.html`, `scripts/decisoes_abertas.py`, `scripts/gera_instrucoes_fluxo.py` | §12 de `DOCUMENTACAO_PROJETO.md`, `PENDENCIAS`, `orcamento_final.md` |
 
 Artefatos publicados: o **dashboard do plano**
 (https://claude.ai/code/artifact/1c434ede-3d79-439c-b97b-a8121979bd03), que
@@ -68,11 +70,28 @@ python3 scripts/layout_ring3.py
 # 6. sinalização
 python3 scripts/gera_plano_sinalizacao.py
 # 7. barreiras internas e Ring 3 nas dimensões oficiais
-python3 scripts/tensa_barreiras.py && python3 scripts/ring3.py
-# 8. portas vivas, Ring 3 ao vivo e dashboard (por último: copia as peças)
+python3 scripts/tensa_barreiras.py && python3 scripts/ring3.py && python3 scripts/gera_pagina_ring3.py
+# 8. fitas no piso (motor do simulador) e desenho sobre a planta
+node simulador/fitas.js 8 && python3 scripts/fitas_piso.py
+# 9. decisões em aberto e instruções de fluxo (leem as opções vigentes)
+python3 scripts/decisoes_abertas.py && python3 scripts/gera_instrucoes_fluxo.py
+# 10. portas vivas, Ring 3 ao vivo e dashboard (por último: copia as peças)
 node simulador/teste_portas.js
 python3 scripts/gera_ring3_vivo.py && python3 scripts/gera_dashboard.py
 ```
+
+**Decisões em aberto (13/09/2026).** O que o Posto ainda não decidiu sobre o
+fluxo (portas, porta preferencial, checkpoint, desenho do Ring 3, unifilas,
+sinalização externa e interna, voluntários, cor ou letra) está em
+`scripts/decisoes_abertas.py`, com as opções, a opção que as saídas de hoje
+assumem, `depende_de` e os efeitos de cada opção sobre as outras decisões. O
+módulo valida o grafo (acíclico, uma opção vigente por decisão) e grava
+`data/decisoes_abertas.json` e `docs/decisoes_em_aberto.md`; a seção
+"Decisões em aberto" do dashboard e `docs/instrucoes_fluxo.md` (instruções de
+gerenciamento de fluxo para o treinamento, um bloco por posto) saem do mesmo
+registro. Mudar uma decisão = trocar `vigente`, regenerar. Tarefas (não
+decisões) continuam em `PENDENCIAS`; o orçamento preenchível está em
+`orcamento_final.md`.
 
 Toda saída em `saidas/` é gerada por script: editar HTML ou SVG à mão se perde
 na próxima geração. Os geradores falham em vez de gravar saída errada quando
@@ -172,7 +191,9 @@ Dublin e passam a votar lá.
   caderno físico.
 - **Ring 3** (`saidas/plano_ring3.md`): ~39 × 35 m; entradas S4/S5/S6, saídas
   S2/S8; três serpenteados (3·9·3 balizas) e duas baias, 1.402 pessoas; 300
-  separadores, 100 a adquirir (~EUR 1.302); evacuação e pendências.
+  separadores, 100 a adquirir (~EUR 1.302); evacuação e pendências. Nas
+  dimensões oficiais (44 × 35 m), `scripts/ring3.py` desenha as alternativas
+  sem garganta, com corredor em L e fita — ver seção própria abaixo.
 - **Sinalização** (`saidas/plano_sinalizacao.html`): oito pontos do portão da
   Merrion Road à urna; uma consulta só (seção → mesa → entrada), replicada a
   cada 25–30 m; mesas pelo MRV e entradas do plano do Ring 3; cor ou letra
@@ -184,3 +205,98 @@ Dublin e passam a votar lá.
 O que a integração de 06/09 resolveu (comparecimento, numeração, portas,
 números do Ring 3 na sinalização) e o que ficou (curvas de chegada, arranjo da
 mesa receptora, cor ou letra) está no §9 da documentação.
+
+## Fitas no piso em vez do checkpoint
+
+`docs/alternativa_fitas_no_piso.md` examina a sugestão de tirar o checkpoint e
+guiar o eleitor da porta à mesa por fitas no piso. `simulador/fitas.js` roda o
+motor oficial do simulador com e sem checkpoint sobre o arranjo Três polos e
+mede a geometria das fitas; `scripts/fitas_piso.py` desenha as fitas sobre a
+planta e monta `saidas/fitas_piso.html`.
+
+```bash
+node simulador/fitas.js 8          # saidas/fitas_piso.json
+python3 scripts/fitas_piso.py      # saidas/fitas_piso.{md,html} e fitas_piso_*.svg
+```
+
+## Barreiras internas: cenário 1e e as hipóteses de corte (11/09)
+
+Registro completo, com as alternativas descartadas e os riscos que a escolha
+aceita: [`saidas/tensa_barreiras.md`](saidas/tensa_barreiras.md). O caminho até
+ela, com as correções feitas e as premissas declaradas, está em
+[`registro_barreiras_hall2.md`](registro_barreiras_hall2.md).
+
+- **`saidas/tensa_barreiras.md`** — o registro da decisão, com o desenho adotado,
+  as alternativas descartadas e os riscos aceitos.
+- **`saidas/propostas_alternativas.md`** — duas hipóteses de corte, com plano e
+  desenho cada: **A**, unifila só para separar até o checkpoint; **B**, unifila só
+  nas mesas pareadas e nas grandes. Mais a síntese **C**, o único corte que o
+  documento recomenda.
+- **`saidas/tensa_barreiras.json`** — os números estruturados, cenário a cenário.
+- **`saidas/barreiras_hall2.html`** — a planta em escala com os sete traçados
+  ([publicada](https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981)).
+- **`saidas/prancheta_hall2.json`** — o cenário salvo, extraído do artefato da
+  prancheta, para a conta ser reproduzível sem abrir a página.
+
+```bash
+python3 scripts/tensa_barreiras.py    # saidas/tensa_barreiras.{md,json} e barreiras_hall2.html
+```
+
+Qual traçado vale depende das decisões D2 (checkpoint) e D4 de
+`scripts/decisoes_abertas.py`.
+
+## Ring 3 nas dimensões oficiais: corredor em L e fita com CCB na ponta (11/09)
+
+`scripts/ring3.py` modela o compound de fila ao ar livre do RDS, **44,0 × 35,0 m
+(medida oficial)**, 14 m ao sul da fachada do Hall 2. O eleitor entra pelo
+**canto nordeste**, desce rente ao gradil leste e vira no fundo: o corredor de
+chegada é um **L** de 3,0 m, e as três zonas são alimentadas pelo trecho de
+fundo. Restam dois desenhos, pela direção das raias.
+
+| | Raias N–S | Raias L–O |
+|---|---:|---:|
+| Lotação (toda em raia) | 1.997 | 1.964 |
+| Raias por zona | 8/10/8 | 23/23/23 |
+| Meias-voltas | 23 | 66 |
+| Separadores | 371 | 371 |
+| A comprar (estoque 200) | 171 | 171 |
+
+**Só duas coisas são separador**, por decisão do Posto: as divisórias entre as
+raias (708,4 m) e a parede que separa a zona C da corrente que desce pelo
+corredor lateral (32,0 m). Saíram da conta o contorno das zonas — que passa a
+ser fita, 160,2 m —, a parede do corredor de chegada (39,8 m) e as raias do
+apron até as portas (87,7 m): 288 m, 144 separadores a menos.
+
+### Cenário 3 — CCB só na ponta, fita grossa no resto
+
+A divisória vira fita do tipo de isolamento, ancorada por **um CCB na ponta
+livre** (o vão da meia-volta). A separação da zona C continua barreira inteira.
+
+| | N–S barreira inteira | N–S CCB na ponta | L–O CCB na ponta |
+|---|---:|---:|---:|
+| Separadores | 371 | **39** | 82 |
+| A comprar (estoque 200) | 171 | **0** | 0 |
+| Fita grossa | — | 662,4 m | 576,4 m |
+| Lotação | 1.997 | 1.997 | 1.964 |
+
+A barreira deixa de ser proporcional ao *comprimento* da raia e passa a ser
+proporcional ao *número* de raias — por isso o girado, com 66 divisórias curtas,
+custa mais que o N–S com 23 longas. Ressalva registrada no plano: cada divisória
+fica com 28,8 m de vão livre de fita; com apoio a cada 5 m seriam 115 apoios, e
+se forem CCB o total volta a 154.
+
+Cada corrida que a conta soma está desenhada em `saidas/ring3_barreiras_*.svg`,
+colorida pelo componente; o mapa **é** a conta, e `scripts/ring3.py` recusa a
+gerar a planta se os dois não fecharem (`confere_mapa`).
+
+O plano vigente (`scripts/layout_ring3.py`, `saidas/plano_ring3.md`) não está
+neste repositório: foi produzido em sessão anterior e não chegou a ser
+versionado. Reconstruído das cotas publicadas, continua servindo de aferição do
+modelo de densidade — reproduz os 855 dos serpenteados e os 547 das baias.
+
+```bash
+python3 scripts/ring3.py              # saidas/ring3.json, plano_ring3_horizontal.md e as plantas
+python3 scripts/gera_pagina_ring3.py  # saidas/ring3_horizontal.html
+```
+
+Memória de trabalho: `contexto_ring3_2026.md`.

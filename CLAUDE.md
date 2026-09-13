@@ -15,13 +15,24 @@ posto do RDS Ballsbridge, Hall 2, para o 1º turno de 04/10/2026.
 3. `docs/SESSAO_2026-09-13.md`: passagem da sessão do dashboard e das portas
    vivas (decisões do Posto sobre as ferramentas, PR #16, como verificar a
    propagação entre Simulador, Prancheta e Ring 3, o que ficou fora).
+4. `docs/SESSAO_2026-09-13b.md`: passagem da sessão que trouxe Ring 3 (corredor
+   em L), barreiras (hipóteses de corte) e fitas no piso para o dashboard e
+   criou o registro de decisões em aberto e as instruções de fluxo geradas.
+5. `docs/decisoes_em_aberto.md` e `PENDENCIAS`: o que falta decidir (com
+   dependências) e o que falta fazer. Não confundir: decisão de fluxo vai em
+   `scripts/decisoes_abertas.py`; tarefa vai em `PENDENCIAS`.
 
 ## Branches
 
-- `claude/integrated-artifacts-dashboard-cmfi4l` (PR para o branch padrão):
+- `claude/vibrant-wozniak-hvmqcr` (PR #18, contra a branch do dashboard):
+  mescla o dashboard (PR #16), as fitas no piso (PR #17) e as pontas dos
+  branches de Ring 3 (#13) e barreiras (#12), e acrescenta o registro de
+  decisões em aberto, as instruções de fluxo e o orçamento preenchível. Base
+  de trabalho a partir de 13/09/2026.
+- `claude/integrated-artifacts-dashboard-cmfi4l` (PR #16 para o branch padrão):
   consolida a branch de 06/09 mais barreiras, Ring 3 oficial, cenário
-  Equitativo e cotações, e acrescenta o dashboard. Base de trabalho a partir
-  de 11/09/2026.
+  Equitativo e cotações, e acrescenta o dashboard. Base de trabalho de 11 a
+  13/09/2026.
 - `claude/project-analysis-documentation-w49q34`: última versão de todas as
   etapas, consolidada em 06/09/2026.
 - `backup/consolidado-2026-09-06`: cópia congelada do mesmo estado. Não
@@ -76,9 +87,22 @@ acordada do salão. Duas regras valem para tudo que for produzido depois:
   (localStorage + BroadcastChannel na mesma origem; hash `#portas=` para
   links). Não reimplemente a regra nas páginas. Alterar a decisão continua
   sendo em `decisoes.py`.
+- Decisões em aberto: `scripts/decisoes_abertas.py` (opções, opção vigente,
+  `depende_de`, efeitos; `condiciona` é calculado). Grava
+  `data/decisoes_abertas.json` e `docs/decisoes_em_aberto.md`. O dashboard
+  (seção "Decisões em aberto") e `scripts/gera_instrucoes_fluxo.py`
+  (`docs/instrucoes_fluxo.md`, `saidas/instrucoes_fluxo.html`) leem
+  `montar()`; nenhum digita opção ou dependência por conta própria. Quando o
+  Posto decide, troque `vigente`, marque `estado` e regenere; se a decisão
+  muda algo de `decisoes.py` (portas, por exemplo), altere lá também.
 - Dashboard: `scripts/gera_dashboard.py` monta `saidas/dashboard/` (index +
   cópias das ferramentas e peças) e roda por último. Sem orçamento nem lista
-  de pendências na página, a pedido do Posto (foram para o Planner).
+  de tarefas na página, a pedido do Posto (foram para o Planner e para
+  `PENDENCIAS` / `orcamento_final.md`); as decisões de fluxo em aberto, sim,
+  entram (decisão do Posto de 13/09).
+- Ring 3 ao vivo (`simulador/portas.js`) desenha os cinco desenhos anteriores
+  a 11/09; o corredor em L e a fita com CCB na ponta estão só em
+  `scripts/ring3.py`. Portar quando a decisão D3 fechar.
 
 ## Convenções
 

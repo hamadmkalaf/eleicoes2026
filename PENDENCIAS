@@ -6,16 +6,30 @@ LISTA DE TAREFAS PARA AINDA FAZER
 3. PLANO DE COMUNICAÇÃO COM ELEITORES - COM POSTAGENS E DIVULGAÇÀO;
 4. PLANO DE COMUNICAÇÃO E ORGANIZAÇÃO COM MESÁRIOS;
 5. PENSAR NO FUNCIONAMENTO DA MRV - QUEM IDENTIFICARÁ, COMO SERÃO DIVIDIDOS OS CADERNOS;
+6. INSTRUÇÕES DE GERENCIAMENTO DE FLUXO PARA O TREINAMENTO (geradas a partir das decisões);
+7. DECISÕES DE FLUXO EM ABERTO E SUAS INTERCONEXÕES (registro em scripts/decisoes_abertas.py);
 
 
 Pendencia por ponto.
 
 1. Transformar projeto de fluxo em todo coerente
+- [13/09] o dashboard (saidas/dashboard/) já integra Ring 3, barreiras, fitas no piso
+  e a seção "Decisões em aberto"; falta a apresentação final (ordem, texto, quem vê o quê).
 
 
 2. fechar orçamento final
 - coletar orçamentos de portaloos e seguranças;
 - fechar tabela de orçamento final, incluindo detalhes de segurança, eletricista e pequenos itens;
+- [13/09] TABELA PREENCHÍVEL em orcamento_final.md: recursos disponíveis (o que já está
+  contratado ou em mãos) e custos em aberto (cada um ligado à decisão de que depende).
+  Preencher valor, fornecedor e status a cada cotação recebida.
+- [13/09] revisar o item a) do telegrama: 20 seguranças -> 4 (libera ~EUR 5.400);
+- [13/09] verificar se a apólice exigida pelo RDS (item f) impõe efetivo mínimo de segurança;
+- [13/09] confirmar com a polícia irlandesa o formato da presença externa (viatura fixa,
+  ronda, horário) e registrar na nota verbal;
+- [13/09] encomendar 111 unifilas, não 100 (11 de reserva, ~EUR 143);
+- [13/09] separadores externos (CCB): a compra depende da decisão D3 (desenho do Ring 3):
+  171 a comprar se barreira inteira; 0 se fita com CCB na ponta (mas entram 115 apoios de fita).
 
 3. Plano de comunicação
 - olhar o que outros postos estão fazendo;
@@ -29,6 +43,8 @@ Pendencia por ponto.
 - para o webinar:
   a) o que é esperado;
   b) como nosso fluxo divergirá de cursos de mesários
+- [13/09] material-base do webinar: docs/instrucoes_fluxo.md (item 6), gerado das decisões
+  vigentes; o bloco da mesa receptora fica "a definir" enquanto o item 5 não fechar.
 
 5. Funcionamento da MRV.
 
@@ -36,3 +52,41 @@ Pendencia por ponto.
 - é melhor marcar as letras nos cadernos. isso facilita?
 - é melhor dividir o caderno por letras ou dividir por seção?
 - como vem organizado o caderno?
+- [13/09] EM ABERTO, SEM RECOMENDAÇÃO: faltam informações. Hipótese do Posto: o caderno
+  chega inteiro, em ordem alfabética (a confirmar). O Posto vai subir mais informações
+  para decidir em conjunto.
+- [13/09] o que a carga impõe (contexto_eleicoes_dublin_2026.md §8.2): com 28 urnas e
+  caderno, as urnas 3313/3322/3315 (~590 comparecentes) só fecham às 17h a <= 55 s por
+  eleitor; as 7 seguintes (~475-490) a <= 66-68 s. A 90 s, 16 das 28 urnas estouram.
+- [13/09] opções em aberto (a comparar quando houver informação):
+  (i)   caderno único alfabético, um mesário identificando;
+  (ii)  caderno dividido por seção agregada, um mesário por caderno (23 urnas têm 2 seções);
+  (iii) caderno dividido por faixa de letras, um mesário por faixa;
+  (iv)  identificação em paralelo com o voto (mesário localiza o próximo enquanto o anterior
+        vota) versus em série;
+  (v)   pré-triagem na fila com documento na mão e seção já sabida.
+- [13/09] perguntas a responder: como o caderno chega (um por seção ou fundido por urna);
+  quantos mesários por urna o TSE designa; se voluntários podem sentar à mesa; tempo real
+  de localizar nome + colher assinatura em 2022.
+
+6. Instruções de gerenciamento de fluxo (treinamento de funcionários e voluntários)
+- [13/09] princípio: o fluxo deve correr o mais desimpedido possível, só com orientação ao
+  eleitor; a equipe aponta, não barra; retenção só onde o plano vigente prevê.
+- [13/09] as instruções são GERADAS por scripts/gera_instrucoes_fluxo.py a partir das
+  decisões vigentes (decisoes.py, decisoes_abertas.py) e das saídas do plano; quando uma
+  decisão muda, o documento muda. Saída: docs/instrucoes_fluxo.md e
+  saidas/instrucoes_fluxo.html (também no dashboard).
+- validar as instruções com quem vai coordenar no dia; traduzir para inglês se houver
+  voluntários irlandeses.
+
+7. Decisões de fluxo em aberto e interconexões
+- [13/09] sete decisões (portas, checkpoint, desenho do Ring 3, unifilas, sinalização
+  externa, sinalização interna, voluntários) mais cor/letra das filas, registradas em
+  scripts/decisoes_abertas.py com "depende de" e "condiciona"; seção "Decisões em aberto"
+  do dashboard e docs/decisoes_em_aberto.md. Mudar uma decisão = editar o módulo e regenerar.
+- [13/09] efeitos de 2ª e 3ª ordem a manter em vista:
+  - voluntários não treinados na pré-triagem são o gargalo não paralelizável do dia;
+  - urnas críticas fechando tarde atrasam a apuração consolidada; o custo de imagem recai
+    sobre o Posto, não sobre o TSE que definiu a agregação;
+  - documentar por escrito que a configuração de 28 urnas foi imposta e que a mitigação
+    possível é operacional (tempo por eleitor na mesa).

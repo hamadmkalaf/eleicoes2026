@@ -91,6 +91,10 @@ unitário já negociado no telegrama (EUR 13,03).
 Custo total do desenho adotado, com as 111 unidades e a entrega em Dublin com
 coleta (EUR 80,00): **EUR 1.745 ex-VAT / EUR 2.146 inc-VAT** a preço de lista.
 
+> Hipóteses de corte estudadas depois da decisão — unifila só na entrada, unifila
+> só nas mesas pareadas e grandes, e a síntese das duas — estão em
+> [`propostas_alternativas.md`](propostas_alternativas.md).
+
 ## Alternativas descartadas
 
 | Cenário | Corridas | Fitas | Postes | +10% | EUR ex-VAT | Por que não |

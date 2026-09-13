@@ -30,6 +30,8 @@
 8. [Revisão dos pull requests](#8-revisão-dos-pull-requests)
 9. [Inconsistências entre etapas e pendências consolidadas](#9-inconsistências-entre-etapas-e-pendências-consolidadas)
 10. [Como reproduzir, e como resgatar algo do backup](#10-como-reproduzir-e-como-resgatar-algo-do-backup)
+11. [Dashboard do plano e portas vivas (11/09/2026)](#11-dashboard-do-plano-e-portas-vivas-11092026)
+12. [Decisões de 13/09, registro de decisões em aberto e instruções de fluxo](#12-decisões-de-1309-registro-de-decisões-em-aberto-e-instruções-de-fluxo)
 
 ---
 
@@ -783,6 +785,18 @@ mesmo custo); a baia guarda gente **em massa** e o serpenteado **em ordem** (a
 baia drena para o fim do serpenteado). Taxas de câmbio: +1 m de profundidade =
 +49 pessoas por 9 separadores; +2 balizas = +114 por 27; +1 m de baia = +43 por 1.
 
+**Desenhos sem garganta (11/09/2026, `scripts/ring3.py`, Ring 3 a 44 × 35 m).**
+O eleitor entra pelo canto nordeste, desce rente ao gradil leste (trecho
+lateral de 3,0 m) e vira no fundo (trecho de fundo de 3,0 m): corredor de
+chegada em L. Restam dois desenhos pela direção das raias (N–S 1.997 pessoas,
+L–O 1.964) e, para cada um, dois regimes de barreira: divisórias inteiras (371
+separadores, 171 a comprar) ou fita grossa com um CCB só na ponta livre (39 ou
+82 separadores, nenhum a comprar, 662 ou 576 m de fita e 115 apoios a cada
+5 m). Só duas coisas são separador por decisão do Posto: as divisórias entre
+as raias e a separação da zona C contra o corredor; o contorno das zonas é fita
+(160 m). A escolha entre o plano vigente e esses desenhos é a decisão **D3** de
+`scripts/decisoes_abertas.py`; memória de trabalho em `contexto_ring3_2026.md`.
+
 ### 5.4 Separadores de barreira (só Ring 3)
 
 | # | Componente | Cálculo | Metros | Separadores |
@@ -860,7 +874,11 @@ resolve é o arranjo de dois cadernos em paralelo.
 4. Cotar cobertura leve para os serpenteados.
 5. Verificar se o perímetro do Ring 3 é fechado; se for, abrir as duas brechas.
 6. **Definir o arranjo da mesa receptora com o Cartório Eleitoral** (decide se
-   o Ring 3 chega a ser usado).
+   o Ring 3 chega a ser usado). Em 13/09 ficou decidido que a identificação é
+   por caderno físico; a divisão dos cadernos e quem identifica continuam em
+   aberto (PENDENCIAS item 5, sem recomendação).
+7. Decidir o desenho (D3) e, se for fita com CCB na ponta, quantos apoios a
+   fita leva; pedir ao fornecedor a distância máxima entre apoios.
 
 ---
 
@@ -1146,6 +1164,11 @@ identificação em paralelo** (dois cadernos) fecham às 17h com caderno físico
 A prancheta não tem esse módulo desenhado. É a decisão que determina se o Ring
 3 chega a ser usado, quanta fila cabe no salão e quantos separadores internos.
 
+Desde 13/09 as decisões de fluxo em aberto têm registro próprio, com
+dependências e efeitos: `scripts/decisoes_abertas.py` (§12). Os itens abaixo
+que são decisões (8, 9, 10, 11) apontam para lá; os que são tarefas ficaram em
+`PENDENCIAS`.
+
 ### 9.8 Pendências consolidadas, por dono
 
 **Cartório Eleitoral / TRE**
@@ -1169,13 +1192,15 @@ A prancheta não tem esse módulo desenhado. É a decisão que determina se o Ri
 
 **Posto (decisões de projeto)**
 8. Identidade das filas para o eleitor: **cor ou letra** (§6.3), a única
-   decisão que ainda contamina todas as peças impressas.
+   decisão que ainda contamina todas as peças impressas. → **D8** em `decisoes_abertas.py`.
 9. Fechar o cenário da prancheta (candidato: "Três polos", o do Cenário
    Claude) e, a partir dele, definir a numeração voltada ao eleitor (§9.2).
-10. Pedido de +100 separadores de barreira (~EUR 1.302) e dimensionamento da
-    barreira interna do Hall 2.
-11. Cotar cobertura leve para os serpenteados; sinalização interna por par de
-    mesas; balcão "não sei minha seção" em P1; rota prioritária desde a rua.
+10. Pedido de separadores de barreira (0 a 171, conforme o desenho **D3**) e
+    dimensionamento da barreira interna do Hall 2 (**D4**; hipóteses A/B/B2/C
+    em `saidas/propostas_alternativas.md`).
+11. Cotar cobertura leve para os serpenteados (`orcamento_final.md` C10);
+    sinalização interna por par de mesas (**D6**); balcão "não sei minha seção"
+    em P1; rota prioritária desde a rua (**D1b**).
 
 **Análise (opcional, para calibrar)**
 12. Unificar a curva de chegada dos três modelos (§9.4) e, se possível,
@@ -1227,6 +1252,14 @@ python3 scripts/simula_fluxo.py
 python3 scripts/layout_ring3.py
 # 6. sinalização
 python3 scripts/gera_plano_sinalizacao.py
+# 7. barreiras internas e Ring 3 nas dimensões oficiais
+python3 scripts/tensa_barreiras.py && python3 scripts/ring3.py && python3 scripts/gera_pagina_ring3.py
+# 8. fitas no piso
+node simulador/fitas.js 8 && python3 scripts/fitas_piso.py
+# 9. decisões em aberto e instruções de fluxo
+python3 scripts/decisoes_abertas.py && python3 scripts/gera_instrucoes_fluxo.py
+# 10. portas vivas, Ring 3 ao vivo e dashboard (por último)
+node simulador/teste_portas.js && python3 scripts/gera_ring3_vivo.py && python3 scripts/gera_dashboard.py
 ```
 
 Toda saída em `saidas/` é gerada por script; editar HTML ou SVG à mão se perde
@@ -1297,4 +1330,78 @@ aberta, o hash `#portas=S4:A,S5:B,S6:C,S2:x,S8:x&desenho=VS` carrega um estado.
 1.402) foram calculadas por `layout_ring3.py` com o Ring 3 a 39 × 35 m
 (fotogrametria); `ring3.py` e o módulo vivo usam a medida oficial de 44 × 35 m e
 reconstroem o plano vigente a 314 separadores (contra 300 publicados). A escolha
-entre o plano com garganta e os desenhos sem garganta continua pendente.
+entre o plano com garganta e os desenhos sem garganta continua pendente (D3).
+
+**Divergência do módulo vivo (13/09).** `simulador/portas.js` porta a versão de
+`ring3.py` de 08/09: cinco desenhos, com e sem baias, sem corredor em L e sem o
+regime de fita com CCB na ponta. Os desenhos de 11/09 estão na peça estática
+(`saidas/ring3_horizontal.html`) e na tabela do dashboard. Decisão do Posto de
+13/09: não portar agora; portar quando D3 fechar.
+
+---
+
+## 12. Decisões de 13/09, registro de decisões em aberto e instruções de fluxo
+
+### 12.1 O que o Posto decidiu em 13/09/2026
+
+1. **Dimensões reais confirmadas:** Hall 2 50,0 × 44,5 m; Ring 3 44,0 × 35,0 m.
+2. **Desagregação inviável:** ficam as 28 urnas do TSE. Os cenários de
+   contraproposta do contexto são registro histórico.
+3. **Identificação por caderno físico**, único método no exterior. Com 28
+   urnas, as três críticas (MRV 22, 24, 23; ~590 comparecentes) só fecham às
+   17h a ≤ 55 s por eleitor; as sete seguintes a ≤ 66–68 s
+   (`contexto_eleicoes_dublin_2026.md` §8.2). A divisão dos cadernos e quem
+   identifica seguem em aberto, sem recomendação (PENDENCIAS item 5).
+4. **4 seguranças** (não 20), mesários voluntários organizando o fluxo, polícia
+   do lado de fora.
+
+### 12.2 O registro de decisões em aberto (`scripts/decisoes_abertas.py`)
+
+`decisoes.py` guarda o decidido; `decisoes_abertas.py` guarda o que falta:
+nove decisões (D1 portas; D1b porta ou rota preferencial; D2 checkpoint; D3
+desenho do Ring 3 e apoios da fita; D4 unifilas internas; D5 sinalização
+externa, parcial; D6 sinalização interna; D7 voluntários; D8 cor ou letra) e
+seis fatos fixos (F1–F6: 28 urnas, caderno, 4 seguranças, dimensões, base B,
+estoque de separadores). Cada decisão tem `opcoes` (com a opção `vigente`, a
+que as saídas de hoje assumem), `depende_de`, `restricoes`, `fontes` e, por
+opção, `efeitos` sobre as decisões que ela condiciona e `parametros` legíveis
+por máquina. `montar()` valida (ids, referências, grafo acíclico por camadas
+de Kahn, todo efeito aponta para uma decisão que depende desta, uma opção
+vigente por decisão) e falha em vez de gravar saída inconsistente.
+
+Ordem recomendada (camadas): **D1 · D2 · D8 → D1b · D3 · D4 → D5 · D6 → D7.**
+Saídas: `data/decisoes_abertas.json`, `docs/decisoes_em_aberto.md`,
+`saidas/decisoes_em_aberto.html`, e a seção 8 do dashboard (grafo em SVG,
+cartões, matriz "se … então …"). Mudar uma decisão = trocar `vigente`, marcar
+`estado`, regenerar; se a decisão altera algo de `decisoes.py` (número de
+portas, por exemplo), alterar lá também — `gera_instrucoes_fluxo.py` falha se
+D1 e `decisoes.py` discordarem no número de entradas.
+
+### 12.3 Instruções de gerenciamento de fluxo (`scripts/gera_instrucoes_fluxo.py`)
+
+Princípio do Posto: o fluxo corre o mais desimpedido possível; a equipe
+orienta, não retém; retenção só onde o plano vigente prevê. O gerador lê as
+opções vigentes, `decisoes.py`, `dados.json`, `ring3.json`,
+`tensa_barreiras.json`, `varredura_top.json` e `fitas_piso.json`, e escreve um
+bloco por posto (portão, corredor, Ring 3 por zona, portas, checkpoint se
+existir, salão e filas de mesa, saídas, acessibilidade, seguranças e polícia),
+a tabela de equipe por posto com os gatilhos de escalada, e um rodapé com o
+que mudaria em cada alternativa. O bloco da mesa receptora fica "a definir"
+até o item 5 do PENDENCIAS fechar. Saídas: `docs/instrucoes_fluxo.md`,
+`saidas/instrucoes_fluxo.html` (copiado para o dashboard). É o material-base
+do webinar dos mesários (PENDENCIAS item 4).
+
+### 12.4 O que entrou no dashboard nesta passagem
+
+Merges reais (sem squash) de `claude/direct-mrv-floor-guidance-k5urxi` (PR #17,
+fitas no piso, já continha o dashboard), das pontas de
+`claude/ring-3-horizontal-queue-pe4x3f` (corredor em L, CCB só na ponta,
+`contexto_ring3_2026.md`) e de `claude/hall-2-tensa-barriers-o30ahm` (hipóteses
+A/B/B2/C, `registro_barreiras_hall2.md`). O gerador do dashboard passou a ler
+os cenários novos de `ring3.json` (os com baias saíram) e os sete traçados de
+`tensa_barreiras.json`, ganhou o bloco das fitas na seção 7 e a seção 8 de
+decisões; a linha do tempo vai até 13/09. `orcamento_final.md` (tabela
+preenchível de recursos e custos em aberto, cada custo ligado à decisão de que
+depende) e `PENDENCIAS` (itens 2, 5, 6 e 7 anotados) ficam fora da página, a
+pedido.
+

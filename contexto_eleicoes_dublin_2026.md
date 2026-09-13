@@ -1,6 +1,8 @@
 # Contexto Consolidado — Eleições Presidenciais 2026 (Posto de Dublin)
 
 > Documento gerado a partir de busca em conversas anteriores (Claude) sobre a organização logística, orçamentária e física das eleições presidenciais brasileiras de 2026 na jurisdição de Dublin. Destinado a servir de base para desenho de fluxo em outra conversa. Datas, valores e números abaixo refletem o que foi efetivamente discutido nas conversas — ainda sujeitos a validação final com o Cartório Eleitoral/TSE.
+>
+> **Nota de 06/09/2026:** documento histórico, mantido como registro da negociação. O que ele diz sobre comparecimento esperado ("~12.000", "74% Dublin / ~50% interior") foi **superado** pela decisão do Posto de adotar a base B, taxa de 2022 por domicílio de origem (`scripts/comparecimento.py`, 11.499 esperados); a configuração final é de 28 urnas, e as decisões vigentes estão em `scripts/decisoes.py` e em `DOCUMENTACAO_PROJETO.md`.
 
 ---
 

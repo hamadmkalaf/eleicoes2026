@@ -1505,6 +1505,7 @@ function simularDia(mont, seed){
     urnaLivre: true, esperaUrna: null, votos: 0, just: 0, fecha: 0, ocioso: 0, fome: 0, urnaBusy: 0,
     idBusy: 0, filaMax: 0, estouro: 0, retidosMax: 0};
   let dentroTotal = 0, dentroMax = 0, restantes = eleitores.length;
+  let perdidos = 0;                                // sem checkpoint: quantos erraram o caminho
   const ring3Max = new Array(nz).fill(0), bufferMax = new Array(nz).fill(0), cpFilaMax = new Array(nz).fill(0);
   let ring3TotalMax = 0, ring3Estouro = 0, bufferEstouro = new Array(nz).fill(0);
   let triFilaMax = 0, triBusy = 0, amostrasAberto = 0, amostrasTri = 0;
@@ -1548,8 +1549,14 @@ function simularDia(mont, seed){
         buffer[z]++;
         heap.push(t + cen.checkpoint.dist / VEL, EV.CP_CHEGADA, v);
       } else {
+        // Sem checkpoint: 10 s para ler a sinalização na porta e a caminhada
+        // direta. Se `sinalizacao.erro` > 0, essa fração dos eleitores se
+        // perde e caminha `sinalizacao.desvio` m a mais antes de achar a mesa.
+        const sin = cen.sinalizacao || {};
+        const desvio = (sin.erro > 0 && rnd() < sin.erro) ? (sin.desvio || 0) : 0;
+        if (desvio) perdidos++;
         est[v.mesa].transito++;
-        heap.push(t + 10 + porSlot[v.mesa].distCp / VEL, EV.MESA_CHEGADA, v);
+        heap.push(t + 10 + (porSlot[v.mesa].distCp + desvio) / VEL, EV.MESA_CHEGADA, v);
       }
     }
   }
@@ -1711,7 +1718,7 @@ function simularDia(mont, seed){
     fomeTotalMin: soma(porMesa.map(m => m.fome)) / 60,
     fomePesadasMin: soma(porMesa.filter(m => m.classe === "pesada").map(m => m.fome)) / 60,
     estouroFilas: soma(porMesa.map(m => m.estouro)),
-    saidasPorta, liberadosPorta,
+    saidasPorta, liberadosPorta, perdidos,
   };
 }
 
@@ -1746,6 +1753,7 @@ function agregar(mont, dias){
     dentroMax: agg("dentroMax"), ring3TotalMax: agg("ring3TotalMax"), ring3EstouroMin: agg("ring3EstouroMin"),
     fomePesadasMin: agg("fomePesadasMin"), fomeTotalMin: agg("fomeTotalMin"), estouroFilas: agg("estouroFilas"),
     triOcupacao: agg("triOcupacao"), votos: agg("votos"), eleitores: agg("eleitores"),
+    perdidos: agg("perdidos"),
   };
   // por mesa: mediana entre dias
   const porMesa = mont.mesas.map((m, i) => {

@@ -184,3 +184,16 @@ Dublin e passam a votar lá.
 O que a integração de 06/09 resolveu (comparecimento, numeração, portas,
 números do Ring 3 na sinalização) e o que ficou (curvas de chegada, arranjo da
 mesa receptora, cor ou letra) está no §9 da documentação.
+
+## Fitas no piso em vez do checkpoint
+
+`docs/alternativa_fitas_no_piso.md` examina a sugestão de tirar o checkpoint e
+guiar o eleitor da porta à mesa por fitas no piso. `simulador/fitas.js` roda o
+motor oficial do simulador com e sem checkpoint sobre o arranjo Três polos e
+mede a geometria das fitas; `scripts/fitas_piso.py` desenha as fitas sobre a
+planta e monta `saidas/fitas_piso.html`.
+
+```bash
+node simulador/fitas.js 8          # saidas/fitas_piso.json
+python3 scripts/fitas_piso.py      # saidas/fitas_piso.{md,html} e fitas_piso_*.svg
+```

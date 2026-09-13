@@ -612,13 +612,24 @@ def escada_de_raias() -> list:
 
 
 def confere_original(v: Desenho) -> dict:
-    """`v` aqui e o desenho_plano_vigente(), nao um dos quatro."""
+    """`v` aqui e o desenho_plano_vigente(), nao um dos cenarios.
+
+    Atencao: so as linhas de CAPACIDADE afericam alguma coisa. A barreira
+    calculada usa a regra atual — que nao conta perimetro, nem parede de
+    corredor, nem raias do apron — e portanto nao e comparavel com os 596,3 m
+    publicados, que foram medidos com a regra antiga. A linha fica no JSON
+    como registro, marcada como nao comparavel.
+    """
     return {
         "raias_calculado": round(v.cap_raias, 1), "raias_publicado": 855,
         "baias_calculado": round(v.cap_baias, 1), "baias_publicado": 547,
         "total_calculado": round(v.capacidade), "total_publicado": 1402,
         "barreira_calculada_m": round(v.barreira_total, 1),
         "barreira_publicada_m": 596.3,
+        "barreira_comparavel": False,
+        "barreira_nota": ("regras diferentes: o publicado conta perímetro, "
+                          "parede de corredor e raias do apron, que saíram da "
+                          "conta atual por decisão do Posto"),
         "separadores_calculado": v.separadores, "separadores_publicado": 300,
     }
 

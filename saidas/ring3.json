@@ -38,6 +38,8 @@
     "total_publicado": 1402,
     "barreira_calculada_m": 380.8,
     "barreira_publicada_m": 596.3,
+    "barreira_comparavel": false,
+    "barreira_nota": "regras diferentes: o publicado conta perímetro, parede de corredor e raias do apron, que saíram da conta atual por decisão do Posto",
     "separadores_calculado": 191,
     "separadores_publicado": 300
   },

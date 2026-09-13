@@ -147,12 +147,61 @@ Discussão paralela (contexto genérico de evento, útil como benchmark) sobre d
 
 ---
 
-## 8. Pontos em aberto / a validar antes do desenho de fluxo final
+## 8. Decisões tomadas (13/09/2026) e pontos que permanecem em aberto
 
-1. **Confirmar dimensões reais do RDS Ballsbridge Hall 2** vs. as 50×44,5 m usadas nas simulações de layout — podem não ser o mesmo espaço.
-2. **Confirmar com o TSE/Cartório Eleitoral** a viabilidade procedimental de desagregar totalmente as seções de Dublin (Cenário 4/5) — decisão pendente de negociação orçamentária e de espaço/mesários.
-3. **Resolver a inconsistência das 7 seções não contabilizadas** (Cork, Galway, Donegal, Limerick) na proposta oficial do TSE antes de fechar o número final de mesas/urnas.
-4. **Definir método de identificação do eleitor** (biométrico/eletrônico vs. caderno físico) — decide diretamente entre Cenário 4 (32–35 urnas) e Cenário 5 (38+ urnas).
-5. **Integrar o modelo de fila de 3 entradas / 28 cabines** (seção 4) com o número final de mesas decidido na negociação com o TSE (seção 2) e com o layout físico real do RDS (seção 3) — atualmente são análises paralelas, não unificadas.
-6. Validar se a pré-triagem na entrada será mediada por equipe humana (risco de gargalo) ou por sinalização/autoatendimento.
-7. Confirmar dimensionamento final de segurança específico para o RDS (a análise da seção 5 é de um evento genérico de referência, não deste evento).
+### 8.1 Decisões fechadas
+1. **Dimensões do RDS Hall 2 confirmadas:** 50,00 m × 44,50 m são as dimensões reais. As simulações de layout da seção 3 valem para o espaço real.
+2. **Desagregação não é mais viável.** Fica a configuração oficial do TSE: **28 urnas, 51 seções, 16.794 eleitores** (base do CSV de 13/08/2026 — ver README). Os Cenários 4/5 da seção 2.3 ficam como registro histórico; não serão negociados.
+3. **Identificação do eleitor será por caderno físico.** É o único método disponível no exterior. Não há biometria nem identificação eletrônica.
+4. **Segurança: apenas 4 seguranças contratados** (orçamento). Mesários voluntários organizarão o fluxo de eleitores. Haverá presença policial do lado de fora do local de votação.
+
+### 8.2 Recálculo da carga por urna com a base atual (28 urnas, caderno)
+Premissas idênticas às da seção 2.3: janela de 9h, 1 MRV por urna, comparecimento de 74% para residentes em Dublin e 50% para o interior. Comparecimento total esperado: **11.418**.
+
+| Urna | Aptos | Comparecimento esperado | Tempo máximo por eleitor para fechar às 17h |
+|---|---|---|---|
+| 3313 | 797 | 590 | 55 s |
+| 3322 | 794 | 588 | 55 s |
+| 3315 | 792 | 586 | 55 s |
+| 3142 | 793 | 492 | 66 s |
+| 3161 | 791 | 491 | 66 s |
+| 3245 | 781 | 486 | 67 s |
+| 3302 | 771 | 481 | 67 s |
+| 3305 | 767 | 479 | 68 s |
+| 3306 | 766 | 478 | 68 s |
+| 3108 | 756 | 474 | 68 s |
+| 3311 | 630 | 466 | 69 s |
+| 3179 | 676 | 434 | 75 s |
+| 3309 | 615 | 403 | 80 s |
+| 3229 | 606 | 399 | 81 s |
+| 511 | 582 | 387 | 84 s |
+| 3216 | 571 | 381 | 85 s |
+| 517 | 513 | 352 | 92 s |
+| 513 | 502 | 347 | 93 s |
+| 512 | 476 | 334 | 97 s |
+| 1160 | 473 | 332 | 97 s |
+| 1352 | 462 | 327 | 99 s |
+| 3054 | 454 | 323 | 100 s |
+| 3078 | 429 | 310 | 104 s |
+| 3688 / 3862 / 3832 | 400 | 296 | 109 s |
+| 3308 / 3442 | 399 / 398 | 295 | 110 s |
+
+Urnas que estouram a janela de 9h, por tempo médio por eleitor:
+
+| Tempo por eleitor | Urnas que estouram (de 28) |
+|---|---|
+| 30 s | 0 |
+| 45 s | 0 |
+| 55 s | 1 |
+| 60 s | 3 |
+| 75 s | 12 |
+| 90 s | 16 |
+
+**Leitura:** como não há mais como reduzir o pico de eleitores por urna (decisão 2) e o caderno é a única identificação (decisão 3), a única variável restante é o **tempo por eleitor na mesa**. O projeto passa a ter como meta operacional **≤ 55 s por eleitor nas 3 urnas Dublin+Dublin e ≤ 66 s nas 7 seguintes**. Com caderno, isso só é atingível se a identificação for **paralelizada** com o ato de votar (o mesário localiza o próximo eleitor no caderno enquanto o anterior está na cabine), de modo que o tempo de ciclo seja o máximo entre identificação e voto, e não a soma. É exatamente a pendência 5 do arquivo PENDENCIAS (organização dos cadernos, quem identifica).
+
+### 8.3 Pontos que permanecem em aberto
+1. Fluxo interno da mesa com caderno: divisão do caderno (por letra ou por seção agregada), quem identifica, e se a assinatura do eleitor ocorre antes ou em paralelo à liberação da urna.
+2. Integrar o modelo de fila de 3 entradas (seção 4, desenhado para 28 cabines) com o layout físico real de 28 urnas em 50 × 44,5 m. Com 28 urnas, o vão entre seções fica entre 2,3 e 3,2 m (seção 3), o que é adequado.
+3. Papel dos 4 seguranças versus voluntários: os seguranças devem ficar nos pontos de controle de acesso; a organização de fila interna fica com voluntários identificados (colete). Verificar se a apólice de seguro exigida pelo RDS (item f do orçamento) impõe efetivo mínimo de segurança.
+4. Revisar o item a) do orçamento (EUR 6.774,84 para 20 seguranças) para 4 seguranças e recompor a tabela final (pendência 2).
+5. Confirmar com a polícia irlandesa o formato da presença externa (viatura fixa, ronda, horário) e registrá-lo na nota verbal.

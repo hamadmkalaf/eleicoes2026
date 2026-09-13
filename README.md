@@ -20,7 +20,9 @@ fita, EUR 1.745 ex-VAT com entrega. Cabe nas 100 unidades já contratadas no ite
 (d) do orçamento, com folga de fita e folga nenhuma de poste.
 
 Registro completo, com as alternativas descartadas e os riscos que a escolha
-aceita: [`saidas/tensa_barreiras.md`](saidas/tensa_barreiras.md).
+aceita: [`saidas/tensa_barreiras.md`](saidas/tensa_barreiras.md). O caminho até
+ela, com as correções feitas e as premissas declaradas, está em
+[`registro_barreiras_hall2.md`](registro_barreiras_hall2.md).
 
 ---
 

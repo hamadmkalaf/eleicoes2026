@@ -387,7 +387,8 @@ def custo(postes):
 
 def resumo(c):
     p = c.total("postes")
-    return dict(nome=c.nome, desc=c.desc, corridas=c.total("corridas"),
+    return dict(nome=c.nome, desc=c.desc, familia=c.familia,
+                corridas=c.total("corridas"),
                 fitas=c.total("fitas"), postes=p,
                 postes_reserva=math.ceil(p * (1 + RESERVA)),
                 metros=c.total("metros"), itens=c.itens,

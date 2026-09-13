@@ -1,0 +1,1346 @@
+{
+ "fonte": {
+  "cenario": "Hamad_3polos",
+  "criadoEm": "2026-09-05T18:45:18.238Z",
+  "base": "A",
+  "salao": {
+   "largura": 50.3,
+   "altura": 44.4,
+   "recorte": [
+    0.0,
+    0.0,
+    7.8,
+    7.0
+   ],
+   "contorno": [
+    [
+     7.8,
+     0.0
+    ],
+    [
+     50.3,
+     0.0
+    ],
+    [
+     50.3,
+     44.4
+    ],
+    [
+     0.0,
+     44.4
+    ],
+    [
+     0.0,
+     7.0
+    ],
+    [
+     7.8,
+     7.0
+    ]
+   ]
+  }
+ },
+ "premissas": {
+  "fita_m": 2.0,
+  "largura_fila": 0.9,
+  "densidade_p_por_m": 2.0,
+  "profundidade_modulo": 4.1,
+  "profundidade_checkpoint": 20.0,
+  "comprimentos": {
+   "alta": 10.0,
+   "media": 5.0,
+   "baixa": 3.0
+  },
+  "reserva": 0.1,
+  "polos": [
+   22,
+   23,
+   24
+  ],
+  "adotado": "1e",
+  "regra": "uma linha no meio de cada par; uma linha por mesa sem par"
+ },
+ "pareamento": {
+  "pares": [
+   {
+    "a": 1,
+    "b": 2,
+    "corredor": 3.0
+   },
+   {
+    "a": 3,
+    "b": 4,
+    "corredor": 3.0
+   },
+   {
+    "a": 7,
+    "b": 8,
+    "corredor": 2.94
+   },
+   {
+    "a": 10,
+    "b": 11,
+    "corredor": 2.5
+   },
+   {
+    "a": 13,
+    "b": 14,
+    "corredor": 1.95
+   },
+   {
+    "a": 17,
+    "b": 18,
+    "corredor": 3.0
+   },
+   {
+    "a": 19,
+    "b": 20,
+    "corredor": 3.0
+   },
+   {
+    "a": 25,
+    "b": 26,
+    "corredor": 3.1
+   },
+   {
+    "a": 27,
+    "b": 28,
+    "corredor": 2.5
+   }
+  ],
+  "sem_par": [
+   5,
+   6,
+   9,
+   12,
+   15,
+   16,
+   21
+  ],
+  "polos": [
+   22,
+   23,
+   24
+  ]
+ },
+ "mesas": [
+  {
+   "n": 1,
+   "mrv": 511,
+   "classe": "baixa",
+   "esperado": 375,
+   "aptos": 582,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 13.8,
+   "y": 44.2,
+   "lado": 1,
+   "fila": 3.0
+  },
+  {
+   "n": 2,
+   "mrv": 512,
+   "classe": "baixa",
+   "esperado": 355,
+   "aptos": 476,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 270,
+   "x": 17.7,
+   "y": 44.2,
+   "lado": -1,
+   "fila": 3.0
+  },
+  {
+   "n": 3,
+   "mrv": 513,
+   "classe": "baixa",
+   "esperado": 351,
+   "aptos": 502,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 270,
+   "x": 20.1,
+   "y": 44.3,
+   "lado": 1,
+   "fila": 3.0
+  },
+  {
+   "n": 4,
+   "mrv": 517,
+   "classe": "baixa",
+   "esperado": 348,
+   "aptos": 513,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 24,
+   "y": 44.3,
+   "lado": -1,
+   "fila": 3.0
+  },
+  {
+   "n": 5,
+   "mrv": 1160,
+   "classe": "baixa",
+   "esperado": 328,
+   "aptos": 473,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 270,
+   "x": 26.4,
+   "y": 44.3,
+   "lado": 1,
+   "fila": 3.0
+  },
+  {
+   "n": 6,
+   "mrv": 1352,
+   "classe": "baixa",
+   "esperado": 328,
+   "aptos": 462,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 270,
+   "x": 39.8,
+   "y": 44.15,
+   "lado": -1,
+   "fila": 3.0
+  },
+  {
+   "n": 7,
+   "mrv": 3054,
+   "classe": "baixa",
+   "esperado": 325,
+   "aptos": 454,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 32.56,
+   "y": 44.4,
+   "lado": 1,
+   "fila": 3.0
+  },
+  {
+   "n": 8,
+   "mrv": 3078,
+   "classe": "baixa",
+   "esperado": 311,
+   "aptos": 429,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 36.4,
+   "y": 44.2,
+   "lado": -1,
+   "fila": 3.0
+  },
+  {
+   "n": 9,
+   "mrv": 3108,
+   "classe": "media",
+   "esperado": 467,
+   "aptos": 756,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 0,
+   "x": 0.9,
+   "y": 14.85,
+   "lado": 1,
+   "fila": 5.0
+  },
+  {
+   "n": 10,
+   "mrv": 3142,
+   "classe": "media",
+   "esperado": 466,
+   "aptos": 793,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 0,
+   "x": 0.9,
+   "y": 12.25,
+   "lado": -1,
+   "fila": 5.0
+  },
+  {
+   "n": 11,
+   "mrv": 3161,
+   "classe": "media",
+   "esperado": 504,
+   "aptos": 791,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 0,
+   "x": 1.05,
+   "y": 8.85,
+   "lado": 1,
+   "fila": 5.0
+  },
+  {
+   "n": 12,
+   "mrv": 3179,
+   "classe": "baixa",
+   "esperado": 423,
+   "aptos": 676,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 180,
+   "x": 47.3,
+   "y": 34.7,
+   "lado": -1,
+   "fila": 3.0
+  },
+  {
+   "n": 13,
+   "mrv": 3216,
+   "classe": "baixa",
+   "esperado": 407,
+   "aptos": 571,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 180,
+   "x": 47.3,
+   "y": 31.8,
+   "lado": 1,
+   "fila": 3.0
+  },
+  {
+   "n": 14,
+   "mrv": 3229,
+   "classe": "baixa",
+   "esperado": 405,
+   "aptos": 606,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 180,
+   "x": 47.2,
+   "y": 28.95,
+   "lado": -1,
+   "fila": 3.0
+  },
+  {
+   "n": 15,
+   "mrv": 3245,
+   "classe": "media",
+   "esperado": 498,
+   "aptos": 781,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 180,
+   "x": 47.2,
+   "y": 26.65,
+   "lado": 1,
+   "fila": 5.0
+  },
+  {
+   "n": 16,
+   "mrv": 3302,
+   "classe": "media",
+   "esperado": 518,
+   "aptos": 771,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 180,
+   "x": 47.3,
+   "y": 19.7,
+   "lado": -1,
+   "fila": 5.0
+  },
+  {
+   "n": 17,
+   "mrv": 3305,
+   "classe": "media",
+   "esperado": 472,
+   "aptos": 767,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 180,
+   "x": 47.3,
+   "y": 17.3,
+   "lado": 1,
+   "fila": 5.0
+  },
+  {
+   "n": 18,
+   "mrv": 3306,
+   "classe": "media",
+   "esperado": 515,
+   "aptos": 766,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 180,
+   "x": 47.3,
+   "y": 13.4,
+   "lado": -1,
+   "fila": 5.0
+  },
+  {
+   "n": 19,
+   "mrv": 3308,
+   "classe": "baixa",
+   "esperado": 295,
+   "aptos": 399,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 180,
+   "x": 47.3,
+   "y": 11,
+   "lado": 1,
+   "fila": 3.0
+  },
+  {
+   "n": 20,
+   "mrv": 3309,
+   "classe": "baixa",
+   "esperado": 395,
+   "aptos": 615,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 180,
+   "x": 47.3,
+   "y": 7.1,
+   "lado": -1,
+   "fila": 3.0
+  },
+  {
+   "n": 21,
+   "mrv": 3311,
+   "classe": "media",
+   "esperado": 466,
+   "aptos": 630,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 0,
+   "x": 1,
+   "y": 18.3,
+   "lado": 1,
+   "fila": 5.0
+  },
+  {
+   "n": 22,
+   "mrv": 3313,
+   "classe": "alta",
+   "esperado": 590,
+   "aptos": 797,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 270,
+   "x": 29.75,
+   "y": 44.35,
+   "lado": -1,
+   "fila": 10.0
+  },
+  {
+   "n": 23,
+   "mrv": 3315,
+   "classe": "alta",
+   "esperado": 586,
+   "aptos": 792,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 180,
+   "x": 47.1,
+   "y": 23.85,
+   "lado": 1,
+   "fila": 10.0
+  },
+  {
+   "n": 24,
+   "mrv": 3322,
+   "classe": "alta",
+   "esperado": 588,
+   "aptos": 794,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 0,
+   "x": 0.9,
+   "y": 23.95,
+   "lado": -1,
+   "fila": 10.0
+  },
+  {
+   "n": 25,
+   "mrv": 3442,
+   "classe": "baixa",
+   "esperado": 295,
+   "aptos": 398,
+   "entrada": "B",
+   "porta": "S5",
+   "rot": 0,
+   "x": 0.9,
+   "y": 27.3,
+   "lado": 1,
+   "fila": 3.0
+  },
+  {
+   "n": 26,
+   "mrv": 3688,
+   "classe": "baixa",
+   "esperado": 296,
+   "aptos": 400,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 0,
+   "x": 0.7,
+   "y": 31.3,
+   "lado": -1,
+   "fila": 3.0
+  },
+  {
+   "n": 27,
+   "mrv": 3832,
+   "classe": "baixa",
+   "esperado": 296,
+   "aptos": 400,
+   "entrada": "C",
+   "porta": "S6",
+   "rot": 0,
+   "x": 0.4,
+   "y": 33.8,
+   "lado": 1,
+   "fila": 3.0
+  },
+  {
+   "n": 28,
+   "mrv": 3862,
+   "classe": "baixa",
+   "esperado": 296,
+   "aptos": 400,
+   "entrada": "A",
+   "porta": "S4",
+   "rot": 0,
+   "x": 0.3,
+   "y": 37.2,
+   "lado": -1,
+   "fila": 3.0
+  }
+ ],
+ "isotempo": [
+  {
+   "n": 1,
+   "mrv": 511,
+   "classe": "baixa",
+   "esperado": 375,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 2,
+   "mrv": 512,
+   "classe": "baixa",
+   "esperado": 355,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 3,
+   "mrv": 513,
+   "classe": "baixa",
+   "esperado": 351,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 4,
+   "mrv": 517,
+   "classe": "baixa",
+   "esperado": 348,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 5,
+   "mrv": 1160,
+   "classe": "baixa",
+   "esperado": 328,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 6,
+   "mrv": 1352,
+   "classe": "baixa",
+   "esperado": 328,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 7,
+   "mrv": 3054,
+   "classe": "baixa",
+   "esperado": 325,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 8,
+   "mrv": 3078,
+   "classe": "baixa",
+   "esperado": 311,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 9,
+   "mrv": 3108,
+   "classe": "media",
+   "esperado": 467,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 10,
+   "mrv": 3142,
+   "classe": "media",
+   "esperado": 466,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 11,
+   "mrv": 3161,
+   "classe": "media",
+   "esperado": 504,
+   "atual": 5.0,
+   "iso": 7.0
+  },
+  {
+   "n": 12,
+   "mrv": 3179,
+   "classe": "baixa",
+   "esperado": 423,
+   "atual": 3.0,
+   "iso": 4.5
+  },
+  {
+   "n": 13,
+   "mrv": 3216,
+   "classe": "baixa",
+   "esperado": 407,
+   "atual": 3.0,
+   "iso": 4.0
+  },
+  {
+   "n": 14,
+   "mrv": 3229,
+   "classe": "baixa",
+   "esperado": 405,
+   "atual": 3.0,
+   "iso": 4.0
+  },
+  {
+   "n": 15,
+   "mrv": 3245,
+   "classe": "media",
+   "esperado": 498,
+   "atual": 5.0,
+   "iso": 7.0
+  },
+  {
+   "n": 16,
+   "mrv": 3302,
+   "classe": "media",
+   "esperado": 518,
+   "atual": 5.0,
+   "iso": 7.5
+  },
+  {
+   "n": 17,
+   "mrv": 3305,
+   "classe": "media",
+   "esperado": 472,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 18,
+   "mrv": 3306,
+   "classe": "media",
+   "esperado": 515,
+   "atual": 5.0,
+   "iso": 7.5
+  },
+  {
+   "n": 19,
+   "mrv": 3308,
+   "classe": "baixa",
+   "esperado": 295,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 20,
+   "mrv": 3309,
+   "classe": "baixa",
+   "esperado": 395,
+   "atual": 3.0,
+   "iso": 3.5
+  },
+  {
+   "n": 21,
+   "mrv": 3311,
+   "classe": "media",
+   "esperado": 466,
+   "atual": 5.0,
+   "iso": 6.0
+  },
+  {
+   "n": 22,
+   "mrv": 3313,
+   "classe": "alta",
+   "esperado": 590,
+   "atual": 10.0,
+   "iso": 10.0
+  },
+  {
+   "n": 23,
+   "mrv": 3315,
+   "classe": "alta",
+   "esperado": 586,
+   "atual": 10.0,
+   "iso": 10.0
+  },
+  {
+   "n": 24,
+   "mrv": 3322,
+   "classe": "alta",
+   "esperado": 588,
+   "atual": 10.0,
+   "iso": 10.0
+  },
+  {
+   "n": 25,
+   "mrv": 3442,
+   "classe": "baixa",
+   "esperado": 295,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 26,
+   "mrv": 3688,
+   "classe": "baixa",
+   "esperado": 296,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 27,
+   "mrv": 3832,
+   "classe": "baixa",
+   "esperado": 296,
+   "atual": 3.0,
+   "iso": 3.0
+  },
+  {
+   "n": 28,
+   "mrv": 3862,
+   "classe": "baixa",
+   "esperado": 296,
+   "atual": 3.0,
+   "iso": 3.0
+  }
+ ],
+ "folego": [
+  {
+   "n": 1,
+   "mrv": 511,
+   "classe": "baixa",
+   "esperado": 375,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.25,
+   "liquido_min": 0.25,
+   "minutos": 24
+  },
+  {
+   "n": 2,
+   "mrv": 512,
+   "classe": "baixa",
+   "esperado": 355,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.18,
+   "liquido_min": 0.18,
+   "minutos": 33
+  },
+  {
+   "n": 3,
+   "mrv": 513,
+   "classe": "baixa",
+   "esperado": 351,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.17,
+   "liquido_min": 0.17,
+   "minutos": 35
+  },
+  {
+   "n": 4,
+   "mrv": 517,
+   "classe": "baixa",
+   "esperado": 348,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.16,
+   "liquido_min": 0.16,
+   "minutos": 38
+  },
+  {
+   "n": 5,
+   "mrv": 1160,
+   "classe": "baixa",
+   "esperado": 328,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.09,
+   "liquido_min": 0.09,
+   "minutos": 64
+  },
+  {
+   "n": 6,
+   "mrv": 1352,
+   "classe": "baixa",
+   "esperado": 328,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.09,
+   "liquido_min": 0.09,
+   "minutos": 64
+  },
+  {
+   "n": 7,
+   "mrv": 3054,
+   "classe": "baixa",
+   "esperado": 325,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.08,
+   "liquido_min": 0.08,
+   "minutos": 72
+  },
+  {
+   "n": 8,
+   "mrv": 3078,
+   "classe": "baixa",
+   "esperado": 311,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.04,
+   "liquido_min": 0.04,
+   "minutos": 164
+  },
+  {
+   "n": 9,
+   "mrv": 3108,
+   "classe": "media",
+   "esperado": 467,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.56,
+   "liquido_min": 0.56,
+   "minutos": 18
+  },
+  {
+   "n": 10,
+   "mrv": 3142,
+   "classe": "media",
+   "esperado": 466,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.55,
+   "liquido_min": 0.55,
+   "minutos": 18
+  },
+  {
+   "n": 11,
+   "mrv": 3161,
+   "classe": "media",
+   "esperado": 504,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.68,
+   "liquido_min": 0.68,
+   "minutos": 15
+  },
+  {
+   "n": 12,
+   "mrv": 3179,
+   "classe": "baixa",
+   "esperado": 423,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.41,
+   "liquido_min": 0.41,
+   "minutos": 15
+  },
+  {
+   "n": 13,
+   "mrv": 3216,
+   "classe": "baixa",
+   "esperado": 407,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.36,
+   "liquido_min": 0.36,
+   "minutos": 17
+  },
+  {
+   "n": 14,
+   "mrv": 3229,
+   "classe": "baixa",
+   "esperado": 405,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.35,
+   "liquido_min": 0.35,
+   "minutos": 17
+  },
+  {
+   "n": 15,
+   "mrv": 3245,
+   "classe": "media",
+   "esperado": 498,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.66,
+   "liquido_min": 0.66,
+   "minutos": 15
+  },
+  {
+   "n": 16,
+   "mrv": 3302,
+   "classe": "media",
+   "esperado": 518,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.73,
+   "liquido_min": 0.73,
+   "minutos": 14
+  },
+  {
+   "n": 17,
+   "mrv": 3305,
+   "classe": "media",
+   "esperado": 472,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.57,
+   "liquido_min": 0.57,
+   "minutos": 17
+  },
+  {
+   "n": 18,
+   "mrv": 3306,
+   "classe": "media",
+   "esperado": 515,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.72,
+   "liquido_min": 0.72,
+   "minutos": 14
+  },
+  {
+   "n": 19,
+   "mrv": 3308,
+   "classe": "baixa",
+   "esperado": 295,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.98,
+   "liquido_min": -0.02,
+   "minutos": null
+  },
+  {
+   "n": 20,
+   "mrv": 3309,
+   "classe": "baixa",
+   "esperado": 395,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 1.32,
+   "liquido_min": 0.32,
+   "minutos": 19
+  },
+  {
+   "n": 21,
+   "mrv": 3311,
+   "classe": "media",
+   "esperado": 466,
+   "fila": 5.0,
+   "cap": 10,
+   "chega_min": 1.55,
+   "liquido_min": 0.55,
+   "minutos": 18
+  },
+  {
+   "n": 22,
+   "mrv": 3313,
+   "classe": "alta",
+   "esperado": 590,
+   "fila": 10.0,
+   "cap": 20,
+   "chega_min": 1.97,
+   "liquido_min": 0.97,
+   "minutos": 21
+  },
+  {
+   "n": 23,
+   "mrv": 3315,
+   "classe": "alta",
+   "esperado": 586,
+   "fila": 10.0,
+   "cap": 20,
+   "chega_min": 1.95,
+   "liquido_min": 0.95,
+   "minutos": 21
+  },
+  {
+   "n": 24,
+   "mrv": 3322,
+   "classe": "alta",
+   "esperado": 588,
+   "fila": 10.0,
+   "cap": 20,
+   "chega_min": 1.96,
+   "liquido_min": 0.96,
+   "minutos": 21
+  },
+  {
+   "n": 25,
+   "mrv": 3442,
+   "classe": "baixa",
+   "esperado": 295,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.98,
+   "liquido_min": -0.02,
+   "minutos": null
+  },
+  {
+   "n": 26,
+   "mrv": 3688,
+   "classe": "baixa",
+   "esperado": 296,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.99,
+   "liquido_min": -0.01,
+   "minutos": null
+  },
+  {
+   "n": 27,
+   "mrv": 3832,
+   "classe": "baixa",
+   "esperado": 296,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.99,
+   "liquido_min": -0.01,
+   "minutos": null
+  },
+  {
+   "n": 28,
+   "mrv": 3862,
+   "classe": "baixa",
+   "esperado": 296,
+   "fila": 3.0,
+   "cap": 6,
+   "chega_min": 0.99,
+   "liquido_min": -0.01,
+   "minutos": null
+  }
+ ],
+ "comparecimento_total": 11499,
+ "adotado": "1e",
+ "cenarios": [
+  {
+   "adotado": true,
+   "nome": "1e",
+   "desc": "ADOTADO. Uma linha no meio de cada par, uma linha por mesa sem par, e só as duas divisórias que separam A de B e B de C. O limite externo dos canais fica com sinalização e equipe.",
+   "corridas": 21,
+   "fitas": 73,
+   "postes": 100,
+   "postes_reserva": 111,
+   "metros": 146.0,
+   "itens": [
+    {
+     "rotulo": "divisórias entre os canais A|B e B|C",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,0 m (2: 10–11, 17–18)",
+     "corridas": 2,
+     "L": 5.0,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "mesa sem par · 5,0 m (4: 9, 15, 16, 21)",
+     "corridas": 4,
+     "L": 5.0,
+     "fitas": 12,
+     "postes": 16,
+     "metros": 24.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,0 m (7: 1–2, 3–4, 7–8, 13–14, 19–20, 25–26, 27–28)",
+     "corridas": 7,
+     "L": 3.0,
+     "fitas": 14,
+     "postes": 21,
+     "metros": 28.0
+    },
+    {
+     "rotulo": "mesa sem par · 3,0 m (3: 5, 6, 12)",
+     "corridas": 3,
+     "L": 3.0,
+     "fitas": 6,
+     "postes": 9,
+     "metros": 12.0
+    }
+   ],
+   "custo": {
+    "postes": 111,
+    "lista_ex": 1745.0,
+    "lista_inc": 2146.35,
+    "ao_preco_orcado": 1446.33
+   }
+  },
+  {
+   "adotado": false,
+   "nome": "1",
+   "desc": "Descartado. O mesmo, mais as duas bordas externas dos canais de entrada.",
+   "corridas": 23,
+   "fitas": 93,
+   "postes": 122,
+   "postes_reserva": 135,
+   "metros": 186.0,
+   "itens": [
+    {
+     "rotulo": "divisórias entre os canais A|B e B|C",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bordas externas dos canais",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,0 m (2: 10–11, 17–18)",
+     "corridas": 2,
+     "L": 5.0,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "mesa sem par · 5,0 m (4: 9, 15, 16, 21)",
+     "corridas": 4,
+     "L": 5.0,
+     "fitas": 12,
+     "postes": 16,
+     "metros": 24.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,0 m (7: 1–2, 3–4, 7–8, 13–14, 19–20, 25–26, 27–28)",
+     "corridas": 7,
+     "L": 3.0,
+     "fitas": 14,
+     "postes": 21,
+     "metros": 28.0
+    },
+    {
+     "rotulo": "mesa sem par · 3,0 m (3: 5, 6, 12)",
+     "corridas": 3,
+     "L": 3.0,
+     "fitas": 6,
+     "postes": 9,
+     "metros": 12.0
+    }
+   ],
+   "custo": {
+    "postes": 135,
+    "lista_ex": 2105.0,
+    "lista_inc": 2589.15,
+    "ao_preco_orcado": 1759.05
+   }
+  },
+  {
+   "adotado": false,
+   "nome": "1i",
+   "desc": "Descartado. Mesma topologia, filas redimensionadas para que toda mesa aguente 20 minutos de pico.",
+   "corridas": 23,
+   "fitas": 97,
+   "postes": 126,
+   "postes_reserva": 139,
+   "metros": 194.0,
+   "itens": [
+    {
+     "rotulo": "divisórias entre os canais A|B e B|C",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bordas externas dos canais",
+     "corridas": 2,
+     "L": 20.0,
+     "fitas": 20,
+     "postes": 22,
+     "metros": 40.0
+    },
+    {
+     "rotulo": "bochechas de portão no checkpoint (2 por canal)",
+     "corridas": 0,
+     "L": 0.0,
+     "fitas": 0,
+     "postes": 6,
+     "metros": 0.0
+    },
+    {
+     "rotulo": "polo isolado · 10,0 m (3: 22, 23, 24)",
+     "corridas": 3,
+     "L": 10.0,
+     "fitas": 15,
+     "postes": 18,
+     "metros": 30.0
+    },
+    {
+     "rotulo": "mesa sem par · 7,5 m (1: 16)",
+     "corridas": 1,
+     "L": 7.5,
+     "fitas": 4,
+     "postes": 5,
+     "metros": 8.0
+    },
+    {
+     "rotulo": "linha do meio de par · 7,0 m (1: 10–11)",
+     "corridas": 1,
+     "L": 7.0,
+     "fitas": 4,
+     "postes": 5,
+     "metros": 8.0
+    },
+    {
+     "rotulo": "mesa sem par · 7,0 m (1: 15)",
+     "corridas": 1,
+     "L": 7.0,
+     "fitas": 4,
+     "postes": 5,
+     "metros": 8.0
+    },
+    {
+     "rotulo": "mesa sem par · 6,0 m (2: 9, 21)",
+     "corridas": 2,
+     "L": 6.0,
+     "fitas": 6,
+     "postes": 8,
+     "metros": 12.0
+    },
+    {
+     "rotulo": "linha do meio de par · 5,5 m (1: 17–18)",
+     "corridas": 1,
+     "L": 5.45,
+     "fitas": 3,
+     "postes": 4,
+     "metros": 6.0
+    },
+    {
+     "rotulo": "mesa sem par · 4,5 m (1: 12)",
+     "corridas": 1,
+     "L": 4.5,
+     "fitas": 3,
+     "postes": 4,
+     "metros": 6.0
+    },
+    {
+     "rotulo": "linha do meio de par · 4,0 m (1: 13–14)",
+     "corridas": 1,
+     "L": 4.0,
+     "fitas": 2,
+     "postes": 3,
+     "metros": 4.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,5 m (1: 19–20)",
+     "corridas": 1,
+     "L": 3.5,
+     "fitas": 2,
+     "postes": 3,
+     "metros": 4.0
+    },
+    {
+     "rotulo": "linha do meio de par · 3,0 m (5: 1–2, 3–4, 7–8, 25–26, 27–28)",
+     "corridas": 5,
+     "L": 3.0,
+     "fitas": 10,
+     "postes": 15,
+     "metros": 20.0
+    },
+    {
+     "rotulo": "mesa sem par · 3,0 m (2: 5, 6)",
+     "corridas": 2,
+     "L": 3.0,
+     "fitas": 4,
+     "postes": 6,
+     "metros": 8.0
+    }
+   ],
+   "custo": {
+    "postes": 139,
+    "lista_ex": 2165.0,
+    "lista_inc": 2662.95,
+    "ao_preco_orcado": 1811.17
+   }
+  }
+ ]
+}

@@ -71,6 +71,14 @@ VAO_SAIDA = 1.40       # abertura do portao de saida, na borda norte da zona
 PERDA_MEIA_VOLTA = 0.60   # fila perdida em cada meia-volta (analise de sensibilidade)
 
 SEPARADOR_M = 2.00     # 1 separador = 2 m de barreira
+
+# Regime de montagem da raia:
+#   "integral"  a divisoria inteira e CCB (separador de fila);
+#   "ponta"     a divisoria e fita grossa, do tipo de isolamento, ancorada
+#               por um unico CCB na ponta — no vao da meia-volta, que e por
+#               onde a pessoa passa e onde a pressao se concentra.
+REGIME_INTEGRAL, REGIME_PONTA = "integral", "ponta"
+CCB_DA_PONTA = SEPARADOR_M      # o CCB da ponta tem o comprimento de um separador
 SEPARADOR_EUR = 13.02  # EUR 1.303,00 / 100 unidades (item d do orcamento)
 ESTOQUE_SEPARADORES = 200
 
@@ -78,7 +86,14 @@ POR_METRO_RAIA = RAIA_UTIL * DENS_FILA     # pessoas por metro de raia
 
 # geometria
 LARG_BAIA = 6.40       # baia de flanco, cada lado
-LARG_CORREDOR = 3.00   # corredor de fundo, encostado no gradil sul do Ring
+LARG_CORREDOR = 3.00   # corredor de chegada, encostado no gradil do Ring
+
+# O corredor de chegada e um L: entra pelo canto nordeste do Ring, junto da
+# porta C, desce rente ao gradil leste e vira no fundo, ao sul. As zonas sao
+# alimentadas pelo trecho de fundo. Quem separa a zona C do trecho lateral e
+# a unica barreira de contencao que sobra fora das divisorias — o resto do
+# contorno e gradil permanente ou fita de delimitacao.
+CORREDOR_LATERAL = "leste"
 # Blocos do plano vigente, medidos do diagrama publicado — usados so na
 # reconstrucao que serve de aferição.
 BLOCOS_ORIG = {"A": (15.16, 19.36), "B": (22.09, 34.69), "C": (37.19, 41.39)}
@@ -188,6 +203,12 @@ class Zona:
     # A segunda parcela sao as divisorias internas, que separam raia de raia.
     @property
     def perimetro(self) -> float:
+        """Contorno da zona — hoje resolvido com fita, nao com barreira.
+
+        O gradil do Ring ja fecha o compound; entre zonas, a delimitacao e
+        fita. Este numero nao entra na conta de separadores: fica registrado
+        para quem for comprar a fita, e para medir o que se abre mao.
+        """
         lados = (self.larg - VAO_SAIDA)                       # norte, menos o portao
         if not self.oeste_no_gradil:
             lados += self.prof
@@ -204,7 +225,8 @@ class Zona:
 
     @property
     def barreira(self) -> float:
-        return self.perimetro + self.divisorias
+        """So as divisorias: o contorno da zona e fita, nao separador."""
+        return self.divisorias
 
     @property
     def meias_voltas(self) -> int:
@@ -232,6 +254,7 @@ class Desenho:
     baias: dict = field(default_factory=dict)      # entrada -> (rotulo, area)
     barreira_extra: dict = field(default_factory=dict)
     notas: list = field(default_factory=list)
+    regime: str = REGIME_INTEGRAL
 
     def zona(self, nome: str) -> Zona:
         return next(z for z in self.zonas if z.nome == nome)
@@ -271,11 +294,60 @@ class Desenho:
     # -- barreira ---------------------------------------------------------
     @property
     def barreira(self) -> dict:
-        b = {"perímetro das zonas": sum(z.perimetro for z in self.zonas),
-             "divisórias entre as raias": sum(z.divisorias for z in self.zonas)}
+        if self.regime == REGIME_PONTA:
+            b = {"CCB na ponta das divisórias": self.n_divisorias * CCB_DA_PONTA}
+        else:
+            b = {"divisórias entre as raias": sum(z.divisorias for z in self.zonas)}
         b.update(self.barreira_extra)
-        b["raias do apron até as portas"] = sum(2 * z.diagonal for z in self.zonas)
         return b
+
+    @property
+    def n_divisorias(self) -> int:
+        return sum(max(0, z.raias - 1) for z in self.zonas)
+
+    def apoios_da_fita(self, espacamento: float = 5.0) -> dict:
+        """Apoios intermediarios que a fita pediria, alem do CCB da ponta.
+
+        Fita nao se sustenta sozinha: entre dois apoios ela cede. Com um CCB
+        so na ponta, cada divisoria fica com um vao livre do comprimento
+        inteiro dela — este calculo diz quantos apoios seriam precisos para
+        manter o vao em `espacamento` metros, e quanto custaria se cada apoio
+        fosse um CCB.
+        """
+        if self.regime != REGIME_PONTA or not self.n_divisorias:
+            return {}
+        vao = self.fita_grossa / self.n_divisorias
+        por_divisoria = max(0, math.ceil(vao / espacamento) - 1)
+        total = por_divisoria * self.n_divisorias
+        return {"espacamento_m": espacamento, "vao_livre_m": round(vao, 1),
+                "apoios_por_divisoria": por_divisoria, "apoios": total,
+                "separadores_se_forem_ccb": self.separadores + total}
+
+    @property
+    def fita_grossa(self) -> float:
+        """Metros de fita nas divisorias, no regime de CCB so na ponta."""
+        if self.regime != REGIME_PONTA:
+            return 0.0
+        return max(0.0, sum(z.divisorias for z in self.zonas)
+                   - self.n_divisorias * CCB_DA_PONTA)
+
+    @property
+    def fora_da_conta(self) -> dict:
+        """O que seria barreira se as decisoes do Posto fossem outras.
+
+        Fica registrado para dar o tamanho do que se esta abrindo mao — e
+        para a conta voltar a fechar se alguma dessas decisoes mudar.
+        """
+        fora = {
+            "contorno das zonas (hoje, fita)":
+                sum(math.dist(a, b) for _, a, b in segmentos_da_fita(self)),
+            "parede do corredor de chegada":
+                (RING["x1"] - RING["x0"]) - len(self.zonas) * VAO_SAIDA,
+            "raias do apron até as portas": sum(2 * z.diagonal for z in self.zonas),
+        }
+        if self.regime == REGIME_PONTA:
+            fora["fita grossa nas divisórias"] = self.fita_grossa
+        return fora
 
     @property
     def barreira_total(self) -> float:
@@ -335,6 +407,13 @@ def _reparte_largura(disponivel: float, snap: bool, com_baias: bool) -> dict:
     return {e: n[e] * PASSO_RAIA for e in n}
 
 
+def x_util() -> tuple:
+    """Faixa de largura que sobra para as zonas, tirado o corredor lateral."""
+    if CORREDOR_LATERAL == "leste":
+        return RING["x0"], RING["x1"] - LARG_CORREDOR
+    return RING["x0"] + LARG_CORREDOR, RING["x1"]
+
+
 def _zonas(orientacao: str, com_baias: bool, prof: float,
            vao_min: float = 2.00) -> tuple:
     """Monta as tres zonas dentro do Ring, com ou sem as baias de flanco.
@@ -342,17 +421,16 @@ def _zonas(orientacao: str, com_baias: bool, prof: float,
     Devolve (zonas, vao) — o vao entre zonas absorve a sobra do arredondamento,
     e nunca fica menor que `vao_min`.
     """
-    borda = LARG_BAIA if com_baias else 0.0
-    disponivel = LARG_RING - 2 * borda - 2 * vao_min
-    larg = _reparte_largura(disponivel, orientacao == "vertical", com_baias)
-    vao = (LARG_RING - 2 * borda - sum(larg.values())) / 2
-    x = RING["x0"] + borda
+    xa, xb = x_util()
+    disponivel = (xb - xa) - 2 * vao_min
+    larg = _reparte_largura(disponivel, orientacao == "vertical", com_baias=False)
+    vao = ((xb - xa) - sum(larg.values())) / 2
+    x = xa
     z = []
     for e in ("A", "B", "C"):
         z.append(Zona(e, x, x + larg[e], prof, orientacao,
-                      oeste_no_gradil=(not com_baias and abs(x - RING["x0"]) < 0.05),
-                      leste_no_gradil=(not com_baias
-                                       and abs(x + larg[e] - RING["x1"]) < 0.05)))
+                      oeste_no_gradil=abs(x - RING["x0"]) < 0.05,
+                      leste_no_gradil=abs(x + larg[e] - RING["x1"]) < 0.05))
         x += larg[e] + vao
     return z, vao
 
@@ -363,20 +441,14 @@ def _baias_de_flanco(prof: float | None = None) -> dict:
             "C": ("baia do flanco leste", LARG_BAIA * p)}
 
 
-def _corredor_de_fundo(n_entradas: int = 3) -> dict:
-    """Corredor encostado no gradil sul: so a parede norte e barreira.
+def _separacao_do_corredor(prof: float) -> dict:
+    """CCB entre a zona C e o trecho lateral do corredor de chegada.
 
-    A parede sul do corredor e o proprio gradil permanente do Ring, e a parede
-    norte e a que fecha o lado sul das zonas — descontadas as aberturas por
-    onde a fila entra em cada zona.
+    E a unica contencao fora das divisorias: de um lado a fila parada da zona
+    C, do outro a corrente que desce do canto nordeste para o fundo. Fita nao
+    serve aqui — sao dois fluxos em sentidos diferentes encostados.
     """
-    larg_ring = RING["x1"] - RING["x0"]
-    return {"corredor de fundo (parede norte)":
-            larg_ring - n_entradas * VAO_SAIDA}
-
-
-def _extra_com_baias() -> dict:
-    return _corredor_de_fundo() | {"fechamento das baias de flanco": 2 * LARG_BAIA}
+    return {"separação entre a zona C e o corredor": prof}
 
 
 def desenho_plano_vigente() -> Desenho:
@@ -400,43 +472,6 @@ def desenho_plano_vigente() -> Desenho:
     return d
 
 
-def desenho_vertical_com_baias() -> Desenho:
-    """Raias norte-sul, baias de flanco mantidas, sem faixa de garganta."""
-    z, _ = _zonas("vertical", com_baias=True, prof=PROF_SERP)
-    d = Desenho("V", "Serpenteados verticais, com baias",
-                "Raias norte-sul; a fila sobe do corredor de fundo, encostado "
-                "no gradil sul, e sai pelo fim da última raia.",
-                z, _baias_de_flanco(), _extra_com_baias())
-    d.notas = [
-        "A fila sai pelo fim da última raia, num canto do bloco — na vertical "
-        "as meias-voltas abrem a borda norte, então o portão não pode ser "
-        "movido para o eixo da porta.",
-        "Raias de 32,00 m: longas, com poucas meias-voltas.",
-    ]
-    return d
-
-
-def desenho_girado_com_baias() -> Desenho:
-    """As mesmas zonas, com as raias giradas para leste-oeste."""
-    z, _ = _zonas("horizontal", com_baias=True, prof=PROF_SERP)
-    d = Desenho("H", "Serpenteados horizontais (mesmas zonas, raias giradas)",
-                "Raias leste-oeste empilhadas em altura, dentro dos mesmos "
-                "retângulos; corredor de fundo, baias e portas no lugar.",
-                z, _baias_de_flanco(), _extra_com_baias())
-    d.notas = [
-        "A última raia corre rente à borda norte da zona, então o portão de "
-        "saída pode ficar em qualquer ponto dela — e vai para o eixo da porta. "
-        "Na zona B o eixo de S5 cai dentro do bloco: a descarga fica "
-        "perpendicular, sem diagonal nenhuma.",
-        "A barreira quase não muda: o perímetro da zona é o mesmo nas duas "
-        "orientações, e só as divisórias internas mudam de comprimento — a "
-        "diferença é de 0,14 × (profundidade − largura) por zona.",
-        "O preço é a meia-volta: nas zonas A e C, de 4,2 m de largura, a raia "
-        "vira um ziguezague de 4,2 m com 16 curvas.",
-    ]
-    return d
-
-
 VAO_ENTRE_ZONAS = 2.60
 
 
@@ -452,10 +487,10 @@ def desenho_girado(raias: int | None = None) -> Desenho:
     prof = PROF_SERP if raias is None else min(raias * PASSO_RAIA, PROF_SERP)
     z, _ = _zonas("horizontal", com_baias=False, prof=prof,
                   vao_min=VAO_ENTRE_ZONAS)
-    d = Desenho("H", "Serpenteados horizontais, sem baias (o desenho)",
+    d = Desenho("H", "Serpenteados horizontais (raias leste-oeste)",
                 "Raias leste-oeste empilhadas; as três zonas ocupam a largura "
                 "toda do Ring e toda a lotação é fila em raia medida.",
-                z, {}, _corredor_de_fundo())
+                z, {}, _separacao_do_corredor(prof))
     d.notas = [
         "Sem baias: toda a lotação é fila em raia — contável, com ordem de "
         "chegada preservada e vazão previsível. No plano vigente, 39% da "
@@ -491,10 +526,10 @@ def desenho_vertical_sem_baias(vao: float = 2.00) -> Desenho:
     modulo de 1,4 m e a sobra vai para os vaos entre zonas.
     """
     z, folga = _zonas("vertical", com_baias=False, prof=PROF_SERP, vao_min=vao)
-    d = Desenho("VS", "Serpenteados verticais, sem baias",
+    d = Desenho("VS", "Serpenteados verticais (raias norte-sul)",
                 "Raias norte-sul, as três zonas ocupando a largura toda do "
                 "Ring; toda a lotação é fila em raia medida.",
-                z, {}, _corredor_de_fundo())
+                z, {}, _separacao_do_corredor(PROF_SERP))
     d.notas = [
         "Sem baias: os 12,8 m dos dois flancos viram serpenteado, e toda a "
         "lotação é fila em raia medida.",
@@ -510,6 +545,31 @@ def desenho_vertical_sem_baias(vao: float = 2.00) -> Desenho:
     return d
 
 
+def desenho_com_ccb_na_ponta(base: Desenho) -> Desenho:
+    """O mesmo desenho, montado com fita grossa e um CCB na ponta de cada raia.
+
+    A divisoria deixa de ser barreira de ponta a ponta: vira fita do tipo de
+    isolamento, ancorada por um unico CCB na ponta livre — no vao da
+    meia-volta, que e por onde a pessoa passa e onde a pressao se concentra.
+    """
+    d = Desenho(base.codigo + "P", base.nome + " · CCB só na ponta",
+                "Divisórias de fita grossa ancoradas por um CCB na ponta de "
+                "cada raia; a contenção de verdade fica só na zona C.",
+                base.zonas, base.baias, dict(base.barreira_extra),
+                regime=REGIME_PONTA)
+    d.notas = [
+        "A conta de CCB cai para o número de divisórias mais a separação da "
+        "zona C: a barreira deixa de ser proporcional ao comprimento da raia e "
+        "passa a ser proporcional ao número de raias.",
+        "O CCB fica na ponta livre da divisória, no vão da meia-volta — o "
+        "ponto onde o eleitor encosta e onde a fila empurra.",
+        "Fita não se sustenta sozinha: entre dois apoios ela cede. Com um CCB "
+        "só na ponta, cada divisória fica com um vão livre do comprimento "
+        "inteiro dela — ver `apoios_da_fita`.",
+    ]
+    return d
+
+
 def escada_de_profundidade() -> list:
     """Para o desenho vertical sem baias, a alavanca e a profundidade da raia."""
     fora = []
@@ -518,7 +578,7 @@ def escada_de_profundidade() -> list:
         z = [Zona(k.nome, k.x0, k.x1, prof, "vertical", k.oeste_no_gradil,
                   k.leste_no_gradil) for k in base.zonas]
         d = Desenho(base.codigo, base.nome, base.resumo, z, {},
-                    _corredor_de_fundo())
+                    _separacao_do_corredor(prof))
         fora.append({
             "profundidade_m": round(prof, 2),
             "capacidade": round(d.capacidade),
@@ -552,13 +612,24 @@ def escada_de_raias() -> list:
 
 
 def confere_original(v: Desenho) -> dict:
-    """`v` aqui e o desenho_plano_vigente(), nao um dos quatro."""
+    """`v` aqui e o desenho_plano_vigente(), nao um dos cenarios.
+
+    Atencao: so as linhas de CAPACIDADE afericam alguma coisa. A barreira
+    calculada usa a regra atual — que nao conta perimetro, nem parede de
+    corredor, nem raias do apron — e portanto nao e comparavel com os 596,3 m
+    publicados, que foram medidos com a regra antiga. A linha fica no JSON
+    como registro, marcada como nao comparavel.
+    """
     return {
         "raias_calculado": round(v.cap_raias, 1), "raias_publicado": 855,
         "baias_calculado": round(v.cap_baias, 1), "baias_publicado": 547,
         "total_calculado": round(v.capacidade), "total_publicado": 1402,
         "barreira_calculada_m": round(v.barreira_total, 1),
         "barreira_publicada_m": 596.3,
+        "barreira_comparavel": False,
+        "barreira_nota": ("regras diferentes: o publicado conta perímetro, "
+                          "parede de corredor e raias do apron, que saíram da "
+                          "conta atual por decisão do Posto"),
         "separadores_calculado": v.separadores, "separadores_publicado": 300,
     }
 
@@ -650,25 +721,23 @@ def svg(d: Desenho) -> str:
                           cor=c, halo="#eef1f4"))
         p.append(_linha(z.portao, y_topo, eixo_porta(z.nome), -0.4, stroke=c,
                         stroke_width="2", marker_end="url(#seta)"))
-    for nome, (x0, x1) in (("baia oeste", (RING["x0"], RING["x0"] + LARG_BAIA)),
-                           ("baia leste", (RING["x1"] - LARG_BAIA, RING["x1"]))):
-        if d.baias:
-            p.append(_ret(x0, y_base, x1, y_topo, fill="#8a919b", fill_opacity=".16",
-                          stroke="#8a919b", stroke_width="1.2", stroke_dasharray="4 3"))
-            p.append(_txt((x0 + x1) / 2, (y_base + y_topo) / 2, nome, 10,
-                          cor="#5c6c80", rot=-90))
-    cy0 = RING["y0"]
-    cy1 = cy0 + LARG_CORREDOR
-    p.append(_ret(RING["x0"], cy0, RING["x1"], cy1, fill="none",
-                  stroke="#5c6c80", stroke_width="1.2"))
-    p.append(_txt((RING["x0"] + RING["x1"]) / 2, (cy0 + cy1) / 2 - 0.4,
-                  f"CORREDOR DE FUNDO · {LARG_CORREDOR:.1f} m".replace(".", ","),
-                  10, peso=600, cor="#5c6c80"))
-    p.append(_linha(RING["x1"] + 3.0, cy0 + LARG_CORREDOR / 2, RING["x1"] - 0.6,
-                    cy0 + LARG_CORREDOR / 2, stroke="#5c6c80", stroke_width="2",
+    cy0, cy1 = RING["y0"], RING["y0"] + LARG_CORREDOR
+    xc = RING["x1"] - LARG_CORREDOR
+    p.append(_ret(xc, RING["y0"], RING["x1"], RING["y1"], fill="#16867f",
+                  fill_opacity=".10", stroke="#5c6c80", stroke_width="1"))
+    p.append(_ret(RING["x0"], cy0, xc, cy1, fill="#16867f", fill_opacity=".10",
+                  stroke="#5c6c80", stroke_width="1"))
+    p.append(_txt(xc + LARG_CORREDOR / 2, RING["y1"] - 9.0,
+                  f"CORREDOR · {LARG_CORREDOR:.1f} m".replace(".", ","), 10,
+                  peso=600, cor="#0f6b64", rot=-90, halo="#f6f4ef"))
+    p.append(_txt((RING["x0"] + xc) / 2, (cy0 + cy1) / 2 - 0.4,
+                  "TRECHO DE FUNDO", 10, peso=600, cor="#0f6b64"))
+    p.append(_linha(RING["x1"] - LARG_CORREDOR / 2, RING["y1"] + 3.2,
+                    RING["x1"] - LARG_CORREDOR / 2, RING["y1"] - 1.5,
+                    stroke="#0f6b64", stroke_width="2.2",
                     marker_end="url(#seta)"))
-    p.append(_txt(RING["x1"] + 0.8, cy0 + LARG_CORREDOR + 1.4,
-                  "entrada sudeste", 10, anchor="start", cor="#5c6c80"))
+    p.append(_txt(RING["x1"] - LARG_CORREDOR - 0.8, RING["y1"] + 2.4,
+                  "entrada · canto nordeste", 10, anchor="end", cor="#0f6b64"))
     p.append(_txt(RING["x0"] - 0.4, RING["y0"] - 1.6,
                   f"gradil permanente do Ring 3 · {LARG_RING:.1f} × "
                   f"{PROF_RING:.1f} m".replace(".", ","), 10,
@@ -705,6 +774,7 @@ def bloco_json(d: Desenho) -> dict:
                                             for k, x in d.equilibrio().items()},
         "barreira_m": round(d.barreira_total, 1),
         "barreira_por_componente_m": {k: round(x, 1) for k, x in d.barreira.items()},
+        "fora_da_conta": {k: round(x, 1) for k, x in d.fora_da_conta.items()},
         "separadores": d.separadores, "estoque": ESTOQUE_SEPARADORES,
         "compra": d.compra, "custo_compra_eur": round(d.custo_compra, 2),
         "m_por_pessoa": round(d.m_por_pessoa, 3),
@@ -725,86 +795,101 @@ def bloco_json(d: Desenho) -> dict:
     }
 
 
-def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
-             vs: Desenho, escada_v: list, pv: Desenho) -> str:
+def markdown(h: Desenho, escada: list, vs: Desenho, escada_v: list,
+             pv: Desenho, vp: Desenho, hp: Desenho) -> str:
     conf = confere_original(pv)
     L = []
     A = L.append
-    quatro = [("Vigente", v), ("Sem baias", vs), ("Girado", hb),
-              ("Girado sem baias", h)]
+    dois = [("N–S", vs), ("L–O", h)]
+    xa, xb = x_util()
 
-    A("# Ring 3 — quatro desenhos na mesma moldura\n")
-    A(f"O compound de fila ao ar livre (Ring 3, {n(LARG_RING,1)} × "
-      f"{n(PROF_RING,1)} m, medidos, 14 m ao sul da "
-      "fachada) tem três zonas — A, B e C —, alimentadas por um **corredor de "
-      "fundo** e descarregando ao norte nas portas S4, S5 e S6. Isso não muda "
-      "em nenhum dos desenhos. Mudam duas decisões, independentes uma da "
-      "outra:\n")
-    A("1. **A direção das raias** — norte-sul, como no plano vigente, ou "
-      "leste-oeste, empilhadas em altura.")
-    A("2. **As baias de flanco** — manter as duas áreas de espera de "
-      f"{n(LARG_BAIA,1)} m nos flancos, ou preenchê-las com serpenteado. As "
-      "barreiras laterais são removíveis e a evacuação sai pelos vãos entre as "
-      "zonas e pelo gradil, então a baia não é necessária como reserva de "
-      "escape.\n")
-    A("Duas decisões, quatro desenhos. Todos medidos com o mesmo modelo — mesma "
-      "densidade, mesmo módulo de raia, mesma regra de barreira.\n")
-    A(f"**Sem faixa de garganta.** O corredor de fundo, de "
-      f"{n(LARG_CORREDOR,1)} m, foi para o limite sul do Ring, encostado no "
-      "gradil, e as filas começam logo acima dele. Os quatro desenhos usam "
-      f"portanto {n(PROF_SERP,2)} m de profundidade de raia, contra os "
-      f"{n(PROF_PLANO_ORIGINAL,2)} m do plano vigente, que reservava "
-      f"{n((RING['y1']-RING['y0']) - PROF_PLANO_ORIGINAL - LARG_CORREDOR,2)} m "
-      "ao sul para a garganta e a pré-triagem. São "
-      f"{n(PROF_SERP - PROF_PLANO_ORIGINAL,2)} m a mais de fila em cada raia — "
-      "e é de onde vem quase toda a lotação a mais destes desenhos. Duas "
-      "consequências de barreira: o funil da garganta desaparece da conta, e a "
-      "parede sul do corredor passa a ser o próprio gradil do Ring, então só a "
-      "parede norte é barreira.\n")
+    A("# Ring 3 — dois desenhos de fila\n")
+    A(f"O compound de fila ao ar livre do RDS mede **{n(LARG_RING,1)} × "
+      f"{n(PROF_RING,1)} m** (medida oficial) e fica {n(APRON,0)} m ao sul da "
+      "fachada do Hall 2. Este documento traz os dois desenhos que sobraram — "
+      "raias norte-sul e raias leste-oeste — e a conta de separadores de cada "
+      "um.\n")
 
-    A("## Os quatro, lado a lado\n")
-    A("| | Raias N–S, com baias | **Raias N–S, sem baias** | Raias L–O, com baias | Raias L–O, sem baias |")
-    A("|---|---:|---:|---:|---:|")
-    A("| " + " | ".join(["Lotação"] + [f"{'**' if k=='Sem baias' else ''}"
-                                       f"{n(d.capacidade)}"
-                                       f"{'**' if k=='Sem baias' else ''}"
-                                       for k, d in quatro]) + " |")
-    A("| " + " | ".join(["… em raia medida"] + [n(d.cap_raias) for _, d in quatro]) + " |")
-    A("| " + " | ".join(["… em baia de espera"] + [n(d.cap_baias) if d.cap_baias else "—" for _, d in quatro]) + " |")
-    A("| " + " | ".join(["Raia"] + [f"{d.zonas[0].raias}×{n(d.zonas[0].comp,1)} m … "
-                                    f"{d.zonas[1].raias}×{n(d.zonas[1].comp,1)} m"
-                                    for _, d in quatro]) + " |")
-    A("| " + " | ".join(["Meias-voltas"] + [str(d.meias_voltas) for _, d in quatro]) + " |")
-    A("| " + " | ".join(["Barreira"] + [f"{n(d.barreira_total,1)} m" for _, d in quatro]) + " |")
-    A("| " + " | ".join(["**Separadores**"] + [f"**{d.separadores}**" for _, d in quatro]) + " |")
-    A("| " + " | ".join([f"A comprar (estoque {ESTOQUE_SEPARADORES})"] +
-                        [str(d.compra) for _, d in quatro]) + " |")
-    A("| " + " | ".join(["Custo da compra"] +
-                        [f"EUR {n(d.custo_compra,2)}" for _, d in quatro]) + " |")
-    A("| " + " | ".join(["Metros por pessoa"] +
-                        [n(d.m_por_pessoa,3) for _, d in quatro]) + " |")
+    A("## O percurso e a moldura\n")
+    A("A entrada **não** é pelo fundo. O eleitor entra pelo **canto nordeste** "
+      "do Ring, o mais perto da porta C, desce rente ao gradil leste e vira no "
+      "fundo: o corredor de chegada é um **L**, com um trecho lateral a leste "
+      f"e um trecho de fundo ao sul, ambos de {n(LARG_CORREDOR,1)} m. As três "
+      "zonas são alimentadas pelo trecho de fundo, e descarregam ao norte nas "
+      "portas S4, S5 e S6.\n")
+    A("Duas consequências de geometria:\n")
+    A(f"- O trecho lateral consome {n(LARG_CORREDOR,1)} m da largura do Ring. "
+      f"Sobram **{n(xb - xa,1)} m** para as zonas, não os {n(LARG_RING,1)} m "
+      "inteiros.")
+    A("- A zona C fica encostada nesse trecho lateral, com a fila parada de um "
+      "lado e a corrente que desce do outro. **É a única contenção de verdade "
+      "que o desenho ainda pede**, e por isso é o único CCB fora das "
+      "divisórias.\n")
+
+    A("## O que entra na conta de separadores\n")
+    A("Por decisão do Posto, três itens que o modelo contava saíram:\n")
+    A("| Item | Por que saiu | Quanto era (N–S) |")
+    A("|---|---|---:|")
+    fora = vs.fora_da_conta
+    A(f"| Contorno das zonas | O gradil já fecha o compound; entre zonas, a "
+      f"delimitação é **fita** | {n(fora['contorno das zonas (hoje, fita)'],1)} m |")
+    A(f"| Parede do corredor de chegada | Fora da conta | "
+      f"{n(fora['parede do corredor de chegada'],1)} m |")
+    A(f"| Raias do apron até as portas | Fora da conta | "
+      f"{n(fora['raias do apron até as portas'],1)} m |")
+    A(f"| **Total retirado** | | **{n(sum(fora.values()),1)} m** — "
+      f"{unidades(sum(fora.values()))} separadores |")
     A("")
-    A("Lê-se assim: **quem decide a barreira são as baias, não a direção das "
-      "raias**. Preencher os flancos custa "
-      f"{vs.separadores - v.separadores} separadores na vertical e "
-      f"{h.separadores - hb.separadores} na horizontal; girar as raias custa "
-      f"{hb.separadores - v.separadores} separadores com as baias e poupa "
-      f"{vs.separadores - h.separadores} sem elas — ruído. O desenho pedido — "
-      f"N–S sem baias — é o de maior lotação dos quatro ({n(vs.capacidade)}) e "
-      f"um dos dois mais caros ({vs.separadores} separadores).\n")
-    A("A razão é geométrica. A barreira de uma zona tem duas parcelas: o "
-      "**perímetro**, que fecha o retângulo e é o mesmo nas duas orientações, "
-      "e as **divisórias internas**, que separam raia de raia. Só a segunda "
-      "muda ao girar, e muda pouco: a diferença é "
-      f"`(profundidade − largura) × (1 − {n(VAO_RETORNO,1)}/{n(PASSO_RAIA,2)})` "
-      "= 0,14 × (profundidade − largura) por zona. Numa zona de "
-      f"{n(v.zona('A').larg,1)} × {n(PROF_SERP,2)} m isso dá menos de 3 m.\n")
+    A("Sobram dois componentes, e só eles são separadores:\n")
+    A("| Componente | " + " | ".join(k for k, _ in dois) + " |")
+    A("|---|" + "---:|" * len(dois))
+    for rot, chave in (("Divisórias entre as raias", "divisórias entre as raias"),
+                       ("Separação da zona C / corredor",
+                        "separação entre a zona C e o corredor")):
+        A(f"| {rot} | " + " | ".join(f"{n(d.barreira[chave],1)} m"
+                                     for _, d in dois) + " |")
+    A("| **Total** | " + " | ".join(f"**{n(d.barreira_total,1)} m**"
+                                    for _, d in dois) + " |")
+    A("| **Separadores de 2 m** | " + " | ".join(f"**{d.separadores}**"
+                                                 for _, d in dois) + " |")
+    A(f"| A comprar (estoque {ESTOQUE_SEPARADORES}) | " +
+      " | ".join(str(d.compra) for _, d in dois) + " |")
+    A("| Custo da compra | " + " | ".join(f"EUR {n(d.custo_compra,2)}"
+                                          for _, d in dois) + " |")
+    A("")
+    A(f"A fita de delimitação é outro material e outro fornecedor: são "
+      f"{n(fora['contorno das zonas (hoje, fita)'],1)} m no desenho N–S e "
+      f"{n(h.fora_da_conta['contorno das zonas (hoje, fita)'],1)} m no "
+      "girado.\n")
 
-    A("## O desenho pedido: raias norte-sul, sem baias\n")
-    A(f"Os {n(2*LARG_BAIA,1)} m dos dois flancos viram serpenteado. Como na "
-      "vertical a largura da zona é um número inteiro de raias, as larguras "
-      f"são arredondadas para o módulo de {n(PASSO_RAIA,2)} m e a sobra vai "
-      "para os vãos entre as zonas.\n")
+    A("## Os dois desenhos\n")
+    A("| | " + " | ".join(k for k, _ in dois) + " |")
+    A("|---|" + "---:|" * len(dois))
+    A("| Lotação (toda em raia) | " + " | ".join(n(d.capacidade) for _, d in dois) + " |")
+    A("| Raias por zona | " + " | ".join(
+        "/".join(str(z.raias) for z in d.zonas) for _, d in dois) + " |")
+    A("| Raia | " + " | ".join(
+        f"{n(min(z.comp for z in d.zonas),1)}–{n(max(z.comp for z in d.zonas),1)} m"
+        for _, d in dois) + " |")
+    A("| Meias-voltas | " + " | ".join(str(d.meias_voltas) for _, d in dois) + " |")
+    A("| Separadores | " + " | ".join(str(d.separadores) for _, d in dois) + " |")
+    A("| Metros por pessoa | " + " | ".join(n(d.m_por_pessoa, 3)
+                                            for _, d in dois) + " |")
+    A("")
+    A("A diferença entre os dois continua sendo ruído na barreira — o "
+      "perímetro saiu da conta e o que sobra são as divisórias, que mudam "
+      f"`0,14 × (profundidade − largura)` por zona. O que separa os dois é "
+      "outra coisa: a **descarga**. Na horizontal a última raia corre rente à "
+      "borda norte, que é linha contínua, e o portão pode ir para o eixo da "
+      "porta; na vertical a fila sai pelo fim da última raia, num canto.\n")
+    A("| Zona | " + " | ".join(f"desvio {k}" for k, _ in dois) + " |")
+    A("|---|" + "---:|" * len(dois))
+    for e in ("A", "B", "C"):
+        A(f"| {e} | " + " | ".join(
+            f"{n(abs(eixo_porta(e) - d.zona(e).portao),2)} m" for _, d in dois) + " |")
+    A("")
+
+    A("## O desenho norte-sul, zona a zona\n")
     A("| Zona | Porta | Largura | Raias | Raia | Caminhada | Lotação | "
       "Esperado | por eleitor |")
     A("|---|---|---:|---:|---:|---:|---:|---:|---:|")
@@ -813,96 +898,24 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
           f"{z.raias} | {n(z.comp,2)} m | {n(z.caminhada)} m | "
           f"{n(z.capacidade)} | {n(ESPERADO[z.nome])} | "
           f"{n(vs.equilibrio()[z.nome],4)} |")
-    folga = ((RING["x1"] - RING["x0"]) - sum(z.larg for z in vs.zonas)) / 2
     A("")
-    A(f"São {sum(z.raias for z in vs.zonas)} raias de {n(PROF_SERP,2)} m "
-      f"ocupando {n(sum(z.larg for z in vs.zonas),2)} m dos "
-      f"{n(RING['x1']-RING['x0'],2)} m de largura do Ring, com **{n(folga,2)} m "
-      "de vão entre as zonas**. Esse vão é a rota de evacuação lateral, "
-      "junto com o gradil: como as barreiras laterais são removíveis, nenhuma "
-      "área precisa ficar vazia à espera de uma emergência.\n")
-    A("A lotação de cada zona sai proporcional ao comparecimento que ela "
-      f"espera — {n(min(vs.equilibrio().values()),4)} a "
-      f"{n(max(vs.equilibrio().values()),4)} pessoa de lotação por eleitor "
-      "esperado, contra "
-      f"{n(min(v.equilibrio().values()),4)}–{n(max(v.equilibrio().values()),4)} "
-      "do plano vigente.\n")
-
-    A("## De onde vem a barreira\n")
-    A("Duas parcelas por zona, e vale distinguir porque elas respondem a "
-      "decisões diferentes.\n")
-    A("| Componente | " + " | ".join(k for k, _ in quatro) + " |")
-    A("|---|" + "---:|" * len(quatro))
-    for rot, chave in (("Perímetro das zonas", "perímetro das zonas"),
-                       ("Divisórias entre as raias", "divisórias entre as raias"),
-                       ("Corredor de fundo", "corredor de fundo (parede norte)"),
-                       ("Fechamento das baias", "fechamento das baias de flanco"),
-                       ("Raias do apron", "raias do apron até as portas")):
-        A(f"| {rot} | " + " | ".join(
-            (n(d.barreira[chave], 1) + " m") if d.barreira.get(chave) else "—"
-            for _, d in quatro) + " |")
-    A("| **Total** | " + " | ".join(f"**{n(d.barreira_total,1)} m**"
-                                    for _, d in quatro) + " |")
-    A("| **Separadores** | " + " | ".join(f"**{d.separadores}**"
-                                          for _, d in quatro) + " |")
-    A("")
-    A("**O perímetro fecha o retângulo da zona** — o lado norte, de frente para "
-      f"o apron, menos o portão de {n(VAO_SAIDA,1)} m; os lados leste e oeste, "
-      "exceto onde coincidem com o gradil permanente do Ring; o lado sul não "
-      "entra porque a parede norte do corredor de fundo já o fecha. É a parcela "
-      "que some quando a zona encosta no gradil: nos desenhos sem baias, as "
-      "zonas A e C ganham um lado de graça.\n")
-    A("**As divisórias** separam raia de raia: são (n−1) corridas, cada uma "
-      f"{n(VAO_RETORNO,1)} m mais curta que a raia, para abrir a meia-volta. É "
-      "aqui, e só aqui, que a orientação pesa — e pesa pouco.\n")
-
-    A("## Onde cada desenho descarrega\n")
-    A("A topologia da barreira decide, e é diferente nas duas orientações. Na "
-      "**vertical**, as divisórias correm norte-sul e as meias-voltas abrem a "
-      "borda norte de duas em duas raias: a fila só pode sair pelo fim da "
-      "última raia, num dos dois cantos do bloco — escolhe-se o canto mais "
-      "perto da porta. Na **horizontal**, a última raia corre rente à borda "
-      "norte, que é barreira contínua: o portão pode ser aberto em qualquer "
-      "ponto dela, e vai para o eixo da porta.\n")
-    A("| Zona | " + " | ".join(k for k, _ in quatro) + " |")
-    A("|---|" + "---:|" * len(quatro))
-    for e in ("A", "B", "C"):
-        A(f"| {e} | " + " | ".join(
-            f"{n(abs(eixo_porta(e) - d.zona(e).portao),2)} m" for _, d in quatro) + " |")
-    A("")
-    A("Desvio lateral entre o ponto de descarga da zona e o eixo da sua porta. "
-      "O caso que separa os desenhos é o da zona B: girada, ela descarrega "
-      "exatamente em cima de S5.\n")
 
     A("## Quanta barreira comprar\n")
     A(f"O estoque da organizadora é de {ESTOQUE_SEPARADORES} separadores "
-      f"({n(ESTOQUE_SEPARADORES*SEPARADOR_M)} m) e o que faltar pode ser "
-      "adquirido. Nenhum dos quatro desenhos cabe no estoque: o corredor de "
-      "fundo e as raias do apron consomem sozinhos "
-      f"{n(vs.barreira_total - sum(z.barreira for z in vs.zonas),1)} m — "
-      f"{unidades(vs.barreira_total - sum(z.barreira for z in vs.zonas))} "
-      "separadores — antes da primeira raia de fila.\n")
-    A("**No desenho pedido, a alavanca é a profundidade da raia** — encurtá-la "
-      "não mexe na largura das zonas, no número de raias nem na descarga:\n")
-    A("| Profundidade | Lotação | A | B | C | Separadores | A comprar | Custo |")
-    A("|---:|---:|---:|---:|---:|---:|---:|---:|")
+      f"({n(ESTOQUE_SEPARADORES*SEPARADOR_M)} m). Com a conta reduzida aos dois "
+      "componentes, a alavanca é a mesma de antes: a profundidade da raia no "
+      "desenho N–S, o número de raias no girado.\n")
+    A("| Profundidade | Lotação | Separadores | A comprar | Custo |")
+    A("|---:|---:|---:|---:|---:|")
     for r in escada_v:
         marca = " ←" if abs(r["profundidade_m"] - PROF_SERP) < 0.01 else ""
-        pe = r["por_entrada"]
         A(f"| {n(r['profundidade_m'],2)} m{marca} | {n(r['capacidade'])} | "
-          f"{n(pe['A'])} | {n(pe['B'])} | {n(pe['C'])} | {r['separadores']} | "
-          f"{r['compra']} | EUR {n(r['custo_compra_eur'],2)} |")
+          f"{r['separadores']} | {r['compra']} | EUR {n(r['custo_compra_eur'],2)} |")
     A("")
-    cabe = [r for r in escada_v if r["separadores"] <= pv.separadores]
+    cabe = [r for r in escada_v if r["compra"] == 0]
     if cabe:
-        A(f"`←` a faixa inteira, do corredor até a fachada norte do Ring. "
-          f"Dentro dos {pv.separadores} separadores do plano vigente "
-          f"reconstruído cabem {n(cabe[-1]['profundidade_m'],1)} m de raia, com "
-          f"{n(cabe[-1]['capacidade'])} pessoas — "
-          f"{n(cabe[-1]['capacidade']-pv.cap_raias)} a mais de **fila medida** "
-          f"que o plano vigente, que tem {n(pv.cap_raias)} em raia e "
-          f"{n(pv.cap_baias)} em baia.\n")
-    A("No desenho girado sem baias, a alavanca é o número de raias por zona:\n")
+        A(f"Dentro do estoque, sem comprar nada: {n(cabe[-1]['profundidade_m'],1)} m "
+          f"de raia, {n(cabe[-1]['capacidade'])} pessoas.\n")
     A("| Raias por zona | Profundidade | Lotação | Separadores | A comprar |")
     A("|---:|---:|---:|---:|---:|")
     for r in escada:
@@ -911,58 +924,93 @@ def markdown(v: Desenho, h: Desenho, hb: Desenho, escada: list,
           f"{n(r['capacidade'])} | {r['separadores']} | {r['compra']} |")
     A("")
 
-    A("## Premissas e aderência ao plano vigente\n")
+    A("## Cenário novo: CCB só na ponta, fita grossa no resto\n")
+    A("A divisória deixa de ser barreira de ponta a ponta. Vira **fita grossa** "
+      "— do tipo que a polícia usa para isolar — ancorada por **um único CCB na "
+      "ponta livre**, no vão da meia-volta, que é por onde a pessoa passa e "
+      "onde a fila empurra. A separação da zona C continua sendo barreira "
+      "inteira: ali são dois fluxos encostados, e fita não segura isso.\n")
+    A("| | Raias N–S | Raias L–O |")
+    A("|---|---:|---:|")
+    A(f"| Divisórias (uma por vão de raia) | {vp.n_divisorias} | {hp.n_divisorias} |")
+    A(f"| CCB nas pontas | {n(vp.n_divisorias * CCB_DA_PONTA,1)} m | "
+      f"{n(hp.n_divisorias * CCB_DA_PONTA,1)} m |")
+    A(f"| Separação da zona C | {n(vp.barreira['separação entre a zona C e o corredor'],1)} m | "
+      f"{n(hp.barreira['separação entre a zona C e o corredor'],1)} m |")
+    A(f"| **Separadores** | **{vp.separadores}** | **{hp.separadores}** |")
+    A(f"| A comprar (estoque {ESTOQUE_SEPARADORES}) | {vp.compra} | {hp.compra} |")
+    A(f"| Fita grossa | {n(vp.fita_grossa,1)} m | {n(hp.fita_grossa,1)} m |")
+    A("")
+    A(f"Contra os {vs.separadores} separadores do regime de barreira inteira, "
+      f"o desenho N–S cai para **{vp.separadores}** — "
+      f"{vs.separadores - vp.separadores} a menos, e **{vp.compra} a comprar** "
+      f"sobre as {ESTOQUE_SEPARADORES} unidades da organizadora. A lotação não "
+      "muda: as raias são as mesmas, só o material que as separa é outro.\n")
+    A("Repare na inversão: a barreira deixa de ser proporcional ao "
+      "**comprimento** da raia e passa a ser proporcional ao **número** de "
+      f"raias. Por isso o girado, com {hp.n_divisorias} divisórias curtas, "
+      f"custa mais ({hp.separadores}) que o N–S com {vp.n_divisorias} longas "
+      f"({vp.separadores}) — exatamente o contrário do que acontecia antes.\n")
+
+    A("### O que a fita pede, e o modelo não cobra\n")
+    ap = vp.apoios_da_fita()
+    A(f"Cada divisória do desenho N–S tem **{n(ap['vao_livre_m'],1)} m de vão "
+      "livre** depois do CCB da ponta. Fita não se sustenta nesse vão: ela "
+      "cede, e uma fila encostada atravessa. Mantendo o vão em "
+      f"{n(ap['espacamento_m'],0)} m, seriam "
+      f"**{ap['apoios_por_divisoria']} apoios por divisória**, "
+      f"{ap['apoios']} no total.\n")
+    A("| Se o apoio for… | Consequência |")
+    A("|---|---|")
+    A(f"| Um CCB | {ap['separadores_se_forem_ccb']} separadores no total — "
+      f"{ap['separadores_se_forem_ccb'] - ESTOQUE_SEPARADORES} além do estoque; "
+      f"ainda bem abaixo dos {vs.separadores} do regime inteiro, mas "
+      f"{ap['separadores_se_forem_ccb'] // vp.separadores}× o do cenário como "
+      "pedido |")
+    A("| Um poste leve com base | Outro item de orçamento, mais barato e mais "
+      f"leve: {ap['apoios']} postes |")
+    A("| Nada | A fita cede entre as pontas e a raia deixa de existir na "
+      "prática, justamente quando a fila enche |")
+    A("")
+    A("**A decisão não é entre fita e barreira — é sobre quantos apoios a fita "
+      "vai ter.** O número de CCB cai de verdade só se os apoios intermediários "
+      "forem outro material.\n")
+
+    A("## Premissas e aderência\n")
     A("| Parâmetro | Valor | Origem |")
     A("|---|---|---|")
-    A(f"| Módulo da raia | {n(PASSO_RAIA,2)} m | reconstruído dos blocos de 4,2 e 12,6 m |")
+    A(f"| Ring | {n(LARG_RING,1)} × {n(PROF_RING,1)} m | medida oficial |")
+    A(f"| Corredor de chegada | {n(LARG_CORREDOR,1)} m, em L (leste + fundo) | decisão do Posto |")
+    A(f"| Módulo da raia | {n(PASSO_RAIA,2)} m | reconstruído |")
     A(f"| Largura livre da raia | {n(RAIA_UTIL,2)} m | reconstruído |")
     A(f"| Densidade em raia | {n(DENS_FILA,1)} pessoas/m² | reconstruído |")
-    A(f"| Densidade em baia | {n(DENS_BAIA,1)} pessoas/m² | reconstruído |")
     A(f"| Vão de meia-volta | {n(VAO_RETORNO,1)} m | premissa |")
-    A(f"| Profundidade da faixa | {n(PROF_SERP,2)} m | plano vigente |")
-    A(f"| Separador | {n(SEPARADOR_M,1)} m · EUR {n(SEPARADOR_EUR,2)} | "
-      "item d do orçamento (100 un. = EUR 1.303) |")
-    A(f"| Estoque da organizadora | {ESTOQUE_SEPARADORES} un. | informado pelo Posto |")
+    A(f"| Separador | {n(SEPARADOR_M,1)} m · EUR {n(SEPARADOR_EUR,2)} | item d do orçamento |")
+    A(f"| Estoque | {ESTOQUE_SEPARADORES} unidades | informado pelo Posto |")
     A("")
-    A("`scripts/layout_ring3.py` e `saidas/plano_ring3.md` foram produzidos em "
-      "sessão anterior e não chegaram a este repositório; o plano vigente foi "
-      "reconstruído das cotas publicadas e reproduz os números publicados:\n")
-    A("| Grandeza | Publicado | Recalculado |")
-    A("|---|---:|---:|")
-    A(f"| Serpenteados | {n(conf['raias_publicado'])} | {n(conf['raias_calculado'],1)} |")
-    A(f"| Baias | {n(conf['baias_publicado'])} | {n(conf['baias_calculado'],1)} |")
-    A(f"| Total | {n(conf['total_publicado'])} | {n(conf['total_calculado'])} |")
-    A(f"| Barreira | {n(conf['barreira_publicada_m'],1)} m | "
-      f"{n(conf['barreira_calculada_m'],1)} m |")
-    A(f"| Separadores | {conf['separadores_publicado']} | "
-      f"{conf['separadores_calculado']} |")
-    A("")
-    A("A capacidade fecha; a barreira fica "
-      f"{n((conf['barreira_calculada_m']/conf['barreira_publicada_m']-1)*100,1)}% "
-      "acima, porque a regra de contagem do plano original não é recuperável do "
-      "que foi publicado. **A comparação usa a regra deste modelo nos quatro "
-      "desenhos.** Ancorando nos 300 separadores publicados em vez dos "
-      f"{v.separadores} recalculados, o desenho pedido daria cerca de "
-      f"{round(300*vs.separadores/v.separadores)} unidades.\n")
+    A("O plano vigente foi reconstruído das cotas publicadas e continua "
+      f"servindo de aferição do modelo de densidade: {n(conf['raias_calculado'],1)} "
+      f"contra {n(conf['raias_publicado'])} publicados nos serpenteados, "
+      f"{n(conf['baias_calculado'],1)} contra {n(conf['baias_publicado'])} nas "
+      "baias.\n")
 
     A("## Pendências de campo\n")
-    A(f"1. **Onde o Ring começa.** A largura é medida — {n(LARG_RING,1)} m "
-      "oficiais —, mas a posição lateral do retângulo ainda é estimativa: ele "
-      "está centrado no eixo de S5. Se o bordo oeste real estiver deslocado, "
-      "as três zonas se deslocam com ele e as diagonais de descarga mudam; o "
-      f"número de raias ({sum(z.raias for z in vs.zonas)} nesta configuração) "
-      "não muda.\n")
-    A("2. **A compra dos separadores.** O desenho pedido precisa de "
-      f"{vs.compra} unidades além das {ESTOQUE_SEPARADORES} da organizadora "
-      f"(EUR {n(vs.custo_compra,2)}). A escada de profundidade é o que dá para "
-      "recuar sem mexer no resto.\n")
-    A("3. **Os vãos entre as zonas como rota de escape.** O desenho conta com "
-      f"{n(folga,2)} m de vão livre entre zonas e com a remoção rápida das "
-      "barreiras laterais. Vale confirmar isso com quem assina o plano de "
-      "evacuação do RDS antes de fechar.\n")
-    A("4. **Densidades.** 2,0 pessoas/m² em raia e 1,8 em baia são "
-      "reconstrução, não medição. Se a densidade real sob guarda-chuva for "
-      "menor, os quatro desenhos perdem na mesma proporção.\n")
+    A("1. **Fita não contém massa.** A decisão de delimitar as zonas com fita, "
+      "e não com barreira, vale enquanto a fila estiver ordenada. Num pico, "
+      "nada impede fisicamente que alguém passe da zona A para a B — e a "
+      "separação por porta, que é a razão de existir da pré-triagem, depende "
+      "disso. Vale decidir se algum trecho crítico volta a ser CCB, sobretudo "
+      "junto às cabeças de fila, onde a pressão é maior.\n")
+    A("2. **A corrente que desce e a saída S8.** A entrada pelo canto nordeste "
+      "cruza o apron a leste, que é justamente onde S8 despeja quem já votou. "
+      "Sem raias no apron, os dois fluxos dividem o mesmo espaço — decidir se "
+      "isso se resolve com sinalização, fiscal ou horário.\n")
+    A("3. **A largura do trecho lateral.** Os "
+      f"{n(LARG_CORREDOR,1)} m assumidos vêm do corredor de fundo. Se a "
+      "corrente de entrada pedir mais, cada metro sai da largura das zonas — "
+      "e, no desenho N–S, tirar 1,4 m tira uma raia inteira.\n")
+    A("4. **Onde a pré-triagem acontece.** Continua sem endereço dentro do "
+      "Ring: o corredor em L é de passagem, não de parada.\n")
     return "\n".join(L) + "\n"
 
 
@@ -994,12 +1042,26 @@ def svg_mapa(d: Desenho) -> str:
         p.append(_txt((z.x0 + z.x1) / 2, RING["y1"] - z.prof / 2,
                       f"zona {z.nome}", 12, peso=700, cor=CORES[z.nome],
                       halo="#faf9f5"))
-    if d.baias:
-        for x0 in (RING["x0"], RING["x1"] - LARG_BAIA):
-            p.append(_ret(x0, RING["y1"] - PROF_SERP, x0 + LARG_BAIA, RING["y1"],
-                          fill="#8a919b", fill_opacity=".10"))
-            p.append(_txt(x0 + LARG_BAIA / 2, RING["y1"] - PROF_SERP / 2, "baia",
-                          11, cor="#5c6c80", rot=-90, halo="#faf9f5"))
+    # corredor de chegada, em L
+    xc = RING["x1"] - LARG_CORREDOR
+    p.append(_ret(xc, RING["y0"], RING["x1"], RING["y1"], fill="#16867f",
+                  fill_opacity=".10"))
+    p.append(_ret(RING["x0"], RING["y0"], xc, RING["y0"] + LARG_CORREDOR,
+                  fill="#16867f", fill_opacity=".10"))
+    p.append(_txt(xc + LARG_CORREDOR / 2, RING["y1"] - 9.0, "corredor de chegada",
+                  11, cor="#0f6b64", rot=-90, halo="#faf9f5"))
+    p.append(_txt((RING["x0"] + xc) / 2, RING["y0"] + LARG_CORREDOR / 2 - 0.4,
+                  "trecho de fundo", 11, cor="#0f6b64", halo="#faf9f5"))
+    p.append(_linha(RING["x1"] - LARG_CORREDOR / 2, RING["y1"] + 3.0,
+                    RING["x1"] - LARG_CORREDOR / 2, RING["y1"] - 2.0,
+                    stroke="#0f6b64", stroke_width="2.4",
+                    marker_end="url(#seta)"))
+    p.append(_txt(RING["x1"] - LARG_CORREDOR - 0.8, RING["y1"] + 2.0,
+                  "entrada · canto nordeste", 10, anchor="end", cor="#0f6b64"))
+    # fita de delimitacao das zonas — fora da conta de separadores
+    for _, p1, p2 in segmentos_da_fita(d):
+        p.append(_linha(p1[0], p1[1], p2[0], p2[1], stroke=FITA["cor"],
+                        stroke_width=str(FITA["traco"]), stroke_dasharray="3 5"))
     # as barreiras, uma cor por componente
     seg = segmentos_do_desenho(d)
     for comp, p1, p2 in seg:
@@ -1008,7 +1070,7 @@ def svg_mapa(d: Desenho) -> str:
                         stroke_width=str(e["traco"]), stroke_linecap="round"))
     # portoes: as aberturas que a conta desconta
     for z in d.zonas:
-        for y in (RING["y1"], RING["y0"] + LARG_CORREDOR):
+        for y in (RING["y1"],):
             p.append(_linha(z.portao - VAO_SAIDA / 2, y, z.portao + VAO_SAIDA / 2, y,
                             stroke="#faf9f5", stroke_width="5"))
             p.append(_linha(z.portao - VAO_SAIDA / 2, y, z.portao + VAO_SAIDA / 2, y,
@@ -1039,8 +1101,9 @@ def svg_mapa(d: Desenho) -> str:
                       f"{soma[comp]:.1f} m".replace(".", ","), 11, anchor="end",
                       cor="#243244"))
         p.append(_txt(RING["x0"] + 41.0, y + 0.9,
-                      f"{unidades(soma[comp])} separadores", 11, anchor="end",
-                      cor="#5c6c80"))
+                      "fita, não separador" if comp in NAO_E_SEPARADOR
+                      else f"{unidades(soma[comp])} separadores", 11,
+                      anchor="end", cor="#5c6c80"))
         y -= 2.2
     p.append(_linha(RING["x0"], y + 1.4, RING["x0"] + 41.0, y + 1.4,
                     stroke="#c6cfc8", stroke_width="1"))
@@ -1051,22 +1114,38 @@ def svg_mapa(d: Desenho) -> str:
                   peso=700, cor="#1f2c3c"))
     p.append(_txt(RING["x0"] + 41.0, y + 0.6, f"{d.separadores} separadores", 11,
                   anchor="end", peso=700, cor="#1f2c3c"))
+    y -= 2.6
+    fita = sum(math.dist(a, b) for _, a, b in segmentos_da_fita(d))
+    p.append(_linha(RING["x0"], y + 0.4, RING["x0"] + 2.2, y + 0.4,
+                    stroke=FITA["cor"], stroke_width="3", stroke_dasharray="3 4"))
+    p.append(_txt(RING["x0"] + 3.0, y + 0.9,
+                  "contorno das zonas — fita, não separador", 11, anchor="start",
+                  cor="#5c6c80"))
+    p.append(_txt(RING["x0"] + 30.0, y + 0.9, f"{fita:.1f} m".replace(".", ","),
+                  11, anchor="end", cor="#5c6c80"))
+    y -= 2.2
+    p.append(_linha(RING["x0"], y + 0.4, RING["x0"] + 2.2, y + 0.4,
+                    stroke=GRADIL["cor"], stroke_width="3", stroke_dasharray="7 4"))
+    p.append(_txt(RING["x0"] + 3.0, y + 0.9,
+                  "gradil permanente do Ring — já existe", 11, anchor="start",
+                  cor="#5c6c80"))
     corpo = "\n".join(p)
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {larg:.0f} '
             f'{alt:.0f}" width="{larg:.0f}" height="{alt:.0f}" role="img">\n'
             f'<rect width="{larg:.0f}" height="{alt:.0f}" fill="#fbfaf7"/>\n'
             f'{MARCADOR}\n'
-            f'{_txt(RING["x0"], 3.4, "Mapa das barreiras · " + d.nome, 15, anchor="start", peso=700)}\n'
+            f'{_txt(RING["x0"], 3.4, "Mapa dos separadores · " + d.nome, 15, anchor="start", peso=700)}\n'
             f'{corpo}\n</svg>\n')
+
 
 
 def main() -> None:
     os.makedirs(SAIDAS, exist_ok=True)
     pv = desenho_plano_vigente()
-    v = desenho_vertical_com_baias()
     vs = desenho_vertical_sem_baias()
     h = desenho_girado()
-    hb = desenho_girado_com_baias()
+    vp = desenho_com_ccb_na_ponta(vs)
+    hp = desenho_com_ccb_na_ponta(h)
     escada = escada_de_raias()
     escada_v = escada_de_profundidade()
 
@@ -1090,18 +1169,28 @@ def main() -> None:
             },
             "aderencia_ao_plano_original": confere_original(pv),
             "plano_vigente_reconstruido": bloco_json(pv),
-            "vertical_com_baias": bloco_json(v), "girado": bloco_json(h),
-            "girado_com_baias": bloco_json(hb),
+            "girado": bloco_json(h),
             "vertical_sem_baias": bloco_json(vs),
+            "vertical_ccb_na_ponta": bloco_json(vp) | {
+                "fita_grossa_m": round(vp.fita_grossa, 1),
+                "n_divisorias": vp.n_divisorias,
+                "apoios_da_fita": vp.apoios_da_fita(),
+            },
+            "girado_ccb_na_ponta": bloco_json(hp) | {
+                "fita_grossa_m": round(hp.fita_grossa, 1),
+                "n_divisorias": hp.n_divisorias,
+                "apoios_da_fita": hp.apoios_da_fita(),
+            },
             "escada_de_raias": escada,
             "escada_de_profundidade": escada_v,
         }, f, ensure_ascii=False, indent=2)
     with open(os.path.join(SAIDAS, "plano_ring3_horizontal.md"), "w",
               encoding="utf-8") as f:
-        f.write(markdown(v, h, hb, escada, vs, escada_v, pv))
-    for d, nome in ((v, "ring3_vertical_com_baias.svg"), (h, "ring3_girado.svg"),
-                    (hb, "ring3_girado_com_baias.svg"),
-                    (vs, "ring3_vertical_sem_baias.svg")):
+        f.write(markdown(h, escada, vs, escada_v, pv, vp, hp))
+    for d, nome in ((vs, "ring3_vertical_sem_baias.svg"),
+                    (h, "ring3_girado.svg"),
+                    (vp, "ring3_vertical_ponta.svg"),
+                    (hp, "ring3_girado_ponta.svg")):
         with open(os.path.join(SAIDAS, nome), "w", encoding="utf-8") as f:
             f.write(svg(d))
         mapa = nome.replace("ring3_", "ring3_barreiras_")
@@ -1112,12 +1201,10 @@ def main() -> None:
         if divergencia:
             raise SystemExit(f"mapa nao bate com a conta em {d.codigo}: {divergencia}")
 
-    for d in (v, vs, hb, h):
+    for d in (vs, h, vp, hp):
         print(f"{d.codigo:<3} {d.capacidade:>6.0f} pessoas · {d.separadores:>3} "
               f"separadores · {d.barreira_total:6.1f} m · "
               f"{d.meias_voltas:>2} meias-voltas")
-    print(f"girado contra vigente: {h.separadores - v.separadores} separadores, "
-          f"{h.capacidade - v.capacidade:+.0f} pessoas")
 
 
 
@@ -1129,12 +1216,13 @@ def main() -> None:
 # conta, nao uma ilustracao dela. `confere_mapa()` garante isso.
 # --------------------------------------------------------------------------
 COMPONENTES = {
-    "perímetro das zonas":              {"cor": "#1f6fb2", "traco": 3.0},
-    "divisórias entre as raias":        {"cor": "#7a8794", "traco": 1.6},
-    "corredor de fundo (parede norte)": {"cor": "#16867f", "traco": 3.0},
-    "fechamento das baias de flanco":   {"cor": "#8b5cf6", "traco": 3.0},
-    "raias do apron até as portas":     {"cor": "#b23b2e", "traco": 2.4},
+    "divisórias entre as raias":             {"cor": "#7a8794", "traco": 1.6},
+    "CCB na ponta das divisórias":           {"cor": "#7a8794", "traco": 3.4},
+    "fita grossa nas divisórias":            {"cor": "#e0a800", "traco": 1.6},
+    "separação entre a zona C e o corredor": {"cor": "#b23b2e", "traco": 3.4},
 }
+NAO_E_SEPARADOR = {"fita grossa nas divisórias"}
+FITA = {"cor": "#1f6fb2", "traco": 1.4}
 GRADIL = {"cor": "#8a919b", "traco": 2.0}
 
 
@@ -1143,79 +1231,76 @@ def _y_faixa() -> tuple:
     return RING["y1"] - PROF_SERP, RING["y1"]
 
 
-def segmentos_da_zona(z: Zona) -> list:
-    """Toda a barreira que a zona `z` pede, segmento a segmento."""
+def segmentos_da_zona(z: Zona, regime: str = REGIME_INTEGRAL) -> list:
+    """A barreira que a zona `z` pede, segmento a segmento.
+
+    So as divisorias internas: o contorno da zona e fita, e o gradil do Ring
+    fecha o compound. A unica excecao esta em `segmentos_do_desenho`, no lado
+    da zona C que encosta no corredor de chegada.
+    """
     y0, y1 = RING["y1"] - z.prof, RING["y1"]
     seg = []
-    # perimetro norte, com o portao de saida aberto
-    g0 = min(max(z.portao - VAO_SAIDA / 2, z.x0), z.x1 - VAO_SAIDA)
-    g1 = g0 + VAO_SAIDA
-    for a, b in ((z.x0, g0), (g1, z.x1)):
-        if b - a > 1e-6:
-            seg.append(("perímetro das zonas", (a, y1), (b, y1)))
-    # perimetro leste e oeste, onde nao e o gradil do Ring
-    if not z.oeste_no_gradil:
-        seg.append(("perímetro das zonas", (z.x0, y0), (z.x0, y1)))
-    if not z.leste_no_gradil:
-        seg.append(("perímetro das zonas", (z.x1, y0), (z.x1, y1)))
     # divisorias internas, cada uma encurtada de VAO_RETORNO numa ponta
     for i in range(1, z.raias):
         if z.orientacao == "vertical":
             x = z.x0 + i * z.passo
-            a, b = (y0 + VAO_RETORNO, y1) if i % 2 else (y0, y1 - VAO_RETORNO)
-            seg.append(("divisórias entre as raias", (x, a), (x, b)))
+            # p1 e sempre a ponta livre, do lado do vao de meia-volta
+            p1, p2 = ((x, y0 + VAO_RETORNO), (x, y1)) if i % 2 else \
+                     ((x, y1 - VAO_RETORNO), (x, y0))
         else:
             y = y0 + i * z.passo
-            a, b = (z.x0 + VAO_RETORNO, z.x1) if i % 2 else (z.x0, z.x1 - VAO_RETORNO)
-            seg.append(("divisórias entre as raias", (a, y), (b, y)))
+            p1, p2 = ((z.x0 + VAO_RETORNO, y), (z.x1, y)) if i % 2 else \
+                     ((z.x1 - VAO_RETORNO, y), (z.x0, y))
+        if regime == REGIME_PONTA:
+            comp = math.dist(p1, p2)
+            t = min(1.0, CCB_DA_PONTA / comp) if comp else 1.0
+            meio = (p1[0] + (p2[0] - p1[0]) * t, p1[1] + (p2[1] - p1[1]) * t)
+            seg.append(("CCB na ponta das divisórias", p1, meio))
+            seg.append(("fita grossa nas divisórias", meio, p2))
+        else:
+            seg.append(("divisórias entre as raias", p1, p2))
+    return seg
+
+
+def segmentos_da_fita(d: Desenho) -> list:
+    """O contorno das zonas, que hoje e fita e nao entra na conta de CCB."""
+    seg = []
+    for z in d.zonas:
+        y0, y1 = RING["y1"] - z.prof, RING["y1"]
+        g0 = min(max(z.portao - VAO_SAIDA / 2, z.x0), z.x1 - VAO_SAIDA)
+        for a, b in ((z.x0, g0), (g0 + VAO_SAIDA, z.x1)):
+            if b - a > 1e-6:
+                seg.append(("fita", (a, y1), (b, y1)))
+        if not z.oeste_no_gradil:
+            seg.append(("fita", (z.x0, y0), (z.x0, y1)))
+        if not z.leste_no_gradil and z.nome != "C":
+            seg.append(("fita", (z.x1, y0), (z.x1, y1)))
     return seg
 
 
 def segmentos_do_desenho(d: Desenho) -> list:
     seg = []
     for z in d.zonas:
-        seg += segmentos_da_zona(z)
-    # parede norte do corredor de fundo, com uma abertura por zona
-    y = RING["y0"] + LARG_CORREDOR
-    cortes = sorted((z.portao - VAO_SAIDA / 2, z.portao + VAO_SAIDA / 2)
-                    for z in d.zonas)
-    x = RING["x0"]
-    for a, b in cortes:
-        if a - x > 1e-6:
-            seg.append(("corredor de fundo (parede norte)", (x, y), (a, y)))
-        x = b
-    if RING["x1"] - x > 1e-6:
-        seg.append(("corredor de fundo (parede norte)", (x, y), (RING["x1"], y)))
-    # fechamento norte das baias de flanco
-    if d.baias:
-        y1 = RING["y1"]
-        for x0 in (RING["x0"], RING["x1"] - LARG_BAIA):
-            seg.append(("fechamento das baias de flanco",
-                        (x0, y1), (x0 + LARG_BAIA, y1)))
-    # raias do apron: duas corridas paralelas por zona, do portao ao eixo da porta
-    for z in d.zonas:
-        ax, ay = z.portao, RING["y1"]
-        bx, by = eixo_porta(z.nome), 0.0
-        dx, dy = bx - ax, by - ay
-        comp = math.hypot(dx, dy)
-        nx, ny = -dy / comp, dx / comp          # normal unitaria
-        for lado in (-1, 1):
-            o = lado * VAO_SAIDA / 2
-            seg.append(("raias do apron até as portas",
-                        (ax + nx * o, ay + ny * o), (bx + nx * o, by + ny * o)))
+        seg += segmentos_da_zona(z, d.regime)
+    # CCB entre a zona C e o trecho lateral do corredor de chegada
+    zc = d.zona("C")
+    seg.append(("separação entre a zona C e o corredor",
+                (zc.x1, RING["y1"] - zc.prof), (zc.x1, RING["y1"])))
     return seg
 
 
-def soma_dos_segmentos(seg: list) -> dict:
+def soma_dos_segmentos(seg: list, so_barreira: bool = False) -> dict:
     fora = {}
     for comp, p1, p2 in seg:
+        if so_barreira and comp == "fita grossa nas divisórias":
+            continue
         fora[comp] = fora.get(comp, 0.0) + math.dist(p1, p2)
     return fora
 
 
 def confere_mapa(d: Desenho) -> dict:
     """O mapa desenhado tem de somar o mesmo que a conta de barreira."""
-    mapa = soma_dos_segmentos(segmentos_do_desenho(d))
+    mapa = soma_dos_segmentos(segmentos_do_desenho(d), so_barreira=True)
     conta = d.barreira
     return {c: (round(conta.get(c, 0.0), 2), round(mapa.get(c, 0.0), 2))
             for c in set(conta) | set(mapa)}

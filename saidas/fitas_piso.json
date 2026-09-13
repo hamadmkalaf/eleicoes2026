@@ -1,0 +1,5183 @@
+{
+ "geradoEm": "2026-09-12T02:53:40.449Z",
+ "runs": 8,
+ "arranjo": "Três polos · 22/23/24 separadas",
+ "resultados": [
+  {
+   "id": "ref",
+   "grupo": "referência",
+   "nome": "Cenário Claude: checkpoint a 16 m, 3/3/3, liberação por buffer",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": true,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "17h03",
+   "fechaP90": "17h03",
+   "p90TotalMin": 49,
+   "p90ForaMin": 33,
+   "p90DentroMin": 20,
+   "dentroMax": 321,
+   "ring3Max": 962,
+   "ring3MaxP90": 990,
+   "fomeVermelhasMin": 4,
+   "estouroFilas": 0,
+   "perdidos": 0,
+   "fita_m": 157,
+   "capBuffer": [
+    53,
+    53,
+    53
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "atencao",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "49 min da chegada ao voto"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 364,
+     "capRing3": 445,
+     "bufferMax": 53,
+     "capBuffer": 53
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 453,
+     "capRing3": 513,
+     "bufferMax": 53,
+     "capBuffer": 53
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 335,
+     "capRing3": 445,
+     "bufferMax": 53,
+     "capBuffer": 53
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 6,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 4,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 3,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "fitas-buffer",
+   "grupo": "fitas",
+   "nome": "Fitas, sem checkpoint, porta libera enquanto cabe na zona (buffer = soma das filas)",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "17h03",
+   "fechaP90": "17h03",
+   "p90TotalMin": 68,
+   "p90ForaMin": 63,
+   "p90DentroMin": 7,
+   "dentroMax": 121,
+   "ring3Max": 1516,
+   "ring3MaxP90": 1625,
+   "fomeVermelhasMin": 10,
+   "estouroFilas": 2216,
+   "perdidos": 0,
+   "fita_m": 61,
+   "capBuffer": [
+    32,
+    37,
+    32
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "68 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "2216 chegadas com a fila da mesa já cheia"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "atencao",
+     "valor": "pico de 1625 pessoas fora (P90) · Entrada A: 573 de 445"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 573,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 640,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 37
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 543,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 26,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 20,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 9,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "fitas-livre",
+   "grupo": "fitas",
+   "nome": "Fitas, sem checkpoint, porta livre (sem contenção)",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "livre",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "17h03",
+   "fechaP90": "17h03",
+   "p90TotalMin": 50,
+   "p90ForaMin": 5,
+   "p90DentroMin": 44,
+   "dentroMax": 950,
+   "ring3Max": 962,
+   "ring3MaxP90": 990,
+   "fomeVermelhasMin": 4,
+   "estouroFilas": 5795,
+   "perdidos": 0,
+   "fita_m": 61,
+   "capBuffer": [
+    32,
+    37,
+    32
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "50 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "5795 chegadas com a fila da mesa já cheia"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 322,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 382,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 37
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 335,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 110,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 94,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 53,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "fitas-mesa",
+   "grupo": "fitas",
+   "nome": "Fitas, sem checkpoint, porta só libera quem tem vaga na sua mesa",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "mesa",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "17h28",
+   "fechaP90": "17h34",
+   "p90TotalMin": 103,
+   "p90ForaMin": 100,
+   "p90DentroMin": 3,
+   "dentroMax": 110,
+   "ring3Max": 2283,
+   "ring3MaxP90": 2294,
+   "fomeVermelhasMin": 123,
+   "estouroFilas": 0,
+   "perdidos": 0,
+   "fita_m": 61,
+   "capBuffer": [
+    32,
+    37,
+    32
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "fecho",
+     "titulo": "Última mesa fecha",
+     "status": "atencao",
+     "valor": "17h28 (mediana) · 17h34 em dia ruim"
+    },
+    {
+     "id": "fome",
+     "titulo": "Mesas vermelhas sem fome",
+     "status": "falha",
+     "valor": "42 min por mesa vermelha"
+    },
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "falha",
+     "valor": "103 min da chegada ao voto"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "falha",
+     "valor": "pico de 2294 pessoas fora (P90) · Entrada B: 978 de 513"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 790,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 978,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 37
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 726,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 6,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 4,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 3,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "fitas-buffer-filas",
+   "grupo": "fitas",
+   "nome": "Fitas, sem checkpoint, buffer, filas de mesa 5/8/12",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 5,
+    "media": 8,
+    "pesada": 12
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "17h03",
+   "fechaP90": "17h04",
+   "p90TotalMin": 52,
+   "p90ForaMin": 42,
+   "p90DentroMin": 17,
+   "dentroMax": 206,
+   "ring3Max": 1001,
+   "ring3MaxP90": 1161,
+   "fomeVermelhasMin": 4,
+   "estouroFilas": 2188,
+   "perdidos": 0,
+   "fita_m": 111,
+   "capBuffer": [
+    58,
+    69,
+    58
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 1,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "52 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "2188 chegadas com a fila da mesa já cheia"
+    },
+    {
+     "id": "encaixe",
+     "titulo": "Filas cabem no espaço",
+     "status": "falha",
+     "valor": "1 conflito"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "atencao",
+     "valor": "pico de 1161 pessoas fora (P90) · Entrada A: 452 de 445"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 452,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 58
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 510,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 69
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 401,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 58
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 52,
+     "L": 12
+    },
+    {
+     "classe": "media",
+     "filaMax": 33,
+     "L": 8
+    },
+    {
+     "classe": "leve",
+     "filaMax": 18,
+     "L": 5
+    }
+   ]
+  },
+  {
+   "id": "fitas-livre-filas",
+   "grupo": "fitas",
+   "nome": "Fitas, sem checkpoint, porta livre, filas de mesa 5/8/12",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "livre",
+   "filaMesa": {
+    "leve": 5,
+    "media": 8,
+    "pesada": 12
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "17h03",
+   "fechaP90": "17h03",
+   "p90TotalMin": 50,
+   "p90ForaMin": 5,
+   "p90DentroMin": 44,
+   "dentroMax": 950,
+   "ring3Max": 962,
+   "ring3MaxP90": 990,
+   "fomeVermelhasMin": 4,
+   "estouroFilas": 5392,
+   "perdidos": 0,
+   "fita_m": 111,
+   "capBuffer": [
+    58,
+    69,
+    58
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 1,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "50 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "5392 chegadas com a fila da mesa já cheia"
+    },
+    {
+     "id": "encaixe",
+     "titulo": "Filas cabem no espaço",
+     "status": "falha",
+     "valor": "1 conflito"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 322,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 58
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 382,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 69
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 335,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 58
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 110,
+     "L": 12
+    },
+    {
+     "classe": "media",
+     "filaMax": 94,
+     "L": 8
+    },
+    {
+     "classe": "leve",
+     "filaMax": 53,
+     "L": 5
+    }
+   ]
+  },
+  {
+   "id": "fitas-buffer-erro10",
+   "grupo": "sinalização",
+   "nome": "Fitas, buffer, 10 % se perdem e andam 30 m a mais",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": {
+    "erro": 0.1,
+    "desvio": 30
+   },
+   "fechaP50": "17h03",
+   "fechaP90": "17h03",
+   "p90TotalMin": 65,
+   "p90ForaMin": 61,
+   "p90DentroMin": 7,
+   "dentroMax": 121,
+   "ring3Max": 1491,
+   "ring3MaxP90": 1658,
+   "fomeVermelhasMin": 9,
+   "estouroFilas": 2130,
+   "perdidos": 1214,
+   "fita_m": 61,
+   "capBuffer": [
+    32,
+    37,
+    32
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "65 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "2130 chegadas com a fila da mesa já cheia"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "falha",
+     "valor": "pico de 1658 pessoas fora (P90) · Entrada A: 584 de 445"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 584,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 664,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 37
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 548,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 25,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 18,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 13,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "fitas-buffer-erro25",
+   "grupo": "sinalização",
+   "nome": "Fitas, buffer, 25 % se perdem e andam 40 m a mais",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": {
+    "erro": 0.25,
+    "desvio": 40
+   },
+   "fechaP50": "17h03",
+   "fechaP90": "17h03",
+   "p90TotalMin": 66,
+   "p90ForaMin": 61,
+   "p90DentroMin": 6,
+   "dentroMax": 121,
+   "ring3Max": 1530,
+   "ring3MaxP90": 1641,
+   "fomeVermelhasMin": 11,
+   "estouroFilas": 2077,
+   "perdidos": 3038,
+   "fita_m": 61,
+   "capBuffer": [
+    32,
+    37,
+    32
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "66 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "2077 chegadas com a fila da mesa já cheia"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "falha",
+     "valor": "pico de 1641 pessoas fora (P90) · Entrada A: 583 de 445"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 583,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 660,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 37
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 542,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 26,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 19,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 12,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "fitas-livre-erro25",
+   "grupo": "sinalização",
+   "nome": "Fitas, porta livre, 25 % se perdem e andam 40 m a mais",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "livre",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": {
+    "erro": 0.25,
+    "desvio": 40
+   },
+   "fechaP50": "17h03",
+   "fechaP90": "17h04",
+   "p90TotalMin": 49,
+   "p90ForaMin": 5,
+   "p90DentroMin": 42,
+   "dentroMax": 954,
+   "ring3Max": 962,
+   "ring3MaxP90": 990,
+   "fomeVermelhasMin": 4,
+   "estouroFilas": 5773,
+   "perdidos": 3005,
+   "fita_m": 61,
+   "capBuffer": [
+    32,
+    37,
+    32
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "49 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "5773 chegadas com a fila da mesa já cheia"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 322,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 382,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 37
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 335,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 116,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 86,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 51,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "ref-id60",
+   "grupo": "identificação 60 s",
+   "nome": "Checkpoint, identificação 60 s",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": true,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 60,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "18h53",
+   "fechaP90": "18h55",
+   "p90TotalMin": 112,
+   "p90ForaMin": 97,
+   "p90DentroMin": 40,
+   "dentroMax": 315,
+   "ring3Max": 2036,
+   "ring3MaxP90": 2116,
+   "fomeVermelhasMin": 3,
+   "estouroFilas": 0,
+   "perdidos": 0,
+   "fita_m": 157,
+   "capBuffer": [
+    53,
+    53,
+    53
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "fecho",
+     "titulo": "Última mesa fecha",
+     "status": "falha",
+     "valor": "18h53 (mediana) · 18h55 em dia ruim"
+    },
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "falha",
+     "valor": "112 min da chegada ao voto"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "falha",
+     "valor": "pico de 2116 pessoas fora (P90) · Entrada B: 940 de 513"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 757,
+     "capRing3": 445,
+     "bufferMax": 53,
+     "capBuffer": 53
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 940,
+     "capRing3": 513,
+     "bufferMax": 53,
+     "capBuffer": 53
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 660,
+     "capRing3": 445,
+     "bufferMax": 53,
+     "capBuffer": 53
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 6,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 4,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 3,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "fitas-buffer-id60",
+   "grupo": "identificação 60 s",
+   "nome": "Fitas, buffer, identificação 60 s",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 60,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "18h59",
+   "fechaP90": "19h07",
+   "p90TotalMin": 147,
+   "p90ForaMin": 141,
+   "p90DentroMin": 11,
+   "dentroMax": 118,
+   "ring3Max": 2724,
+   "ring3MaxP90": 2853,
+   "fomeVermelhasMin": 9,
+   "estouroFilas": 2828,
+   "perdidos": 0,
+   "fita_m": 61,
+   "capBuffer": [
+    32,
+    37,
+    32
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "fecho",
+     "titulo": "Última mesa fecha",
+     "status": "falha",
+     "valor": "18h59 (mediana) · 19h07 em dia ruim"
+    },
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "falha",
+     "valor": "147 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "2828 chegadas com a fila da mesa já cheia"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "falha",
+     "valor": "pico de 2853 pessoas fora (P90) · Entrada B: 1133 de 513"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 935,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 1133,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 37
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 917,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 27,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 21,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 11,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "fitas-livre-id60",
+   "grupo": "identificação 60 s",
+   "nome": "Fitas, porta livre, identificação 60 s",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "livre",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 60,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "18h50",
+   "fechaP90": "18h53",
+   "p90TotalMin": 108,
+   "p90ForaMin": 5,
+   "p90DentroMin": 107,
+   "dentroMax": 1401,
+   "ring3Max": 962,
+   "ring3MaxP90": 990,
+   "fomeVermelhasMin": 3,
+   "estouroFilas": 8800,
+   "perdidos": 0,
+   "fita_m": 61,
+   "capBuffer": [
+    32,
+    37,
+    32
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "fecho",
+     "titulo": "Última mesa fecha",
+     "status": "falha",
+     "valor": "18h50 (mediana) · 18h53 em dia ruim"
+    },
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "falha",
+     "valor": "108 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "8800 chegadas com a fila da mesa já cheia"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 3642,
+     "ring3Max": 322,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4215,
+     "ring3Max": 382,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 37
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 3642,
+     "ring3Max": 335,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 179,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 141,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 74,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "ref-grande",
+   "grupo": "comparecimento +15 %",
+   "nome": "Checkpoint, comparecimento grande",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": true,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "grande",
+   "sinalizacao": null,
+   "fechaP50": "17h37",
+   "fechaP90": "17h44",
+   "p90TotalMin": 82,
+   "p90ForaMin": 68,
+   "p90DentroMin": 32,
+   "dentroMax": 317,
+   "ring3Max": 1852,
+   "ring3MaxP90": 2098,
+   "fomeVermelhasMin": 4,
+   "estouroFilas": 0,
+   "perdidos": 0,
+   "fita_m": 157,
+   "capBuffer": [
+    53,
+    53,
+    53
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "fecho",
+     "titulo": "Última mesa fecha",
+     "status": "atencao",
+     "valor": "17h37 (mediana) · 17h44 em dia ruim"
+    },
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "82 min da chegada ao voto"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "falha",
+     "valor": "pico de 2098 pessoas fora (P90) · Entrada B: 939 de 513"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 4188,
+     "ring3Max": 655,
+     "capRing3": 445,
+     "bufferMax": 53,
+     "capBuffer": 53
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4847,
+     "ring3Max": 939,
+     "capRing3": 513,
+     "bufferMax": 53,
+     "capBuffer": 53
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 4188,
+     "ring3Max": 692,
+     "capRing3": 445,
+     "bufferMax": 53,
+     "capBuffer": 53
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 6,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 4,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 3,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "fitas-buffer-grande",
+   "grupo": "comparecimento +15 %",
+   "nome": "Fitas, buffer, comparecimento grande",
+   "atribuicao": "decisão (quota)",
+   "checkpoint": false,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "grande",
+   "sinalizacao": null,
+   "fechaP50": "17h46",
+   "fechaP90": "17h50",
+   "p90TotalMin": 112,
+   "p90ForaMin": 107,
+   "p90DentroMin": 8,
+   "dentroMax": 121,
+   "ring3Max": 2619,
+   "ring3MaxP90": 2783,
+   "fomeVermelhasMin": 12,
+   "estouroFilas": 3076,
+   "perdidos": 0,
+   "fita_m": 61,
+   "capBuffer": [
+    32,
+    37,
+    32
+   ],
+   "desequilibrio": 1.16,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "fecho",
+     "titulo": "Última mesa fecha",
+     "status": "atencao",
+     "valor": "17h46 (mediana) · 17h50 em dia ruim"
+    },
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "falha",
+     "valor": "112 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "3076 chegadas com a fila da mesa já cheia"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "falha",
+     "valor": "pico de 2783 pessoas fora (P90) · Entrada A: 975 de 445"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 4188,
+     "ring3Max": 975,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 4847,
+     "ring3Max": 1048,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 37
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 4188,
+     "ring3Max": 945,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 32
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 24,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 18,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 11,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "geo-ref",
+   "grupo": "atribuição geográfica",
+   "nome": "Checkpoint, mesas atribuídas por parede (oeste A, norte B, leste C)",
+   "atribuicao": "geográfica",
+   "checkpoint": true,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "17h03",
+   "fechaP90": "17h03",
+   "p90TotalMin": 50,
+   "p90ForaMin": 39,
+   "p90DentroMin": 21,
+   "dentroMax": 315,
+   "ring3Max": 971,
+   "ring3MaxP90": 990,
+   "fomeVermelhasMin": 6,
+   "estouroFilas": 0,
+   "perdidos": 0,
+   "fita_m": 157,
+   "capBuffer": [
+    53,
+    53,
+    53
+   ],
+   "desequilibrio": 3.36,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "50 min da chegada ao voto"
+    },
+    {
+     "id": "equilibrio",
+     "titulo": "Portas equilibradas",
+     "status": "falha",
+     "valor": "porta mais carregada recebe 3.36× a menos carregada"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "falha",
+     "valor": "pico de 990 pessoas fora (P90) · Entrada C: 601 de 445"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 1771,
+     "ring3Max": 177,
+     "capRing3": 445,
+     "bufferMax": 53,
+     "capBuffer": 53
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 3777,
+     "ring3Max": 361,
+     "capRing3": 513,
+     "bufferMax": 53,
+     "capBuffer": 53
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 5951,
+     "ring3Max": 601,
+     "capRing3": 445,
+     "bufferMax": 53,
+     "capBuffer": 53
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 6,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 4,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 3,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "geo-fitas-buffer",
+   "grupo": "atribuição geográfica",
+   "nome": "Fitas, buffer, mesas atribuídas por parede",
+   "atribuicao": "geográfica",
+   "checkpoint": false,
+   "liberacao": "buffer",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "17h03",
+   "fechaP90": "17h03",
+   "p90TotalMin": 70,
+   "p90ForaMin": 65,
+   "p90DentroMin": 7,
+   "dentroMax": 120,
+   "ring3Max": 1551,
+   "ring3MaxP90": 1641,
+   "fomeVermelhasMin": 10,
+   "estouroFilas": 2264,
+   "perdidos": 0,
+   "fita_m": 61,
+   "capBuffer": [
+    18,
+    34,
+    49
+   ],
+   "desequilibrio": 3.36,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "70 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "2264 chegadas com a fila da mesa já cheia"
+    },
+    {
+     "id": "equilibrio",
+     "titulo": "Portas equilibradas",
+     "status": "falha",
+     "valor": "porta mais carregada recebe 3.36× a menos carregada"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "falha",
+     "valor": "pico de 1641 pessoas fora (P90) · Entrada C: 900 de 445"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 1771,
+     "ring3Max": 293,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 18
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 3777,
+     "ring3Max": 592,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 34
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 5951,
+     "ring3Max": 900,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 49
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 26,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 18,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 12,
+     "L": 3
+    }
+   ]
+  },
+  {
+   "id": "geo-fitas-livre",
+   "grupo": "atribuição geográfica",
+   "nome": "Fitas, porta livre, mesas atribuídas por parede",
+   "atribuicao": "geográfica",
+   "checkpoint": false,
+   "liberacao": "livre",
+   "filaMesa": {
+    "leve": 3,
+    "media": 4,
+    "pesada": 6
+   },
+   "identificacao": 45,
+   "comparecimento": "medio",
+   "sinalizacao": null,
+   "fechaP50": "17h03",
+   "fechaP90": "17h04",
+   "p90TotalMin": 48,
+   "p90ForaMin": 9,
+   "p90DentroMin": 42,
+   "dentroMax": 868,
+   "ring3Max": 962,
+   "ring3MaxP90": 990,
+   "fomeVermelhasMin": 6,
+   "estouroFilas": 5785,
+   "perdidos": 0,
+   "fita_m": 61,
+   "capBuffer": [
+    18,
+    34,
+    49
+   ],
+   "desequilibrio": 3.36,
+   "conflitos": 0,
+   "nota": "falha",
+   "ruins": [
+    {
+     "id": "espera",
+     "titulo": "Espera do eleitor (P90)",
+     "status": "atencao",
+     "valor": "48 min da chegada ao voto"
+    },
+    {
+     "id": "semcp",
+     "titulo": "Filas das mesas sem checkpoint",
+     "status": "falha",
+     "valor": "5785 chegadas com a fila da mesa já cheia"
+    },
+    {
+     "id": "equilibrio",
+     "titulo": "Portas equilibradas",
+     "status": "falha",
+     "valor": "porta mais carregada recebe 3.36× a menos carregada"
+    },
+    {
+     "id": "ring3",
+     "titulo": "Ring 3 comporta a fila externa",
+     "status": "atencao",
+     "valor": "pico de 990 pessoas fora (P90) · Entrada C: 546 de 445"
+    }
+   ],
+   "porZona": [
+    {
+     "nome": "Entrada A",
+     "porta": "S4",
+     "esperados": 1771,
+     "ring3Max": 170,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 18
+    },
+    {
+     "nome": "Entrada B",
+     "porta": "S5",
+     "esperados": 3777,
+     "ring3Max": 336,
+     "capRing3": 513,
+     "bufferMax": 0,
+     "capBuffer": 34
+    },
+    {
+     "nome": "Entrada C",
+     "porta": "S6",
+     "esperados": 5951,
+     "ring3Max": 546,
+     "capRing3": 445,
+     "bufferMax": 0,
+     "capBuffer": 49
+    }
+   ],
+   "filaMaxPorClasse": [
+    {
+     "classe": "pesada",
+     "filaMax": 105,
+     "L": 6
+    },
+    {
+     "classe": "media",
+     "filaMax": 89,
+     "L": 4
+    },
+    {
+     "classe": "leve",
+     "filaMax": 50,
+     "L": 3
+    }
+   ]
+  }
+ ],
+ "geometria": {
+  "decisao": {
+   "rotulo": "atribuição da decisão (por quota do Ring 3)",
+   "linhas": [
+    {
+     "mrv": 1,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      1.605,
+      38.2
+     ],
+     "comp": 46.59466063831778,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 375
+    },
+    {
+     "mrv": 2,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "norte",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      5.505,
+      38.2
+     ],
+     "comp": 47.96081734082521,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 355
+    },
+    {
+     "mrv": 3,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "norte",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      12.5,
+      38.2
+     ],
+     "comp": 39.37929944780634,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 351
+    },
+    {
+     "mrv": 4,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      16.4,
+      38.2
+     ],
+     "comp": 40.006164837434746,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 348
+    },
+    {
+     "mrv": 5,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "norte",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      26.26,
+      38.2
+     ],
+     "comp": 38.42965033668665,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 328
+    },
+    {
+     "mrv": 6,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "norte",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      30.16,
+      38.2
+     ],
+     "comp": 38.44631354239311,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 328
+    },
+    {
+     "mrv": 7,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      32.56,
+      38.2
+     ],
+     "comp": 38.43846543503006,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 325
+    },
+    {
+     "mrv": 8,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      36.46,
+      38.2
+     ],
+     "comp": 39.06495392292176,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 311
+    },
+    {
+     "mrv": 9,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "leste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      40.5,
+      42.5
+     ],
+     "comp": 46.32601024262719,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 467
+    },
+    {
+     "mrv": 10,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      40.5,
+      38.6
+     ],
+     "comp": 39.06277031906468,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 466
+    },
+    {
+     "mrv": 11,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      40.5,
+      36.2
+     ],
+     "comp": 36.693051453919715,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 504
+    },
+    {
+     "mrv": 12,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "leste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      41.1,
+      32.3
+     ],
+     "comp": 37.49161539597887,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 423
+    },
+    {
+     "mrv": 13,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      41.1,
+      29.9
+     ],
+     "comp": 30.61868751269394,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 407
+    },
+    {
+     "mrv": 14,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      41.1,
+      26
+     ],
+     "comp": 26.823385785541692,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 405
+    },
+    {
+     "mrv": 15,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "leste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      40.5,
+      23.6
+     ],
+     "comp": 29.946773198459965,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 498
+    },
+    {
+     "mrv": 16,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "leste",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      40.5,
+      19.7
+     ],
+     "comp": 23.179651097460457,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 518
+    },
+    {
+     "mrv": 17,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "leste",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      40.5,
+      17.3
+     ],
+     "comp": 21.17772945808875,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 472
+    },
+    {
+     "mrv": 18,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "leste",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      40.5,
+      13.4
+     ],
+     "comp": 18.131911785578488,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 515
+    },
+    {
+     "mrv": 19,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      41.1,
+      11
+     ],
+     "comp": 12.825522406514288,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 295
+    },
+    {
+     "mrv": 20,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "leste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      41.1,
+      7.1
+     ],
+     "comp": 20.316033692628096,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 395
+    },
+    {
+     "mrv": 21,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "recorte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      7.35,
+      13.799999999999999
+     ],
+     "comp": 25.07417446298083,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "media",
+     "esperados": 466
+    },
+    {
+     "mrv": 22,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      40.05,
+      36.4
+     ],
+     "comp": 38.25408769007568,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "alta",
+     "esperados": 590
+    },
+    {
+     "mrv": 23,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      39.3,
+      3.5
+     ],
+     "comp": 5.936499389370812,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "alta",
+     "esperados": 586
+    },
+    {
+     "mrv": 24,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      7.999999999999999,
+      13.2
+     ],
+     "comp": 19.288966405694218,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "alta",
+     "esperados": 588
+    },
+    {
+     "mrv": 25,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "oeste",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      6.199999999999999,
+      24.765
+     ],
+     "comp": 33.182110390992314,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 295
+    },
+    {
+     "mrv": 26,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      6.199999999999999,
+      28.665
+     ],
+     "comp": 32.76248540633021,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 296
+    },
+    {
+     "mrv": 27,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "oeste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      6.199999999999999,
+      31.065
+     ],
+     "comp": 42.02626857097832,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 296
+    },
+    {
+     "mrv": 28,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      6.199999999999999,
+      34.965
+     ],
+     "comp": 38.395956167284076,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 296
+    }
+   ],
+   "troncos": [
+    {
+     "entrada": "A",
+     "cor": "#2a78d6",
+     "parede": "norte",
+     "mesas": [
+      5,
+      3
+     ],
+     "pontos": [
+      [
+       22.065,
+       0
+      ],
+      [
+       26.26,
+       38.2
+      ],
+      [
+       12.5,
+       38.2
+      ]
+     ],
+     "comp": 52.189650336686654
+    },
+    {
+     "entrada": "A",
+     "cor": "#2a78d6",
+     "parede": "leste",
+     "mesas": [
+      20,
+      15,
+      12,
+      9
+     ],
+     "pontos": [
+      [
+       22.065,
+       0
+      ],
+      [
+       41.1,
+       7.1
+      ],
+      [
+       40.5,
+       23.6
+      ],
+      [
+       41.1,
+       32.3
+      ],
+      [
+       40.5,
+       42.5
+      ]
+     ],
+     "comp": 55.76523611141353
+    },
+    {
+     "entrada": "A",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "mesas": [
+      24,
+      26,
+      28
+     ],
+     "pontos": [
+      [
+       22.065,
+       0
+      ],
+      [
+       7.999999999999999,
+       13.2
+      ],
+      [
+       6.199999999999999,
+       28.665
+      ],
+      [
+       6.199999999999999,
+       34.965
+      ]
+     ],
+     "comp": 41.15836668316156
+    },
+    {
+     "entrada": "B",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "mesas": [
+      22,
+      7,
+      8,
+      4,
+      1
+     ],
+     "pontos": [
+      [
+       28.285,
+       0
+      ],
+      [
+       40.05,
+       36.4
+      ],
+      [
+       32.56,
+       38.2
+      ],
+      [
+       36.46,
+       38.2
+      ],
+      [
+       16.4,
+       38.2
+      ],
+      [
+       1.605,
+       38.2
+      ]
+     ],
+     "comp": 84.71234024987145
+    },
+    {
+     "entrada": "B",
+     "cor": "#e08a00",
+     "parede": "leste",
+     "mesas": [
+      18,
+      17,
+      16
+     ],
+     "pontos": [
+      [
+       28.285,
+       0
+      ],
+      [
+       40.5,
+       13.4
+      ],
+      [
+       40.5,
+       17.3
+      ],
+      [
+       40.5,
+       19.7
+      ]
+     ],
+     "comp": 24.431911785578485
+    },
+    {
+     "entrada": "B",
+     "cor": "#e08a00",
+     "parede": "recorte",
+     "mesas": [
+      21
+     ],
+     "pontos": [
+      [
+       28.285,
+       0
+      ],
+      [
+       7.35,
+       13.799999999999999
+      ]
+     ],
+     "comp": 25.07417446298083
+    },
+    {
+     "entrada": "B",
+     "cor": "#e08a00",
+     "parede": "oeste",
+     "mesas": [
+      25
+     ],
+     "pontos": [
+      [
+       28.285,
+       0
+      ],
+      [
+       6.199999999999999,
+       24.765
+      ]
+     ],
+     "comp": 33.182110390992314
+    },
+    {
+     "entrada": "C",
+     "cor": "#c2185b",
+     "parede": "norte",
+     "mesas": [
+      6,
+      2
+     ],
+     "pontos": [
+      [
+       34.504999999999995,
+       0
+      ],
+      [
+       30.16,
+       38.2
+      ],
+      [
+       5.505,
+       38.2
+      ]
+     ],
+     "comp": 63.101313542393115
+    },
+    {
+     "entrada": "C",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "mesas": [
+      23,
+      19,
+      14,
+      13,
+      11,
+      10
+     ],
+     "pontos": [
+      [
+       34.504999999999995,
+       0
+      ],
+      [
+       39.3,
+       3.5
+      ],
+      [
+       41.1,
+       11
+      ],
+      [
+       41.1,
+       26
+      ],
+      [
+       41.1,
+       29.9
+      ],
+      [
+       40.5,
+       36.2
+      ],
+      [
+       40.5,
+       38.6
+      ]
+     ],
+     "comp": 41.277982401598976
+    },
+    {
+     "entrada": "C",
+     "cor": "#c2185b",
+     "parede": "oeste",
+     "mesas": [
+      27
+     ],
+     "pontos": [
+      [
+       34.504999999999995,
+       0
+      ],
+      [
+       6.199999999999999,
+       31.065
+      ]
+     ],
+     "comp": 42.02626857097832
+    }
+   ],
+   "porEntrada": [
+    {
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "mesas": [
+      3,
+      5,
+      9,
+      12,
+      15,
+      20,
+      24,
+      26,
+      28
+     ],
+     "esperados": 3642,
+     "capRing3": 445,
+     "paredes": [
+      "norte",
+      "leste",
+      "oeste"
+     ],
+     "fitaPorMesa_m": 302.3367902934956,
+     "fitaTroncos_m": 149.11325313126173,
+     "nTroncos": 3,
+     "distMedia_m": 32.74667677819286
+    },
+    {
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "mesas": [
+      1,
+      4,
+      7,
+      8,
+      16,
+      17,
+      18,
+      21,
+      22,
+      25
+     ],
+     "esperados": 4215,
+     "capRing3": 513,
+     "paredes": [
+      "norte",
+      "leste",
+      "recorte",
+      "oeste"
+     ],
+     "fitaPorMesa_m": 323.10390971888086,
+     "fitaTroncos_m": 167.40053688942308,
+     "nTroncos": 4,
+     "distMedia_m": 31.179342060194937
+    },
+    {
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "mesas": [
+      2,
+      6,
+      10,
+      11,
+      13,
+      14,
+      19,
+      23,
+      27
+     ],
+     "esperados": 3642,
+     "capRing3": 445,
+     "paredes": [
+      "norte",
+      "leste",
+      "oeste"
+     ],
+     "fitaPorMesa_m": 280.39331632130177,
+     "fitaTroncos_m": 146.40556451497042,
+     "nTroncos": 3,
+     "distMedia_m": 30.02756732819082
+    }
+   ],
+   "cruzEntre": 103,
+   "paresEntre": [
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     1,
+     9
+    ],
+    [
+     1,
+     12
+    ],
+    [
+     1,
+     15
+    ],
+    [
+     1,
+     20
+    ],
+    [
+     1,
+     27
+    ],
+    [
+     1,
+     28
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     2,
+     4
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     8
+    ],
+    [
+     2,
+     9
+    ],
+    [
+     2,
+     12
+    ],
+    [
+     2,
+     15
+    ],
+    [
+     2,
+     16
+    ],
+    [
+     2,
+     17
+    ],
+    [
+     2,
+     18
+    ],
+    [
+     2,
+     20
+    ],
+    [
+     2,
+     22
+    ],
+    [
+     3,
+     21
+    ],
+    [
+     3,
+     25
+    ],
+    [
+     3,
+     27
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     4,
+     9
+    ],
+    [
+     4,
+     12
+    ],
+    [
+     4,
+     15
+    ],
+    [
+     4,
+     20
+    ],
+    [
+     4,
+     27
+    ],
+    [
+     5,
+     21
+    ],
+    [
+     5,
+     25
+    ],
+    [
+     5,
+     27
+    ],
+    [
+     6,
+     7
+    ],
+    [
+     6,
+     8
+    ],
+    [
+     6,
+     9
+    ],
+    [
+     6,
+     12
+    ],
+    [
+     6,
+     15
+    ],
+    [
+     6,
+     16
+    ],
+    [
+     6,
+     17
+    ],
+    [
+     6,
+     18
+    ],
+    [
+     6,
+     20
+    ],
+    [
+     6,
+     22
+    ],
+    [
+     7,
+     9
+    ],
+    [
+     7,
+     12
+    ],
+    [
+     7,
+     15
+    ],
+    [
+     7,
+     20
+    ],
+    [
+     7,
+     27
+    ],
+    [
+     8,
+     9
+    ],
+    [
+     8,
+     12
+    ],
+    [
+     8,
+     15
+    ],
+    [
+     8,
+     20
+    ],
+    [
+     8,
+     27
+    ],
+    [
+     9,
+     21
+    ],
+    [
+     9,
+     25
+    ],
+    [
+     9,
+     27
+    ],
+    [
+     10,
+     12
+    ],
+    [
+     10,
+     15
+    ],
+    [
+     10,
+     16
+    ],
+    [
+     10,
+     17
+    ],
+    [
+     10,
+     18
+    ],
+    [
+     10,
+     20
+    ],
+    [
+     11,
+     12
+    ],
+    [
+     11,
+     15
+    ],
+    [
+     11,
+     16
+    ],
+    [
+     11,
+     17
+    ],
+    [
+     11,
+     18
+    ],
+    [
+     11,
+     20
+    ],
+    [
+     12,
+     21
+    ],
+    [
+     12,
+     22
+    ],
+    [
+     12,
+     25
+    ],
+    [
+     12,
+     27
+    ],
+    [
+     13,
+     15
+    ],
+    [
+     13,
+     16
+    ],
+    [
+     13,
+     17
+    ],
+    [
+     13,
+     18
+    ],
+    [
+     13,
+     20
+    ],
+    [
+     14,
+     15
+    ],
+    [
+     14,
+     16
+    ],
+    [
+     14,
+     17
+    ],
+    [
+     14,
+     18
+    ],
+    [
+     14,
+     20
+    ],
+    [
+     15,
+     21
+    ],
+    [
+     15,
+     22
+    ],
+    [
+     15,
+     25
+    ],
+    [
+     15,
+     27
+    ],
+    [
+     16,
+     20
+    ],
+    [
+     16,
+     27
+    ],
+    [
+     17,
+     20
+    ],
+    [
+     17,
+     27
+    ],
+    [
+     18,
+     20
+    ],
+    [
+     18,
+     27
+    ],
+    [
+     19,
+     20
+    ],
+    [
+     20,
+     21
+    ],
+    [
+     20,
+     22
+    ],
+    [
+     20,
+     25
+    ],
+    [
+     20,
+     27
+    ],
+    [
+     21,
+     26
+    ],
+    [
+     21,
+     28
+    ],
+    [
+     22,
+     27
+    ],
+    [
+     25,
+     26
+    ],
+    [
+     25,
+     28
+    ],
+    [
+     27,
+     28
+    ]
+   ],
+   "cruzSaida": 102,
+   "cruzTroncos": 18,
+   "fitaPorMesa_m": 905.8340163336785,
+   "fitaTroncos_m": 462.9193545356552,
+   "desequilibrio": 1.157331136738056
+  },
+  "geografica": {
+   "rotulo": "atribuição por parede (oeste A, norte B, leste C)",
+   "linhas": [
+    {
+     "mrv": 1,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      1.605,
+      38.2
+     ],
+     "comp": 46.59466063831778,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 375
+    },
+    {
+     "mrv": 2,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      5.505,
+      38.2
+     ],
+     "comp": 44.4766050862698,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 355
+    },
+    {
+     "mrv": 3,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      12.5,
+      38.2
+     ],
+     "comp": 41.33287099875837,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 351
+    },
+    {
+     "mrv": 4,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      16.4,
+      38.2
+     ],
+     "comp": 40.006164837434746,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 348
+    },
+    {
+     "mrv": 5,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      26.26,
+      38.2
+     ],
+     "comp": 38.253635448150554,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 328
+    },
+    {
+     "mrv": 6,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      30.16,
+      38.2
+     ],
+     "comp": 38.24598835172129,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 328
+    },
+    {
+     "mrv": 7,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      32.56,
+      38.2
+     ],
+     "comp": 38.43846543503006,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 325
+    },
+    {
+     "mrv": 8,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      36.46,
+      38.2
+     ],
+     "comp": 39.06495392292176,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 311
+    },
+    {
+     "mrv": 9,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      40.5,
+      42.5
+     ],
+     "comp": 42.92074119816665,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 467
+    },
+    {
+     "mrv": 10,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      40.5,
+      38.6
+     ],
+     "comp": 39.06277031906468,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 466
+    },
+    {
+     "mrv": 11,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      40.5,
+      36.2
+     ],
+     "comp": 36.693051453919715,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 504
+    },
+    {
+     "mrv": 12,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      41.1,
+      32.3
+     ],
+     "comp": 32.966407523416926,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 423
+    },
+    {
+     "mrv": 13,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      41.1,
+      29.9
+     ],
+     "comp": 30.61868751269394,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 407
+    },
+    {
+     "mrv": 14,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      41.1,
+      26
+     ],
+     "comp": 26.823385785541692,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 405
+    },
+    {
+     "mrv": 15,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      40.5,
+      23.6
+     ],
+     "comp": 24.349538496653278,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 498
+    },
+    {
+     "mrv": 16,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      40.5,
+      19.7
+     ],
+     "comp": 20.591989340517834,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 518
+    },
+    {
+     "mrv": 17,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      40.5,
+      17.3
+     ],
+     "comp": 18.30928794355477,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 472
+    },
+    {
+     "mrv": 18,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      40.5,
+      13.4
+     ],
+     "comp": 14.679919107406556,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "media",
+     "esperados": 515
+    },
+    {
+     "mrv": 19,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      41.1,
+      11
+     ],
+     "comp": 12.825522406514288,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 295
+    },
+    {
+     "mrv": 20,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      41.1,
+      7.1
+     ],
+     "comp": 9.690408918100417,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 395
+    },
+    {
+     "mrv": 21,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "recorte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      7.35,
+      13.799999999999999
+     ],
+     "comp": 25.07417446298083,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "media",
+     "esperados": 466
+    },
+    {
+     "mrv": 22,
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "a": [
+      28.285,
+      0
+     ],
+     "b": [
+      40.05,
+      36.4
+     ],
+     "comp": 38.25408769007568,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "alta",
+     "esperados": 590
+    },
+    {
+     "mrv": 23,
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "a": [
+      34.504999999999995,
+      0
+     ],
+     "b": [
+      39.3,
+      3.5
+     ],
+     "comp": 5.936499389370812,
+     "saida": "S8",
+     "bSaida": [
+      42.72,
+      0
+     ],
+     "classe": "alta",
+     "esperados": 586
+    },
+    {
+     "mrv": 24,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      7.999999999999999,
+      13.2
+     ],
+     "comp": 19.288966405694218,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "alta",
+     "esperados": 588
+    },
+    {
+     "mrv": 25,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      6.199999999999999,
+      24.765
+     ],
+     "comp": 29.410940991406584,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 295
+    },
+    {
+     "mrv": 26,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      6.199999999999999,
+      28.665
+     ],
+     "comp": 32.76248540633021,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 296
+    },
+    {
+     "mrv": 27,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      6.199999999999999,
+      31.065
+     ],
+     "comp": 34.881692189456636,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 296
+    },
+    {
+     "mrv": 28,
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "a": [
+      22.065,
+      0
+     ],
+     "b": [
+      6.199999999999999,
+      34.965
+     ],
+     "comp": 38.395956167284076,
+     "saida": "S2",
+     "bSaida": [
+      13.85,
+      0
+     ],
+     "classe": "baixa",
+     "esperados": 296
+    }
+   ],
+   "troncos": [
+    {
+     "entrada": "A",
+     "cor": "#2a78d6",
+     "parede": "oeste",
+     "mesas": [
+      24,
+      25,
+      26,
+      27,
+      28
+     ],
+     "pontos": [
+      [
+       22.065,
+       0
+      ],
+      [
+       7.999999999999999,
+       13.2
+      ],
+      [
+       6.199999999999999,
+       24.765
+      ],
+      [
+       6.199999999999999,
+       28.665
+      ],
+      [
+       6.199999999999999,
+       31.065
+      ],
+      [
+       6.199999999999999,
+       34.965
+      ]
+     ],
+     "comp": 41.19320602217509
+    },
+    {
+     "entrada": "B",
+     "cor": "#e08a00",
+     "parede": "norte",
+     "mesas": [
+      6,
+      5,
+      22,
+      7,
+      8,
+      4,
+      3,
+      2,
+      1
+     ],
+     "pontos": [
+      [
+       28.285,
+       0
+      ],
+      [
+       30.16,
+       38.2
+      ],
+      [
+       26.26,
+       38.2
+      ],
+      [
+       40.05,
+       36.4
+      ],
+      [
+       32.56,
+       38.2
+      ],
+      [
+       36.46,
+       38.2
+      ],
+      [
+       16.4,
+       38.2
+      ],
+      [
+       12.5,
+       38.2
+      ],
+      [
+       5.505,
+       38.2
+      ],
+      [
+       1.605,
+       38.2
+      ]
+     ],
+     "comp": 102.51122117324175
+    },
+    {
+     "entrada": "B",
+     "cor": "#e08a00",
+     "parede": "recorte",
+     "mesas": [
+      21
+     ],
+     "pontos": [
+      [
+       28.285,
+       0
+      ],
+      [
+       7.35,
+       13.799999999999999
+      ]
+     ],
+     "comp": 25.07417446298083
+    },
+    {
+     "entrada": "C",
+     "cor": "#c2185b",
+     "parede": "leste",
+     "mesas": [
+      23,
+      20,
+      19,
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9
+     ],
+     "pontos": [
+      [
+       34.504999999999995,
+       0
+      ],
+      [
+       39.3,
+       3.5
+      ],
+      [
+       41.1,
+       7.1
+      ],
+      [
+       41.1,
+       11
+      ],
+      [
+       40.5,
+       13.4
+      ],
+      [
+       40.5,
+       17.3
+      ],
+      [
+       40.5,
+       19.7
+      ],
+      [
+       40.5,
+       23.6
+      ],
+      [
+       41.1,
+       26
+      ],
+      [
+       41.1,
+       29.9
+      ],
+      [
+       41.1,
+       32.3
+      ],
+      [
+       40.5,
+       36.2
+      ],
+      [
+       40.5,
+       38.6
+      ],
+      [
+       40.5,
+       42.5
+      ]
+     ],
+     "comp": 45.5550324310014
+    }
+   ],
+   "porEntrada": [
+    {
+     "entrada": "A",
+     "porta": "S4",
+     "cor": "#2a78d6",
+     "mesas": [
+      24,
+      25,
+      26,
+      27,
+      28
+     ],
+     "esperados": 1771,
+     "capRing3": 445,
+     "paredes": [
+      "oeste"
+     ],
+     "fitaPorMesa_m": 154.74004116017173,
+     "fitaTroncos_m": 41.19320602217509,
+     "nTroncos": 1,
+     "distMedia_m": 29.026549651542705
+    },
+    {
+     "entrada": "B",
+     "porta": "S5",
+     "cor": "#e08a00",
+     "mesas": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      21,
+      22
+     ],
+     "esperados": 3777,
+     "capRing3": 513,
+     "paredes": [
+      "norte",
+      "recorte"
+     ],
+     "fitaPorMesa_m": 389.7416068716608,
+     "fitaTroncos_m": 127.58539563622259,
+     "nTroncos": 2,
+     "distMedia_m": 38.57035509892813
+    },
+    {
+     "entrada": "C",
+     "porta": "S6",
+     "cor": "#c2185b",
+     "mesas": [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      23
+     ],
+     "esperados": 5951,
+     "capRing3": 445,
+     "paredes": [
+      "leste"
+     ],
+     "fitaPorMesa_m": 315.46820939492153,
+     "fitaTroncos_m": 45.5550324310014,
+     "nTroncos": 1,
+     "distMedia_m": 24.213660671879715
+    }
+   ],
+   "cruzEntre": 6,
+   "paresEntre": [
+    [
+     1,
+     28
+    ],
+    [
+     9,
+     22
+    ],
+    [
+     21,
+     25
+    ],
+    [
+     21,
+     26
+    ],
+    [
+     21,
+     27
+    ],
+    [
+     21,
+     28
+    ]
+   ],
+   "cruzSaida": 102,
+   "cruzTroncos": 1,
+   "fitaPorMesa_m": 859.9498574267543,
+   "fitaTroncos_m": 214.33363408939906,
+   "desequilibrio": 3.360248447204969
+  }
+ },
+ "planta": {
+  "salao": {
+   "largura": 50.3,
+   "altura": 44.4,
+   "recorte": [
+    0,
+    0,
+    7.8,
+    7
+   ],
+   "contorno": [
+    [
+     7.8,
+     0
+    ],
+    [
+     50.3,
+     0
+    ],
+    [
+     50.3,
+     44.4
+    ],
+    [
+     0,
+     44.4
+    ],
+    [
+     0,
+     7
+    ],
+    [
+     7.8,
+     7
+    ]
+   ]
+  },
+  "modulo": {
+   "prof": 4.1,
+   "larg": 0.9,
+   "urna": 0.9,
+   "mesa": [
+    1.7,
+    0.8
+   ],
+   "eleitor": 0.9,
+   "passagem": 0.6,
+   "assento": 0.75,
+   "corredor": [
+    2.5,
+    3
+   ],
+   "entre_pares": [
+    1,
+    1.5
+   ]
+  },
+  "portas": [
+   {
+    "id": "N1",
+    "rds": "2.13",
+    "face": "norte",
+    "estado": "fechada",
+    "x1": 7.41,
+    "y1": 44.4,
+    "x2": 9.44,
+    "y2": 44.4,
+    "larg": 2.03
+   },
+   {
+    "id": "N2",
+    "rds": "2.14/2.15",
+    "face": "norte",
+    "estado": "catering",
+    "x1": 20.66,
+    "y1": 44.4,
+    "x2": 24.22,
+    "y2": 44.4,
+    "larg": 3.56
+   },
+   {
+    "id": "L1",
+    "rds": "2.16/2.17",
+    "face": "leste",
+    "estado": "emergencia",
+    "x1": 50.3,
+    "y1": 38.51,
+    "x2": 50.3,
+    "y2": 41.57,
+    "larg": 3.06
+   },
+   {
+    "id": "L2",
+    "rds": "2.18/2.19",
+    "face": "leste",
+    "estado": "emergencia",
+    "x1": 50.3,
+    "y1": 26.66,
+    "x2": 50.3,
+    "y2": 29.72,
+    "larg": 3.06
+   },
+   {
+    "id": "L3",
+    "rds": "2.20/2.21",
+    "face": "leste",
+    "estado": "emergencia",
+    "x1": 50.3,
+    "y1": 14.8,
+    "x2": 50.3,
+    "y2": 17.87,
+    "larg": 3.07
+   },
+   {
+    "id": "L4",
+    "rds": "2.22/2.23",
+    "face": "leste",
+    "estado": "emergencia",
+    "x1": 50.3,
+    "y1": 2.95,
+    "x2": 50.3,
+    "y2": 6.01,
+    "larg": 3.06
+   },
+   {
+    "id": "S1",
+    "rds": "carga oeste",
+    "face": "sul",
+    "estado": "livre",
+    "x1": 7.83,
+    "y1": 0,
+    "x2": 11.45,
+    "y2": 0,
+    "larg": 3.62
+   },
+   {
+    "id": "S2",
+    "rds": "sem codigo RDS",
+    "face": "sul",
+    "estado": "saida",
+    "x1": 13.25,
+    "y1": 0,
+    "x2": 14.45,
+    "y2": 0,
+    "larg": 1.2
+   },
+   {
+    "id": "S3",
+    "rds": "2.7",
+    "face": "sul",
+    "estado": "livre",
+    "x1": 17.22,
+    "y1": 0,
+    "x2": 18.47,
+    "y2": 0,
+    "larg": 1.25
+   },
+   {
+    "id": "S4",
+    "rds": "2.5/2.6",
+    "face": "sul",
+    "estado": "entrada",
+    "x1": 19.1,
+    "y1": 0,
+    "x2": 25.03,
+    "y2": 0,
+    "larg": 5.93
+   },
+   {
+    "id": "S5",
+    "rds": "2.4",
+    "face": "sul",
+    "estado": "entrada",
+    "x1": 25.32,
+    "y1": 0,
+    "x2": 31.25,
+    "y2": 0,
+    "larg": 5.93
+   },
+   {
+    "id": "S6",
+    "rds": "2.2/2.3",
+    "face": "sul",
+    "estado": "entrada",
+    "x1": 31.54,
+    "y1": 0,
+    "x2": 37.47,
+    "y2": 0,
+    "larg": 5.93
+   },
+   {
+    "id": "S7",
+    "rds": "2.1",
+    "face": "sul",
+    "estado": "livre",
+    "x1": 38.09,
+    "y1": 0,
+    "x2": 39.36,
+    "y2": 0,
+    "larg": 1.27
+   },
+   {
+    "id": "S8",
+    "rds": "sem codigo RDS",
+    "face": "sul",
+    "estado": "saida",
+    "x1": 42.12,
+    "y1": 0,
+    "x2": 43.32,
+    "y2": 0,
+    "larg": 1.2
+   },
+   {
+    "id": "S9",
+    "rds": "carga leste",
+    "face": "sul",
+    "estado": "livre",
+    "x1": 45.12,
+    "y1": 0,
+    "x2": 48.75,
+    "y2": 0,
+    "larg": 3.63
+   },
+   {
+    "id": "O1",
+    "rds": "acesso Hall 1",
+    "face": "oeste",
+    "estado": "livre",
+    "x1": 0,
+    "y1": 36.8,
+    "x2": 0,
+    "y2": 38.5,
+    "larg": 1.7
+   },
+   {
+    "id": "O2",
+    "rds": "2.10/2.11",
+    "face": "oeste",
+    "estado": "livre",
+    "x1": 0,
+    "y1": 19.36,
+    "x2": 0,
+    "y2": 22.43,
+    "larg": 3.07
+   },
+   {
+    "id": "R1",
+    "rds": "2.8/2.9",
+    "face": "recorte_v",
+    "estado": "livre",
+    "x1": 7.8,
+    "y1": 3,
+    "x2": 7.8,
+    "y2": 6.5,
+    "larg": 3.5
+   }
+  ],
+  "zonasProtegidas": [
+   {
+    "rect": [
+     47.3,
+     0,
+     50.3,
+     44.4
+    ],
+    "rotulo": "fachada leste · faixa protegida de 3 m"
+   },
+   {
+    "rect": [
+     14.22,
+     0,
+     21.47,
+     3
+    ],
+    "rotulo": "S3 · recuo de emergência"
+   },
+   {
+    "rect": [
+     35.09,
+     0,
+     42.36,
+     3
+    ],
+    "rotulo": "S7 · recuo de emergência"
+   },
+   {
+    "rect": [
+     7.8,
+     0,
+     10.8,
+     7
+    ],
+    "rotulo": "R1 · recuo de emergência"
+   }
+  ],
+  "mesas": [
+   {
+    "mrv": 1,
+    "x": 1.605,
+    "y": 44.4,
+    "rot": 270,
+    "lado": 1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     1.605,
+     40
+    ],
+    "cauda": [
+     1.605,
+     38.2
+    ],
+    "L": 3,
+    "esperados": 375,
+    "secao": 511,
+    "agregada": 1100,
+    "entradaDecisao": "B",
+    "entradaGeo": "B",
+    "saida": "S2"
+   },
+   {
+    "mrv": 2,
+    "x": 5.505,
+    "y": 44.4,
+    "rot": 270,
+    "lado": -1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     5.505,
+     40
+    ],
+    "cauda": [
+     5.505,
+     38.2
+    ],
+    "L": 3,
+    "esperados": 355,
+    "secao": 512,
+    "agregada": 2855,
+    "entradaDecisao": "C",
+    "entradaGeo": "B",
+    "saida": "S2"
+   },
+   {
+    "mrv": 3,
+    "x": 12.5,
+    "y": 44.4,
+    "rot": 270,
+    "lado": 1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     12.5,
+     40
+    ],
+    "cauda": [
+     12.5,
+     38.2
+    ],
+    "L": 3,
+    "esperados": 351,
+    "secao": 513,
+    "agregada": 1105,
+    "entradaDecisao": "A",
+    "entradaGeo": "B",
+    "saida": "S2"
+   },
+   {
+    "mrv": 4,
+    "x": 16.4,
+    "y": 44.4,
+    "rot": 270,
+    "lado": -1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     16.4,
+     40
+    ],
+    "cauda": [
+     16.4,
+     38.2
+    ],
+    "L": 3,
+    "esperados": 348,
+    "secao": 517,
+    "agregada": 1292,
+    "entradaDecisao": "B",
+    "entradaGeo": "B",
+    "saida": "S2"
+   },
+   {
+    "mrv": 5,
+    "x": 26.26,
+    "y": 44.4,
+    "rot": 270,
+    "lado": 1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     26.26,
+     40
+    ],
+    "cauda": [
+     26.26,
+     38.2
+    ],
+    "L": 3,
+    "esperados": 328,
+    "secao": 1160,
+    "agregada": 3845,
+    "entradaDecisao": "A",
+    "entradaGeo": "B",
+    "saida": "S2"
+   },
+   {
+    "mrv": 6,
+    "x": 30.16,
+    "y": 44.4,
+    "rot": 270,
+    "lado": -1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     30.16,
+     40
+    ],
+    "cauda": [
+     30.16,
+     38.2
+    ],
+    "L": 3,
+    "esperados": 328,
+    "secao": 1352,
+    "agregada": 522,
+    "entradaDecisao": "C",
+    "entradaGeo": "B",
+    "saida": "S8"
+   },
+   {
+    "mrv": 7,
+    "x": 32.56,
+    "y": 44.4,
+    "rot": 270,
+    "lado": 1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     32.56,
+     40
+    ],
+    "cauda": [
+     32.56,
+     38.2
+    ],
+    "L": 3,
+    "esperados": 325,
+    "secao": 3054,
+    "agregada": 1099,
+    "entradaDecisao": "B",
+    "entradaGeo": "B",
+    "saida": "S8"
+   },
+   {
+    "mrv": 8,
+    "x": 36.46,
+    "y": 44.4,
+    "rot": 270,
+    "lado": -1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     36.46,
+     40
+    ],
+    "cauda": [
+     36.46,
+     38.2
+    ],
+    "L": 3,
+    "esperados": 311,
+    "secao": 3078,
+    "agregada": 2847,
+    "entradaDecisao": "B",
+    "entradaGeo": "B",
+    "saida": "S8"
+   },
+   {
+    "mrv": 9,
+    "x": 47.3,
+    "y": 42.5,
+    "rot": 180,
+    "lado": 1,
+    "classe": "media",
+    "cor": "#d4a017",
+    "frente": [
+     42.9,
+     42.5
+    ],
+    "cauda": [
+     40.5,
+     42.5
+    ],
+    "L": 4,
+    "esperados": 467,
+    "secao": 3108,
+    "agregada": 3422,
+    "entradaDecisao": "A",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 10,
+    "x": 47.3,
+    "y": 38.6,
+    "rot": 180,
+    "lado": -1,
+    "classe": "media",
+    "cor": "#d4a017",
+    "frente": [
+     42.9,
+     38.6
+    ],
+    "cauda": [
+     40.5,
+     38.6
+    ],
+    "L": 4,
+    "esperados": 466,
+    "secao": 3142,
+    "agregada": 1278,
+    "entradaDecisao": "C",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 11,
+    "x": 47.3,
+    "y": 36.2,
+    "rot": 180,
+    "lado": 1,
+    "classe": "media",
+    "cor": "#d4a017",
+    "frente": [
+     42.9,
+     36.2
+    ],
+    "cauda": [
+     40.5,
+     36.2
+    ],
+    "L": 4,
+    "esperados": 504,
+    "secao": 3161,
+    "agregada": 3307,
+    "entradaDecisao": "C",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 12,
+    "x": 47.3,
+    "y": 32.3,
+    "rot": 180,
+    "lado": -1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     42.9,
+     32.3
+    ],
+    "cauda": [
+     41.1,
+     32.3
+    ],
+    "L": 3,
+    "esperados": 423,
+    "secao": 3179,
+    "agregada": 530,
+    "entradaDecisao": "A",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 13,
+    "x": 47.3,
+    "y": 29.9,
+    "rot": 180,
+    "lado": 1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     42.9,
+     29.9
+    ],
+    "cauda": [
+     41.1,
+     29.9
+    ],
+    "L": 3,
+    "esperados": 407,
+    "secao": 3216,
+    "agregada": 527,
+    "entradaDecisao": "C",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 14,
+    "x": 47.3,
+    "y": 26,
+    "rot": 180,
+    "lado": -1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     42.9,
+     26
+    ],
+    "cauda": [
+     41.1,
+     26
+    ],
+    "L": 3,
+    "esperados": 405,
+    "secao": 3229,
+    "agregada": 3821,
+    "entradaDecisao": "C",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 15,
+    "x": 47.3,
+    "y": 23.6,
+    "rot": 180,
+    "lado": 1,
+    "classe": "media",
+    "cor": "#d4a017",
+    "frente": [
+     42.9,
+     23.6
+    ],
+    "cauda": [
+     40.5,
+     23.6
+    ],
+    "L": 4,
+    "esperados": 498,
+    "secao": 3245,
+    "agregada": 519,
+    "entradaDecisao": "A",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 16,
+    "x": 47.3,
+    "y": 19.7,
+    "rot": 180,
+    "lado": -1,
+    "classe": "media",
+    "cor": "#d4a017",
+    "frente": [
+     42.9,
+     19.7
+    ],
+    "cauda": [
+     40.5,
+     19.7
+    ],
+    "L": 4,
+    "esperados": 518,
+    "secao": 3302,
+    "agregada": 3181,
+    "entradaDecisao": "B",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 17,
+    "x": 47.3,
+    "y": 17.3,
+    "rot": 180,
+    "lado": 1,
+    "classe": "media",
+    "cor": "#d4a017",
+    "frente": [
+     42.9,
+     17.3
+    ],
+    "cauda": [
+     40.5,
+     17.3
+    ],
+    "L": 4,
+    "esperados": 472,
+    "secao": 3305,
+    "agregada": 521,
+    "entradaDecisao": "B",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 18,
+    "x": 47.3,
+    "y": 13.4,
+    "rot": 180,
+    "lado": -1,
+    "classe": "media",
+    "cor": "#d4a017",
+    "frente": [
+     42.9,
+     13.4
+    ],
+    "cauda": [
+     40.5,
+     13.4
+    ],
+    "L": 4,
+    "esperados": 515,
+    "secao": 3306,
+    "agregada": 518,
+    "entradaDecisao": "B",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 19,
+    "x": 47.3,
+    "y": 11,
+    "rot": 180,
+    "lado": 1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     42.9,
+     11
+    ],
+    "cauda": [
+     41.1,
+     11
+    ],
+    "L": 3,
+    "esperados": 295,
+    "secao": 3308,
+    "agregada": null,
+    "entradaDecisao": "C",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 20,
+    "x": 47.3,
+    "y": 7.1,
+    "rot": 180,
+    "lado": -1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     42.9,
+     7.1
+    ],
+    "cauda": [
+     41.1,
+     7.1
+    ],
+    "L": 3,
+    "esperados": 395,
+    "secao": 3309,
+    "agregada": 1314,
+    "entradaDecisao": "A",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 21,
+    "x": 7.35,
+    "y": 7,
+    "rot": 90,
+    "lado": 1,
+    "classe": "media",
+    "cor": "#d4a017",
+    "frente": [
+     7.35,
+     11.399999999999999
+    ],
+    "cauda": [
+     7.35,
+     13.799999999999999
+    ],
+    "L": 4,
+    "esperados": 466,
+    "secao": 3311,
+    "agregada": 3913,
+    "entradaDecisao": "B",
+    "entradaGeo": "B",
+    "saida": "S2"
+   },
+   {
+    "mrv": 22,
+    "x": 40.05,
+    "y": 44.4,
+    "rot": 270,
+    "lado": -1,
+    "classe": "alta",
+    "cor": "#c0392b",
+    "frente": [
+     40.05,
+     40
+    ],
+    "cauda": [
+     40.05,
+     36.4
+    ],
+    "L": 6,
+    "esperados": 590,
+    "secao": 3313,
+    "agregada": 3889,
+    "entradaDecisao": "B",
+    "entradaGeo": "B",
+    "saida": "S8"
+   },
+   {
+    "mrv": 23,
+    "x": 47.3,
+    "y": 3.5,
+    "rot": 180,
+    "lado": 1,
+    "classe": "alta",
+    "cor": "#c0392b",
+    "frente": [
+     42.9,
+     3.5
+    ],
+    "cauda": [
+     39.3,
+     3.5
+    ],
+    "L": 6,
+    "esperados": 586,
+    "secao": 3315,
+    "agregada": 3778,
+    "entradaDecisao": "C",
+    "entradaGeo": "C",
+    "saida": "S8"
+   },
+   {
+    "mrv": 24,
+    "x": 0,
+    "y": 13.2,
+    "rot": 0,
+    "lado": -1,
+    "classe": "alta",
+    "cor": "#c0392b",
+    "frente": [
+     4.3999999999999995,
+     13.2
+    ],
+    "cauda": [
+     7.999999999999999,
+     13.2
+    ],
+    "L": 6,
+    "esperados": 588,
+    "secao": 3322,
+    "agregada": 3752,
+    "entradaDecisao": "A",
+    "entradaGeo": "A",
+    "saida": "S2"
+   },
+   {
+    "mrv": 25,
+    "x": 0,
+    "y": 24.765,
+    "rot": 0,
+    "lado": 1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     4.3999999999999995,
+     24.765
+    ],
+    "cauda": [
+     6.199999999999999,
+     24.765
+    ],
+    "L": 3,
+    "esperados": 295,
+    "secao": 3442,
+    "agregada": null,
+    "entradaDecisao": "B",
+    "entradaGeo": "A",
+    "saida": "S2"
+   },
+   {
+    "mrv": 26,
+    "x": 0,
+    "y": 28.665,
+    "rot": 0,
+    "lado": -1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     4.3999999999999995,
+     28.665
+    ],
+    "cauda": [
+     6.199999999999999,
+     28.665
+    ],
+    "L": 3,
+    "esperados": 296,
+    "secao": 3688,
+    "agregada": null,
+    "entradaDecisao": "A",
+    "entradaGeo": "A",
+    "saida": "S2"
+   },
+   {
+    "mrv": 27,
+    "x": 0,
+    "y": 31.065,
+    "rot": 0,
+    "lado": 1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     4.3999999999999995,
+     31.065
+    ],
+    "cauda": [
+     6.199999999999999,
+     31.065
+    ],
+    "L": 3,
+    "esperados": 296,
+    "secao": 3832,
+    "agregada": null,
+    "entradaDecisao": "C",
+    "entradaGeo": "A",
+    "saida": "S2"
+   },
+   {
+    "mrv": 28,
+    "x": 0,
+    "y": 34.965,
+    "rot": 0,
+    "lado": -1,
+    "classe": "baixa",
+    "cor": "#1e8449",
+    "frente": [
+     4.3999999999999995,
+     34.965
+    ],
+    "cauda": [
+     6.199999999999999,
+     34.965
+    ],
+    "L": 3,
+    "esperados": 296,
+    "secao": 3862,
+    "agregada": null,
+    "entradaDecisao": "A",
+    "entradaGeo": "A",
+    "saida": "S2"
+   }
+  ],
+  "entradas": [
+   {
+    "letra": "A",
+    "porta": "S4",
+    "centro": [
+     22.065,
+     0
+    ],
+    "cor": "#2a78d6"
+   },
+   {
+    "letra": "B",
+    "porta": "S5",
+    "centro": [
+     28.285,
+     0
+    ],
+    "cor": "#e08a00"
+   },
+   {
+    "letra": "C",
+    "porta": "S6",
+    "centro": [
+     34.504999999999995,
+     0
+    ],
+    "cor": "#c2185b"
+   }
+  ],
+  "checkpointClaude": {
+   "dist": 16,
+   "pontos": [
+    [
+     22.065,
+     16
+    ],
+    [
+     28.285,
+     16
+    ],
+    [
+     34.504999999999995,
+     16
+    ]
+   ]
+  }
+ },
+ "premissas": {
+  "curvaChegada": "a do simulador (fatias de 30 min, 7h–17h)",
+  "identificacao": 45,
+  "voto": 30,
+  "cv": 0.35,
+  "velocidade": 1.2,
+  "passoFila": 0.6,
+  "semCheckpoint": "10 s para ler a sinalização na porta + caminhada direta; erro de sinalização opcional (cen.sinalizacao)"
+ }
+}

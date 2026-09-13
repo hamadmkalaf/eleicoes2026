@@ -1,0 +1,230 @@
+<meta charset="utf-8">
+<title>Ring 3 ao vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --papel:#f1efe7; --folha:#fffdf7; --prancha:#fbfaf7; --piso:#eef1f4; --tinta:#16202b;
+  --meio:#57616c; --fraco:#8b9099; --regua:#dbd5c7; --regua2:#eae5d9; --traco:#1c2733;
+  --a:#1f6fb2; --alerta:#b23b2e; --aviso:#b26a12; --ok:#1a7f6b; --realce:rgba(31,111,178,.10);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --papel:#101418; --folha:#181d23; --prancha:#1d232b; --piso:#232a33; --tinta:#e6eaee;
+  --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931; --traco:#c9d1da;
+  --a:#63a6e0; --alerta:#e0796a; --aviso:#dda257; --ok:#4fc0a8; --realce:rgba(99,166,224,.14);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --papel:#101418; --folha:#181d23; --prancha:#1d232b; --piso:#232a33; --tinta:#e6eaee;
+  --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931; --traco:#c9d1da;
+  --a:#63a6e0; --alerta:#e0796a; --aviso:#dda257; --ok:#4fc0a8; --realce:rgba(99,166,224,.14);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:15.5px; line-height:1.58; -webkit-font-smoothing:antialiased}
+.folha{max-width:1120px; margin:0 auto; padding:0 22px 72px}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif; margin:0; font-weight:700; letter-spacing:-.01em; text-wrap:balance}
+h1{font-size:clamp(1.8rem,4vw,2.6rem); line-height:1.08}
+h2{font-size:1.35rem; line-height:1.25}
+p{margin:0 0 1em; max-width:70ch}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums}
+a{color:var(--a)}
+header{padding:44px 0 0}
+.olho{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--meio); margin:0 0 14px}
+.chamada{color:var(--meio); font-size:1.02rem; max-width:64ch; margin:14px 0 0}
+.faixa{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px; background:var(--regua); border:1px solid var(--regua); margin:26px 0 0}
+.faixa div{background:var(--papel); padding:12px 14px}
+.faixa dt{font-size:.68rem; letter-spacing:.09em; text-transform:uppercase; color:var(--meio); margin:0 0 4px}
+.faixa dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.3rem; font-weight:500; line-height:1.15}
+.faixa dd small{display:block; font-family:"IBM Plex Sans",sans-serif; font-size:.72rem; font-weight:400; color:var(--fraco); margin-top:3px}
+.estado{margin:22px 0 0; border:1px solid var(--regua); border-left:3px solid var(--a); background:var(--folha); padding:14px 18px; display:flex; flex-wrap:wrap; gap:10px 22px; align-items:center; font-size:.9rem}
+.estado.difere{border-left-color:var(--aviso)}
+.estado .rot{font-family:"IBM Plex Mono",monospace; font-size:.68rem; letter-spacing:.13em; text-transform:uppercase; color:var(--meio)}
+.chip{display:inline-block; font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.8rem; padding:1px 8px; border:1px solid currentColor; border-radius:2px; margin-right:4px}
+.estado select{font:inherit; font-size:.86rem; padding:4px 8px; background:var(--papel); color:var(--tinta); border:1px solid var(--regua)}
+.aviso{color:var(--aviso); font-size:.86rem}
+.erro{color:var(--alerta); font-size:.86rem; font-weight:600}
+section{margin:44px 0 0}
+.rotulo{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--meio); margin:0 0 8px; padding-bottom:8px; border-bottom:1px solid var(--regua)}
+section>h2{margin-bottom:12px}
+.prancha{background:var(--prancha); border:1px solid var(--regua); padding:6px; overflow-x:auto; margin-top:16px}
+.prancha svg{min-width:520px}
+.rolagem{overflow-x:auto; border:1px solid var(--regua); background:var(--folha); margin:16px 0 0}
+table{border-collapse:collapse; width:100%; font-size:.85rem}
+th,td{text-align:left; padding:8px 11px; border-bottom:1px solid var(--regua2); white-space:nowrap}
+thead th{font-size:.67rem; letter-spacing:.08em; text-transform:uppercase; color:var(--meio); font-weight:500; background:var(--folha)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right}
+tr.total td{border-top:1.5px solid var(--regua); font-weight:600}
+tr.marcada td{background:var(--realce); font-weight:600}
+td.mesas{white-space:normal; font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--meio)}
+.sw{display:inline-block; width:.7rem; height:.7rem; border-radius:2px; margin-right:6px; vertical-align:-1px}
+.nota{border-left:2px solid var(--aviso); padding:2px 0 2px 16px; margin:20px 0 0; color:var(--meio); font-size:.9rem; max-width:70ch}
+.nota strong{color:var(--tinta)}
+footer{margin:56px 0 0; padding-top:18px; border-top:1px solid var(--regua); font-size:.8rem; color:var(--fraco)}
+@media (max-width:640px){ .folha{padding:0 16px 56px} header{padding-top:32px} }
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições 2026 · 1º turno · 4 de outubro · RDS Ballsbridge · fila externa</p>
+  <h1>Ring 3 ao vivo</h1>
+  <p class="chamada">A fila externa redesenhada para as portas em vigor: uma zona de serpenteado por entrada, as mesas repartidas entre as entradas na proporção da capacidade de cada zona, e a barreira contada peça a peça. As portas mudam no Simulador; o desenho da fila escolhe-se aqui ou lá.</p>
+  <dl class="faixa" id="faixa"></dl>
+  <div class="estado" id="estado"></div>
+</header>
+
+<section>
+  <p class="rotulo">A planta</p>
+  <h2 id="tituloPlanta">Em escala, sobre o Ring 3 de 44 × 35 m</h2>
+  <div class="prancha" id="prancha"></div>
+  <p class="nota" id="notaDesenho"></p>
+</section>
+
+<section>
+  <p class="rotulo">Por entrada</p>
+  <h2>Zona, capacidade e mesas de cada entrada</h2>
+  <div class="rolagem"><table id="tabZonas"></table></div>
+</section>
+
+<section>
+  <p class="rotulo">Barreira</p>
+  <h2>Metros e separadores, componente a componente</h2>
+  <div class="rolagem"><table id="tabBarreira"></table></div>
+</section>
+
+<section>
+  <p class="rotulo">Decisão pendente</p>
+  <h2>Os cinco desenhos, para estas portas</h2>
+  <p>O Posto ainda não escolheu entre manter o plano com garganta e pré-triagem (1.402 pessoas com três entradas) e os desenhos sem garganta, que devolvem 8,25 m a cada raia. A tabela refaz os cinco para as portas em vigor; a linha marcada é o desenho selecionado acima.</p>
+  <div class="rolagem"><table id="tabDesenhos"></table></div>
+</section>
+
+<footer>
+  <p>Modelo de fila de <span class="mono">scripts/ring3.py</span> (raia de 1,40 m, 2,0 pessoas/m², baia a 1,8 pessoas/m², separador de 2 m a EUR 13,02, 200 em estoque), portado para o navegador em <span class="mono">simulador/portas.js</span>; regra de atribuição das mesas de <span class="mono">scripts/decisoes.py</span>. Ring 3 nas dimensões oficiais de 44 × 35 m, centrado em S5 por estimativa. O plano vigente é reconstruído a partir do diagrama publicado (blocos de 4,2 / 12,6 / 4,2 m, raias de 23,75 m), o que dá 314 separadores contra os 300 do plano original.</p>
+</footer>
+</div>
+
+<script>
+/*__BASE__*/
+/*__DECISOES__*/
+</script>
+<script>
+/*__PORTAS_JS__*/
+</script>
+<script>
+(function(){
+"use strict";
+const PT = Portas, $ = id => document.getElementById(id);
+const fmt = n => Math.round(n).toLocaleString("pt-BR");
+const vg = (v, c = 1) => Number(v).toFixed(c).replace(".", ",");
+const eur = v => "EUR " + Number(v).toLocaleString("pt-BR", {minimumFractionDigits: 0, maximumFractionDigits: 0});
+const porMrv = Object.fromEntries(DECISOES.mesas.map(m => [m.mrv, m]));
+let estado = PT.estadoDaDecisao(DECISOES), desenho = "vigente", publicando = true;
+
+function h(tag, attrs, ...filhos){
+  const e = document.createElement(tag);
+  for (const k in (attrs || {})) { if (k === "class") e.className = attrs[k]; else if (k === "text") e.textContent = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  for (const f of filhos) if (f != null) e.appendChild(typeof f === "string" ? document.createTextNode(f) : f);
+  return e;
+}
+
+function pinta(){
+  const ctx = {portas: BASE.portas, dec: DECISOES, desenho};
+  const r = PT.resolve(estado, ctx);
+  const difere = !(r.igualDecisao && r.desenho === "vigente");
+  // estado
+  const E = $("estado"); E.innerHTML = ""; E.classList.toggle("difere", difere);
+  E.appendChild(h("span", {class: "rot", text: "Portas em vigor"}));
+  const ent = h("span"); for (const e of r.entradas) ent.appendChild(h("span", {class: "chip", style: `color:${e.hex}`, text: `${e.porta} ${e.id}`}));
+  E.appendChild(h("span", null, "entradas ", ent));
+  const sai = h("span"); for (const s of r.saidas) sai.appendChild(h("span", {class: "chip", style: "color:var(--aviso)", text: s}));
+  E.appendChild(h("span", null, "saídas ", sai));
+  const sel = h("select", {"aria-label": "Desenho da fila externa"});
+  for (const d of PT.DESENHOS) { const o = h("option", {value: d.id, text: d.nome}); if (d.so3 && r.entradas.length !== 3) o.disabled = true; sel.appendChild(o); }
+  sel.value = r.desenho;
+  sel.addEventListener("change", () => { desenho = sel.value; pinta(); if (publicando) PT.publica(estado, {desenho, origem: "ring3"}); });
+  E.appendChild(h("label", null, "desenho ", sel));
+  E.appendChild(h("span", {class: difere ? "aviso" : "", text: difere ? "difere da decisão de 06/09 (entradas S4, S5, S6; saídas S2, S8)" : "é a decisão do Posto de 06/09/2026"}));
+  for (const a of r.avisos) E.appendChild(h("span", {class: "aviso", text: a}));
+  for (const a of r.erros) E.appendChild(h("span", {class: "erro", text: a}));
+  if (!r.ring3) { $("prancha").innerHTML = ""; return; }
+  const d = r.ring3;
+  // faixa
+  const F = $("faixa"); F.innerHTML = "";
+  const tile = (k, v, s) => F.appendChild(h("div", null, h("dt", {text: k}), h("dd", null, v, s ? h("small", {text: s}) : null)));
+  tile("Entradas", String(r.entradas.length), r.entradas.map(e => e.id + " por " + e.porta).join(" · "));
+  tile("Lotação", fmt(d.capacidade), d.capBaias ? `${fmt(d.capRaias)} em raia + ${fmt(d.capBaias)} em baia` : "toda em raia");
+  tile("Separadores", String(d.separadores), `${vg(d.barreiraTotal, 0)} m de barreira`);
+  tile("A comprar", String(d.compra), `sobre os ${PT.R3.ESTOQUE} da organizadora · ${eur(d.custoCompra)}`);
+  tile("Comparecimento", fmt(DECISOES.comparecimento.total), "base B, estimativa não oficial");
+  // planta
+  $("tituloPlanta").textContent = `${d.nome}, em escala sobre o Ring 3 de ${vg(d.ring.x1 - d.ring.x0, 0)} × ${vg(PT.R3.PROF_RING, 0)} m`;
+  $("prancha").innerHTML = PT.svgRing3(r, {portas: BASE.portas});
+  $("notaDesenho").innerHTML = d.garganta
+    ? "<strong>Plano vigente.</strong> Raias de 23,75 m, baias de flanco e 8,25 m de faixa de garganta ao sul para a pré-triagem; a barreira inclui o funil da garganta e os dois lados do corredor de fundo."
+    : `<strong>Sem garganta.</strong> O corredor de fundo encosta no gradil sul e as raias medem ${vg(d.prof, 2)} m. Onde a pré-triagem passa a acontecer é decisão em aberto. ${d.comBaias ? "As baias de flanco guardam gente em massa, sem ordem de chegada." : "Toda a lotação é fila em raia medida, com ordem de chegada preservada."}`;
+  // zonas
+  const T = $("tabZonas"); T.innerHTML = "";
+  T.appendChild(h("thead", null, h("tr", null, h("th", {text: "Entrada"}), h("th", {text: "Porta"}), h("th", {class: "num", text: "Raias"}),
+    h("th", {class: "num", text: "Comprimento"}), h("th", {class: "num", text: "Em raia"}), h("th", {class: "num", text: "Em baia"}), h("th", {class: "num", text: "Capacidade"}),
+    h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Esperados"}), h("th", {class: "num", text: "Cap./esperado"}), h("th", {text: "MRV"}))));
+  const tb = h("tbody");
+  let tot = {cap: 0, esp: 0, mesas: 0};
+  for (const e of r.entradas) {
+    const z = d.zonas.find(x => x.nome === e.id), baia = d.baias[e.id] ? d.baias[e.id].area * PT.R3.DENS_BAIA : 0;
+    tot.cap += e.capacidade; tot.esp += e.esperado; tot.mesas += e.mrvs.length;
+    tb.appendChild(h("tr", null,
+      h("td", null, h("span", {class: "sw", style: `background:${e.hex}`}), h("strong", {text: e.id}), ` ${e.cor}`),
+      h("td", {class: "mono", text: e.porta}), h("td", {class: "num mono", text: String(z.raias)}),
+      h("td", {class: "num mono", text: vg(z.comp, 1) + " m"}), h("td", {class: "num mono", text: fmt(z.capacidade)}),
+      h("td", {class: "num mono", text: baia ? fmt(baia) : "—"}), h("td", {class: "num mono", text: fmt(e.capacidade)}),
+      h("td", {class: "num mono", text: String(e.mrvs.length)}), h("td", {class: "num mono", text: fmt(e.esperado)}),
+      h("td", {class: "num mono", text: vg(e.capacidade / Math.max(1, e.esperado), 3)}),
+      h("td", {class: "mesas", text: e.mrvs.map(n => `${n} (${porMrv[n] ? porMrv[n].principal : "?"})`).join(", ")})));
+  }
+  tb.appendChild(h("tr", {class: "total"}, h("td", {text: "Total"}), h("td"), h("td"), h("td"), h("td", {class: "num mono", text: fmt(d.capRaias)}),
+    h("td", {class: "num mono", text: d.capBaias ? fmt(d.capBaias) : "—"}), h("td", {class: "num mono", text: fmt(tot.cap)}),
+    h("td", {class: "num mono", text: String(tot.mesas)}), h("td", {class: "num mono", text: fmt(tot.esp)}), h("td", {class: "num mono", text: vg(tot.cap / Math.max(1, tot.esp), 3)}), h("td")));
+  T.appendChild(tb);
+  // barreira
+  const B = $("tabBarreira"); B.innerHTML = "";
+  B.appendChild(h("thead", null, h("tr", null, h("th", {text: "Componente"}), h("th", {class: "num", text: "Metros"}), h("th", {class: "num", text: "Separadores de 2 m"}))));
+  const bb = h("tbody");
+  for (const [k, v] of Object.entries(d.barreira)) bb.appendChild(h("tr", null, h("td", {text: k}), h("td", {class: "num mono", text: vg(v, 1)}), h("td", {class: "num mono", text: String(Math.ceil(v / PT.R3.SEPARADOR_M - 1e-9))})));
+  bb.appendChild(h("tr", {class: "total"}, h("td", {text: "Total"}), h("td", {class: "num mono", text: vg(d.barreiraTotal, 1)}), h("td", {class: "num mono", text: String(d.separadores)})));
+  bb.appendChild(h("tr", null, h("td", {text: "Fornecidos pela organizadora"}), h("td"), h("td", {class: "num mono", text: "−" + PT.R3.ESTOQUE})));
+  bb.appendChild(h("tr", {class: "total"}, h("td", {text: "A comprar"}), h("td", {class: "num mono", text: eur(d.custoCompra)}), h("td", {class: "num mono", text: String(d.compra)})));
+  B.appendChild(bb);
+  // cinco desenhos
+  const D = $("tabDesenhos"); D.innerHTML = "";
+  D.appendChild(h("thead", null, h("tr", null, h("th", {text: "Desenho"}), h("th", {class: "num", text: "Lotação"}), h("th", {class: "num", text: "Em raia"}),
+    h("th", {class: "num", text: "Raia mais curta"}), h("th", {class: "num", text: "Meias-voltas"}), h("th", {class: "num", text: "Barreira"}), h("th", {class: "num", text: "Separadores"}), h("th", {class: "num", text: "A comprar"}), h("th", {class: "num", text: "Custo"}))));
+  const db = h("tbody");
+  for (const dd of PT.DESENHOS) {
+    if (dd.so3 && r.entradas.length !== 3) continue;
+    const rr = PT.resolve(estado, Object.assign({}, ctx, {desenho: dd.id}));
+    const x = rr.ring3; if (!x) continue;
+    db.appendChild(h("tr", {class: dd.id === r.desenho ? "marcada" : ""}, h("td", {text: dd.nome}), h("td", {class: "num mono", text: fmt(x.capacidade)}),
+      h("td", {class: "num mono", text: fmt(x.capRaias)}), h("td", {class: "num mono", text: vg(Math.min(...x.zonas.map(z => z.comp)), 1) + " m"}),
+      h("td", {class: "num mono", text: String(x.meiasVoltas)}), h("td", {class: "num mono", text: vg(x.barreiraTotal, 1) + " m"}),
+      h("td", {class: "num mono", text: String(x.separadores)}), h("td", {class: "num mono", text: String(x.compra)}), h("td", {class: "num mono", text: eur(x.custoCompra)})));
+  }
+  D.appendChild(db);
+}
+
+const guardado = PT.le();
+if (guardado && guardado.estado) { estado = PT.normalizaEstado(guardado.estado); if (guardado.desenho) desenho = guardado.desenho; }
+pinta();
+PT.assina(msg => {
+  if (msg.origem === "ring3") return;
+  publicando = false;
+  try { estado = PT.normalizaEstado(msg.estado); if (msg.desenho) desenho = msg.desenho; pinta(); }
+  finally { publicando = true; }
+});
+})();
+</script>

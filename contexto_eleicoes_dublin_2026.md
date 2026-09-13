@@ -1,6 +1,9 @@
 # Contexto Consolidado — Eleições Presidenciais 2026 (Posto de Dublin)
 
 > Documento gerado a partir de busca em conversas anteriores (Claude) sobre a organização logística, orçamentária e física das eleições presidenciais brasileiras de 2026 na jurisdição de Dublin. Destinado a servir de base para desenho de fluxo em outra conversa. Datas, valores e números abaixo refletem o que foi efetivamente discutido nas conversas — ainda sujeitos a validação final com o Cartório Eleitoral/TSE.
+>
+> **Nota de 06/09/2026:** documento histórico, mantido como registro da negociação. O que ele diz sobre comparecimento esperado ("~12.000", "74% Dublin / ~50% interior") foi **superado** pela decisão do Posto de adotar a base B, taxa de 2022 por domicílio de origem (`scripts/comparecimento.py`, 11.499 esperados); a configuração final é de 28 urnas, e as decisões vigentes estão em `scripts/decisoes.py` e em `DOCUMENTACAO_PROJETO.md`.
+> **Atualizado.** Parte dos pontos em aberto da seção 8 foi resolvida depois, pelo processamento deste repositório e pela Prancheta do Hall 2. As correções estão marcadas com **[resolvido]** ao longo do texto, e o desenho de fila adotado está na nova seção 9. O `README.md` e `saidas/tensa_barreiras.md` são as fontes atuais; este documento é o registro do que se sabia antes.
 
 ---
 
@@ -8,7 +11,8 @@
 
 - **1º turno:** 4/10/2026, 8h–17h, local: **RDS Ballsbridge, Hall 2** (Dublin).
 - **2º turno (se necessário):** 25/10/2026, mesmo local e horário.
-- **Eleitores registrados:** ~16.000 (conforme nota verbal); outra fonte (planilha TSE) trabalha com **14.626 aptos** distribuídos em **51 seções** e **15 localidades** (32 seções em Dublin + 19 no interior da Irlanda: Cork, Galway, Donegal, Limerick, Kerry, Mayo, Cavan, Clare, Leitrim, Longford, Roscommon, Waterford, Westmeath, "outros locais" etc.).
+- **Eleitores registrados:** ~16.000 (conforme nota verbal); outra fonte (planilha TSE) trabalha com **14.626 aptos** distribuídos em **51 seções** e **15 localidades**
+  - **[resolvido]** O CSV oficial do TSE de 13/08/2026 (`data/raw/eleitorado_local_votacao_2026_ZZ.csv`) traz **16.794 aptos** em 51 seções, agregadas em **28 urnas**. É esse o número que prevalece em todo o processamento do repositório; os 14.626 são de planilha anterior. O comparecimento esperado, ponderado pelo domicílio de origem, fica em **11.499**. (32 seções em Dublin + 19 no interior da Irlanda: Cork, Galway, Donegal, Limerick, Kerry, Mayo, Cavan, Clare, Leitrim, Longford, Roscommon, Waterford, Westmeath, "outros locais" etc.).
 - **Comparecimento esperado:** ~12.000 (base histórica), com taxa de comparecimento de 2022 de **74%** em seções domiciliadas em Dublin (próxima à taxa doméstica) e **~50%** em seções do interior.
 - **Contexto especial 2026:** coincide com a presidência irlandesa do Conselho da UE, o que reduziu a oferta de espaços disponíveis para locação (o local usado no 2º turno de 2022, mais barato, estava indisponível).
 
@@ -67,6 +71,7 @@ Premissas: fluxo contínuo de eleitores, 1 urna (MRV) por mesa, comparecimento p
 ## 3. Layout físico do salão de votação
 
 - **Local simulado:** pavilhão retangular de **50,00 m × 44,50 m** (nota: local real definido posteriormente foi RDS Ballsbridge, Hall 2 — validar se dimensões coincidem).
+  - **[resolvido]** Confere. A planta do RDS (`RDS_Hall_2_Floorplan_(1).pdf`) dá o Hall 2 em **50,2 × 44,5 m**, 2.238 m² brutos, pé-direito de 7 m; a prancheta trabalha com **50,3 × 44,4 m** de contorno útil, com o recorte a noroeste. As simulações de layout valem.
 - **Unidade básica:** "seção" = par mesa receptora (3 mesários) + urna eletrônica (MRV), legal e operacionalmente vinculados — **não podem ser fisicamente separados** sem validação prévia do Cartório Eleitoral/TSE.
 - **Cenários de quantidade simulados:** 25, 30 e 38 seções.
 - **Restrições de desenho adotadas:**
@@ -91,11 +96,13 @@ Premissas: fluxo contínuo de eleitores, 1 urna (MRV) por mesa, comparecimento p
 
 - Estrutura discutida: **28 cabines/urnas** divididas em **3 entradas**: Entrada A (cabines 1–10), Entrada B (11–20), Entrada C (21–28).
 - **4 cabines de alto volume** (~600 eleitores cada) vs. as demais (~400 cada).
+  - **[resolvido]** São **três**, não quatro: os MRVs **22 (3313), 23 (3315) e 24 (3322)**, com 590, 586 e 588 comparecentes esperados — as três urnas Dublin+Dublin. Há dez urnas na faixa dos ~790 aptos, mas as outras sete somam uma seção de Dublin com uma do interior, cuja taxa de comparecimento é de ~50%, e caem para 466–518 esperados.
 - **Modelo de fila em dois níveis:**
   1. Fila de entrada — eleitores chegam e são direcionados para dentro.
   2. Filas individuais internas — direcionam diretamente à cabine/urna específica.
 - **Questão central resolvida:** com **pré-triagem na entrada** (eleitores direcionados a sub-filas específicas por destino já no ponto de entrada), o problema de "cabines calmas contaminadas pela fila de cabines movimentadas" é **estruturalmente resolvido**, independentemente de onde as cabines de alto volume estejam fisicamente.
 - **Recomendação de balanceamento:** distribuir as 4 cabines de alto volume **uma por zona de entrada** (não concentrar todas numa entrada), pois:
+  - **[resolvido — implementado]** No cenário `Hamad_3polos` as três de alto volume estão uma por porta: **24 → A (S4)**, **22 → B (S5)**, **23 → C (S6)**, e afastadas entre si nas três paredes (norte, leste e oeste). É a origem do nome "três polos". Carga esperada por porta: A 3.642, B 4.215, C 3.642.
   - Concentrar cria problema de vazão bruta naquela porta específica e concentra risco operacional num único ponto.
   - Distribuir equilibra a carga de pico entre entradas e isola geograficamente qualquer incidente.
 - Direcionar recursos incrementais (equipe extra, sinalização) às sub-filas específicas de cabines de alto volume, em vez de reestruturar toda uma entrada em função delas.
@@ -130,6 +137,7 @@ Discussão paralela (contexto genérico de evento, útil como benchmark) sobre d
 | b) Eletricista | 5.387,40 | Modificação de cabeamento e instalação de pontos elétricos para as urnas |
 | c) Banners de sinalização | 1.961,00 | Impressão e aluguel de bases, para organizar o espaço e simplificar o fluxo de eleitores |
 | d) Separadores de fila (unifila) | 1.303,00 | 100 unidades (200 metros) para controle de fluxo |
+|  | | **[resolvido]** O desenho adotado (seção 9) consome exatamente **100 postes e 146 m** de fita. Cabe, com folga de 27% em fita e folga nenhuma em poste. Falta só a reserva de 10% — **11 unidades, EUR 143 ao preço unitário deste item**. |
 | e) Locação de mobiliário | 276,48 | Mesas adicionais para posicionamento das urnas |
 | f) Seguro obrigatório | 2.642,00 | Cobre 1º e 2º turno, exigido pelo local contratado |
 
@@ -205,3 +213,48 @@ Urnas que estouram a janela de 9h, por tempo médio por eleitor:
 3. Papel dos 4 seguranças versus voluntários: os seguranças devem ficar nos pontos de controle de acesso; a organização de fila interna fica com voluntários identificados (colete). Verificar se a apólice de seguro exigida pelo RDS (item f do orçamento) impõe efetivo mínimo de segurança.
 4. Revisar o item a) do orçamento (EUR 6.774,84 para 20 seguranças) para 4 seguranças e recompor a tabela final (pendência 2).
 5. Confirmar com a polícia irlandesa o formato da presença externa (viatura fixa, ronda, horário) e registrá-lo na nota verbal.
+
+### 8.4 Lista original de pontos em aberto (histórico, com baixas)
+
+1. ~~**Confirmar dimensões reais do RDS Ballsbridge Hall 2**~~ — **[resolvido]** 50,2 × 44,5 m brutos na planta do RDS, 50,3 × 44,4 m de contorno útil na prancheta. Ver seção 3.
+2. ~~**Confirmar com o TSE/Cartório Eleitoral** a viabilidade procedimental de desagregar totalmente as seções de Dublin (Cenário 4/5)~~ — **[resolvido em 13/09]** Não há mais viabilidade de desagregar. Ficam as 28 urnas (8.1, decisão 2).
+3. ~~**Resolver a inconsistência das 7 seções não contabilizadas**~~ — **[superado]** O CSV oficial de 13/08 traz as 51 seções em 28 urnas; a inconsistência era da planilha anterior.
+4. ~~**Definir método de identificação do eleitor**~~ — **[resolvido em 13/09]** Caderno físico, único método disponível no exterior (8.1, decisão 3).
+5. ~~**Integrar o modelo de fila de 3 entradas / 28 cabines**~~ — **[resolvido]** Unificado no cenário `Hamad_3polos` da Prancheta do Hall 2 e na contagem de `scripts/tensa_barreiras.py`: as 28 mesas em posições reais sobre a planta do RDS, com as três entradas nos vãos S4, S5 e S6 e o checkpoint a 20 m. Continua pendente o **número final de mesas** com o TSE (ponto 2) — se houver desagregação, o layout muda.
+6. Validar se a pré-triagem na entrada será mediada por equipe humana (risco de gargalo) ou por sinalização/autoatendimento. **Ficou mais crítico:** o desenho adotado (1e) dispensa as bordas externas dos canais de entrada, então é sinalização e equipe que mantêm o eleitor dentro do canal entre a porta e o checkpoint. No pico a porta B recebe 14,1 pessoas/min e precisa de três posições de conferência a 10 s cada.
+7. ~~Confirmar dimensionamento final de segurança específico para o RDS~~ — **[resolvido em 13/09]** 4 seguranças contratados, mesários voluntários no fluxo, polícia do lado de fora (8.1, decisão 4). O que falta é a distribuição por posto (ver `scripts/decisoes_abertas.py`, D7).
+
+---
+
+## 9. Desenho de fila adotado (separadores Tensa)
+
+> Acrescentado depois da consolidação original. Fonte viva:
+> `saidas/tensa_barreiras.md`; conta reproduzível em `scripts/tensa_barreiras.py`.
+
+**Cenário 1e**, sobre o cenário `Hamad_3polos` da Prancheta do Hall 2:
+
+1. **Duas linhas de 20 m** nos canais de entrada, uma entre A e B, outra entre B
+   e C — só as divisórias que separam as correntes. As portas S4, S5 e S6 são
+   contíguas (5,93 m cada, 0,29 m entre vãos), então os canais compartilham
+   divisória. As bordas externas ficam a cargo de sinalização e equipe.
+2. **Uma linha no meio de cada par** de mesas, separando as duas filas. Cabe
+   porque a fila só começa a 4,10 m da parede, além dos mesários.
+3. **Uma linha por mesa sem par**, rente à fila.
+4. **Escada de comprimento 10/5/3 m** — 10 m nos três polos, 5 m nas de média,
+   3 m nas de baixa.
+
+**Quantidade: 100 postes de consumo, 111 a encomendar** com reserva de 10%;
+146 m de fita; EUR 1.745 ex-VAT com entrega em Dublin (EUR 2.146 inc-VAT).
+
+**Pareamento real das 28 mesas:** 9 pares (18 mesas), 7 mesas sem par (5, 6, 9,
+12, 15, 16, 21) e os 3 polos (22, 23, 24). Não são "todas pareadas menos os
+polos" — 5, 16 e 21 perderam o par quando os polos foram afastados, e 28 − 3 = 25
+é ímpar de qualquer modo. Reposicionar mesas para formar novos pares economiza
+3 postes por par.
+
+**Riscos que a escolha aceita.** A escada 3/5/10 m não equaliza resiliência: a
+60 s por voto e pico de 1,8× a média, as mesas de média transbordam em **14
+minutos** contra 21 das de alta, porque 5 m sobre 518 esperados é proporção pior
+que 10 m sobre 590. Doze mesas (oito de média, quatro de baixa) transbordam
+entre 14 e 19 minutos de pico sustentado e passam a depender de gestão de piso.
+O cenário 1i corrigia isso por 28 unidades a mais e foi descartado.

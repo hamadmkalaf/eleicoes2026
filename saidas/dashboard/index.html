@@ -1,0 +1,1171 @@
+<meta charset="utf-8">
+<title>Posto de Dublin 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --papel:#f1efe7; --folha:#fffdf7; --prancha:#fbfaf7; --piso:#eef1f4;
+  --tinta:#16202b; --meio:#57616c; --fraco:#8b9099; --regua:#dbd5c7; --regua2:#eae5d9; --traco:#1c2733;
+  --a:#1f6fb2; --aviso:#b26a12; --alerta:#b23b2e; --ok:#1a7f6b; --realce:rgba(31,111,178,.10);
+  --alta:#c0392b; --media:#d4a017; --baixa:#1e8449; --neutra:#75808e;
+  --ra:#2a78d6; --rb:#e08a00; --rc:#c2185b;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --papel:#101418; --folha:#181d23; --prancha:#1d232b; --piso:#232a33;
+  --tinta:#e6eaee; --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931; --traco:#c9d1da;
+  --a:#63a6e0; --aviso:#dda257; --alerta:#e0796a; --ok:#4fc0a8; --realce:rgba(99,166,224,.14);
+  --alta:#cb454a; --media:#bd8200; --baixa:#33a36d; --neutra:#8a95a3;
+  --ra:#63a6e0; --rb:#e0a13c; --rc:#e2688f;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --papel:#101418; --folha:#181d23; --prancha:#1d232b; --piso:#232a33;
+  --tinta:#e6eaee; --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931; --traco:#c9d1da;
+  --a:#63a6e0; --aviso:#dda257; --alerta:#e0796a; --ok:#4fc0a8; --realce:rgba(99,166,224,.14);
+  --alta:#cb454a; --media:#bd8200; --baixa:#33a36d; --neutra:#8a95a3;
+  --ra:#63a6e0; --rb:#e0a13c; --rc:#e2688f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased}
+.folha{max-width:1080px; margin:0 auto; padding:0 24px 88px}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,"Times New Roman",serif; margin:0; font-weight:700; letter-spacing:-.01em; text-wrap:balance}
+h1{font-size:clamp(2rem,4.6vw,3.1rem); line-height:1.06}
+h2{font-size:clamp(1.4rem,2.4vw,1.85rem); line-height:1.2}
+h3{font-size:1.02rem; font-weight:600; line-height:1.3; margin:26px 0 8px}
+p{margin:0 0 1em; max-width:68ch}
+a{color:var(--a)}
+strong{font-weight:600}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums}
+.b{font-weight:600}
+:focus-visible{outline:2px solid var(--a); outline-offset:2px}
+
+/* ---- navegacao ---- */
+nav.topo{position:sticky; top:0; z-index:8; background:var(--folha); border-bottom:1px solid var(--regua)}
+nav.topo .in{max-width:1080px; margin:0 auto; padding:0 24px; display:flex; align-items:center; gap:4px 18px; overflow-x:auto; scrollbar-width:none}
+nav.topo .in::-webkit-scrollbar{display:none}
+nav.topo .marca{font-family:"Source Serif 4",Georgia,serif; font-weight:700; white-space:nowrap; padding:12px 0; margin-right:6px}
+nav.topo a{color:var(--meio); text-decoration:none; font-size:.82rem; white-space:nowrap; padding:12px 0; border-bottom:2px solid transparent}
+nav.topo a:hover{color:var(--tinta)}
+nav.topo a.ativa{color:var(--tinta); border-bottom-color:var(--a)}
+
+/* ---- cabecalho ---- */
+header{padding:56px 0 0}
+.olho{font-family:"IBM Plex Mono",monospace; font-size:.71rem; letter-spacing:.15em; text-transform:uppercase; color:var(--meio); margin:0 0 16px}
+.chamada{font-family:"Source Serif 4",Georgia,serif; font-size:clamp(1.05rem,1.9vw,1.28rem); line-height:1.5; color:var(--meio); max-width:62ch; margin:18px 0 0}
+.faixa{display:grid; grid-template-columns:repeat(auto-fit,minmax(138px,1fr)); gap:1px; background:var(--regua); border:1px solid var(--regua); margin:34px 0 0}
+.faixa div{background:var(--papel); padding:13px 15px}
+.faixa dt{font-size:.68rem; letter-spacing:.09em; text-transform:uppercase; color:var(--meio); margin:0 0 4px}
+.faixa dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.34rem; font-weight:500; line-height:1.15; font-variant-numeric:tabular-nums}
+.faixa dd small{display:block; font-family:"IBM Plex Sans",sans-serif; font-size:.72rem; font-weight:400; color:var(--fraco); margin-top:3px}
+
+/* ---- portas em vigor ---- */
+.vivo{margin:18px 0 0; border:1px solid var(--regua); border-left:3px solid var(--a); background:var(--folha); padding:12px 18px; display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; font-size:.88rem}
+.vivo.difere{border-left-color:var(--aviso)}
+.vivo .rot{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.13em; text-transform:uppercase; color:var(--meio)}
+.chip{display:inline-block; font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.78rem; padding:0 7px; border:1px solid currentColor; border-radius:2px; margin-right:3px; line-height:1.5}
+.vivo .aviso{color:var(--aviso)}
+.vivo .mini{margin-left:auto; max-width:260px; flex:1 1 200px}
+.vivo .mini svg{display:block; width:100%; height:auto}
+
+/* ---- secoes ---- */
+section{margin:68px 0 0}
+.rotulo{font-family:"IBM Plex Mono",monospace; font-size:.71rem; letter-spacing:.15em; text-transform:uppercase; color:var(--meio); margin:0 0 10px; padding-bottom:9px; border-bottom:1px solid var(--regua); display:flex; gap:12px; align-items:baseline}
+.rotulo .passo{color:var(--a)}
+section>h2{margin-bottom:14px}
+.lede{font-size:1.06rem; color:var(--meio); max-width:62ch}
+.duas{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:26px; align-items:start}
+@media (max-width:820px){ .duas{grid-template-columns:minmax(0,1fr)} }
+
+/* ---- pecas ---- */
+.pecas{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin:22px 0 0; padding:12px 0 0; border-top:1px dashed var(--regua); font-size:.86rem}
+.pecas .rot{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.13em; text-transform:uppercase; color:var(--meio); margin-right:4px}
+.peca{display:inline-flex; align-items:stretch; border:1px solid var(--regua); background:var(--folha)}
+.peca a{padding:5px 11px; text-decoration:none; color:var(--tinta); font-weight:500}
+.peca a.ext{border-left:1px solid var(--regua); color:var(--meio); font-weight:400; font-size:.8rem}
+.peca a:hover{background:var(--realce)}
+
+/* ---- figuras e tabelas ---- */
+figure{margin:22px 0 0}
+figcaption{font-size:.84rem; color:var(--meio); margin-top:12px; max-width:74ch}
+.prancha{background:var(--prancha); border:1px solid var(--regua); padding:8px; overflow-x:auto}
+.prancha svg{display:block; min-width:560px; width:100%; height:auto}
+.rolagem{overflow-x:auto; border:1px solid var(--regua); background:var(--folha); margin:18px 0 0}
+table{border-collapse:collapse; width:100%; font-size:.85rem}
+th,td{text-align:left; padding:7px 11px; border-bottom:1px solid var(--regua2); white-space:nowrap; vertical-align:top}
+thead th{font-size:.67rem; letter-spacing:.08em; text-transform:uppercase; color:var(--meio); font-weight:500; background:var(--folha)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+td.mesas{white-space:normal; font-size:.78rem; color:var(--meio); max-width:34ch}
+tr.marcada td{background:var(--realce); font-weight:600}
+td .sub{display:block; white-space:normal; font-size:.76rem; color:var(--meio); font-weight:400; max-width:44ch}
+.sw{display:inline-block; width:.7rem; height:.7rem; border-radius:2px; margin-right:6px; vertical-align:-1px}
+.tag{display:inline-block; font-size:.7rem; letter-spacing:.04em; padding:1px 7px; border:1px solid currentColor; color:var(--meio)}
+.t-entrada{color:var(--a); font-weight:600} .t-saida{color:var(--aviso); font-weight:600}
+.t-emerg{color:var(--ok)} .t-fechada{color:var(--alerta)} .t-livre{opacity:.7}
+
+/* ---- barras ---- */
+.grafico{background:var(--folha); border:1px solid var(--regua); padding:18px 20px 14px; margin-top:20px}
+.linha{display:grid; grid-template-columns:38px 1fr 40px; align-items:center; gap:10px; padding:1.5px 0; position:relative; outline:none}
+.linha .cod{font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--meio); text-align:right; font-variant-numeric:tabular-nums}
+.linha .trilho{height:11px; background:var(--regua2)}
+.linha .barra{display:block; height:100%; border-radius:0 3px 3px 0}
+.c-alta{background:var(--alta)} .c-media{background:var(--media)} .c-baixa{background:var(--baixa)} .c-neutra{background:var(--neutra)}
+.linha .val{font-family:"IBM Plex Mono",monospace; font-size:.74rem; color:var(--meio); font-variant-numeric:tabular-nums}
+.linha .dica{position:absolute; left:50px; bottom:100%; z-index:5; opacity:0; pointer-events:none; background:var(--tinta); color:var(--papel);
+  font-family:"IBM Plex Mono",monospace; font-size:.7rem; line-height:1.45; padding:5px 9px; max-width:min(380px,70vw); white-space:normal; transition:opacity .12s}
+.linha:hover .dica,.linha:focus .dica{opacity:1}
+.linha:focus .trilho{outline:2px solid var(--a); outline-offset:2px}
+.legenda{display:flex; flex-wrap:wrap; gap:14px; font-size:.78rem; color:var(--meio); margin:10px 0 0}
+.legenda span{display:inline-flex; align-items:center; gap:6px}
+
+/* ---- respostas e notas ---- */
+.respostas{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); margin-top:22px}
+.resposta{background:var(--folha); border:1px solid var(--regua); padding:18px 20px; display:flex; flex-direction:column; gap:8px}
+.resposta .num{font-family:"IBM Plex Mono",monospace; font-size:.68rem; color:var(--a); letter-spacing:.1em; text-transform:uppercase}
+.resposta .curta{font-family:"Source Serif 4",Georgia,serif; font-size:1.14rem; font-weight:700; line-height:1.28}
+.resposta p{margin:0; font-size:.9rem; color:var(--meio)}
+.nota{border-left:2px solid var(--aviso); padding:2px 0 2px 18px; margin:22px 0 0; color:var(--meio); font-size:.92rem; max-width:70ch}
+.nota strong{color:var(--tinta)}
+.nota.pendente{border-left-color:var(--alerta)}
+.nota.pendente strong{color:var(--alerta)}
+
+/* ---- ferramentas embutidas ---- */
+.ferramenta{margin:22px 0 0; border:1px solid var(--regua); background:var(--folha)}
+.ferramenta .barra-f{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; padding:9px 14px; border-bottom:1px solid var(--regua); font-size:.82rem; color:var(--meio)}
+.ferramenta .barra-f strong{color:var(--tinta)}
+.ferramenta .barra-f a{margin-left:auto}
+.ferramenta iframe{display:block; width:100%; height:720px; border:0; background:var(--papel)}
+@media (max-width:640px){ .ferramenta iframe{height:560px} }
+
+/* ---- linha do tempo ---- */
+ol.tempo{list-style:none; padding:0; margin:22px 0 0; display:grid; gap:0; border-left:2px solid var(--regua)}
+ol.tempo li{display:grid; grid-template-columns:82px 1fr; gap:14px; padding:10px 0 10px 18px; position:relative}
+ol.tempo li::before{content:""; position:absolute; left:-6px; top:19px; width:10px; height:10px; border-radius:50%; background:var(--papel); border:2px solid var(--fraco)}
+ol.tempo li.marco::before{background:var(--a); border-color:var(--a)}
+ol.tempo .data{font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--meio); padding-top:3px}
+ol.tempo .o{font-size:.93rem; max-width:68ch}
+ol.tempo .o b{font-weight:600}
+ol.tempo .o small{display:block; color:var(--meio); font-size:.82rem; margin-top:2px}
+ul.fontes{padding-left:1.1em; margin:16px 0 0; max-width:74ch; font-size:.92rem; color:var(--meio)}
+ul.fontes li{margin-bottom:6px}
+ul.fontes b{color:var(--tinta); font-weight:600}
+footer{margin:72px 0 0; padding-top:18px; border-top:1px solid var(--regua); font-size:.8rem; color:var(--fraco)}
+footer p{max-width:76ch}
+@media (max-width:640px){ .folha{padding:0 16px 60px} header{padding-top:36px} .prancha svg{min-width:480px} }
+</style>
+
+<nav class="topo" aria-label="Seções"><div class="in">
+  <span class="marca">Posto de Dublin 2026</span>
+  <a href="#eleitorado">Quem vota</a><a href="#salao">O salão</a><a href="#mesas">As mesas</a>
+  <a href="#ring3">Fila externa</a><a href="#rota">Rota e placas</a><a href="#barreiras">Barreiras</a>
+  <a href="#simulacao">O dia simulado</a><a href="#caminho">Caminho até aqui</a><a href="#fontes">Fontes</a>
+</div></nav>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro, 8h às 17h · RDS Ballsbridge, Hall 2 e Ring 3</p>
+  <h1>O plano de votação do posto de Dublin</h1>
+  <p class="chamada">Como 11.499 eleitores previstos chegam ao Royal Dublin Society, esperam no Ring 3, entram por três portas da fachada sul, votam em 28 mesas e saem sem cruzar a fila de quem entra. Um só lugar para o que as análises decidiram, o que ficou pendente e as ferramentas para testar alternativas.</p>
+  <dl class="faixa">
+    <div><dt>Eleitores aptos</dt><dd>16.794<small>51 seções, todas em Dublin</small></dd></div>
+    <div><dt>Comparecimento previsto</dt><dd>11.499<small>68,5% · taxa de 2022 por origem, estimativa</small></dd></div>
+    <div><dt>Mesas receptoras</dt><dd>28<small>uma urna por mesa · MRV do DJE</small></dd></div>
+    <div><dt>Portas de eleitor</dt><dd>3 + 2<small>entradas S4 A · S5 B · S6 C; saídas S2 e S8</small></dd></div>
+    <div><dt>Hall 2</dt><dd>50,3 × 44,4 m<small>2.179 m², pé-direito 7 m</small></dd></div>
+    <div><dt>Ring 3</dt><dd>44 × 35 m<small>fila externa, 14 m ao sul da fachada</small></dd></div>
+  </dl>
+  <div class="vivo" id="vivo"><span class="rot">Portas em vigor</span><span>carregando…</span></div>
+</header>
+
+<!-- ============================ 1 · QUEM VOTA ============================ -->
+<section id="eleitorado">
+  <p class="rotulo"><span class="passo">1</span>Quem vota</p>
+  <h2>28 mesas, de 398 a 797 eleitores, e três que pesam mais</h2>
+  <p class="lede">O TSE concentrou as 51 seções da Irlanda em 28 urnas num único local. Vinte e três urnas somam duas seções; cinco operam com uma só. A carga esperada de cada mesa decide tudo o que vem depois: onde ela fica, quanto de fila tem à frente e por qual porta os seus eleitores entram.</p>
+  <div class="duas">
+    <div>
+      <figure>
+        <div class="grafico"><div class="linha" tabindex="0" aria-label="MRV 22: 590 esperados de 797 aptos"><span class="cod">22</span><span class="trilho"><span class="barra c-alta" style="width:100.0%"></span></span><span class="val">590</span><span class="dica">MRV 22 · seções 3313 + 3889 · Dublin · 797 aptos · entrada B</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 24: 588 esperados de 794 aptos"><span class="cod">24</span><span class="trilho"><span class="barra c-alta" style="width:99.7%"></span></span><span class="val">588</span><span class="dica">MRV 24 · seções 3322 + 3752 · Dublin · 794 aptos · entrada A</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 23: 586 esperados de 792 aptos"><span class="cod">23</span><span class="trilho"><span class="barra c-alta" style="width:99.3%"></span></span><span class="val">586</span><span class="dica">MRV 23 · seções 3315 + 3778 · Dublin · 792 aptos · entrada C</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 16: 518 esperados de 771 aptos"><span class="cod">16</span><span class="trilho"><span class="barra c-media" style="width:87.8%"></span></span><span class="val">518</span><span class="dica">MRV 16 · seções 3302 + 3181 · Outros Locais Da Irlanda · 771 aptos · entrada B</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 18: 515 esperados de 766 aptos"><span class="cod">18</span><span class="trilho"><span class="barra c-media" style="width:87.3%"></span></span><span class="val">515</span><span class="dica">MRV 18 · seções 3306 + 518 · Outros Locais Da Irlanda · 766 aptos · entrada B</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 11: 504 esperados de 791 aptos"><span class="cod">11</span><span class="trilho"><span class="barra c-media" style="width:85.4%"></span></span><span class="val">504</span><span class="dica">MRV 11 · seções 3161 + 3307 · Cork · 791 aptos · entrada C</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 15: 498 esperados de 781 aptos"><span class="cod">15</span><span class="trilho"><span class="barra c-media" style="width:84.4%"></span></span><span class="val">498</span><span class="dica">MRV 15 · seções 3245 + 519 · Cork · 781 aptos · entrada A</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 17: 472 esperados de 767 aptos"><span class="cod">17</span><span class="trilho"><span class="barra c-media" style="width:80.0%"></span></span><span class="val">472</span><span class="dica">MRV 17 · seções 3305 + 521 · Galway · 767 aptos · entrada B</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 9: 467 esperados de 756 aptos"><span class="cod">9</span><span class="trilho"><span class="barra c-media" style="width:79.2%"></span></span><span class="val">467</span><span class="dica">MRV 9 · seções 3108 + 3422 · Galway · 756 aptos · entrada A</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 10: 466 esperados de 793 aptos"><span class="cod">10</span><span class="trilho"><span class="barra c-media" style="width:79.0%"></span></span><span class="val">466</span><span class="dica">MRV 10 · seções 3142 + 1278 · Limerick · 793 aptos · entrada C</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 21: 466 esperados de 630 aptos"><span class="cod">21</span><span class="trilho"><span class="barra c-media" style="width:79.0%"></span></span><span class="val">466</span><span class="dica">MRV 21 · seções 3311 + 3913 · Dublin · 630 aptos · entrada B</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 12: 423 esperados de 676 aptos"><span class="cod">12</span><span class="trilho"><span class="barra c-baixa" style="width:71.7%"></span></span><span class="val">423</span><span class="dica">MRV 12 · seções 3179 + 530 · Westmeath · 676 aptos · entrada A</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 13: 407 esperados de 571 aptos"><span class="cod">13</span><span class="trilho"><span class="barra c-baixa" style="width:69.0%"></span></span><span class="val">407</span><span class="dica">MRV 13 · seções 3216 + 527 · Clare · 571 aptos · entrada C</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 14: 405 esperados de 606 aptos"><span class="cod">14</span><span class="trilho"><span class="barra c-baixa" style="width:68.6%"></span></span><span class="val">405</span><span class="dica">MRV 14 · seções 3229 + 3821 · Cork · 606 aptos · entrada C</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 20: 395 esperados de 615 aptos"><span class="cod">20</span><span class="trilho"><span class="barra c-baixa" style="width:66.9%"></span></span><span class="val">395</span><span class="dica">MRV 20 · seções 3309 + 1314 · Waterford · 615 aptos · entrada A</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 1: 375 esperados de 582 aptos"><span class="cod">1</span><span class="trilho"><span class="barra c-baixa" style="width:63.6%"></span></span><span class="val">375</span><span class="dica">MRV 1 · seções 511 + 1100 · Roscommon · 582 aptos · entrada B</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 2: 355 esperados de 476 aptos"><span class="cod">2</span><span class="trilho"><span class="barra c-baixa" style="width:60.2%"></span></span><span class="val">355</span><span class="dica">MRV 2 · seções 512 + 2855 · Longford · 476 aptos · entrada C</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 3: 351 esperados de 502 aptos"><span class="cod">3</span><span class="trilho"><span class="barra c-baixa" style="width:59.5%"></span></span><span class="val">351</span><span class="dica">MRV 3 · seções 513 + 1105 · Mayo · 502 aptos · entrada A</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 4: 348 esperados de 513 aptos"><span class="cod">4</span><span class="trilho"><span class="barra c-baixa" style="width:59.0%"></span></span><span class="val">348</span><span class="dica">MRV 4 · seções 517 + 1292 · Cavan · 513 aptos · entrada B</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 5: 328 esperados de 473 aptos"><span class="cod">5</span><span class="trilho"><span class="barra c-baixa" style="width:55.6%"></span></span><span class="val">328</span><span class="dica">MRV 5 · seções 1160 + 3845 · Limerick · 473 aptos · entrada A</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 6: 328 esperados de 462 aptos"><span class="cod">6</span><span class="trilho"><span class="barra c-baixa" style="width:55.6%"></span></span><span class="val">328</span><span class="dica">MRV 6 · seções 1352 + 522 · Donegal · 462 aptos · entrada C</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 7: 325 esperados de 454 aptos"><span class="cod">7</span><span class="trilho"><span class="barra c-baixa" style="width:55.1%"></span></span><span class="val">325</span><span class="dica">MRV 7 · seções 3054 + 1099 · Kerry · 454 aptos · entrada B</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 8: 311 esperados de 429 aptos"><span class="cod">8</span><span class="trilho"><span class="barra c-baixa" style="width:52.7%"></span></span><span class="val">311</span><span class="dica">MRV 8 · seções 3078 + 2847 · Leitrim · 429 aptos · entrada B</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 26: 296 esperados de 400 aptos"><span class="cod">26</span><span class="trilho"><span class="barra c-baixa" style="width:50.2%"></span></span><span class="val">296</span><span class="dica">MRV 26 · seções 3688 · 400 aptos · entrada A</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 27: 296 esperados de 400 aptos"><span class="cod">27</span><span class="trilho"><span class="barra c-baixa" style="width:50.2%"></span></span><span class="val">296</span><span class="dica">MRV 27 · seções 3832 · 400 aptos · entrada C</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 28: 296 esperados de 400 aptos"><span class="cod">28</span><span class="trilho"><span class="barra c-baixa" style="width:50.2%"></span></span><span class="val">296</span><span class="dica">MRV 28 · seções 3862 · 400 aptos · entrada A</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 19: 295 esperados de 399 aptos"><span class="cod">19</span><span class="trilho"><span class="barra c-baixa" style="width:50.0%"></span></span><span class="val">295</span><span class="dica">MRV 19 · seções 3308 · 399 aptos · entrada C</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 25: 295 esperados de 398 aptos"><span class="cod">25</span><span class="trilho"><span class="barra c-baixa" style="width:50.0%"></span></span><span class="val">295</span><span class="dica">MRV 25 · seções 3442 · 398 aptos · entrada B</span></div></div>
+        <div class="legenda"><span><i class="sw" style="background:var(--alta)"></i>alta: as 3 maiores</span><span><i class="sw" style="background:var(--media)"></i>média: 8 mesas com 450 ou mais</span><span><i class="sw" style="background:var(--baixa)"></i>baixa: 17 mesas</span></div>
+        <figcaption>Comparecimento esperado por mesa receptora (MRV), da maior para a menor. Passe o cursor ou foque uma linha para ver as seções e a entrada. A cor é a classe de carga usada na prancheta, nas barreiras e no simulador.</figcaption>
+      </figure>
+    </div>
+    <div>
+      <h3 style="margin-top:22px">O que os números mostram</h3>
+      <p><strong>Três mesas críticas, não quatro.</strong> MRV 22 (3313 + 3889, 590) · MRV 24 (3322 + 3752, 588) · MRV 23 (3315 + 3778, 586). São as únicas que somam duas seções inteiras de Dublin; abaixo delas há um degrau nítido.</p>
+      <p><strong>Um quarto do eleitorado vem do interior.</strong> 4.213 eleitores (25%) moram em Cork, Galway, Limerick e outros condados e passam a votar em Dublin. Chegam em grupo e procuram o nome do condado, não o número da seção.</p>
+      <p><strong>Um erro no mapa do TSE.</strong> O PNG oficial lista a seção agregada 3752 sob a principal 3222, que pertence ao Porto. A correta é a 3322, uma das três críticas. O CSV oficial prevalece.</p>
+      <div class="rolagem"><table>
+        <thead><tr><th>Localidade de origem</th><th class="num">Eleitores</th><th class="num">Parcela</th></tr></thead>
+        <tbody><tr><td>Dublin</td><td class="num mono">12.581</td><td class="num mono">74,9%</td></tr>
+<tr><td>Cork</td><td class="num mono">986</td><td class="num mono">5,9%</td></tr>
+<tr><td>Outros Locais Da Irlanda</td><td class="num mono">745</td><td class="num mono">4,4%</td></tr>
+<tr><td>Galway</td><td class="num mono">728</td><td class="num mono">4,3%</td></tr>
+<tr><td>Limerick</td><td class="num mono">468</td><td class="num mono">2,8%</td></tr>
+<tr><td>Westmeath</td><td class="num mono">278</td><td class="num mono">1,7%</td></tr>
+<tr><td>Waterford</td><td class="num mono">217</td><td class="num mono">1,3%</td></tr>
+<tr><td>Roscommon</td><td class="num mono">182</td><td class="num mono">1,1%</td></tr>
+<tr><td>Clare</td><td class="num mono">173</td><td class="num mono">1,0%</td></tr>
+<tr><td>Cavan</td><td class="num mono">113</td><td class="num mono">0,7%</td></tr>
+<tr><td>Mayo</td><td class="num mono">102</td><td class="num mono">0,6%</td></tr>
+<tr><td>Longford</td><td class="num mono">76</td><td class="num mono">0,5%</td></tr>
+<tr><td>Donegal</td><td class="num mono">62</td><td class="num mono">0,4%</td></tr>
+<tr><td>Kerry</td><td class="num mono">54</td><td class="num mono">0,3%</td></tr>
+<tr><td>Leitrim</td><td class="num mono">29</td><td class="num mono">0,2%</td></tr></tbody>
+      </table></div>
+    </div>
+  </div>
+  <div class="pecas"><span class="rot">Peças completas</span><span class="peca"><a href="pecas/urnas.html">Urnas de Dublin</a><a class="ext" href="https://claude.ai/code/artifact/3d1b9ff8-458d-42c9-b1b6-8aacf15dfd9f" target="_blank" rel="noopener">no claude.ai</a></span></div>
+</section>
+
+<!-- ============================ 2 · O SALAO ============================ -->
+<section id="salao">
+  <p class="rotulo"><span class="passo">2</span>O salão</p>
+  <h2>O Hall 2 e as suas 18 portas, numeradas por fachada</h2>
+  <p class="lede">Um retângulo de 50,3 por 44,4 m com o canto sudoeste recortado, sem colunas. As portas ganharam um número por fachada (N, L, S, O e R para o recorte), na ordem de leitura do desenho, porque o código do RDS numera folhas e não localiza nada. A parede leste é toda de emergência e exige 3 m livres em torno de cada vão.</p>
+  <figure>
+    <div class="prancha"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1058 972" style="width:100%;height:auto" role="img" aria-label="Planta-base do Hall 2: o salão vazio, as portas numeradas por fachada e o recuo de 3 m da parede leste">
+<rect x="0" y="0" width="1058.5" height="972.0" fill="#fbfaf7"/>
+<polygon points="269.0,742.0 906.5,742.0 906.5,76.0 152.0,76.0 152.0,637.0 269.0,637.0" fill="#eef1f4"/>
+<rect x="861.5" y="76.0" width="45.0" height="133.4" fill="#16867f" opacity=".10" stroke="#16867f" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="861.5" y="251.2" width="45.0" height="135.9" fill="#16867f" opacity=".10" stroke="#16867f" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="861.5" y="428.9" width="45.0" height="136.0" fill="#16867f" opacity=".10" stroke="#16867f" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="861.5" y="606.9" width="45.0" height="135.1" fill="#16867f" opacity=".10" stroke="#16867f" stroke-width="1" stroke-dasharray="4 3"/>
+<path d="M861.5 674.8L906.5 674.8" stroke="#5d6773" stroke-width="0.8" opacity=".8"/><line x1="861.5" y1="671.8" x2="861.5" y2="677.8" stroke="#5d6773" stroke-width="0.8"/><line x1="906.5" y1="671.8" x2="906.5" y2="677.8" stroke="#5d6773" stroke-width="0.8"/><text x="884.0" y="669.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">3 m</text>
+<polygon points="269.0,742.0 906.5,742.0 906.5,76.0 152.0,76.0 152.0,637.0 269.0,637.0" fill="none" stroke="#1c2733" stroke-width="3.4"/>
+<line x1="263.1" y1="76.0" x2="293.6" y2="76.0" stroke="#b23b2e" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="278.4" y="59.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">N1</text>
+<text x="278.4" y="69.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">2.13 · 2,03 m</text>
+<line x1="461.9" y1="76.0" x2="515.3" y2="76.0" stroke="#1f6fb2" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="488.6" y="59.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">N2</text>
+<text x="488.6" y="69.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">2.14/2.15 · 3,56 m</text>
+<line x1="906.5" y1="164.4" x2="906.5" y2="118.4" stroke="#16867f" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="917.5" y="139.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="start">L1</text>
+<text x="917.5" y="150.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">2.16/2.17 · 3,06 m</text>
+<line x1="906.5" y1="342.1" x2="906.5" y2="296.2" stroke="#16867f" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="917.5" y="317.1" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="start">L2</text>
+<text x="917.5" y="328.1" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">2.18/2.19 · 3,06 m</text>
+<line x1="906.5" y1="520.0" x2="906.5" y2="473.9" stroke="#16867f" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="917.5" y="495.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="start">L3</text>
+<text x="917.5" y="506.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">2.20/2.21 · 3,07 m</text>
+<line x1="906.5" y1="697.7" x2="906.5" y2="651.9" stroke="#16867f" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="917.5" y="672.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="start">L4</text>
+<text x="917.5" y="683.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">2.22/2.23 · 3,06 m</text>
+<line x1="269.4" y1="742.0" x2="323.8" y2="742.0" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="296.6" y="762.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S1</text>
+<text x="296.6" y="773.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">carga oeste · 3,62 m</text>
+<line x1="350.8" y1="742.0" x2="368.8" y2="742.0" stroke="#b26a12" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="359.8" y="784.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S2</text>
+<text x="359.8" y="795.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">sem codigo RDS · 1,20 m</text>
+<text x="359.8" y="809.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#b26a12" text-anchor="middle">SAÍDA</text>
+<line x1="410.3" y1="742.0" x2="429.0" y2="742.0" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="419.7" y="762.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S3</text>
+<text x="419.7" y="773.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">2.7 · 1,25 m</text>
+<line x1="438.5" y1="742.0" x2="527.5" y2="742.0" stroke="#1f6fb2" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="483.0" y="762.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S4</text>
+<text x="483.0" y="773.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">2.5/2.6 · 5,93 m</text>
+<text x="483.0" y="787.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#1f6fb2" text-anchor="middle">ENTRADA A</text>
+<line x1="531.8" y1="742.0" x2="620.8" y2="742.0" stroke="#1f6fb2" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="576.3" y="762.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S5</text>
+<text x="576.3" y="773.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">2.4 · 5,93 m</text>
+<text x="576.3" y="787.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#1f6fb2" text-anchor="middle">ENTRADA B</text>
+<line x1="625.1" y1="742.0" x2="714.0" y2="742.0" stroke="#1f6fb2" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="669.6" y="762.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S6</text>
+<text x="669.6" y="773.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">2.2/2.3 · 5,93 m</text>
+<text x="669.6" y="787.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#1f6fb2" text-anchor="middle">ENTRADA C</text>
+<line x1="723.4" y1="742.0" x2="742.4" y2="742.0" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="732.9" y="762.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S7</text>
+<text x="732.9" y="773.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">2.1 · 1,27 m</text>
+<line x1="783.8" y1="742.0" x2="801.8" y2="742.0" stroke="#b26a12" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="792.8" y="784.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S8</text>
+<text x="792.8" y="795.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">sem codigo RDS · 1,20 m</text>
+<text x="792.8" y="809.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#b26a12" text-anchor="middle">SAÍDA</text>
+<line x1="828.8" y1="742.0" x2="883.2" y2="742.0" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="856.0" y="762.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S9</text>
+<text x="856.0" y="773.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">carga leste · 3,63 m</text>
+<line x1="152.0" y1="190.0" x2="152.0" y2="164.5" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="141.0" y="175.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="end">O1</text>
+<text x="141.0" y="186.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">acesso Hall 1 · 1,70 m</text>
+<line x1="152.0" y1="451.6" x2="152.0" y2="405.5" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="141.0" y="426.6" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="end">O2</text>
+<text x="141.0" y="437.6" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">2.10/2.11 · 3,07 m</text>
+<line x1="269.0" y1="697.0" x2="269.0" y2="644.5" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
+<text x="280.0" y="668.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="start">R1</text>
+<text x="280.0" y="679.8" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="start">2.8/2.9 · 3,50 m</text>
+<text x="278.4" y="92.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#b23b2e" text-anchor="middle">FECHADA</text>
+<text x="488.6" y="92.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" font-weight="700" fill="#1f6fb2" text-anchor="middle">DESBLOQUEADA</text>
+<text x="488.6" y="103.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#1f6fb2" text-anchor="middle">saída do catering</text>
+<text x="822.5" y="409.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#16867f" opacity=".75" text-anchor="middle" transform="rotate(90 822.5 409.0)">SAÍDAS DE EMERGÊNCIA · RECUO DE 3 m</text>
+<text x="359.8" y="820.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#16867f" text-anchor="middle">emergência · sem recuo · aberta</text>
+<text x="792.8" y="820.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#16867f" text-anchor="middle">emergência · sem recuo · aberta</text>
+<text x="141.0" y="200.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">para o Hall 1</text>
+<text x="141.0" y="451.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">para os sanitários</text>
+<text x="529.2" y="130.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle">PAREDE NORTE</text>
+<text x="529.2" y="688.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle">FACHADA SUL</text>
+<text x="221.0" y="356.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle" transform="rotate(-90 221.0 356.5)">PAREDE OESTE</text>
+<text x="780.5" y="409.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle" transform="rotate(90 780.5 409.0)">PAREDE LESTE</text>
+<text x="210.5" y="680.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">fora do salão</text>
+<text x="210.5" y="698.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">7,8 × 7,0 m</text>
+<path d="M152.0 40.0L906.5 40.0" stroke="#5d6773" stroke-width="0.8" opacity=".8"/><line x1="152.0" y1="37.0" x2="152.0" y2="43.0" stroke="#5d6773" stroke-width="0.8"/><line x1="906.5" y1="37.0" x2="906.5" y2="43.0" stroke="#5d6773" stroke-width="0.8"/><text x="529.2" y="35.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">50,3 m</text>
+<path d="M677.0 742.0L677.0 76.0" stroke="#5d6773" stroke-width="0.8" opacity=".8"/><line x1="674.0" y1="742.0" x2="680.0" y2="742.0" stroke="#5d6773" stroke-width="0.8"/><line x1="674.0" y1="76.0" x2="680.0" y2="76.0" stroke="#5d6773" stroke-width="0.8"/><text x="677.0" y="404.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle" transform="rotate(-90 677.0 404.0)">44,4 m</text>
+<text x="152.0" y="17.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="16" font-weight="700" fill="#1f2c3c" text-anchor="start">PLANTA-BASE — o salão e as portas numeradas</text>
+<rect x="152" y="852.0" width="11" height="11" fill="#5d6773" opacity=".55" stroke="#5d6773"/>
+<text x="168" y="861.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">sem papel definido</text>
+<rect x="273.4" y="852.0" width="11" height="11" fill="#b23b2e" opacity=".55" stroke="#b23b2e"/>
+<text x="289.4" y="861.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">fechada</text>
+<rect x="336.5" y="852.0" width="11" height="11" fill="#1f6fb2" opacity=".55" stroke="#1f6fb2"/>
+<text x="352.5" y="861.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">entrada de eleitores A/B/C · catering (N2)</text>
+<rect x="585.1" y="852.0" width="11" height="11" fill="#b26a12" opacity=".55" stroke="#b26a12"/>
+<text x="601.1" y="861.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">saída de eleitores</text>
+<rect x="706.5" y="852.0" width="11" height="11" fill="#16867f" opacity=".55" stroke="#16867f"/>
+<text x="722.5" y="861.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#243244">saída de emergência (recuo de 3 m onde determinado)</text>
+<text x="152" y="886.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80">As portas são numeradas por fachada, na ordem de leitura do desenho: de oeste para leste nas paredes norte e sul, de norte para sul nas paredes leste e oeste. Abaixo de cada</text>
+<text x="152" y="900.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80">número vem o código do RDS e a largura do vão. Entradas de eleitor S4 (A), S5 (B) e S6 (C); saídas S2 e S8 — decisão do Posto de 06/09/2026. O recuo de 3 m está marcado só na parede leste, onde</text>
+<text x="152" y="914.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80">todas as portas são saídas de emergência; sobram dela 3 trechos de 2,79 m entre os recuos. As portas 2.8/2.9 ficam na parede do recorte, que não é fachada.</text>
+<text x="152" y="928.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80">S2 e S8 são saída de emergência sem código do RDS — não constavam na planta original, confirmadas no local: portas pretas de sinal verde encostadas às portas de carga. Ficam permanentemente</text>
+<text x="152" y="942.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80">abertas e por isso não pedem recuo; posição e vão são estimados até medir no local. Segue em aberto se S3 (2.7), S7 (2.1) e R1, as três saídas de emergência restantes, também dispensam — N1 não conta, já fechada.</text>
+</svg></div>
+    <figcaption>Planta-base em escala, medida da planta oficial do RDS (escala aferida contra a ficha técnica: 50,2 × 44,5 m, 2.238 m²). Entradas de eleitor S4 (A), S5 (B) e S6 (C); saídas S2 e S8, decisão do Posto de 06/09/2026. S2 e S8 não constam da planta do RDS: foram confirmadas no local como saídas de emergência permanentemente abertas, com posição e vão estimados sobre foto.</figcaption>
+  </figure>
+  <div class="rolagem"><table>
+    <thead><tr><th>Nº</th><th>Parede</th><th>Código RDS</th><th class="num">Vão</th><th>Papel</th></tr></thead>
+    <tbody><tr><td class="mono b">N1</td><td>norte</td><td class="mono">2.13</td><td class="num mono">2,03 m</td><td><span class="tag t-fechada">fechada</span></td></tr>
+<tr><td class="mono b">N2</td><td>norte</td><td class="mono">2.14/2.15</td><td class="num mono">3,56 m</td><td><span class="tag t-livre">catering</span></td></tr>
+<tr><td class="mono b">L1</td><td>leste</td><td class="mono">2.16/2.17</td><td class="num mono">3,06 m</td><td><span class="tag t-emerg">emergência</span></td></tr>
+<tr><td class="mono b">L2</td><td>leste</td><td class="mono">2.18/2.19</td><td class="num mono">3,06 m</td><td><span class="tag t-emerg">emergência</span></td></tr>
+<tr><td class="mono b">L3</td><td>leste</td><td class="mono">2.20/2.21</td><td class="num mono">3,07 m</td><td><span class="tag t-emerg">emergência</span></td></tr>
+<tr><td class="mono b">L4</td><td>leste</td><td class="mono">2.22/2.23</td><td class="num mono">3,06 m</td><td><span class="tag t-emerg">emergência</span></td></tr>
+<tr><td class="mono b">S1</td><td>sul</td><td class="mono">carga oeste</td><td class="num mono">3,62 m</td><td><span class="tag t-livre">a definir</span></td></tr>
+<tr><td class="mono b">S2</td><td>sul</td><td class="mono">sem codigo RDS</td><td class="num mono">1,20 m</td><td><span class="tag t-saida">saída de eleitores</span></td></tr>
+<tr><td class="mono b">S3</td><td>sul</td><td class="mono">2.7</td><td class="num mono">1,25 m</td><td><span class="tag t-livre">a definir</span></td></tr>
+<tr><td class="mono b">S4</td><td>sul</td><td class="mono">2.5/2.6</td><td class="num mono">5,93 m</td><td><span class="tag t-entrada">entrada A</span></td></tr>
+<tr><td class="mono b">S5</td><td>sul</td><td class="mono">2.4</td><td class="num mono">5,93 m</td><td><span class="tag t-entrada">entrada B</span></td></tr>
+<tr><td class="mono b">S6</td><td>sul</td><td class="mono">2.2/2.3</td><td class="num mono">5,93 m</td><td><span class="tag t-entrada">entrada C</span></td></tr>
+<tr><td class="mono b">S7</td><td>sul</td><td class="mono">2.1</td><td class="num mono">1,27 m</td><td><span class="tag t-livre">a definir</span></td></tr>
+<tr><td class="mono b">S8</td><td>sul</td><td class="mono">sem codigo RDS</td><td class="num mono">1,20 m</td><td><span class="tag t-saida">saída de eleitores</span></td></tr>
+<tr><td class="mono b">S9</td><td>sul</td><td class="mono">carga leste</td><td class="num mono">3,63 m</td><td><span class="tag t-livre">a definir</span></td></tr>
+<tr><td class="mono b">O1</td><td>oeste</td><td class="mono">acesso Hall 1</td><td class="num mono">1,70 m</td><td><span class="tag t-livre">a definir</span></td></tr>
+<tr><td class="mono b">O2</td><td>oeste</td><td class="mono">2.10/2.11</td><td class="num mono">3,07 m</td><td><span class="tag t-livre">a definir</span></td></tr>
+<tr><td class="mono b">R1</td><td>recorte</td><td class="mono">2.8/2.9</td><td class="num mono">3,50 m</td><td><span class="tag t-livre">a definir</span></td></tr></tbody>
+  </table></div>
+  <p class="nota"><strong>"A definir" não quer dizer disponível.</strong> Quer dizer que nada foi decidido sobre a porta. As portas de carga S1 e S9, por exemplo, dependem de poderem ficar abertas e travadas as nove horas e de a soleira servir a pedestre.</p>
+  <div class="pecas"><span class="rot">Peças completas</span><span class="peca"><a href="pecas/planta_base.html">Planta-base do Hall 2</a><a class="ext" href="https://claude.ai/code/artifact/48817634-cbe1-426e-829f-5b5c674a688c" target="_blank" rel="noopener">no claude.ai</a></span></div>
+</section>
+
+<!-- ============================ 3 · AS MESAS ============================ -->
+<section id="mesas">
+  <p class="rotulo"><span class="passo">3</span>As mesas</p>
+  <h2>Um módulo de 0,90 m de frente por 4,10 m de fundo, em pares contra as paredes</h2>
+  <p class="lede">A mesa receptora é um conjunto: a mesa de identificação com três mesários, a mesa redonda da urna e o eleitor votando entre a urna e a parede, de costas para o salão. Dois módulos formam um par com corredor de 3,00 m; pares vizinhos ficam a 1,50 m. A fachada leste, que os recuos de emergência inutilizavam, passou a render 12 mesas quando a fileira foi recuada 3 m e a faixa protegida se tornou contínua.</p>
+  <div class="duas">
+    <figure>
+      <div class="prancha"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 776 423" style="width:100%;height:auto" role="img" aria-label="O módulo da mesa receptora de votos, com as cotas"><rect x="0" y="0" width="776" height="423" fill="#fbfaf7"/><text x="96.0" y="26.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" fill="#1f2c3c" text-anchor="start" font-weight="700">O MÓDULO — uma mesa receptora de votos, e o par</text><text x="96.0" y="44.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#5c6c80" text-anchor="start">Vista de cima. Os mesários do par ficam de frente uns para os outros; o par seguinte fica de costas.</text><defs><marker id="s2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f6fb2"/></marker><marker id="cota" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 2L8 5L2 8z" fill="#5c6c80"/></marker></defs><rect x="96.0" y="84.0" width="374.4" height="213.2" fill="#eef1f4"/><line x1="83.0" y1="84.0" x2="483.4" y2="84.0" stroke="#1c2733" stroke-width="6"/><text x="283.2" y="68.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="10.5" fill="#1f2c3c" text-anchor="middle" font-weight="700">PAREDE · as urnas ficam sempre voltadas para ela</text><rect x="142.8" y="84.0" width="156.0" height="213.2" fill="#1f6fb2" opacity=".07"/><g opacity="1"><rect x="98.6" y="208.8" width="41.6" height="88.4" fill="#3b4552" opacity=".85"/><circle cx="119.4" cy="154.2" r="23.4" fill="#fff" stroke="#1f6fb2" stroke-width="2"/><rect x="110.0" y="143.8" width="18.7" height="15.6" fill="#1f6fb2" opacity=".7"/><circle cx="119.4" cy="107.4" r="12.5" fill="none" stroke="#59616d" stroke-width="1.6"/><circle cx="153.7" cy="223.5" r="12.5" fill="#59616d" opacity=".6"/><circle cx="153.7" cy="253.0" r="12.5" fill="#59616d" opacity=".6"/><circle cx="153.7" cy="282.5" r="12.5" fill="#59616d" opacity=".6"/></g><g opacity="1"><rect x="301.4" y="208.8" width="41.6" height="88.4" fill="#3b4552" opacity=".85"/><circle cx="322.2" cy="154.2" r="23.4" fill="#fff" stroke="#1f6fb2" stroke-width="2"/><rect x="312.8" y="143.8" width="18.7" height="15.6" fill="#1f6fb2" opacity=".7"/><circle cx="322.2" cy="107.4" r="12.5" fill="none" stroke="#59616d" stroke-width="1.6"/><circle cx="287.9" cy="223.5" r="12.5" fill="#59616d" opacity=".6"/><circle cx="287.9" cy="253.0" r="12.5" fill="#59616d" opacity=".6"/><circle cx="287.9" cy="282.5" r="12.5" fill="#59616d" opacity=".6"/></g><g opacity=".34"><rect x="426.2" y="208.8" width="41.6" height="88.4" fill="#3b4552" opacity=".85"/><circle cx="447.0" cy="154.2" r="23.4" fill="#fff" stroke="#1f6fb2" stroke-width="2"/><rect x="437.6" y="143.8" width="18.7" height="15.6" fill="#1f6fb2" opacity=".7"/><circle cx="447.0" cy="107.4" r="12.5" fill="none" stroke="#59616d" stroke-width="1.6"/><circle cx="481.3" cy="223.5" r="12.5" fill="#59616d" opacity=".6"/><circle cx="481.3" cy="253.0" r="12.5" fill="#59616d" opacity=".6"/><circle cx="481.3" cy="282.5" r="12.5" fill="#59616d" opacity=".6"/></g><path d="M211.8 319.2L211.8 164.6" stroke="#1f6fb2" stroke-width="2" marker-end="url(#s2)"/><path d="M229.8 164.6L229.8 319.2" stroke="#1f6fb2" stroke-width="2" opacity=".45" marker-end="url(#s2)"/><text x="220.8" y="335.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#1f6fb2" text-anchor="middle" font-weight="600">entra · sai</text><path d="M500.4 84.0L500.4 130.8" stroke="#5c6c80" stroke-width="0.9" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="508.4" y="110.4" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9" fill="#5c6c80" text-anchor="start">0,90 · eleitor votando</text><path d="M500.4 130.8L500.4 177.6" stroke="#5c6c80" stroke-width="0.9" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="508.4" y="157.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9" fill="#5c6c80" text-anchor="start">0,90 · mesa de votação</text><path d="M500.4 177.6L500.4 208.8" stroke="#5c6c80" stroke-width="0.9" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="508.4" y="196.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9" fill="#5c6c80" text-anchor="start">0,60 · passagem</text><path d="M500.4 208.8L500.4 297.2" stroke="#5c6c80" stroke-width="0.9" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="508.4" y="256.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9" fill="#5c6c80" text-anchor="start">1,70 · mesa de identificação</text><path d="M668.4 84.0L668.4 297.2" stroke="#1f2c3c" stroke-width="1" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="682.4" y="190.6" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#1f2c3c" font-weight="600" text-anchor="middle" transform="rotate(-90 682.4 190.6)">4,10 m de profundidade</text><path d="M96.0 355.2L142.8 355.2" stroke="#5c6c80" stroke-width="0.9" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="119.4" y="369.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9" fill="#5c6c80" text-anchor="middle">0,90</text><path d="M142.8 355.2L298.8 355.2" stroke="#5c6c80" stroke-width="0.9" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="220.8" y="369.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9" fill="#5c6c80" text-anchor="middle">corredor do par · 2,50 a 3,00</text><path d="M298.8 355.2L345.6 355.2" stroke="#5c6c80" stroke-width="0.9" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="322.2" y="369.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9" fill="#5c6c80" text-anchor="middle">0,90</text><path d="M345.6 355.2L423.6 355.2" stroke="#5c6c80" stroke-width="0.9" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="384.6" y="369.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9" fill="#5c6c80" text-anchor="middle">entre pares · 1,00 a 1,50</text><path d="M96.0 385.2L423.6 385.2" stroke="#1f2c3c" stroke-width="1" marker-start="url(#cota)" marker-end="url(#cota)"/><text x="259.8" y="399.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="9.5" fill="#1f2c3c" text-anchor="middle" font-weight="600">passo do par: 5,30 a 6,30 m de frente para duas mesas receptoras</text></svg></div>
+      <figcaption>O módulo em escala e o passo do par. Cotas de eleitor votando (0,90 m) e passagem (0,60 m) são premissas de trabalho; o mobiliário é o informado pelo Posto.</figcaption>
+    </figure>
+    <div>
+      <div class="respostas" style="grid-template-columns:1fr; margin-top:22px">
+        <div class="resposta"><span class="num">Planta oficial</span><span class="curta">28 mesas: 8 na parede norte, 12 na fileira recuada da fachada leste, 2 no recorte, 6 na parede oeste.</span><p>A fachada sul não recebe mesa nenhuma: as nove portas fragmentam os 42,5 m e ela fica inteira para o fluxo do eleitor. Com a mesma folga o salão comporta 30 mesas.</p></div>
+        <div class="resposta"><span class="num">Cenários da prancheta</span><span class="curta">Hamad_3polos é o arranjo de trabalho: as três mesas críticas em três áreas distintas do salão.</span><p>Hamad1, Hamad 2, Três polos e Equitativo estão salvos na biblioteca. O simulador escolheu Três polos por varredura; as barreiras foram contadas sobre o Hamad_3polos.</p></div>
+        <div class="resposta"><span class="num">Identidade da mesa</span><span class="curta">O número é o MRV do DJE/TRE-DF e não muda quando a mesa se move.</span><p>A mesa 22 é a 22 na parede norte, leste ou oeste. A cor é a carga: vermelho as três de maior comparecimento, amarelo médio, verde baixo.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="ferramenta">
+    <div class="barra-f"><strong>Prancheta do Hall 2</strong><span>arraste, gire, meça, repareie; salve cenários. Portas, entradas e o Ring 3 seguem o que for clicado no Simulador.</span><a href="ferramentas/prancheta.html" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+    <iframe src="ferramentas/prancheta.html" title="Prancheta do Hall 2" loading="lazy"></iframe>
+  </div>
+  <div class="pecas"><span class="rot">Peças completas</span><span class="peca"><a href="pecas/mesas.html">Quantas mesas cabem no Hall 2</a><a class="ext" href="https://claude.ai/code/artifact/8ea7b55b-ec3f-4dd4-baaf-7702c4d3fcce" target="_blank" rel="noopener">no claude.ai</a></span><span class="peca"><a href="ferramentas/prancheta.html">Prancheta do Hall 2</a><a class="ext" href="https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0" target="_blank" rel="noopener">no claude.ai</a></span></div>
+</section>
+
+<!-- ============================ 4 · FILA EXTERNA ============================ -->
+<section id="ring3">
+  <p class="rotulo"><span class="passo">4</span>A fila externa</p>
+  <h2>O Ring 3 guarda a fila em ordem, uma zona por entrada</h2>
+  <p class="lede">Ao sul da fachada, depois de um apron pavimentado de 14 m, o Ring 3 é a apólice contra erro de previsão: quem chega antes de haver vaga no salão espera ali, já separado pela entrada que vai usar. Cada entrada tem o seu serpenteado, e as 28 mesas são repartidas entre as entradas na proporção da capacidade de cada zona, com uma mesa vermelha em cada.</p>
+  <div class="rolagem"><table>
+    <thead><tr><th>Entrada</th><th>Porta</th><th class="num">Mesas</th><th class="num">Esperados</th><th class="num">Cabe no Ring 3</th><th>MRV</th></tr></thead>
+    <tbody><tr><td><span class="sw" style="background:#2a78d6"></span><strong>A</strong> azul</td><td class="mono">S4</td><td class="num mono">9</td><td class="num mono">3.642</td><td class="num mono">445</td><td class="mono mesas">3, 5, 9, 12, 15, 20, 24, 26, 28</td></tr>
+<tr><td><span class="sw" style="background:#e08a00"></span><strong>B</strong> âmbar</td><td class="mono">S5</td><td class="num mono">10</td><td class="num mono">4.215</td><td class="num mono">513</td><td class="mono mesas">1, 4, 7, 8, 16, 17, 18, 21, 22, 25</td></tr>
+<tr><td><span class="sw" style="background:#c2185b"></span><strong>C</strong> magenta</td><td class="mono">S6</td><td class="num mono">9</td><td class="num mono">3.642</td><td class="num mono">445</td><td class="mono mesas">2, 6, 10, 11, 13, 14, 19, 23, 27</td></tr></tbody>
+  </table></div>
+  <p class="nota pendente"><strong>Decisão pendente: o desenho da fila.</strong> O plano vigente mantém uma faixa de garganta ao sul para a pré-triagem e guarda 1.402 pessoas com 300 separadores (100 a comprar, cerca de EUR 1.302). Sem a garganta, cada raia ganha 8,25 m: o desenho norte-sul sem baias guarda 2.150 pessoas, mas custa 531 separadores (331 a comprar, EUR 4.310). A tabela compara os cinco; onde a pré-triagem passa a acontecer nos desenhos sem garganta ainda não foi definido.</p>
+  <div class="rolagem"><table>
+    <thead><tr><th>Desenho</th><th class="num">Lotação</th><th class="num">Em raia</th><th class="num">Em baia</th><th class="num">Separadores</th><th class="num">A comprar</th><th class="num">Custo</th></tr></thead>
+    <tbody><tr><td>Plano vigente · com garganta e baias<span class=sub>1.402 no plano original (300 separadores); reconstrução dá 314</span></td><td class="num mono">1.402</td><td class="num mono">855</td><td class="num mono">547</td><td class="num mono">314</td><td class="num mono">114</td><td class="num mono">EUR 1.484</td></tr>
+<tr><td>Norte-sul, sem baias<span class=sub>o desenho pedido em 08/09</span></td><td class="num mono">2.150</td><td class="num mono">2.150</td><td class="num mono">0</td><td class="num mono">531</td><td class="num mono">331</td><td class="num mono">EUR 4.310</td></tr>
+<tr><td>Norte-sul, com baias</td><td class="num mono">2.196</td><td class="num mono">1.459</td><td class="num mono">737</td><td class="num mono">425</td><td class="num mono">225</td><td class="num mono">EUR 2.930</td></tr>
+<tr><td>Leste-oeste, sem baias</td><td class="num mono">2.125</td><td class="num mono">2.125</td><td class="num mono">0</td><td class="num mono">532</td><td class="num mono">332</td><td class="num mono">EUR 4.323</td></tr>
+<tr><td>Leste-oeste, com baias</td><td class="num mono">2.221</td><td class="num mono">1.484</td><td class="num mono">737</td><td class="num mono">437</td><td class="num mono">237</td><td class="num mono">EUR 3.086</td></tr></tbody>
+  </table></div>
+  <div class="ferramenta">
+    <div class="barra-f"><strong>Ring 3 ao vivo</strong><span>redesenhado para as portas em vigor: com N entradas, N serpenteados. Escolha o desenho aqui ou no Simulador.</span><a href="ferramentas/ring3.html" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+    <iframe src="ferramentas/ring3.html" title="Ring 3 ao vivo" loading="lazy"></iframe>
+  </div>
+  <div class="pecas"><span class="rot">Peças completas</span><span class="peca"><a href="pecas/ring3_quatro.html">Ring 3, quatro desenhos</a><a class="ext" href="https://claude.ai/code/artifact/c1257b13-e450-4bc1-b801-439a32bddb87" target="_blank" rel="noopener">no claude.ai</a></span></div>
+</section>
+
+<!-- ============================ 5 · ROTA E PLACAS ============================ -->
+<section id="rota">
+  <p class="rotulo"><span class="passo">5</span>A rota e as placas</p>
+  <h2>O eleitor decide no corredor, não na porta</h2>
+  <p class="lede">Entre o portão da Merrion Road e a fachada sul há cerca de 150 m de caminhada pela lateral leste do Hall 2, e no pico muito mais tempo do que isso parado em fila. Toda a consulta ("qual é a minha mesa, qual é a minha porta") cabe nesse trecho. Quando o eleitor chega à bifurcação A, B e C, só confirma uma letra que já sabe.</p>
+  <div class="respostas">
+    <div class="resposta"><span class="num">Regra 1</span><span class="curta">Uma consulta só.</span><p>Seção, mesa e porta no mesmo painel, ordenado pela única coisa que o eleitor traz de casa: o número da seção. Cinquenta e uma linhas, não 28; um eleitor da seção 3889 procura 3889.</p></div>
+    <div class="resposta"><span class="num">Regra 2</span><span class="curta">Consulta replicada.</span><p>O mesmo painel repetido a cada 25 a 30 m ao longo do corredor, colado nas portas de serviço da parede leste, entre as saídas de emergência. Quatro painéis simultâneos no pico, a 15 s por leitura.</p></div>
+    <div class="resposta"><span class="num">Regra 3</span><span class="curta">Bifurcação sem informação nova.</span><p>Na porta, só a letra em vinil de 300 mm no vidro da fachada, legível de 60 m. Tudo bilíngue, em lona de 440 g com ilhoses, montado acima de 2,5 m por causa dos guarda-chuvas.</p></div>
+  </div>
+  <h3>Os oito pontos, do portão à rua</h3>
+  <div class="rolagem"><table>
+    <thead><tr><th>Ponto</th><th>Onde fica</th><th>O que decide</th><th>Peças</th></tr></thead>
+    <tbody>
+      <tr><td class="mono b">P0</td><td>Calçada da Merrion Road, pontos de ônibus, demais portões do RDS</td><td>Se está no lugar certo e por qual portão entra</td><td>4 painéis</td></tr>
+      <tr><td class="mono b">P1</td><td>Portão de entrada</td><td>Primeira consulta seção → mesa → porta; desvio dos casos sem seção</td><td>pórtico, 3 painéis, 1 totem do balcão de dúvidas</td></tr>
+      <tr><td class="mono b">P2</td><td>Corredor da lateral leste, a 10,75, 22,50 e 33,90 m do canto norte</td><td>Nada novo: repete a consulta no tempo morto</td><td>3 painéis de 1,8 × 1,2 m + 2 lonas no gradil</td></tr>
+      <tr><td class="mono b">P3</td><td>Garganta sudeste do Ring 3, junto aos agentes de pré-triagem</td><td>Última consulta; divisão nos serpenteados</td><td>2 painéis, 3 totens de 3 m</td></tr>
+      <tr><td class="mono b">P4</td><td>Cabeça de cada serpenteado</td><td>Confirmação da fila; captura de quem errou</td><td>3 totens, 1 faixa de correção</td></tr>
+      <tr><td class="mono b">P5</td><td>Vidro das portas S4, S5 e S6</td><td>Só que ali se entra; nenhuma informação nova</td><td>3 vinis de fachada</td></tr>
+      <tr><td class="mono b">P6</td><td>Logo depois das portas, dentro do salão</td><td>Mesa → posição física</td><td>3 faixas suspensas, 28 totens de mesa</td></tr>
+      <tr><td class="mono b">P7</td><td>Saídas S2 e S8, nos flancos</td><td>Encaminha para a rua sem reentrar no Ring 3</td><td>2 painéis internos, 2 externos</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Índice por condado, para quem procura o nome de onde mora</h3>
+  <div class="rolagem"><table>
+    <thead><tr><th>Localidade de origem</th><th class="num">Eleitores</th><th>Seções</th><th>Mesa e entrada</th></tr></thead>
+    <tbody><tr><td>Cork</td><td class="num mono">986</td><td class="mono">3307, 3821, 519</td><td><span class="chip" style="color:#c2185b">MRV 11 · C</span> <span class="chip" style="color:#c2185b">MRV 14 · C</span> <span class="chip" style="color:#2a78d6">MRV 15 · A</span></td></tr>
+<tr><td>Outros Locais Da Irlanda</td><td class="num mono">745</td><td class="mono">3181, 518</td><td><span class="chip" style="color:#e08a00">MRV 16 · B</span> <span class="chip" style="color:#e08a00">MRV 18 · B</span></td></tr>
+<tr><td>Galway</td><td class="num mono">728</td><td class="mono">3422, 521</td><td><span class="chip" style="color:#2a78d6">MRV 9 · A</span> <span class="chip" style="color:#e08a00">MRV 17 · B</span></td></tr>
+<tr><td>Limerick</td><td class="num mono">468</td><td class="mono">3845, 1278</td><td><span class="chip" style="color:#2a78d6">MRV 5 · A</span> <span class="chip" style="color:#c2185b">MRV 10 · C</span></td></tr>
+<tr><td>Westmeath</td><td class="num mono">278</td><td class="mono">530</td><td><span class="chip" style="color:#2a78d6">MRV 12 · A</span></td></tr>
+<tr><td>Waterford</td><td class="num mono">217</td><td class="mono">1314</td><td><span class="chip" style="color:#2a78d6">MRV 20 · A</span></td></tr>
+<tr><td>Roscommon</td><td class="num mono">182</td><td class="mono">1100</td><td><span class="chip" style="color:#e08a00">MRV 1 · B</span></td></tr>
+<tr><td>Clare</td><td class="num mono">173</td><td class="mono">527</td><td><span class="chip" style="color:#c2185b">MRV 13 · C</span></td></tr>
+<tr><td>Cavan</td><td class="num mono">113</td><td class="mono">1292</td><td><span class="chip" style="color:#e08a00">MRV 4 · B</span></td></tr>
+<tr><td>Mayo</td><td class="num mono">102</td><td class="mono">1105</td><td><span class="chip" style="color:#2a78d6">MRV 3 · A</span></td></tr>
+<tr><td>Longford</td><td class="num mono">76</td><td class="mono">2855</td><td><span class="chip" style="color:#c2185b">MRV 2 · C</span></td></tr>
+<tr><td>Donegal</td><td class="num mono">62</td><td class="mono">522</td><td><span class="chip" style="color:#c2185b">MRV 6 · C</span></td></tr>
+<tr><td>Kerry</td><td class="num mono">54</td><td class="mono">1099</td><td><span class="chip" style="color:#e08a00">MRV 7 · B</span></td></tr>
+<tr><td>Leitrim</td><td class="num mono">29</td><td class="mono">2847</td><td><span class="chip" style="color:#e08a00">MRV 8 · B</span></td></tr></tbody>
+  </table></div>
+  <div class="pecas"><span class="rot">Peças completas</span><span class="peca"><a href="pecas/rota.html">Rota do Eleitor</a><a class="ext" href="https://claude.ai/code/artifact/0320fda4-365e-406e-8aa4-1d0a1b535de8" target="_blank" rel="noopener">no claude.ai</a></span></div>
+</section>
+
+<!-- ============================ 6 · BARREIRAS ============================ -->
+<section id="barreiras">
+  <p class="rotulo"><span class="passo">6</span>Barreiras internas</p>
+  <h2>100 postes de fita retrátil, contados corrida a corrida</h2>
+  <p class="lede">Dentro do salão a fila de cada mesa é guiada por postes Tensa de fita de 2 m. O desenho adotado, cenário 1e, põe uma linha no meio de cada par de mesas, uma linha por mesa sem par e só as duas divisórias que separam as entradas A de B e B de C. Uma corrida de L metros gasta L÷2 fitas e uma a mais de postes; por isso o número de corridas, e não a metragem, manda no consumo.</p>
+  <dl class="faixa">
+    <div><dt>Postes</dt><dd>100<small>111 com reserva de 10%</small></dd></div>
+    <div><dt>Fitas de 2 m</dt><dd>73<small>146 m de barreira</small></dd></div>
+    <div><dt>Corridas</dt><dd>21<small>9 pares, 7 mesas sem par, 3 polos</small></dd></div>
+    <div><dt>Já contratados</dt><dd>100<small>folga de fita, folga nenhuma de poste</small></dd></div>
+  </dl>
+  <div class="rolagem"><table>
+    <thead><tr><th>Cenário</th><th class="num">Corridas</th><th class="num">Fitas</th><th class="num">Postes</th><th class="num">Com reserva</th><th class="num">Barreira</th></tr></thead>
+    <tbody><tr class="marcada"><td><strong>1e</strong><span class="sub">ADOTADO. Uma linha no meio de cada par, uma linha por mesa sem par, e só as duas divisórias que separam A de B e B de C. O limite externo dos canais fica com sinalização e equipe.</span></td><td class="num mono">21</td><td class="num mono">73</td><td class="num mono">100</td><td class="num mono">111</td><td class="num mono">146 m</td></tr>
+<tr><td><strong>1</strong><span class="sub">Descartado. O mesmo, mais as duas bordas externas dos canais de entrada.</span></td><td class="num mono">23</td><td class="num mono">93</td><td class="num mono">122</td><td class="num mono">135</td><td class="num mono">186 m</td></tr>
+<tr><td><strong>1i</strong><span class="sub">Descartado. Mesma topologia, filas redimensionadas para que toda mesa aguente 20 minutos de pico.</span></td><td class="num mono">23</td><td class="num mono">97</td><td class="num mono">126</td><td class="num mono">139</td><td class="num mono">194 m</td></tr></tbody>
+  </table></div>
+  <div class="duas">
+    <figure>
+      <div class="grafico"><div class="linha" tabindex="0" aria-label="MRV 16: lota em 14 minutos"><span class="cod">16</span><span class="trilho"><span class="barra c-alta" style="width:35.0%"></span></span><span class="val">14</span><span class="dica">MRV 16 · seção 3302 · fila de 5 m (cabem 10) · chegam 1,73/min · lota em 14 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 18: lota em 14 minutos"><span class="cod">18</span><span class="trilho"><span class="barra c-alta" style="width:35.0%"></span></span><span class="val">14</span><span class="dica">MRV 18 · seção 3306 · fila de 5 m (cabem 10) · chegam 1,72/min · lota em 14 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 11: lota em 15 minutos"><span class="cod">11</span><span class="trilho"><span class="barra c-alta" style="width:37.5%"></span></span><span class="val">15</span><span class="dica">MRV 11 · seção 3161 · fila de 5 m (cabem 10) · chegam 1,68/min · lota em 15 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 12: lota em 15 minutos"><span class="cod">12</span><span class="trilho"><span class="barra c-alta" style="width:37.5%"></span></span><span class="val">15</span><span class="dica">MRV 12 · seção 3179 · fila de 3 m (cabem 6) · chegam 1,41/min · lota em 15 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 15: lota em 15 minutos"><span class="cod">15</span><span class="trilho"><span class="barra c-alta" style="width:37.5%"></span></span><span class="val">15</span><span class="dica">MRV 15 · seção 3245 · fila de 5 m (cabem 10) · chegam 1,66/min · lota em 15 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 13: lota em 17 minutos"><span class="cod">13</span><span class="trilho"><span class="barra c-alta" style="width:42.5%"></span></span><span class="val">17</span><span class="dica">MRV 13 · seção 3216 · fila de 3 m (cabem 6) · chegam 1,36/min · lota em 17 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 14: lota em 17 minutos"><span class="cod">14</span><span class="trilho"><span class="barra c-alta" style="width:42.5%"></span></span><span class="val">17</span><span class="dica">MRV 14 · seção 3229 · fila de 3 m (cabem 6) · chegam 1,35/min · lota em 17 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 17: lota em 17 minutos"><span class="cod">17</span><span class="trilho"><span class="barra c-alta" style="width:42.5%"></span></span><span class="val">17</span><span class="dica">MRV 17 · seção 3305 · fila de 5 m (cabem 10) · chegam 1,57/min · lota em 17 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 9: lota em 18 minutos"><span class="cod">9</span><span class="trilho"><span class="barra c-alta" style="width:45.0%"></span></span><span class="val">18</span><span class="dica">MRV 9 · seção 3108 · fila de 5 m (cabem 10) · chegam 1,56/min · lota em 18 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 10: lota em 18 minutos"><span class="cod">10</span><span class="trilho"><span class="barra c-alta" style="width:45.0%"></span></span><span class="val">18</span><span class="dica">MRV 10 · seção 3142 · fila de 5 m (cabem 10) · chegam 1,55/min · lota em 18 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 21: lota em 18 minutos"><span class="cod">21</span><span class="trilho"><span class="barra c-alta" style="width:45.0%"></span></span><span class="val">18</span><span class="dica">MRV 21 · seção 3311 · fila de 5 m (cabem 10) · chegam 1,55/min · lota em 18 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 20: lota em 19 minutos"><span class="cod">20</span><span class="trilho"><span class="barra c-alta" style="width:47.5%"></span></span><span class="val">19</span><span class="dica">MRV 20 · seção 3309 · fila de 3 m (cabem 6) · chegam 1,32/min · lota em 19 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 22: lota em 21 minutos"><span class="cod">22</span><span class="trilho"><span class="barra c-neutra" style="width:52.5%"></span></span><span class="val">21</span><span class="dica">MRV 22 · seção 3313 · fila de 10 m (cabem 20) · chegam 1,97/min · lota em 21 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 23: lota em 21 minutos"><span class="cod">23</span><span class="trilho"><span class="barra c-neutra" style="width:52.5%"></span></span><span class="val">21</span><span class="dica">MRV 23 · seção 3315 · fila de 10 m (cabem 20) · chegam 1,95/min · lota em 21 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 24: lota em 21 minutos"><span class="cod">24</span><span class="trilho"><span class="barra c-neutra" style="width:52.5%"></span></span><span class="val">21</span><span class="dica">MRV 24 · seção 3322 · fila de 10 m (cabem 20) · chegam 1,96/min · lota em 21 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 1: lota em 24 minutos"><span class="cod">1</span><span class="trilho"><span class="barra c-neutra" style="width:60.0%"></span></span><span class="val">24</span><span class="dica">MRV 1 · seção 511 · fila de 3 m (cabem 6) · chegam 1,25/min · lota em 24 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 2: lota em 33 minutos"><span class="cod">2</span><span class="trilho"><span class="barra c-neutra" style="width:82.5%"></span></span><span class="val">33</span><span class="dica">MRV 2 · seção 512 · fila de 3 m (cabem 6) · chegam 1,18/min · lota em 33 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 3: lota em 35 minutos"><span class="cod">3</span><span class="trilho"><span class="barra c-neutra" style="width:87.5%"></span></span><span class="val">35</span><span class="dica">MRV 3 · seção 513 · fila de 3 m (cabem 6) · chegam 1,17/min · lota em 35 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 4: lota em 38 minutos"><span class="cod">4</span><span class="trilho"><span class="barra c-neutra" style="width:95.0%"></span></span><span class="val">38</span><span class="dica">MRV 4 · seção 517 · fila de 3 m (cabem 6) · chegam 1,16/min · lota em 38 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 5: lota em 64 minutos"><span class="cod">5</span><span class="trilho"><span class="barra c-neutra" style="width:100.0%"></span></span><span class="val">64</span><span class="dica">MRV 5 · seção 1160 · fila de 3 m (cabem 6) · chegam 1,09/min · lota em 64 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 6: lota em 64 minutos"><span class="cod">6</span><span class="trilho"><span class="barra c-neutra" style="width:100.0%"></span></span><span class="val">64</span><span class="dica">MRV 6 · seção 1352 · fila de 3 m (cabem 6) · chegam 1,09/min · lota em 64 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 7: lota em 72 minutos"><span class="cod">7</span><span class="trilho"><span class="barra c-neutra" style="width:100.0%"></span></span><span class="val">72</span><span class="dica">MRV 7 · seção 3054 · fila de 3 m (cabem 6) · chegam 1,08/min · lota em 72 min de pico</span></div>
+<div class="linha" tabindex="0" aria-label="MRV 8: lota em 164 minutos"><span class="cod">8</span><span class="trilho"><span class="barra c-neutra" style="width:100.0%"></span></span><span class="val">164</span><span class="dica">MRV 8 · seção 3078 · fila de 3 m (cabem 6) · chegam 1,04/min · lota em 164 min de pico</span></div></div>
+      <figcaption>Minutos que a fila de cada mesa aguenta antes de transbordar, a 60 s por voto e pico de 1,8× a média, com filas de 3, 5 e 10 m por classe. Em vermelho as que lotam em menos de 20 minutos. Não lotam: MRV 19, 25, 26, 27, 28.</figcaption>
+    </figure>
+    <div>
+      <h3 style="margin-top:22px">O risco que a escolha aceita</h3>
+      <p>A escada de 3, 5 e 10 m não equaliza resiliência: a fila de uma mesa de carga média aguenta 14 minutos de pico; a de uma crítica, 21. Sem as bordas externas dos canais, o que mantém o eleitor entre a porta e o checkpoint é sinalização e equipe de piso, que deixa de ser conveniência e vira parte do desenho.</p>
+      <p>O reservatório do surto das 8h não está dentro do salão: é o Ring 3. A fila externa e a interna foram desenhadas juntas por isso.</p>
+    </div>
+  </div>
+  <div class="pecas"><span class="rot">Peças completas</span><span class="peca"><a href="pecas/barreiras.html">Barreiras do Hall 2</a><a class="ext" href="https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981" target="_blank" rel="noopener">no claude.ai</a></span></div>
+</section>
+
+<!-- ============================ 7 · O DIA SIMULADO ============================ -->
+<section id="simulacao">
+  <p class="rotulo"><span class="passo">7</span>O dia simulado</p>
+  <h2>Eleitor a eleitor, das 7h ao fechamento da última mesa</h2>
+  <p class="lede">O simulador percorre o dia inteiro por eventos discretos sobre o arranjo real das 28 mesas: chegada ao Ring 3, triagem, fila da entrada, porta com liberação controlada, checkpoint, fila da mesa, identificação pelo caderno e urna. Onze critérios dão o veredito. As portas clicáveis do bloco "Portas da fachada sul" são o controle mestre deste dashboard: mudar uma entrada ou uma saída redesenha a Prancheta e o Ring 3 acima.</p>
+  <div class="respostas">
+    <div class="resposta"><span class="num">Cenário Claude</span><span class="curta">Última mesa fecha às 17h03 no dia ruim (P90); espera P90 de 54 minutos.</span><p>Arranjo Três polos (as três mesas vermelhas em áreas distintas), checkpoint a 16 m com 3 atendentes por entrada, filas 3/4/6 por classe. Pico de cerca de 971 pessoas fora, dentro da capacidade do Ring 3. Só a espera fica em atenção; os demais critérios passam.</p></div>
+    <div class="resposta"><span class="num">O gargalo é a mesa</span><span class="curta">A 60 s por eleitor falham exatamente as três mesas vermelhas; 590 eleitores em 540 minutos dão 54,9 s cada.</span><p>Vinte e três das 28 urnas acumulam duas seções, logo dois cadernos: com os três mesários é possível identificar em paralelo e fechar às 17h mesmo com caderno lento. É a negociação a abrir com o Cartório.</p></div>
+    <div class="resposta"><span class="num">Fixo em todos os cenários</span><span class="curta">Caderno físico, liberação controlada, curva de chegada com pico de manhã e repique perto das 17h.</span><p>Comparecimento pela base B (taxa de 2022 por domicílio de origem), com presets de sensibilidade de −15% e +15%. Cada dia simulado sorteia horários e tempos; o resultado mostra a mediana e o dia ruim.</p></div>
+  </div>
+  <div class="ferramenta">
+    <div class="barra-f"><strong>Simulador do Hall 2</strong><span>clique numa porta da fachada sul para testar outra combinação; "Rodar simulação" refaz o dia.</span><a href="ferramentas/simulador.html" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+    <iframe src="ferramentas/simulador.html" title="Simulador do Hall 2" loading="lazy"></iframe>
+  </div>
+  <div class="pecas"><span class="rot">Peças completas</span><span class="peca"><a href="ferramentas/simulador.html">Simulador do Hall 2</a><a class="ext" href="https://claude.ai/code/artifact/f2fea148-f618-4d3d-aa63-b0653f4139bc" target="_blank" rel="noopener">no claude.ai</a></span></div>
+</section>
+
+<!-- ============================ 8 · CAMINHO ATE AQUI ============================ -->
+<section id="caminho">
+  <p class="rotulo"><span class="passo">8</span>Caminho até aqui</p>
+  <h2>O que foi testado e descartado antes deste desenho</h2>
+  <p class="lede">O plano atual é a quarta ideia de layout e a segunda de portas. As anteriores continuam disponíveis, porque explicam por que o desenho vigente é o que é.</p>
+  <ol class="tempo">
+    <li><span class="data">jul–ago</span><span class="o"><b>Contraproposta ao TSE.</b> A proposta original tinha 20 mesas e 25 urnas sobre 14.626 aptos; por "casa dos pombos", com menos de 32 mesas há pares Dublin-Dublin forçados de quase 590 comparecentes. A negociação fechou em 28 urnas.</span></li>
+    <li class="marco"><span class="data">13/08</span><span class="o"><b>Agregação das seções.</b> Cruzamento do mapa de agregações do TSE com o eleitorado por seção: 16.794 aptos, 51 seções, 28 urnas, e o erro 3222 → 3322 registrado.</span></li>
+    <li><span class="data">28/08</span><span class="o"><b>Ideia 1, ilhas no meio do salão.</b> Duas entradas pelas portas de carga nas pontas e saída no meio; três fileiras de ilhas com a carga crescendo para o fundo. Descartada: o módulo lado a lado de 2,80 m não cabia nas paredes e as portas de carga dependem de ficarem abertas.<small>Peça: Fluxo do Posto de Dublin.</small></span></li>
+    <li><span class="data">31/08</span><span class="o"><b>Ideia 2, as 28 mesas encostadas nas paredes.</b> Só fecha com três condições ao mesmo tempo (recuo só na parede leste, módulo em linha e setor reforçado com quatro mesários). Descartada pela folga de 6,3 m em 68,2.<small>Peça: As 28 Mesas nas Paredes.</small></span></li>
+    <li class="marco"><span class="data">01/09</span><span class="o"><b>Planta-base fixada e mesas pareadas com fileira recuada.</b> A fachada leste passa de zero a 12 mesas; o salão fecha em 28 com folga para 30.<small>Peça: Quantas mesas cabem no Hall 2.</small></span></li>
+    <li><span class="data">02–05/09</span><span class="o"><b>Prancheta, MRVs do DJE, simulador, Ring 3 e sinalização.</b> S2 e S8 confirmadas no local; cenário Três polos; plano de sinalização com levantamento fotográfico.</span></li>
+    <li class="marco"><span class="data">06/09</span><span class="o"><b>Decisão das portas e fonte única.</b> Entradas S4, S5 e S6; saídas S2 e S8; comparecimento pela base B; numeração MRV; cores por carga. Tudo passa a ser gerado de <span class="mono">scripts/decisoes.py</span>.</span></li>
+    <li><span class="data">07–08/09</span><span class="o"><b>Barreiras internas (1e) e Ring 3 nas dimensões oficiais.</b> Quatro desenhos de fila externa comparados; a escolha entre eles é a decisão pendente.</span></li>
+  </ol>
+  <div class="pecas"><span class="rot">Peças completas</span><span class="peca"><a href="historico/fluxo_ilhas_2026-08-28.html">Fluxo do Posto de Dublin</a><a class="ext" href="https://claude.ai/code/artifact/bdf8a5b8-2fdd-4b00-a409-9fe4af2bf3f2" target="_blank" rel="noopener">no claude.ai</a></span><span class="peca"><a href="historico/mesas_nas_paredes_2026-08-31.html">As 28 Mesas nas Paredes</a><a class="ext" href="https://claude.ai/code/artifact/1193fccf-effa-49ca-8ac5-5f4946fe4788" target="_blank" rel="noopener">no claude.ai</a></span><span class="peca"><a href="pecas/mesas.html">Quantas mesas cabem no Hall 2</a><a class="ext" href="https://claude.ai/code/artifact/8ea7b55b-ec3f-4dd4-baaf-7702c4d3fcce" target="_blank" rel="noopener">no claude.ai</a></span></div>
+</section>
+
+<!-- ============================ 9 · FONTES ============================ -->
+<section id="fontes">
+  <p class="rotulo"><span class="passo">9</span>Fontes e método</p>
+  <h2>De onde vêm os números</h2>
+  <ul class="fontes">
+    <li><b>Eleitorado.</b> CSV do TSE de seções do exterior (13/08/2026) e perfil do eleitorado de Dublin (14/07/2026). O processamento falha em vez de gravar saída errada se a soma por seção, por urna e do perfil não fecharem em 16.794 ou se algum total de urna divergir do campo que o TSE publica agregado.</li>
+    <li><b>MRV × seção.</b> Diário da Justiça Eletrônico do TRE-DF, ano 2026 n. 139 (04/08/2026), convocação de mesários de Dublin.</li>
+    <li><b>Comparecimento.</b> Taxa de 2022 por domicílio de origem de cada seção (base B). É uma estimativa de trabalho, não um dado oficial por seção; substitui-se quando houver dado do Cartório. Todos os cenários usam a mesma base.</li>
+    <li><b>Geometria.</b> Planta oficial do RDS (Hall 2, térreo) com escala aferida contra a ficha técnica; Ring 3 nas dimensões oficiais de 44 × 35 m, posição lateral centrada em S5 por estimativa. As capacidades do plano vigente foram calculadas com a fotogrametria anterior (39 × 35 m).</li>
+    <li><b>Modelos.</b> Fila por urna a 55 s de projeto; simulador por eventos discretos com 11 critérios; Ring 3 com raias de 1,40 m a 2 pessoas por m²; barreira Tensa de 2 m por poste. Premissas e sensibilidades estão em cada peça completa.</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Gerado por <span class="mono">scripts/gera_dashboard.py</span> a partir das saídas versionadas do repositório <span class="mono">eleicoes2026</span>. As ferramentas embutidas partilham a mesma origem: as portas clicadas no Simulador valem para a Prancheta e para o Ring 3 ao vivo nesta página.</p>
+</footer>
+</div>
+
+<script>
+const BASE = {"portas":[{"id":"N1","rds":"2.13","face":"norte","estado":"fechada","x1":7.41,"y1":44.4,"x2":9.44,"y2":44.4,"larg":2.03},{"id":"N2","rds":"2.14/2.15","face":"norte","estado":"catering","x1":20.66,"y1":44.4,"x2":24.22,"y2":44.4,"larg":3.56},{"id":"L1","rds":"2.16/2.17","face":"leste","estado":"emergencia","x1":50.3,"y1":38.51,"x2":50.3,"y2":41.57,"larg":3.06},{"id":"L2","rds":"2.18/2.19","face":"leste","estado":"emergencia","x1":50.3,"y1":26.66,"x2":50.3,"y2":29.72,"larg":3.06},{"id":"L3","rds":"2.20/2.21","face":"leste","estado":"emergencia","x1":50.3,"y1":14.8,"x2":50.3,"y2":17.87,"larg":3.07},{"id":"L4","rds":"2.22/2.23","face":"leste","estado":"emergencia","x1":50.3,"y1":2.95,"x2":50.3,"y2":6.01,"larg":3.06},{"id":"S1","rds":"carga oeste","face":"sul","estado":"livre","x1":7.83,"y1":0.0,"x2":11.45,"y2":0.0,"larg":3.62},{"id":"S2","rds":"sem codigo RDS","face":"sul","estado":"saida","x1":13.25,"y1":0.0,"x2":14.45,"y2":0.0,"larg":1.2},{"id":"S3","rds":"2.7","face":"sul","estado":"livre","x1":17.22,"y1":0.0,"x2":18.47,"y2":0.0,"larg":1.25},{"id":"S4","rds":"2.5/2.6","face":"sul","estado":"entrada","x1":19.1,"y1":0.0,"x2":25.03,"y2":0.0,"larg":5.93},{"id":"S5","rds":"2.4","face":"sul","estado":"entrada","x1":25.32,"y1":0.0,"x2":31.25,"y2":0.0,"larg":5.93},{"id":"S6","rds":"2.2/2.3","face":"sul","estado":"entrada","x1":31.54,"y1":0.0,"x2":37.47,"y2":0.0,"larg":5.93},{"id":"S7","rds":"2.1","face":"sul","estado":"livre","x1":38.09,"y1":0.0,"x2":39.36,"y2":0.0,"larg":1.27},{"id":"S8","rds":"sem codigo RDS","face":"sul","estado":"saida","x1":42.12,"y1":0.0,"x2":43.32,"y2":0.0,"larg":1.2},{"id":"S9","rds":"carga leste","face":"sul","estado":"livre","x1":45.12,"y1":0.0,"x2":48.75,"y2":0.0,"larg":3.63},{"id":"O1","rds":"acesso Hall 1","face":"oeste","estado":"livre","x1":0.0,"y1":36.8,"x2":0.0,"y2":38.5,"larg":1.7},{"id":"O2","rds":"2.10/2.11","face":"oeste","estado":"livre","x1":0.0,"y1":19.36,"x2":0.0,"y2":22.43,"larg":3.07},{"id":"R1","rds":"2.8/2.9","face":"recorte_v","estado":"livre","x1":7.8,"y1":3.0,"x2":7.8,"y2":6.5,"larg":3.5}],"salao":{"largura":50.3,"altura":44.4,"recorte":[0.0,0.0,7.8,7.0],"contorno":[[7.8,0.0],[50.3,0.0],[50.3,44.4],[0.0,44.4],[0.0,7.0],[7.8,7.0]]}};
+const DECISOES = {"decididoEm":"2026-09-06","numeracao":"MRV do DJE/TRE-DF, identidade unica da mesa; nao depende da posicao","comparecimento":{"base":"B","rotulo":"taxa de 2022 por domicílio de origem (base B, não oficial)","total":11499,"total_exato":11497.7,"aptos":16794,"taxas":{"DUBLIN":{"taxa":0.74,"qualidade":"direto"},"CORK":{"taxa":0.533,"qualidade":"direto"},"OUTROS LOCAIS DA IRLANDA":{"taxa":0.6,"qualidade":"direto"},"GALWAY":{"taxa":0.481,"qualidade":"direto"},"LIMERICK":{"taxa":0.434,"qualidade":"proxy"},"WESTMEATH":{"taxa":0.461,"qualidade":"proxy"},"WATERFORD":{"taxa":0.461,"qualidade":"proxy"},"ROSCOMMON":{"taxa":0.434,"qualidade":"proxy"},"CLARE":{"taxa":0.649,"qualidade":"direto"},"CAVAN":{"taxa":0.461,"qualidade":"proxy"},"MAYO":{"taxa":0.544,"qualidade":"proxy"},"LONGFORD":{"taxa":0.778,"qualidade":"direto"},"DONEGAL":{"taxa":0.51,"qualidade":"genérico (0,49 abst.)"},"KERRY":{"taxa":0.544,"qualidade":"proxy"},"LEITRIM":{"taxa":0.51,"qualidade":"genérico (0,49 abst.)"}}},"classes":{"regra":"as 3 maiores = alta; esperado >= 450 = media; abaixo = baixa","n_alta":3,"limiar_media":450,"cores":{"alta":{"cor":"vermelho","hex":"#c0392b","rotulo":"alto comparecimento"},"media":{"cor":"amarelo","hex":"#d4a017","rotulo":"médio comparecimento"},"baixa":{"cor":"verde","hex":"#1e8449","rotulo":"baixo comparecimento"}},"contagem":{"alta":3,"media":8,"baixa":17}},"portas":{"S4":{"papel":"entrada","entrada":"A","cor":"#2a78d6"},"S5":{"papel":"entrada","entrada":"B","cor":"#e08a00"},"S6":{"papel":"entrada","entrada":"C","cor":"#c2185b"},"S2":{"papel":"saida"},"S8":{"papel":"saida"}},"entradas":[{"id":"A","porta":"S4","cor":"azul","hex":"#2a78d6","balizas":3,"serpenteado":171,"baia":274,"capacidade":445,"quota":0.3171,"mrvs":[3,5,9,12,15,20,24,26,28],"esperado":3642,"alvo":3646},{"id":"B","porta":"S5","cor":"âmbar","hex":"#e08a00","balizas":9,"serpenteado":513,"baia":0,"capacidade":513,"quota":0.3659,"mrvs":[1,4,7,8,16,17,18,21,22,25],"esperado":4215,"alvo":4207},{"id":"C","porta":"S6","cor":"magenta","hex":"#c2185b","balizas":3,"serpenteado":171,"baia":274,"capacidade":445,"quota":0.3171,"mrvs":[2,6,10,11,13,14,19,23,27],"esperado":3642,"alvo":3646}],"saidas":["S2","S8"],"nomenclatura_portas":"em aberto: cor ou letra","mesas":[{"mrv":1,"principal":511,"agregada":1100,"origem_agregada":"ROSCOMMON","aptos":582,"aptos_principal":400,"aptos_agregada":182,"aptos_dublin":400,"aptos_interior":182,"esperado":375,"esperado_exato":374.99,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":2,"principal":512,"agregada":2855,"origem_agregada":"LONGFORD","aptos":476,"aptos_principal":400,"aptos_agregada":76,"aptos_dublin":400,"aptos_interior":76,"esperado":355,"esperado_exato":355.13,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":3,"principal":513,"agregada":1105,"origem_agregada":"MAYO","aptos":502,"aptos_principal":400,"aptos_agregada":102,"aptos_dublin":400,"aptos_interior":102,"esperado":351,"esperado_exato":351.49,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":4,"principal":517,"agregada":1292,"origem_agregada":"CAVAN","aptos":513,"aptos_principal":400,"aptos_agregada":113,"aptos_dublin":400,"aptos_interior":113,"esperado":348,"esperado_exato":348.09,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":5,"principal":1160,"agregada":3845,"origem_agregada":"LIMERICK","aptos":473,"aptos_principal":400,"aptos_agregada":73,"aptos_dublin":400,"aptos_interior":73,"esperado":328,"esperado_exato":327.68,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":6,"principal":1352,"agregada":522,"origem_agregada":"DONEGAL","aptos":462,"aptos_principal":400,"aptos_agregada":62,"aptos_dublin":400,"aptos_interior":62,"esperado":328,"esperado_exato":327.62,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":7,"principal":3054,"agregada":1099,"origem_agregada":"KERRY","aptos":454,"aptos_principal":400,"aptos_agregada":54,"aptos_dublin":400,"aptos_interior":54,"esperado":325,"esperado_exato":325.38,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":8,"principal":3078,"agregada":2847,"origem_agregada":"LEITRIM","aptos":429,"aptos_principal":400,"aptos_agregada":29,"aptos_dublin":400,"aptos_interior":29,"esperado":311,"esperado_exato":310.79,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":9,"principal":3108,"agregada":3422,"origem_agregada":"GALWAY","aptos":756,"aptos_principal":398,"aptos_agregada":358,"aptos_dublin":398,"aptos_interior":358,"esperado":467,"esperado_exato":466.72,"classe":"media","cor":"#d4a017","entrada":"A","porta":"S4"},{"mrv":10,"principal":3142,"agregada":1278,"origem_agregada":"LIMERICK","aptos":793,"aptos_principal":398,"aptos_agregada":395,"aptos_dublin":398,"aptos_interior":395,"esperado":466,"esperado_exato":465.95,"classe":"media","cor":"#d4a017","entrada":"C","porta":"S6"},{"mrv":11,"principal":3161,"agregada":3307,"origem_agregada":"CORK","aptos":791,"aptos_principal":397,"aptos_agregada":394,"aptos_dublin":397,"aptos_interior":394,"esperado":504,"esperado_exato":503.78,"classe":"media","cor":"#d4a017","entrada":"C","porta":"S6"},{"mrv":12,"principal":3179,"agregada":530,"origem_agregada":"WESTMEATH","aptos":676,"aptos_principal":398,"aptos_agregada":278,"aptos_dublin":398,"aptos_interior":278,"esperado":423,"esperado_exato":422.68,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":13,"principal":3216,"agregada":527,"origem_agregada":"CLARE","aptos":571,"aptos_principal":398,"aptos_agregada":173,"aptos_dublin":398,"aptos_interior":173,"esperado":407,"esperado_exato":406.8,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":14,"principal":3229,"agregada":3821,"origem_agregada":"CORK","aptos":606,"aptos_principal":398,"aptos_agregada":208,"aptos_dublin":398,"aptos_interior":208,"esperado":405,"esperado_exato":405.38,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":15,"principal":3245,"agregada":519,"origem_agregada":"CORK","aptos":781,"aptos_principal":397,"aptos_agregada":384,"aptos_dublin":397,"aptos_interior":384,"esperado":498,"esperado_exato":498.45,"classe":"media","cor":"#d4a017","entrada":"A","porta":"S4"},{"mrv":16,"principal":3302,"agregada":3181,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos":771,"aptos_principal":396,"aptos_agregada":375,"aptos_dublin":396,"aptos_interior":375,"esperado":518,"esperado_exato":518.04,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":17,"principal":3305,"agregada":521,"origem_agregada":"GALWAY","aptos":767,"aptos_principal":397,"aptos_agregada":370,"aptos_dublin":397,"aptos_interior":370,"esperado":472,"esperado_exato":471.75,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":18,"principal":3306,"agregada":518,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos":766,"aptos_principal":396,"aptos_agregada":370,"aptos_dublin":396,"aptos_interior":370,"esperado":515,"esperado_exato":515.04,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":19,"principal":3308,"agregada":null,"origem_agregada":null,"aptos":399,"aptos_principal":399,"aptos_agregada":0,"aptos_dublin":399,"aptos_interior":0,"esperado":295,"esperado_exato":295.26,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":20,"principal":3309,"agregada":1314,"origem_agregada":"WATERFORD","aptos":615,"aptos_principal":398,"aptos_agregada":217,"aptos_dublin":398,"aptos_interior":217,"esperado":395,"esperado_exato":394.56,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":21,"principal":3311,"agregada":3913,"origem_agregada":"DUBLIN","aptos":630,"aptos_principal":397,"aptos_agregada":233,"aptos_dublin":630,"aptos_interior":0,"esperado":466,"esperado_exato":466.2,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":22,"principal":3313,"agregada":3889,"origem_agregada":"DUBLIN","aptos":797,"aptos_principal":397,"aptos_agregada":400,"aptos_dublin":797,"aptos_interior":0,"esperado":590,"esperado_exato":589.78,"classe":"alta","cor":"#c0392b","entrada":"B","porta":"S5"},{"mrv":23,"principal":3315,"agregada":3778,"origem_agregada":"DUBLIN","aptos":792,"aptos_principal":395,"aptos_agregada":397,"aptos_dublin":792,"aptos_interior":0,"esperado":586,"esperado_exato":586.08,"classe":"alta","cor":"#c0392b","entrada":"C","porta":"S6"},{"mrv":24,"principal":3322,"agregada":3752,"origem_agregada":"DUBLIN","aptos":794,"aptos_principal":398,"aptos_agregada":396,"aptos_dublin":794,"aptos_interior":0,"esperado":588,"esperado_exato":587.56,"classe":"alta","cor":"#c0392b","entrada":"A","porta":"S4"},{"mrv":25,"principal":3442,"agregada":null,"origem_agregada":null,"aptos":398,"aptos_principal":398,"aptos_agregada":0,"aptos_dublin":398,"aptos_interior":0,"esperado":295,"esperado_exato":294.52,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":26,"principal":3688,"agregada":null,"origem_agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"aptos_dublin":400,"aptos_interior":0,"esperado":296,"esperado_exato":296.0,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":27,"principal":3832,"agregada":null,"origem_agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"aptos_dublin":400,"aptos_interior":0,"esperado":296,"esperado_exato":296.0,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":28,"principal":3862,"agregada":null,"origem_agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"aptos_dublin":400,"aptos_interior":0,"esperado":296,"esperado_exato":296.0,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"}],"ring3":{"largura":39.0,"profundidade":35.0,"apron":14.0,"rect":[8.79,-49.0,47.78,-14.0],"eixo":"centrado em S5 (estimativa; aferir o bordo oeste em campo)","serpenteado":28.5,"balizas":[3,9,3],"capacidade":1402,"separadores":300,"metros":596.3,"em_maos":200,"a_adquirir":100,"custo_eur":1302,"evacuacao_min":11.4,"largura_saida_exigida":2.14}};
+</script>
+<script>
+/* Portas vivas do posto de Dublin: o estado das portas da fachada sul e tudo o
+ * que deriva dele, calculado no navegador (e em Node, para os testes).
+ *
+ * Fonte unica da decisao continua sendo scripts/decisoes.py (06/09/2026:
+ * entradas S4 A, S5 B, S6 C; saidas S2 e S8). Este modulo serve ao que a
+ * decisao nao cobre: quando alguem, no Simulador, muda o papel de uma porta,
+ * a Prancheta, o desenho do Ring 3 e o dashboard precisam seguir a mudanca --
+ * com N entradas, N serpenteados, N letras, e cada mesa numa entrada.
+ *
+ * Tres blocos:
+ *   1. estado das portas: validacao, letras e cores das entradas;
+ *   2. Ring 3 parametrico: porte de scripts/ring3.py (Zona/Desenho) para N
+ *      zonas, mais a reconstrucao do plano vigente (3 · 9 · 3 com baias);
+ *   3. atribuicao mesa -> entrada: porte de decisoes.atribui_entradas.
+ * E a sincronizacao entre paginas da mesma origem (localStorage +
+ * BroadcastChannel) com fallback pelo hash da URL.
+ *
+ * Roda no navegador (global `Portas`) e em Node (module.exports). Nao depende
+ * de DOM, exceto `svgRing3`, que devolve texto SVG.
+ */
+(function (raiz) {
+"use strict";
+
+/* ------------------------------------------------------------------ */
+/* 1. Estado das portas                                                */
+/* ------------------------------------------------------------------ */
+const SUL = ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"];
+const PAPEIS = ["fechada", "entrada", "saida"];
+/* Cores das raias: azul, ambar e magenta sao as do plano de sinalizacao
+ * (distinguiveis em deuteranopia e protanopia); as duas extras servem a uma
+ * quarta e uma quinta entrada. */
+const PALETA = [
+  {cor: "azul", hex: "#2a78d6"}, {cor: "âmbar", hex: "#e08a00"},
+  {cor: "magenta", hex: "#c2185b"}, {cor: "verde-água", hex: "#1baf7a"},
+  {cor: "roxo", hex: "#7d3c98"}, {cor: "castanho", hex: "#8a5a2b"},
+  {cor: "cinza", hex: "#5c6c80"}, {cor: "oliva", hex: "#7a8a1a"},
+  {cor: "preto", hex: "#17202b"},
+];
+
+const DECISAO = {S2: "saida", S4: "entrada", S5: "entrada", S6: "entrada", S8: "saida"};
+
+function estadoDaDecisao(dec){
+  const e = {};
+  for (const id of SUL) e[id] = "fechada";
+  const portas = (dec && dec.portas) ? dec.portas : null;
+  if (portas) for (const id of Object.keys(portas)) if (SUL.includes(id)) e[id] = portas[id].papel;
+  else Object.assign(e, DECISAO);
+  return e;
+}
+
+/* Le qualquer coisa parecida com um estado (objeto por porta, ou o `portas`
+ * do cenario do simulador) e devolve os nove papeis, um por porta. */
+function normalizaEstado(obj){
+  const e = {};
+  for (const id of SUL) {
+    const v = obj && obj[id];
+    e[id] = PAPEIS.includes(v) ? v : "fechada";
+  }
+  return e;
+}
+
+function igual(a, b){
+  a = normalizaEstado(a); b = normalizaEstado(b);
+  return SUL.every(id => a[id] === b[id]);
+}
+
+/* Centro em x de cada porta da fachada sul. `portas` e a lista de BASE.portas
+ * (prancheta / simulador), com x1 e x2 em metros do canto sudoeste. */
+function centros(portas){
+  const c = {};
+  for (const p of (portas || [])) if (p.face === "sul" && SUL.includes(p.id)) c[p.id] = (p.x1 + p.x2) / 2;
+  return c;
+}
+
+/* As entradas em ordem de x (oeste -> leste), com letra e cor. */
+function entradas(estado, portas){
+  const e = normalizaEstado(estado), cx = centros(portas);
+  const ids = SUL.filter(id => e[id] === "entrada")
+    .sort((a, b) => (cx[a] ?? SUL.indexOf(a)) - (cx[b] ?? SUL.indexOf(b)));
+  return ids.map((id, i) => ({
+    id: String.fromCharCode(65 + i), porta: id, x: cx[id],
+    cor: PALETA[i % PALETA.length].cor, hex: PALETA[i % PALETA.length].hex,
+  }));
+}
+function saidas(estado){ return SUL.filter(id => normalizaEstado(estado)[id] === "saida"); }
+
+function valida(estado, portas){
+  const e = normalizaEstado(estado), erros = [], avisos = [];
+  const ent = SUL.filter(id => e[id] === "entrada"), sai = SUL.filter(id => e[id] === "saida");
+  if (!ent.length) erros.push("Nenhuma porta de entrada: marque ao menos uma.");
+  if (!sai.length) erros.push("Nenhuma porta de saída: marque ao menos uma.");
+  if (ent.length > PALETA.length) erros.push(`No máximo ${PALETA.length} entradas.`);
+  for (const id of Object.keys(estado || {})) {
+    if (!SUL.includes(id) && estado[id] && estado[id] !== "fechada")
+      erros.push(`${id} não é porta da fachada sul; só S1 a S9 servem ao eleitor.`);
+  }
+  // saida entre duas entradas: quem sai cruza a fila de quem entra
+  const cx = centros(portas);
+  const ex = ent.map(id => cx[id] ?? SUL.indexOf(id));
+  if (ex.length >= 2) {
+    const lo = Math.min(...ex), hi = Math.max(...ex);
+    for (const id of sai) {
+      const x = cx[id] ?? SUL.indexOf(id);
+      if (x > lo && x < hi) avisos.push(`A saída ${id} fica entre duas entradas: quem sai cruza a fila de quem entra.`);
+    }
+  }
+  for (const id of ["S1", "S9"]) if (e[id] !== "fechada")
+    avisos.push(`${id} é porta de carga: depende de ficar aberta e travada as nove horas e de a soleira servir a pedestre.`);
+  return {ok: !erros.length, erros, avisos};
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Ring 3 parametrico (porte de scripts/ring3.py)                   */
+/* ------------------------------------------------------------------ */
+const R3 = {
+  LARG_RING: 44.0, PROF_RING: 35.0, EIXO_S5: 28.285, APRON: 14.0,
+  Y0: -49.0,
+  PASSO_RAIA: 1.40, TOL_PASSO: 0.05, RAIA_UTIL: 1.20, DENS_FILA: 2.00,
+  DENS_BAIA: 1.80, VAO_RETORNO: 1.20, VAO_SAIDA: 1.40,
+  SEPARADOR_M: 2.00, SEPARADOR_EUR: 13.02, ESTOQUE: 200,
+  LARG_BAIA: 6.40, LARG_CORREDOR: 3.00, VAO_ENTRE_ZONAS: 2.60, VAO_MIN: 2.00,
+  // reconstrucao do plano vigente (aferição)
+  BLOCOS_ORIG: {A: [15.16, 19.36], B: [22.09, 34.69], C: [37.19, 41.39]},
+  PROF_PLANO_ORIGINAL: 23.75, CORREDOR_ORIGINAL: 36.70, FUNIL_GARGANTA: 12.0,
+};
+const POR_METRO_RAIA = R3.RAIA_UTIL * R3.DENS_FILA;
+
+function ring(largura){
+  const L = largura || R3.LARG_RING;
+  return {x0: R3.EIXO_S5 - L / 2, x1: R3.EIXO_S5 + L / 2, y0: R3.Y0, y1: R3.Y0 + R3.PROF_RING};
+}
+const PROF_SERP = R3.PROF_RING - R3.LARG_CORREDOR;   // 32,0 m sem faixa de garganta
+
+function raiasQueCabem(dim){
+  let n = Math.round(dim / R3.PASSO_RAIA);
+  while (n > 0 && dim / n < R3.PASSO_RAIA - R3.TOL_PASSO) n--;
+  return Math.max(n, 0);
+}
+const unidades = m => Math.ceil(m / R3.SEPARADOR_M - 1e-9);
+
+/* Uma zona: o retangulo de serpenteado de uma entrada. `eixo` e o x da porta. */
+function zona(nome, x0, x1, prof, orientacao, eixo, oesteGradil, lesteGradil){
+  const larg = x1 - x0, vertical = orientacao === "vertical";
+  const raias = raiasQueCabem(vertical ? larg : prof);
+  const comp = vertical ? prof : larg;
+  const passo = raias ? (vertical ? larg : prof) / raias : 0;
+  let portao, toco;
+  if (vertical) { portao = Math.abs(eixo - x0) <= Math.abs(eixo - x1) ? x0 : x1; toco = 0; }
+  else { portao = Math.min(Math.max(eixo, x0), x1); toco = Math.min(portao - x0, x1 - portao); }
+  const diagonal = Math.hypot(R3.APRON, eixo - portao);
+  const capacidade = (raias * comp - toco) * POR_METRO_RAIA;
+  let perimetro = larg - R3.VAO_SAIDA;
+  if (!oesteGradil) perimetro += prof;
+  if (!lesteGradil) perimetro += prof;
+  const divisorias = raias <= 1 ? 0 : (raias - 1) * Math.max(0, comp - R3.VAO_RETORNO);
+  return {nome, x0, x1, larg, prof, orientacao, raias, passo, comp, portao, toco, diagonal,
+          eixo, capacidade, perimetro, divisorias, barreira: perimetro + divisorias,
+          meiasVoltas: Math.max(0, raias - 1)};
+}
+
+function larguraEquivalenteDaBaia(){ return R3.LARG_BAIA * R3.DENS_BAIA / (POR_METRO_RAIA / R3.PASSO_RAIA); }
+
+/* Reparte a largura entre N zonas na proporcao do esperado de cada uma.
+ * `esperado` e uma lista alinhada com as entradas (oeste -> leste). Onde ha
+ * baia de flanco, a primeira e a ultima zona ja ganham lotacao da baia e
+ * recebem menos largura, exatamente o equivalente. `snap` arredonda para um
+ * numero inteiro de raias (orientacao vertical). */
+function reparteLargura(disponivel, esperado, snap, comBaias){
+  const n = esperado.length, total = esperado.reduce((s, v) => s + v, 0) || n;
+  const baia = comBaias ? larguraEquivalenteDaBaia() : 0;
+  const flancos = i => (n === 1 ? 2 : ((i === 0 || i === n - 1) ? 1 : 0));
+  const equivalente = disponivel + 2 * baia;
+  const alvo = esperado.map((v, i) => equivalente * (total ? v / total : 1 / n) - baia * flancos(i));
+  if (!snap) return alvo;
+  const totalRaias = Math.floor(disponivel / R3.PASSO_RAIA + 0.02);
+  const exato = alvo.map(v => Math.max(0, v) / R3.PASSO_RAIA);
+  const nr = exato.map(v => Math.floor(v));
+  const sobra = totalRaias - nr.reduce((s, v) => s + v, 0);
+  const ordem = exato.map((v, i) => i).sort((a, b) => (exato[b] - nr[b]) - (exato[a] - nr[a]));
+  for (let i = 0; i < Math.max(0, sobra); i++) nr[ordem[i % n]]++;
+  return nr.map(v => v * R3.PASSO_RAIA);
+}
+
+/* Monta as N zonas dentro do Ring, com ou sem baias, e devolve o desenho
+ * completo (capacidade, barreira, separadores). `ents` vem de entradas():
+ * cada uma com x (eixo da porta); `esperado` alinhado com `ents`. */
+function desenho(ents, esperado, opts){
+  opts = opts || {};
+  const orientacao = opts.orientacao === "horizontal" ? "horizontal" : "vertical";
+  const comBaias = !!opts.baias;
+  const RG = ring(opts.largura);
+  const L = RG.x1 - RG.x0, n = ents.length;
+  if (!n) return null;
+  const prof = opts.prof || PROF_SERP;
+  const vaoMin = comBaias ? R3.VAO_MIN : (orientacao === "horizontal" ? R3.VAO_ENTRE_ZONAS : R3.VAO_MIN);
+  const borda = comBaias ? R3.LARG_BAIA : 0;
+  const disponivel = L - 2 * borda - (n - 1) * vaoMin;
+  const larg = reparteLargura(disponivel, esperado, orientacao === "vertical", comBaias);
+  const somaLarg = larg.reduce((s, v) => s + v, 0);
+  const vao = n > 1 ? (L - 2 * borda - somaLarg) / (n - 1) : 0;
+  const zonas = [];
+  let x = RG.x0 + borda;
+  ents.forEach((e, i) => {
+    const x1 = x + larg[i];
+    zonas.push(zona(e.id, x, x1, prof, orientacao, e.x,
+      !comBaias && Math.abs(x - RG.x0) < 0.05, !comBaias && Math.abs(x1 - RG.x1) < 0.05));
+    x = x1 + vao;
+  });
+  const baias = {};
+  if (comBaias) {
+    baias[ents[0].id] = {rotulo: "baia do flanco oeste", area: R3.LARG_BAIA * prof, x0: RG.x0, x1: RG.x0 + R3.LARG_BAIA};
+    baias[ents[n - 1].id] = {rotulo: "baia do flanco leste", area: R3.LARG_BAIA * prof, x0: RG.x1 - R3.LARG_BAIA, x1: RG.x1};
+    if (n === 1) baias[ents[0].id].area *= 2;
+  }
+  const extra = {"corredor de fundo (parede norte)": L - n * R3.VAO_SAIDA};
+  if (comBaias) extra["fechamento das baias de flanco"] = 2 * R3.LARG_BAIA;
+  return fecha({codigo: orientacao === "vertical" ? (comBaias ? "V" : "VS") : (comBaias ? "HB" : "H"),
+    nome: (orientacao === "vertical" ? "Raias norte-sul" : "Raias leste-oeste") + (comBaias ? ", com baias" : ", sem baias"),
+    ring: RG, apron: R3.APRON, prof, vao, orientacao, comBaias, zonas, baias, extra});
+}
+
+/* Reconstrucao do plano vigente (3 · 9 · 3 raias, 23,75 m, garganta ao sul),
+ * so valida com tres entradas: serve de aferição e de preset "vigente". */
+function desenhoPlanoVigente(ents){
+  if (ents.length !== 3) return null;
+  const RG = ring(R3.LARG_RING);
+  const prof = R3.PROF_PLANO_ORIGINAL;
+  const zonas = ents.map((e, i) => {
+    const b = R3.BLOCOS_ORIG[["A", "B", "C"][i]];
+    return zona(e.id, b[0], b[1], prof, "vertical", e.x, false, false);
+  });
+  const baias = {};
+  baias[ents[0].id] = {rotulo: "baia do flanco oeste", area: R3.LARG_BAIA * prof, x0: RG.x0 + 2.5, x1: RG.x0 + 2.5 + R3.LARG_BAIA};
+  baias[ents[2].id] = {rotulo: "baia do flanco leste", area: R3.LARG_BAIA * prof, x0: RG.x1 - 2.5 - R3.LARG_BAIA, x1: RG.x1 - 2.5};
+  const extra = {"corredor de fundo (2 lados)": 2 * R3.CORREDOR_ORIGINAL,
+                 "fechamento das baias de flanco": 2 * R3.LARG_BAIA,
+                 "funil da garganta sudeste": 2 * R3.FUNIL_GARGANTA};
+  return fecha({codigo: "PV", nome: "Plano vigente (3 · 9 · 3, com garganta)", ring: RG, apron: R3.APRON,
+    prof, vao: null, orientacao: "vertical", comBaias: true, zonas, baias, extra, garganta: true});
+}
+
+function fecha(d){
+  const capRaias = d.zonas.reduce((s, z) => s + z.capacidade, 0);
+  const capBaias = Object.values(d.baias).reduce((s, b) => s + b.area * R3.DENS_BAIA, 0);
+  const porEntrada = {};
+  for (const z of d.zonas) porEntrada[z.nome] = z.capacidade + (d.baias[z.nome] ? d.baias[z.nome].area * R3.DENS_BAIA : 0);
+  const barreira = {"perímetro das zonas": d.zonas.reduce((s, z) => s + z.perimetro, 0),
+                    "divisórias entre as raias": d.zonas.reduce((s, z) => s + z.divisorias, 0)};
+  Object.assign(barreira, d.extra);
+  barreira["raias do apron até as portas"] = d.zonas.reduce((s, z) => s + 2 * z.diagonal, 0);
+  const total = Object.values(barreira).reduce((s, v) => s + v, 0);
+  const separadores = unidades(total);
+  d.capacidade = capRaias + capBaias; d.capRaias = capRaias; d.capBaias = capBaias;
+  d.porEntrada = porEntrada; d.barreira = barreira; d.barreiraTotal = total;
+  d.separadores = separadores; d.compra = Math.max(0, separadores - R3.ESTOQUE);
+  d.custoCompra = d.compra * R3.SEPARADOR_EUR;
+  d.meiasVoltas = d.zonas.reduce((s, z) => s + z.meiasVoltas, 0);
+  return d;
+}
+
+const DESENHOS = [
+  {id: "vigente", nome: "Plano vigente · 3·9·3 com baias e garganta", so3: true},
+  {id: "VS", nome: "Norte-sul, sem baias", orientacao: "vertical", baias: false},
+  {id: "V", nome: "Norte-sul, com baias", orientacao: "vertical", baias: true},
+  {id: "H", nome: "Leste-oeste, sem baias", orientacao: "horizontal", baias: false},
+  {id: "HB", nome: "Leste-oeste, com baias", orientacao: "horizontal", baias: true},
+];
+
+function desenhoPorId(id, ents, esperado, opts){
+  if (id === "vigente") return desenhoPlanoVigente(ents);
+  const d = DESENHOS.find(x => x.id === id) || DESENHOS[1];
+  return desenho(ents, esperado, Object.assign({}, opts || {}, {orientacao: d.orientacao, baias: d.baias}));
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Atribuicao mesa -> entrada (porte de decisoes.atribui_entradas)  */
+/* ------------------------------------------------------------------ */
+/* `lista`: [{mrv, esperado, classe}]; `quotas`: {entrada: fracao}. Uma mesa de
+ * classe alta em cada entrada (as tres criticas nunca na mesma fila), depois
+ * as demais, sempre para a entrada mais distante da sua quota. */
+function atribuiEntradas(lista, quotas){
+  const total = lista.reduce((s, m) => s + m.esperado, 0);
+  const chaves = Object.keys(quotas);
+  const alvo = {}, grupos = {}, carga = {};
+  for (const k of chaves) { alvo[k] = quotas[k] * total; grupos[k] = []; carga[k] = 0; }
+  const ordenadas = lista.slice().sort((a, b) => (b.esperado - a.esperado) || (a.mrv - b.mrv));
+  const altas = ordenadas.filter(m => m.classe === "alta");
+  const porQuota = chaves.slice().sort((a, b) => quotas[b] - quotas[a]);
+  const postas = new Set();
+  porQuota.forEach((k, i) => {
+    if (i >= altas.length) return;
+    grupos[k].push(altas[i].mrv); carga[k] += altas[i].esperado; postas.add(altas[i].mrv);
+  });
+  for (const m of ordenadas) {
+    if (postas.has(m.mrv)) continue;
+    let melhor = chaves[0], folga = -Infinity;
+    for (const k of chaves) { const f = alvo[k] - carga[k]; if (f > folga) { folga = f; melhor = k; } }
+    grupos[melhor].push(m.mrv); carga[melhor] += m.esperado;
+  }
+  for (const k of chaves) grupos[k].sort((a, b) => a - b);
+  return {grupos, carga, alvo};
+}
+
+/* As 28 mesas com esperado e classe, lidas do bloco de decisoes (objeto por
+ * MRV na prancheta, lista no simulador). */
+function mesasDaDecisao(dec){
+  const m = dec && dec.mesas;
+  if (!m) return [];
+  if (Array.isArray(m)) return m.map(x => ({mrv: x.mrv, esperado: x.esperado, classe: x.classe, principal: x.principal}));
+  return Object.keys(m).map(k => ({mrv: +k, esperado: m[k].esperado, classe: m[k].classe, principal: m[k].principal}))
+    .sort((a, b) => a.mrv - b.mrv);
+}
+
+/* ------------------------------------------------------------------ */
+/* Resolucao: do estado das portas ao quadro completo                  */
+/* ------------------------------------------------------------------ */
+/* ctx = {portas: BASE.portas, dec: DECISOES, desenho: id, largura}. Devolve
+ * {estado, entradas, saidas, mesas: {mrv: {entrada, porta}}, ring3, avisos,
+ * erros, igualDecisao}. Com as portas da decisao e o desenho "vigente", a
+ * atribuicao e a da decisao (data/decisoes.json), letra por letra. */
+function resolve(estado, ctx){
+  ctx = ctx || {};
+  const e = normalizaEstado(estado);
+  const v = valida(e, ctx.portas);
+  const ents = entradas(e, ctx.portas);
+  const lista = mesasDaDecisao(ctx.dec);
+  const igualDecisao = igual(e, estadoDaDecisao(ctx.dec));
+  let desenhoId = ctx.desenho || "vigente";
+  if (desenhoId === "vigente" && ents.length !== 3) desenhoId = "VS";
+  const out = {estado: e, entradas: ents, saidas: saidas(e), mesas: {}, avisos: v.avisos.slice(),
+               erros: v.erros.slice(), igualDecisao, desenho: desenhoId, ring3: null};
+  if (!ents.length || !lista.length) return out;
+
+  let esperado = ents.map(() => 1), grupos = null, r3 = null;
+  if (desenhoId === "vigente" && igualDecisao && ctx.dec && Array.isArray(ctx.dec.entradas)) {
+    // a decisao, tal como esta em decisoes.py
+    r3 = desenhoPlanoVigente(ents);
+    ctx.dec.entradas.forEach((de, i) => { ents[i].capacidade = de.capacidade; ents[i].quota = de.quota; });
+    grupos = {}; ctx.dec.entradas.forEach((de, i) => { grupos[ents[i].id] = de.mrvs.slice(); });
+  } else {
+    // itera: largura das zonas <- esperado <- atribuicao <- capacidade das zonas
+    let anterior = "";
+    for (let it = 0; it < 8; it++) {
+      r3 = desenhoPorId(desenhoId, ents, esperado, {largura: ctx.largura});
+      const tot = Object.values(r3.porEntrada).reduce((s, x) => s + x, 0);
+      const quotas = {}; for (const z of ents) quotas[z.id] = r3.porEntrada[z.id] / tot;
+      const a = atribuiEntradas(lista, quotas);
+      grupos = a.grupos;
+      esperado = ents.map(z => a.carga[z.id]);
+      const chave = JSON.stringify(grupos);
+      if (chave === anterior) break;
+      anterior = chave;
+    }
+    const tot = Object.values(r3.porEntrada).reduce((s, x) => s + x, 0);
+    ents.forEach(z => { z.capacidade = Math.round(r3.porEntrada[z.id]); z.quota = r3.porEntrada[z.id] / tot; });
+  }
+  const porMrv = {}; for (const m of lista) porMrv[m.mrv] = m;
+  ents.forEach(z => {
+    z.mrvs = grupos[z.id] || [];
+    z.esperado = z.mrvs.reduce((s, n) => s + (porMrv[n] ? porMrv[n].esperado : 0), 0);
+    for (const n of z.mrvs) out.mesas[n] = {entrada: z.id, porta: z.porta, hex: z.hex};
+  });
+  out.ring3 = r3;
+  out.ring3.rect = [r3.ring.x0, r3.ring.y0, r3.ring.x1, r3.ring.y1];
+  if (r3.zonas.some(z => z.raias === 0)) out.avisos.push("Alguma zona do Ring 3 ficou sem raia: entradas demais para a largura do Ring.");
+  return out;
+}
+
+/* O bloco de decisoes com o estado vivo aplicado: portas, entradas, mesas e
+ * Ring 3 substituidos; o resto (classes, comparecimento) igual. Serve tanto
+ * ao simulador (mesas em lista) quanto a prancheta (mesas por MRV). Com a
+ * decisao e o desenho vigente devolve o proprio `dec`. */
+function decisaoViva(dec, res){
+  if (!dec || !res || !res.ring3) return dec;
+  if (res.igualDecisao && res.desenho === "vigente") return dec;
+  const portas = {};
+  for (const id of SUL) {
+    if (res.estado[id] === "saida") portas[id] = {papel: "saida"};
+    else if (res.estado[id] === "entrada") {
+      const e = res.entradas.find(z => z.porta === id);
+      portas[id] = {papel: "entrada", entrada: e.id, cor: e.hex};
+    }
+  }
+  const entradas = res.entradas.map(e => ({id: e.id, porta: e.porta, cor: e.cor, hex: e.hex,
+    mrvs: e.mrvs.slice(), esperado: e.esperado, capacidade: e.capacidade, quota: e.quota}));
+  let mesas;
+  if (Array.isArray(dec.mesas)) mesas = dec.mesas.map(m => Object.assign({}, m, res.mesas[m.mrv] ? {entrada: res.mesas[m.mrv].entrada, porta: res.mesas[m.mrv].porta} : {}));
+  else { mesas = {}; for (const k of Object.keys(dec.mesas)) mesas[k] = Object.assign({}, dec.mesas[k], res.mesas[k] ? {entrada: res.mesas[k].entrada, porta: res.mesas[k].porta} : {}); }
+  const r = res.ring3;
+  const ring3 = Object.assign({}, dec.ring3 || {}, {
+    largura: r.ring.x1 - r.ring.x0, profundidade: R3.PROF_RING, apron: r.apron, rect: r.rect,
+    capacidade: Math.round(r.capacidade), separadores: r.separadores, metros: Math.round(r.barreiraTotal * 10) / 10,
+    a_adquirir: r.compra, custo_eur: Math.round(r.custoCompra), desenho: res.desenho, nome_desenho: r.nome,
+    eixo: "centrado em S5 (estimativa; aferir o bordo oeste em campo)",
+  });
+  return Object.assign({}, dec, {portas, entradas, saidas: res.saidas.slice(), mesas, ring3, vivo: true});
+}
+
+/* ------------------------------------------------------------------ */
+/* SVG do Ring 3 (porte de ring3.svg), em escala                       */
+/* ------------------------------------------------------------------ */
+function svgRing3(res, opts){
+  opts = opts || {};
+  const d = res && res.ring3;
+  if (!d) return "";
+  const RG = d.ring, ESC = opts.escala || 12, MG = 40;
+  const px = (x, y) => [MG + (x - RG.x0 + 6) * ESC, MG + (2.0 - y) * ESC];
+  const larg = (RG.x1 - RG.x0 + 12) * ESC + 2 * MG, alt = (RG.y1 - RG.y0 + d.apron + 6) * ESC + 2 * MG;
+  const s = [];
+  const ret = (x0, y0, x1, y1, at) => { const [ax, ay] = px(x0, y1), [bx, by] = px(x1, y0);
+    s.push(`<rect x="${ax.toFixed(1)}" y="${ay.toFixed(1)}" width="${(bx - ax).toFixed(1)}" height="${(by - ay).toFixed(1)}" ${at}/>`); };
+  const lin = (x0, y0, x1, y1, at) => { const [ax, ay] = px(x0, y0), [bx, by] = px(x1, y1);
+    s.push(`<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${bx.toFixed(1)}" y2="${by.toFixed(1)}" ${at}/>`); };
+  const txt = (x, y, t, size, peso, cor, anchor, rot) => { const [ax, ay] = px(x, y);
+    const r = rot ? ` transform="rotate(${rot} ${ax.toFixed(1)} ${ay.toFixed(1)})"` : "";
+    s.push(`<text x="${ax.toFixed(1)}" y="${ay.toFixed(1)}" text-anchor="${anchor || "middle"}" font-family="IBM Plex Sans,ui-sans-serif,system-ui,sans-serif" font-size="${size}" font-weight="${peso || 400}" fill="${cor}" paint-order="stroke" stroke="var(--prancha,#fbfaf7)" stroke-width="3" stroke-linejoin="round"${r}>${t}</text>`); };
+  s.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${larg.toFixed(0)} ${alt.toFixed(0)}" role="img" aria-label="Ring 3 com ${d.zonas.length} zona(s) de fila, uma por entrada" style="width:100%;height:auto;display:block">`);
+  s.push(`<rect width="${larg.toFixed(0)}" height="${alt.toFixed(0)}" fill="var(--prancha,#fbfaf7)"/>`);
+  ret(RG.x0 - 5, -d.apron, RG.x1 + 5, 0, 'fill="var(--piso,#eef1f4)"');
+  ret(RG.x0, RG.y0, RG.x1, RG.y1, 'fill="var(--folha,#f6f4ef)" stroke="var(--traco,#1c2733)" stroke-width="2"');
+  lin(RG.x0 - 5, 0, RG.x1 + 5, 0, 'stroke="var(--traco,#1c2733)" stroke-width="3"');
+  txt((RG.x0 + RG.x1) / 2, 1.3, "FACHADA SUL DO HALL 2", 10, 700, "var(--meio,#5c6c80)");
+  const portas = (opts.portas || []).filter(p => p.face === "sul");
+  for (const p of portas) {
+    const papel = res.estado[p.id] || "fechada";
+    const ent = res.entradas.find(z => z.porta === p.id);
+    const cor = ent ? ent.hex : (papel === "saida" ? "#b26a12" : "#b2bcc8");
+    lin(p.x1, 0, p.x2, 0, `stroke="${cor}" stroke-width="${ent ? 6 : (papel === "saida" ? 6 : 3)}"`);
+    if (ent) txt((p.x1 + p.x2) / 2, -1.7, `${p.id} · ${ent.id}`, 10, 700, cor);
+    else if (papel === "saida") txt((p.x1 + p.x2) / 2, -1.7, `${p.id} saída`, 9, 400, cor);
+  }
+  txt(RG.x0 - 4.2, -d.apron / 2, `apron pavimentado · ${d.apron} m`, 9, 400, "var(--meio,#5c6c80)", "middle", -90);
+  const yTopo = RG.y1, yBase = RG.y1 - d.prof;
+  for (const z of d.zonas) {
+    const c = (res.entradas.find(e => e.id === z.nome) || {}).hex || "#5c6c80";
+    ret(z.x0, yBase, z.x1, yTopo, `fill="${c}" fill-opacity=".13" stroke="${c}" stroke-width="1.4"`);
+    if (z.orientacao === "vertical") {
+      for (let i = 1; i < z.raias; i++) {
+        const x = z.x0 + i * z.passo;
+        lin(x, i % 2 ? yBase + R3.VAO_RETORNO : yBase, x, i % 2 ? yTopo : yTopo - R3.VAO_RETORNO, `stroke="${c}" stroke-width="1" stroke-opacity=".6"`);
+      }
+      txt((z.x0 + z.x1) / 2, yTopo + 1.3, `${z.nome} · ${z.raias} raias de ${z.comp.toFixed(1).replace(".", ",")} m`, 10, 700, c);
+    } else {
+      for (let i = 1; i < z.raias; i++) {
+        const y = yBase + i * z.passo;
+        lin(i % 2 ? z.x0 + R3.VAO_RETORNO : z.x0, y, i % 2 ? z.x1 : z.x1 - R3.VAO_RETORNO, y, `stroke="${c}" stroke-width="1" stroke-opacity=".6"`);
+      }
+      txt((z.x0 + z.x1) / 2, yTopo + 1.3, `${z.nome} · ${z.raias} × ${z.larg.toFixed(1).replace(".", ",")} m`, 10, 700, c);
+    }
+    lin(z.portao, yTopo, z.eixo, -0.4, `stroke="${c}" stroke-width="2" stroke-dasharray="4 3"`);
+  }
+  for (const k of Object.keys(d.baias)) {
+    const b = d.baias[k];
+    if (b.x0 === undefined) continue;
+    ret(b.x0, yBase, b.x1, yTopo, 'fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"');
+    txt((b.x0 + b.x1) / 2, (yBase + yTopo) / 2, b.rotulo, 9, 400, "var(--meio,#5c6c80)", "middle", -90);
+  }
+  ret(RG.x0, RG.y0, RG.x1, RG.y0 + R3.LARG_CORREDOR, 'fill="none" stroke="#5c6c80" stroke-width="1.2"');
+  txt((RG.x0 + RG.x1) / 2, RG.y0 + R3.LARG_CORREDOR / 2 - 0.4, "CORREDOR DE FUNDO · 3,0 m", 9, 600, "var(--meio,#5c6c80)");
+  txt(RG.x0, RG.y0 - 1.8, `Ring 3 · ${(RG.x1 - RG.x0).toFixed(1).replace(".", ",")} × ${R3.PROF_RING.toFixed(1).replace(".", ",")} m · ${Math.round(d.capacidade).toLocaleString("pt-BR")} pessoas · ${d.separadores} separadores`, 9, 400, "#8a919b", "start");
+  s.push("</svg>");
+  return s.join("\n");
+}
+
+/* ------------------------------------------------------------------ */
+/* Sincronizacao entre paginas                                         */
+/* ------------------------------------------------------------------ */
+const CHAVE = "posto-dublin/portas", CANAL = "posto-dublin";
+let canal = null;
+function abreCanal(){
+  if (canal !== null) return canal;
+  try { canal = (typeof BroadcastChannel !== "undefined") ? new BroadcastChannel(CANAL) : false; }
+  catch (e) { canal = false; }
+  return canal;
+}
+function guarda(msg){ try { localStorage.setItem(CHAVE, JSON.stringify(msg)); } catch (e) {} }
+function le(){
+  try { const s = JSON.parse(localStorage.getItem(CHAVE) || "null"); if (s && s.estado) return s; } catch (e) {}
+  const h = deHash(typeof location !== "undefined" ? location.hash : "");
+  return h ? {estado: h.estado, desenho: h.desenho, origem: "hash"} : null;
+}
+/* Publica o estado para as outras paginas da mesma origem. `origem` e um nome
+ * curto da pagina que publicou, para cada uma ignorar o proprio eco. */
+function publica(estado, extra){
+  const msg = Object.assign({}, extra || {}, {estado: normalizaEstado(estado), quando: Date.now()});
+  guarda(msg);
+  const c = abreCanal();
+  if (c) { try { c.postMessage(msg); } catch (e) {} }
+  return msg;
+}
+function assina(fn){
+  const c = abreCanal();
+  if (c) c.addEventListener("message", ev => { if (ev.data && ev.data.estado) fn(ev.data); });
+  if (typeof window !== "undefined") window.addEventListener("storage", ev => {
+    if (ev.key !== CHAVE || !ev.newValue) return;
+    try { const m = JSON.parse(ev.newValue); if (m && m.estado) fn(m); } catch (e) {}
+  });
+}
+/* #portas=S4:A,S5:B,S6:C,S2:x,S8:x&desenho=VS  (x = saida; letra = entrada) */
+function paraHash(estado, desenho){
+  const e = normalizaEstado(estado), ents = entradas(e);
+  const partes = [];
+  for (const id of SUL) {
+    if (e[id] === "entrada") partes.push(`${id}:${(ents.find(z => z.porta === id) || {}).id || "E"}`);
+    else if (e[id] === "saida") partes.push(`${id}:x`);
+  }
+  return "portas=" + partes.join(",") + (desenho ? "&desenho=" + desenho : "");
+}
+function deHash(hash){
+  const m = /portas=([^&]+)/.exec(hash || "");
+  if (!m) return null;
+  const e = {}; for (const id of SUL) e[id] = "fechada";
+  for (const par of m[1].split(",")) {
+    const [id, v] = par.split(":");
+    if (SUL.includes(id)) e[id] = (v === "x" ? "saida" : "entrada");
+  }
+  const d = /desenho=([A-Za-z]+)/.exec(hash || "");
+  return {estado: e, desenho: d ? d[1] : null};
+}
+
+const Portas = {
+  SUL, PAPEIS, PALETA, DECISAO, R3, DESENHOS,
+  estadoDaDecisao, normalizaEstado, igual, centros, entradas, saidas, valida,
+  ring, raiasQueCabem, desenho, desenhoPlanoVigente, desenhoPorId, atribuiEntradas,
+  mesasDaDecisao, resolve, decisaoViva, svgRing3,
+  CHAVE, CANAL, publica, assina, le, paraHash, deHash,
+};
+if (typeof module !== "undefined" && module.exports) module.exports = Portas;
+else raiz.Portas = Portas;
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+(function(){
+"use strict";
+const PT = Portas, $ = id => document.getElementById(id);
+const fmt = n => Math.round(n).toLocaleString("pt-BR");
+function h(tag, attrs, ...filhos){
+  const e = document.createElement(tag);
+  for (const k in (attrs || {})) { if (k === "class") e.className = attrs[k]; else if (k === "text") e.textContent = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  for (const f of filhos) if (f != null) e.appendChild(typeof f === "string" ? document.createTextNode(f) : f);
+  return e;
+}
+let estado = PT.estadoDaDecisao(DECISOES), desenho = "vigente";
+function pinta(){
+  const r = PT.resolve(estado, {portas: BASE.portas, dec: DECISOES, desenho});
+  const difere = !(r.igualDecisao && r.desenho === "vigente");
+  const V = $("vivo"); V.innerHTML = ""; V.classList.toggle("difere", difere);
+  V.appendChild(h("span", {class: "rot", text: "Portas em vigor"}));
+  const ent = h("span"); for (const e of r.entradas) ent.appendChild(h("span", {class: "chip", style: `color:${e.hex}`, text: `${e.porta} ${e.id}`}));
+  V.appendChild(h("span", null, "entradas ", ent));
+  const sai = h("span"); for (const s of r.saidas) sai.appendChild(h("span", {class: "chip", style: "color:var(--aviso)", text: s}));
+  V.appendChild(h("span", null, "saídas ", sai));
+  if (r.ring3) V.appendChild(h("span", {text: `${r.ring3.nome}: ${fmt(r.ring3.capacidade)} pessoas, ${r.ring3.separadores} separadores`}));
+  V.appendChild(h("span", {class: difere ? "aviso" : "", text: difere ? "difere da decisão de 06/09; mude no Simulador, na seção 7" : "decisão do Posto de 06/09/2026"}));
+  for (const a of r.avisos) V.appendChild(h("span", {class: "aviso", text: a}));
+  if (r.ring3) { const m = h("span", {class: "mini"}); m.innerHTML = PT.svgRing3(r, {portas: BASE.portas, escala: 6}); V.appendChild(m); }
+}
+const guardado = PT.le();
+if (guardado && guardado.estado) { estado = PT.normalizaEstado(guardado.estado); if (guardado.desenho) desenho = guardado.desenho; }
+pinta();
+PT.assina(msg => { estado = PT.normalizaEstado(msg.estado); if (msg.desenho) desenho = msg.desenho; pinta(); });
+
+// navegacao: marca a secao visivel
+const links = [...document.querySelectorAll("nav.topo a")];
+const secoes = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+if ("IntersectionObserver" in window) {
+  const obs = new IntersectionObserver(ents => {
+    for (const en of ents) if (en.isIntersecting) for (const a of links) a.classList.toggle("ativa", a.getAttribute("href") === "#" + en.target.id);
+  }, {rootMargin: "-40% 0px -55% 0px"});
+  for (const s of secoes) obs.observe(s);
+}
+})();
+</script>

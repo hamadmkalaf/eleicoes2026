@@ -1,0 +1,861 @@
+{
+  "gerado_por": "scripts/ring3.py",
+  "ring": {
+    "x0": 6.285,
+    "x1": 50.285,
+    "y0": -49.0,
+    "y1": -14.0
+  },
+  "apron_m": 14.0,
+  "premissas": {
+    "passo_raia_m": 1.4,
+    "raia_util_m": 1.2,
+    "densidade_fila_p_m2": 2.0,
+    "densidade_baia_p_m2": 1.8,
+    "vao_retorno_m": 1.2,
+    "vao_saida_m": 1.4,
+    "vao_entre_zonas_m": 2.6,
+    "perda_por_meia_volta_m": 0.6,
+    "profundidade_serpenteado_m": 32.0,
+    "largura_baia_m": 6.4,
+    "largura_corredor_m": 3.0,
+    "profundidade_plano_vigente_m": 23.75,
+    "separador_m": 2.0,
+    "separador_eur": 13.02,
+    "estoque_separadores": 200,
+    "comparecimento_esperado": {
+      "A": 3642,
+      "B": 4215,
+      "C": 3642
+    }
+  },
+  "aderencia_ao_plano_original": {
+    "raias_calculado": 855.0,
+    "raias_publicado": 855,
+    "baias_calculado": 547.2,
+    "baias_publicado": 547,
+    "total_calculado": 1402,
+    "total_publicado": 1402,
+    "barreira_calculada_m": 380.8,
+    "barreira_publicada_m": 596.3,
+    "barreira_comparavel": false,
+    "barreira_nota": "regras diferentes: o publicado conta perímetro, parede de corredor e raias do apron, que saíram da conta atual por decisão do Posto",
+    "separadores_calculado": 191,
+    "separadores_publicado": 300
+  },
+  "plano_vigente_reconstruido": {
+    "codigo": "PV",
+    "nome": "Plano vigente, reconstruído",
+    "capacidade": 1402,
+    "capacidade_raias": 855,
+    "capacidade_baias": 547,
+    "capacidade_com_perda_de_meia_volta": 1385,
+    "meias_voltas": 12,
+    "por_entrada": {
+      "A": 445,
+      "B": 513,
+      "C": 445
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1221,
+      "B": 0.1217,
+      "C": 0.1221
+    },
+    "barreira_m": 380.8,
+    "barreira_por_componente_m": {
+      "divisórias entre as raias": 270.6,
+      "corredor de fundo (2 lados)": 73.4,
+      "fechamento das baias de flanco": 12.8,
+      "funil da garganta sudeste": 24.0
+    },
+    "fora_da_conta": {
+      "contorno das zonas (hoje, fita)": 135.6,
+      "parede do corredor de chegada": 39.8,
+      "raias do apron até as portas": 87.6
+    },
+    "separadores": 191,
+    "estoque": 200,
+    "compra": 0,
+    "custo_compra_eur": 0.0,
+    "m_por_pessoa": 0.272,
+    "zonas": [
+      {
+        "entrada": "A",
+        "orientacao": "vertical",
+        "largura_m": 4.2,
+        "profundidade_m": 23.75,
+        "raias": 3,
+        "comprimento_raia_m": 23.75,
+        "passo_m": 1.4,
+        "meias_voltas": 2,
+        "caminhada_m": 71.2,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 19.36,
+        "descarga_m": 14.26,
+        "desvio_lateral_m": 2.71,
+        "capacidade": 171
+      },
+      {
+        "entrada": "B",
+        "orientacao": "vertical",
+        "largura_m": 12.6,
+        "profundidade_m": 23.75,
+        "raias": 9,
+        "comprimento_raia_m": 23.75,
+        "passo_m": 1.4,
+        "meias_voltas": 8,
+        "caminhada_m": 213.8,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 22.09,
+        "descarga_m": 15.31,
+        "desvio_lateral_m": 6.2,
+        "capacidade": 513
+      },
+      {
+        "entrada": "C",
+        "orientacao": "vertical",
+        "largura_m": 4.2,
+        "profundidade_m": 23.75,
+        "raias": 3,
+        "comprimento_raia_m": 23.75,
+        "passo_m": 1.4,
+        "meias_voltas": 2,
+        "caminhada_m": 71.2,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 37.19,
+        "descarga_m": 14.26,
+        "desvio_lateral_m": 2.69,
+        "capacidade": 171
+      }
+    ],
+    "baias": {
+      "A": {
+        "rotulo": "baia do flanco oeste",
+        "area_m2": 152.0,
+        "capacidade": 274
+      },
+      "C": {
+        "rotulo": "baia do flanco leste",
+        "area_m2": 152.0,
+        "capacidade": 274
+      }
+    },
+    "notas": []
+  },
+  "girado": {
+    "codigo": "H",
+    "nome": "Serpenteados horizontais (raias leste-oeste)",
+    "capacidade": 1964,
+    "capacidade_raias": 1964,
+    "capacidade_baias": 0,
+    "capacidade_com_perda_de_meia_volta": 1869,
+    "meias_voltas": 66,
+    "por_entrada": {
+      "A": 626,
+      "B": 712,
+      "C": 626
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1719,
+      "B": 0.169,
+      "C": 0.1719
+    },
+    "barreira_m": 740.4,
+    "barreira_por_componente_m": {
+      "divisórias entre as raias": 708.4,
+      "separação entre a zona C e o corredor": 32.0
+    },
+    "fora_da_conta": {
+      "contorno das zonas (hoje, fita)": 159.6,
+      "parede do corredor de chegada": 39.8,
+      "raias do apron até as portas": 85.5
+    },
+    "separadores": 371,
+    "estoque": 200,
+    "compra": 171,
+    "custo_compra_eur": 2226.42,
+    "m_por_pessoa": 0.377,
+    "zonas": [
+      {
+        "entrada": "A",
+        "orientacao": "horizontal",
+        "largura_m": 11.34,
+        "profundidade_m": 32.0,
+        "raias": 23,
+        "comprimento_raia_m": 11.34,
+        "passo_m": 1.391,
+        "meias_voltas": 22,
+        "caminhada_m": 260.8,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 17.62,
+        "descarga_m": 14.69,
+        "desvio_lateral_m": 4.44,
+        "capacidade": 626
+      },
+      {
+        "entrada": "B",
+        "orientacao": "horizontal",
+        "largura_m": 13.12,
+        "profundidade_m": 32.0,
+        "raias": 23,
+        "comprimento_raia_m": 13.12,
+        "passo_m": 1.391,
+        "meias_voltas": 22,
+        "caminhada_m": 296.8,
+        "toco_perdido_m": 5.06,
+        "portao_x_m": 28.29,
+        "descarga_m": 14.0,
+        "desvio_lateral_m": 0.0,
+        "capacidade": 712
+      },
+      {
+        "entrada": "C",
+        "orientacao": "horizontal",
+        "largura_m": 11.34,
+        "profundidade_m": 32.0,
+        "raias": 23,
+        "comprimento_raia_m": 11.34,
+        "passo_m": 1.391,
+        "meias_voltas": 22,
+        "caminhada_m": 260.8,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 35.95,
+        "descarga_m": 14.07,
+        "desvio_lateral_m": 1.44,
+        "capacidade": 626
+      }
+    ],
+    "baias": {},
+    "notas": [
+      "Sem baias: toda a lotação é fila em raia — contável, com ordem de chegada preservada e vazão previsível. No plano vigente, 39% da lotação é massa parada nas baias de flanco.",
+      "A raia mais curta passa de 4,2 m (o ziguezague das zonas A e C quando só se gira, mantendo as baias) para mais de 10 m.",
+      "A largura de cada zona é proporcional ao comparecimento que ela espera — e, nesta geometria, largura da zona é comprimento de raia.",
+      "Custa mais barreira que o plano vigente: a lotação que ele ganha de graça nas baias, que usam o gradil do Ring em três lados, passa a ser paga em divisória."
+    ]
+  },
+  "vertical_sem_baias": {
+    "codigo": "VS",
+    "nome": "Serpenteados verticais (raias norte-sul)",
+    "capacidade": 1997,
+    "capacidade_raias": 1997,
+    "capacidade_baias": 0,
+    "capacidade_com_perda_de_meia_volta": 1964,
+    "meias_voltas": 23,
+    "por_entrada": {
+      "A": 614,
+      "B": 768,
+      "C": 614
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1687,
+      "B": 0.1822,
+      "C": 0.1687
+    },
+    "barreira_m": 740.4,
+    "barreira_por_componente_m": {
+      "divisórias entre as raias": 708.4,
+      "separação entre a zona C e o corredor": 32.0
+    },
+    "fora_da_conta": {
+      "contorno das zonas (hoje, fita)": 160.2,
+      "parede do corredor de chegada": 39.8,
+      "raias do apron até as portas": 87.7
+    },
+    "separadores": 371,
+    "estoque": 200,
+    "compra": 171,
+    "custo_compra_eur": 2226.42,
+    "m_por_pessoa": 0.371,
+    "zonas": [
+      {
+        "entrada": "A",
+        "orientacao": "vertical",
+        "largura_m": 11.2,
+        "profundidade_m": 32.0,
+        "raias": 8,
+        "comprimento_raia_m": 32.0,
+        "passo_m": 1.4,
+        "meias_voltas": 7,
+        "caminhada_m": 256.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 17.48,
+        "descarga_m": 14.73,
+        "desvio_lateral_m": 4.58,
+        "capacidade": 614
+      },
+      {
+        "entrada": "B",
+        "orientacao": "vertical",
+        "largura_m": 14.0,
+        "profundidade_m": 32.0,
+        "raias": 10,
+        "comprimento_raia_m": 32.0,
+        "passo_m": 1.4,
+        "meias_voltas": 9,
+        "caminhada_m": 320.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 33.78,
+        "descarga_m": 15.04,
+        "desvio_lateral_m": 5.5,
+        "capacidade": 768
+      },
+      {
+        "entrada": "C",
+        "orientacao": "vertical",
+        "largura_m": 11.2,
+        "profundidade_m": 32.0,
+        "raias": 8,
+        "comprimento_raia_m": 32.0,
+        "passo_m": 1.4,
+        "meias_voltas": 7,
+        "caminhada_m": 256.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 36.09,
+        "descarga_m": 14.09,
+        "desvio_lateral_m": 1.58,
+        "capacidade": 614
+      }
+    ],
+    "baias": {},
+    "notas": [
+      "Sem baias: os 12,8 m dos dois flancos viram serpenteado, e toda a lotação é fila em raia medida.",
+      "A evacuação sai pelos vãos de 2.30 m entre as zonas e pelo gradil, porque as barreiras laterais são removíveis — não é preciso reservar baia para isso.",
+      "É o desenho de maior lotação dos quatro, e o mais caro em barreira: raia norte-sul de 23,75 m é longa, e divisória longa é divisória cara.",
+      "A saída continua presa a um canto do bloco: na vertical a borda norte é aberta pelas meias-voltas, então o portão não pode ser movido para o eixo da porta como na horizontal."
+    ]
+  },
+  "vertical_ccb_na_ponta": {
+    "codigo": "VSP",
+    "nome": "Serpenteados verticais (raias norte-sul) · CCB só na ponta",
+    "capacidade": 1997,
+    "capacidade_raias": 1997,
+    "capacidade_baias": 0,
+    "capacidade_com_perda_de_meia_volta": 1964,
+    "meias_voltas": 23,
+    "por_entrada": {
+      "A": 614,
+      "B": 768,
+      "C": 614
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1687,
+      "B": 0.1822,
+      "C": 0.1687
+    },
+    "barreira_m": 78.0,
+    "barreira_por_componente_m": {
+      "CCB na ponta das divisórias": 46.0,
+      "separação entre a zona C e o corredor": 32.0
+    },
+    "fora_da_conta": {
+      "contorno das zonas (hoje, fita)": 160.2,
+      "parede do corredor de chegada": 39.8,
+      "raias do apron até as portas": 87.7,
+      "fita grossa nas divisórias": 662.4
+    },
+    "separadores": 39,
+    "estoque": 200,
+    "compra": 0,
+    "custo_compra_eur": 0.0,
+    "m_por_pessoa": 0.039,
+    "zonas": [
+      {
+        "entrada": "A",
+        "orientacao": "vertical",
+        "largura_m": 11.2,
+        "profundidade_m": 32.0,
+        "raias": 8,
+        "comprimento_raia_m": 32.0,
+        "passo_m": 1.4,
+        "meias_voltas": 7,
+        "caminhada_m": 256.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 17.48,
+        "descarga_m": 14.73,
+        "desvio_lateral_m": 4.58,
+        "capacidade": 614
+      },
+      {
+        "entrada": "B",
+        "orientacao": "vertical",
+        "largura_m": 14.0,
+        "profundidade_m": 32.0,
+        "raias": 10,
+        "comprimento_raia_m": 32.0,
+        "passo_m": 1.4,
+        "meias_voltas": 9,
+        "caminhada_m": 320.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 33.78,
+        "descarga_m": 15.04,
+        "desvio_lateral_m": 5.5,
+        "capacidade": 768
+      },
+      {
+        "entrada": "C",
+        "orientacao": "vertical",
+        "largura_m": 11.2,
+        "profundidade_m": 32.0,
+        "raias": 8,
+        "comprimento_raia_m": 32.0,
+        "passo_m": 1.4,
+        "meias_voltas": 7,
+        "caminhada_m": 256.0,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 36.09,
+        "descarga_m": 14.09,
+        "desvio_lateral_m": 1.58,
+        "capacidade": 614
+      }
+    ],
+    "baias": {},
+    "notas": [
+      "A conta de CCB cai para o número de divisórias mais a separação da zona C: a barreira deixa de ser proporcional ao comprimento da raia e passa a ser proporcional ao número de raias.",
+      "O CCB fica na ponta livre da divisória, no vão da meia-volta — o ponto onde o eleitor encosta e onde a fila empurra.",
+      "Fita não se sustenta sozinha: entre dois apoios ela cede. Com um CCB só na ponta, cada divisória fica com um vão livre do comprimento inteiro dela — ver `apoios_da_fita`."
+    ],
+    "fita_grossa_m": 662.4,
+    "n_divisorias": 23,
+    "apoios_da_fita": {
+      "espacamento_m": 5.0,
+      "vao_livre_m": 28.8,
+      "apoios_por_divisoria": 5,
+      "apoios": 115,
+      "separadores_se_forem_ccb": 154
+    }
+  },
+  "girado_ccb_na_ponta": {
+    "codigo": "HP",
+    "nome": "Serpenteados horizontais (raias leste-oeste) · CCB só na ponta",
+    "capacidade": 1964,
+    "capacidade_raias": 1964,
+    "capacidade_baias": 0,
+    "capacidade_com_perda_de_meia_volta": 1869,
+    "meias_voltas": 66,
+    "por_entrada": {
+      "A": 626,
+      "B": 712,
+      "C": 626
+    },
+    "capacidade_por_eleitor_esperado": {
+      "A": 0.1719,
+      "B": 0.169,
+      "C": 0.1719
+    },
+    "barreira_m": 164.0,
+    "barreira_por_componente_m": {
+      "CCB na ponta das divisórias": 132.0,
+      "separação entre a zona C e o corredor": 32.0
+    },
+    "fora_da_conta": {
+      "contorno das zonas (hoje, fita)": 159.6,
+      "parede do corredor de chegada": 39.8,
+      "raias do apron até as portas": 85.5,
+      "fita grossa nas divisórias": 576.4
+    },
+    "separadores": 82,
+    "estoque": 200,
+    "compra": 0,
+    "custo_compra_eur": 0.0,
+    "m_por_pessoa": 0.084,
+    "zonas": [
+      {
+        "entrada": "A",
+        "orientacao": "horizontal",
+        "largura_m": 11.34,
+        "profundidade_m": 32.0,
+        "raias": 23,
+        "comprimento_raia_m": 11.34,
+        "passo_m": 1.391,
+        "meias_voltas": 22,
+        "caminhada_m": 260.8,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 17.62,
+        "descarga_m": 14.69,
+        "desvio_lateral_m": 4.44,
+        "capacidade": 626
+      },
+      {
+        "entrada": "B",
+        "orientacao": "horizontal",
+        "largura_m": 13.12,
+        "profundidade_m": 32.0,
+        "raias": 23,
+        "comprimento_raia_m": 13.12,
+        "passo_m": 1.391,
+        "meias_voltas": 22,
+        "caminhada_m": 296.8,
+        "toco_perdido_m": 5.06,
+        "portao_x_m": 28.29,
+        "descarga_m": 14.0,
+        "desvio_lateral_m": 0.0,
+        "capacidade": 712
+      },
+      {
+        "entrada": "C",
+        "orientacao": "horizontal",
+        "largura_m": 11.34,
+        "profundidade_m": 32.0,
+        "raias": 23,
+        "comprimento_raia_m": 11.34,
+        "passo_m": 1.391,
+        "meias_voltas": 22,
+        "caminhada_m": 260.8,
+        "toco_perdido_m": 0.0,
+        "portao_x_m": 35.95,
+        "descarga_m": 14.07,
+        "desvio_lateral_m": 1.44,
+        "capacidade": 626
+      }
+    ],
+    "baias": {},
+    "notas": [
+      "A conta de CCB cai para o número de divisórias mais a separação da zona C: a barreira deixa de ser proporcional ao comprimento da raia e passa a ser proporcional ao número de raias.",
+      "O CCB fica na ponta livre da divisória, no vão da meia-volta — o ponto onde o eleitor encosta e onde a fila empurra.",
+      "Fita não se sustenta sozinha: entre dois apoios ela cede. Com um CCB só na ponta, cada divisória fica com um vão livre do comprimento inteiro dela — ver `apoios_da_fita`."
+    ],
+    "fita_grossa_m": 576.4,
+    "n_divisorias": 66,
+    "apoios_da_fita": {
+      "espacamento_m": 5.0,
+      "vao_livre_m": 8.7,
+      "apoios_por_divisoria": 1,
+      "apoios": 66,
+      "separadores_se_forem_ccb": 148
+    }
+  },
+  "escada_de_raias": [
+    {
+      "raias_por_zona": 6,
+      "profundidade_m": 8.4,
+      "capacidade": 503,
+      "por_entrada": {
+        "A": 163,
+        "B": 177,
+        "C": 163
+      },
+      "barreira_m": 169.4,
+      "separadores": 85,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "raias_por_zona": 7,
+      "profundidade_m": 9.8,
+      "capacidade": 589,
+      "por_entrada": {
+        "A": 190,
+        "B": 208,
+        "C": 190
+      },
+      "barreira_m": 203.0,
+      "separadores": 102,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "raias_por_zona": 8,
+      "profundidade_m": 11.2,
+      "capacidade": 675,
+      "por_entrada": {
+        "A": 218,
+        "B": 240,
+        "C": 218
+      },
+      "barreira_m": 236.6,
+      "separadores": 119,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "raias_por_zona": 9,
+      "profundidade_m": 12.6,
+      "capacidade": 761,
+      "por_entrada": {
+        "A": 245,
+        "B": 271,
+        "C": 245
+      },
+      "barreira_m": 270.2,
+      "separadores": 136,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "raias_por_zona": 10,
+      "profundidade_m": 14.0,
+      "capacidade": 847,
+      "por_entrada": {
+        "A": 272,
+        "B": 303,
+        "C": 272
+      },
+      "barreira_m": 303.8,
+      "separadores": 152,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "raias_por_zona": 11,
+      "profundidade_m": 15.4,
+      "capacidade": 933,
+      "por_entrada": {
+        "A": 299,
+        "B": 334,
+        "C": 299
+      },
+      "barreira_m": 337.4,
+      "separadores": 169,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "raias_por_zona": 12,
+      "profundidade_m": 16.8,
+      "capacidade": 1019,
+      "por_entrada": {
+        "A": 327,
+        "B": 366,
+        "C": 327
+      },
+      "barreira_m": 371.0,
+      "separadores": 186,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "raias_por_zona": 13,
+      "profundidade_m": 18.2,
+      "capacidade": 1105,
+      "por_entrada": {
+        "A": 354,
+        "B": 397,
+        "C": 354
+      },
+      "barreira_m": 404.6,
+      "separadores": 203,
+      "compra": 3,
+      "custo_compra_eur": 39.06
+    },
+    {
+      "raias_por_zona": 14,
+      "profundidade_m": 19.6,
+      "capacidade": 1191,
+      "por_entrada": {
+        "A": 381,
+        "B": 429,
+        "C": 381
+      },
+      "barreira_m": 438.2,
+      "separadores": 220,
+      "compra": 20,
+      "custo_compra_eur": 260.4
+    },
+    {
+      "raias_por_zona": 15,
+      "profundidade_m": 21.0,
+      "capacidade": 1277,
+      "por_entrada": {
+        "A": 408,
+        "B": 460,
+        "C": 408
+      },
+      "barreira_m": 471.8,
+      "separadores": 236,
+      "compra": 36,
+      "custo_compra_eur": 468.72
+    },
+    {
+      "raias_por_zona": 16,
+      "profundidade_m": 22.4,
+      "capacidade": 1363,
+      "por_entrada": {
+        "A": 435,
+        "B": 492,
+        "C": 435
+      },
+      "barreira_m": 505.4,
+      "separadores": 253,
+      "compra": 53,
+      "custo_compra_eur": 690.06
+    },
+    {
+      "raias_por_zona": 17,
+      "profundidade_m": 23.8,
+      "capacidade": 1448,
+      "por_entrada": {
+        "A": 463,
+        "B": 523,
+        "C": 463
+      },
+      "barreira_m": 539.0,
+      "separadores": 270,
+      "compra": 70,
+      "custo_compra_eur": 911.4
+    },
+    {
+      "raias_por_zona": 18,
+      "profundidade_m": 25.2,
+      "capacidade": 1534,
+      "por_entrada": {
+        "A": 490,
+        "B": 555,
+        "C": 490
+      },
+      "barreira_m": 572.6,
+      "separadores": 287,
+      "compra": 87,
+      "custo_compra_eur": 1132.74
+    },
+    {
+      "raias_por_zona": 19,
+      "profundidade_m": 26.6,
+      "capacidade": 1620,
+      "por_entrada": {
+        "A": 517,
+        "B": 586,
+        "C": 517
+      },
+      "barreira_m": 606.2,
+      "separadores": 304,
+      "compra": 104,
+      "custo_compra_eur": 1354.08
+    },
+    {
+      "raias_por_zona": 20,
+      "profundidade_m": 28.0,
+      "capacidade": 1706,
+      "por_entrada": {
+        "A": 544,
+        "B": 618,
+        "C": 544
+      },
+      "barreira_m": 639.8,
+      "separadores": 320,
+      "compra": 120,
+      "custo_compra_eur": 1562.4
+    },
+    {
+      "raias_por_zona": 21,
+      "profundidade_m": 29.4,
+      "capacidade": 1792,
+      "por_entrada": {
+        "A": 571,
+        "B": 649,
+        "C": 571
+      },
+      "barreira_m": 673.4,
+      "separadores": 337,
+      "compra": 137,
+      "custo_compra_eur": 1783.74
+    },
+    {
+      "raias_por_zona": 22,
+      "profundidade_m": 30.8,
+      "capacidade": 1878,
+      "por_entrada": {
+        "A": 599,
+        "B": 681,
+        "C": 599
+      },
+      "barreira_m": 707.0,
+      "separadores": 354,
+      "compra": 154,
+      "custo_compra_eur": 2005.08
+    },
+    {
+      "raias_por_zona": 23,
+      "profundidade_m": 32.0,
+      "capacidade": 1964,
+      "por_entrada": {
+        "A": 626,
+        "B": 712,
+        "C": 626
+      },
+      "barreira_m": 740.4,
+      "separadores": 371,
+      "compra": 171,
+      "custo_compra_eur": 2226.42
+    }
+  ],
+  "escada_de_profundidade": [
+    {
+      "profundidade_m": 12.0,
+      "capacidade": 749,
+      "por_entrada": {
+        "A": 230,
+        "B": 288,
+        "C": 230
+      },
+      "barreira_m": 260.4,
+      "separadores": 131,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "profundidade_m": 16.0,
+      "capacidade": 998,
+      "por_entrada": {
+        "A": 307,
+        "B": 384,
+        "C": 307
+      },
+      "barreira_m": 356.4,
+      "separadores": 179,
+      "compra": 0,
+      "custo_compra_eur": 0.0
+    },
+    {
+      "profundidade_m": 20.0,
+      "capacidade": 1248,
+      "por_entrada": {
+        "A": 384,
+        "B": 480,
+        "C": 384
+      },
+      "barreira_m": 452.4,
+      "separadores": 227,
+      "compra": 27,
+      "custo_compra_eur": 351.54
+    },
+    {
+      "profundidade_m": 24.0,
+      "capacidade": 1498,
+      "por_entrada": {
+        "A": 461,
+        "B": 576,
+        "C": 461
+      },
+      "barreira_m": 548.4,
+      "separadores": 275,
+      "compra": 75,
+      "custo_compra_eur": 976.5
+    },
+    {
+      "profundidade_m": 28.0,
+      "capacidade": 1747,
+      "por_entrada": {
+        "A": 538,
+        "B": 672,
+        "C": 538
+      },
+      "barreira_m": 644.4,
+      "separadores": 323,
+      "compra": 123,
+      "custo_compra_eur": 1601.46
+    },
+    {
+      "profundidade_m": 32.0,
+      "capacidade": 1997,
+      "por_entrada": {
+        "A": 614,
+        "B": 768,
+        "C": 614
+      },
+      "barreira_m": 740.4,
+      "separadores": 371,
+      "compra": 171,
+      "custo_compra_eur": 2226.42
+    }
+  ]
+}

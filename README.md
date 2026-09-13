@@ -200,6 +200,32 @@ node simulador/fitas.js 8          # saidas/fitas_piso.json
 python3 scripts/fitas_piso.py      # saidas/fitas_piso.{md,html} e fitas_piso_*.svg
 ```
 
+## Barreiras internas: cenário 1e e as hipóteses de corte (11/09)
+
+Registro completo, com as alternativas descartadas e os riscos que a escolha
+aceita: [`saidas/tensa_barreiras.md`](saidas/tensa_barreiras.md). O caminho até
+ela, com as correções feitas e as premissas declaradas, está em
+[`registro_barreiras_hall2.md`](registro_barreiras_hall2.md).
+
+- **`saidas/tensa_barreiras.md`** — o registro da decisão, com o desenho adotado,
+  as alternativas descartadas e os riscos aceitos.
+- **`saidas/propostas_alternativas.md`** — duas hipóteses de corte, com plano e
+  desenho cada: **A**, unifila só para separar até o checkpoint; **B**, unifila só
+  nas mesas pareadas e nas grandes. Mais a síntese **C**, o único corte que o
+  documento recomenda.
+- **`saidas/tensa_barreiras.json`** — os números estruturados, cenário a cenário.
+- **`saidas/barreiras_hall2.html`** — a planta em escala com os sete traçados
+  ([publicada](https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981)).
+- **`saidas/prancheta_hall2.json`** — o cenário salvo, extraído do artefato da
+  prancheta, para a conta ser reproduzível sem abrir a página.
+
+```bash
+python3 scripts/tensa_barreiras.py    # saidas/tensa_barreiras.{md,json} e barreiras_hall2.html
+```
+
+Qual traçado vale depende das decisões D2 (checkpoint) e D4 de
+`scripts/decisoes_abertas.py`.
+
 ## Ring 3 nas dimensões oficiais: corredor em L e fita com CCB na ponta (11/09)
 
 `scripts/ring3.py` modela o compound de fila ao ar livre do RDS, **44,0 × 35,0 m

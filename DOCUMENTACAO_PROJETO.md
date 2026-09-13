@@ -90,7 +90,7 @@ mais cópia própria de porta, taxa ou numeração.
 
 | Peça | URL |
 |---|---|
-| **Dashboard do plano** (integra tudo; portas vivas) | https://claude.ai/code/artifact/1c434ede-3d79-439c-b97b-a8121979bd03 |
+| **Dashboard do plano** (integra tudo; portas vivas; versão 2 de 13/09 com Ring 3 em L, hipóteses de corte, fitas no piso e decisões em aberto) | https://claude.ai/code/artifact/1c434ede-3d79-439c-b97b-a8121979bd03 |
 | Urnas de Dublin | https://claude.ai/code/artifact/3d1b9ff8-458d-42c9-b1b6-8aacf15dfd9f |
 | Barreiras do Hall 2 | https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981 |
 | Ring 3, quatro desenhos | https://claude.ai/code/artifact/c1257b13-e450-4bc1-b801-439a32bddb87 |

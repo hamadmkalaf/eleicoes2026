@@ -12,6 +12,9 @@ posto do RDS Ballsbridge, Hall 2, para o 1º turno de 04/10/2026.
    refazer o que já está feito ou a repetir uma divergência já mapeada.
 2. `docs/CONTEXTO.md`: documento de passagem do desenho de fluxo do salão
    (geometria medida, premissas, carga das 28 urnas, perguntas em aberto).
+3. `docs/SESSAO_2026-09-13.md`: passagem da sessão do dashboard e das portas
+   vivas (decisões do Posto sobre as ferramentas, PR #16, como verificar a
+   propagação entre Simulador, Prancheta e Ring 3, o que ficou fora).
 
 ## Branches
 

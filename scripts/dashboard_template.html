@@ -160,20 +160,53 @@ ul.fontes b{color:var(--tinta); font-weight:600}
 footer{margin:72px 0 0; padding-top:18px; border-top:1px solid var(--regua); font-size:.8rem; color:var(--fraco)}
 footer p{max-width:76ch}
 @media (max-width:640px){ .folha{padding:0 16px 60px} header{padding-top:36px} .prancha svg{min-width:480px} }
+
+/* ---- decisoes em aberto ---- */
+.dec-grafo{background:var(--folha); border:1px solid var(--regua); padding:14px 12px 8px; margin-top:20px; overflow-x:auto; color:var(--tinta)}
+.dec-grafo svg{min-width:720px}
+.dec-grafo a{text-decoration:none}
+.dec-grafo a:hover rect{fill:var(--realce)}
+.resposta .fonte{font-family:"IBM Plex Mono",monospace; font-size:.68rem; color:var(--fraco)}
+.cartoes{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); margin-top:22px}
+.cartao{background:var(--folha); border:1px solid var(--regua); padding:18px 20px 16px; min-width:0}
+.cartao header{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:8px}
+.cartao header .id{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--a)}
+.cartao header h3{margin:0; flex:1 1 auto}
+.cartao .estado{font-family:"IBM Plex Mono",monospace; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; border:1px solid currentColor; padding:1px 7px; border-radius:2px}
+.cartao .perg{font-size:.92rem; color:var(--meio)}
+.cartao .liga{display:flex; flex-wrap:wrap; gap:6px 18px; font-size:.8rem; margin:6px 0 10px}
+.cartao .liga i{font-style:normal; color:var(--fraco); margin-right:4px}
+.cartao .liga .chip{font-size:.72rem; padding:0 6px; color:var(--a); text-decoration:none; border:1px solid var(--regua)}
+.cartao .liga .chip.vazio{color:var(--fraco); border-color:transparent}
+.cartao ol.opcoes{padding-left:1.2em; margin:0; font-size:.88rem}
+.cartao ol.opcoes>li{margin:0 0 9px; padding-left:4px}
+.cartao ol.opcoes>li.vigente{border-left:2px solid var(--a); padding-left:10px; margin-left:-12px}
+.cartao ol.opcoes .res{display:block; color:var(--meio); margin-top:2px}
+.cartao ul.ef{margin:5px 0 0; padding-left:1em; font-size:.8rem; color:var(--meio)}
+.cartao ul.ef li{margin:2px 0}
+.cartao ul.ef a{font-family:"IBM Plex Mono",monospace; text-decoration:none}
+.cartao .mini-rot{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--meio); margin:10px 0 4px}
+.cartao ul.adic{margin:0; padding-left:1.1em; font-size:.82rem; color:var(--meio)}
+.cartao .fontes-dec{font-family:"IBM Plex Mono",monospace; font-size:.68rem; color:var(--fraco); margin:12px 0 0; max-width:none}
+.matriz table{font-size:.79rem}
+.matriz td.se{white-space:normal; min-width:220px; max-width:300px}
+.matriz td.ef{white-space:normal; min-width:200px; max-width:280px; color:var(--meio); vertical-align:top}
+.matriz tr.marcada td.ef{color:var(--tinta)}
+@media (max-width:720px){ .cartoes{grid-template-columns:1fr} }
 </style>
 
 <nav class="topo" aria-label="Seções"><div class="in">
   <span class="marca">Posto de Dublin 2026</span>
   <a href="#eleitorado">Quem vota</a><a href="#salao">O salão</a><a href="#mesas">As mesas</a>
   <a href="#ring3">Fila externa</a><a href="#rota">Rota e placas</a><a href="#barreiras">Barreiras</a>
-  <a href="#simulacao">O dia simulado</a><a href="#caminho">Caminho até aqui</a><a href="#fontes">Fontes</a>
+  <a href="#simulacao">O dia simulado</a><a href="#decisoes">Decisões</a><a href="#caminho">Caminho até aqui</a><a href="#fontes">Fontes</a>
 </div></nav>
 
 <div class="folha">
 <header>
   <p class="olho">Eleições presidenciais 2026 · 1º turno · 4 de outubro, 8h às 17h · RDS Ballsbridge, Hall 2 e Ring 3</p>
   <h1>O plano de votação do posto de Dublin</h1>
-  <p class="chamada">Como {{ESPERADOS}} eleitores previstos chegam ao Royal Dublin Society, esperam no Ring 3, entram por três portas da fachada sul, votam em 28 mesas e saem sem cruzar a fila de quem entra. Um só lugar para o que as análises decidiram, o que ficou pendente e as ferramentas para testar alternativas.</p>
+  <p class="chamada">Como {{ESPERADOS}} eleitores previstos chegam ao Royal Dublin Society, esperam no Ring 3, entram por três portas da fachada sul, votam em 28 mesas e saem sem cruzar a fila de quem entra. Um só lugar para o que as análises decidiram, o que ainda falta decidir (e o que cada escolha puxa) e as ferramentas para testar alternativas.</p>
   <dl class="faixa">
     <div><dt>Eleitores aptos</dt><dd>{{APTOS}}<small>{{SECOES}} seções, todas em Dublin</small></dd></div>
     <div><dt>Comparecimento previsto</dt><dd>{{ESPERADOS}}<small>{{TAXA}}% · taxa de 2022 por origem, estimativa</small></dd></div>
@@ -263,13 +296,14 @@ footer p{max-width:76ch}
     <thead><tr><th>Entrada</th><th>Porta</th><th class="num">Mesas</th><th class="num">Esperados</th><th class="num">Cabe no Ring 3</th><th>MRV</th></tr></thead>
     <tbody>{{TABELA_ENTRADAS}}</tbody>
   </table></div>
-  <p class="nota pendente"><strong>Decisão pendente: o desenho da fila.</strong> O plano vigente mantém uma faixa de garganta ao sul para a pré-triagem e guarda {{PV_CAP}} pessoas com {{PV_SEP}} separadores ({{PV_COMPRA}} a comprar, cerca de EUR {{PV_EUR}}). Sem a garganta, cada raia ganha 8,25 m: o desenho norte-sul sem baias guarda {{VS_CAP}} pessoas, mas custa {{VS_SEP}} separadores ({{VS_COMPRA}} a comprar, EUR {{VS_EUR}}). A tabela compara os cinco; onde a pré-triagem passa a acontecer nos desenhos sem garganta ainda não foi definido.</p>
+  <p><strong>O percurso decidido em 11/09.</strong> O eleitor entra no Ring 3 pelo canto nordeste, o lado mais próximo da porta C, desce rente ao gradil leste e vira no fundo: um corredor de chegada em L de 3,0 m alimenta as zonas pelo trecho de fundo. Nos desenhos sem garganta o contorno das zonas passa a ser fita, e só duas coisas são separador: as divisórias entre as raias e a parede que separa a zona C da corrente que desce. Com a divisória em fita grossa e um CCB só na ponta, a barreira cai de {{VS_SEP}} para {{VSP_SEP}} separadores e nada há a comprar, mas entram {{VSP_FITA}} m de fita e {{VSP_APOIOS}} apoios a cada 5 m ({{VSP_APOIOS_CCB}} CCB se os apoios forem CCB). A decisão real não é entre fita e barreira: é quantos apoios a fita vai ter.</p>
+  <p class="nota pendente"><strong>Decisão pendente: o desenho da fila (D3).</strong> As saídas de hoje assumem o <em>{{R3_VIG_NOME}}</em>: {{R3_VIG_CAP}} pessoas, {{R3_VIG_SEP}} separadores, quotas por entrada de 445/513/445. A escolha depende do número de portas (D1) e do checkpoint (D2): sem checkpoint o Ring 3 precisa guardar até 2.283 pessoas. Ver a <a href="#decisoes">seção de decisões</a>.</p>
   <div class="rolagem"><table>
-    <thead><tr><th>Desenho</th><th class="num">Lotação</th><th class="num">Em raia</th><th class="num">Em baia</th><th class="num">Separadores</th><th class="num">A comprar</th><th class="num">Custo</th></tr></thead>
+    <thead><tr><th>Desenho</th><th class="num">Lotação</th><th class="num">Em baia</th><th class="num">Meias-voltas</th><th class="num">Separadores</th><th class="num">A comprar</th><th class="num">Custo</th><th class="num">Fita grossa</th><th class="num">Apoios da fita</th></tr></thead>
     <tbody>{{TABELA_RING3}}</tbody>
   </table></div>
   <div class="ferramenta">
-    <div class="barra-f"><strong>Ring 3 ao vivo</strong><span>redesenhado para as portas em vigor: com N entradas, N serpenteados. Escolha o desenho aqui ou no Simulador.</span><a href="{{LINK_RING3VIVO}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+    <div class="barra-f"><strong>Ring 3 ao vivo</strong><span>redesenhado para as portas em vigor: com N entradas, N serpenteados. Desenha os cinco desenhos anteriores a 11/09 (com e sem baias); o corredor em L e a fita com CCB na ponta estão na peça estática "Ring 3, quatro desenhos".</span><a href="{{LINK_RING3VIVO}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
     <iframe src="{{LINK_RING3VIVO}}" title="Ring 3 ao vivo" loading="lazy"></iframe>
   </div>
   {{PECAS_RING3}}
@@ -319,9 +353,10 @@ footer p{max-width:76ch}
     <div><dt>Já contratados</dt><dd>100<small>folga de fita, folga nenhuma de poste</small></dd></div>
   </dl>
   <div class="rolagem"><table>
-    <thead><tr><th>Cenário</th><th class="num">Corridas</th><th class="num">Fitas</th><th class="num">Postes</th><th class="num">Com reserva</th><th class="num">Barreira</th></tr></thead>
+    <thead><tr><th>Traçado</th><th class="num">Corridas</th><th class="num">Fitas</th><th class="num">Postes</th><th class="num">Com reserva</th><th class="num">Barreira</th><th class="num">EUR ex-VAT</th><th class="num">Mesas sem guia</th></tr></thead>
     <tbody>{{TABELA_BARREIRAS}}</tbody>
   </table></div>
+  <p class="nota"><strong>As hipóteses de corte (11/09).</strong> A e B são deliberadamente opostas: uma gasta barreira só na entrada, a outra só nas mesas. A carga não é simétrica: uma divisória de entrada organiza 12 a 14 pessoas por minuto por porta; uma linha de mesa organiza 1 a 2. Por isso o corte defensável é a interseção das duas, a síntese C, e trocar material por gente não é economia nesta escala (cinco orientadores custam EUR 1.569 ao preço do item a). Se o desenho vigente muda (decisão D4), as mesas sem guia passam a depender de placa alta e de orientador.</p>
   <div class="duas">
     <figure>
       <div class="grafico">{{FOLEGO}}</div>
@@ -350,12 +385,37 @@ footer p{max-width:76ch}
     <div class="barra-f"><strong>Simulador do Hall 2</strong><span>clique numa porta da fachada sul para testar outra combinação; "Rodar simulação" refaz o dia.</span><a href="{{LINK_SIMULADOR}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
     <iframe src="{{LINK_SIMULADOR}}" title="Simulador do Hall 2" loading="lazy"></iframe>
   </div>
+  <h3>Fitas no piso em vez do checkpoint (12/09)</h3>
+  <p>A sugestão de eliminar o checkpoint e guiar o eleitor da porta à mesa por fitas no piso foi simulada no motor oficial. <strong>O checkpoint não custa vazão:</strong> a última mesa fecha às {{FIT_FECHA}} com ou sem ele. O que ele faz é reter por mesa. Sem ele, com a porta livre, {{FIT_LIVRE_DENTRO}} pessoas ficam dentro do salão no pico e {{FIT_LIVRE_CHEIA}} chegam a uma fila já cheia; com a porta regulando às cegas, o Ring 3 sobe de {{FIT_REF_RING3}} para {{FIT_BUFFER_RING3}}. Perder-se custa 1 a 3 minutos no P90. É a opção (c) da decisão D2.</p>
+  <div class="rolagem"><table>
+    <thead><tr><th>Cenário</th><th>Fecha (p50)</th><th class="num">Espera P90 (min)</th><th class="num">fora / dentro</th><th class="num">Pico dentro</th><th class="num">Pico Ring 3</th><th class="num">Chegadas a fila cheia</th></tr></thead>
+    <tbody>{{TABELA_FITAS}}</tbody>
+  </table></div>
   {{PECAS_SIM}}
 </section>
 
-<!-- ============================ 8 · CAMINHO ATE AQUI ============================ -->
+<!-- ============================ 8 · DECISOES EM ABERTO ============================ -->
+<section id="decisoes">
+  <p class="rotulo"><span class="passo">8</span>Decisões em aberto</p>
+  <h2>{{DEC_N}} decisões de fluxo ainda por tomar, e como uma puxa a outra</h2>
+  <p class="lede">Registro de {{DEC_DATA}}: o que falta decidir, as opções em cima da mesa, o que cada opção impõe às outras decisões e a ordem em que convém decidir. Tudo o que esta página mostra assume, em cada decisão, a opção marcada como "o que as saídas de hoje assumem". Mudar uma decisão é editar <span class="mono">scripts/decisoes_abertas.py</span> e regenerar: o dashboard, o documento de decisões e as instruções de fluxo para o treinamento mudam juntos.</p>
+  <h3>Fatos fixos: o que toda opção respeita</h3>
+  <div class="respostas">{{DEC_FATOS}}</div>
+  <figure>
+    <div class="dec-grafo">{{DEC_GRAFO}}</div>
+    <figcaption>Cada seta liga uma decisão às que ela condiciona. As colunas são a ordem recomendada: {{DEC_ORDEM}}. Contorno vermelho: em aberto; laranja: parcialmente decidida. Clique num nó para ir ao cartão.</figcaption>
+  </figure>
+  <h3>As decisões, uma a uma</h3>
+  <div class="cartoes">{{DEC_CARTOES}}</div>
+  <h3>Matriz "se … então …"</h3>
+  <p>Linhas: uma opção de uma decisão. Colunas: as decisões que ela condiciona. A linha destacada é a opção que as saídas de hoje assumem.</p>
+  <div class="rolagem matriz"><table>{{DEC_MATRIZ}}</table></div>
+  {{PECAS_DECISOES}}
+</section>
+
+<!-- ============================ 9 · CAMINHO ATE AQUI ============================ -->
 <section id="caminho">
-  <p class="rotulo"><span class="passo">8</span>Caminho até aqui</p>
+  <p class="rotulo"><span class="passo">9</span>Caminho até aqui</p>
   <h2>O que foi testado e descartado antes deste desenho</h2>
   <p class="lede">O plano atual é a quarta ideia de layout e a segunda de portas. As anteriores continuam disponíveis, porque explicam por que o desenho vigente é o que é.</p>
   <ol class="tempo">
@@ -366,20 +426,24 @@ footer p{max-width:76ch}
     <li class="marco"><span class="data">01/09</span><span class="o"><b>Planta-base fixada e mesas pareadas com fileira recuada.</b> A fachada leste passa de zero a 12 mesas; o salão fecha em 28 com folga para 30.<small>Peça: Quantas mesas cabem no Hall 2.</small></span></li>
     <li><span class="data">02–05/09</span><span class="o"><b>Prancheta, MRVs do DJE, simulador, Ring 3 e sinalização.</b> S2 e S8 confirmadas no local; cenário Três polos; plano de sinalização com levantamento fotográfico.</span></li>
     <li class="marco"><span class="data">06/09</span><span class="o"><b>Decisão das portas e fonte única.</b> Entradas S4, S5 e S6; saídas S2 e S8; comparecimento pela base B; numeração MRV; cores por carga. Tudo passa a ser gerado de <span class="mono">scripts/decisoes.py</span>.</span></li>
-    <li><span class="data">07–08/09</span><span class="o"><b>Barreiras internas (1e) e Ring 3 nas dimensões oficiais.</b> Quatro desenhos de fila externa comparados; a escolha entre eles é a decisão pendente.</span></li>
+    <li><span class="data">07–08/09</span><span class="o"><b>Barreiras internas (1e) e Ring 3 nas dimensões oficiais.</b> Quatro desenhos de fila externa comparados.</span></li>
+    <li><span class="data">11/09</span><span class="o"><b>Corredor em L, fita com CCB na ponta e hipóteses de corte.</b> O Ring 3 perde a garganta e a barreira cai a dois componentes; as hipóteses A, B, B2 e C testam onde a unifila interna rende mais. Dashboard e portas vivas.</span></li>
+    <li><span class="data">12/09</span><span class="o"><b>Fitas no piso em vez do checkpoint.</b> Simulado no motor oficial: o checkpoint não custa vazão, retém por mesa.<small>Peça: Fitas no piso em vez do checkpoint.</small></span></li>
+    <li class="marco"><span class="data">13/09</span><span class="o"><b>Decisões do Posto e registro do que falta decidir.</b> Dimensões reais confirmadas; desagregação descartada; caderno físico; 4 seguranças e voluntários. As decisões de fluxo em aberto passam a ter registro próprio, com dependências, e as instruções de fluxo para o treinamento passam a ser geradas delas.</span></li>
   </ol>
   {{PECAS_HISTORICO}}
 </section>
 
-<!-- ============================ 9 · FONTES ============================ -->
+<!-- ============================ 10 · FONTES ============================ -->
 <section id="fontes">
-  <p class="rotulo"><span class="passo">9</span>Fontes e método</p>
+  <p class="rotulo"><span class="passo">10</span>Fontes e método</p>
   <h2>De onde vêm os números</h2>
   <ul class="fontes">
     <li><b>Eleitorado.</b> CSV do TSE de seções do exterior (13/08/2026) e perfil do eleitorado de Dublin (14/07/2026). O processamento falha em vez de gravar saída errada se a soma por seção, por urna e do perfil não fecharem em 16.794 ou se algum total de urna divergir do campo que o TSE publica agregado.</li>
     <li><b>MRV × seção.</b> Diário da Justiça Eletrônico do TRE-DF, ano 2026 n. 139 (04/08/2026), convocação de mesários de Dublin.</li>
     <li><b>Comparecimento.</b> Taxa de 2022 por domicílio de origem de cada seção (base B). É uma estimativa de trabalho, não um dado oficial por seção; substitui-se quando houver dado do Cartório. Todos os cenários usam a mesma base.</li>
     <li><b>Geometria.</b> Planta oficial do RDS (Hall 2, térreo) com escala aferida contra a ficha técnica; Ring 3 nas dimensões oficiais de 44 × 35 m, posição lateral centrada em S5 por estimativa. As capacidades do plano vigente foram calculadas com a fotogrametria anterior (39 × 35 m).</li>
+    <li><b>Decisões em aberto.</b> <span class="mono">scripts/decisoes_abertas.py</span>: opções, dependências e efeitos, validados (grafo acíclico, uma opção vigente por decisão). As instruções de fluxo (<span class="mono">docs/instrucoes_fluxo.md</span>) saem do mesmo registro.</li>
     <li><b>Modelos.</b> Fila por urna a 55 s de projeto; simulador por eventos discretos com 11 critérios; Ring 3 com raias de 1,40 m a 2 pessoas por m²; barreira Tensa de 2 m por poste. Premissas e sensibilidades estão em cada peça completa.</li>
   </ul>
 </section>

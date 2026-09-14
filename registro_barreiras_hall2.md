@@ -1,3 +1,10 @@
+> **Atualizado em 13/09/2026 (tarde).** Este registro conta o caminho até o
+> cenário 1e de 11/09 (100 postes, escada 10/5/3 m, hipóteses A/B/B2/C). Em
+> 13/09 o Posto fixou outra regra de mesa (par = 4 m, vermelha = 10 m, não
+> vermelha sem par = sem unifila) e os traçados 1e/1f/1g/1h; com ela o 1e dá
+> 73 postes. Os números abaixo são históricos; o registro vivo é
+> `saidas/tensa_barreiras.md`.
+
 # Registro de trabalho — separadores de fila do Hall 2
 
 Memória da conversa que produziu a contagem de separadores Tensa para o Hall 2 do
@@ -297,8 +304,8 @@ tem só ~5,7 m de chão livre.
 | Hipóteses de corte A, B, B2 e a síntese C | [`saidas/propostas_alternativas.md`](saidas/propostas_alternativas.md) |
 | A conta, reproduzível | `python3 scripts/tensa_barreiras.py` |
 | Números estruturados | `saidas/tensa_barreiras.json` |
-| Cenário salvo da prancheta, extraído | `saidas/prancheta_hall2.json` |
-| Planta com os sete traçados | `saidas/barreiras_hall2.html` · <https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981> |
+| Cenário da prancheta (desde 13/09: o cenário de trabalho de `decisoes.py` sobre `data/prancheta_hall2.json` + `cenarios/`; a cópia `saidas/prancheta_hall2.json` foi removida) | `scripts/decisoes.py` (`cenario_trabalho()`, `posicoes()`) |
+| Planta com os traçados (desde 13/09: quatro, 1e/1f/1g/1h, gerada por `scripts/gera_barreiras_hall2.py`) | `saidas/barreiras_hall2.html` · publicação de 11/09 com os sete traçados antigos: <https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981> |
 | Prancheta do Hall 2 (origem das posições) | <https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0> |
 | Pull request | <https://github.com/hamadmkalaf/eleicoes2026/pull/12> |
 

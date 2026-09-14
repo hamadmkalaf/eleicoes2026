@@ -1,6 +1,13 @@
 # Duas hipóteses alternativas de unifila — Hall 2
 
-Documento de trabalho. O desenho em vigor continua sendo o **1e**
+> **Superado em 13/09/2026.** O Posto fixou a regra de mesa (par = 4 m no
+> meio, vermelha = 10 m, não vermelha sem par = sem unifila) e trocou as
+> hipóteses de corte pelos traçados 1e (adotado) e 1f/1g/1h ("desenho em T").
+> As hipóteses A, B, B2 e C abaixo ficam como histórico da comparação de
+> 11/09; `scripts/tensa_barreiras.py` não as calcula mais. Fonte viva:
+> `saidas/tensa_barreiras.md`.
+
+Documento de trabalho de 11/09. O desenho em vigor continua sendo o **1e**
 (`saidas/tensa_barreiras.md`); aqui estão duas hipóteses de corte, cada uma com
 o seu plano, o seu desenho e o que ela custa fora do orçamento de material.
 

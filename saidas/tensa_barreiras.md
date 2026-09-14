@@ -1,190 +1,152 @@
-# Separadores Tensa para o Hall 2 — desenho adotado
+# Separadores Tensa para o Hall 2 — os quatro traçados de 13/09
 
-> **Decisão do Posto: cenário 1e.** 100 postes, 111 com reserva de 10%, 146 m de
-> fita, EUR 1.745 ex-VAT com entrega. Os cenários 1 e 1i ficam registrados como
-> alternativas descartadas, para a decisão continuar auditável.
+> Gerado por `scripts/gera_barreiras_hall2.py` de `saidas/tensa_barreiras.json` (`scripts/tensa_barreiras.py`, 2026-09-14). Não editar à mão.
 
-Base: cenário **`Hamad_3polos`** da *Prancheta do Hall 2* (salvo em 05/09/2026,
-sobre a planta A), com as 28 mesas nas posições em que Hamad as deixou, os
-papéis de porta já decididos (S4 = entrada **A**, S5 = **B**, S6 = **C**) e a
-classe de comparecimento de cada MRV. Salão aferido na planta do RDS:
-**50,3 × 44,4 m** úteis, 2.238 m² brutos.
+> **Traçado adotado: 1e.** 73 postes, 81 com reserva de 10 %, 53 fitas de 2 m (106 m de barreira), EUR 1.295,00 ex-VAT com entrega. Contra os 100 postes já contratados: -19.
 
-Reproduzir: `python3 scripts/tensa_barreiras.py` (lê
-`saidas/prancheta_hall2.json`, grava `saidas/tensa_barreiras.json`).
+Base: cenário **`Hamad_3polos`** da Prancheta do Hall 2 (salvo em 2026-09-05, sobre a planta A), com as 28 mesas onde ficaram, as portas S4/S5/S6 como entradas A, B e C e as saídas S2 e S8. **Provisório:** o cenário `hamad-final` (o "Hamad_Final" da prancheta) ainda não foi colado em `cenarios/`; a conta e a numeração eleitor mudam quando ele entrar.
 
-## O que será montado
+## A regra de mesa (Posto, 13/09/2026)
 
-**1. Canais de entrada.** Duas linhas de 20 m, da parede sul ao checkpoint,
-posicionadas nos limites entre os vãos: uma entre A e B, outra entre B e C. São
-as duas que de fato separam as três correntes de eleitores. As portas S4, S5 e
-S6 são contíguas — 5,93 m cada, 0,29 m entre vãos —, então três canais precisam
-de divisórias compartilhadas, e o desenho adotado fica só com as do meio.
+- **Par de mesas que se encaram:** uma única linha de **4 m** no meio do corredor, separando as duas filas.
+- **Mesa vermelha** (as três de maior comparecimento, os polos): **10 m** de unifila do seu lado.
+- **Mesa não vermelha sem par: sem unifila.** Fica com a placa alta e o orientador de piso.
 
-**2. Uma linha no meio de cada par.** Onde duas mesas se encaram através do
-corredor de serviço, uma única linha entre elas separa as duas filas. Funciona
-porque os mesários sentam entre 2,4 e 4,1 m da parede e a fila só começa onde o
-módulo termina, a 4,10 m: na profundidade da fila aquele corredor é chão livre.
+## Os quatro traçados do canal de entrada
 
-**3. Uma linha por mesa sem par**, rente à fila, do lado dos mesários.
+| Traçado | Canal | Corridas | Fitas | Postes | Com reserva | Barreira | EUR ex-VAT | Mesas sem guia |
+|---|---|--:|--:|--:|--:|--:|--:|--:|
+| **1e** **(adotado)** | duas divisórias de 20 m + 6 bochechas | 14 | 53 | 73 | 81 | 106 m | 1.295,00 | 7 |
+| **1f** | T: canal B de 15 m, braços de 6 m + 2 bochechas | 14 | 55 | 71 | 79 | 110 m | 1.265,00 | 7 |
+| **1g** | T: canal B de 10 m, braços de 6 m + 2 bochechas | 14 | 49 | 65 | 72 | 98 m | 1.160,00 | 7 |
+| **1h** | T: canal B de 5 m, braços de 3 m + 2 bochechas | 14 | 41 | 57 | 63 | 82 m | 1.025,00 | 7 |
 
-**4. Comprimentos pela escada 10/5/3 m** — 10 m nos três polos de alto
-comparecimento, 5 m nas de média, 3 m nas de baixa.
+- **1e**: as duas divisórias que separam as três correntes, da porta ao checkpoint (20 m), com duas bochechas de portão por canal.
+- **1f, 1g, 1h ("desenho em T")**: só o canal B fica isolado, por 15, 10 ou 5 m; no topo, um braço perpendicular para oeste guia a fila A e um para leste guia a fila C (6 m nos dois primeiros, premissa; 3 m no 1h). Cada lado do T é uma corrida contínua: o canto é um poste com duas fitas.
+
+### Traçado 1e — **adotado**
+
+Adotado. As duas linhas que separam as três correntes da porta ao checkpoint, com 6 bochechas de portão; nas mesas, a regra de 13/09.
 
 | Item | Corridas | Comp. | Fitas | Postes |
 |---|--:|--:|--:|--:|
-| divisórias entre os canais A\|B e B\|C | 2 | 20,0 m | 20 | 22 |
-| bochechas de portão no checkpoint | — | — | 0 | 6 |
-| polos isolados (22, 23, 24) | 3 | 10,0 m | 15 | 18 |
-| linha do meio de par (10–11, 17–18) | 2 | 5,0 m | 6 | 8 |
-| mesas sem par (9, 15, 16, 21) | 4 | 5,0 m | 12 | 16 |
-| linha do meio de par (7 pares) | 7 | 3,0 m | 14 | 21 |
-| mesas sem par (5, 6, 12) | 3 | 3,0 m | 6 | 9 |
-| **Total** | **21** | | **73** | **100** |
+| divisória A\|B · 20 m | 1 | 20,0 m | 10 | 11 |
+| divisória B\|C · 20 m | 1 | 20,0 m | 10 | 11 |
+| bochechas de portão (6) | — | — | 0 | 6 |
+| polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5) | 3 | 10,0 m | 15 | 18 |
+| linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9) | 9 | 4,0 m | 18 | 27 |
+| **Total** | **14** | | **53** | **73** |
 
-**Encomendar 111 unidades**, não 100: os 100 são o consumo exato do desenho e
-não deixam um único poste de reserva para quebra ou realocação no dia.
+### Traçado 1f
+
+Duas linhas em x 25,18 e 31,40 da parede sul até 15 m; no metro 15, um braço para oeste guia a fila A e um para leste guia a fila C (6 m cada, premissa).
+
+| Item | Corridas | Comp. | Fitas | Postes |
+|---|--:|--:|--:|--:|
+| lado oeste do T · canal 15 m + braço 6 m (guia a fila A) | 1 | 21,0 m | 11 | 12 |
+| lado leste do T · canal 15 m + braço 6 m (guia a fila C) | 1 | 21,0 m | 11 | 12 |
+| bochechas de portão (2) | — | — | 0 | 2 |
+| polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5) | 3 | 10,0 m | 15 | 18 |
+| linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9) | 9 | 4,0 m | 18 | 27 |
+| **Total** | **14** | | **55** | **71** |
+
+### Traçado 1g
+
+Como o 1f, com o canal B encurtado para 10 m; braços de 6 m.
+
+| Item | Corridas | Comp. | Fitas | Postes |
+|---|--:|--:|--:|--:|
+| lado oeste do T · canal 10 m + braço 6 m (guia a fila A) | 1 | 16,0 m | 8 | 9 |
+| lado leste do T · canal 10 m + braço 6 m (guia a fila C) | 1 | 16,0 m | 8 | 9 |
+| bochechas de portão (2) | — | — | 0 | 2 |
+| polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5) | 3 | 10,0 m | 15 | 18 |
+| linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9) | 9 | 4,0 m | 18 | 27 |
+| **Total** | **14** | | **49** | **65** |
+
+### Traçado 1h
+
+O mínimo que ainda marca a virada: 5 m de canal e 3 m de braço.
+
+| Item | Corridas | Comp. | Fitas | Postes |
+|---|--:|--:|--:|--:|
+| lado oeste do T · canal 5 m + braço 3 m (guia a fila A) | 1 | 8,0 m | 4 | 5 |
+| lado leste do T · canal 5 m + braço 3 m (guia a fila C) | 1 | 8,0 m | 4 | 5 |
+| bochechas de portão (2) | — | — | 0 | 2 |
+| polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5) | 3 | 10,0 m | 15 | 18 |
+| linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9) | 9 | 4,0 m | 18 | 27 |
+| **Total** | **14** | | **41** | **57** |
+
+## O pareamento no cenário de trabalho
+
+9 pares (18 mesas), 7 mesas sem par, 3 polos. Regra da própria prancheta: mesmo giro, mesmo recuo da parede, mesários de lados opostos; os polos saem do sorteio antes.
+
+| Par (nº eleitor) | MRV | Corredor | Classes |
+|---|---|--:|---|
+| 10–11 | 1–2 | 3,00 m | baixa/baixa |
+| 12–13 | 3–4 | 3,00 m | baixa/baixa |
+| 16–17 | 7–8 | 2,94 m | baixa/baixa |
+| 2–1 | 10–11 | 2,50 m | media/media |
+| 20–21 | 13–14 | 1,95 m | baixa/baixa |
+| 25–26 | 17–18 | 3,00 m | media/media |
+| 27–28 | 19–20 | 3,00 m | baixa/baixa |
+| 6–7 | 25–26 | 3,10 m | baixa/baixa |
+| 8–9 | 27–28 | 2,50 m | baixa/baixa |
+
+- Sem par, **sem unifila**: mesa 14 (MRV 5, baixa), mesa 18 (MRV 6, baixa), mesa 3 (MRV 9, media), mesa 19 (MRV 12, baixa), mesa 22 (MRV 15, media), mesa 24 (MRV 16, media), mesa 4 (MRV 21, media).
+- Polos, 10 m: mesa 15 (MRV 22), mesa 23 (MRV 23), mesa 5 (MRV 24).
+- **Atenção:** MRV 5 e 22 se encaram e um deles e polo: o polo recebe os seus 10 m e o outro fica sem par (regra de 13/09; confirmar com o Posto).
+- **Atenção:** MRV 16 e 23 se encaram e um deles e polo: o polo recebe os seus 10 m e o outro fica sem par (regra de 13/09; confirmar com o Posto).
+- **Atenção:** MRV 21 e 24 se encaram e um deles e polo: o polo recebe os seus 10 m e o outro fica sem par (regra de 13/09; confirmar com o Posto).
+
+## Fôlego das filas com guia
+
+Minutos de pico (1,8× a média, 60 s por voto) que a fila aguenta antes de transbordar; a fila de 4 m cabe 8 pessoas, a de 10 m, 20.
+
+| Mesa (nº eleitor) | MRV | Seção | Classe | Esperados | Fila | Cabem | Chegam/min | Lota em |
+|---|---|---|---|--:|--:|--:|--:|--:|
+| 26 | 18 | 3306 | media | 515 | 4 m | 8 | 1,72 | 11 min |
+| 1 | 11 | 3161 | media | 504 | 4 m | 8 | 1,68 | 12 min |
+| 2 | 10 | 3142 | media | 466 | 4 m | 8 | 1,55 | 14 min |
+| 25 | 17 | 3305 | media | 472 | 4 m | 8 | 1,57 | 14 min |
+| 15 | 22 | 3313 | alta | 590 | 10 m | 20 | 1,97 | 21 min |
+| 23 | 23 | 3315 | alta | 586 | 10 m | 20 | 1,95 | 21 min |
+| 5 | 24 | 3322 | alta | 588 | 10 m | 20 | 1,96 | 21 min |
+| 20 | 13 | 3216 | baixa | 407 | 4 m | 8 | 1,36 | 22 min |
+| 21 | 14 | 3229 | baixa | 405 | 4 m | 8 | 1,35 | 23 min |
+| 28 | 20 | 3309 | baixa | 395 | 4 m | 8 | 1,32 | 25 min |
+| 10 | 1 | 511 | baixa | 375 | 4 m | 8 | 1,25 | 32 min |
+| 11 | 2 | 512 | baixa | 355 | 4 m | 8 | 1,18 | 44 min |
+| 12 | 3 | 513 | baixa | 351 | 4 m | 8 | 1,17 | 47 min |
+| 13 | 4 | 517 | baixa | 348 | 4 m | 8 | 1,16 | 50 min |
+| 16 | 7 | 3054 | baixa | 325 | 4 m | 8 | 1,08 | 96 min |
+| 17 | 8 | 3078 | baixa | 311 | 4 m | 8 | 1,04 | 218 min |
+| 27 | 19 | 3308 | baixa | 295 | 4 m | 8 | 0,98 | não lota |
+| 6 | 25 | 3442 | baixa | 295 | 4 m | 8 | 0,98 | não lota |
+| 7 | 26 | 3688 | baixa | 296 | 4 m | 8 | 0,99 | não lota |
+| 8 | 27 | 3832 | baixa | 296 | 4 m | 8 | 0,99 | não lota |
+| 9 | 28 | 3862 | baixa | 296 | 4 m | 8 | 0,99 | não lota |
+| 14 | 5 | 1160 | baixa | 328 | — | — | 1,09 | sem guia |
+| 18 | 6 | 1352 | baixa | 328 | — | — | 1,09 | sem guia |
+| 3 | 9 | 3108 | media | 467 | — | — | 1,56 | sem guia |
+| 19 | 12 | 3179 | baixa | 423 | — | — | 1,41 | sem guia |
+| 22 | 15 | 3245 | media | 498 | — | — | 1,66 | sem guia |
+| 24 | 16 | 3302 | media | 518 | — | — | 1,73 | sem guia |
+| 4 | 21 | 3311 | media | 466 | — | — | 1,55 | sem guia |
 
 ## Como se conta um poste
 
-O produto é o **Tensa Barrier (2 m Black Ribbon)**: um poste com fita retrátil
-de 2,00 m que engata no poste seguinte. Uma corrida reta de *L* metros gasta
-`⌈L/2⌉` fitas e **`⌈L/2⌉ + 1` postes** — o poste a mais é o de ponta, que fecha
-a corrida. O custo segue o número de **corridas independentes**, não a metragem.
+O produto é o **Tensa Barrier (2 m Black Ribbon)**: um poste com fita retrátil de 2,00 m que engata no poste seguinte. Uma corrida de *L* metros gasta `⌈L/2⌉` fitas e **`⌈L/2⌉ + 1` postes** — o poste a mais é o de ponta. Corridas independentes não compartilham poste; por isso o número de corridas, e não só a metragem, manda no orçamento.
 
-## O pareamento real do `Hamad_3polos`
+## Premissas que mexem no número
 
-Rodando a regra de pareamento da própria prancheta — mesmo giro, mesmo recuo da
-parede, mesários de lados opostos, a segunda caindo do lado para onde a primeira
-põe os seus — sobre as posições salvas, e retirando 22, 23 e 24 do sorteio
-porque estão isoladas de propósito:
+1. Fita de **2,00 m** por poste. Com fita de 3,0 m a contagem cai cerca de 30 %.
+2. **2,0 pessoas por metro** de fila (0,50 m cada); com bagagem ou carrinho cai para 1,5–1,7.
+3. 60 s por voto e pico de 1,8× a média (8h–17h). Com caderno físico a 90 s, nenhuma fila de 4 m se sustenta na hora de pico.
+4. Vãos de 5,93 m em S4, S5 e S6, com 0,29 m entre eles; as divisórias ficam em x 25,18 e 31,39 m. Conferir em campo.
+5. Comparecimento esperado da base B: **11.499**. Preços: EUR 15,00 ex-VAT por unidade, entrega EUR 80,00 (M. O'Byrne Hire).
+6. Numeração eleitor: 1 na mesa mais ao sul da parede oeste, sentido horário, 28 na mais ao sul da parede leste; MRV é a numeração oficial.
 
-| | Mesas | Quais |
-|---|--:|---|
-| **Pares** | 18 | 1–2, 3–4, 7–8, 10–11, 13–14, 17–18, 19–20, 25–26, 27–28 |
-| **Sem par** | 7 | 5, 6, 9, 12, 15, 16, 21 |
-| **Polos** | 3 | 22, 23, 24 |
+## O que mudou em 13/09
 
-Não é "todas pareadas menos os polos": são **nove pares e sete mesas soltas**.
-**5, 16 e 21** ficaram sozinhas porque eram os pares de 22, 23 e 24 antes de eles
-serem afastados; **6, 9, 12 e 15** já estavam sem par na planta salva.
-Aritmeticamente também não fecharia: 28 − 3 = 25 é ímpar.
+Os traçados 1, 1i (escada 10/5/3 m por fôlego) e as hipóteses A, B, B2 e C de 11/09 foram retirados: a regra passou a ser par = 4 m, vermelha = 10 m, solta não vermelha = sem unifila, e o canal de entrada ganhou as três variantes em T. As hipóteses antigas seguem em `saidas/propostas_alternativas.md`, marcadas como superadas.
 
-Se as mesas forem reposicionadas para formar mais pares, cada novo par converte
-**duas linhas em uma**: 2 fitas e 3 postes a menos, a 3 m.
-
-## O orçamento fecha, no limite
-
-O item (d) do telegrama de revisão contratou **100 unidades (200 m) por EUR
-1.303,00**. O desenho adotado consome exatamente esses 100 postes e 146 dos 200
-metros de fita — folga de 27% em fita, folga nenhuma em poste.
-
-| | Contratado | 1e consome | Sobra |
-|---|--:|--:|--:|
-| Postes | 100 | 100 | 0 |
-| Fita | 200 m | 146 m | 54 m |
-
-A reserva de 10% (11 unidades) é o único complemento a pedir: **EUR 165 ex-VAT**
-ao preço de lista da M. O'Byrne Hire (EUR 15,00/unidade), ou EUR 143 ao preço
-unitário já negociado no telegrama (EUR 13,03).
-
-Custo total do desenho adotado, com as 111 unidades e a entrega em Dublin com
-coleta (EUR 80,00): **EUR 1.745 ex-VAT / EUR 2.146 inc-VAT** a preço de lista.
-
-> Hipóteses de corte estudadas depois da decisão — unifila só na entrada, unifila
-> só nas mesas pareadas e grandes, e a síntese das duas — estão em
-> [`propostas_alternativas.md`](propostas_alternativas.md).
-
-## Alternativas descartadas
-
-| Cenário | Corridas | Fitas | Postes | +10% | EUR ex-VAT | Por que não |
-|---|--:|--:|--:|--:|--:|---|
-| **1e** | 21 | 73 | **100** | **111** | 1.745 | **adotado** |
-| 1 | 23 | 93 | 122 | 135 | 2.105 | as duas bordas externas do canal são contenção, não separação |
-| 1i | 23 | 97 | 126 | 139 | 2.165 | +28 unidades sobre o adotado, fora do contratado |
-
-## O que a adoção do 1e aceita como risco
-
-**A escada 3/5/10 não equaliza resiliência, e o 1e a mantém.** Quanto cada fila
-aguenta antes de transbordar, a 60 s por voto e pico de 1,8× a média
-(comparecimento espalhado em 9 h, das 8h às 17h):
-
-| Classe | Fila | Cabe | Chegada no pico | Cresce | Lota em |
-|---|--:|--:|--:|--:|--:|
-| alta (3313) | 10 m | 20 pessoas | 1,97/min | 0,97/min | **21 min** |
-| média (3302) | 5 m | 10 pessoas | 1,73/min | 0,73/min | **14 min** |
-| baixa (3179) | 3 m | 6 pessoas | 1,41/min | 0,41/min | **15 min** |
-| baixa (3308) | 3 m | 6 pessoas | 0,98/min | −0,02/min | não lota |
-
-Os 10 m dos polos estão bem calibrados; os **5 m das mesas de média é que estão
-curtos** — 5 m sobre 518 esperados é proporção pior que 10 m sobre 590. Era isso
-que o cenário 1i corrigia, ao custo de 28 unidades a mais. Ao adotar o 1e, o
-Posto aceita que **oito mesas de média e quatro de baixa transbordem em 14 a 19
-minutos de pico sustentado**. Doze mesas, portanto, dependem de gestão de piso e
-não da barreira.
-
-**O limite externo dos canais deixa de ser físico.** Sem as duas bordas, o que
-mantém o eleitor dentro do canal entre a porta e o checkpoint é sinalização e
-equipe. Isso torna a pergunta em aberto sobre a pré-triagem — mediada por pessoa
-ou por sinalização — parte do desenho, e não mais um detalhe operacional.
-
-**Cada fila fica guiada de um lado só.** Enquanto a fila couber no comprimento
-previsto, funciona. Quando transborda, a ponta sem guia se espalha lateralmente
-e encosta na fila vizinha. A economia é real e o seu preço é que o desenho
-depende de a fila não estourar.
-
-## Verificações de geometria
-
-Rodadas contra as posições reais das 28 mesas:
-
-- Nenhuma linha invade a faixa de entrada/checkpoint (x 19,10–37,47 / y 0–20).
-- Nenhuma linha cruza outra, invade módulo de mesa ou sai do salão.
-- Toda linha de par equidista dos dois módulos (desvio máximo de 1 cm, no par
-  7–8, onde os recuos diferem em 20 cm).
-- Folga mais apertada: o polo **23 (3315)** termina a **3,13 m** do topo do
-  checkpoint. É a única medida que merece conferência em campo.
-
-No desenho adotado nenhuma linha precisa ser aparada. (No 1i, descartado, o par
-17–18 pediria 7,5 m e só teria 5,5 m até a faixa de entrada — as mesas da parede
-leste entre y = 11 e y = 20 têm só ~5,7 m de chão livre.)
-
-## Efeitos de segunda e terceira ordem
-
-**Segunda ordem.** O checkpoint continua sendo o gargalo não paralelizável. No
-pico a porta B recebe **14,1 pessoas/min**; a 10 s por conferência cada posição
-atende 6, então B precisa de **três posições**, A e C de duas a três. Nenhuma
-barreira compensa checkpoint com pessoal a menos — e no 1e, que devolve o limite
-externo do canal à equipe, a conta de gente cresce de novo.
-
-**Terceira ordem.** Os três polos são 3313, 3315 e 3322 — as três urnas
-Dublin+Dublin de ~790 aptos que sustentam a contraproposta ao TSE. Se o TSE
-aceitar desagregar, o pico por mesa cai de 590 para ~335, a classe de 10 m deixa
-de existir e os polos podem voltar a parear. A agregação do TSE não custa só
-mesários e tempo de apuração — custa metro linear de barreira.
-
-**Terceira ordem, no fluxo.** Fila longa na porta desestimula o comparecimento, e
-quem desiste antes de entrar não aparece em estatística nenhuma. O reservatório
-do surto das 8h não está dentro do salão: é o apron do **Ring 3** (~1.402
-pessoas na prancheta). A fila externa precisa ser desenhada junto com a interna
-— e no 1e, sem bordas de canal, a transição da calçada para o canal é o ponto
-mais frágil do percurso.
-
-## Premissas a validar antes de encomendar
-
-1. **Fita de 2,00 m por poste** — confirmado no anúncio do fornecedor. Há modelos
-   de 2,3 m e 3,0 m; com 3,0 m a contagem cai cerca de 30%.
-2. **Que a linha única do meio seja aceita** para separar as duas filas de um par.
-   Se o Cartório Eleitoral exigir canal fechado por fila, a conta volta a duas
-   linhas por fila e o 1e deixa de existir.
-3. **Que o canal de entrada possa ficar sem borda externa.** É o que distingue o
-   1e do cenário 1, e vale 22 postes.
-4. Vãos de 5,93 m em S4, S5 e S6, com 0,29 m entre eles — medidos na planta do
-   RDS, conferir em campo.
-5. Densidade de 2,0 pessoas por metro (0,50 m cada) e 60 s por voto, com pico de
-   1,8× a média. Se a identificação for por caderno físico (90 s), nenhuma fila
-   de 3 m se sustenta e a decisão pelo 1e precisa ser reaberta.
-
----
-
-Página com a planta e os três cenários lado a lado:
-<https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981>

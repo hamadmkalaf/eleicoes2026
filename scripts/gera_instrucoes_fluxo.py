@@ -61,13 +61,13 @@ def pico_por_min(esperado):
     return esperado * FATOR_PICO / JANELA_MIN
 
 
-def equipe(dec, P, r3d, tb_cen, n_ent):
+def equipe(dec, P, r3d, tb, n_ent):
     """Tabela de equipe por posto, derivada das opcoes vigentes."""
     f = P["D7"].get("fator", 1.0)
     por_mesas = P["D7"].get("orientador_por_mesas", 3)
     chk = P["D2"]
     em_L = P["D3"].get("corredor_em_L", False)
-    sem_guia = P["D4"].get("mesas_sem_guia", 0)
+    sem_guia = len(tb["sem_guia"])          # mesas sem unifila no tracado vigente (tensa_barreiras.py)
     n_mesas = len(dec["mesas"])
     linhas = []
 
@@ -141,8 +141,12 @@ def documento():
     ident = P["D8"].get("identidade")
     ident_txt = {"cor": "a cor da fila", "letra": "a letra da fila", "ambas": "a cor e a letra da fila"}.get(ident, "a identidade da fila (cor ou letra, ainda sem decisão: D8)")
     altas = sorted([m for m in dec["mesas"] if m["classe"] == "alta"], key=lambda m: -m["esperado"])
-    comp = tb["premissas"]["comprimentos"]
-    folego = {f["n"]: f for f in tb["folego"]}
+    filas = tb["premissas"]["filas_mesa_m"]
+    eleitor = {m["mrv"]: m["eleitor"] for m in dec["mesas"]}
+    sem_guia = tb["sem_guia"]
+
+    def mesa(mrv):
+        return f"{eleitor[mrv]} (MRV {mrv})"
     zonas = {z["entrada"]: z for z in r3d["zonas"]} if r3d.get("zonas") else {}
     cap_zona = {}
     for e in ent:
@@ -153,7 +157,7 @@ def documento():
             cap_zona[e["id"]] = int(round(z["capacidade"]))
         else:
             cap_zona[e["id"]] = e["capacidade"]
-    eq, total_vol = equipe(dec, P, r3d, tb_cen, n_ent)
+    eq, total_vol = equipe(dec, P, r3d, tb, n_ent)
 
     L = []
     L.append("# Instruções de gerenciamento de fluxo — treinamento da equipe\n")
@@ -204,9 +208,9 @@ def documento():
     L.append("## 3. Ring 3: uma zona por entrada\n")
     L.append(f"Desenho vigente: **{r3d['nome']}** — lotação {fmt(r3d['capacidade'])} pessoas, {r3d['separadores']} separadores"
              + (f", {vg(r3d['fita_grossa_m'], 0)} m de fita grossa" if r3d.get("fita_grossa_m") else "") + ".\n")
-    L.append("| Zona | Porta | Cabe na zona | Esperados no dia | Pico (pessoas/min) | Mesas (MRV) |\n|---|---|---|---|---|---|")
+    L.append("| Zona | Porta | Cabe na zona | Esperados no dia | Pico (pessoas/min) | Mesas (nº eleitor, MRV) |\n|---|---|---|---|---|---|")
     for e in ent:
-        L.append(f"| {e['id']} | {e['porta']} | {fmt(cap_zona[e['id']])} | {fmt(e['esperado'])} | {vg(pico_por_min(e['esperado']))} | {', '.join(str(m) for m in e['mrvs'])} |")
+        L.append(f"| {e['id']} | {e['porta']} | {fmt(cap_zona[e['id']])} | {fmt(e['esperado'])} | {vg(pico_por_min(e['esperado']))} | {', '.join(mesa(m) for m in sorted(e['mrvs'], key=lambda m: eleitor[m]))} |")
     L.append("")
     L.append("- **A fita delimita, não contém.** O que mantém a zona A separada da B é o marshal da cabeça de fila. Num pico, ninguém passa de uma zona para outra sem ele.")
     L.append("- Quem errou de fila é corrigido na cabeça da zona (P4), enquanto ainda cabe voltar; depois da meia-volta, vai até a porta e o marshal de porta o encaminha.")
@@ -229,7 +233,7 @@ def documento():
                  f"No pico a porta mais carregada recebe {vg(max(pico_por_min(e['esperado']) for e in ent))}/min: com {chk['seg_por_conferencia']} s por conferência cada posição atende {60 // chk['seg_por_conferencia']}, "
                  f"logo essa porta precisa de {math.ceil(max(pico_por_min(e['esperado']) for e in ent) / (60 / chk['seg_por_conferencia']))} posições.")
         L.append("- O que se faz: lê a seção (ou o cartão), diz o número da mesa e aponta a direção. Não se confere documento aqui.")
-        L.append(f"- **Quando reter:** só se a fila da mesa de destino estiver no limite ({comp['alta']:.0f} m nas três críticas, {comp['media']:.0f} m nas de média, {comp['baixa']:.0f} m nas de baixa). Reter é segurar na posição por um ou dois minutos e liberar; não é formar fila nova.")
+        L.append(f"- **Quando reter:** só se a fila da mesa de destino estiver no limite ({filas['polo']:.0f} m nas três vermelhas, {filas['par']:.0f} m nas mesas pareadas; nas sem guia, quando o orientador avisar). Reter é segurar na posição por um ou dois minutos e liberar; não é formar fila nova.")
         L.append("- Quem não encontra a seção no painel vai ao balcão de dúvidas do checkpoint, fora da posição.\n")
     elif chk.get("existe"):
         L.append("## 5. Ponto informativo depois da porta\n")
@@ -244,24 +248,27 @@ def documento():
 
     L.append("## 6. Salão e filas de mesa\n")
     L.append(f"Traçado vigente das unifilas: **{tb_cen['nome']}** — {tb_cen['postes']} postes ({tb_cen['postes_reserva']} com reserva), {vg(tb_cen['metros'], 0)} m de fita. {tb_cen['desc']}\n")
-    L.append(f"- Comprimento de fila por classe: {comp['alta']:.0f} m nas três críticas (MRV {', '.join(str(m['mrv']) for m in altas)}), {comp['media']:.0f} m nas de média, {comp['baixa']:.0f} m nas de baixa. A linha do meio de cada par separa as duas filas; a fila só começa depois dos mesários.")
-    curtos = sorted((f for f in tb["folego"] if f["minutos"] is not None and f["minutos"] < 20), key=lambda f: f["minutos"])
+    L.append(f"- Duas numerações: a **oficial** é o MRV (cadernos, convocação, rádio entre a equipe); a **do eleitor** é o número grande na mesa, 1 a {len(dec['mesas'])} em sentido horário a partir do sul da parede oeste. A equipe fala com o eleitor pelo número dele e confere o MRV entre si.")
+    L.append(f"- Regra das unifilas (13/09): {filas['par']:.0f} m no meio de cada par (uma linha separa as duas filas); {filas['polo']:.0f} m nas três vermelhas, mesas {', '.join(mesa(m['mrv']) for m in altas)}; nenhuma fita nas não vermelhas sem par. A fila só começa depois dos mesários.")
+    curtos = sorted((f for f in tb["folego"] if f["guia"] and f["minutos"] is not None and f["minutos"] < 20), key=lambda f: f["minutos"])
     if curtos:
-        L.append(f"- **Mesas que lotam rápido no pico** (menos de 20 min a 60 s por voto): MRV {', '.join(str(f['n']) + ' (' + str(f['minutos']) + ' min)' for f in curtos)}. O orientador de piso fica com o olho nelas; fila além da fita → chamar o checkpoint para reter, não empurrar a fila pelo corredor.")
-    nunca = [str(f["n"]) for f in tb["folego"] if f["minutos"] is None]
+        L.append(f"- **Mesas que lotam rápido no pico** (menos de 20 min a 60 s por voto): {', '.join(mesa(f['mrv']) + ' em ' + str(f['minutos']) + ' min' for f in curtos)}. O orientador de piso fica com o olho nelas; fila além da fita → chamar o checkpoint para reter, não empurrar a fila pelo corredor.")
+    nunca = [mesa(f["mrv"]) for f in tb["folego"] if f["guia"] and f["minutos"] is None]
     if nunca:
-        L.append(f"- Mesas que não lotam em hipótese nenhuma: MRV {', '.join(nunca)}. Não precisam de orientador dedicado.")
-    if P["D4"].get("mesas_sem_guia"):
-        L.append(f"- {P['D4']['mesas_sem_guia']} mesas sem fita: a ordem é do orientador. Fila em linha única rente à parede, placa alta como referência.")
+        L.append(f"- Mesas com guia que não lotam em hipótese nenhuma: {', '.join(nunca)}. Não precisam de orientador dedicado.")
+    if sem_guia:
+        L.append(f"- **{len(sem_guia)} mesas sem unifila** ({', '.join(mesa(m) for m in sem_guia)}): a ordem é do orientador. Fila em linha única rente à parede, placa alta como referência; a fila de uma delas que chegue a 4 m é gatilho de aviso.")
     if P["D6"].get("placa_alta_mesa"):
-        L.append("- Toda mesa tem placa alta com o número (MRV); o orientador aponta a placa, não a mesa.")
+        L.append("- Toda mesa tem placa alta com o número eleitor (MRV ao lado); o orientador aponta a placa, não a mesa.")
     else:
-        L.append("- Sinalização interna vigente: faixas suspensas por bloco e totem por mesa (P6). Sem placa alta, o orientador precisa nomear a mesa em voz alta: \"MRV vinte e dois, ali, parede norte\".")
+        L.append("- Sinalização interna vigente: faixas suspensas por bloco e totem por mesa (P6), com o número eleitor em destaque. Sem placa alta, o orientador precisa nomear a mesa em voz alta: \"mesa quinze, ali, parede norte\".")
     L.append("- Quem chega à mesa errada não volta ao checkpoint: o orientador o leva à mesa certa pelo corredor mais curto.")
-    L.append("- **Mesa receptora (identificação pelo caderno): a definir.** Com "
-             f"{fmt(altas[0]['esperado'])} comparecentes esperados na mesa mais carregada (MRV {altas[0]['mrv']}), fechar às 17h exige no máximo "
-             f"{JANELA_MIN * 60 // altas[0]['esperado']} s por eleitor; nas outras duas críticas, {JANELA_MIN * 60 // altas[-1]['esperado']} s. "
-             "Como o caderno chega, quem identifica e se a identificação corre em paralelo com o voto é a pendência 5 do PENDENCIAS; este bloco é preenchido quando ela fechar.\n")
+    d9 = V.get("D9")
+    L.append("- **Mesa receptora (identificação pelo caderno físico): decisão (a) em aberto (D9)"
+             + (f", hoje assumindo *{d9['rotulo']}*" if d9 else ", sem opção assumida") + ".** Com "
+             f"{fmt(altas[0]['esperado'])} comparecentes esperados na mesa mais carregada ({mesa(altas[0]['mrv'])}), fechar às 17h exige no máximo "
+             f"{JANELA_MIN * 60 // altas[0]['esperado']} s por eleitor; nas outras duas vermelhas, {JANELA_MIN * 60 // altas[-1]['esperado']} s. "
+             "Como o caderno chega, quem identifica e se a identificação corre em paralelo com o voto é o que D9 decide; este bloco é preenchido quando ela fechar.\n")
 
     L.append(f"## 7. Saídas {' e '.join(dec['saidas'])}\n")
     L.append("- Quem votou sai pela porta de saída do flanco mais próximo. Ninguém volta pelo salão para conversar, fotografar ou esperar alguém.")
@@ -291,15 +298,18 @@ def documento():
     L.append("**Gatilhos de escalada** (quem vê, avisa a coordenação; ninguém age sozinho):")
     for e in ent:
         L.append(f"- Zona {e['id']} com mais de {fmt(cap_zona[e['id']])} pessoas, ou porta {e['porta']} recebendo mais de {vg(pico_por_min(e['esperado']))} por minuto por mais de 10 min.")
-    L.append(f"- Fila de mesa além da fita ({comp['alta']:.0f} / {comp['media']:.0f} / {comp['baixa']:.0f} m).")
+    L.append(f"- Fila de mesa além da fita ({filas['polo']:.0f} m nas vermelhas, {filas['par']:.0f} m nos pares) ou fila de mesa sem guia com mais de 8 pessoas.")
     L.append(f"- Última mesa prevista para fechar depois das {melhor['fecha90']} (dia ruim do simulador).")
     L.append("- Qualquer cruzamento entre quem sai e quem entra fora do apron leste.\n")
 
     L.append("## 11. O que muda neste documento se uma decisão mudar\n")
-    L.append("Gerado do registro de decisões: para cada decisão em aberto, o que a alternativa faria com a equipe e com a sinalização interna.\n")
+    L.append("Gerado do registro de decisões: para as duas decisões em aberto e para as decididas que ainda têm alternativas registradas, o que cada alternativa faria com a equipe e com a sinalização interna.\n")
     for d in reg["decisoes"]:
+        if d["estado"] == "derivada" or len(d["opcoes"]) < 2:
+            continue
         vig = V[d["id"]]
-        L.append(f"**{d['id']} — {d['titulo']}** (hoje: {vig['rotulo'] if vig else 'sem opção vigente'})")
+        estado = "em aberto" if d["aberta"] else f"{d['estado']} em 13/09"
+        L.append(f"**{d['id']} — {d['titulo']}** ({estado}; hoje: {vig['rotulo'] if vig else 'sem opção vigente'})")
         for o in d["opcoes"]:
             if vig and o["id"] == vig["id"]:
                 continue

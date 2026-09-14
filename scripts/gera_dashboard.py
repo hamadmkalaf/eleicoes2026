@@ -97,11 +97,11 @@ def barras_mesas(dec):
         sec = f'{m["principal"]}' + (f' + {m["agregada"]}' if m["agregada"] else "")
         origem = (m["origem_agregada"] or "").title()
         linhas.append(
-            f'<div class="linha" tabindex="0" aria-label="MRV {m["mrv"]}: {m["esperado"]} esperados de {m["aptos"]} aptos">'
-            f'<span class="cod">{m["mrv"]}</span>'
+            f'<div class="linha" tabindex="0" aria-label="Mesa {m["eleitor"]} (MRV {m["mrv"]}): {m["esperado"]} esperados de {m["aptos"]} aptos">'
+            f'<span class="cod">{m["eleitor"]}<small class="mrv">MRV {m["mrv"]}</small></span>'
             f'<span class="trilho"><span class="barra c-{m["classe"]}" style="width:{m["esperado"] / maximo * 100:.1f}%"></span></span>'
             f'<span class="val">{m["esperado"]}</span>'
-            f'<span class="dica">MRV {m["mrv"]} · seções {sec}{(" · " + origem) if origem else ""} · {m["aptos"]} aptos · entrada {m["entrada"]}</span>'
+            f'<span class="dica">mesa {m["eleitor"]} · MRV {m["mrv"]} · seções {sec}{(" · " + origem) if origem else ""} · {m["aptos"]} aptos · entrada {m["entrada"]} · parede {m["parede"]}</span>'
             f'</div>')
     return "\n".join(linhas)
 
@@ -133,9 +133,10 @@ def tabela_portas(dec):
 
 
 def tabela_entradas(dec):
+    eleitor = {m["mrv"]: m["eleitor"] for m in dec["mesas"]}
     linhas = []
     for e in dec["entradas"]:
-        mrvs = ", ".join(str(n) for n in e["mrvs"])
+        mrvs = ", ".join(f'{eleitor[n]}<small class="mrv">MRV {n}</small>' for n in sorted(e["mrvs"], key=lambda n: eleitor[n]))
         linhas.append(f'<tr><td><span class="sw" style="background:{e["hex"]}"></span><strong>{e["id"]}</strong> {esc(e["cor"])}</td>'
                       f'<td class="mono">{e["porta"]}</td><td class="num mono">{len(e["mrvs"])}</td>'
                       f'<td class="num mono">{fmt(e["esperado"])}</td><td class="num mono">{fmt(e["capacidade"])}</td>'
@@ -143,13 +144,13 @@ def tabela_entradas(dec):
     return "\n".join(linhas)
 
 
-def tabela_ring3(r3, vig):
-    """Plano vigente contra os quatro desenhos sem garganta (saidas/ring3.json)."""
-    cols = [("plano_vigente_reconstruido", "Plano vigente · garganta, 3 serpenteados e 2 baias", "1.402 no plano original (300 separadores); reconstrução a 44 × 35 m dá 191 + baias"),
+def tabela_ring3(r3, vig, registrados):
+    """O desenho decidido em 13/09 contra os outros quatro (saidas/ring3.json)."""
+    cols = [("girado_ccb_na_ponta", "Leste-oeste · CCB só na ponta + fita grossa", f"DECIDIDO em 13/09: {registrados} separadores registrados, com margem"),
+            ("plano_vigente_reconstruido", "Plano anterior · garganta, 3 serpenteados e 2 baias", "1.402 no plano original (300 separadores); reconstrução a 44 × 35 m dá 191 + baias"),
             ("vertical_sem_baias", "Norte-sul · corredor em L · barreira inteira", "raias de 32 m"),
             ("girado", "Leste-oeste · corredor em L · barreira inteira", "descarga da zona B no eixo de S5"),
-            ("vertical_ccb_na_ponta", "Norte-sul · CCB só na ponta + fita grossa", "115 apoios de fita a cada 5 m; 154 CCB se os apoios forem CCB"),
-            ("girado_ccb_na_ponta", "Leste-oeste · CCB só na ponta + fita grossa", "66 divisórias curtas")]
+            ("vertical_ccb_na_ponta", "Norte-sul · CCB só na ponta + fita grossa", "115 apoios de fita a cada 5 m; 154 CCB se os apoios forem CCB")]
     linhas = []
     for k, nome, nota in cols:
         d = r3[k]
@@ -167,6 +168,7 @@ def tabela_ring3(r3, vig):
 
 def indice_condados(dec):
     """Localidade de origem -> mesas e entradas (para o painel de consulta)."""
+    eleitor = {m["mrv"]: m["eleitor"] for m in dec["mesas"]}
     por = {}
     for m in dec["mesas"]:
         o = m["origem_agregada"]
@@ -176,24 +178,26 @@ def indice_condados(dec):
     linhas = []
     for o, ms in sorted(por.items(), key=lambda kv: -sum(x["aptos_agregada"] for x in kv[1])):
         aptos = sum(x["aptos_agregada"] for x in ms)
-        celas = " ".join(f'<span class="chip" style="color:{dec["portas"][x["porta"]]["cor"]}">MRV {x["mrv"]} · {x["entrada"]}</span>' for x in ms)
+        celas = " ".join(f'<span class="chip" style="color:{dec["portas"][x["porta"]]["cor"]}">mesa {eleitor[x["mrv"]]} (MRV {x["mrv"]}) · {x["entrada"]}</span>' for x in ms)
         linhas.append(f'<tr><td>{esc(o.title())}</td><td class="num mono">{fmt(aptos)}</td>'
                       f'<td class="mono">{", ".join(str(x["agregada"]) for x in ms)}</td><td>{celas}</td></tr>')
     return "\n".join(linhas)
 
 
-def tabela_barreiras(tb, sem_guia):
-    """Os sete tracados: o adotado, os descartados e as hipoteses de corte."""
+def tabela_barreiras(tb):
+    """Os quatro tracados de 13/09 (1e adotado; 1f, 1g, 1h em T)."""
     linhas = []
     for c in tb["cenarios"]:
         cls = ' class="marcada"' if c.get("adotado") else ""
-        sg = sem_guia.get(c["nome"], "—")
-        linhas.append(f'<tr{cls}><td><strong>{esc(c["nome"])}</strong> <span class="tag t-livre">{esc(c["familia"])}</span>'
-                      f'<span class="sub">{esc(c["desc"])}</span></td>'
+        cn = c["canal"]
+        canal = (f'duas divisórias de {vg(cn["canal_m"], 0)} m + 6 bochechas' if cn["canal"] == "meio"
+                 else f'T: canal B de {vg(cn["canal_m"], 0)} m, braços de {vg(cn["braco_m"], 0)} m + 2 bochechas')
+        linhas.append(f'<tr{cls}><td><strong>{esc(c["nome"])}</strong> <span class="tag t-livre">{"adotado" if c.get("adotado") else "alternativa"}</span>'
+                      f'<span class="sub">{esc(canal)}</span></td>'
                       f'<td class="num mono">{c["corridas"]}</td><td class="num mono">{c["fitas"]}</td>'
                       f'<td class="num mono">{c["postes"]}</td><td class="num mono">{c["postes_reserva"]}</td>'
                       f'<td class="num mono">{vg(c["metros"], 0)} m</td><td class="num mono">EUR {fmt(c["custo"]["lista_ex"])}</td>'
-                      f'<td class="num mono">{sg}</td></tr>')
+                      f'<td class="num mono">{c["mesas_sem_guia"]}</td></tr>')
     return "\n".join(linhas)
 
 
@@ -213,24 +217,25 @@ def tabela_fitas(fp):
 
 
 def folego(tb):
-    """Minutos ate a fila de cada mesa transbordar, no desenho adotado."""
-    fol = sorted(tb["folego"], key=lambda f: (f["minutos"] is None, f["minutos"] or 0))
+    """Minutos ate a fila de cada mesa com guia transbordar, no tracado adotado."""
+    fol = sorted((f for f in tb["folego"] if f["guia"]), key=lambda f: (f["minutos"] is None, f["minutos"] or 0))
     linhas = []
     for f in fol:
         if f["minutos"] is None:
             continue
         risco = f["minutos"] < 20
         w = min(f["minutos"], 40) / 40 * 100
-        linhas.append(f'<div class="linha" tabindex="0" aria-label="MRV {f["n"]}: lota em {f["minutos"]} minutos">'
-                      f'<span class="cod">{f["n"]}</span><span class="trilho"><span class="barra {"c-alta" if risco else "c-neutra"}" style="width:{w:.1f}%"></span></span>'
+        linhas.append(f'<div class="linha" tabindex="0" aria-label="Mesa {f["eleitor"]} (MRV {f["mrv"]}): lota em {f["minutos"]} minutos">'
+                      f'<span class="cod">{f["eleitor"]}<small class="mrv">MRV {f["mrv"]}</small></span><span class="trilho"><span class="barra {"c-alta" if risco else "c-neutra"}" style="width:{w:.1f}%"></span></span>'
                       f'<span class="val">{f["minutos"]}</span>'
-                      f'<span class="dica">MRV {f["n"]} · seção {f["mrv"]} · fila de {vg(f["fila"], 0)} m (cabem {f["cap"]}) · chegam {vg(f["chega_min"], 2)}/min · lota em {f["minutos"]} min de pico</span></div>')
-    nunca = ", ".join(str(f["n"]) for f in tb["folego"] if f["minutos"] is None)
-    return "\n".join(linhas), nunca
+                      f'<span class="dica">mesa {f["eleitor"]} · MRV {f["mrv"]} · seção {f["principal"]} · {f["tipo"]} · fila de {vg(f["fila"], 0)} m (cabem {f["cap"]}) · chegam {vg(f["chega_min"], 2)}/min · lota em {f["minutos"]} min de pico</span></div>')
+    nunca = ", ".join(f'{f["eleitor"]} (MRV {f["mrv"]})' for f in tb["folego"] if f["guia"] and f["minutos"] is None)
+    sem = ", ".join(f'{f["eleitor"]} (MRV {f["mrv"]}, {f["classe"]})' for f in tb["folego"] if not f["guia"])
+    return "\n".join(linhas), nunca, sem
 
 
 # ------------------------------------------------------ decisoes em aberto --
-COR_ESTADO = {"em aberto": "var(--alerta)", "parcial": "var(--aviso)", "decidida": "var(--ok)"}
+COR_ESTADO = {"em aberto": "var(--alerta)", "parcial": "var(--aviso)", "decidida": "var(--ok)", "derivada": "var(--meio)"}
 
 
 def grafo_decisoes(reg):
@@ -278,6 +283,24 @@ def fatos_html(reg):
                    f'<p>{esc(f["texto"])}</p><p class="fonte">{esc(f["fonte"])}</p></div>' for f in reg["fatos"])
 
 
+def decididas_html(reg):
+    """Bloco compacto: o que ja foi decidido (13/09) e os planos derivados."""
+    por_id = {d["id"]: d for d in reg["decisoes"]}
+    out = []
+    for k in reg["decididas"]:
+        d = por_id[k]
+        op = next(o for o in d["opcoes"] if o["vigente"])
+        alt = [o["id"] for o in d["opcoes"] if not o["vigente"]]
+        out.append(f'<div class="resposta" id="dec-{k}"><span class="num">{esc(k)} · decidida</span><span class="curta">{esc(d["curto"])}: {esc(op["rotulo"])}</span>'
+                   f'<p>{esc(op["resumo"])}' + (f' Alternativas registradas: {esc(", ".join(alt))}.' if alt else "") + '</p></div>')
+    for k in reg["derivadas"]:
+        d = por_id[k]
+        op = next(o for o in d["opcoes"] if o["vigente"])
+        out.append(f'<div class="resposta" id="dec-{k}"><span class="num">{esc(k)} · plano derivado</span><span class="curta">{esc(d["curto"])}: {esc(op["rotulo"])}</span>'
+                   f'<p>{esc(op["resumo"])}</p></div>')
+    return "".join(out)
+
+
 def cartoes_decisoes(reg):
     por_id = {d["id"]: d for d in reg["decisoes"]}
 
@@ -286,10 +309,14 @@ def cartoes_decisoes(reg):
 
     out = []
     for d in reg["decisoes"]:
+        if not d["aberta"]:
+            continue
         ops = []
         for op in d["opcoes"]:
             cls = ' class="vigente"' if op["vigente"] else ""
             marca = '<span class="tag t-entrada">o que as saídas de hoje assumem</span> ' if op["vigente"] else ""
+            if d["vigente"] is None and op is d["opcoes"][0]:
+                marca = '<span class="tag t-livre">nenhuma opção assumida ainda</span> '
             ef = "".join(f'<li><a href="#dec-{k}">{k}</a> → {esc(v)}</li>' for k, v in op["efeitos"].items())
             ops.append(f'<li{cls}><b>{esc(op["rotulo"])}</b> {marca}<span class="res">{esc(op["resumo"])}</span>'
                        + (f'<ul class="ef">{ef}</ul>' if ef else "") + "</li>")
@@ -310,10 +337,13 @@ def cartoes_decisoes(reg):
 
 
 def matriz_decisoes(reg):
-    alvos = [k for k in reg["ordem"] if any(k in op["efeitos"] for d in reg["decisoes"] for op in d["opcoes"])]
-    cab = "".join(f'<th><a href="#dec-{k}">{k}</a></th>' for k in alvos)
+    """Linhas: opcoes das decisoes em aberto. Colunas: o que elas condicionam."""
+    por_id = {d["id"]: d for d in reg["decisoes"]}
+    abertas = [por_id[k] for k in reg["abertas"]]
+    alvos = [k for k in reg["ordem"] if any(k in op["efeitos"] for d in abertas for op in d["opcoes"])]
+    cab = "".join(f'<th><a href="#dec-{k}">{k}<span class="sub">{esc(por_id[k]["curto"])}</span></a></th>' for k in alvos)
     linhas = []
-    for d in reg["decisoes"]:
+    for d in abertas:
         for op in d["opcoes"]:
             if not op["efeitos"]:
                 continue
@@ -345,14 +375,20 @@ def main():
     fora_dublin = sum(v for k, v in dados["residencia_total"].items() if k != "DUBLIN")
     contagem = dec["classes"]["contagem"]
     adotado = next(c for c in tb["cenarios"] if c.get("adotado"))
-    fol_html, fol_nunca = folego(tb)
+    if adotado["nome"] != PAR["D4"]["tensa"]:
+        raise SystemExit(f"tensa_barreiras.json adota {adotado['nome']}, D4 vigente e {PAR['D4']['tensa']}: rode tensa_barreiras.py")
+    fol_html, fol_nunca, fol_sem = folego(tb)
     melhor = varr[0]
     pv = r3["plano_vigente_reconstruido"]
     vs = r3["vertical_sem_baias"]
     vsp = r3["vertical_ccb_na_ponta"]
-    r3_vig = r3[PAR["D3"]["ring3_json"]]
-    sem_guia = {op["parametros"]["tensa"]: op["parametros"]["mesas_sem_guia"] for op in next(d for d in reg["decisoes"] if d["id"] == "D4")["opcoes"]}
-    n_abertas = sum(1 for d in reg["decisoes"] if d["estado"] != "decidida")
+    r3d = dec["ring3"]["decidido"]
+    if PAR["D3"]["ring3_json"] != r3d["ring3_json"]:
+        raise SystemExit(f"D3 vigente ({PAR['D3']['ring3_json']}) difere do Ring 3 decidido em decisoes.py ({r3d['ring3_json']})")
+    r3_vig = r3[r3d["ring3_json"]]
+    n_abertas = len(reg["abertas"])
+    ct = dec["cenario_trabalho"]
+    pa = tb["pareamento"]
     fb = next(r for r in fp["resultados"] if r["id"] == "fitas-buffer")
     fl = next(r for r in fp["resultados"] if r["id"] == "fitas-livre")
     urna_max = max(u["Total_combinado"] for u in dados["urnas"])
@@ -377,8 +413,12 @@ def main():
         "MODULO_SVG": modulo_svg,
         "TABELA_PORTAS": tabela_portas(dec),
         "TABELA_ENTRADAS": tabela_entradas(dec),
-        "TABELA_RING3": tabela_ring3(r3, PAR["D3"]["ring3_json"]),
+        "TABELA_RING3": tabela_ring3(r3, r3d["ring3_json"], r3d["registrados"]),
         "R3_VIG_NOME": esc(r3_vig["nome"]), "R3_VIG_CAP": fmt(r3_vig["capacidade"]), "R3_VIG_SEP": str(r3_vig["separadores"]),
+        "R3_REG": str(r3d["registrados"]), "R3_FITA": vg(r3d["fita_grossa_m"], 0), "R3_APOIOS": str(r3d["apoios_da_fita"]),
+        "R3_A": fmt(r3d["por_entrada"]["A"]), "R3_B": fmt(r3d["por_entrada"]["B"]), "R3_C": fmt(r3d["por_entrada"]["C"]),
+        "CEN_TRABALHO": esc(ct["nome"]), "CEN_PROVISORIO": (" (provisório: o cenário Hamad_Final ainda não foi colado em <span class=\"mono\">cenarios/</span>; tudo regenera quando entrar)" if ct["provisorio"] else ""),
+        "NUM_ELEITOR": esc(dec["numeracao_eleitor"]),
         "VSP_SEP": str(vsp["separadores"]), "VSP_FITA": vg(vsp["fita_grossa_m"], 0), "VSP_APOIOS": str(vsp["apoios_da_fita"]["apoios"]),
         "VSP_APOIOS_CCB": str(vsp["apoios_da_fita"]["separadores_se_forem_ccb"]),
         "PV_CAP": fmt(pv["capacidade"]), "VS_CAP": fmt(vs["capacidade"]),
@@ -386,19 +426,26 @@ def main():
         "PV_COMPRA": str(dec["ring3"]["a_adquirir"]), "VS_COMPRA": str(vs["compra"]),
         "PV_EUR": fmt(dec["ring3"]["custo_eur"]), "VS_EUR": fmt(vs["custo_compra_eur"]),
         "INDICE_CONDADOS": indice_condados(dec),
-        "TABELA_BARREIRAS": tabela_barreiras(tb, sem_guia),
+        "TABELA_BARREIRAS": tabela_barreiras(tb),
+        "B_PARES": str(len(pa["pares"])), "B_SEMPAR": str(len(pa["sem_par"])), "B_POLOS": str(len(pa["polos"])),
+        "B_SEMGUIA": str(adotado["mesas_sem_guia"]), "B_SEMGUIA_LISTA": esc(fol_sem),
+        "B_FILA_PAR": vg(tb["premissas"]["filas_mesa_m"]["par"], 0), "B_FILA_POLO": vg(tb["premissas"]["filas_mesa_m"]["polo"], 0),
+        "B_AVISOS": "".join(f"<li>{esc(a)}</li>" for a in tb["avisos"]),
+        "FOLEGO_SEM": esc(fol_sem),
         "TABELA_FITAS": tabela_fitas(fp),
         "FIT_FECHA": esc(fb["fechaP50"]), "FIT_LIVRE_DENTRO": fmt(fl["dentroMax"]), "FIT_LIVRE_CHEIA": fmt(fl["estouroFilas"]),
         "FIT_BUFFER_RING3": fmt(fb["ring3Max"]), "FIT_REF_RING3": fmt(next(r for r in fp["resultados"] if r["id"] == "ref")["ring3Max"]),
         "DEC_N": str(n_abertas), "DEC_DATA": reg["registradoEm"][8:10] + "/" + reg["registradoEm"][5:7],
-        "DEC_GRAFO": grafo_decisoes(reg), "DEC_FATOS": fatos_html(reg), "DEC_CARTOES": cartoes_decisoes(reg),
+        "DEC_GRAFO": grafo_decisoes(reg), "DEC_CARTOES": cartoes_decisoes(reg), "DEC_DECIDIDAS": decididas_html(reg),
         "DEC_MATRIZ": matriz_decisoes(reg),
         "DEC_ORDEM": " → ".join(" · ".join(c) for c in reg["camadas"]),
+        "DEC_ABERTAS": " e ".join(f'<a href="#dec-{k}">{k}</a>' for k in reg["abertas"]),
+        "DEC_PREMISSAS": "; ".join(f'{esc(f["titulo"])} ({esc(f["fonte"])})' for f in reg["fatos"]),
         "B_POSTES": str(adotado["postes"]), "B_RESERVA": str(adotado["postes_reserva"]),
         "B_FITAS": str(adotado["fitas"]), "B_METROS": vg(adotado["metros"], 0), "B_CORRIDAS": str(adotado["corridas"]),
         "FOLEGO": fol_html, "FOLEGO_NUNCA": fol_nunca,
         "SIM_FECHA": melhor["fecha90"], "SIM_P90": str(melhor["P90min"]), "SIM_RING3": fmt(melhor["ring3p90"]),
-        "SIM_ARRANJO": "Três polos (as três mesas vermelhas em áreas distintas)",
+        "SIM_ARRANJO": "Três polos (as três mesas vermelhas em áreas distintas; a varredura ainda não foi refeita sobre o cenário de trabalho da prancheta)",
         "MODULO_FRENTE": vg(mesas["modulo"]["largura"], 2), "MODULO_PROF": vg(mesas["modulo"]["profundidade"], 2),
         "PECAS_URNAS": pecas("urnas"), "PECAS_PLANTA": pecas("planta"), "PECAS_MESAS": pecas("mesas", "prancheta"),
         "PECAS_RING3": pecas("ring3"), "PECAS_ROTA": pecas("rota"), "PECAS_BARREIRAS": pecas("barreiras"),

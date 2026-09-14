@@ -39,8 +39,10 @@ def bloco_decisoes():
         nomenclaturaPortas=d["nomenclatura_portas"],
         entradas=[{k: e[k] for k in ("id", "porta", "cor", "hex", "mrvs", "esperado", "capacidade")}
                   for e in d["entradas"]],
+        numeracaoEleitor=d["numeracao_eleitor"], cenarioTrabalho=d["cenario_trabalho"],
         mesas={m["mrv"]: {k: m[k] for k in ("principal", "agregada", "origem_agregada", "aptos",
-                                             "esperado", "classe", "cor", "entrada", "porta")}
+                                             "esperado", "classe", "cor", "entrada", "porta",
+                                             "eleitor", "parede")}
                for m in d["mesas"]},
         ring3={k: d["ring3"][k] for k in ("largura", "profundidade", "apron", "rect", "eixo",
                                           "capacidade")},

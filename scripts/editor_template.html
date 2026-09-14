@@ -200,7 +200,7 @@ footer .estado.guia{color:var(--entrada)}
 <div class="app">
 <header>
   <h1>Prancheta do Hall&nbsp;2</h1>
-  <span class="sub">28 mesas receptoras numeradas pelo MRV do DJE · escala real · RDS Ballsbridge</span>
+  <span class="sub">28 mesas receptoras · número eleitor em destaque, MRV do DJE ao lado · escala real · RDS Ballsbridge</span>
   <span class="sub" id="portasVivas" hidden style="color:var(--aviso);font-weight:600"></span>
   <div class="dir">
     <div class="grupo" role="group" aria-label="Cenário">
@@ -314,7 +314,7 @@ footer .estado.guia{color:var(--entrada)}
     </div>
     <div class="bloco">
       <p class="rot">Como usar</p>
-      <p class="dica">O número da mesa é o <strong>MRV do DJE/TRE-DF</strong> e não muda quando ela se move: a mesa 22 é a 22 na parede norte, leste ou oeste. A cor é a carga esperada — <strong>vermelho</strong> as três de maior comparecimento, <strong>amarelo</strong> as de médio, <strong>verde</strong> as de baixo. As portas mostram o papel decidido: entradas S4 (A), S5 (B) e S6 (C); saídas S2 e S8.</p>
+      <p class="dica">Duas numerações (13/09): o número grande é a <strong>numeração eleitor</strong> (1 na mesa mais ao sul da parede oeste, sentido horário, calculada sobre o cenário de trabalho); o pequeno é o <strong>MRV do DJE/TRE-DF</strong>, oficial, que não muda quando a mesa se move. A cor é a carga esperada — <strong>vermelho</strong> as três de maior comparecimento, <strong>amarelo</strong> as de médio, <strong>verde</strong> as de baixo. As portas mostram o papel decidido: entradas S4 (A), S5 (B) e S6 (C); saídas S2 e S8.</p>
       <p class="dica">Arraste uma mesa para movê-la; <kbd>Shift</kbd>+clique soma mesas à seleção e o arrasto move o conjunto. A mesa ganha <strong>contorno roxo tracejado</strong> quando invade zona protegida, vão de porta, outra mesa, ou sai do salão.</p>
       <p class="dica"><strong>Reparear</strong>: clique na mesa que fica parada e depois na que vai formar par — ela vem para 3,00 m de corredor e, se houver vizinha alinhada, o par encosta a 1,50 m dela.</p>
       <p class="dica"><kbd>R</kbd> gira a seleção 90°. Setas movem de um passo, com <kbd>Shift</kbd> de dez. <kbd>Ctrl+Z</kbd> desfaz. <kbd>Esc</kbd> desmarca.</p>
@@ -805,12 +805,21 @@ function montaMesas(){
         opacity: .5}, g);
     }
 
+    // numero eleitor em destaque (decisao de 13/09); o MRV, pequeno, na passagem
+    const infoN = DEC && DEC.mesas && DEC.mesas[m.n];
     const q = P(M.prof - M.mesa[0] / 2, 0);
     const t = el("text", {x: fx(q[0]), y: fy(q[1]) + .22, "font-size": .62,
       "font-weight": 700, fill: "var(--prancha)", "text-anchor": "middle",
       "font-family": "IBM Plex Mono, monospace",
       style: "pointer-events:none"}, g);
-    t.textContent = m.n;
+    t.textContent = infoN && infoN.eleitor ? infoN.eleitor : m.n;
+    if (infoN && infoN.eleitor) {
+      const q2 = P(M.prof - M.mesa[0] - M.passagem / 2, 0);
+      const t2 = el("text", {x: fx(q2[0]), y: fy(q2[1]) + .12, "font-size": .3,
+        "font-weight": 600, fill: "var(--meio)", "text-anchor": "middle",
+        "font-family": "IBM Plex Mono, monospace", style: "pointer-events:none"}, g);
+      t2.textContent = "MRV " + m.n;
+    }
 
     if (marcada || ancora) {
       const r = corpoRect(m);
@@ -946,7 +955,8 @@ function infoMesa(n){
   const secoes = String(i.principal) + (i.agregada ? ` + ${i.agregada}` : "");
   const origem = i.origem_agregada ? ` (${i.origem_agregada.toLowerCase()})` : "";
   const cl = DEC.classes.cores[i.classe];
-  return `<dt>MRV</dt><dd>${n} · seções ${secoes}${origem}</dd>` +
+  return (i.eleitor ? `<dt>Nº eleitor</dt><dd>${i.eleitor} · parede ${i.parede}</dd>` : "") +
+    `<dt>MRV</dt><dd>${n} · seções ${secoes}${origem}</dd>` +
     `<dt>Esperado</dt><dd><span class="sw" style="background:var(--${i.classe})"></span>${i.esperado} de ${i.aptos} aptos · ${cl.cor}</dd>` +
     `<dt>Entrada</dt><dd>${i.entrada} · porta ${i.porta}</dd>`;
 }

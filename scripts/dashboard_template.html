@@ -193,6 +193,9 @@ footer p{max-width:76ch}
 .matriz td.ef{white-space:normal; min-width:200px; max-width:280px; color:var(--meio); vertical-align:top}
 .matriz tr.marcada td.ef{color:var(--tinta)}
 @media (max-width:720px){ .cartoes{grid-template-columns:1fr} }
+.cod small.mrv,.mesas small.mrv{display:block; font-size:.62rem; color:var(--fraco); font-weight:400; letter-spacing:0}
+.mesas small.mrv{display:inline; margin:0 6px 0 2px}
+th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
 </style>
 
 <nav class="topo" aria-label="Seções"><div class="in">
@@ -210,10 +213,10 @@ footer p{max-width:76ch}
   <dl class="faixa">
     <div><dt>Eleitores aptos</dt><dd>{{APTOS}}<small>{{SECOES}} seções, todas em Dublin</small></dd></div>
     <div><dt>Comparecimento previsto</dt><dd>{{ESPERADOS}}<small>{{TAXA}}% · taxa de 2022 por origem, estimativa</small></dd></div>
-    <div><dt>Mesas receptoras</dt><dd>{{URNAS}}<small>uma urna por mesa · MRV do DJE</small></dd></div>
+    <div><dt>Mesas receptoras</dt><dd>{{URNAS}}<small>uma urna por mesa · numeração eleitor 1–28 e MRV oficial</small></dd></div>
     <div><dt>Portas de eleitor</dt><dd>3 + 2<small>entradas S4 A · S5 B · S6 C; saídas S2 e S8</small></dd></div>
     <div><dt>Hall 2</dt><dd>50,3 × 44,4 m<small>2.179 m², pé-direito 7 m</small></dd></div>
-    <div><dt>Ring 3</dt><dd>44 × 35 m<small>fila externa, 14 m ao sul da fachada</small></dd></div>
+    <div><dt>Ring 3</dt><dd>44 × 35 m<small>fila externa · {{R3_VIG_CAP}} pessoas no desenho decidido</small></dd></div>
   </dl>
   <div class="vivo" id="vivo"><span class="rot">Portas em vigor</span><span>carregando…</span></div>
 </header>
@@ -275,8 +278,8 @@ footer p{max-width:76ch}
     <div>
       <div class="respostas" style="grid-template-columns:1fr; margin-top:22px">
         <div class="resposta"><span class="num">Planta oficial</span><span class="curta">28 mesas: 8 na parede norte, 12 na fileira recuada da fachada leste, 2 no recorte, 6 na parede oeste.</span><p>A fachada sul não recebe mesa nenhuma: as nove portas fragmentam os 42,5 m e ela fica inteira para o fluxo do eleitor. Com a mesma folga o salão comporta 30 mesas.</p></div>
-        <div class="resposta"><span class="num">Cenários da prancheta</span><span class="curta">Hamad_3polos é o arranjo de trabalho: as três mesas críticas em três áreas distintas do salão.</span><p>Hamad1, Hamad 2, Três polos e Equitativo estão salvos na biblioteca. O simulador escolheu Três polos por varredura; as barreiras foram contadas sobre o Hamad_3polos.</p></div>
-        <div class="resposta"><span class="num">Identidade da mesa</span><span class="curta">O número é o MRV do DJE/TRE-DF e não muda quando a mesa se move.</span><p>A mesa 22 é a 22 na parede norte, leste ou oeste. A cor é a carga: vermelho as três de maior comparecimento, amarelo médio, verde baixo.</p></div>
+        <div class="resposta"><span class="num">Cenário de trabalho</span><span class="curta">{{CEN_TRABALHO}} é o cenário da prancheta sobre o qual as barreiras e a numeração eleitor são contadas{{CEN_PROVISORIO}}.</span><p>O Posto salvou o cenário Hamad_Final em 13/09 como arranjo atual e possivelmente final; o botão Salvar da prancheta grava só no navegador e copia o JSON, que precisa ser colado em <span class="mono">cenarios/</span>. Hamad1, Hamad 2, Três polos e Equitativo continuam na biblioteca. O simulador ainda usa Três polos, escolhido por varredura.</p></div>
+        <div class="resposta"><span class="num">Duas numerações</span><span class="curta">A oficial é o MRV do DJE/TRE-DF; a do eleitor vai de 1 a 28 em sentido horário a partir do sul da parede oeste.</span><p>{{NUM_ELEITOR}} O MRV fica nos cadernos, na convocação e no rádio da equipe; o número eleitor é o que vai nas placas, nos totens e na boca do orientador. As peças mostram o número eleitor em destaque e o MRV ao lado. A cor é a carga: vermelho as três de maior comparecimento, amarelo médio, verde baixo.</p></div>
       </div>
     </div>
   </div>
@@ -297,13 +300,13 @@ footer p{max-width:76ch}
     <tbody>{{TABELA_ENTRADAS}}</tbody>
   </table></div>
   <p><strong>O percurso decidido em 11/09.</strong> O eleitor entra no Ring 3 pelo canto nordeste, o lado mais próximo da porta C, desce rente ao gradil leste e vira no fundo: um corredor de chegada em L de 3,0 m alimenta as zonas pelo trecho de fundo. Nos desenhos sem garganta o contorno das zonas passa a ser fita, e só duas coisas são separador: as divisórias entre as raias e a parede que separa a zona C da corrente que desce. Com a divisória em fita grossa e um CCB só na ponta, a barreira cai de {{VS_SEP}} para {{VSP_SEP}} separadores e nada há a comprar, mas entram {{VSP_FITA}} m de fita e {{VSP_APOIOS}} apoios a cada 5 m ({{VSP_APOIOS_CCB}} CCB se os apoios forem CCB). A decisão real não é entre fita e barreira: é quantos apoios a fita vai ter.</p>
-  <p class="nota pendente"><strong>Decisão pendente: o desenho da fila (D3).</strong> As saídas de hoje assumem o <em>{{R3_VIG_NOME}}</em>: {{R3_VIG_CAP}} pessoas, {{R3_VIG_SEP}} separadores, quotas por entrada de 445/513/445. A escolha depende do número de portas (D1) e do checkpoint (D2): sem checkpoint o Ring 3 precisa guardar até 2.283 pessoas. Ver a <a href="#decisoes">seção de decisões</a>.</p>
+  <p class="nota"><strong>Decidido em 13/09: o desenho da fila (D3) é o de raias leste-oeste com CCB só na ponta.</strong> <em>{{R3_VIG_NOME}}</em>: {{R3_VIG_CAP}} pessoas (A {{R3_A}}, B {{R3_B}}, C {{R3_C}}), {{R3_VIG_SEP}} separadores contados, <strong>registrados como {{R3_REG}}</strong> para dar margem; {{R3_FITA}} m de fita grossa com {{R3_APOIOS}} apoios a cada 5 m; nada a comprar sobre os 200 da organizadora. A atribuição das mesas às entradas não muda: o desenho foi dimensionado sobre o comparecimento esperado por entrada que sai dela, e <span class="mono">gera_decisoes.py</span> confere que os dois batem.</p>
   <div class="rolagem"><table>
     <thead><tr><th>Desenho</th><th class="num">Lotação</th><th class="num">Em baia</th><th class="num">Meias-voltas</th><th class="num">Separadores</th><th class="num">A comprar</th><th class="num">Custo</th><th class="num">Fita grossa</th><th class="num">Apoios da fita</th></tr></thead>
     <tbody>{{TABELA_RING3}}</tbody>
   </table></div>
   <div class="ferramenta">
-    <div class="barra-f"><strong>Ring 3 ao vivo</strong><span>redesenhado para as portas em vigor: com N entradas, N serpenteados. Desenha os cinco desenhos anteriores a 11/09 (com e sem baias); o corredor em L e a fita com CCB na ponta estão na peça estática "Ring 3, quatro desenhos".</span><a href="{{LINK_RING3VIVO}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
+    <div class="barra-f"><strong>Ring 3 ao vivo</strong><span>redesenhado para as portas em vigor: com N entradas, N serpenteados. Abre no desenho leste-oeste sem baias, o mais próximo do decidido que o módulo vivo desenha; o corredor em L e a fita com CCB na ponta estão só na peça estática "Ring 3, quatro desenhos" e em <span class="mono">scripts/ring3.py</span>.</span><a href="{{LINK_RING3VIVO}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
     <iframe src="{{LINK_RING3VIVO}}" title="Ring 3 ao vivo" loading="lazy"></iframe>
   </div>
   {{PECAS_RING3}}
@@ -345,26 +348,28 @@ footer p{max-width:76ch}
 <section id="barreiras">
   <p class="rotulo"><span class="passo">6</span>Barreiras internas</p>
   <h2>{{B_POSTES}} postes de fita retrátil, contados corrida a corrida</h2>
-  <p class="lede">Dentro do salão a fila de cada mesa é guiada por postes Tensa de fita de 2 m. O desenho adotado, cenário 1e, põe uma linha no meio de cada par de mesas, uma linha por mesa sem par e só as duas divisórias que separam as entradas A de B e B de C. Uma corrida de L metros gasta L÷2 fitas e uma a mais de postes; por isso o número de corridas, e não a metragem, manda no consumo.</p>
+  <p class="lede">Dentro do salão a fila de cada mesa é guiada por postes Tensa de fita de 2 m, pela regra que o Posto fixou em 13/09: uma linha de {{B_FILA_PAR}} m no meio de cada par de mesas, {{B_FILA_POLO}} m para cada mesa vermelha, e nenhuma fita nas mesas não vermelhas sem par. O traçado adotado, 1e, acrescenta as duas divisórias de 20 m que separam as entradas A de B e B de C até o checkpoint; 1f, 1g e 1h são o "desenho em T", com só o canal B isolado. Uma corrida de L metros gasta L÷2 fitas e uma a mais de postes; por isso o número de corridas, e não a metragem, manda no consumo.</p>
   <dl class="faixa">
     <div><dt>Postes</dt><dd>{{B_POSTES}}<small>{{B_RESERVA}} com reserva de 10%</small></dd></div>
     <div><dt>Fitas de 2 m</dt><dd>{{B_FITAS}}<small>{{B_METROS}} m de barreira</small></dd></div>
-    <div><dt>Corridas</dt><dd>{{B_CORRIDAS}}<small>9 pares, 7 mesas sem par, 3 polos</small></dd></div>
-    <div><dt>Já contratados</dt><dd>100<small>folga de fita, folga nenhuma de poste</small></dd></div>
+    <div><dt>Corridas</dt><dd>{{B_CORRIDAS}}<small>{{B_PARES}} pares, {{B_POLOS}} polos, o canal</small></dd></div>
+    <div><dt>Mesas sem guia</dt><dd>{{B_SEMGUIA}}<small>não vermelhas sem par: {{B_SEMGUIA_LISTA}}</small></dd></div>
+    <div><dt>Já contratados</dt><dd>100<small>sobram para o traçado adotado, mesmo com reserva</small></dd></div>
   </dl>
   <div class="rolagem"><table>
     <thead><tr><th>Traçado</th><th class="num">Corridas</th><th class="num">Fitas</th><th class="num">Postes</th><th class="num">Com reserva</th><th class="num">Barreira</th><th class="num">EUR ex-VAT</th><th class="num">Mesas sem guia</th></tr></thead>
     <tbody>{{TABELA_BARREIRAS}}</tbody>
   </table></div>
-  <p class="nota"><strong>As hipóteses de corte (11/09).</strong> A e B são deliberadamente opostas: uma gasta barreira só na entrada, a outra só nas mesas. A carga não é simétrica: uma divisória de entrada organiza 12 a 14 pessoas por minuto por porta; uma linha de mesa organiza 1 a 2. Por isso o corte defensável é a interseção das duas, a síntese C, e trocar material por gente não é economia nesta escala (cinco orientadores custam EUR 1.569 ao preço do item a). Se o desenho vigente muda (decisão D4), as mesas sem guia passam a depender de placa alta e de orientador.</p>
+  <p class="nota"><strong>O desenho em T (1f, 1g, 1h).</strong> Duas linhas isolam o canal B da parede sul até 15, 10 ou 5 m; no topo de cada uma, um braço perpendicular para oeste guia a fila A e um para leste guia a fila C (6 m nos dois primeiros, premissa; 3 m no 1h). Cada lado do T é uma corrida contínua. As hipóteses de corte A, B, B2 e C de 11/09 e os traçados 1 e 1i saíram: valem só como histórico em <span class="mono">saidas/propostas_alternativas.md</span>. <strong>O que a regra de mesa custa:</strong> as três mesas vermelhas encaram uma mesa cada (5, 16 e 21), que por isso fica sem par e sem fita; com as quatro mesas amarelas sem par, são {{B_SEMGUIA}} mesas em que a ordem da fila é do orientador e da placa alta.</p>
+  <ul class="avisos">{{B_AVISOS}}</ul>
   <div class="duas">
     <figure>
       <div class="grafico">{{FOLEGO}}</div>
-      <figcaption>Minutos que a fila de cada mesa aguenta antes de transbordar, a 60 s por voto e pico de 1,8× a média, com filas de 3, 5 e 10 m por classe. Em vermelho as que lotam em menos de 20 minutos. Não lotam: MRV {{FOLEGO_NUNCA}}.</figcaption>
+      <figcaption>Minutos que a fila de cada mesa com guia aguenta antes de transbordar, a 60 s por voto e pico de 1,8× a média, com {{B_FILA_PAR}} m nos pares e {{B_FILA_POLO}} m nas vermelhas. Em vermelho as que lotam em menos de 20 minutos. Não lotam: mesas {{FOLEGO_NUNCA}}. Fora do gráfico, sem guia: {{FOLEGO_SEM}}.</figcaption>
     </figure>
     <div>
-      <h3 style="margin-top:22px">O risco que a escolha aceita</h3>
-      <p>A escada de 3, 5 e 10 m não equaliza resiliência: a fila de uma mesa de carga média aguenta 14 minutos de pico; a de uma crítica, 21. Sem as bordas externas dos canais, o que mantém o eleitor entre a porta e o checkpoint é sinalização e equipe de piso, que deixa de ser conveniência e vira parte do desenho.</p>
+      <h3 style="margin-top:22px">O risco que a regra aceita</h3>
+      <p>Uma fila de {{B_FILA_PAR}} m cabe 8 pessoas: nas mesas amarelas pareadas ela lota em 11 a 14 minutos de pico, e nas sete mesas sem guia a ordem depende do orientador de piso desde o primeiro eleitor. Sem as bordas externas dos canais, o que mantém o eleitor entre a porta e o checkpoint é sinalização e equipe, que deixa de ser conveniência e vira parte do desenho.</p>
       <p>O reservatório do surto das 8h não está dentro do salão: é o Ring 3. A fila externa e a interna foram desenhadas juntas por isso.</p>
     </div>
   </div>
@@ -397,18 +402,18 @@ footer p{max-width:76ch}
 <!-- ============================ 8 · DECISOES EM ABERTO ============================ -->
 <section id="decisoes">
   <p class="rotulo"><span class="passo">8</span>Decisões em aberto</p>
-  <h2>{{DEC_N}} decisões de fluxo ainda por tomar, e como uma puxa a outra</h2>
-  <p class="lede">Registro de {{DEC_DATA}}: o que falta decidir, as opções em cima da mesa, o que cada opção impõe às outras decisões e a ordem em que convém decidir. Tudo o que esta página mostra assume, em cada decisão, a opção marcada como "o que as saídas de hoje assumem". Mudar uma decisão é editar <span class="mono">scripts/decisoes_abertas.py</span> e regenerar: o dashboard, o documento de decisões e as instruções de fluxo para o treinamento mudam juntos.</p>
-  <h3>Fatos fixos: o que toda opção respeita</h3>
-  <div class="respostas">{{DEC_FATOS}}</div>
+  <h2>{{DEC_N}} decisões de fluxo por tomar, e o que cada uma puxa</h2>
+  <p class="lede">Registro de {{DEC_DATA}}. O Posto fechou em 13/09 as portas, o desenho do Ring 3, os unifilas e a letra das filas; restam as duas decisões {{DEC_ABERTAS}}: (a) como fazer a identificação no caderno físico e (b) checkpoint ou sinalização por fitas. Tudo o que esta página mostra assume, em cada decisão, a opção marcada como "o que as saídas de hoje assumem". Mudar uma decisão é editar <span class="mono">scripts/decisoes_abertas.py</span> e regenerar: o dashboard, o documento de decisões e as instruções de fluxo para o treinamento mudam juntos. Premissas que toda opção respeita: {{DEC_PREMISSAS}}.</p>
   <figure>
     <div class="dec-grafo">{{DEC_GRAFO}}</div>
-    <figcaption>Cada seta liga uma decisão às que ela condiciona. As colunas são a ordem recomendada: {{DEC_ORDEM}}. Contorno vermelho: em aberto; laranja: parcialmente decidida. Clique num nó para ir ao cartão.</figcaption>
+    <figcaption>Cada seta liga uma decisão às que ela condiciona. As colunas são a ordem recomendada: {{DEC_ORDEM}}. Contorno vermelho: em aberto; verde: decidida em 13/09; cinza: plano derivado, que se ajusta sozinho às decisões. Clique num nó para ir ao cartão.</figcaption>
   </figure>
-  <h3>As decisões, uma a uma</h3>
+  <h3>As duas decisões em aberto</h3>
   <div class="cartoes">{{DEC_CARTOES}}</div>
+  <h3>Decidido em 13/09, e os planos derivados</h3>
+  <div class="respostas">{{DEC_DECIDIDAS}}</div>
   <h3>Matriz "se … então …"</h3>
-  <p>Linhas: uma opção de uma decisão. Colunas: as decisões que ela condiciona. A linha destacada é a opção que as saídas de hoje assumem.</p>
+  <p>Linhas: uma opção de uma das duas decisões em aberto. Colunas: as decisões e os planos que ela condiciona. A linha destacada é a opção que as saídas de hoje assumem.</p>
   <div class="rolagem matriz"><table>{{DEC_MATRIZ}}</table></div>
   {{PECAS_DECISOES}}
 </section>
@@ -471,18 +476,21 @@ function h(tag, attrs, ...filhos){
   for (const f of filhos) if (f != null) e.appendChild(typeof f === "string" ? document.createTextNode(f) : f);
   return e;
 }
-let estado = PT.estadoDaDecisao(DECISOES), desenho = "vigente";
+let estado = PT.estadoDaDecisao(DECISOES), desenho = PT.DESENHO_DECIDIDO;
 function pinta(){
   const r = PT.resolve(estado, {portas: BASE.portas, dec: DECISOES, desenho});
-  const difere = !(r.igualDecisao && r.desenho === "vigente");
+  const difere = !(r.igualDecisao && r.desenhoDecidido);
   const V = $("vivo"); V.innerHTML = ""; V.classList.toggle("difere", difere);
   V.appendChild(h("span", {class: "rot", text: "Portas em vigor"}));
   const ent = h("span"); for (const e of r.entradas) ent.appendChild(h("span", {class: "chip", style: `color:${e.hex}`, text: `${e.porta} ${e.id}`}));
   V.appendChild(h("span", null, "entradas ", ent));
   const sai = h("span"); for (const s of r.saidas) sai.appendChild(h("span", {class: "chip", style: "color:var(--aviso)", text: s}));
   V.appendChild(h("span", null, "saídas ", sai));
-  if (r.ring3) V.appendChild(h("span", {text: `${r.ring3.nome}: ${fmt(r.ring3.capacidade)} pessoas, ${r.ring3.separadores} separadores`}));
-  V.appendChild(h("span", {class: difere ? "aviso" : "", text: difere ? "difere da decisão de 06/09; mude no Simulador, na seção 7" : "decisão do Posto de 06/09/2026"}));
+  const r3d = DECISOES.ring3 && DECISOES.ring3.decidido;
+  if (r.ring3) V.appendChild(h("span", {text: (r.igualDecisao && r.desenhoDecidido && r3d)
+    ? `Ring 3 decidido (${r3d.nome}): ${fmt(r3d.capacidade)} pessoas, ${r3d.separadores} separadores, ${r3d.registrados} registrados`
+    : `${r.ring3.nome}: ${fmt(r.ring3.capacidade)} pessoas, ${r.ring3.separadores} separadores`}));
+  V.appendChild(h("span", {class: difere ? "aviso" : "", text: !r.igualDecisao ? "portas diferem da decisão do Posto (S4, S5, S6; S2, S8); mude no Simulador, na seção 7" : (difere ? "portas da decisão; o desenho do Ring 3 não é o decidido em 13/09 (leste-oeste, CCB na ponta)" : "portas da decisão de 06/09 e desenho do Ring 3 decidido em 13/09")}));
   for (const a of r.avisos) V.appendChild(h("span", {class: "aviso", text: a}));
   if (r.ring3) { const m = h("span", {class: "mini"}); m.innerHTML = PT.svgRing3(r, {portas: BASE.portas, escala: 6}); V.appendChild(m); }
 }

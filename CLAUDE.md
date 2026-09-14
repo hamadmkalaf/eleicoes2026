@@ -15,13 +15,28 @@ posto do RDS Ballsbridge, Hall 2, para o 1º turno de 04/10/2026.
 3. `docs/SESSAO_2026-09-13.md`: passagem da sessão do dashboard e das portas
    vivas (decisões do Posto sobre as ferramentas, PR #16, como verificar a
    propagação entre Simulador, Prancheta e Ring 3, o que ficou fora).
+4. `docs/SESSAO_2026-09-13b.md`: passagem da sessão que trouxe Ring 3 (corredor
+   em L), barreiras (hipóteses de corte) e fitas no piso para o dashboard e
+   criou o registro de decisões em aberto e as instruções de fluxo geradas.
+5. `docs/SESSAO_2026-09-14.md`: transcrição da conversa de 13/09 (tarde) a
+   14/09 (a lista de quinze mudanças do Posto, literal) e a passagem para a
+   próxima sessão: estado, decisões em números, como rodar cada simulador e o
+   que condiciona os resultados (colar o Hamad_Final primeiro).
+6. `docs/decisoes_em_aberto.md` e `PENDENCIAS`: o que falta decidir (com
+   dependências) e o que falta fazer. Não confundir: decisão de fluxo vai em
+   `scripts/decisoes_abertas.py`; tarefa vai em `PENDENCIAS`.
 
 ## Branches
 
-- `claude/integrated-artifacts-dashboard-cmfi4l` (PR para o branch padrão):
+- `claude/vibrant-wozniak-hvmqcr` (PR #18, contra a branch do dashboard):
+  mescla o dashboard (PR #16), as fitas no piso (PR #17) e as pontas dos
+  branches de Ring 3 (#13) e barreiras (#12), e acrescenta o registro de
+  decisões em aberto, as instruções de fluxo e o orçamento preenchível. Base
+  de trabalho a partir de 13/09/2026.
+- `claude/integrated-artifacts-dashboard-cmfi4l` (PR #16 para o branch padrão):
   consolida a branch de 06/09 mais barreiras, Ring 3 oficial, cenário
-  Equitativo e cotações, e acrescenta o dashboard. Base de trabalho a partir
-  de 11/09/2026.
+  Equitativo e cotações, e acrescenta o dashboard. Base de trabalho de 11 a
+  13/09/2026.
 - `claude/project-analysis-documentation-w49q34`: última versão de todas as
   etapas, consolidada em 06/09/2026.
 - `backup/consolidado-2026-09-06`: cópia congelada do mesmo estado. Não
@@ -53,13 +68,44 @@ acordada do salão. Duas regras valem para tudo que for produzido depois:
   de carga, atribuição das mesas às entradas do Ring 3) e
   `scripts/comparecimento.py` (base B). `gera_decisoes.py` grava
   `data/decisoes.json`; rode-o antes dos outros geradores.
-- Numeração das mesas: **só o MRV do DJE/TRE-DF**, identidade da mesa que não
-  depende da posição. Não numere mesas por posição, por porta ou por bloco. A
-  numeração voltada ao eleitor só entra depois que o cenário da prancheta for
-  fechado.
+- Numeração das mesas: duas, decididas em 13/09. **NUMERAÇÃO OFICIAL = MRV
+  do DJE/TRE-DF**, identidade da mesa que não depende da posição (cadernos,
+  convocação, comunicação interna). **NUMERAÇÃO ELEITOR** = 1 na mesa mais ao
+  sul da parede oeste, sentido horário, 28 na mais ao sul da parede leste,
+  calculada por `decisoes.numeracao_eleitor()` sobre o cenário de trabalho; as
+  peças mostram o número eleitor em destaque e o MRV ao lado. Não numere mesas
+  por porta ou por bloco, e não digite a numeração eleitor: ela sai de
+  `decisoes.mesas()[*]["eleitor"]`.
+- Cenário de trabalho: `decisoes.CENARIO_TRABALHO` (`hamad-final`), hoje
+  `cenarios/hamad-final-20260914-170656.json` (o Hamad_Final salvo pelo Posto
+  em 14/09, recuperado da prancheta publicada). Se o arquivo sumir,
+  `cenario_trabalho()` cai no `CENARIO_PROVISORIO` (Hamad_3polos) e marca
+  `provisorio` nas saídas. `simulador/fitas.js` simula o cenário de trabalho
+  (`data/decisoes.json` → `cenario_trabalho.id`); o simulador interativo e a
+  varredura ainda usam Três polos.
 - Cores: vermelho/amarelo/verde marcam a **carga** da mesa (as 3 maiores, ≥ 450
   esperados, o resto); azul/âmbar/magenta são as **raias** A/B/C da
-  sinalização. Não misturar. Cor ou letra para o eleitor: sem decisão.
+  sinalização. Não misturar. Identidade da fila para o eleitor: **letra**
+  (A, B, C; decisão de 13/09, `decisoes.NOMENCLATURA_PORTAS`); a cor é apoio.
+- Ring 3: desenho decidido em 13/09 = `girado_ccb_na_ponta` de
+  `saidas/ring3.json` (`decisoes.RING3_DESENHO`; 82 separadores contados,
+  `RING3_SEPARADORES_REGISTRADOS = 100`). A atribuição das mesas às entradas
+  continua pelas quotas de `layout_ring3.py`; não use as capacidades por zona
+  do desenho como quota (é circular). `gera_decisoes.py` confere.
+- Barreiras internas: `scripts/tensa_barreiras.py` lê o cenário de trabalho
+  por `decisoes.py` e os traçados pelos `parametros` de D4 em
+  `decisoes_abertas.py` (`so_mesas` adotado em 14/09: nenhum poste na
+  entrada; 1e e 1f/1g/1h em T como alternativas); `gera_barreiras_hall2.py`
+  gera a planta e `saidas/tensa_barreiras.md`. Regra de mesa: par 4 m,
+  vermelha 10 m, solta não vermelha sem fita. Não edite
+  `barreiras_hall2.html` à mão.
+- Regime de fila (D2, 14/09): **fitas no piso, sem checkpoint**. O plano
+  operacional é gerado por `scripts/gera_plano_filas.py` (`docs/plano_filas.md`,
+  `saidas/plano_filas.html`) a partir de `fitas_piso.json`,
+  `tensa_barreiras.json`, `ring3.json` e das decisões; falha se D2 ou D4
+  mudarem ou se `fitas_piso.json` não for do cenário de trabalho.
+- Prancheta pelas seções: `scripts/gera_prancheta_secoes.py`
+  (`saidas/prancheta_secoes.svg/.html/.png`), mesas rotuladas pelas seções.
 - Geometria: `scripts/salao.py`, inclusive o Ring 3 (`RING3`, `ring3_rect()`). As medidas saíram do PDF do RDS e da versão
   revisada com as portas de carga; não remeça o PDF nem duplique constantes.
   `data/prancheta_hall2.json` é a exportação congelada dessa geometria para o
@@ -76,9 +122,31 @@ acordada do salão. Duas regras valem para tudo que for produzido depois:
   (localStorage + BroadcastChannel na mesma origem; hash `#portas=` para
   links). Não reimplemente a regra nas páginas. Alterar a decisão continua
   sendo em `decisoes.py`.
+- Decisões em aberto: `scripts/decisoes_abertas.py` (opções, opção vigente,
+  `depende_de`, efeitos; `condiciona` é calculado; estados `em aberto`,
+  `parcial`, `decidida`, `derivada`). Desde 14/09 só **D9** (identificação
+  no caderno) está em aberto; D1, D2 (fitas), D3, D4 (so_mesas) e D8
+  decididas; D1b, D5, D6, D7 derivadas. Grava
+  `data/decisoes_abertas.json` e `docs/decisoes_em_aberto.md`. O dashboard
+  (seção "Decisões em aberto") e `scripts/gera_instrucoes_fluxo.py`
+  (`docs/instrucoes_fluxo.md`, `saidas/instrucoes_fluxo.html`) leem
+  `montar()`; nenhum digita opção ou dependência por conta própria. Quando o
+  Posto decide, troque `vigente`, marque `estado` e regenere; se a decisão
+  muda algo de `decisoes.py` (portas, por exemplo), altere lá também.
 - Dashboard: `scripts/gera_dashboard.py` monta `saidas/dashboard/` (index +
-  cópias das ferramentas e peças) e roda por último. Sem orçamento nem lista
-  de pendências na página, a pedido do Posto (foram para o Planner).
+  cópias das ferramentas e peças) e roda por último. O cabeçalho mostra o
+  Ring 3 decidido (`saidas/ring3_girado_ponta.svg`); o mini-desenho vivo só
+  aparece quando as portas ou o desenho fogem da decisão. A seção 7 é o plano
+  de distribuição de filas. Sem orçamento nem lista
+  de tarefas na página, a pedido do Posto (foram para o Planner e para
+  `PENDENCIAS` / `orcamento_final.md`); as decisões de fluxo em aberto, sim,
+  entram (decisão do Posto de 13/09).
+- Ring 3 ao vivo (`simulador/portas.js`) desenha os cinco desenhos anteriores
+  a 11/09 e abre no leste-oeste sem baias (`DESENHO_DECIDIDO = "H"`), o mais
+  próximo do decidido; o corredor em L e a fita com CCB na ponta estão só em
+  `scripts/ring3.py` e na peça estática. Portá-los segue pendente. O
+  simulador continua no plano anterior (capacidade 1.402) por coerência com
+  a varredura salva.
 
 ## Convenções
 

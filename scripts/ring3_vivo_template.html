@@ -98,9 +98,9 @@ footer{margin:56px 0 0; padding-top:18px; border-top:1px solid var(--regua); fon
 </section>
 
 <section>
-  <p class="rotulo">Decisão pendente</p>
+  <p class="rotulo">Decidido em 13/09</p>
   <h2>Os cinco desenhos, para estas portas</h2>
-  <p>O Posto ainda não escolheu entre manter o plano com garganta e pré-triagem (1.402 pessoas com três entradas) e os desenhos sem garganta, que devolvem 8,25 m a cada raia. A tabela refaz os cinco para as portas em vigor; a linha marcada é o desenho selecionado acima.</p>
+  <p>O Posto decidiu em 13/09/2026 o desenho de raias leste-oeste com CCB só na ponta das divisórias (82 separadores, registrados como 100; <span class="mono">scripts/ring3.py</span>). Este módulo ainda não desenha o corredor em L nem a fita com CCB na ponta: abre no leste-oeste sem baias, o mais próximo, e refaz os cinco desenhos para as portas em vigor; a linha marcada é o desenho selecionado acima.</p>
   <div class="rolagem"><table id="tabDesenhos"></table></div>
 </section>
 
@@ -124,7 +124,7 @@ const fmt = n => Math.round(n).toLocaleString("pt-BR");
 const vg = (v, c = 1) => Number(v).toFixed(c).replace(".", ",");
 const eur = v => "EUR " + Number(v).toLocaleString("pt-BR", {minimumFractionDigits: 0, maximumFractionDigits: 0});
 const porMrv = Object.fromEntries(DECISOES.mesas.map(m => [m.mrv, m]));
-let estado = PT.estadoDaDecisao(DECISOES), desenho = "vigente", publicando = true;
+let estado = PT.estadoDaDecisao(DECISOES), desenho = PT.DESENHO_DECIDIDO, publicando = true;
 
 function h(tag, attrs, ...filhos){
   const e = document.createElement(tag);
@@ -136,7 +136,7 @@ function h(tag, attrs, ...filhos){
 function pinta(){
   const ctx = {portas: BASE.portas, dec: DECISOES, desenho};
   const r = PT.resolve(estado, ctx);
-  const difere = !(r.igualDecisao && r.desenho === "vigente");
+  const difere = !(r.igualDecisao && r.desenhoDecidido);
   // estado
   const E = $("estado"); E.innerHTML = ""; E.classList.toggle("difere", difere);
   E.appendChild(h("span", {class: "rot", text: "Portas em vigor"}));
@@ -149,7 +149,7 @@ function pinta(){
   sel.value = r.desenho;
   sel.addEventListener("change", () => { desenho = sel.value; pinta(); if (publicando) PT.publica(estado, {desenho, origem: "ring3"}); });
   E.appendChild(h("label", null, "desenho ", sel));
-  E.appendChild(h("span", {class: difere ? "aviso" : "", text: difere ? "difere da decisão de 06/09 (entradas S4, S5, S6; saídas S2, S8)" : "é a decisão do Posto de 06/09/2026"}));
+  E.appendChild(h("span", {class: difere ? "aviso" : "", text: !r.igualDecisao ? "portas diferem da decisão de 06/09 (entradas S4, S5, S6; saídas S2, S8)" : (difere ? "portas da decisão; o desenho não é o decidido em 13/09 (leste-oeste com CCB na ponta: aqui, o leste-oeste sem baias)" : "portas da decisão de 06/09; desenho decidido em 13/09 (leste-oeste; a fita com CCB na ponta só na peça estática)")}));
   for (const a of r.avisos) E.appendChild(h("span", {class: "aviso", text: a}));
   for (const a of r.erros) E.appendChild(h("span", {class: "erro", text: a}));
   if (!r.ring3) { $("prancha").innerHTML = ""; return; }
@@ -166,7 +166,7 @@ function pinta(){
   $("tituloPlanta").textContent = `${d.nome}, em escala sobre o Ring 3 de ${vg(d.ring.x1 - d.ring.x0, 0)} × ${vg(PT.R3.PROF_RING, 0)} m`;
   $("prancha").innerHTML = PT.svgRing3(r, {portas: BASE.portas});
   $("notaDesenho").innerHTML = d.garganta
-    ? "<strong>Plano vigente.</strong> Raias de 23,75 m, baias de flanco e 8,25 m de faixa de garganta ao sul para a pré-triagem; a barreira inclui o funil da garganta e os dois lados do corredor de fundo."
+    ? "<strong>Plano anterior (vigente até 13/09).</strong> Raias de 23,75 m, baias de flanco e 8,25 m de faixa de garganta ao sul para a pré-triagem; a barreira inclui o funil da garganta e os dois lados do corredor de fundo."
     : `<strong>Sem garganta.</strong> O corredor de fundo encosta no gradil sul e as raias medem ${vg(d.prof, 2)} m. Onde a pré-triagem passa a acontecer é decisão em aberto. ${d.comBaias ? "As baias de flanco guardam gente em massa, sem ordem de chegada." : "Toda a lotação é fila em raia medida, com ordem de chegada preservada."}`;
   // zonas
   const T = $("tabZonas"); T.innerHTML = "";

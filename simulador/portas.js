@@ -258,8 +258,14 @@ function fecha(d){
   return d;
 }
 
+/* Decisao do Posto de 13/09/2026 (D3): raias leste-oeste com CCB so na ponta
+ * (scripts/ring3.py `girado_ccb_na_ponta`). Este modulo ainda nao desenha o
+ * corredor em L nem a fita com CCB na ponta; o mais proximo que ele desenha e
+ * o leste-oeste sem baias (H), que abre por padrao. */
+const DESENHO_DECIDIDO = "H";
+
 const DESENHOS = [
-  {id: "vigente", nome: "Plano vigente · 3·9·3 com baias e garganta", so3: true},
+  {id: "vigente", nome: "Plano anterior · 3·9·3 com baias e garganta", so3: true},
   {id: "VS", nome: "Norte-sul, sem baias", orientacao: "vertical", baias: false},
   {id: "V", nome: "Norte-sul, com baias", orientacao: "vertical", baias: true},
   {id: "H", nome: "Leste-oeste, sem baias", orientacao: "horizontal", baias: false},
@@ -325,18 +331,28 @@ function resolve(estado, ctx){
   const ents = entradas(e, ctx.portas);
   const lista = mesasDaDecisao(ctx.dec);
   const igualDecisao = igual(e, estadoDaDecisao(ctx.dec));
-  let desenhoId = ctx.desenho || "vigente";
+  let desenhoId = ctx.desenho || DESENHO_DECIDIDO;
   if (desenhoId === "vigente" && ents.length !== 3) desenhoId = "VS";
   const out = {estado: e, entradas: ents, saidas: saidas(e), mesas: {}, avisos: v.avisos.slice(),
-               erros: v.erros.slice(), igualDecisao, desenho: desenhoId, ring3: null};
+               erros: v.erros.slice(), igualDecisao, desenho: desenhoId,
+               desenhoDecidido: desenhoId === DESENHO_DECIDIDO, ring3: null};
   if (!ents.length || !lista.length) return out;
 
   let esperado = ents.map(() => 1), grupos = null, r3 = null;
-  if (desenhoId === "vigente" && igualDecisao && ctx.dec && Array.isArray(ctx.dec.entradas)) {
-    // a decisao, tal como esta em decisoes.py
-    r3 = desenhoPlanoVigente(ents);
-    ctx.dec.entradas.forEach((de, i) => { ents[i].capacidade = de.capacidade; ents[i].quota = de.quota; });
+  const temDec = igualDecisao && ctx.dec && Array.isArray(ctx.dec.entradas);
+  if (temDec && (desenhoId === "vigente" || desenhoId === DESENHO_DECIDIDO)) {
+    // as portas da decisao: a atribuicao mesa -> entrada e a de decisoes.py,
+    // letra por letra; o Ring 3 e o plano anterior (vigente) ou o desenho
+    // decidido dimensionado sobre o esperado por entrada da decisao
     grupos = {}; ctx.dec.entradas.forEach((de, i) => { grupos[ents[i].id] = de.mrvs.slice(); });
+    if (desenhoId === "vigente") {
+      r3 = desenhoPlanoVigente(ents);
+      ctx.dec.entradas.forEach((de, i) => { ents[i].capacidade = de.capacidade; ents[i].quota = de.quota; });
+    } else {
+      r3 = desenhoPorId(desenhoId, ents, ctx.dec.entradas.map(de => de.esperado), {largura: ctx.largura});
+      const tot = Object.values(r3.porEntrada).reduce((s, x) => s + x, 0);
+      ents.forEach(z => { z.capacidade = Math.round(r3.porEntrada[z.id]); z.quota = r3.porEntrada[z.id] / tot; });
+    }
   } else {
     // itera: largura das zonas <- esperado <- atribuicao <- capacidade das zonas
     let anterior = "";
@@ -519,7 +535,7 @@ function deHash(hash){
 }
 
 const Portas = {
-  SUL, PAPEIS, PALETA, DECISAO, R3, DESENHOS,
+  SUL, PAPEIS, PALETA, DECISAO, R3, DESENHOS, DESENHO_DECIDIDO,
   estadoDaDecisao, normalizaEstado, igual, centros, entradas, saidas, valida,
   ring, raiasQueCabem, desenho, desenhoPlanoVigente, desenhoPorId, atribuiEntradas,
   mesasDaDecisao, resolve, decisaoViva, svgRing3,

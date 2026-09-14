@@ -10,6 +10,11 @@ const NS = "http://www.w3.org/2000/svg";
  * entradas (azul, âmbar, magenta), as mesmas do plano de sinalização. */
 const DEC0 = (typeof DECISOES !== "undefined" && DECISOES) ? DECISOES : null;
 if (!DEC0) throw new Error("DECISOES ausente: gere a página com scripts/gera_simulador.py");
+// numeracao eleitor (13/09): numero grande nas pecas; o MRV oficial vai ao lado
+const ELEITOR = {};
+for (const m of (DEC0.mesas || [])) ELEITOR[m.mrv] = m.eleitor;
+const rotMesa = mrv => ELEITOR[mrv] ? `${ELEITOR[mrv]} (MRV ${mrv})` : `MRV ${mrv}`;
+const numMesa = mrv => ELEITOR[mrv] ? String(ELEITOR[mrv]) : String(mrv);
 /* DEC e a decisao em vigor NESTA pagina: a do Posto, ou a decisao viva que
  * simulador/portas.js deriva das portas que quem simula clicou (N entradas,
  * N zonas do Ring 3, cada mesa numa entrada). As portas clicaveis desta
@@ -26,6 +31,14 @@ recalculaCores();
 const PT = (typeof Portas !== "undefined") ? Portas : null;
 let resolvido = null;          // ultima resolucao das portas (Portas.resolve)
 let publicando = true;         // false enquanto se aplica um estado recebido de outra pagina
+/* O simulador so publica o desenho do Ring 3 quando o usuario escolheu um no
+ * seletor; o "vigente" e o seu modelo interno de referencia (plano anterior,
+ * coerente com a varredura salva), nao uma decisao, e nao deve tirar o
+ * dashboard e o Ring 3 ao vivo do desenho decidido em 13/09. */
+function desenhoEscolhido(){
+  const d = cen.ring3 && cen.ring3.desenho;
+  return d && d !== "vigente" ? (resolvido ? resolvido.desenho : d) : undefined;
+}
 function recalculaDecisao(){
   if (!PT) return;
   const desenho = (cen.ring3 && cen.ring3.desenho) || "vigente";
@@ -33,7 +46,7 @@ function recalculaDecisao(){
   DEC = resolvido.erros.length ? DEC0 : PT.decisaoViva(DEC0, resolvido);
   recalculaCores();
   if (cen.ring3 && !cen.ring3.capManual) cen.ring3.capacidade = DEC.ring3.capacidade;
-  if (publicando) PT.publica(cen.portas, {desenho: resolvido.desenho, origem: "simulador"});
+  if (publicando) PT.publica(cen.portas, {desenho: desenhoEscolhido(), origem: "simulador"});
 }
 const COR_CLASSE = {pesada: "var(--alta)", media: "var(--media)", leve: "var(--baixa)"};
 const CHAVE_RASCUNHO = "simulador-hall2-cenario-v1";
@@ -508,7 +521,7 @@ function desenhaZonasMini(){
     const r = m.corpo, cor = CORES_ZONA[m.zona];
     el("rect", {x: X(r[0]), y: Y(r[3]), width: (r[2] - r[0]) * esc, height: (r[3] - r[1]) * esc, fill: cor, opacity: .85}, svg);
     const t = el("text", {x: X((r[0] + r[2]) / 2), y: Y((r[1] + r[3]) / 2) + 2.6, "font-size": 6.4, "font-weight": 600, fill: "#fff", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, svg);
-    t.textContent = m.mrv;
+    t.textContent = numMesa(m.mrv);
   }
   for (const p of SUL) {
     const est = p.estado === "emergencia" ? "emergencia" : estadoPorta(p.id);
@@ -530,7 +543,7 @@ function tabelaZonas(){
   const T = $("tabZonas"); T.innerHTML = "";
   const entradas = SUL_USAVEIS.filter(id => cen.portas[id] === "entrada");
   T.appendChild(h("thead", null, h("tr", null,
-    h("th", {text: "Entrada"}), h("th", {text: "MRV (DJE)"}), h("th", {class: "num", text: "Mesas"}),
+    h("th", {text: "Entrada"}), h("th", {text: "Mesas (nº eleitor, MRV)"}), h("th", {class: "num", text: "Mesas"}),
     h("th", {class: "num", text: "Eleitores"}), h("th", {class: "num", text: "Cabe no Ring 3"}), h("th", {text: "Entra por"}))));
   const tb = h("tbody");
   for (const z of mont.zonas) {
@@ -569,7 +582,7 @@ function kpisEstaticos(){
   if (cen.checkpoint.existe) add("Checkpoint → mesa (média)", vg(mont.zonas.reduce((s, z) => s + z.distCpMedia * z.mesas.length, 0) / 28, 0) + " m");
   const A = $("avisos"); A.innerHTML = "";
   const avisos = mont.avisos.slice();
-  for (const c of mont.conflitos.slice(0, 4)) avisos.push(`Fila da MRV ${c.mesa} invade ${c.com}.`);
+  for (const c of mont.conflitos.slice(0, 4)) avisos.push(`Fila da mesa ${rotMesa(c.mesa)} invade ${c.com}.`);
   const arr = listaArranjos().find(a => a.id === idArranjoAtual());
   if (arr) for (const c of M.conflitosArranjo(BASE, arr).slice(0, 4))
     avisos.push(`Mesa ${c.mesa} do arranjo “${arr.nome}” sobrepõe ${c.motivos.join(", ")}.`);
@@ -692,7 +705,7 @@ function desenhaPlanta(){
     const urna = el("circle", {cx: cu[0], cy: fy(cu[1]), r: Mm.urna / 2 - .1, fill: "none", stroke: cor, "stroke-width": .12}, g);
     const q = P(Mm.prof - Mm.mesa[0] / 2, 0);
     const t = el("text", {x: q[0], y: fy(q[1]) + .25, "font-size": .68, "font-weight": 700, fill: "var(--prancha)", "text-anchor": "middle", "font-family": "IBM Plex Mono, monospace"}, g);
-    t.textContent = m.mrv;
+    t.textContent = numMesa(m.mrv);
     // fila: L posições
     const gf = el("g", {}, g); const dots = [];
     for (let k = 0; k < m.L; k++) {
@@ -706,7 +719,7 @@ function desenhaPlanta(){
     tooltip(hit, () => {
       const i = tempoIdx, idx = mo.mesas.indexOf(m), L = res.ref.linha;
       const pm = res.porMesa[idx];
-      return `<b>MRV ${m.mrv}</b> · seção ${m.secao}${m.agregada ? " + " + m.agregada : ""} · ${m.aptos} aptos · ${M.ROTULO_CLASSE[m.classe]}<br>` +
+      return `<b>mesa ${rotMesa(m.mrv)}</b> · seção ${m.secao}${m.agregada ? " + " + m.agregada : ""} · ${m.aptos} aptos · ${M.ROTULO_CLASSE[m.classe]}<br>` +
         `entrada ${mo.zonas[m.zona].letra} · fila de ${m.L} · ${fmt(m.esperados)} eleitores esperados<br>` +
         `agora: ${L.mesaFila[idx][i]} na fila · ${["urna e mesário parados", "identificando", "identificando e votando", "votando", "mesário esperando a urna"][L.mesaEstado[idx][i]]}<br>` +
         `dia: fecha ${M.hhmm(pm.fecha)} · urna ${pct(pm.ocupUrna)} · fome ${min(pm.fome)} · fila máx ${pm.filaMax}`;
@@ -865,11 +878,11 @@ function graficoLinhas(o){
 function heatmapMesas(){
   const L = res.ref.linha, mo = res.mont, n = L.t.length, linhaPx = 10;
   const fig = h("figure", {style: "grid-column:1/-1"});
-  fig.appendChild(h("figcaption", null, "Estado de cada mesa ao longo do dia", h("span", {class: "sub", text: "uma linha por mesa, ordem MRV; passe o mouse para ler"})));
+  fig.appendChild(h("figcaption", null, "Estado de cada mesa ao longo do dia", h("span", {class: "sub", text: "uma linha por mesa, ordem do número eleitor; passe o mouse para ler"})));
   const wrap = h("div", {style: "display:grid;grid-template-columns:38px 1fr;gap:4px;align-items:start"});
   const rot = h("div", {style: `display:flex;flex-direction:column;font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:var(--meio);line-height:${linhaPx}px`});
-  const ordem = mo.mesas.map((m, idx) => ({idx, mrv: m.mrv})).sort((a, b) => a.mrv - b.mrv);
-  for (const o of ordem) rot.appendChild(h("span", {text: "MRV " + o.mrv}));
+  const ordem = mo.mesas.map((m, idx) => ({idx, mrv: m.mrv, el: ELEITOR[m.mrv] || m.mrv})).sort((a, b) => a.el - b.el);
+  for (const o of ordem) rot.appendChild(h("span", {text: numMesa(o.mrv) + " · MRV " + o.mrv}));
   const cv = document.createElement("canvas"); cv.width = n; cv.height = 28 * linhaPx;
   cv.style.height = (28 * linhaPx) + "px";
   const ctx = cv.getContext("2d");
@@ -886,7 +899,7 @@ function heatmapMesas(){
     const r = cv.getBoundingClientRect(); const i = Math.max(0, Math.min(n - 1, Math.floor((ev.clientX - r.left) / r.width * n)));
     const row = Math.max(0, Math.min(27, Math.floor((ev.clientY - r.top) / r.height * 28)));
     const o = ordem[row], m = mo.mesas[o.idx];
-    TIP.innerHTML = `<b>MRV ${m.mrv}</b> · ${M.hhmm(L.t[i])}<br>${["urna e mesário parados", "identificando", "identificando e votando", "votando", "mesário esperando a urna"][L.mesaEstado[o.idx][i]]}<br>${L.mesaFila[o.idx][i]} na fila (cabem ${m.L})`;
+    TIP.innerHTML = `<b>mesa ${rotMesa(m.mrv)}</b> · ${M.hhmm(L.t[i])}<br>${["urna e mesário parados", "identificando", "identificando e votando", "votando", "mesário esperando a urna"][L.mesaEstado[o.idx][i]]}<br>${L.mesaFila[o.idx][i]} na fila (cabem ${m.L})`;
     TIP.style.display = "block"; TIP.style.left = Math.min(ev.clientX + 14, window.innerWidth - TIP.offsetWidth - 8) + "px"; TIP.style.top = (ev.clientY + 14) + "px";
   });
   cv.addEventListener("pointerleave", () => { TIP.style.display = "none"; });
@@ -950,7 +963,7 @@ function pintaResultado(){
     h("th", {class: "num", text: "Pico fora / cabe"}), h("th", {class: "num", text: "Buffer máx / cabe"}), h("th", {class: "num", text: "Fila checkpoint"}), h("th", {class: "num", text: "Ocup. checkpoint"}), h("th", {class: "num", text: "Fecha"}))));
   const tzb = h("tbody");
   for (const z of res.porZona) tzb.appendChild(h("tr", null,
-    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), `${z.nome} · MRV ${res.mont.zonas[z.idx].slots.slice().sort((a, b) => a - b).join(", ")}`), h("td", {class: "mono", text: z.porta}),
+    h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[z.idx]}`}), `${z.nome} · mesas ${res.mont.zonas[z.idx].slots.slice().sort((a, b) => (ELEITOR[a] || a) - (ELEITOR[b] || b)).map(rotMesa).join(", ")}`), h("td", {class: "mono", text: z.porta}),
     h("td", {class: "num", text: z.mesas}), h("td", {class: "num", text: fmt(z.esperados)}), h("td", {class: "num", text: fmt(z.ring3Max) + (res.mont.zonas[z.idx].capRing3 ? ` / ${res.mont.zonas[z.idx].capRing3}` : "")}),
     h("td", {class: "num", text: cen.checkpoint.existe ? `${z.bufferMax} / ${z.capBuffer}` : "—"}), h("td", {class: "num", text: cen.checkpoint.existe ? String(z.cpFilaMax) : "—"}),
     h("td", {class: "num", text: cen.checkpoint.existe ? `${pct(z.cpOcupacao)} (${z.atendentesCp} atend.)` : "—"}), h("td", {class: "num", text: M.hhmm(z.fecha)})));
@@ -960,14 +973,14 @@ function pintaResultado(){
   const secM = h("div", {class: "secao"}, h("h2", {text: "Por mesa, da que fecha mais tarde à mais cedo"}),
     h("p", {class: "dica", style: "margin-bottom:10px", text: "“Fila necessária” é o maior tamanho que a fila da mesa atingiu; se bate no que cabe, o checkpoint reteve gente. Uso da urna acima de 90 % é mesa saturada. “Fome” é tempo parada enquanto havia gente da zona no Ring 3; em mesa leve é inevitável, porque quem espera lá fora é de outra mesa."}));
   const tm = h("table", {class: "tabela"});
-  tm.appendChild(h("thead", null, h("tr", null, h("th", {text: "MRV"}), h("th", {text: "Seções"}), h("th", {class: "num", text: "Aptos"}), h("th", {text: "Entrada"}), h("th", {class: "num", text: "Votos"}),
+  tm.appendChild(h("thead", null, h("tr", null, h("th", {text: "Mesa (nº eleitor · MRV)"}), h("th", {text: "Seções"}), h("th", {class: "num", text: "Aptos"}), h("th", {text: "Entrada"}), h("th", {class: "num", text: "Votos"}),
     h("th", {class: "num", text: "Fecha"}), h("th", {class: "num", text: "Uso da urna"}), h("th", {class: "num", text: "Fome"}), h("th", {class: "num", text: "Fila necessária / cabe"}))));
   const tmb = h("tbody");
   const maxOc = Math.max(...res.porMesa.map(m => m.ocupUrna), .01);
   for (const m of res.porMesa.slice().sort((a, b) => b.fecha - a.fecha)) {
     const mm = res.mont.mesas.find(x => x.slot === m.slot);
     tmb.appendChild(h("tr", null,
-      h("td", null, h("span", {class: "swatch", style: `background:${COR_CLASSE[m.classe]}`}), h("span", {class: "mono", text: String(m.mrv)})), h("td", {class: "mono", text: `${mm.secao}${mm.agregada ? " + " + mm.agregada : ""}`}),
+      h("td", null, h("span", {class: "swatch", style: `background:${COR_CLASSE[m.classe]}`}), h("span", {class: "mono", text: rotMesa(m.mrv)})), h("td", {class: "mono", text: `${mm.secao}${mm.agregada ? " + " + mm.agregada : ""}`}),
       h("td", {class: "num", text: String(m.aptos)}), h("td", null, h("span", {class: "swatch", style: `background:${CORES_ZONA[m.zona]}`}), LETRAS[m.zona]),
       h("td", {class: "num", text: fmt(m.votos)}), h("td", {class: "num", text: M.hhmm(m.fecha)}),
       h("td", {class: "num"}, h("span", {class: "barraMesa", style: `width:${Math.round(m.ocupUrna / maxOc * 60)}px;margin-right:6px;background:${m.ocupUrna > .9 ? "var(--falha)" : "var(--z1)"}`}), pct(m.ocupUrna)),
@@ -1018,9 +1031,9 @@ function relatorioTexto(){
   l.push("## Critérios");
   for (const v of res.vereditos) l.push(`- [${{ok: "OK", atencao: "ATENÇÃO", falha: "FALHA"}[v.status]}] ${v.titulo}: ${v.valor} (meta ${v.meta}). ${v.porque}${v.detalhe ? " " + v.detalhe : ""}`);
   l.push("", "## Por entrada do Ring 3");
-  for (const z of res.porZona) l.push(`- ${z.nome} (MRV ${res.mont.zonas[z.idx].slots.slice().sort((a, b) => a - b).join(", ")}, porta ${z.porta}): ${fmt(z.esperados)} eleitores, pico fora ${fmt(z.ring3Max)}, checkpoint ${pct(z.cpOcupacao)} com ${z.atendentesCp} atendente(s), fecha ${M.hhmm(z.fecha)}`);
+  for (const z of res.porZona) l.push(`- ${z.nome} (mesas ${res.mont.zonas[z.idx].slots.slice().sort((a, b) => a - b).map(rotMesa).join(", ")}, porta ${z.porta}): ${fmt(z.esperados)} eleitores, pico fora ${fmt(z.ring3Max)}, checkpoint ${pct(z.cpOcupacao)} com ${z.atendentesCp} atendente(s), fecha ${M.hhmm(z.fecha)}`);
   l.push("", "## Por mesa (fecha, uso da urna, fome, fila necessária/cabe)");
-  for (const m of res.porMesa.slice().sort((a, b) => b.fecha - a.fecha)) l.push(`- MRV ${m.mrv} (${m.secao}, ${m.aptos} aptos): ${M.hhmm(m.fecha)}, ${pct(m.ocupUrna)}, ${min(m.fome)}, ${m.filaMax}/${m.L}`);
+  for (const m of res.porMesa.slice().sort((a, b) => b.fecha - a.fecha)) l.push(`- mesa ${rotMesa(m.mrv)} (${m.secao}, ${m.aptos} aptos): ${M.hhmm(m.fecha)}, ${pct(m.ocupUrna)}, ${min(m.fome)}, ${m.filaMax}/${m.L}`);
   l.push("", "## Premissas (JSON)", "```json", JSON.stringify(cen), "```");
   return l.join("\n");
 }

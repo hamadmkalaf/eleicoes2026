@@ -57,7 +57,7 @@
 <line x1="828.8" y1="742.0" x2="883.2" y2="742.0" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
 <text x="856.0" y="762.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="middle">S9</text>
 <text x="856.0" y="773.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="middle">carga leste · 3,63 m</text>
-<line x1="152.0" y1="190.0" x2="152.0" y2="164.5" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
+<line x1="152.0" y1="190.0" x2="152.0" y2="164.5" stroke="#b23b2e" stroke-width="6.0" stroke-linecap="butt"/>
 <text x="141.0" y="175.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1f2c3c" text-anchor="end">O1</text>
 <text x="141.0" y="186.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">acesso Hall 1 · 1,70 m</text>
 <line x1="152.0" y1="451.6" x2="152.0" y2="405.5" stroke="#5d6773" stroke-width="6.0" stroke-linecap="butt"/>
@@ -72,7 +72,7 @@
 <text x="822.5" y="409.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8.5" font-weight="700" fill="#16867f" opacity=".75" text-anchor="middle" transform="rotate(90 822.5 409.0)">SAÍDAS DE EMERGÊNCIA · RECUO DE 3 m</text>
 <text x="359.8" y="820.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#16867f" text-anchor="middle">emergência · sem recuo · aberta</text>
 <text x="792.8" y="820.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#16867f" text-anchor="middle">emergência · sem recuo · aberta</text>
-<text x="141.0" y="200.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">para o Hall 1</text>
+<text x="141.0" y="200.2" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">para o Hall 1 (fechada)</text>
 <text x="141.0" y="451.5" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="8" fill="#5c6c80" text-anchor="end">para os sanitários</text>
 <text x="529.2" y="130.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle">PAREDE NORTE</text>
 <text x="529.2" y="688.0" font-family="ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#243244" opacity=".4" text-anchor="middle">FACHADA SUL</text>

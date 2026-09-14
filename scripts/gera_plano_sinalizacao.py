@@ -47,6 +47,8 @@ def carrega():
             "esperado": m["esperado"],
             "classe": m["classe"],
             "mesa": m["mrv"],
+            "eleitor": m["eleitor"],
+            "parede": m["parede"],
             "porta": m["entrada"],
         })
     return d, urnas
@@ -61,12 +63,18 @@ def distribui(urnas):
 
 
 def tabela_mestra(urnas):
+    """(secao, MRV, entrada, numero eleitor), em ordem de secao."""
     linhas = []
     for u in urnas:
-        linhas.append((u["principal"], u["mesa"], u["porta"]))
+        linhas.append((u["principal"], u["mesa"], u["porta"], u["eleitor"]))
         if u["agregada"]:
-            linhas.append((u["agregada"], u["mesa"], u["porta"]))
+            linhas.append((u["agregada"], u["mesa"], u["porta"], u["eleitor"]))
     return sorted(linhas)
+
+
+def rot_mesa(u):
+    """Numero eleitor em destaque, MRV oficial ao lado (decisao de 13/09)."""
+    return f'mesa&nbsp;{u["eleitor"]}&nbsp;<span class="sub">(MRV&nbsp;{u["mesa"]})</span>'
 
 
 def br(n):
@@ -344,7 +352,7 @@ def tabela_localidade(dados, urnas):
         secoes = sorted(g["secoes"])
         destinos = sorted({por_secao[s]["mesa"] for s in secoes})
         alvo = " ".join(
-            f'MRV&nbsp;{m}&nbsp;{chip(next(u["porta"] for u in urnas if u["mesa"] == m))}'
+            f'{rot_mesa(next(u for u in urnas if u["mesa"] == m))}&nbsp;{chip(next(u["porta"] for u in urnas if u["mesa"] == m))}'
             for m in destinos
         )
         rotulo = ROTULOS_LOCALIDADE.get(local, local.title())
@@ -403,17 +411,17 @@ PONTOS = [
     ("P4", "Cabeças dos serpenteados",
      "No início de cada bloco, ao longo do corredor de distribuição",
      "Confirmação da fila · captura de quem errou, enquanto ainda cabe corrigir",
-     "Identidade da fila (cor ou letra, a decidir) em corpo grande + lista das mesas + “errou? volte ao corredor →”",
+     "Letra da fila (A, B, C; decisão de 13/09) em corpo grande + lista das mesas (número eleitor, MRV ao lado) + “errou? volte ao corredor →”",
      "3 totens · 1 faixa de correção"),
     ("P5", "Portas de entrada",
      "No vidro, à frente de cada vão de entrada da fachada sul, lidas de dentro do serpenteado",
      "Só confirmação de que ali se entra. Nenhuma informação nova",
-     "ENTRADA em 300 mm + a identidade da fila que descarrega naquele vão (cor ou letra, a decidir)",
+     "ENTRADA em 300 mm + a letra da fila que descarrega naquele vão (A, B ou C; a cor da raia como apoio)",
      "3 bandeirolas de fachada"),
     ("P6", "Checkpoint interno",
      "Logo depois das portas, dentro do salão",
      "Mesa → posição física no salão",
-     "Faixas suspensas por bloco de mesas + numeração em totem sobre cada mesa",
+     "Faixas suspensas por bloco de mesas + totem sobre cada mesa com o número eleitor em destaque e o MRV ao lado",
      "3 faixas suspensas · 28 totens de mesa"),
     ("P7", "Saídas S2 e S8",
      "Nos flancos da fachada sul, fora do vão das entradas — os fluxos já se separam sozinhos",
@@ -467,28 +475,28 @@ def tabela_portas(grupos):
         linhas += (
             f'<tr><td>{chip(porta)} <strong>Entrada {porta}</strong><span class="sub">porta {e["porta"]}</span></td>'
             f'<td>{e["cor"].capitalize()}</td>'
-            f'<td class="num">{len(grupo)}<span class="sub">MRV {", ".join(str(u["mesa"]) for u in grupo)}</span></td>'
+            f'<td class="num">{len(grupo)}<span class="sub">mesas {", ".join(str(u["eleitor"]) for u in sorted(grupo, key=lambda u: u["eleitor"]))} (MRV {", ".join(str(u["mesa"]) for u in grupo)})</span></td>'
             f'<td class="num">{br(sum(u["aptos"] for u in grupo))}</td>'
             f'<td class="num">{br(sum(u["esperado"] for u in grupo))}</td>'
             f'<td class="num">{e["capacidade"]}</td>'
-            f'<td class="pt">MRV {pesada["mesa"]}<span class="sub">{pesada["esperado"]} esperados</span></td></tr>'
+            f'<td class="pt">mesa {pesada["eleitor"]} (MRV {pesada["mesa"]})<span class="sub">{pesada["esperado"]} esperados</span></td></tr>'
         )
     return linhas
 
 
 def tabela_mesas(urnas):
     linhas = ""
-    for u in sorted(urnas, key=lambda x: x["mesa"]):
+    for u in sorted(urnas, key=lambda x: x["eleitor"]):
         secoes = str(u["principal"]) + (f' + {u["agregada"]}' if u["agregada"] else "")
         origem = "Dublin" if u["interior"] == 0 else f'Dublin + {br(u["interior"])} do interior'
         linhas += (
-            f'<tr><td class="pt">MRV {u["mesa"]}</td><td>{chip(u["porta"])}</td>'
+            f'<tr><td class="pt">{u["eleitor"]}<span class="sub">parede {u["parede"]}</span></td><td class="pt">MRV {u["mesa"]}</td><td>{chip(u["porta"])}</td>'
             f'<td class="pt">{secoes}'
             f'<span class="sub">{origem}</span></td>'
             f'<td class="num">{br(u["aptos"])}</td><td class="num">{br(u["esperado"])}</td>'
             f'<td>{CLASSE_TXT[u["classe"]]}</td></tr>'
         )
-    return ('<div class="tscroll"><table><thead><tr><th>Mesa (MRV)</th><th>Entrada</th>'
+    return ('<div class="tscroll"><table><thead><tr><th>Mesa (nº eleitor)</th><th>MRV oficial</th><th>Entrada</th>'
             '<th>Seções</th><th class="num">Aptos</th>'
             '<th class="num">Esperado</th><th>Carga</th></tr></thead><tbody>' + linhas + "</tbody></table></div>")
 
@@ -496,8 +504,8 @@ def tabela_mesas(urnas):
 def bloco_mestra(mestra):
     linhas = "".join(
         f'<div class="mrow"><span class="sec">{secao}</span><span class="dots"></span>'
-        f'<span class="mesa">MRV {mesa}</span>{chip(porta)}</div>'
-        for secao, mesa, porta in mestra
+        f'<span class="mesa">mesa {eleitor} <span class="sub">MRV {mesa}</span></span>{chip(porta)}</div>'
+        for secao, mesa, porta, eleitor in mestra
     )
     return f'<div class="mestra">{linhas}</div>'
 
@@ -521,7 +529,7 @@ def bloco_ring3():
 
 def mesas_pesadas_txt(urnas):
     pes = sorted([u for u in urnas if u["classe"] == "alta"], key=lambda u: u["mesa"])
-    return (", ".join(f'MRV {u["mesa"]}' for u in pes[:-1]) + f' e MRV {pes[-1]["mesa"]}'
+    return (", ".join(f'mesa {u["eleitor"]} (MRV {u["mesa"]})' for u in pes[:-1]) + f' e mesa {pes[-1]["eleitor"]} (MRV {pes[-1]["mesa"]})'
             + f' (seções {", ".join(str(u["principal"]) for u in pes)}, {min(u["esperado"] for u in pes)} a '
             f'{max(u["esperado"] for u in pes)} comparecentes esperados cada), uma em cada entrada '
             + "(" + ", ".join(f'{u["porta"]}' for u in pes) + ")")
@@ -748,7 +756,7 @@ def main():
     grupos = distribui(urnas)
     mestra = tabela_mestra(urnas)
     assert len(mestra) == dados["total_secoes"], "a tabela mestra precisa cobrir as 51 seções"
-    assert len({s for s, _, _ in mestra}) == len(mestra), "seção duplicada na tabela mestra"
+    assert len({s for s, *_ in mestra}) == len(mestra), "seção duplicada na tabela mestra"
     total_esperado = sum(u["esperado"] for u in urnas)
 
     html = TEMPLATE.read_text(encoding="utf-8")

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decisões em aberto · Posto de Dublin 2026</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1f2c3c;--mut:#5c6c80;--line:#dfe5ec;--card:#fff;--acc:#1f6fb2;--warn:#b26a12}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#151a21;--fg:#e8ecf1;--mut:#a3aebb;--line:#2c3542;--card:#1c232c;--acc:#7fb3e6;--warn:#dda257}}
+:root[data-theme="dark"]{--bg:#151a21;--fg:#e8ecf1;--mut:#a3aebb;--line:#2c3542;--card:#1c232c;--acc:#7fb3e6;--warn:#dda257}
+body{background:var(--bg);color:var(--fg);font:15.5px/1.55 ui-sans-serif,system-ui,'Segoe UI',Helvetica,Arial,sans-serif;margin:0;padding:24px 16px 56px}
+main{max-width:880px;margin:0 auto}h1{font-size:1.6rem;line-height:1.2;margin:.2em 0 .4em;text-wrap:balance}
+h2{font-size:1.15rem;margin:1.8em 0 .5em;color:var(--acc);border-bottom:1px solid var(--line);padding-bottom:.25em}h3{font-size:1rem;margin:1.3em 0 .3em}ol{padding-left:1.4em;max-width:80ch}
+p{margin:.5em 0;max-width:80ch}.lead{color:var(--mut);max-width:80ch;border-left:3px solid var(--warn);padding-left:12px}
+ul{padding-left:1.2em;max-width:80ch}li{margin:.3em 0}
+.tw{overflow-x:auto;margin:.6em 0;border:1px solid var(--line);background:var(--card)}table{border-collapse:collapse;font-size:13.5px;width:100%;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600;white-space:nowrap}
+code{font-size:.92em;background:var(--line);padding:0 4px;border-radius:3px}
+@media print{body{padding:0}h2{break-after:avoid}.tw{break-inside:avoid}}
+</style></head><body><main>
+<h1>Decisões de fluxo: as que faltam, as que já saíram e como uma condiciona a outra</h1>
+<p class="lead">Gerado por <code>scripts/decisoes_abertas.py</code> (registro de 2026-09-14). Não editar à mão: mudar uma decisão é editar o módulo e regenerar. A seção "Decisões" do dashboard e <code>docs/instrucoes_fluxo.md</code> saem do mesmo registro.</p>
+<h2>Premissas</h2>
+<ul><li><strong>Identificação por caderno físico.</strong> Único método disponível no exterior. Impõe ≤ 55 s por eleitor nas três urnas críticas e ≤ 66–68 s nas sete seguintes para fechar às 17h; a 90 s, 16 das 28 urnas estouram a janela. (contexto_eleicoes_dublin_2026.md §8.2)</li><li><strong>4 seguranças + mesários voluntários + polícia fora.</strong> Orçamento comporta 4 seguranças (não 20). A organização do fluxo fica com voluntários identificados; a polícia fica do lado de fora do recinto. (Posto, 13/09 · contexto §8.1 decisão 4)</li></ul>
+<h2>Decisões em aberto</h2>
+<h3>D9 — (a) Como fazer a identificação no caderno físico</h3>
+<p><strong>Pergunta.</strong> Com 28 urnas e caderno físico, as três urnas críticas (MRV 22, 24, 23; ~590 comparecentes) só fecham às 17h a ≤ 55 s por eleitor. Como se organiza a identificação na mesa receptora para chegar a esse ritmo?</p>
+<p>Dono: Posto + Cartório Eleitoral · depende de: nada · condiciona: D2, D6, D7</p>
+<ul><li><strong>(i) Caderno único em ordem alfabética, um mesário identificando</strong>  </li></ul>
+<p>  Hipótese do Posto sobre como o caderno chega (a confirmar). É o arranjo que a simulação por urna trata como serial: a 55 s por eleitor, fecha 20h37 na mesa mais carregada.</p>
+<ul><li>↳ se esta: <strong>D2</strong> → A mesa é o gargalo e retém por si só: o checkpoint só faz sentido como válvula (reter por mesa) — as fitas no piso não ajudam a mesa.</li><li>↳ se esta: <strong>D7</strong> → Nada muda na equipe de piso; o esforço vai para a mesa (mesários).</li><li><strong>(ii) Caderno dividido por seção agregada, um mesário por caderno</strong>  </li></ul>
+<p>  23 das 28 urnas somam duas seções: dois cadernos, dois mesários identificando em paralelo; o terceiro opera a urna. É o arranjo que <code>simula_fluxo.py</code> chama de 'dois cadernos': fila zero, fecha 17h00.</p>
+<ul><li>↳ se esta: <strong>D2</strong> → A mesa deixa de ser o gargalo; o checkpoint pode ser leve (2 por porta) ou ceder lugar às fitas sem que a fila migre para dentro.</li><li>↳ se esta: <strong>D7</strong> → Pré-triagem precisa dizer ao eleitor a SEÇÃO, não só a mesa: o painel seção → mesa ganha a coluna do caderno.</li><li><strong>(iii) Caderno dividido por faixa de letras, um mesário por faixa</strong>  </li></ul>
+<p>  Independe de como o caderno chega (se for único alfabético, corta-se ao meio). Equilibra melhor que por seção quando uma seção é maior que a outra.</p>
+<ul><li>↳ se esta: <strong>D2</strong> → Como (ii).</li><li>↳ se esta: <strong>D7</strong> → Placa da mesa com as faixas de letras (A–L / M–Z); orientador aponta a fila certa.</li><li><strong>(iv) Identificação em paralelo com o voto (o mesário localiza o próximo enquanto o anterior vota)</strong>  </li></ul>
+<p>  Um caderno só, mas o tempo de ciclo vira o maior entre identificação e voto, não a soma. Fecha 17h01 a 55 s no modelo por urna. Depende de disciplina de mesa, não de material.</p>
+<ul><li>↳ se esta: <strong>D2</strong> → Mesa no limite (55 s): o checkpoint como válvula continua necessário nas três críticas.</li><li>↳ se esta: <strong>D7</strong> → Treinamento dos mesários vira parte do plano de fluxo (webinar).</li><li><strong>(v) Pré-triagem na fila: eleitor chega à mesa com documento na mão e seção sabida</strong>  </li></ul>
+<p>  Complementa qualquer das anteriores: tira da mesa os 10–20 s de procurar documento e seção. Custa equipe na fila, não na mesa.</p>
+<ul><li>↳ se esta: <strong>D2</strong> → Se houver checkpoint, a pré-triagem acontece nele; sem checkpoint, acontece na fila da mesa, por orientador.</li><li>↳ se esta: <strong>D7</strong> → 1 orientador a cada 3 mesas conferindo documento na fila.</li></ul>
+<p>Fontes: <code>PENDENCIAS item 5</code> · <code>contexto_eleicoes_dublin_2026.md §8.2</code> · <code>DOCUMENTACAO_PROJETO.md §4.2 e §9.7</code></p>
+<h2>Decididas em 13/09/2026</h2>
+<div class="tw"><table><thead><tr><th>Decisão</th><th>Escolha</th><th>Resumo</th></tr></thead><tbody>
+<tr><td><strong>D1</strong> Portas: quantas e quais</td><td>3 entradas (S4 A, S5 B, S6 C) e 2 saídas (S2, S8)</td><td>Decisão de 06/09, confirmada em 13/09. Vãos contíguos de 5,93 m; pico de 12,1 / 14,1 / 12,1 pessoas/min. O1 também fica fechada no dia.</td></tr>
+<tr><td><strong>D8</strong> Identidade das filas: letra</td><td>Letra (A, B, C), como nos rótulos de planejamento</td><td>Decidido em 13/09. Coincide com o simulador, a prancheta e o Ring 3.</td></tr>
+<tr><td><strong>D2</strong> (b) Checkpoint ou sinalização por fitas? Decidido: fitas</td><td>Sinalização por fitas no piso, sem checkpoint (decidido em 14/09)</td><td>Decidido pelo Posto em 14/09. Simulado no motor oficial sobre o Hamad_Final: fecha às 17h03 (mesmo horário do checkpoint); com a porta regulando pelo que cabe nas filas de mesa, espera P90 de 65 min (50 com checkpoint), 122 dentro do salão e 1.429 no Ring 3 (1.600 no dia ruim, contra 1.964 decididos); com porta livre, 951 dentro e 5.809 chegadas a fila cheia. Plano operacional em docs/plano_filas.md.</td></tr>
+<tr><td><strong>D3</strong> Desenho do Ring 3 e apoios da fita</td><td>Raias leste-oeste, CCB só na ponta + fita grossa (1.964 pessoas)</td><td>Decidido em 13/09. Entrada pelo canto nordeste, corredor em L de 3,0 m. 82 separadores contados, registrados 100 para dar margem; nenhum a comprar; 576 m de fita grossa com 66 apoios a cada 5 m; 66 meias-voltas.</td></tr>
+<tr><td><strong>D4</strong> Unifilas internas (postes Tensa)</td><td>Só as filas de mesa: nenhum poste na entrada, as fitas no piso levam da porta à mesa</td><td>Adotado em 14/09, com D2 = fitas. Postes só nas filas de mesa pela regra de 13/09 (4 m no par, 10 m na vermelha, nada na solta não vermelha); as três correntes se separam na soleira seguindo a fita da sua entrada.</td></tr>
+</tbody></table></div>
+<h2>Planos derivados (não são decisões)</h2>
+<ul><li><strong>D1b Rota preferencial (plano derivado)</strong> — Rota prioritária pelo apron, com 1 agente, até a porta da sua zona. O que o plano do Ring 3 prevê: nenhum prioritário entra no serpenteado.</li><li><strong>D5 Sinalização externa (plano derivado)</strong> — P0–P2 nas paredes do RDS + uma placa por porta nas CCBs de cabeça de zona. Cada placa lista as seções e as mesas (número eleitor e MRV) que entram por aquela porta, com a letra da fila.</li><li><strong>D6 Sinalização interna (plano derivado)</strong> — P6 como está: 3 faixas suspensas por bloco + 28 totens de mesa + P7 nas saídas. O plano de sinalização de 05/09, agora com número eleitor em destaque e MRV oficial ao lado.</li><li>↳ Placa alta com o número eleitor (e o MRV oficial em corpo menor) em cada mesa, legível de 40 m.</li><li>↳ "Fim da fila" móvel para as mesas vermelhas (10 m) e placa "esta fila: mesa n".</li><li>↳ Saídas S2 e S8 (P7) e "não volte pelo salão".</li><li>↳ Balcão de dúvidas / "não sei minha seção" (em P1, fora; repetido no checkpoint).</li><li>↳ Rota prioritária e banheiros (portaloos) desde P0.</li><li><strong>D7 Voluntários de apoio (plano derivado)</strong> — Equipe dimensionada para o pico, derivada das outras decisões. A tabela por posto sai de gera_instrucoes_fluxo.py.</li></ul>
+<h2>Matriz "se … então …" (opções das decisões em aberto)</h2>
+<div class="tw"><table><thead><tr><th>Se …</th><th>D2 Checkpoint ou fitas</th><th>D7 Voluntários</th></tr></thead><tbody>
+<tr><td><strong>D9</strong> = (i) Caderno único em ordem alfabética, um mesário identificando</td><td>A mesa é o gargalo e retém por si só: o checkpoint só faz sentido como válvula (reter por mesa) — as fitas no piso não ajudam a mesa.</td><td>Nada muda na equipe de piso; o esforço vai para a mesa (mesários).</td></tr>
+<tr><td><strong>D9</strong> = (ii) Caderno dividido por seção agregada, um mesário por caderno</td><td>A mesa deixa de ser o gargalo; o checkpoint pode ser leve (2 por porta) ou ceder lugar às fitas sem que a fila migre para dentro.</td><td>Pré-triagem precisa dizer ao eleitor a SEÇÃO, não só a mesa: o painel seção → mesa ganha a coluna do caderno.</td></tr>
+<tr><td><strong>D9</strong> = (iii) Caderno dividido por faixa de letras, um mesário por faixa</td><td>Como (ii).</td><td>Placa da mesa com as faixas de letras (A–L / M–Z); orientador aponta a fila certa.</td></tr>
+<tr><td><strong>D9</strong> = (iv) Identificação em paralelo com o voto (o mesário localiza o próximo enquanto o anterior vota)</td><td>Mesa no limite (55 s): o checkpoint como válvula continua necessário nas três críticas.</td><td>Treinamento dos mesários vira parte do plano de fluxo (webinar).</td></tr>
+<tr><td><strong>D9</strong> = (v) Pré-triagem na fila: eleitor chega à mesa com documento na mão e seção sabida</td><td>Se houver checkpoint, a pré-triagem acontece nele; sem checkpoint, acontece na fila da mesa, por orientador.</td><td>1 orientador a cada 3 mesas conferindo documento na fila.</td></tr>
+</tbody></table></div>
+</main></body></html>

@@ -58,7 +58,7 @@ ESTADO = {
     "S8": ("emergencia", "Saída de emergência confirmada no local (porta "
            "preta, sinal verde) — fica permanentemente aberta; sem recuo. "
            "Sem código RDS: não consta na planta original."),
-    "O1": ("livre", "Passagem para o Hall 1."),
+    "O1": ("fechada", "Passagem para o Hall 1, fechada no dia da votação (Posto, 13/09/2026)."),
     "O2": ("livre", "Único acesso aos sanitários, que ficam fora do salão."),
     "S1": ("livre", "Porta de carga."),
     "S9": ("livre", "Porta de carga."),
@@ -238,7 +238,7 @@ def planta(portas):
                  .replace('fill="#5c6c80"', f'fill="{VERDE}"'))
 
     # ---------- para onde levam as portas da parede oeste
-    o.append(txt(0, 37.65, "para o Hall 1", "sub", anchor="end", dx=-11, dy=23))
+    o.append(txt(0, 37.65, "para o Hall 1 (fechada)", "sub", anchor="end", dx=-11, dy=23))
     o.append(txt(0, 20.90, "para os sanitários", "sub", anchor="end",
                  dx=-11, dy=23))
 

@@ -5,9 +5,10 @@ LISTA DE TAREFAS PARA AINDA FAZER
 2. FECHAR ORÇAMENTO FINAL 
 3. PLANO DE COMUNICAÇÃO COM ELEITORES - COM POSTAGENS E DIVULGAÇÀO;
 4. PLANO DE COMUNICAÇÃO E ORGANIZAÇÃO COM MESÁRIOS;
-5. PENSAR NO FUNCIONAMENTO DA MRV - QUEM IDENTIFICARÁ, COMO SERÃO DIVIDIDOS OS CADERNOS;
+5. PENSAR NO FUNCIONAMENTO DA MRV - QUEM IDENTIFICARÁ, COMO SERÃO DIVIDIDOS OS CADERNOS (decisão (a), D9);
 6. INSTRUÇÕES DE GERENCIAMENTO DE FLUXO PARA O TREINAMENTO (geradas a partir das decisões);
 7. DECISÕES DE FLUXO EM ABERTO E SUAS INTERCONEXÕES (registro em scripts/decisoes_abertas.py);
+8. COLAR O JSON DO CENÁRIO Hamad_Final DA PRANCHETA EM cenarios/ E REGENERAR;
 
 
 Pendencia por ponto.
@@ -27,9 +28,12 @@ Pendencia por ponto.
 - [13/09] verificar se a apólice exigida pelo RDS (item f) impõe efetivo mínimo de segurança;
 - [13/09] confirmar com a polícia irlandesa o formato da presença externa (viatura fixa,
   ronda, horário) e registrar na nota verbal;
-- [13/09] encomendar 111 unifilas, não 100 (11 de reserva, ~EUR 143);
-- [13/09] separadores externos (CCB): a compra depende da decisão D3 (desenho do Ring 3):
-  171 a comprar se barreira inteira; 0 se fita com CCB na ponta (mas entram 115 apoios de fita).
+- [13/09 manhã] encomendar 111 unifilas, não 100 -> SUPERADO à tarde: com a regra nova
+  (par 4 m, vermelha 10 m, solta sem fita) o traçado 1e consome 73 postes (81 com
+  reserva); os 100 contratados bastam, sobram 19.
+- [13/09 tarde] separadores externos (CCB): D3 DECIDIDA (fita com CCB na ponta, raias
+  leste-oeste): 0 a comprar; 82 contados, 100 registrados; entram 576 m de fita grossa e
+  66 apoios (cotar: orcamento_final.md C3-C5).
 
 3. Plano de comunicação
 - olhar o que outros postos estão fazendo;
@@ -55,6 +59,8 @@ Pendencia por ponto.
 - [13/09] EM ABERTO, SEM RECOMENDAÇÃO: faltam informações. Hipótese do Posto: o caderno
   chega inteiro, em ordem alfabética (a confirmar). O Posto vai subir mais informações
   para decidir em conjunto.
+- [13/09 tarde] é a decisão (a) do Posto, registrada como D9 em decisoes_abertas.py (sem
+  opção vigente); uma das duas únicas decisões de fluxo em aberto.
 - [13/09] o que a carga impõe (contexto_eleicoes_dublin_2026.md §8.2): com 28 urnas e
   caderno, as urnas 3313/3322/3315 (~590 comparecentes) só fecham às 17h a <= 55 s por
   eleitor; as 7 seguintes (~475-490) a <= 66-68 s. A 90 s, 16 das 28 urnas estouram.
@@ -84,6 +90,19 @@ Pendencia por ponto.
   externa, sinalização interna, voluntários) mais cor/letra das filas, registradas em
   scripts/decisoes_abertas.py com "depende de" e "condiciona"; seção "Decisões em aberto"
   do dashboard e docs/decisoes_em_aberto.md. Mudar uma decisão = editar o módulo e regenerar.
+- [13/09 tarde] O POSTO REDUZIU A LISTA A DUAS: (a) identificação no caderno físico (D9);
+  (b) checkpoint ou sinalização por fitas (D2). Decididas: portas (3+2, O1 fechada), Ring 3
+  (CCB na ponta, 100 registrados), unifilas (1e; 1f/1g/1h em T como alternativas), letra.
+  Sinalização e voluntários viraram planos derivados. Matriz "se... então" refeita.
+
+8. Cenário Hamad_Final
+- [13/09] o Posto salvou o cenário Hamad_Final na prancheta (arranjo atual, possivelmente
+  final). O botão Salvar grava só no navegador e copia o JSON; ele NÃO está no repositório.
+  Colar o JSON em cenarios/hamad-final-<carimbo>.json (formato dos outros arquivos da pasta)
+  e regenerar: numeração eleitor, contagem de unifilas, sinalização e dashboard mudam.
+  Até lá tudo usa o Hamad_3polos, marcado como provisório.
+- [13/09] conferir com o Posto a regra nas mesas encaradas por uma vermelha (MRV 5, 16, 21):
+  pela regra de 13/09 ficam sem par e sem fita; 7 mesas sem guia no total.
 - [13/09] efeitos de 2ª e 3ª ordem a manter em vista:
   - voluntários não treinados na pré-triagem são o gargalo não paralelizável do dia;
   - urnas críticas fechando tarde atrasam a apuração consolidada; o custo de imagem recai

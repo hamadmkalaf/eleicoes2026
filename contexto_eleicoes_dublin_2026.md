@@ -163,6 +163,14 @@ Discussão paralela (contexto genérico de evento, útil como benchmark) sobre d
 3. **Identificação do eleitor será por caderno físico.** É o único método disponível no exterior. Não há biometria nem identificação eletrônica.
 4. **Segurança: apenas 4 seguranças contratados** (orçamento). Mesários voluntários organizarão o fluxo de eleitores. Haverá presença policial do lado de fora do local de votação.
 
+Decisões da tarde de 13/09/2026, depois da revisão do dashboard (registro em `scripts/decisoes.py` e `scripts/decisoes_abertas.py`; detalhe em `DOCUMENTACAO_PROJETO.md` §12.5):
+
+5. **Ring 3:** o desenho vigente é o de raias leste-oeste com CCB só na ponta das divisórias (1.964 pessoas; 82 separadores contados, **registrados como 100** para dar margem; 576 m de fita grossa, 66 apoios; nada a comprar). **O1 (passagem para o Hall 1) fica fechada**; só 3 entradas (S4, S5, S6) e 2 saídas (S2, S8).
+6. **Cenário da prancheta:** o `Hamad_Final`, salvo em 13/09, é o arranjo atual e possivelmente final. Falta colar o JSON no repositório (`cenarios/`); até lá as contas usam o `Hamad_3polos` marcado como provisório.
+7. **Duas numerações de mesa:** a atual (MRV do DJE) é a **NUMERAÇÃO OFICIAL**; a **NUMERAÇÃO ELEITOR** começa em 1 na mesa mais ao sul da parede oeste e termina em 28 na mesa mais ao sul da parede leste, em sentido horário. A identidade das filas para o eleitor é a **letra** (A, B, C).
+8. **Unifilas internas:** fica só o traçado 1e (duas divisórias de 20 m até o checkpoint); criados 1f, 1g e 1h, o "desenho em T" (canal B isolado por 15, 10 ou 5 m e braços perpendiculares que guiam A e C). Regra de mesa: par = 4 m de fila no meio; não vermelha sem par = sem unifila; vermelha = 10 m. Contagem: 1e 73 postes (81 com reserva), 1f 71, 1g 65, 1h 57; os 100 já contratados bastam.
+9. **Só duas decisões de fluxo restam:** (a) como fazer a identificação no caderno físico; (b) checkpoint ou sinalização por fitas.
+
 ### 8.2 Recálculo da carga por urna com a base atual (28 urnas, caderno)
 Premissas idênticas às da seção 2.3: janela de 9h, 1 MRV por urna, comparecimento de 74% para residentes em Dublin e 50% para o interior. Comparecimento total esperado: **11.418**.
 
@@ -208,7 +216,9 @@ Urnas que estouram a janela de 9h, por tempo médio por eleitor:
 **Leitura:** como não há mais como reduzir o pico de eleitores por urna (decisão 2) e o caderno é a única identificação (decisão 3), a única variável restante é o **tempo por eleitor na mesa**. O projeto passa a ter como meta operacional **≤ 55 s por eleitor nas 3 urnas Dublin+Dublin e ≤ 66 s nas 7 seguintes**. Com caderno, isso só é atingível se a identificação for **paralelizada** com o ato de votar (o mesário localiza o próximo eleitor no caderno enquanto o anterior está na cabine), de modo que o tempo de ciclo seja o máximo entre identificação e voto, e não a soma. É exatamente a pendência 5 do arquivo PENDENCIAS (organização dos cadernos, quem identifica).
 
 ### 8.3 Pontos que permanecem em aberto
-1. Fluxo interno da mesa com caderno: divisão do caderno (por letra ou por seção agregada), quem identifica, e se a assinatura do eleitor ocorre antes ou em paralelo à liberação da urna.
+1. **(a) Fluxo interno da mesa com caderno** (decisão D9): divisão do caderno (por letra ou por seção agregada), quem identifica, e se a assinatura do eleitor ocorre antes ou em paralelo à liberação da urna.
+1b. **(b) Checkpoint ou sinalização por fitas** (decisão D2): manter a triagem a 20 m da porta, com retenção quando a fila da mesa lota, ou levar o eleitor da porta à mesa por fitas no piso, sem parada.
+1c. Colar o JSON do cenário `Hamad_Final` da prancheta em `cenarios/` e regenerar (numeração eleitor e contagem de unifilas dependem dele).
 2. Integrar o modelo de fila de 3 entradas (seção 4, desenhado para 28 cabines) com o layout físico real de 28 urnas em 50 × 44,5 m. Com 28 urnas, o vão entre seções fica entre 2,3 e 3,2 m (seção 3), o que é adequado.
 3. Papel dos 4 seguranças versus voluntários: os seguranças devem ficar nos pontos de controle de acesso; a organização de fila interna fica com voluntários identificados (colete). Verificar se a apólice de seguro exigida pelo RDS (item f do orçamento) impõe efetivo mínimo de segurança.
 4. Revisar o item a) do orçamento (EUR 6.774,84 para 20 seguranças) para 4 seguranças e recompor a tabela final (pendência 2).
@@ -231,7 +241,13 @@ Urnas que estouram a janela de 9h, por tempo médio por eleitor:
 > Acrescentado depois da consolidação original. Fonte viva:
 > `saidas/tensa_barreiras.md`; conta reproduzível em `scripts/tensa_barreiras.py`.
 
-**Cenário 1e**, sobre o cenário `Hamad_3polos` da Prancheta do Hall 2:
+> **Atualizado em 13/09 (tarde).** A regra de mesa mudou (par = 4 m no meio,
+> vermelha = 10 m, não vermelha sem par = sem unifila) e o canal ganhou as
+> variantes em T (1f/1g/1h). Com ela, o 1e passa a 73 postes (81 com reserva,
+> 106 m); os números abaixo são os de 11/09 e valem como histórico. Fonte viva:
+> `saidas/tensa_barreiras.md`, gerado por `scripts/gera_barreiras_hall2.py`.
+
+**Cenário 1e** (versão de 11/09), sobre o cenário `Hamad_3polos` da Prancheta do Hall 2:
 
 1. **Duas linhas de 20 m** nos canais de entrada, uma entre A e B, outra entre B
    e C — só as divisórias que separam as correntes. As portas S4, S5 e S6 são

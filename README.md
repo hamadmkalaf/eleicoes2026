@@ -15,11 +15,15 @@ estado de 06/09 antes da integração.
 
 **Decisões do Posto (06/09/2026), fonte única em `scripts/decisoes.py`:**
 comparecimento esperado pela base B (taxa de 2022 por domicílio de origem,
-`scripts/comparecimento.py`, 11.499); o número da mesa é o **MRV do DJE** e
-não depende da posição; mesas coloridas por carga (vermelho as 3 maiores,
+`scripts/comparecimento.py`, 11.499); a numeração **oficial** da mesa é o
+**MRV do DJE** e não depende da posição, e desde 13/09 há a **numeração
+eleitor** (1 a 28 em sentido horário a partir do sul da parede oeste, calculada
+sobre o cenário de trabalho da prancheta; nas peças, o número eleitor em
+destaque e o MRV ao lado); mesas coloridas por carga (vermelho as 3 maiores,
 amarelo médio, verde baixo); entradas **S4 (A), S5 (B), S6 (C)** e saídas **S2
-e S8**; cada entrada do Ring 3 com as suas mesas. A nomenclatura das filas para
-o eleitor (cor ou letra) está em aberto.
+e S8**, O1 fechada; cada entrada do Ring 3 com as suas mesas; identidade das
+filas para o eleitor: **letra** (13/09); Ring 3 no desenho de raias leste-oeste
+com CCB só na ponta (82 separadores, 100 registrados; 13/09).
 
 ## Mapa do projeto
 
@@ -32,7 +36,7 @@ o eleitor (cor ou letra) está em aberto.
 | 5 | Dimensões e plano do Ring 3 | `saidas/plano_ring3.md`, `saidas/layout_ring3.svg/.png` | §5 |
 | 6 | Plano de sinalização externo | `saidas/plano_sinalizacao.html`, `data/fotos/` | §6 |
 | 7 | Expectativa de horários de pico | `pesquisa_horarios_pico_votacao.md` | §7 |
-| 8 | Separadores de fila do salão (cenário 1e adotado: 100 postes, 146 m de fita) | `saidas/barreiras_hall2.html`, `saidas/tensa_barreiras.md`, `saidas/tensa_barreiras.json`, `scripts/tensa_barreiras.py` | `saidas/tensa_barreiras.md` |
+| 8 | Separadores de fila do salão (traçado 1e adotado com a regra de 13/09: 73 postes, 106 m de fita; 1f/1g/1h em T como alternativas) | `saidas/barreiras_hall2.html`, `saidas/tensa_barreiras.md`, `saidas/tensa_barreiras.json`, `scripts/tensa_barreiras.py`, `scripts/gera_barreiras_hall2.py` | `saidas/tensa_barreiras.md` |
 | 9 | Ring 3 nas dimensões oficiais (44 × 35 m): quatro desenhos de fila comparados | `saidas/ring3_horizontal.html`, `saidas/ring3.json`, `saidas/plano_ring3_horizontal.md`, `scripts/ring3.py` | `saidas/plano_ring3_horizontal.md` |
 | 10 | Dashboard do plano (narrativa única, ferramentas embutidas, portas vivas) | `saidas/dashboard/index.html`, `saidas/ring3_vivo.html`, `simulador/portas.js`, `scripts/gera_dashboard.py`, `scripts/gera_ring3_vivo.py` | §0 e §11 de `DOCUMENTACAO_PROJETO.md` |
 | 11 | Fitas no piso em vez do checkpoint (simulação no motor oficial) | `saidas/fitas_piso.html`, `saidas/fitas_piso.json`, `simulador/fitas.js`, `scripts/fitas_piso.py` | `docs/alternativa_fitas_no_piso.md`, `docs/registro_fitas_no_piso_2026-09-12.md` |
@@ -69,20 +73,23 @@ python3 scripts/simula_fluxo.py
 python3 scripts/layout_ring3.py
 # 6. sinalização
 python3 scripts/gera_plano_sinalizacao.py
-# 7. barreiras internas e Ring 3 nas dimensões oficiais
-python3 scripts/tensa_barreiras.py && python3 scripts/ring3.py && python3 scripts/gera_pagina_ring3.py
+# 7. Ring 3 nas dimensões oficiais, registro de decisões e barreiras internas
+python3 scripts/ring3.py && python3 scripts/gera_pagina_ring3.py
+python3 scripts/decisoes_abertas.py                    # os traçados de D4 alimentam a conta
+python3 scripts/tensa_barreiras.py && python3 scripts/gera_barreiras_hall2.py
 # 8. fitas no piso (motor do simulador) e desenho sobre a planta
 node simulador/fitas.js 8 && python3 scripts/fitas_piso.py
-# 9. decisões em aberto e instruções de fluxo (leem as opções vigentes)
-python3 scripts/decisoes_abertas.py && python3 scripts/gera_instrucoes_fluxo.py
+# 9. instruções de fluxo (leem as opções vigentes e tensa_barreiras.json)
+python3 scripts/gera_instrucoes_fluxo.py
 # 10. portas vivas, Ring 3 ao vivo e dashboard (por último: copia as peças)
 node simulador/teste_portas.js
 python3 scripts/gera_ring3_vivo.py && python3 scripts/gera_dashboard.py
 ```
 
-**Decisões em aberto (13/09/2026).** O que o Posto ainda não decidiu sobre o
-fluxo (portas, porta preferencial, checkpoint, desenho do Ring 3, unifilas,
-sinalização externa e interna, voluntários, cor ou letra) está em
+**Decisões em aberto (13/09/2026, tarde).** Restam duas: (a) como fazer a
+identificação no caderno físico (D9) e (b) checkpoint ou sinalização por
+fitas (D2). Portas, Ring 3, unifilas e letra estão decididas; sinalização e
+voluntários são planos derivados. Tudo em
 `scripts/decisoes_abertas.py`, com as opções, a opção que as saídas de hoje
 assumem, `depende_de` e os efeitos de cada opção sobre as outras decisões. O
 módulo valida o grafo (acíclico, uma opção vigente por decisão) e grava
@@ -219,27 +226,29 @@ node simulador/fitas.js 8          # saidas/fitas_piso.json
 python3 scripts/fitas_piso.py      # saidas/fitas_piso.{md,html} e fitas_piso_*.svg
 ```
 
-## Barreiras internas: cenário 1e e as hipóteses de corte (11/09)
+## Barreiras internas: traçado 1e e o desenho em T (13/09)
 
-Registro completo, com as alternativas descartadas e os riscos que a escolha
-aceita: [`saidas/tensa_barreiras.md`](saidas/tensa_barreiras.md). O caminho até
-ela, com as correções feitas e as premissas declaradas, está em
-[`registro_barreiras_hall2.md`](registro_barreiras_hall2.md).
+Regra de mesa fixada pelo Posto em 13/09: par de mesas = uma linha de 4 m no
+meio; mesa vermelha = 10 m; não vermelha sem par = sem unifila. Quatro traçados
+do canal de entrada: **1e** (adotado: duas divisórias de 20 m até o checkpoint)
+e **1f/1g/1h**, o "desenho em T" (canal B isolado por 15/10/5 m com braços
+perpendiculares que guiam A e C). Os traçados 1, 1i e as hipóteses A/B/B2/C de
+11/09 saíram. Registro gerado: [`saidas/tensa_barreiras.md`](saidas/tensa_barreiras.md);
+o caminho até 11/09 está em [`registro_barreiras_hall2.md`](registro_barreiras_hall2.md).
 
-- **`saidas/tensa_barreiras.md`** — o registro da decisão, com o desenho adotado,
-  as alternativas descartadas e os riscos aceitos.
-- **`saidas/propostas_alternativas.md`** — duas hipóteses de corte, com plano e
-  desenho cada: **A**, unifila só para separar até o checkpoint; **B**, unifila só
-  nas mesas pareadas e nas grandes. Mais a síntese **C**, o único corte que o
-  documento recomenda.
-- **`saidas/tensa_barreiras.json`** — os números estruturados, cenário a cenário.
-- **`saidas/barreiras_hall2.html`** — a planta em escala com os sete traçados
-  ([publicada](https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981)).
-- **`saidas/prancheta_hall2.json`** — o cenário salvo, extraído do artefato da
-  prancheta, para a conta ser reproduzível sem abrir a página.
+- **`scripts/tensa_barreiras.py`** — a conta: lê o cenário de trabalho por
+  `decisoes.py` (Hamad_Final; Hamad_3polos enquanto o JSON não for colado) e os
+  traçados por `decisoes_abertas.py` (D4); grava `saidas/tensa_barreiras.json`.
+- **`scripts/gera_barreiras_hall2.py`** — gera `saidas/barreiras_hall2.html`
+  (planta em escala, um desenho por traçado, mesas com número eleitor e MRV,
+  fôlego) e `saidas/tensa_barreiras.md`.
+- **`saidas/propostas_alternativas.md`** — as hipóteses A/B/B2/C de 11/09,
+  superadas; ficam como histórico.
+- A publicação de 11/09 em <https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981>
+  ainda mostra os sete traçados antigos; a versão nova está na cópia do dashboard.
 
 ```bash
-python3 scripts/tensa_barreiras.py    # saidas/tensa_barreiras.{md,json} e barreiras_hall2.html
+python3 scripts/tensa_barreiras.py && python3 scripts/gera_barreiras_hall2.py
 ```
 
 Qual traçado vale depende das decisões D2 (checkpoint) e D4 de

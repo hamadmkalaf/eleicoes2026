@@ -8,7 +8,8 @@ LISTA DE TAREFAS PARA AINDA FAZER
 5. PENSAR NO FUNCIONAMENTO DA MRV - QUEM IDENTIFICARÁ, COMO SERÃO DIVIDIDOS OS CADERNOS (decisão (a), D9);
 6. INSTRUÇÕES DE GERENCIAMENTO DE FLUXO PARA O TREINAMENTO (geradas a partir das decisões);
 7. DECISÕES DE FLUXO EM ABERTO E SUAS INTERCONEXÕES (registro em scripts/decisoes_abertas.py);
-8. COLAR O JSON DO CENÁRIO Hamad_Final DA PRANCHETA EM cenarios/ E REGENERAR;
+8. ~~COLAR O JSON DO CENÁRIO Hamad_Final DA PRANCHETA EM cenarios/ E REGENERAR~~ (feito em 14/09);
+9. COTAR O REGIME DE FITAS NO PISO: fita de piso (462 m), painel de soleira (3), placa alta por mesa (28);
 
 
 Pendencia por ponto.
@@ -98,11 +99,19 @@ Pendencia por ponto.
 8. Cenário Hamad_Final
 - [13/09] o Posto salvou o cenário Hamad_Final na prancheta (arranjo atual, possivelmente
   final). O botão Salvar grava só no navegador e copia o JSON; ele NÃO está no repositório.
-  Colar o JSON em cenarios/hamad-final-<carimbo>.json (formato dos outros arquivos da pasta)
-  e regenerar: numeração eleitor, contagem de unifilas, sinalização e dashboard mudam.
-  Até lá tudo usa o Hamad_3polos, marcado como provisório.
-- [13/09] conferir com o Posto a regra nas mesas encaradas por uma vermelha (MRV 5, 16, 21):
-  pela regra de 13/09 ficam sem par e sem fita; 7 mesas sem guia no total.
+- [14/09] FEITO: recuperado da prancheta publicada na versão 4 do dashboard e gravado em
+  cenarios/hamad-final-20260914-170656.json; tudo regenerado sobre ele. No Hamad_Final as
+  vermelhas não encaram outra mesa: 12 pares, 3 polos, só 1 mesa sem guia (MRV 19).
+
+9. Regime de fitas no piso, sem checkpoint (decisão D2 de 14/09)
+- [14/09] plano de distribuição de filas gerado: docs/plano_filas.md (troncos de fita por
+  entrada, 28 filas de mesa, simulação, gatilhos, equipe, sinalização mínima).
+- cotar: fita de piso por entrada (462 m no total, três cores), painel seção -> mesa na
+  soleira (3), placa alta com o número eleitor em toda mesa (28); ver orcamento_final.md.
+- confirmar com a equipe o gatilho "fila além do poste -> segunda fila rente à parede pelo
+  orientador volante; a coordenação segura a porta daquela entrada".
+- o simulador interativo ainda não roda sobre o Hamad_Final nem no Ring 3 decidido; só a
+  varredura das fitas (simulador/fitas.js) roda sobre ele.
 - [13/09] efeitos de 2ª e 3ª ordem a manter em vista:
   - voluntários não treinados na pré-triagem são o gargalo não paralelizável do dia;
   - urnas críticas fechando tarde atrasam a apuração consolidada; o custo de imagem recai

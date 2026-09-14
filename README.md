@@ -36,7 +36,7 @@ com CCB só na ponta (82 separadores, 100 registrados; 13/09).
 | 5 | Dimensões e plano do Ring 3 | `saidas/plano_ring3.md`, `saidas/layout_ring3.svg/.png` | §5 |
 | 6 | Plano de sinalização externo | `saidas/plano_sinalizacao.html`, `data/fotos/` | §6 |
 | 7 | Expectativa de horários de pico | `pesquisa_horarios_pico_votacao.md` | §7 |
-| 8 | Separadores de fila do salão (traçado 1e adotado com a regra de 13/09: 73 postes, 106 m de fita; 1f/1g/1h em T como alternativas) | `saidas/barreiras_hall2.html`, `saidas/tensa_barreiras.md`, `saidas/tensa_barreiras.json`, `scripts/tensa_barreiras.py`, `scripts/gera_barreiras_hall2.py` | `saidas/tensa_barreiras.md` |
+| 8 | Separadores de fila do salão (traçado `so_mesas` adotado em 14/09: nenhum poste na entrada, 54 postes nas filas de mesa; 1e e 1f/1g/1h em T como alternativas) | `saidas/barreiras_hall2.html`, `saidas/tensa_barreiras.md`, `saidas/tensa_barreiras.json`, `scripts/tensa_barreiras.py`, `scripts/gera_barreiras_hall2.py` | `saidas/tensa_barreiras.md` |
 | 9 | Ring 3 nas dimensões oficiais (44 × 35 m): quatro desenhos de fila comparados | `saidas/ring3_horizontal.html`, `saidas/ring3.json`, `saidas/plano_ring3_horizontal.md`, `scripts/ring3.py` | `saidas/plano_ring3_horizontal.md` |
 | 10 | Dashboard do plano (narrativa única, ferramentas embutidas, portas vivas) | `saidas/dashboard/index.html`, `saidas/ring3_vivo.html`, `simulador/portas.js`, `scripts/gera_dashboard.py`, `scripts/gera_ring3_vivo.py` | §0 e §11 de `DOCUMENTACAO_PROJETO.md` |
 | 11 | Fitas no piso em vez do checkpoint (simulação no motor oficial) | `saidas/fitas_piso.html`, `saidas/fitas_piso.json`, `simulador/fitas.js`, `scripts/fitas_piso.py` | `docs/alternativa_fitas_no_piso.md`, `docs/registro_fitas_no_piso_2026-09-12.md` |
@@ -77,8 +77,9 @@ python3 scripts/gera_plano_sinalizacao.py
 python3 scripts/ring3.py && python3 scripts/gera_pagina_ring3.py
 python3 scripts/decisoes_abertas.py                    # os traçados de D4 alimentam a conta
 python3 scripts/tensa_barreiras.py && python3 scripts/gera_barreiras_hall2.py
-# 8. fitas no piso (motor do simulador) e desenho sobre a planta
+# 8. fitas no piso sobre o cenário de trabalho, plano de distribuição de filas, prancheta pelas seções
 node simulador/fitas.js 8 && python3 scripts/fitas_piso.py
+python3 scripts/gera_plano_filas.py && python3 scripts/gera_prancheta_secoes.py
 # 9. instruções de fluxo (leem as opções vigentes e tensa_barreiras.json)
 python3 scripts/gera_instrucoes_fluxo.py
 # 10. portas vivas, Ring 3 ao vivo e dashboard (por último: copia as peças)
@@ -86,10 +87,13 @@ node simulador/teste_portas.js
 python3 scripts/gera_ring3_vivo.py && python3 scripts/gera_dashboard.py
 ```
 
-**Decisões em aberto (13/09/2026, tarde).** Restam duas: (a) como fazer a
-identificação no caderno físico (D9) e (b) checkpoint ou sinalização por
-fitas (D2). Portas, Ring 3, unifilas e letra estão decididas; sinalização e
-voluntários são planos derivados. Tudo em
+**Decisões em aberto (14/09/2026).** Resta uma: (a) como fazer a
+identificação no caderno físico (D9). Portas, Ring 3, regime de fila (fitas
+no piso, sem checkpoint), unifilas (só nas filas de mesa) e letra estão
+decididas; sinalização e voluntários são planos derivados. O plano
+operacional do regime está em `docs/plano_filas.md`
+(`scripts/gera_plano_filas.py`) e a prancheta pelas seções em
+`saidas/prancheta_secoes.html` (`scripts/gera_prancheta_secoes.py`). Tudo em
 `scripts/decisoes_abertas.py`, com as opções, a opção que as saídas de hoje
 assumem, `depende_de` e os efeitos de cada opção sobre as outras decisões. O
 módulo valida o grafo (acíclico, uma opção vigente por decisão) e grava

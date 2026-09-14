@@ -90,7 +90,7 @@ mais cópia própria de porta, taxa ou numeração.
 
 | Peça | URL |
 |---|---|
-| **Dashboard do plano** (integra tudo; portas vivas; versão 3 de 14/09 com as decisões de 13/09: Ring 3 decidido, O1 fechada, letra, duas numerações, traçados 1e/1f/1g/1h, só duas decisões em aberto) | https://claude.ai/code/artifact/1c434ede-3d79-439c-b97b-a8121979bd03 |
+| **Dashboard do plano** (integra tudo; portas vivas; versão 5 de 14/09: Hamad_Final, fitas no piso sem checkpoint, plano de distribuição de filas, prancheta pelas seções, Ring 3 decidido no cabeçalho; só D9 em aberto) | https://claude.ai/code/artifact/1c434ede-3d79-439c-b97b-a8121979bd03 |
 | Urnas de Dublin | https://claude.ai/code/artifact/3d1b9ff8-458d-42c9-b1b6-8aacf15dfd9f |
 | Barreiras do Hall 2 (publicação de 11/09, sete traçados; a versão de 13/09 com os quatro traçados está em `saidas/barreiras_hall2.html` e na cópia do dashboard, ainda não republicada nesta URL) | https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981 |
 | Ring 3, quatro desenhos | https://claude.ai/code/artifact/c1257b13-e450-4bc1-b801-439a32bddb87 |
@@ -1286,9 +1286,10 @@ python3 scripts/gera_plano_sinalizacao.py
 # 7. barreiras internas e Ring 3 nas dimensões oficiais
 python3 scripts/ring3.py && python3 scripts/gera_pagina_ring3.py
 python3 scripts/decisoes_abertas.py                      # os tracados de D4 alimentam a conta seguinte
-python3 scripts/tensa_barreiras.py && python3 scripts/gera_barreiras_hall2.py   # 1e/1f/1g/1h; planta e md gerados
-# 8. fitas no piso
+python3 scripts/tensa_barreiras.py && python3 scripts/gera_barreiras_hall2.py   # so_mesas/1e/1f/1g/1h; planta e md gerados
+# 8. fitas no piso sobre o cenario de trabalho, plano de distribuicao de filas, prancheta pelas secoes
 node simulador/fitas.js 8 && python3 scripts/fitas_piso.py
+python3 scripts/gera_plano_filas.py && python3 scripts/gera_prancheta_secoes.py
 # 9. instruções de fluxo (leem as opções vigentes e tensa_barreiras.json)
 python3 scripts/gera_instrucoes_fluxo.py
 # 10. portas vivas, Ring 3 ao vivo e dashboard (por último)
@@ -1493,4 +1494,48 @@ dimensionado sobre outro esperado por entrada.
 **Fora desta passagem:** republicar a peça "Barreiras do Hall 2" na URL de
 11/09 (a cópia do dashboard já é a nova); portar o corredor em L ao módulo
 vivo; refazer a varredura do simulador sobre o Hamad_Final quando ele entrar.
+
+### 12.6 14/09 (tarde): Hamad_Final no repositório, fitas no piso sem checkpoint, plano de filas, prancheta pelas seções
+
+**Hamad_Final recuperado.** O cenário salvo pelo Posto em 14/09 nunca chegou ao
+repositório (Salvar grava só no navegador), mas a outra sessão o embutiu na
+prancheta publicada na versão 4 do dashboard (bloco `cenariosSalvos`). Foi
+extraído de lá e gravado em `cenarios/hamad-final-20260914-170656.json`; o
+pipeline inteiro passou a rodar sobre ele, sem a marca de provisório. Números:
+12 pares, 3 polos, 1 mesa sem guia (MRV 19, mesa 26); numeração eleitor
+1 = MRV 5 … 28 = MRV 28 (a tabela completa está em `saidas/prancheta_secoes.html`).
+
+**Três pedidos do Posto, atendidos.**
+
+1. **Cabeçalho do dashboard**: a imagem da faixa "Portas em vigor" passou a ser
+   o desenho decidido do Ring 3 (`saidas/ring3_girado_ponta.svg`, gerado por
+   `ring3.py`), com legenda; o mini-desenho do módulo vivo só aparece quando as
+   portas ou o desenho selecionado fogem da decisão. O simulador deixou de
+   publicar o seu desenho de referência ("vigente") ao carregar: publica só o
+   que o usuário escolher no seletor (`simulador/app.js`, `desenhoEscolhido()`).
+2. **D2 decidida: sinalização por fitas no piso, sem checkpoint.** Com a
+   resposta do Posto de que "as fitas no piso devem encaminhar os eleitores
+   diretamente para sua mesa", D4 ganhou a opção **`so_mesas`** (nenhum poste
+   na entrada; postes só nas filas de mesa, regra de 13/09) e ela é a vigente:
+   54 postes (60 com reserva). `simulador/fitas.js` passou a simular o cenário
+   de trabalho (`data/decisoes.json` → `cenario_trabalho.id`). Novo gerador
+   **`scripts/gera_plano_filas.py`** → `docs/plano_filas.md` e
+   `saidas/plano_filas.html`: regime, zonas do Ring 3 por entrada (626/712/626),
+   troncos de fita por entrada (462 m em 9 troncos, 23 cruzamentos), as 28
+   filas de mesa, a simulação sem checkpoint sobre o Hamad_Final (fecha 17h03;
+   P90 65 min contra 50 com checkpoint; 1.429 no Ring 3, 1.600 no dia ruim,
+   contra 1.964 decididos; 2.190 chegadas a fila cheia por dia), gatilhos,
+   equipe e sinalização mínima. Dashboard: nova seção 7 "Distribuição das
+   filas"; "O dia simulado" e "Decisões" viraram 8 e 9; o lede das decisões é
+   gerado das abertas (só **D9** resta).
+3. **Prancheta pelas seções**: `scripts/gera_prancheta_secoes.py` desenha o
+   Hamad_Final com cada mesa rotulada pela seção principal e pela agregada
+   (`saidas/prancheta_secoes.svg/.html/.png`, 22 px/m); entra no dashboard §3
+   e como peça.
+
+**Divergências que ficam.** O simulador interativo e a varredura
+(`varredura_top.json`) continuam sobre Três polos e no plano anterior do
+Ring 3; só `fitas.js` roda sobre o Hamad_Final. O módulo vivo ainda não
+desenha o corredor em L. A peça "Barreiras do Hall 2" na URL de 11/09 não
+foi republicada.
 

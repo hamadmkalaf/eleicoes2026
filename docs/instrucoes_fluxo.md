@@ -34,9 +34,9 @@ Desenho vigente: **Serpenteados horizontais (raias leste-oeste) · CCB só na po
 
 | Zona | Porta | Cabe na zona | Esperados no dia | Pico (pessoas/min) | Mesas (nº eleitor, MRV) |
 |---|---|---|---|---|---|
-| A | S4 | 626 | 3.642 | 12,1 | 3 (MRV 9), 5 (MRV 24), 7 (MRV 26), 9 (MRV 28), 12 (MRV 3), 14 (MRV 5), 19 (MRV 12), 22 (MRV 15), 28 (MRV 20) |
-| B | S5 | 712 | 4.215 | 14,1 | 4 (MRV 21), 6 (MRV 25), 10 (MRV 1), 13 (MRV 4), 15 (MRV 22), 16 (MRV 7), 17 (MRV 8), 24 (MRV 16), 25 (MRV 17), 26 (MRV 18) |
-| C | S6 | 626 | 3.642 | 12,1 | 1 (MRV 11), 2 (MRV 10), 8 (MRV 27), 11 (MRV 2), 18 (MRV 6), 20 (MRV 13), 21 (MRV 14), 23 (MRV 23), 27 (MRV 19) |
+| A | S4 | 626 | 3.642 | 12,1 | 1 (MRV 5), 3 (MRV 12), 7 (MRV 24), 8 (MRV 9), 10 (MRV 15), 17 (MRV 20), 19 (MRV 3), 25 (MRV 26), 28 (MRV 28) |
+| B | S5 | 712 | 4.215 | 14,1 | 4 (MRV 17), 5 (MRV 1), 6 (MRV 4), 11 (MRV 16), 13 (MRV 8), 14 (MRV 22), 18 (MRV 25), 20 (MRV 7), 23 (MRV 18), 24 (MRV 21) |
+| C | S6 | 626 | 3.642 | 12,1 | 2 (MRV 6), 9 (MRV 11), 12 (MRV 2), 15 (MRV 10), 16 (MRV 13), 21 (MRV 23), 22 (MRV 14), 26 (MRV 19), 27 (MRV 27) |
 
 - **A fita delimita, não contém.** O que mantém a zona A separada da B é o marshal da cabeça de fila. Num pico, ninguém passa de uma zona para outra sem ele.
 - Quem errou de fila é corrigido na cabeça da zona (P4), enquanto ainda cabe voltar; depois da meia-volta, vai até a porta e o marshal de porta o encaminha.
@@ -60,16 +60,16 @@ Desenho vigente: **Serpenteados horizontais (raias leste-oeste) · CCB só na po
 
 ## 6. Salão e filas de mesa
 
-Traçado vigente das unifilas: **1e** — 73 postes (81 com reserva), 106 m de fita. Adotado. As duas linhas que separam as três correntes da porta ao checkpoint, com 6 bochechas de portão; nas mesas, a regra de 13/09.
+Traçado vigente das unifilas: **1e** — 82 postes (91 com reserva), 118 m de fita. Adotado. As duas linhas que separam as três correntes da porta ao checkpoint, com 6 bochechas de portão; nas mesas, a regra de 13/09.
 
 - Duas numerações: a **oficial** é o MRV (cadernos, convocação, rádio entre a equipe); a **do eleitor** é o número grande na mesa, 1 a 28 em sentido horário a partir do sul da parede oeste. A equipe fala com o eleitor pelo número dele e confere o MRV entre si.
-- Regra das unifilas (13/09): 4 m no meio de cada par (uma linha separa as duas filas); 10 m nas três vermelhas, mesas 15 (MRV 22), 5 (MRV 24), 23 (MRV 23); nenhuma fita nas não vermelhas sem par. A fila só começa depois dos mesários.
-- **Mesas que lotam rápido no pico** (menos de 20 min a 60 s por voto): 26 (MRV 18) em 11 min, 1 (MRV 11) em 12 min, 2 (MRV 10) em 14 min, 25 (MRV 17) em 14 min. O orientador de piso fica com o olho nelas; fila além da fita → chamar o checkpoint para reter, não empurrar a fila pelo corredor.
-- Mesas com guia que não lotam em hipótese nenhuma: 27 (MRV 19), 6 (MRV 25), 7 (MRV 26), 8 (MRV 27), 9 (MRV 28). Não precisam de orientador dedicado.
-- **7 mesas sem unifila** (14 (MRV 5), 18 (MRV 6), 3 (MRV 9), 19 (MRV 12), 22 (MRV 15), 24 (MRV 16), 4 (MRV 21)): a ordem é do orientador. Fila em linha única rente à parede, placa alta como referência; a fila de uma delas que chegue a 4 m é gatilho de aviso.
+- Regra das unifilas (13/09): 4 m no meio de cada par (uma linha separa as duas filas); 10 m nas três vermelhas, mesas 14 (MRV 22), 7 (MRV 24), 21 (MRV 23); nenhuma fita nas não vermelhas sem par. A fila só começa depois dos mesários.
+- **Mesas que lotam rápido no pico** (menos de 20 min a 60 s por voto): 11 (MRV 16) em 11 min, 23 (MRV 18) em 11 min, 9 (MRV 11) em 12 min, 10 (MRV 15) em 12 min, 8 (MRV 9) em 14 min, 15 (MRV 10) em 14 min, 4 (MRV 17) em 14 min, 24 (MRV 21) em 14 min. O orientador de piso fica com o olho nelas; fila além da fita → chamar o checkpoint para reter, não empurrar a fila pelo corredor.
+- Mesas com guia que não lotam em hipótese nenhuma: 18 (MRV 25), 25 (MRV 26), 27 (MRV 27), 28 (MRV 28). Não precisam de orientador dedicado.
+- **1 mesas sem unifila** (26 (MRV 19)): a ordem é do orientador. Fila em linha única rente à parede, placa alta como referência; a fila de uma delas que chegue a 4 m é gatilho de aviso.
 - Sinalização interna vigente: faixas suspensas por bloco e totem por mesa (P6), com o número eleitor em destaque. Sem placa alta, o orientador precisa nomear a mesa em voz alta: "mesa quinze, ali, parede norte".
 - Quem chega à mesa errada não volta ao checkpoint: o orientador o leva à mesa certa pelo corredor mais curto.
-- **Mesa receptora (identificação pelo caderno físico): decisão (a) em aberto (D9), sem opção assumida.** Com 590 comparecentes esperados na mesa mais carregada (15 (MRV 22)), fechar às 17h exige no máximo 54 s por eleitor; nas outras duas vermelhas, 55 s. Como o caderno chega, quem identifica e se a identificação corre em paralelo com o voto é o que D9 decide; este bloco é preenchido quando ela fechar.
+- **Mesa receptora (identificação pelo caderno físico): decisão (a) em aberto (D9), sem opção assumida.** Com 590 comparecentes esperados na mesa mais carregada (14 (MRV 22)), fechar às 17h exige no máximo 54 s por eleitor; nas outras duas vermelhas, 55 s. Como o caderno chega, quem identifica e se a identificação corre em paralelo com o voto é o que D9 decide; este bloco é preenchido quando ela fechar.
 
 ## 7. Saídas S2 e S8
 
@@ -102,12 +102,12 @@ Traçado vigente das unifilas: **1e** — 73 postes (81 com reserva), 106 m de f
 | Portas de entrada (3) | 3 | Libera pelo ritmo combinado; conversa com o interior do salão; recebe prioritários fora de fila. | coordenação |
 | Checkpoint: posições de conferência (2–3 por porta) | 9 | Confere a seção em ~10 s, aponta a mesa e retém só se a fila da mesa estiver no limite. | coordenação |
 | Checkpoint: supervisor | 1 | Redistribui posições entre portas conforme a carga; fala com a coordenação. | coordenação |
-| Salão: orientadores de piso (norte, leste, oeste) | 6 | Um por parede; mais um a cada três mesas sem guia. Mantêm o eleitor no canal e a fila da mesa dentro da fita. | coordenação |
+| Salão: orientadores de piso (norte, leste, oeste) | 4 | Um por parede; mais um a cada três mesas sem guia. Mantêm o eleitor no canal e a fila da mesa dentro da fita. | coordenação |
 | Saídas S2 e S8 | 2 | Encaminham para a rua; ninguém volta pelo salão nem reentra no Ring 3. | coordenação |
 | Acessibilidade e prioridade | 1 | Conduz idosos e PcD pela rota prioritária; fala com o marshal de porta para a entrada fora de fila. | coordenação |
 | Seguranças contratados (4) | 4 | Controle de acesso e resposta a incidente. Proposta de postos: 2 no portão e no acesso, 1 na fachada das entradas, 1 nas saídas. Não organizam fila. | coordenação |
 | Polícia | — | Do lado de fora do recinto (formato a confirmar). | — |
-| **Total de voluntários** | **32** | mais 4 seguranças | |
+| **Total de voluntários** | **30** | mais 4 seguranças | |
 
 **Gatilhos de escalada** (quem vê, avisa a coordenação; ninguém age sozinho):
 - Zona A com mais de 626 pessoas, ou porta S4 recebendo mais de 12,1 por minuto por mais de 10 min.

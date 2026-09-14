@@ -4,10 +4,10 @@
  "numeracao": "NUMERAÇÃO OFICIAL: MRV do DJE/TRE-DF, identidade da mesa de uso interno; não depende da posição.",
  "numeracao_eleitor": "NUMERAÇÃO ELEITOR: 1 na mesa mais ao sul da parede oeste, sentido horário, 28 na mais ao sul da parede leste; voltada ao público.",
  "cenario_trabalho": {
-  "id": "hamad-3polos-20260905-184518",
-  "nome": "Hamad_3polos",
-  "criadoEm": "2026-09-05T18:45:18.238Z",
-  "provisorio": true
+  "id": "hamad-final-20260914-170656",
+  "nome": "Hamad_Final",
+  "criadoEm": "2026-09-14T17:06:56.476Z",
+  "provisorio": false
  },
  "comparecimento": {
   "base": "B",
@@ -223,8 +223,8 @@
    "esperado_exato": 374.99,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 10,
-   "parede": "norte",
+   "eleitor": 5,
+   "parede": "oeste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -242,7 +242,7 @@
    "esperado_exato": 355.13,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 11,
+   "eleitor": 12,
    "parede": "norte",
    "entrada": "C",
    "porta": "S6"
@@ -261,8 +261,8 @@
    "esperado_exato": 351.49,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 12,
-   "parede": "norte",
+   "eleitor": 19,
+   "parede": "leste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -280,8 +280,8 @@
    "esperado_exato": 348.09,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 13,
-   "parede": "norte",
+   "eleitor": 6,
+   "parede": "oeste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -299,8 +299,8 @@
    "esperado_exato": 327.68,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 14,
-   "parede": "norte",
+   "eleitor": 1,
+   "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -318,8 +318,8 @@
    "esperado_exato": 327.62,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 18,
-   "parede": "norte",
+   "eleitor": 2,
+   "parede": "oeste",
    "entrada": "C",
    "porta": "S6"
   },
@@ -337,8 +337,8 @@
    "esperado_exato": 325.38,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 16,
-   "parede": "norte",
+   "eleitor": 20,
+   "parede": "leste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -356,7 +356,7 @@
    "esperado_exato": 310.79,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 17,
+   "eleitor": 13,
    "parede": "norte",
    "entrada": "B",
    "porta": "S5"
@@ -375,7 +375,7 @@
    "esperado_exato": 466.72,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 3,
+   "eleitor": 8,
    "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
@@ -394,8 +394,8 @@
    "esperado_exato": 465.95,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 2,
-   "parede": "oeste",
+   "eleitor": 15,
+   "parede": "norte",
    "entrada": "C",
    "porta": "S6"
   },
@@ -413,7 +413,7 @@
    "esperado_exato": 503.78,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 1,
+   "eleitor": 9,
    "parede": "oeste",
    "entrada": "C",
    "porta": "S6"
@@ -432,8 +432,8 @@
    "esperado_exato": 422.68,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 19,
-   "parede": "leste",
+   "eleitor": 3,
+   "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -451,8 +451,8 @@
    "esperado_exato": 406.8,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 20,
-   "parede": "leste",
+   "eleitor": 16,
+   "parede": "norte",
    "entrada": "C",
    "porta": "S6"
   },
@@ -470,7 +470,7 @@
    "esperado_exato": 405.38,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 21,
+   "eleitor": 22,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -489,8 +489,8 @@
    "esperado_exato": 498.45,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 22,
-   "parede": "leste",
+   "eleitor": 10,
+   "parede": "norte",
    "entrada": "A",
    "porta": "S4"
   },
@@ -508,8 +508,8 @@
    "esperado_exato": 518.04,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 24,
-   "parede": "leste",
+   "eleitor": 11,
+   "parede": "norte",
    "entrada": "B",
    "porta": "S5"
   },
@@ -527,8 +527,8 @@
    "esperado_exato": 471.75,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 25,
-   "parede": "leste",
+   "eleitor": 4,
+   "parede": "oeste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -546,7 +546,7 @@
    "esperado_exato": 515.04,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 26,
+   "eleitor": 23,
    "parede": "leste",
    "entrada": "B",
    "porta": "S5"
@@ -565,7 +565,7 @@
    "esperado_exato": 295.26,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 27,
+   "eleitor": 26,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -584,8 +584,8 @@
    "esperado_exato": 394.56,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 28,
-   "parede": "leste",
+   "eleitor": 17,
+   "parede": "norte",
    "entrada": "A",
    "porta": "S4"
   },
@@ -603,8 +603,8 @@
    "esperado_exato": 466.2,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 4,
-   "parede": "oeste",
+   "eleitor": 24,
+   "parede": "leste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -622,7 +622,7 @@
    "esperado_exato": 589.78,
    "classe": "alta",
    "cor": "#c0392b",
-   "eleitor": 15,
+   "eleitor": 14,
    "parede": "norte",
    "entrada": "B",
    "porta": "S5"
@@ -641,7 +641,7 @@
    "esperado_exato": 586.08,
    "classe": "alta",
    "cor": "#c0392b",
-   "eleitor": 23,
+   "eleitor": 21,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -660,7 +660,7 @@
    "esperado_exato": 587.56,
    "classe": "alta",
    "cor": "#c0392b",
-   "eleitor": 5,
+   "eleitor": 7,
    "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
@@ -679,8 +679,8 @@
    "esperado_exato": 294.52,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 6,
-   "parede": "oeste",
+   "eleitor": 18,
+   "parede": "norte",
    "entrada": "B",
    "porta": "S5"
   },
@@ -698,8 +698,8 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 7,
-   "parede": "oeste",
+   "eleitor": 25,
+   "parede": "leste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -717,8 +717,8 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 8,
-   "parede": "oeste",
+   "eleitor": 27,
+   "parede": "leste",
    "entrada": "C",
    "porta": "S6"
   },
@@ -736,8 +736,8 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 9,
-   "parede": "oeste",
+   "eleitor": 28,
+   "parede": "leste",
    "entrada": "A",
    "porta": "S4"
   }

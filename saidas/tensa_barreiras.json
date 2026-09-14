@@ -1,12 +1,12 @@
 {
  "geradoEm": "2026-09-14",
  "fonte": {
-  "cenario": "Hamad_3polos",
-  "id": "hamad-3polos-20260905-184518",
-  "criadoEm": "2026-09-05T18:45:18.238Z",
+  "cenario": "Hamad_Final",
+  "id": "hamad-final-20260914-170656",
+  "criadoEm": "2026-09-14T17:06:56.476Z",
   "base": "A",
-  "provisorio": true,
-  "pendente": "hamad-final",
+  "provisorio": false,
+  "pendente": null,
   "salao": {
    "largura": 50.3,
    "altura": 44.4,
@@ -108,58 +108,67 @@
   "pares": [
    {
     "a": 1,
-    "b": 2,
-    "corredor": 3.0
-   },
-   {
-    "a": 3,
     "b": 4,
     "corredor": 3.0
    },
    {
-    "a": 7,
+    "a": 2,
     "b": 8,
-    "corredor": 2.94
+    "corredor": 3.0
+   },
+   {
+    "a": 3,
+    "b": 7,
+    "corredor": 3.0
+   },
+   {
+    "a": 5,
+    "b": 6,
+    "corredor": 3.0
+   },
+   {
+    "a": 9,
+    "b": 11,
+    "corredor": 3.0
    },
    {
     "a": 10,
-    "b": 11,
-    "corredor": 2.5
+    "b": 13,
+    "corredor": 3.0
    },
    {
-    "a": 13,
-    "b": 14,
-    "corredor": 1.95
+    "a": 12,
+    "b": 17,
+    "corredor": 3.0
    },
    {
-    "a": 17,
+    "a": 14,
     "b": 18,
+    "corredor": 2.15
+   },
+   {
+    "a": 15,
+    "b": 16,
     "corredor": 3.0
    },
    {
-    "a": 19,
-    "b": 20,
+    "a": 20,
+    "b": 25,
     "corredor": 3.0
    },
    {
-    "a": 25,
+    "a": 21,
     "b": 26,
-    "corredor": 3.1
+    "corredor": 3.0
    },
    {
     "a": 27,
     "b": 28,
-    "corredor": 2.5
+    "corredor": 3.0
    }
   ],
   "sem_par": [
-   5,
-   6,
-   9,
-   12,
-   15,
-   16,
-   21
+   19
   ],
   "polos": [
    22,
@@ -170,8 +179,8 @@
  "mesas": [
   {
    "mrv": 1,
-   "eleitor": 10,
-   "parede": "norte",
+   "eleitor": 5,
+   "parede": "oeste",
    "principal": 511,
    "agregada": 1100,
    "classe": "baixa",
@@ -179,9 +188,9 @@
    "aptos": 582,
    "entrada": "B",
    "porta": "S5",
-   "rot": 270,
-   "x": 13.8,
-   "y": 44.2,
+   "rot": 0,
+   "x": 0.2,
+   "y": 23.35,
    "lado": 1,
    "tipo": "par",
    "fila_m": 4.0,
@@ -189,7 +198,7 @@
   },
   {
    "mrv": 2,
-   "eleitor": 11,
+   "eleitor": 12,
    "parede": "norte",
    "principal": 512,
    "agregada": 2855,
@@ -199,17 +208,17 @@
    "entrada": "C",
    "porta": "S6",
    "rot": 270,
-   "x": 17.7,
-   "y": 44.2,
-   "lado": -1,
+   "x": 18.06,
+   "y": 44.1,
+   "lado": 1,
    "tipo": "par",
    "fila_m": 4.0,
    "guia": true
   },
   {
    "mrv": 3,
-   "eleitor": 12,
-   "parede": "norte",
+   "eleitor": 19,
+   "parede": "leste",
    "principal": 513,
    "agregada": 1105,
    "classe": "baixa",
@@ -217,9 +226,9 @@
    "aptos": 502,
    "entrada": "A",
    "porta": "S4",
-   "rot": 270,
-   "x": 20.1,
-   "y": 44.3,
+   "rot": 180,
+   "x": 47.15,
+   "y": 37.2,
    "lado": 1,
    "tipo": "par",
    "fila_m": 4.0,
@@ -227,8 +236,8 @@
   },
   {
    "mrv": 4,
-   "eleitor": 13,
-   "parede": "norte",
+   "eleitor": 6,
+   "parede": "oeste",
    "principal": 517,
    "agregada": 1292,
    "classe": "baixa",
@@ -236,9 +245,9 @@
    "aptos": 513,
    "entrada": "B",
    "porta": "S5",
-   "rot": 270,
-   "x": 24,
-   "y": 44.3,
+   "rot": 0,
+   "x": 0.2,
+   "y": 27.25,
    "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
@@ -246,8 +255,8 @@
   },
   {
    "mrv": 5,
-   "eleitor": 14,
-   "parede": "norte",
+   "eleitor": 1,
+   "parede": "oeste",
    "principal": 1160,
    "agregada": 3845,
    "classe": "baixa",
@@ -255,18 +264,18 @@
    "aptos": 473,
    "entrada": "A",
    "porta": "S4",
-   "rot": 270,
-   "x": 26.4,
-   "y": 44.3,
+   "rot": 0,
+   "x": 0,
+   "y": 7.73,
    "lado": 1,
-   "tipo": "solta",
-   "fila_m": 0.0,
-   "guia": false
+   "tipo": "par",
+   "fila_m": 4.0,
+   "guia": true
   },
   {
    "mrv": 6,
-   "eleitor": 18,
-   "parede": "norte",
+   "eleitor": 2,
+   "parede": "oeste",
    "principal": 1352,
    "agregada": 522,
    "classe": "baixa",
@@ -274,18 +283,18 @@
    "aptos": 462,
    "entrada": "C",
    "porta": "S6",
-   "rot": 270,
-   "x": 39.8,
-   "y": 44.15,
+   "rot": 0,
+   "x": 0,
+   "y": 11.63,
    "lado": -1,
-   "tipo": "solta",
-   "fila_m": 0.0,
-   "guia": false
+   "tipo": "par",
+   "fila_m": 4.0,
+   "guia": true
   },
   {
    "mrv": 7,
-   "eleitor": 16,
-   "parede": "norte",
+   "eleitor": 20,
+   "parede": "leste",
    "principal": 3054,
    "agregada": 1099,
    "classe": "baixa",
@@ -293,17 +302,17 @@
    "aptos": 454,
    "entrada": "B",
    "porta": "S5",
-   "rot": 270,
-   "x": 32.56,
-   "y": 44.4,
-   "lado": 1,
+   "rot": 180,
+   "x": 47.15,
+   "y": 33.3,
+   "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
    "guia": true
   },
   {
    "mrv": 8,
-   "eleitor": 17,
+   "eleitor": 13,
    "parede": "norte",
    "principal": 3078,
    "agregada": 2847,
@@ -313,8 +322,8 @@
    "entrada": "B",
    "porta": "S5",
    "rot": 270,
-   "x": 36.4,
-   "y": 44.2,
+   "x": 21.96,
+   "y": 44.1,
    "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
@@ -322,7 +331,7 @@
   },
   {
    "mrv": 9,
-   "eleitor": 3,
+   "eleitor": 8,
    "parede": "oeste",
    "principal": 3108,
    "agregada": 3422,
@@ -332,17 +341,17 @@
    "entrada": "A",
    "porta": "S4",
    "rot": 0,
-   "x": 0.9,
-   "y": 14.85,
+   "x": 0.5,
+   "y": 34.85,
    "lado": 1,
-   "tipo": "solta",
-   "fila_m": 0.0,
-   "guia": false
+   "tipo": "par",
+   "fila_m": 4.0,
+   "guia": true
   },
   {
    "mrv": 10,
-   "eleitor": 2,
-   "parede": "oeste",
+   "eleitor": 15,
+   "parede": "norte",
    "principal": 3142,
    "agregada": 1278,
    "classe": "media",
@@ -350,17 +359,17 @@
    "aptos": 793,
    "entrada": "C",
    "porta": "S6",
-   "rot": 0,
-   "x": 0.9,
-   "y": 12.25,
-   "lado": -1,
+   "rot": 270,
+   "x": 29.65,
+   "y": 44.05,
+   "lado": 1,
    "tipo": "par",
    "fila_m": 4.0,
    "guia": true
   },
   {
    "mrv": 11,
-   "eleitor": 1,
+   "eleitor": 9,
    "parede": "oeste",
    "principal": 3161,
    "agregada": 3307,
@@ -370,17 +379,17 @@
    "entrada": "C",
    "porta": "S6",
    "rot": 0,
-   "x": 1.05,
-   "y": 8.85,
-   "lado": 1,
+   "x": 0.5,
+   "y": 38.75,
+   "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
    "guia": true
   },
   {
    "mrv": 12,
-   "eleitor": 19,
-   "parede": "leste",
+   "eleitor": 3,
+   "parede": "oeste",
    "principal": 3179,
    "agregada": 530,
    "classe": "baixa",
@@ -388,18 +397,18 @@
    "aptos": 676,
    "entrada": "A",
    "porta": "S4",
-   "rot": 180,
-   "x": 47.3,
-   "y": 34.7,
-   "lado": -1,
-   "tipo": "solta",
-   "fila_m": 0.0,
-   "guia": false
+   "rot": 0,
+   "x": 0,
+   "y": 14.63,
+   "lado": 1,
+   "tipo": "par",
+   "fila_m": 4.0,
+   "guia": true
   },
   {
    "mrv": 13,
-   "eleitor": 20,
-   "parede": "leste",
+   "eleitor": 16,
+   "parede": "norte",
    "principal": 3216,
    "agregada": 527,
    "classe": "baixa",
@@ -407,17 +416,17 @@
    "aptos": 571,
    "entrada": "C",
    "porta": "S6",
-   "rot": 180,
-   "x": 47.3,
-   "y": 31.8,
-   "lado": 1,
+   "rot": 270,
+   "x": 33.55,
+   "y": 44.05,
+   "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
    "guia": true
   },
   {
    "mrv": 14,
-   "eleitor": 21,
+   "eleitor": 22,
    "parede": "leste",
    "principal": 3229,
    "agregada": 3821,
@@ -427,17 +436,17 @@
    "entrada": "C",
    "porta": "S6",
    "rot": 180,
-   "x": 47.2,
-   "y": 28.95,
-   "lado": -1,
+   "x": 47.3,
+   "y": 25.9,
+   "lado": 1,
    "tipo": "par",
    "fila_m": 4.0,
    "guia": true
   },
   {
    "mrv": 15,
-   "eleitor": 22,
-   "parede": "leste",
+   "eleitor": 10,
+   "parede": "norte",
    "principal": 3245,
    "agregada": 519,
    "classe": "media",
@@ -445,18 +454,18 @@
    "aptos": 781,
    "entrada": "A",
    "porta": "S4",
-   "rot": 180,
-   "x": 47.2,
-   "y": 26.65,
+   "rot": 270,
+   "x": 11.76,
+   "y": 44.4,
    "lado": 1,
-   "tipo": "solta",
-   "fila_m": 0.0,
-   "guia": false
+   "tipo": "par",
+   "fila_m": 4.0,
+   "guia": true
   },
   {
    "mrv": 16,
-   "eleitor": 24,
-   "parede": "leste",
+   "eleitor": 11,
+   "parede": "norte",
    "principal": 3302,
    "agregada": 3181,
    "classe": "media",
@@ -464,18 +473,18 @@
    "aptos": 771,
    "entrada": "B",
    "porta": "S5",
-   "rot": 180,
-   "x": 47.3,
-   "y": 19.7,
+   "rot": 270,
+   "x": 15.66,
+   "y": 44.4,
    "lado": -1,
-   "tipo": "solta",
-   "fila_m": 0.0,
-   "guia": false
+   "tipo": "par",
+   "fila_m": 4.0,
+   "guia": true
   },
   {
    "mrv": 17,
-   "eleitor": 25,
-   "parede": "leste",
+   "eleitor": 4,
+   "parede": "oeste",
    "principal": 3305,
    "agregada": 521,
    "classe": "media",
@@ -483,17 +492,17 @@
    "aptos": 767,
    "entrada": "B",
    "porta": "S5",
-   "rot": 180,
-   "x": 47.3,
-   "y": 17.3,
-   "lado": 1,
+   "rot": 0,
+   "x": 0,
+   "y": 18.53,
+   "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
    "guia": true
   },
   {
    "mrv": 18,
-   "eleitor": 26,
+   "eleitor": 23,
    "parede": "leste",
    "principal": 3306,
    "agregada": 518,
@@ -504,7 +513,7 @@
    "porta": "S5",
    "rot": 180,
    "x": 47.3,
-   "y": 13.4,
+   "y": 22.85,
    "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
@@ -512,7 +521,7 @@
   },
   {
    "mrv": 19,
-   "eleitor": 27,
+   "eleitor": 26,
    "parede": "leste",
    "principal": 3308,
    "agregada": null,
@@ -523,16 +532,16 @@
    "porta": "S6",
    "rot": 180,
    "x": 47.3,
-   "y": 11,
+   "y": 12.95,
    "lado": 1,
-   "tipo": "par",
-   "fila_m": 4.0,
-   "guia": true
+   "tipo": "solta",
+   "fila_m": 0.0,
+   "guia": false
   },
   {
    "mrv": 20,
-   "eleitor": 28,
-   "parede": "leste",
+   "eleitor": 17,
+   "parede": "norte",
    "principal": 3309,
    "agregada": 1314,
    "classe": "baixa",
@@ -540,18 +549,18 @@
    "aptos": 615,
    "entrada": "A",
    "porta": "S4",
-   "rot": 180,
-   "x": 47.3,
-   "y": 7.1,
-   "lado": -1,
+   "rot": 270,
+   "x": 35.95,
+   "y": 43.8,
+   "lado": 1,
    "tipo": "par",
    "fila_m": 4.0,
    "guia": true
   },
   {
    "mrv": 21,
-   "eleitor": 4,
-   "parede": "oeste",
+   "eleitor": 24,
+   "parede": "leste",
    "principal": 3311,
    "agregada": 3913,
    "classe": "media",
@@ -559,17 +568,17 @@
    "aptos": 630,
    "entrada": "B",
    "porta": "S5",
-   "rot": 0,
-   "x": 1,
-   "y": 18.3,
+   "rot": 180,
+   "x": 47.3,
+   "y": 19.85,
    "lado": 1,
-   "tipo": "solta",
-   "fila_m": 0.0,
-   "guia": false
+   "tipo": "par",
+   "fila_m": 4.0,
+   "guia": true
   },
   {
    "mrv": 22,
-   "eleitor": 15,
+   "eleitor": 14,
    "parede": "norte",
    "principal": 3313,
    "agregada": 3889,
@@ -579,16 +588,16 @@
    "entrada": "B",
    "porta": "S5",
    "rot": 270,
-   "x": 29.75,
-   "y": 44.35,
-   "lado": -1,
+   "x": 25.65,
+   "y": 43.9,
+   "lado": 1,
    "tipo": "polo",
    "fila_m": 10.0,
    "guia": true
   },
   {
    "mrv": 23,
-   "eleitor": 23,
+   "eleitor": 21,
    "parede": "leste",
    "principal": 3315,
    "agregada": 3778,
@@ -598,8 +607,8 @@
    "entrada": "C",
    "porta": "S6",
    "rot": 180,
-   "x": 47.1,
-   "y": 23.85,
+   "x": 47.15,
+   "y": 29.4,
    "lado": 1,
    "tipo": "polo",
    "fila_m": 10.0,
@@ -607,7 +616,7 @@
   },
   {
    "mrv": 24,
-   "eleitor": 5,
+   "eleitor": 7,
    "parede": "oeste",
    "principal": 3322,
    "agregada": 3752,
@@ -617,17 +626,17 @@
    "entrada": "A",
    "porta": "S4",
    "rot": 0,
-   "x": 0.9,
-   "y": 23.95,
-   "lado": -1,
+   "x": 0.4,
+   "y": 30.8,
+   "lado": 1,
    "tipo": "polo",
    "fila_m": 10.0,
    "guia": true
   },
   {
    "mrv": 25,
-   "eleitor": 6,
-   "parede": "oeste",
+   "eleitor": 18,
+   "parede": "norte",
    "principal": 3442,
    "agregada": null,
    "classe": "baixa",
@@ -635,18 +644,18 @@
    "aptos": 398,
    "entrada": "B",
    "porta": "S5",
-   "rot": 0,
-   "x": 0.9,
-   "y": 27.3,
-   "lado": 1,
+   "rot": 270,
+   "x": 39.85,
+   "y": 43.8,
+   "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
    "guia": true
   },
   {
    "mrv": 26,
-   "eleitor": 7,
-   "parede": "oeste",
+   "eleitor": 25,
+   "parede": "leste",
    "principal": 3688,
    "agregada": null,
    "classe": "baixa",
@@ -654,9 +663,9 @@
    "aptos": 400,
    "entrada": "A",
    "porta": "S4",
-   "rot": 0,
-   "x": 0.7,
-   "y": 31.3,
+   "rot": 180,
+   "x": 47.3,
+   "y": 15.95,
    "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
@@ -664,8 +673,8 @@
   },
   {
    "mrv": 27,
-   "eleitor": 8,
-   "parede": "oeste",
+   "eleitor": 27,
+   "parede": "leste",
    "principal": 3832,
    "agregada": null,
    "classe": "baixa",
@@ -673,9 +682,9 @@
    "aptos": 400,
    "entrada": "C",
    "porta": "S6",
-   "rot": 0,
-   "x": 0.4,
-   "y": 33.8,
+   "rot": 180,
+   "x": 47.3,
+   "y": 9.95,
    "lado": 1,
    "tipo": "par",
    "fila_m": 4.0,
@@ -683,8 +692,8 @@
   },
   {
    "mrv": 28,
-   "eleitor": 9,
-   "parede": "oeste",
+   "eleitor": 28,
+   "parede": "leste",
    "principal": 3862,
    "agregada": null,
    "classe": "baixa",
@@ -692,9 +701,9 @@
    "aptos": 400,
    "entrada": "A",
    "porta": "S4",
-   "rot": 0,
-   "x": 0.3,
-   "y": 37.2,
+   "rot": 180,
+   "x": 47.3,
+   "y": 6.05,
    "lado": -1,
    "tipo": "par",
    "fila_m": 4.0,
@@ -702,18 +711,12 @@
   }
  ],
  "sem_guia": [
-  5,
-  6,
-  9,
-  12,
-  15,
-  16,
-  21
+  19
  ],
  "folego": [
   {
    "mrv": 1,
-   "eleitor": 10,
+   "eleitor": 5,
    "principal": 511,
    "classe": "baixa",
    "esperado": 375,
@@ -727,7 +730,7 @@
   },
   {
    "mrv": 2,
-   "eleitor": 11,
+   "eleitor": 12,
    "principal": 512,
    "classe": "baixa",
    "esperado": 355,
@@ -741,7 +744,7 @@
   },
   {
    "mrv": 3,
-   "eleitor": 12,
+   "eleitor": 19,
    "principal": 513,
    "classe": "baixa",
    "esperado": 351,
@@ -755,7 +758,7 @@
   },
   {
    "mrv": 4,
-   "eleitor": 13,
+   "eleitor": 6,
    "principal": 517,
    "classe": "baixa",
    "esperado": 348,
@@ -769,35 +772,35 @@
   },
   {
    "mrv": 5,
-   "eleitor": 14,
+   "eleitor": 1,
    "principal": 1160,
    "classe": "baixa",
    "esperado": 328,
-   "tipo": "solta",
-   "guia": false,
-   "fila": 0.0,
-   "cap": 0,
+   "tipo": "par",
+   "guia": true,
+   "fila": 4.0,
+   "cap": 8,
    "chega_min": 1.09,
    "liquido_min": 0.09,
-   "minutos": null
+   "minutos": 86
   },
   {
    "mrv": 6,
-   "eleitor": 18,
+   "eleitor": 2,
    "principal": 1352,
    "classe": "baixa",
    "esperado": 328,
-   "tipo": "solta",
-   "guia": false,
-   "fila": 0.0,
-   "cap": 0,
+   "tipo": "par",
+   "guia": true,
+   "fila": 4.0,
+   "cap": 8,
    "chega_min": 1.09,
    "liquido_min": 0.09,
-   "minutos": null
+   "minutos": 86
   },
   {
    "mrv": 7,
-   "eleitor": 16,
+   "eleitor": 20,
    "principal": 3054,
    "classe": "baixa",
    "esperado": 325,
@@ -811,7 +814,7 @@
   },
   {
    "mrv": 8,
-   "eleitor": 17,
+   "eleitor": 13,
    "principal": 3078,
    "classe": "baixa",
    "esperado": 311,
@@ -825,21 +828,21 @@
   },
   {
    "mrv": 9,
-   "eleitor": 3,
+   "eleitor": 8,
    "principal": 3108,
    "classe": "media",
    "esperado": 467,
-   "tipo": "solta",
-   "guia": false,
-   "fila": 0.0,
-   "cap": 0,
+   "tipo": "par",
+   "guia": true,
+   "fila": 4.0,
+   "cap": 8,
    "chega_min": 1.56,
    "liquido_min": 0.56,
-   "minutos": null
+   "minutos": 14
   },
   {
    "mrv": 10,
-   "eleitor": 2,
+   "eleitor": 15,
    "principal": 3142,
    "classe": "media",
    "esperado": 466,
@@ -853,7 +856,7 @@
   },
   {
    "mrv": 11,
-   "eleitor": 1,
+   "eleitor": 9,
    "principal": 3161,
    "classe": "media",
    "esperado": 504,
@@ -867,21 +870,21 @@
   },
   {
    "mrv": 12,
-   "eleitor": 19,
+   "eleitor": 3,
    "principal": 3179,
    "classe": "baixa",
    "esperado": 423,
-   "tipo": "solta",
-   "guia": false,
-   "fila": 0.0,
-   "cap": 0,
+   "tipo": "par",
+   "guia": true,
+   "fila": 4.0,
+   "cap": 8,
    "chega_min": 1.41,
    "liquido_min": 0.41,
-   "minutos": null
+   "minutos": 20
   },
   {
    "mrv": 13,
-   "eleitor": 20,
+   "eleitor": 16,
    "principal": 3216,
    "classe": "baixa",
    "esperado": 407,
@@ -895,7 +898,7 @@
   },
   {
    "mrv": 14,
-   "eleitor": 21,
+   "eleitor": 22,
    "principal": 3229,
    "classe": "baixa",
    "esperado": 405,
@@ -909,35 +912,35 @@
   },
   {
    "mrv": 15,
-   "eleitor": 22,
+   "eleitor": 10,
    "principal": 3245,
    "classe": "media",
    "esperado": 498,
-   "tipo": "solta",
-   "guia": false,
-   "fila": 0.0,
-   "cap": 0,
+   "tipo": "par",
+   "guia": true,
+   "fila": 4.0,
+   "cap": 8,
    "chega_min": 1.66,
    "liquido_min": 0.66,
-   "minutos": null
+   "minutos": 12
   },
   {
    "mrv": 16,
-   "eleitor": 24,
+   "eleitor": 11,
    "principal": 3302,
    "classe": "media",
    "esperado": 518,
-   "tipo": "solta",
-   "guia": false,
-   "fila": 0.0,
-   "cap": 0,
+   "tipo": "par",
+   "guia": true,
+   "fila": 4.0,
+   "cap": 8,
    "chega_min": 1.73,
    "liquido_min": 0.73,
-   "minutos": null
+   "minutos": 11
   },
   {
    "mrv": 17,
-   "eleitor": 25,
+   "eleitor": 4,
    "principal": 3305,
    "classe": "media",
    "esperado": 472,
@@ -951,7 +954,7 @@
   },
   {
    "mrv": 18,
-   "eleitor": 26,
+   "eleitor": 23,
    "principal": 3306,
    "classe": "media",
    "esperado": 515,
@@ -965,21 +968,21 @@
   },
   {
    "mrv": 19,
-   "eleitor": 27,
+   "eleitor": 26,
    "principal": 3308,
    "classe": "baixa",
    "esperado": 295,
-   "tipo": "par",
-   "guia": true,
-   "fila": 4.0,
-   "cap": 8,
+   "tipo": "solta",
+   "guia": false,
+   "fila": 0.0,
+   "cap": 0,
    "chega_min": 0.98,
    "liquido_min": -0.02,
    "minutos": null
   },
   {
    "mrv": 20,
-   "eleitor": 28,
+   "eleitor": 17,
    "principal": 3309,
    "classe": "baixa",
    "esperado": 395,
@@ -993,21 +996,21 @@
   },
   {
    "mrv": 21,
-   "eleitor": 4,
+   "eleitor": 24,
    "principal": 3311,
    "classe": "media",
    "esperado": 466,
-   "tipo": "solta",
-   "guia": false,
-   "fila": 0.0,
-   "cap": 0,
+   "tipo": "par",
+   "guia": true,
+   "fila": 4.0,
+   "cap": 8,
    "chega_min": 1.55,
    "liquido_min": 0.55,
-   "minutos": null
+   "minutos": 14
   },
   {
    "mrv": 22,
-   "eleitor": 15,
+   "eleitor": 14,
    "principal": 3313,
    "classe": "alta",
    "esperado": 590,
@@ -1021,7 +1024,7 @@
   },
   {
    "mrv": 23,
-   "eleitor": 23,
+   "eleitor": 21,
    "principal": 3315,
    "classe": "alta",
    "esperado": 586,
@@ -1035,7 +1038,7 @@
   },
   {
    "mrv": 24,
-   "eleitor": 5,
+   "eleitor": 7,
    "principal": 3322,
    "classe": "alta",
    "esperado": 588,
@@ -1049,7 +1052,7 @@
   },
   {
    "mrv": 25,
-   "eleitor": 6,
+   "eleitor": 18,
    "principal": 3442,
    "classe": "baixa",
    "esperado": 295,
@@ -1063,7 +1066,7 @@
   },
   {
    "mrv": 26,
-   "eleitor": 7,
+   "eleitor": 25,
    "principal": 3688,
    "classe": "baixa",
    "esperado": 296,
@@ -1077,7 +1080,7 @@
   },
   {
    "mrv": 27,
-   "eleitor": 8,
+   "eleitor": 27,
    "principal": 3832,
    "classe": "baixa",
    "esperado": 296,
@@ -1091,7 +1094,7 @@
   },
   {
    "mrv": 28,
-   "eleitor": 9,
+   "eleitor": 28,
    "principal": 3862,
    "classe": "baixa",
    "esperado": 296,
@@ -1110,11 +1113,11 @@
   {
    "nome": "1e",
    "desc": "Adotado. As duas linhas que separam as três correntes da porta ao checkpoint, com 6 bochechas de portão; nas mesas, a regra de 13/09.",
-   "corridas": 14,
-   "fitas": 53,
-   "postes": 73,
-   "postes_reserva": 81,
-   "metros": 106.0,
+   "corridas": 17,
+   "fitas": 59,
+   "postes": 82,
+   "postes_reserva": 91,
+   "metros": 118.0,
    "itens": [
     {
      "rotulo": "divisória A|B · 20 m",
@@ -1141,7 +1144,7 @@
      "metros": 0.0
     },
     {
-     "rotulo": "polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5)",
+     "rotulo": "polo (mesa vermelha) · 10,0 m (3: mesas 14, 21, 7)",
      "corridas": 3,
      "L": 10.0,
      "fitas": 15,
@@ -1149,19 +1152,19 @@
      "metros": 30.0
     },
     {
-     "rotulo": "linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9)",
-     "corridas": 9,
+     "rotulo": "linha do meio de par · 4,0 m (12: mesas 5–6, 12–13, 19–20, 1–2, 8–9, 15–16, 3–4, 22–23, 10–11, 17–18, 24–25, 27–28)",
+     "corridas": 12,
      "L": 4.0,
-     "fitas": 18,
-     "postes": 27,
-     "metros": 36.0
+     "fitas": 24,
+     "postes": 36,
+     "metros": 48.0
     }
    ],
    "custo": {
-    "postes": 81,
-    "lista_ex": 1295.0,
-    "lista_inc": 1592.85,
-    "ao_preco_orcado": 1055.43
+    "postes": 91,
+    "lista_ex": 1445.0,
+    "lista_inc": 1777.35,
+    "ao_preco_orcado": 1185.73
    },
    "adotado": true,
    "canal": {
@@ -1210,28 +1213,6 @@
      "tipo": "par",
      "quem": [
       1,
-      2
-     ],
-     "L": 4.0,
-     "pedido": 4.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [
-      [
-       15.75,
-       40.1
-      ],
-      [
-       15.75,
-       36.1
-      ]
-     ],
-     "rotulo": "par 10–11 (MRV 1–2) · linha do meio · 4,0 m"
-    },
-    {
-     "tipo": "par",
-     "quem": [
-      3,
       4
      ],
      "L": 4.0,
@@ -1240,20 +1221,20 @@
      "classe": "baixa",
      "pontos": [
       [
-       22.05,
-       40.2
+       4.3,
+       25.3
       ],
       [
-       22.05,
-       36.2
+       8.3,
+       25.3
       ]
      ],
-     "rotulo": "par 12–13 (MRV 3–4) · linha do meio · 4,0 m"
+     "rotulo": "par 5–6 (MRV 1–4) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      7,
+      2,
       8
      ],
      "L": 4.0,
@@ -1262,20 +1243,64 @@
      "classe": "baixa",
      "pontos": [
       [
-       34.48,
-       40.3
+       20.01,
+       40.0
       ],
       [
-       34.48,
-       36.3
+       20.01,
+       36.0
       ]
      ],
-     "rotulo": "par 16–17 (MRV 7–8) · linha do meio · 4,0 m"
+     "rotulo": "par 12–13 (MRV 2–8) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      10,
+      3,
+      7
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "baixa",
+     "pontos": [
+      [
+       43.05,
+       35.25
+      ],
+      [
+       39.05,
+       35.25
+      ]
+     ],
+     "rotulo": "par 19–20 (MRV 3–7) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      5,
+      6
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "baixa",
+     "pontos": [
+      [
+       4.1,
+       9.68
+      ],
+      [
+       8.1,
+       9.68
+      ]
+     ],
+     "rotulo": "par 1–2 (MRV 5–6) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      9,
       11
      ],
      "L": 4.0,
@@ -1284,42 +1309,64 @@
      "classe": "media",
      "pontos": [
       [
-       5.0,
-       10.55
+       4.6,
+       36.8
       ],
       [
-       9.0,
-       10.55
+       8.6,
+       36.8
       ]
      ],
-     "rotulo": "par 2–1 (MRV 10–11) · linha do meio · 4,0 m"
+     "rotulo": "par 8–9 (MRV 9–11) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      13,
-      14
+      10,
+      13
      ],
      "L": 4.0,
      "pedido": 4.0,
      "cortada": 0.0,
-     "classe": "baixa",
+     "classe": "media",
      "pontos": [
       [
-       43.2,
-       30.375
+       31.6,
+       39.95
       ],
       [
-       39.2,
-       30.375
+       31.6,
+       35.95
       ]
      ],
-     "rotulo": "par 20–21 (MRV 13–14) · linha do meio · 4,0 m"
+     "rotulo": "par 15–16 (MRV 10–13) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      17,
+      12,
+      17
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "media",
+     "pontos": [
+      [
+       4.1,
+       16.58
+      ],
+      [
+       8.1,
+       16.58
+      ]
+     ],
+     "rotulo": "par 3–4 (MRV 12–17) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      14,
       18
      ],
      "L": 4.0,
@@ -1329,20 +1376,42 @@
      "pontos": [
       [
        43.2,
-       15.35
+       24.375
       ],
       [
        39.2,
-       15.35
+       24.375
       ]
      ],
-     "rotulo": "par 25–26 (MRV 17–18) · linha do meio · 4,0 m"
+     "rotulo": "par 22–23 (MRV 14–18) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      19,
-      20
+      15,
+      16
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "media",
+     "pontos": [
+      [
+       13.71,
+       40.3
+      ],
+      [
+       13.71,
+       36.3
+      ]
+     ],
+     "rotulo": "par 10–11 (MRV 15–16) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      20,
+      25
      ],
      "L": 4.0,
      "pedido": 4.0,
@@ -1350,37 +1419,37 @@
      "classe": "baixa",
      "pontos": [
       [
-       43.2,
-       9.05
+       37.9,
+       39.7
       ],
       [
-       39.2,
-       9.05
+       37.9,
+       35.7
       ]
      ],
-     "rotulo": "par 27–28 (MRV 19–20) · linha do meio · 4,0 m"
+     "rotulo": "par 17–18 (MRV 20–25) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      25,
+      21,
       26
      ],
      "L": 4.0,
      "pedido": 4.0,
      "cortada": 0.0,
-     "classe": "baixa",
+     "classe": "media",
      "pontos": [
       [
-       5.0,
-       29.3
+       43.2,
+       17.9
       ],
       [
-       9.0,
-       29.3
+       39.2,
+       17.9
       ]
      ],
-     "rotulo": "par 6–7 (MRV 25–26) · linha do meio · 4,0 m"
+     "rotulo": "par 24–25 (MRV 21–26) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
@@ -1394,99 +1463,27 @@
      "classe": "baixa",
      "pontos": [
       [
-       4.5,
-       35.5
+       43.2,
+       8.0
       ],
       [
-       8.5,
-       35.5
+       39.2,
+       8.0
       ]
      ],
-     "rotulo": "par 8–9 (MRV 27–28) · linha do meio · 4,0 m"
+     "rotulo": "par 27–28 (MRV 27–28) · linha do meio · 4,0 m"
     },
     {
      "tipo": "solta",
      "quem": [
-      5
+      19
      ],
      "L": 0.0,
      "pedido": 0.0,
      "cortada": 0.0,
      "classe": "baixa",
      "pontos": [],
-     "rotulo": "mesa 14 (MRV 5) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      6
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [],
-     "rotulo": "mesa 18 (MRV 6) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      9
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 3 (MRV 9) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      12
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [],
-     "rotulo": "mesa 19 (MRV 12) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      15
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 22 (MRV 15) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      16
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 24 (MRV 16) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      21
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 4 (MRV 21) · sem par · sem unifila"
+     "rotulo": "mesa 26 (MRV 19) · sem par · sem unifila"
     },
     {
      "tipo": "polo",
@@ -1499,15 +1496,15 @@
      "classe": "alta",
      "pontos": [
       [
-       29.15,
-       40.25
+       26.25,
+       39.8
       ],
       [
-       29.15,
-       30.25
+       26.25,
+       29.8
       ]
      ],
-     "rotulo": "mesa 15 (MRV 22) · polo · 10,0 m"
+     "rotulo": "mesa 14 (MRV 22) · polo · 10,0 m"
     },
     {
      "tipo": "polo",
@@ -1520,15 +1517,15 @@
      "classe": "alta",
      "pontos": [
       [
-       43.0,
-       23.25
+       43.05,
+       28.8
       ],
       [
-       33.0,
-       23.25
+       33.05,
+       28.8
       ]
      ],
-     "rotulo": "mesa 23 (MRV 23) · polo · 10,0 m"
+     "rotulo": "mesa 21 (MRV 23) · polo · 10,0 m"
     },
     {
      "tipo": "polo",
@@ -1541,36 +1538,30 @@
      "classe": "alta",
      "pontos": [
       [
-       5.0,
-       23.35
+       4.5,
+       31.4
       ],
       [
-       15.0,
-       23.35
+       14.5,
+       31.4
       ]
      ],
-     "rotulo": "mesa 5 (MRV 24) · polo · 10,0 m"
+     "rotulo": "mesa 7 (MRV 24) · polo · 10,0 m"
     }
    ],
    "sem_guia": [
-    5,
-    6,
-    9,
-    12,
-    15,
-    16,
-    21
+    19
    ],
-   "mesas_sem_guia": 7
+   "mesas_sem_guia": 1
   },
   {
    "nome": "1f",
    "desc": "Duas linhas em x 25,18 e 31,40 da parede sul até 15 m; no metro 15, um braço para oeste guia a fila A e um para leste guia a fila C (6 m cada, premissa).",
-   "corridas": 14,
-   "fitas": 55,
-   "postes": 71,
-   "postes_reserva": 79,
-   "metros": 110.0,
+   "corridas": 17,
+   "fitas": 61,
+   "postes": 80,
+   "postes_reserva": 88,
+   "metros": 122.0,
    "itens": [
     {
      "rotulo": "lado oeste do T · canal 15 m + braço 6 m (guia a fila A)",
@@ -1597,7 +1588,7 @@
      "metros": 0.0
     },
     {
-     "rotulo": "polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5)",
+     "rotulo": "polo (mesa vermelha) · 10,0 m (3: mesas 14, 21, 7)",
      "corridas": 3,
      "L": 10.0,
      "fitas": 15,
@@ -1605,19 +1596,19 @@
      "metros": 30.0
     },
     {
-     "rotulo": "linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9)",
-     "corridas": 9,
+     "rotulo": "linha do meio de par · 4,0 m (12: mesas 5–6, 12–13, 19–20, 1–2, 8–9, 15–16, 3–4, 22–23, 10–11, 17–18, 24–25, 27–28)",
+     "corridas": 12,
      "L": 4.0,
-     "fitas": 18,
-     "postes": 27,
-     "metros": 36.0
+     "fitas": 24,
+     "postes": 36,
+     "metros": 48.0
     }
    ],
    "custo": {
-    "postes": 79,
-    "lista_ex": 1265.0,
-    "lista_inc": 1555.95,
-    "ao_preco_orcado": 1029.37
+    "postes": 88,
+    "lista_ex": 1400.0,
+    "lista_inc": 1722.0,
+    "ao_preco_orcado": 1146.64
    },
    "adotado": false,
    "canal": {
@@ -1674,28 +1665,6 @@
      "tipo": "par",
      "quem": [
       1,
-      2
-     ],
-     "L": 4.0,
-     "pedido": 4.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [
-      [
-       15.75,
-       40.1
-      ],
-      [
-       15.75,
-       36.1
-      ]
-     ],
-     "rotulo": "par 10–11 (MRV 1–2) · linha do meio · 4,0 m"
-    },
-    {
-     "tipo": "par",
-     "quem": [
-      3,
       4
      ],
      "L": 4.0,
@@ -1704,20 +1673,20 @@
      "classe": "baixa",
      "pontos": [
       [
-       22.05,
-       40.2
+       4.3,
+       25.3
       ],
       [
-       22.05,
-       36.2
+       8.3,
+       25.3
       ]
      ],
-     "rotulo": "par 12–13 (MRV 3–4) · linha do meio · 4,0 m"
+     "rotulo": "par 5–6 (MRV 1–4) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      7,
+      2,
       8
      ],
      "L": 4.0,
@@ -1726,20 +1695,64 @@
      "classe": "baixa",
      "pontos": [
       [
-       34.48,
-       40.3
+       20.01,
+       40.0
       ],
       [
-       34.48,
-       36.3
+       20.01,
+       36.0
       ]
      ],
-     "rotulo": "par 16–17 (MRV 7–8) · linha do meio · 4,0 m"
+     "rotulo": "par 12–13 (MRV 2–8) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      10,
+      3,
+      7
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "baixa",
+     "pontos": [
+      [
+       43.05,
+       35.25
+      ],
+      [
+       39.05,
+       35.25
+      ]
+     ],
+     "rotulo": "par 19–20 (MRV 3–7) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      5,
+      6
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "baixa",
+     "pontos": [
+      [
+       4.1,
+       9.68
+      ],
+      [
+       8.1,
+       9.68
+      ]
+     ],
+     "rotulo": "par 1–2 (MRV 5–6) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      9,
       11
      ],
      "L": 4.0,
@@ -1748,42 +1761,64 @@
      "classe": "media",
      "pontos": [
       [
-       5.0,
-       10.55
+       4.6,
+       36.8
       ],
       [
-       9.0,
-       10.55
+       8.6,
+       36.8
       ]
      ],
-     "rotulo": "par 2–1 (MRV 10–11) · linha do meio · 4,0 m"
+     "rotulo": "par 8–9 (MRV 9–11) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      13,
-      14
+      10,
+      13
      ],
      "L": 4.0,
      "pedido": 4.0,
      "cortada": 0.0,
-     "classe": "baixa",
+     "classe": "media",
      "pontos": [
       [
-       43.2,
-       30.375
+       31.6,
+       39.95
       ],
       [
-       39.2,
-       30.375
+       31.6,
+       35.95
       ]
      ],
-     "rotulo": "par 20–21 (MRV 13–14) · linha do meio · 4,0 m"
+     "rotulo": "par 15–16 (MRV 10–13) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      17,
+      12,
+      17
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "media",
+     "pontos": [
+      [
+       4.1,
+       16.58
+      ],
+      [
+       8.1,
+       16.58
+      ]
+     ],
+     "rotulo": "par 3–4 (MRV 12–17) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      14,
       18
      ],
      "L": 4.0,
@@ -1793,20 +1828,42 @@
      "pontos": [
       [
        43.2,
-       15.35
+       24.375
       ],
       [
        39.2,
-       15.35
+       24.375
       ]
      ],
-     "rotulo": "par 25–26 (MRV 17–18) · linha do meio · 4,0 m"
+     "rotulo": "par 22–23 (MRV 14–18) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      19,
-      20
+      15,
+      16
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "media",
+     "pontos": [
+      [
+       13.71,
+       40.3
+      ],
+      [
+       13.71,
+       36.3
+      ]
+     ],
+     "rotulo": "par 10–11 (MRV 15–16) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      20,
+      25
      ],
      "L": 4.0,
      "pedido": 4.0,
@@ -1814,37 +1871,37 @@
      "classe": "baixa",
      "pontos": [
       [
-       43.2,
-       9.05
+       37.9,
+       39.7
       ],
       [
-       39.2,
-       9.05
+       37.9,
+       35.7
       ]
      ],
-     "rotulo": "par 27–28 (MRV 19–20) · linha do meio · 4,0 m"
+     "rotulo": "par 17–18 (MRV 20–25) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      25,
+      21,
       26
      ],
      "L": 4.0,
      "pedido": 4.0,
      "cortada": 0.0,
-     "classe": "baixa",
+     "classe": "media",
      "pontos": [
       [
-       5.0,
-       29.3
+       43.2,
+       17.9
       ],
       [
-       9.0,
-       29.3
+       39.2,
+       17.9
       ]
      ],
-     "rotulo": "par 6–7 (MRV 25–26) · linha do meio · 4,0 m"
+     "rotulo": "par 24–25 (MRV 21–26) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
@@ -1858,99 +1915,27 @@
      "classe": "baixa",
      "pontos": [
       [
-       4.5,
-       35.5
+       43.2,
+       8.0
       ],
       [
-       8.5,
-       35.5
+       39.2,
+       8.0
       ]
      ],
-     "rotulo": "par 8–9 (MRV 27–28) · linha do meio · 4,0 m"
+     "rotulo": "par 27–28 (MRV 27–28) · linha do meio · 4,0 m"
     },
     {
      "tipo": "solta",
      "quem": [
-      5
+      19
      ],
      "L": 0.0,
      "pedido": 0.0,
      "cortada": 0.0,
      "classe": "baixa",
      "pontos": [],
-     "rotulo": "mesa 14 (MRV 5) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      6
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [],
-     "rotulo": "mesa 18 (MRV 6) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      9
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 3 (MRV 9) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      12
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [],
-     "rotulo": "mesa 19 (MRV 12) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      15
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 22 (MRV 15) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      16
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 24 (MRV 16) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      21
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 4 (MRV 21) · sem par · sem unifila"
+     "rotulo": "mesa 26 (MRV 19) · sem par · sem unifila"
     },
     {
      "tipo": "polo",
@@ -1963,15 +1948,15 @@
      "classe": "alta",
      "pontos": [
       [
-       29.15,
-       40.25
+       26.25,
+       39.8
       ],
       [
-       29.15,
-       30.25
+       26.25,
+       29.8
       ]
      ],
-     "rotulo": "mesa 15 (MRV 22) · polo · 10,0 m"
+     "rotulo": "mesa 14 (MRV 22) · polo · 10,0 m"
     },
     {
      "tipo": "polo",
@@ -1984,15 +1969,15 @@
      "classe": "alta",
      "pontos": [
       [
-       43.0,
-       23.25
+       43.05,
+       28.8
       ],
       [
-       33.0,
-       23.25
+       33.05,
+       28.8
       ]
      ],
-     "rotulo": "mesa 23 (MRV 23) · polo · 10,0 m"
+     "rotulo": "mesa 21 (MRV 23) · polo · 10,0 m"
     },
     {
      "tipo": "polo",
@@ -2005,36 +1990,30 @@
      "classe": "alta",
      "pontos": [
       [
-       5.0,
-       23.35
+       4.5,
+       31.4
       ],
       [
-       15.0,
-       23.35
+       14.5,
+       31.4
       ]
      ],
-     "rotulo": "mesa 5 (MRV 24) · polo · 10,0 m"
+     "rotulo": "mesa 7 (MRV 24) · polo · 10,0 m"
     }
    ],
    "sem_guia": [
-    5,
-    6,
-    9,
-    12,
-    15,
-    16,
-    21
+    19
    ],
-   "mesas_sem_guia": 7
+   "mesas_sem_guia": 1
   },
   {
    "nome": "1g",
    "desc": "Como o 1f, com o canal B encurtado para 10 m; braços de 6 m.",
-   "corridas": 14,
-   "fitas": 49,
-   "postes": 65,
-   "postes_reserva": 72,
-   "metros": 98.0,
+   "corridas": 17,
+   "fitas": 55,
+   "postes": 74,
+   "postes_reserva": 82,
+   "metros": 110.0,
    "itens": [
     {
      "rotulo": "lado oeste do T · canal 10 m + braço 6 m (guia a fila A)",
@@ -2061,7 +2040,7 @@
      "metros": 0.0
     },
     {
-     "rotulo": "polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5)",
+     "rotulo": "polo (mesa vermelha) · 10,0 m (3: mesas 14, 21, 7)",
      "corridas": 3,
      "L": 10.0,
      "fitas": 15,
@@ -2069,19 +2048,19 @@
      "metros": 30.0
     },
     {
-     "rotulo": "linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9)",
-     "corridas": 9,
+     "rotulo": "linha do meio de par · 4,0 m (12: mesas 5–6, 12–13, 19–20, 1–2, 8–9, 15–16, 3–4, 22–23, 10–11, 17–18, 24–25, 27–28)",
+     "corridas": 12,
      "L": 4.0,
-     "fitas": 18,
-     "postes": 27,
-     "metros": 36.0
+     "fitas": 24,
+     "postes": 36,
+     "metros": 48.0
     }
    ],
    "custo": {
-    "postes": 72,
-    "lista_ex": 1160.0,
-    "lista_inc": 1426.8,
-    "ao_preco_orcado": 938.16
+    "postes": 82,
+    "lista_ex": 1310.0,
+    "lista_inc": 1611.3,
+    "ao_preco_orcado": 1068.46
    },
    "adotado": false,
    "canal": {
@@ -2138,28 +2117,6 @@
      "tipo": "par",
      "quem": [
       1,
-      2
-     ],
-     "L": 4.0,
-     "pedido": 4.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [
-      [
-       15.75,
-       40.1
-      ],
-      [
-       15.75,
-       36.1
-      ]
-     ],
-     "rotulo": "par 10–11 (MRV 1–2) · linha do meio · 4,0 m"
-    },
-    {
-     "tipo": "par",
-     "quem": [
-      3,
       4
      ],
      "L": 4.0,
@@ -2168,20 +2125,20 @@
      "classe": "baixa",
      "pontos": [
       [
-       22.05,
-       40.2
+       4.3,
+       25.3
       ],
       [
-       22.05,
-       36.2
+       8.3,
+       25.3
       ]
      ],
-     "rotulo": "par 12–13 (MRV 3–4) · linha do meio · 4,0 m"
+     "rotulo": "par 5–6 (MRV 1–4) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      7,
+      2,
       8
      ],
      "L": 4.0,
@@ -2190,20 +2147,64 @@
      "classe": "baixa",
      "pontos": [
       [
-       34.48,
-       40.3
+       20.01,
+       40.0
       ],
       [
-       34.48,
-       36.3
+       20.01,
+       36.0
       ]
      ],
-     "rotulo": "par 16–17 (MRV 7–8) · linha do meio · 4,0 m"
+     "rotulo": "par 12–13 (MRV 2–8) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      10,
+      3,
+      7
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "baixa",
+     "pontos": [
+      [
+       43.05,
+       35.25
+      ],
+      [
+       39.05,
+       35.25
+      ]
+     ],
+     "rotulo": "par 19–20 (MRV 3–7) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      5,
+      6
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "baixa",
+     "pontos": [
+      [
+       4.1,
+       9.68
+      ],
+      [
+       8.1,
+       9.68
+      ]
+     ],
+     "rotulo": "par 1–2 (MRV 5–6) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      9,
       11
      ],
      "L": 4.0,
@@ -2212,42 +2213,64 @@
      "classe": "media",
      "pontos": [
       [
-       5.0,
-       10.55
+       4.6,
+       36.8
       ],
       [
-       9.0,
-       10.55
+       8.6,
+       36.8
       ]
      ],
-     "rotulo": "par 2–1 (MRV 10–11) · linha do meio · 4,0 m"
+     "rotulo": "par 8–9 (MRV 9–11) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      13,
-      14
+      10,
+      13
      ],
      "L": 4.0,
      "pedido": 4.0,
      "cortada": 0.0,
-     "classe": "baixa",
+     "classe": "media",
      "pontos": [
       [
-       43.2,
-       30.375
+       31.6,
+       39.95
       ],
       [
-       39.2,
-       30.375
+       31.6,
+       35.95
       ]
      ],
-     "rotulo": "par 20–21 (MRV 13–14) · linha do meio · 4,0 m"
+     "rotulo": "par 15–16 (MRV 10–13) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      17,
+      12,
+      17
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "media",
+     "pontos": [
+      [
+       4.1,
+       16.58
+      ],
+      [
+       8.1,
+       16.58
+      ]
+     ],
+     "rotulo": "par 3–4 (MRV 12–17) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      14,
       18
      ],
      "L": 4.0,
@@ -2257,20 +2280,42 @@
      "pontos": [
       [
        43.2,
-       15.35
+       24.375
       ],
       [
        39.2,
-       15.35
+       24.375
       ]
      ],
-     "rotulo": "par 25–26 (MRV 17–18) · linha do meio · 4,0 m"
+     "rotulo": "par 22–23 (MRV 14–18) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      19,
-      20
+      15,
+      16
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "media",
+     "pontos": [
+      [
+       13.71,
+       40.3
+      ],
+      [
+       13.71,
+       36.3
+      ]
+     ],
+     "rotulo": "par 10–11 (MRV 15–16) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      20,
+      25
      ],
      "L": 4.0,
      "pedido": 4.0,
@@ -2278,37 +2323,37 @@
      "classe": "baixa",
      "pontos": [
       [
-       43.2,
-       9.05
+       37.9,
+       39.7
       ],
       [
-       39.2,
-       9.05
+       37.9,
+       35.7
       ]
      ],
-     "rotulo": "par 27–28 (MRV 19–20) · linha do meio · 4,0 m"
+     "rotulo": "par 17–18 (MRV 20–25) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      25,
+      21,
       26
      ],
      "L": 4.0,
      "pedido": 4.0,
      "cortada": 0.0,
-     "classe": "baixa",
+     "classe": "media",
      "pontos": [
       [
-       5.0,
-       29.3
+       43.2,
+       17.9
       ],
       [
-       9.0,
-       29.3
+       39.2,
+       17.9
       ]
      ],
-     "rotulo": "par 6–7 (MRV 25–26) · linha do meio · 4,0 m"
+     "rotulo": "par 24–25 (MRV 21–26) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
@@ -2322,99 +2367,27 @@
      "classe": "baixa",
      "pontos": [
       [
-       4.5,
-       35.5
+       43.2,
+       8.0
       ],
       [
-       8.5,
-       35.5
+       39.2,
+       8.0
       ]
      ],
-     "rotulo": "par 8–9 (MRV 27–28) · linha do meio · 4,0 m"
+     "rotulo": "par 27–28 (MRV 27–28) · linha do meio · 4,0 m"
     },
     {
      "tipo": "solta",
      "quem": [
-      5
+      19
      ],
      "L": 0.0,
      "pedido": 0.0,
      "cortada": 0.0,
      "classe": "baixa",
      "pontos": [],
-     "rotulo": "mesa 14 (MRV 5) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      6
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [],
-     "rotulo": "mesa 18 (MRV 6) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      9
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 3 (MRV 9) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      12
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [],
-     "rotulo": "mesa 19 (MRV 12) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      15
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 22 (MRV 15) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      16
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 24 (MRV 16) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      21
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 4 (MRV 21) · sem par · sem unifila"
+     "rotulo": "mesa 26 (MRV 19) · sem par · sem unifila"
     },
     {
      "tipo": "polo",
@@ -2427,15 +2400,15 @@
      "classe": "alta",
      "pontos": [
       [
-       29.15,
-       40.25
+       26.25,
+       39.8
       ],
       [
-       29.15,
-       30.25
+       26.25,
+       29.8
       ]
      ],
-     "rotulo": "mesa 15 (MRV 22) · polo · 10,0 m"
+     "rotulo": "mesa 14 (MRV 22) · polo · 10,0 m"
     },
     {
      "tipo": "polo",
@@ -2448,15 +2421,15 @@
      "classe": "alta",
      "pontos": [
       [
-       43.0,
-       23.25
+       43.05,
+       28.8
       ],
       [
-       33.0,
-       23.25
+       33.05,
+       28.8
       ]
      ],
-     "rotulo": "mesa 23 (MRV 23) · polo · 10,0 m"
+     "rotulo": "mesa 21 (MRV 23) · polo · 10,0 m"
     },
     {
      "tipo": "polo",
@@ -2469,36 +2442,30 @@
      "classe": "alta",
      "pontos": [
       [
-       5.0,
-       23.35
+       4.5,
+       31.4
       ],
       [
-       15.0,
-       23.35
+       14.5,
+       31.4
       ]
      ],
-     "rotulo": "mesa 5 (MRV 24) · polo · 10,0 m"
+     "rotulo": "mesa 7 (MRV 24) · polo · 10,0 m"
     }
    ],
    "sem_guia": [
-    5,
-    6,
-    9,
-    12,
-    15,
-    16,
-    21
+    19
    ],
-   "mesas_sem_guia": 7
+   "mesas_sem_guia": 1
   },
   {
    "nome": "1h",
    "desc": "O mínimo que ainda marca a virada: 5 m de canal e 3 m de braço.",
-   "corridas": 14,
-   "fitas": 41,
-   "postes": 57,
-   "postes_reserva": 63,
-   "metros": 82.0,
+   "corridas": 17,
+   "fitas": 47,
+   "postes": 66,
+   "postes_reserva": 73,
+   "metros": 94.0,
    "itens": [
     {
      "rotulo": "lado oeste do T · canal 5 m + braço 3 m (guia a fila A)",
@@ -2525,7 +2492,7 @@
      "metros": 0.0
     },
     {
-     "rotulo": "polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5)",
+     "rotulo": "polo (mesa vermelha) · 10,0 m (3: mesas 14, 21, 7)",
      "corridas": 3,
      "L": 10.0,
      "fitas": 15,
@@ -2533,19 +2500,19 @@
      "metros": 30.0
     },
     {
-     "rotulo": "linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9)",
-     "corridas": 9,
+     "rotulo": "linha do meio de par · 4,0 m (12: mesas 5–6, 12–13, 19–20, 1–2, 8–9, 15–16, 3–4, 22–23, 10–11, 17–18, 24–25, 27–28)",
+     "corridas": 12,
      "L": 4.0,
-     "fitas": 18,
-     "postes": 27,
-     "metros": 36.0
+     "fitas": 24,
+     "postes": 36,
+     "metros": 48.0
     }
    ],
    "custo": {
-    "postes": 63,
-    "lista_ex": 1025.0,
-    "lista_inc": 1260.75,
-    "ao_preco_orcado": 820.89
+    "postes": 73,
+    "lista_ex": 1175.0,
+    "lista_inc": 1445.25,
+    "ao_preco_orcado": 951.19
    },
    "adotado": false,
    "canal": {
@@ -2602,28 +2569,6 @@
      "tipo": "par",
      "quem": [
       1,
-      2
-     ],
-     "L": 4.0,
-     "pedido": 4.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [
-      [
-       15.75,
-       40.1
-      ],
-      [
-       15.75,
-       36.1
-      ]
-     ],
-     "rotulo": "par 10–11 (MRV 1–2) · linha do meio · 4,0 m"
-    },
-    {
-     "tipo": "par",
-     "quem": [
-      3,
       4
      ],
      "L": 4.0,
@@ -2632,20 +2577,20 @@
      "classe": "baixa",
      "pontos": [
       [
-       22.05,
-       40.2
+       4.3,
+       25.3
       ],
       [
-       22.05,
-       36.2
+       8.3,
+       25.3
       ]
      ],
-     "rotulo": "par 12–13 (MRV 3–4) · linha do meio · 4,0 m"
+     "rotulo": "par 5–6 (MRV 1–4) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      7,
+      2,
       8
      ],
      "L": 4.0,
@@ -2654,20 +2599,64 @@
      "classe": "baixa",
      "pontos": [
       [
-       34.48,
-       40.3
+       20.01,
+       40.0
       ],
       [
-       34.48,
-       36.3
+       20.01,
+       36.0
       ]
      ],
-     "rotulo": "par 16–17 (MRV 7–8) · linha do meio · 4,0 m"
+     "rotulo": "par 12–13 (MRV 2–8) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      10,
+      3,
+      7
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "baixa",
+     "pontos": [
+      [
+       43.05,
+       35.25
+      ],
+      [
+       39.05,
+       35.25
+      ]
+     ],
+     "rotulo": "par 19–20 (MRV 3–7) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      5,
+      6
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "baixa",
+     "pontos": [
+      [
+       4.1,
+       9.68
+      ],
+      [
+       8.1,
+       9.68
+      ]
+     ],
+     "rotulo": "par 1–2 (MRV 5–6) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      9,
       11
      ],
      "L": 4.0,
@@ -2676,42 +2665,64 @@
      "classe": "media",
      "pontos": [
       [
-       5.0,
-       10.55
+       4.6,
+       36.8
       ],
       [
-       9.0,
-       10.55
+       8.6,
+       36.8
       ]
      ],
-     "rotulo": "par 2–1 (MRV 10–11) · linha do meio · 4,0 m"
+     "rotulo": "par 8–9 (MRV 9–11) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      13,
-      14
+      10,
+      13
      ],
      "L": 4.0,
      "pedido": 4.0,
      "cortada": 0.0,
-     "classe": "baixa",
+     "classe": "media",
      "pontos": [
       [
-       43.2,
-       30.375
+       31.6,
+       39.95
       ],
       [
-       39.2,
-       30.375
+       31.6,
+       35.95
       ]
      ],
-     "rotulo": "par 20–21 (MRV 13–14) · linha do meio · 4,0 m"
+     "rotulo": "par 15–16 (MRV 10–13) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      17,
+      12,
+      17
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "media",
+     "pontos": [
+      [
+       4.1,
+       16.58
+      ],
+      [
+       8.1,
+       16.58
+      ]
+     ],
+     "rotulo": "par 3–4 (MRV 12–17) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      14,
       18
      ],
      "L": 4.0,
@@ -2721,20 +2732,42 @@
      "pontos": [
       [
        43.2,
-       15.35
+       24.375
       ],
       [
        39.2,
-       15.35
+       24.375
       ]
      ],
-     "rotulo": "par 25–26 (MRV 17–18) · linha do meio · 4,0 m"
+     "rotulo": "par 22–23 (MRV 14–18) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      19,
-      20
+      15,
+      16
+     ],
+     "L": 4.0,
+     "pedido": 4.0,
+     "cortada": 0.0,
+     "classe": "media",
+     "pontos": [
+      [
+       13.71,
+       40.3
+      ],
+      [
+       13.71,
+       36.3
+      ]
+     ],
+     "rotulo": "par 10–11 (MRV 15–16) · linha do meio · 4,0 m"
+    },
+    {
+     "tipo": "par",
+     "quem": [
+      20,
+      25
      ],
      "L": 4.0,
      "pedido": 4.0,
@@ -2742,37 +2775,37 @@
      "classe": "baixa",
      "pontos": [
       [
-       43.2,
-       9.05
+       37.9,
+       39.7
       ],
       [
-       39.2,
-       9.05
+       37.9,
+       35.7
       ]
      ],
-     "rotulo": "par 27–28 (MRV 19–20) · linha do meio · 4,0 m"
+     "rotulo": "par 17–18 (MRV 20–25) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
      "quem": [
-      25,
+      21,
       26
      ],
      "L": 4.0,
      "pedido": 4.0,
      "cortada": 0.0,
-     "classe": "baixa",
+     "classe": "media",
      "pontos": [
       [
-       5.0,
-       29.3
+       43.2,
+       17.9
       ],
       [
-       9.0,
-       29.3
+       39.2,
+       17.9
       ]
      ],
-     "rotulo": "par 6–7 (MRV 25–26) · linha do meio · 4,0 m"
+     "rotulo": "par 24–25 (MRV 21–26) · linha do meio · 4,0 m"
     },
     {
      "tipo": "par",
@@ -2786,99 +2819,27 @@
      "classe": "baixa",
      "pontos": [
       [
-       4.5,
-       35.5
+       43.2,
+       8.0
       ],
       [
-       8.5,
-       35.5
+       39.2,
+       8.0
       ]
      ],
-     "rotulo": "par 8–9 (MRV 27–28) · linha do meio · 4,0 m"
+     "rotulo": "par 27–28 (MRV 27–28) · linha do meio · 4,0 m"
     },
     {
      "tipo": "solta",
      "quem": [
-      5
+      19
      ],
      "L": 0.0,
      "pedido": 0.0,
      "cortada": 0.0,
      "classe": "baixa",
      "pontos": [],
-     "rotulo": "mesa 14 (MRV 5) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      6
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [],
-     "rotulo": "mesa 18 (MRV 6) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      9
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 3 (MRV 9) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      12
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "baixa",
-     "pontos": [],
-     "rotulo": "mesa 19 (MRV 12) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      15
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 22 (MRV 15) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      16
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 24 (MRV 16) · sem par · sem unifila"
-    },
-    {
-     "tipo": "solta",
-     "quem": [
-      21
-     ],
-     "L": 0.0,
-     "pedido": 0.0,
-     "cortada": 0.0,
-     "classe": "media",
-     "pontos": [],
-     "rotulo": "mesa 4 (MRV 21) · sem par · sem unifila"
+     "rotulo": "mesa 26 (MRV 19) · sem par · sem unifila"
     },
     {
      "tipo": "polo",
@@ -2891,15 +2852,15 @@
      "classe": "alta",
      "pontos": [
       [
-       29.15,
-       40.25
+       26.25,
+       39.8
       ],
       [
-       29.15,
-       30.25
+       26.25,
+       29.8
       ]
      ],
-     "rotulo": "mesa 15 (MRV 22) · polo · 10,0 m"
+     "rotulo": "mesa 14 (MRV 22) · polo · 10,0 m"
     },
     {
      "tipo": "polo",
@@ -2912,15 +2873,15 @@
      "classe": "alta",
      "pontos": [
       [
-       43.0,
-       23.25
+       43.05,
+       28.8
       ],
       [
-       33.0,
-       23.25
+       33.05,
+       28.8
       ]
      ],
-     "rotulo": "mesa 23 (MRV 23) · polo · 10,0 m"
+     "rotulo": "mesa 21 (MRV 23) · polo · 10,0 m"
     },
     {
      "tipo": "polo",
@@ -2933,32 +2894,22 @@
      "classe": "alta",
      "pontos": [
       [
-       5.0,
-       23.35
+       4.5,
+       31.4
       ],
       [
-       15.0,
-       23.35
+       14.5,
+       31.4
       ]
      ],
-     "rotulo": "mesa 5 (MRV 24) · polo · 10,0 m"
+     "rotulo": "mesa 7 (MRV 24) · polo · 10,0 m"
     }
    ],
    "sem_guia": [
-    5,
-    6,
-    9,
-    12,
-    15,
-    16,
-    21
+    19
    ],
-   "mesas_sem_guia": 7
+   "mesas_sem_guia": 1
   }
  ],
- "avisos": [
-  "MRV 5 e 22 se encaram e um deles e polo: o polo recebe os seus 10 m e o outro fica sem par (regra de 13/09; confirmar com o Posto)",
-  "MRV 16 e 23 se encaram e um deles e polo: o polo recebe os seus 10 m e o outro fica sem par (regra de 13/09; confirmar com o Posto)",
-  "MRV 21 e 24 se encaram e um deles e polo: o polo recebe os seus 10 m e o outro fica sem par (regra de 13/09; confirmar com o Posto)"
- ]
+ "avisos": []
 }

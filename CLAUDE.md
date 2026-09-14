@@ -21,7 +21,7 @@ posto do RDS Ballsbridge, Hall 2, para o 1º turno de 04/10/2026.
 5. `docs/SESSAO_2026-09-14.md`: transcrição da conversa de 13/09 (tarde) a
    14/09 (a lista de quinze mudanças do Posto, literal) e a passagem para a
    próxima sessão: estado, decisões em números, como rodar cada simulador e o
-   que condiciona os resultados (colar o Hamad_Final primeiro).
+   que condiciona os resultados (o Hamad_Final já está em `cenarios/`).
 6. `docs/decisoes_em_aberto.md` e `PENDENCIAS`: o que falta decidir (com
    dependências) e o que falta fazer. Não confundir: decisão de fluxo vai em
    `scripts/decisoes_abertas.py`; tarefa vai em `PENDENCIAS`.
@@ -77,10 +77,11 @@ acordada do salão. Duas regras valem para tudo que for produzido depois:
   por porta ou por bloco, e não digite a numeração eleitor: ela sai de
   `decisoes.mesas()[*]["eleitor"]`.
 - Cenário de trabalho: `decisoes.CENARIO_TRABALHO` (`hamad-final`, o
-  Hamad_Final salvo pelo Posto em 13/09). Enquanto o JSON não for colado em
-  `cenarios/`, `cenario_trabalho()` cai no `CENARIO_PROVISORIO`
-  (Hamad_3polos) e marca `provisorio` nas saídas; ao receber o JSON, grave-o
-  em `cenarios/hamad-final-<carimbo>.json` e regenere tudo.
+  Hamad_Final salvo pelo Posto em 13/09 e colado em
+  `cenarios/hamad-final-20260914-170656.json` em 14/09). Se o arquivo faltar,
+  `cenario_trabalho()` cai no `CENARIO_PROVISORIO` (Hamad_3polos) e marca
+  `provisorio` nas saídas. Um cenário novo da prancheta entra pelo mesmo
+  caminho: JSON colado pelo Posto, gravado em `cenarios/`, tudo regenerado.
 - Cores: vermelho/amarelo/verde marcam a **carga** da mesa (as 3 maiores, ≥ 450
   esperados, o resto); azul/âmbar/magenta são as **raias** A/B/C da
   sinalização. Não misturar. Identidade da fila para o eleitor: **letra**

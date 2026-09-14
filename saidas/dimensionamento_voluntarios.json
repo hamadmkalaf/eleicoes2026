@@ -1,0 +1,664 @@
+{
+  "base": {
+    "clusters": [
+      {
+        "Cluster": "C1",
+        "Entrada": "A",
+        "Urnas": [
+          3313,
+          3216,
+          517
+        ],
+        "Comparecimento_esperado": 1323
+      },
+      {
+        "Cluster": "C2",
+        "Entrada": "B",
+        "Urnas": [
+          3322,
+          511,
+          513
+        ],
+        "Comparecimento_esperado": 1322
+      },
+      {
+        "Cluster": "C3",
+        "Entrada": "B",
+        "Urnas": [
+          3315,
+          3229,
+          512
+        ],
+        "Comparecimento_esperado": 1319
+      },
+      {
+        "Cluster": "C4",
+        "Entrada": "A",
+        "Urnas": [
+          3142,
+          3309,
+          1160
+        ],
+        "Comparecimento_esperado": 1227
+      },
+      {
+        "Cluster": "C5",
+        "Entrada": "B",
+        "Urnas": [
+          3161,
+          3179,
+          1352,
+          3442
+        ],
+        "Comparecimento_esperado": 1547
+      },
+      {
+        "Cluster": "C6",
+        "Entrada": "A",
+        "Urnas": [
+          3245,
+          3311,
+          3054,
+          3308
+        ],
+        "Comparecimento_esperado": 1570
+      },
+      {
+        "Cluster": "C7",
+        "Entrada": "A",
+        "Urnas": [
+          3302,
+          3108,
+          3078,
+          3832
+        ],
+        "Comparecimento_esperado": 1561
+      },
+      {
+        "Cluster": "C8",
+        "Entrada": "B",
+        "Urnas": [
+          3305,
+          3306,
+          3688,
+          3862
+        ],
+        "Comparecimento_esperado": 1549
+      }
+    ],
+    "premissas": {
+      "taxa_comparecimento_dublin": 0.74,
+      "taxa_comparecimento_interior": 0.5,
+      "curva_chegada": {
+        "08-09": 0.08,
+        "09-10": 0.12,
+        "10-11": 0.15,
+        "11-12": 0.15,
+        "12-13": 0.13,
+        "13-14": 0.11,
+        "14-15": 0.1,
+        "15-16": 0.09,
+        "16-17": 0.07
+      },
+      "frac_precisa_triagem": 0.6,
+      "seg_por_triagem": 20,
+      "frac_precisa_consulta": 0.08,
+      "seg_por_consulta": 90,
+      "utilizacao_alvo": 0.8,
+      "eleitores_por_orientador_fila": 60,
+      "frac_fila_na_abertura": 0.45,
+      "urnas_por_orientador_corredor": 3.5,
+      "frac_prioritarios": 0.1,
+      "prioritarios_por_apoio_hora": 60,
+      "urnas_por_runner": 7,
+      "fixos_saida": 2,
+      "fixos_coordenacao": 3,
+      "margem_reserva": 0.15,
+      "absenteismo_recrutamento": 0.25
+    },
+    "aptos": 16794,
+    "comparecimento_esperado": 11418,
+    "urnas": 28,
+    "urnas_detalhe": [
+      {
+        "Urna": 3313,
+        "Aptos": 797,
+        "Comparecimento_esperado": 590
+      },
+      {
+        "Urna": 3322,
+        "Aptos": 794,
+        "Comparecimento_esperado": 588
+      },
+      {
+        "Urna": 3315,
+        "Aptos": 792,
+        "Comparecimento_esperado": 586
+      },
+      {
+        "Urna": 3142,
+        "Aptos": 793,
+        "Comparecimento_esperado": 492
+      },
+      {
+        "Urna": 3161,
+        "Aptos": 791,
+        "Comparecimento_esperado": 491
+      },
+      {
+        "Urna": 3245,
+        "Aptos": 781,
+        "Comparecimento_esperado": 486
+      },
+      {
+        "Urna": 3302,
+        "Aptos": 771,
+        "Comparecimento_esperado": 481
+      },
+      {
+        "Urna": 3305,
+        "Aptos": 767,
+        "Comparecimento_esperado": 479
+      },
+      {
+        "Urna": 3306,
+        "Aptos": 766,
+        "Comparecimento_esperado": 478
+      },
+      {
+        "Urna": 3108,
+        "Aptos": 756,
+        "Comparecimento_esperado": 474
+      },
+      {
+        "Urna": 3311,
+        "Aptos": 630,
+        "Comparecimento_esperado": 466
+      },
+      {
+        "Urna": 3179,
+        "Aptos": 676,
+        "Comparecimento_esperado": 434
+      },
+      {
+        "Urna": 3309,
+        "Aptos": 615,
+        "Comparecimento_esperado": 403
+      },
+      {
+        "Urna": 3229,
+        "Aptos": 606,
+        "Comparecimento_esperado": 399
+      },
+      {
+        "Urna": 511,
+        "Aptos": 582,
+        "Comparecimento_esperado": 387
+      },
+      {
+        "Urna": 3216,
+        "Aptos": 571,
+        "Comparecimento_esperado": 381
+      },
+      {
+        "Urna": 517,
+        "Aptos": 513,
+        "Comparecimento_esperado": 352
+      },
+      {
+        "Urna": 513,
+        "Aptos": 502,
+        "Comparecimento_esperado": 347
+      },
+      {
+        "Urna": 512,
+        "Aptos": 476,
+        "Comparecimento_esperado": 334
+      },
+      {
+        "Urna": 1160,
+        "Aptos": 473,
+        "Comparecimento_esperado": 332
+      },
+      {
+        "Urna": 1352,
+        "Aptos": 462,
+        "Comparecimento_esperado": 327
+      },
+      {
+        "Urna": 3054,
+        "Aptos": 454,
+        "Comparecimento_esperado": 323
+      },
+      {
+        "Urna": 3078,
+        "Aptos": 429,
+        "Comparecimento_esperado": 310
+      },
+      {
+        "Urna": 3688,
+        "Aptos": 400,
+        "Comparecimento_esperado": 296
+      },
+      {
+        "Urna": 3862,
+        "Aptos": 400,
+        "Comparecimento_esperado": 296
+      },
+      {
+        "Urna": 3832,
+        "Aptos": 400,
+        "Comparecimento_esperado": 296
+      },
+      {
+        "Urna": 3308,
+        "Aptos": 399,
+        "Comparecimento_esperado": 295
+      },
+      {
+        "Urna": 3442,
+        "Aptos": 398,
+        "Comparecimento_esperado": 295
+      }
+    ],
+    "horas": {
+      "08-09": {
+        "Fluxo_esperado": 913,
+        "Eleitores_por_minuto": 15.2,
+        "Fila_na_abertura": 411,
+        "Equipe": {
+          "Fila externa e recepcao": 8,
+          "Triagem nas entradas A e B": 4,
+          "Balcao de consulta e casos": 3,
+          "Orientacao de corredor": 8,
+          "Atendimento prioritario": 2,
+          "Apoio as mesas (runner)": 4,
+          "Saida e pos-voto": 2,
+          "Coordenacao": 3,
+          "Subtotal": 34,
+          "Reserva": 6,
+          "Total": 40
+        }
+      },
+      "09-10": {
+        "Fluxo_esperado": 1370,
+        "Eleitores_por_minuto": 22.8,
+        "Fila_na_abertura": 0,
+        "Equipe": {
+          "Fila externa e recepcao": 2,
+          "Triagem nas entradas A e B": 6,
+          "Balcao de consulta e casos": 4,
+          "Orientacao de corredor": 8,
+          "Atendimento prioritario": 3,
+          "Apoio as mesas (runner)": 4,
+          "Saida e pos-voto": 2,
+          "Coordenacao": 3,
+          "Subtotal": 32,
+          "Reserva": 5,
+          "Total": 37
+        }
+      },
+      "10-11": {
+        "Fluxo_esperado": 1713,
+        "Eleitores_por_minuto": 28.5,
+        "Fila_na_abertura": 0,
+        "Equipe": {
+          "Fila externa e recepcao": 2,
+          "Triagem nas entradas A e B": 8,
+          "Balcao de consulta e casos": 5,
+          "Orientacao de corredor": 8,
+          "Atendimento prioritario": 3,
+          "Apoio as mesas (runner)": 4,
+          "Saida e pos-voto": 2,
+          "Coordenacao": 3,
+          "Subtotal": 35,
+          "Reserva": 6,
+          "Total": 41
+        }
+      },
+      "11-12": {
+        "Fluxo_esperado": 1713,
+        "Eleitores_por_minuto": 28.5,
+        "Fila_na_abertura": 0,
+        "Equipe": {
+          "Fila externa e recepcao": 2,
+          "Triagem nas entradas A e B": 8,
+          "Balcao de consulta e casos": 5,
+          "Orientacao de corredor": 8,
+          "Atendimento prioritario": 3,
+          "Apoio as mesas (runner)": 4,
+          "Saida e pos-voto": 2,
+          "Coordenacao": 3,
+          "Subtotal": 35,
+          "Reserva": 6,
+          "Total": 41
+        }
+      },
+      "12-13": {
+        "Fluxo_esperado": 1484,
+        "Eleitores_por_minuto": 24.7,
+        "Fila_na_abertura": 0,
+        "Equipe": {
+          "Fila externa e recepcao": 2,
+          "Triagem nas entradas A e B": 7,
+          "Balcao de consulta e casos": 4,
+          "Orientacao de corredor": 8,
+          "Atendimento prioritario": 3,
+          "Apoio as mesas (runner)": 4,
+          "Saida e pos-voto": 2,
+          "Coordenacao": 3,
+          "Subtotal": 33,
+          "Reserva": 5,
+          "Total": 38
+        }
+      },
+      "13-14": {
+        "Fluxo_esperado": 1256,
+        "Eleitores_por_minuto": 20.9,
+        "Fila_na_abertura": 0,
+        "Equipe": {
+          "Fila externa e recepcao": 2,
+          "Triagem nas entradas A e B": 6,
+          "Balcao de consulta e casos": 4,
+          "Orientacao de corredor": 8,
+          "Atendimento prioritario": 3,
+          "Apoio as mesas (runner)": 4,
+          "Saida e pos-voto": 2,
+          "Coordenacao": 3,
+          "Subtotal": 32,
+          "Reserva": 5,
+          "Total": 37
+        }
+      },
+      "14-15": {
+        "Fluxo_esperado": 1142,
+        "Eleitores_por_minuto": 19.0,
+        "Fila_na_abertura": 0,
+        "Equipe": {
+          "Fila externa e recepcao": 2,
+          "Triagem nas entradas A e B": 5,
+          "Balcao de consulta e casos": 3,
+          "Orientacao de corredor": 8,
+          "Atendimento prioritario": 2,
+          "Apoio as mesas (runner)": 4,
+          "Saida e pos-voto": 2,
+          "Coordenacao": 3,
+          "Subtotal": 29,
+          "Reserva": 5,
+          "Total": 34
+        }
+      },
+      "15-16": {
+        "Fluxo_esperado": 1028,
+        "Eleitores_por_minuto": 17.1,
+        "Fila_na_abertura": 0,
+        "Equipe": {
+          "Fila externa e recepcao": 2,
+          "Triagem nas entradas A e B": 5,
+          "Balcao de consulta e casos": 3,
+          "Orientacao de corredor": 8,
+          "Atendimento prioritario": 2,
+          "Apoio as mesas (runner)": 4,
+          "Saida e pos-voto": 2,
+          "Coordenacao": 3,
+          "Subtotal": 29,
+          "Reserva": 5,
+          "Total": 34
+        }
+      },
+      "16-17": {
+        "Fluxo_esperado": 799,
+        "Eleitores_por_minuto": 13.3,
+        "Fila_na_abertura": 0,
+        "Equipe": {
+          "Fila externa e recepcao": 2,
+          "Triagem nas entradas A e B": 4,
+          "Balcao de consulta e casos": 2,
+          "Orientacao de corredor": 8,
+          "Atendimento prioritario": 2,
+          "Apoio as mesas (runner)": 4,
+          "Saida e pos-voto": 2,
+          "Coordenacao": 3,
+          "Subtotal": 27,
+          "Reserva": 5,
+          "Total": 32
+        }
+      }
+    },
+    "pico_por_funcao": {
+      "Fila externa e recepcao": 8,
+      "Triagem nas entradas A e B": 8,
+      "Balcao de consulta e casos": 5,
+      "Orientacao de corredor": 8,
+      "Atendimento prioritario": 3,
+      "Apoio as mesas (runner)": 4,
+      "Saida e pos-voto": 2,
+      "Coordenacao": 3,
+      "Subtotal": 35,
+      "Reserva": 6,
+      "Total": 41
+    },
+    "equipe_simultanea_pico": 41,
+    "exigencia_por_hora": {
+      "08-09": 40,
+      "09-10": 37,
+      "10-11": 41,
+      "11-12": 41,
+      "12-13": 38,
+      "13-14": 37,
+      "14-15": 34,
+      "15-16": 34,
+      "16-17": 32
+    },
+    "escala_turnos": {
+      "T1 Manha (07h00-13h30)": 40,
+      "T2 Tarde (12h30-encerramento)": 34,
+      "T3 Reforco de pico (09h30-14h00)": 3
+    },
+    "pessoas_distintas_dia": 77,
+    "voluntarios_a_recrutar": 103
+  },
+  "cenarios": {
+    "Enxuto": {
+      "premissas": {
+        "taxa_comparecimento_dublin": 0.74,
+        "taxa_comparecimento_interior": 0.5,
+        "curva_chegada": {
+          "08-09": 0.08,
+          "09-10": 0.12,
+          "10-11": 0.15,
+          "11-12": 0.15,
+          "12-13": 0.13,
+          "13-14": 0.11,
+          "14-15": 0.1,
+          "15-16": 0.09,
+          "16-17": 0.07
+        },
+        "frac_precisa_triagem": 0.4,
+        "seg_por_triagem": 15,
+        "frac_precisa_consulta": 0.05,
+        "seg_por_consulta": 90,
+        "utilizacao_alvo": 0.8,
+        "eleitores_por_orientador_fila": 60,
+        "frac_fila_na_abertura": 0.45,
+        "urnas_por_orientador_corredor": 6,
+        "frac_prioritarios": 0.1,
+        "prioritarios_por_apoio_hora": 60,
+        "urnas_por_runner": 14,
+        "fixos_saida": 2,
+        "fixos_coordenacao": 3,
+        "margem_reserva": 0.15,
+        "absenteismo_recrutamento": 0.25
+      },
+      "aptos": 16794,
+      "comparecimento_esperado": 11418,
+      "urnas": 28,
+      "pico_por_funcao": {
+        "Fila externa e recepcao": 8,
+        "Triagem nas entradas A e B": 4,
+        "Balcao de consulta e casos": 3,
+        "Orientacao de corredor": 5,
+        "Atendimento prioritario": 3,
+        "Apoio as mesas (runner)": 2,
+        "Saida e pos-voto": 2,
+        "Coordenacao": 3,
+        "Subtotal": 26,
+        "Reserva": 4,
+        "Total": 30
+      },
+      "equipe_simultanea_pico": 30,
+      "exigencia_por_hora": {
+        "08-09": 30,
+        "09-10": 27,
+        "10-11": 28,
+        "11-12": 28,
+        "12-13": 28,
+        "13-14": 26,
+        "14-15": 25,
+        "15-16": 25,
+        "16-17": 23
+      },
+      "escala_turnos": {
+        "T1 Manha (07h00-13h30)": 30,
+        "T2 Tarde (12h30-encerramento)": 25,
+        "T3 Reforco de pico (09h30-14h00)": 1
+      },
+      "pessoas_distintas_dia": 56,
+      "voluntarios_a_recrutar": 75
+    },
+    "Base": {
+      "premissas": {
+        "taxa_comparecimento_dublin": 0.74,
+        "taxa_comparecimento_interior": 0.5,
+        "curva_chegada": {
+          "08-09": 0.08,
+          "09-10": 0.12,
+          "10-11": 0.15,
+          "11-12": 0.15,
+          "12-13": 0.13,
+          "13-14": 0.11,
+          "14-15": 0.1,
+          "15-16": 0.09,
+          "16-17": 0.07
+        },
+        "frac_precisa_triagem": 0.6,
+        "seg_por_triagem": 20,
+        "frac_precisa_consulta": 0.08,
+        "seg_por_consulta": 90,
+        "utilizacao_alvo": 0.8,
+        "eleitores_por_orientador_fila": 60,
+        "frac_fila_na_abertura": 0.45,
+        "urnas_por_orientador_corredor": 3.5,
+        "frac_prioritarios": 0.1,
+        "prioritarios_por_apoio_hora": 60,
+        "urnas_por_runner": 7,
+        "fixos_saida": 2,
+        "fixos_coordenacao": 3,
+        "margem_reserva": 0.15,
+        "absenteismo_recrutamento": 0.25
+      },
+      "aptos": 16794,
+      "comparecimento_esperado": 11418,
+      "urnas": 28,
+      "pico_por_funcao": {
+        "Fila externa e recepcao": 8,
+        "Triagem nas entradas A e B": 8,
+        "Balcao de consulta e casos": 5,
+        "Orientacao de corredor": 8,
+        "Atendimento prioritario": 3,
+        "Apoio as mesas (runner)": 4,
+        "Saida e pos-voto": 2,
+        "Coordenacao": 3,
+        "Subtotal": 35,
+        "Reserva": 6,
+        "Total": 41
+      },
+      "equipe_simultanea_pico": 41,
+      "exigencia_por_hora": {
+        "08-09": 40,
+        "09-10": 37,
+        "10-11": 41,
+        "11-12": 41,
+        "12-13": 38,
+        "13-14": 37,
+        "14-15": 34,
+        "15-16": 34,
+        "16-17": 32
+      },
+      "escala_turnos": {
+        "T1 Manha (07h00-13h30)": 40,
+        "T2 Tarde (12h30-encerramento)": 34,
+        "T3 Reforco de pico (09h30-14h00)": 3
+      },
+      "pessoas_distintas_dia": 77,
+      "voluntarios_a_recrutar": 103
+    },
+    "Reforcado": {
+      "premissas": {
+        "taxa_comparecimento_dublin": 0.74,
+        "taxa_comparecimento_interior": 0.5,
+        "curva_chegada": {
+          "08-09": 0.08,
+          "09-10": 0.12,
+          "10-11": 0.15,
+          "11-12": 0.15,
+          "12-13": 0.13,
+          "13-14": 0.11,
+          "14-15": 0.1,
+          "15-16": 0.09,
+          "16-17": 0.07
+        },
+        "frac_precisa_triagem": 0.75,
+        "seg_por_triagem": 25,
+        "frac_precisa_consulta": 0.12,
+        "seg_por_consulta": 90,
+        "utilizacao_alvo": 0.8,
+        "eleitores_por_orientador_fila": 60,
+        "frac_fila_na_abertura": 0.45,
+        "urnas_por_orientador_corredor": 3,
+        "frac_prioritarios": 0.1,
+        "prioritarios_por_apoio_hora": 60,
+        "urnas_por_runner": 5,
+        "fixos_saida": 2,
+        "fixos_coordenacao": 3,
+        "margem_reserva": 0.15,
+        "absenteismo_recrutamento": 0.25
+      },
+      "aptos": 16794,
+      "comparecimento_esperado": 11418,
+      "urnas": 28,
+      "pico_por_funcao": {
+        "Fila externa e recepcao": 8,
+        "Triagem nas entradas A e B": 12,
+        "Balcao de consulta e casos": 7,
+        "Orientacao de corredor": 10,
+        "Atendimento prioritario": 3,
+        "Apoio as mesas (runner)": 6,
+        "Saida e pos-voto": 2,
+        "Coordenacao": 3,
+        "Subtotal": 45,
+        "Reserva": 7,
+        "Total": 52
+      },
+      "equipe_simultanea_pico": 52,
+      "exigencia_por_hora": {
+        "08-09": 48,
+        "09-10": 48,
+        "10-11": 52,
+        "11-12": 52,
+        "12-13": 49,
+        "13-14": 46,
+        "14-15": 44,
+        "15-16": 42,
+        "16-17": 40
+      },
+      "escala_turnos": {
+        "T1 Manha (07h00-13h30)": 48,
+        "T2 Tarde (12h30-encerramento)": 44,
+        "T3 Reforco de pico (09h30-14h00)": 4
+      },
+      "pessoas_distintas_dia": 96,
+      "voluntarios_a_recrutar": 128
+    }
+  }
+}

@@ -40,6 +40,7 @@ pip install pandas openpyxl
 cd scripts
 python3 mapa_agregacoes.py   # gera saidas/Dublin_2026_agregacoes.xlsx e saidas/dados.json
 python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
+python3 voluntarios.py       # gera saidas/dimensionamento_voluntarios.{json,md}
 ```
 
 `parse_dados.py` também roda sozinho e imprime um resumo da carga.
@@ -51,6 +52,9 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
   `Residencia x Urna` e `Inconsistencias`.
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
+- **`saidas/dimensionamento_voluntarios.md`** e **`.json`** — equipe de
+  voluntários hora a hora, escala de turnos, clusters de corredor e divisão
+  das urnas entre as entradas A e B.
 
 ## Validações
 
@@ -83,7 +87,16 @@ com uma seção inteira do interior (3142 com Limerick, 3161 e 3245 com Cork,
 3305 e 3108 com Galway). São 4.213 eleitores — 25% da zona — que residem fora
 de Dublin e passam a votar lá.
 
+## Plano de voluntários
+
+`plano_voluntarios.md` dimensiona e aloca a equipe de apoio ao eleitor a
+partir destes mesmos dados: 41 voluntários simultâneos no pico, 77 pessoas no
+dia, ~100 a recrutar. O cálculo está em `scripts/voluntarios.py`, com todas as
+premissas reunidas no dicionário `PREMISSAS`.
+
 ## Escopo
 
-Nenhum modelo de tempo de votação foi aplicado, a pedido: as saídas entregam os
-totais ordenados e o critério de gargalo fica a cargo de quem analisa.
+Nenhum modelo de tempo de votação por eleitor foi aplicado às agregações, a
+pedido: as saídas entregam os totais ordenados e o critério de gargalo fica a
+cargo de quem analisa. O plano de voluntários modela fluxo de chegada e
+atendimento fora da mesa — não o tempo de voto dentro dela.

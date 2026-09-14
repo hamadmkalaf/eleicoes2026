@@ -7,6 +7,13 @@ fila na rua. Todos os números saem de `scripts/plano_filas.py` e
 
 **Desenho:** `saidas/plano_filas_sem_ring3.svg` (e `.png`)
 
+> **Atualização.** O RDS proibiu formação de fila em seu terreno, o uso da rua é
+> incerto e não há autorização de Brasília para o Ring 3. As seções 3 a 5 deste
+> documento — que contavam com retenção externa no pátio — estão **superadas
+> por `plano_filas_confinado_hall2.md`**, que dimensiona toda a fila dentro do
+> Hall 2. As seções 1, 2, 6 e 7 (fila esperada, equipe, efeitos de segunda e
+> terceira ordem) continuam válidas.
+
 ---
 
 ## 1. O problema, em uma linha

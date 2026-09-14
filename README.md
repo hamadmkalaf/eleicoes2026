@@ -100,3 +100,12 @@ python3 filas_sem_ring3.py   # pico de fila por cenário -> saidas/filas_sem_rin
 python3 plano_filas.py       # clusters, anel, equipe, materiais -> saidas/plano_filas.json
 python3 desenha_plano.py     # desenho em escala -> saidas/plano_filas_sem_ring3.svg
 ```
+
+`plano_filas_confinado_hall2.md` — supersede as seções 3 a 5 do anterior depois que
+o RDS proibiu fila em seu terreno: dimensiona toda a fila dentro do Hall 2 e compara
+serpentina norte-sul com leste-oeste.
+
+```bash
+python3 serpentina_hall2.py   # capacidade, fronteira urnas x fila -> saidas/serpentina_hall2.json
+python3 desenha_serpentina.py # as duas orientações -> saidas/serpentina_hall2.svg
+```

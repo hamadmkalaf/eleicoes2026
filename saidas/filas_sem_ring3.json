@@ -1,0 +1,314 @@
+{
+  "premissas": {
+    "taxa_dublin": 0.74,
+    "taxa_interior": 0.5,
+    "densidade_p_m2": 1.7,
+    "largura_canal_m": 1.1,
+    "perfis": {
+      "base": [
+        0.1,
+        0.14,
+        0.15,
+        0.14,
+        0.12,
+        0.1,
+        0.09,
+        0.08,
+        0.08
+      ],
+      "pico_manha": [
+        0.14,
+        0.17,
+        0.16,
+        0.13,
+        0.11,
+        0.09,
+        0.07,
+        0.07,
+        0.06
+      ]
+    },
+    "fila_abertura": {
+      "base": 0.03,
+      "pico_manha": 0.05
+    }
+  },
+  "total_aptos": 16794,
+  "comparecimento_esperado": 11416,
+  "cenarios": [
+    {
+      "perfil": "base",
+      "urnas": 28,
+      "t_servico": 45,
+      "pico": 248,
+      "hora_pico": 8.0,
+      "pior_urna": 16,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "base",
+      "urnas": 28,
+      "t_servico": 60,
+      "pico": 415,
+      "hora_pico": 11.92,
+      "pior_urna": 81,
+      "fecha_as": 17.83
+    },
+    {
+      "perfil": "base",
+      "urnas": 28,
+      "t_servico": 75,
+      "pico": 1188,
+      "hora_pico": 12.92,
+      "pior_urna": 150,
+      "fecha_as": 20.33
+    },
+    {
+      "perfil": "base",
+      "urnas": 28,
+      "t_servico": 90,
+      "pico": 2013,
+      "hora_pico": 13.92,
+      "pior_urna": 207,
+      "fecha_as": 22.75
+    },
+    {
+      "perfil": "base",
+      "urnas": 32,
+      "t_servico": 45,
+      "pico": 221,
+      "hora_pico": 8.0,
+      "pior_urna": 7,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "base",
+      "urnas": 32,
+      "t_servico": 60,
+      "pico": 275,
+      "hora_pico": 8.0,
+      "pior_urna": 9,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "base",
+      "urnas": 32,
+      "t_servico": 75,
+      "pico": 307,
+      "hora_pico": 8.0,
+      "pior_urna": 10,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "base",
+      "urnas": 32,
+      "t_servico": 90,
+      "pico": 1141,
+      "hora_pico": 12.92,
+      "pior_urna": 36,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "base",
+      "urnas": 38,
+      "t_servico": 45,
+      "pico": 181,
+      "hora_pico": 8.0,
+      "pior_urna": 5,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "base",
+      "urnas": 38,
+      "t_servico": 60,
+      "pico": 245,
+      "hora_pico": 8.0,
+      "pior_urna": 6,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "base",
+      "urnas": 38,
+      "t_servico": 75,
+      "pico": 283,
+      "hora_pico": 8.0,
+      "pior_urna": 7,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "base",
+      "urnas": 38,
+      "t_servico": 90,
+      "pico": 308,
+      "hora_pico": 8.0,
+      "pior_urna": 8,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 28,
+      "t_servico": 45,
+      "pico": 511,
+      "hora_pico": 8.0,
+      "pior_urna": 29,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 28,
+      "t_servico": 60,
+      "pico": 899,
+      "hora_pico": 10.92,
+      "pior_urna": 113,
+      "fecha_as": 17.83
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 28,
+      "t_servico": 75,
+      "pico": 1746,
+      "hora_pico": 11.92,
+      "pior_urna": 174,
+      "fecha_as": 20.33
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 28,
+      "t_servico": 90,
+      "pico": 2671,
+      "hora_pico": 12.92,
+      "pior_urna": 227,
+      "fecha_as": 22.75
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 32,
+      "t_servico": 45,
+      "pico": 484,
+      "hora_pico": 8.0,
+      "pior_urna": 15,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 32,
+      "t_servico": 60,
+      "pico": 537,
+      "hora_pico": 8.0,
+      "pior_urna": 17,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 32,
+      "t_servico": 75,
+      "pico": 1060,
+      "hora_pico": 10.92,
+      "pior_urna": 33,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 32,
+      "t_servico": 90,
+      "pico": 1958,
+      "hora_pico": 11.92,
+      "pior_urna": 61,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 38,
+      "t_servico": 45,
+      "pico": 444,
+      "hora_pico": 8.0,
+      "pior_urna": 12,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 38,
+      "t_servico": 60,
+      "pico": 507,
+      "hora_pico": 8.0,
+      "pior_urna": 13,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 38,
+      "t_servico": 75,
+      "pico": 545,
+      "hora_pico": 8.0,
+      "pior_urna": 14,
+      "fecha_as": 17.0
+    },
+    {
+      "perfil": "pico_manha",
+      "urnas": 38,
+      "t_servico": 90,
+      "pico": 1108,
+      "hora_pico": 10.92,
+      "pior_urna": 29,
+      "fecha_as": 17.0
+    }
+  ],
+  "dimensionamento": {
+    "200": {
+      "pessoas": 200,
+      "area_m2": 118,
+      "barreira_m": 107,
+      "unifila_un": 54,
+      "ccb_un": 54
+    },
+    "300": {
+      "pessoas": 300,
+      "area_m2": 176,
+      "barreira_m": 160,
+      "unifila_un": 81,
+      "ccb_un": 81
+    },
+    "400": {
+      "pessoas": 400,
+      "area_m2": 235,
+      "barreira_m": 214,
+      "unifila_un": 107,
+      "ccb_un": 107
+    },
+    "500": {
+      "pessoas": 500,
+      "area_m2": 294,
+      "barreira_m": 267,
+      "unifila_un": 134,
+      "ccb_un": 134
+    },
+    "600": {
+      "pessoas": 600,
+      "area_m2": 353,
+      "barreira_m": 321,
+      "unifila_un": 161,
+      "ccb_un": 161
+    },
+    "800": {
+      "pessoas": 800,
+      "area_m2": 471,
+      "barreira_m": 428,
+      "unifila_un": 214,
+      "ccb_un": 214
+    },
+    "1000": {
+      "pessoas": 1000,
+      "area_m2": 588,
+      "barreira_m": 535,
+      "unifila_un": 268,
+      "ccb_un": 268
+    },
+    "1200": {
+      "pessoas": 1200,
+      "area_m2": 706,
+      "barreira_m": 642,
+      "unifila_un": 321,
+      "ccb_un": 321
+    }
+  }
+}

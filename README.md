@@ -87,3 +87,16 @@ de Dublin e passam a votar lá.
 
 Nenhum modelo de tempo de votação foi aplicado, a pedido: as saídas entregam os
 totais ordenados e o critério de gargalo fica a cargo de quem analisa.
+
+## Plano de filas sem o Ring 3
+
+`plano_filas_sem_ring3.md` — desenho de formação de filas dentro do Hall 2 sem
+depender do Ring 3, com dimensionamento de unifila/CCB e avaliação da
+alternativa de fila na rua.
+
+```bash
+cd scripts
+python3 filas_sem_ring3.py   # pico de fila por cenário -> saidas/filas_sem_ring3.json
+python3 plano_filas.py       # clusters, anel, equipe, materiais -> saidas/plano_filas.json
+python3 desenha_plano.py     # desenho em escala -> saidas/plano_filas_sem_ring3.svg
+```

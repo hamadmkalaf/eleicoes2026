@@ -45,8 +45,9 @@ Decisoes de 13/09/2026 (Posto):
      parede oeste, sentido horario (oeste sul->norte, norte oeste->leste,
      leste norte->sul), 28 na mesa mais ao sul da parede leste. Calculada
      das posicoes do cenario de trabalho da prancheta (CENARIO_TRABALHO).
- 10. Cenario de trabalho da prancheta: Hamad_Final (salvo em 13/09). Ate o
-     JSON ser colado em cenarios/, vale o provisorio Hamad_3polos, marcado.
+ 10. Cenario de trabalho da prancheta: Hamad_Final (salvo em 13/09, colado em
+     cenarios/hamad-final-20260914-170656.json em 14/09). Se o arquivo sumir,
+     vale o provisorio Hamad_3polos, marcado como tal nas saidas.
 """
 import json
 import os
@@ -65,9 +66,9 @@ RING3_JSON = os.path.join(RAIZ, "saidas", "ring3.json")
 
 # ------------------------------------------------ cenario de trabalho -----
 # Prefixo do id (nome do arquivo em cenarios/) do arranjo que vale para a
-# numeracao eleitor e para a contagem de unifilas. Hamad_Final ainda nao foi
-# colado no repositorio (a prancheta so grava no navegador); ate la vale o
-# provisorio, e as saidas dizem que e provisorio.
+# numeracao eleitor e para a contagem de unifilas. Hamad_Final foi colado em
+# cenarios/ em 14/09 (a prancheta so grava no navegador, o Posto mandou o JSON);
+# se o arquivo faltar, vale o provisorio, e as saidas dizem que e provisorio.
 CENARIO_TRABALHO = "hamad-final"
 CENARIO_PROVISORIO = "hamad-3polos"
 

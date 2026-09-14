@@ -93,7 +93,8 @@ desenho); o simulador as descarta ao embutir a lista.
 
 | Arquivo | Cenário | Mesas fora do lugar |
 |---|---|---|
-| `hamad-3polos-20260905-184518.json` | Hamad_3polos | 28 |
+| `hamad-final-20260914-170656.json` | Hamad_Final (**cenário de trabalho**, `decisoes.CENARIO_TRABALHO`; salvo pelo Posto em 13/09, colado em 14/09) | 28 |
+| `hamad-3polos-20260905-184518.json` | Hamad_3polos (provisório até 14/09) | 28 |
 | `tres-polos-20260905-182000.json` | Três polos · 22/23/24 separadas | 19 |
 | `hamad-2-20260905-160048.json` | Hamad 2 | 6 |
 | `hamad1-20260905-155811.json` | Hamad1 | 6 |

@@ -1,5 +1,5 @@
 {
- "geradoEm": "2026-09-12T02:53:40.449Z",
+ "geradoEm": "2026-09-14T17:10:55.934Z",
  "runs": 8,
  "arranjo": "Três polos · 22/23/24 separadas",
  "resultados": [
@@ -4382,7 +4382,7 @@
     "id": "O1",
     "rds": "acesso Hall 1",
     "face": "oeste",
-    "estado": "livre",
+    "estado": "fechada",
     "x1": 0,
     "y1": 36.8,
     "x2": 0,

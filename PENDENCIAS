@@ -8,7 +8,7 @@ LISTA DE TAREFAS PARA AINDA FAZER
 5. PENSAR NO FUNCIONAMENTO DA MRV - QUEM IDENTIFICARÁ, COMO SERÃO DIVIDIDOS OS CADERNOS (decisão (a), D9);
 6. INSTRUÇÕES DE GERENCIAMENTO DE FLUXO PARA O TREINAMENTO (geradas a partir das decisões);
 7. DECISÕES DE FLUXO EM ABERTO E SUAS INTERCONEXÕES (registro em scripts/decisoes_abertas.py);
-8. COLAR O JSON DO CENÁRIO Hamad_Final DA PRANCHETA EM cenarios/ E REGENERAR;
+8. ~~COLAR O JSON DO CENÁRIO Hamad_Final DA PRANCHETA EM cenarios/ E REGENERAR~~ FEITO 14/09;
 
 
 Pendencia por ponto.
@@ -96,13 +96,20 @@ Pendencia por ponto.
   Sinalização e voluntários viraram planos derivados. Matriz "se... então" refeita.
 
 8. Cenário Hamad_Final
-- [13/09] o Posto salvou o cenário Hamad_Final na prancheta (arranjo atual, possivelmente
-  final). O botão Salvar grava só no navegador e copia o JSON; ele NÃO está no repositório.
-  Colar o JSON em cenarios/hamad-final-<carimbo>.json (formato dos outros arquivos da pasta)
-  e regenerar: numeração eleitor, contagem de unifilas, sinalização e dashboard mudam.
-  Até lá tudo usa o Hamad_3polos, marcado como provisório.
-- [13/09] conferir com o Posto a regra nas mesas encaradas por uma vermelha (MRV 5, 16, 21):
-  pela regra de 13/09 ficam sem par e sem fita; 7 mesas sem guia no total.
+- [14/09] FEITO: o Posto colou o JSON; está em cenarios/hamad-final-20260914-170656.json
+  e tudo foi regenerado (numeração eleitor, unifilas, sinalização, instruções, dashboard).
+  Numeração eleitor sobre o Hamad_Final: oeste 1-9 = MRV 5, 6, 12, 17, 1, 4, 24, 9, 11;
+  norte 10-18 = MRV 15, 16, 2, 8, 22, 10, 13, 20, 25; leste 19-28 = MRV 3, 7, 23, 14, 18,
+  21, 26, 19, 27, 28. Unifilas 1e: 82 postes (91 com reserva), 118 m; os 100 bastam.
+- [14/09] no Hamad_Final só a MRV 19 (eleitor 26, parede leste) fica sem guia: é a única
+  não vermelha sem par. As três vermelhas (22, 23, 24) são polos soltos com 10 m de fita
+  cada, sem mesa encarada (tensa_barreiras.py não emite aviso), então a dúvida de 13/09
+  sobre "mesa encarada por vermelha" desaparece. Conferir se a MRV 19 fica mesmo sem fita.
+- [14/09] folgas laterais apertadas no Hamad_Final (folgas_prancheta.py): MRV 5 com 0,28 m,
+  MRV 17 com 0,38 m e MRV 1 com 0,47 m na parede oeste; a planta original tinha 0,98 m
+  no pior caso. Filas de 20 m em todas as mesas. Conferir se é intencional.
+- [14/09] pendente: refazer a varredura do simulador (simulador/varredura.js) sobre o
+  Hamad_Final; hoje o Cenário Claude do simulador ainda é o Três polos.
 - [13/09] efeitos de 2ª e 3ª ordem a manter em vista:
   - voluntários não treinados na pré-triagem são o gargalo não paralelizável do dia;
   - urnas críticas fechando tarde atrasam a apuração consolidada; o custo de imagem recai

@@ -1317,10 +1317,10 @@
   ],
   "numeracaoEleitor": "NUMERAÇÃO ELEITOR: 1 na mesa mais ao sul da parede oeste, sentido horário, 28 na mais ao sul da parede leste; voltada ao público.",
   "cenarioTrabalho": {
-   "id": "hamad-3polos-20260905-184518",
-   "nome": "Hamad_3polos",
-   "criadoEm": "2026-09-05T18:45:18.238Z",
-   "provisorio": true
+   "id": "hamad-final-20260914-170656",
+   "nome": "Hamad_Final",
+   "criadoEm": "2026-09-14T17:06:56.476Z",
+   "provisorio": false
   },
   "mesas": {
    "1": {
@@ -1333,8 +1333,8 @@
     "cor": "#1e8449",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 10,
-    "parede": "norte"
+    "eleitor": 5,
+    "parede": "oeste"
    },
    "2": {
     "principal": 512,
@@ -1346,7 +1346,7 @@
     "cor": "#1e8449",
     "entrada": "C",
     "porta": "S6",
-    "eleitor": 11,
+    "eleitor": 12,
     "parede": "norte"
    },
    "3": {
@@ -1359,8 +1359,8 @@
     "cor": "#1e8449",
     "entrada": "A",
     "porta": "S4",
-    "eleitor": 12,
-    "parede": "norte"
+    "eleitor": 19,
+    "parede": "leste"
    },
    "4": {
     "principal": 517,
@@ -1372,8 +1372,8 @@
     "cor": "#1e8449",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 13,
-    "parede": "norte"
+    "eleitor": 6,
+    "parede": "oeste"
    },
    "5": {
     "principal": 1160,
@@ -1385,8 +1385,8 @@
     "cor": "#1e8449",
     "entrada": "A",
     "porta": "S4",
-    "eleitor": 14,
-    "parede": "norte"
+    "eleitor": 1,
+    "parede": "oeste"
    },
    "6": {
     "principal": 1352,
@@ -1398,8 +1398,8 @@
     "cor": "#1e8449",
     "entrada": "C",
     "porta": "S6",
-    "eleitor": 18,
-    "parede": "norte"
+    "eleitor": 2,
+    "parede": "oeste"
    },
    "7": {
     "principal": 3054,
@@ -1411,8 +1411,8 @@
     "cor": "#1e8449",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 16,
-    "parede": "norte"
+    "eleitor": 20,
+    "parede": "leste"
    },
    "8": {
     "principal": 3078,
@@ -1424,7 +1424,7 @@
     "cor": "#1e8449",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 17,
+    "eleitor": 13,
     "parede": "norte"
    },
    "9": {
@@ -1437,7 +1437,7 @@
     "cor": "#d4a017",
     "entrada": "A",
     "porta": "S4",
-    "eleitor": 3,
+    "eleitor": 8,
     "parede": "oeste"
    },
    "10": {
@@ -1450,8 +1450,8 @@
     "cor": "#d4a017",
     "entrada": "C",
     "porta": "S6",
-    "eleitor": 2,
-    "parede": "oeste"
+    "eleitor": 15,
+    "parede": "norte"
    },
    "11": {
     "principal": 3161,
@@ -1463,7 +1463,7 @@
     "cor": "#d4a017",
     "entrada": "C",
     "porta": "S6",
-    "eleitor": 1,
+    "eleitor": 9,
     "parede": "oeste"
    },
    "12": {
@@ -1476,8 +1476,8 @@
     "cor": "#1e8449",
     "entrada": "A",
     "porta": "S4",
-    "eleitor": 19,
-    "parede": "leste"
+    "eleitor": 3,
+    "parede": "oeste"
    },
    "13": {
     "principal": 3216,
@@ -1489,8 +1489,8 @@
     "cor": "#1e8449",
     "entrada": "C",
     "porta": "S6",
-    "eleitor": 20,
-    "parede": "leste"
+    "eleitor": 16,
+    "parede": "norte"
    },
    "14": {
     "principal": 3229,
@@ -1502,7 +1502,7 @@
     "cor": "#1e8449",
     "entrada": "C",
     "porta": "S6",
-    "eleitor": 21,
+    "eleitor": 22,
     "parede": "leste"
    },
    "15": {
@@ -1515,8 +1515,8 @@
     "cor": "#d4a017",
     "entrada": "A",
     "porta": "S4",
-    "eleitor": 22,
-    "parede": "leste"
+    "eleitor": 10,
+    "parede": "norte"
    },
    "16": {
     "principal": 3302,
@@ -1528,8 +1528,8 @@
     "cor": "#d4a017",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 24,
-    "parede": "leste"
+    "eleitor": 11,
+    "parede": "norte"
    },
    "17": {
     "principal": 3305,
@@ -1541,8 +1541,8 @@
     "cor": "#d4a017",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 25,
-    "parede": "leste"
+    "eleitor": 4,
+    "parede": "oeste"
    },
    "18": {
     "principal": 3306,
@@ -1554,7 +1554,7 @@
     "cor": "#d4a017",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 26,
+    "eleitor": 23,
     "parede": "leste"
    },
    "19": {
@@ -1567,7 +1567,7 @@
     "cor": "#1e8449",
     "entrada": "C",
     "porta": "S6",
-    "eleitor": 27,
+    "eleitor": 26,
     "parede": "leste"
    },
    "20": {
@@ -1580,8 +1580,8 @@
     "cor": "#1e8449",
     "entrada": "A",
     "porta": "S4",
-    "eleitor": 28,
-    "parede": "leste"
+    "eleitor": 17,
+    "parede": "norte"
    },
    "21": {
     "principal": 3311,
@@ -1593,8 +1593,8 @@
     "cor": "#d4a017",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 4,
-    "parede": "oeste"
+    "eleitor": 24,
+    "parede": "leste"
    },
    "22": {
     "principal": 3313,
@@ -1606,7 +1606,7 @@
     "cor": "#c0392b",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 15,
+    "eleitor": 14,
     "parede": "norte"
    },
    "23": {
@@ -1619,7 +1619,7 @@
     "cor": "#c0392b",
     "entrada": "C",
     "porta": "S6",
-    "eleitor": 23,
+    "eleitor": 21,
     "parede": "leste"
    },
    "24": {
@@ -1632,7 +1632,7 @@
     "cor": "#c0392b",
     "entrada": "A",
     "porta": "S4",
-    "eleitor": 5,
+    "eleitor": 7,
     "parede": "oeste"
    },
    "25": {
@@ -1645,8 +1645,8 @@
     "cor": "#1e8449",
     "entrada": "B",
     "porta": "S5",
-    "eleitor": 6,
-    "parede": "oeste"
+    "eleitor": 18,
+    "parede": "norte"
    },
    "26": {
     "principal": 3688,
@@ -1658,8 +1658,8 @@
     "cor": "#1e8449",
     "entrada": "A",
     "porta": "S4",
-    "eleitor": 7,
-    "parede": "oeste"
+    "eleitor": 25,
+    "parede": "leste"
    },
    "27": {
     "principal": 3832,
@@ -1671,8 +1671,8 @@
     "cor": "#1e8449",
     "entrada": "C",
     "porta": "S6",
-    "eleitor": 8,
-    "parede": "oeste"
+    "eleitor": 27,
+    "parede": "leste"
    },
    "28": {
     "principal": 3862,
@@ -1684,8 +1684,8 @@
     "cor": "#1e8449",
     "entrada": "A",
     "porta": "S4",
-    "eleitor": 9,
-    "parede": "oeste"
+    "eleitor": 28,
+    "parede": "leste"
    }
   },
   "ring3": {

@@ -1138,8 +1138,8 @@ rádio) e a **NUMERAÇÃO ELEITOR** começa em 1 na mesa mais ao sul da parede
 oeste, segue em sentido horário (oeste de sul para norte, norte de oeste para
 leste, leste de norte para sul) e termina em 28 na mesa mais ao sul da parede
 leste. É calculada por `decisoes.numeracao_eleitor()` sobre as posições do
-cenário de trabalho (`CENARIO_TRABALHO`, o Hamad_Final; provisoriamente o
-Hamad_3polos) e falha se houver mesa no recorte sul, para a qual a regra não
+cenário de trabalho (`CENARIO_TRABALHO`, o Hamad_Final, em `cenarios/` desde
+14/09) e falha se houver mesa no recorte sul, para a qual a regra não
 diz a ordem. Todas as peças mostram o número eleitor em destaque e o MRV ao
 lado; a numeração muda quando o cenário de trabalho mudar, e por isso é a
 terceira coisa a congelar antes da impressão (com a atribuição mesa → entrada e
@@ -1217,10 +1217,9 @@ que são decisões (8, 9, 10, 11) apontam para lá; os que são tarefas ficaram 
 8. ~~Identidade das filas para o eleitor: cor ou letra~~ **Decidido em 13/09:
    letra** (D8, §6.3).
 9. ~~Fechar o cenário da prancheta~~ **O Posto salvou o Hamad_Final em 13/09**
-   como cenário atual e possivelmente final; a numeração eleitor (§9.2) já é
-   calculada, mas sobre o Hamad_3polos, porque o JSON do Hamad_Final ainda
-   não foi colado em `cenarios/` (Salvar grava só no navegador). **Falta colar
-   o JSON e regenerar.**
+   como cenário atual e possivelmente final e **colou o JSON em 14/09**:
+   `cenarios/hamad-final-20260914-170656.json`. A numeração eleitor (§9.2) e
+   as contagens de unifilas passaram a valer para ele (§12.6).
 10. ~~Pedido de separadores de barreira~~ **Decidido em 13/09**: Ring 3 com
     CCB só na ponta (D3, 0 a comprar; 82 contados, 100 registrados) e
     barreira interna pelo traçado **1e** com a regra de mesa de 13/09 (D4; 73
@@ -1465,9 +1464,9 @@ frentes abaixo (nada ficou fora).
 | 1, 7, 14b | **Ring 3 decidido (D3):** raias leste-oeste com CCB só na ponta (`girado_ccb_na_ponta`): 1.964 pessoas, 82 separadores contados, **100 registrados** para dar margem, 576 m de fita grossa, 66 apoios, nada a comprar. | `decisoes.py` (`RING3_DESENHO`, `RING3_SEPARADORES_REGISTRADOS`, `montar()["ring3"]["decidido"]`), `decisoes_abertas.py` D3, dashboard §4, `orcamento_final.md` C2–C5, `portas.js` (`DESENHO_DECIDIDO = "H"`) |
 | 2 | **O1 fechada** no dia. | `planta_base.ESTADO`, planta-base, dashboard §2 |
 | 3 | Só 3 entradas (S4, S5, S6) e 2 saídas (S2, S8): já era a decisão de 06/09; D1 passa a `decidida`. | `decisoes_abertas.py` D1 |
-| 4, 11 | **Cenário de trabalho Hamad_Final** (salvo pelo Posto em 13/09). Não está no repositório nem no branch de dados: Salvar grava só no `localStorage` e copia o JSON. `decisoes.cenario_trabalho()` procura `CENARIO_TRABALHO = "hamad-final"` na biblioteca e, enquanto não o encontra, usa `CENARIO_PROVISORIO = "hamad-3polos"` com a marca `provisorio` em todas as saídas. **Pendente: colar o JSON em `cenarios/hamad-final-<carimbo>.json` e regenerar.** | `decisoes.py`, `tensa_barreiras.py`, dashboard §3 e §6 |
-| 5, 6 | **Duas numerações:** OFICIAL = MRV do DJE; ELEITOR = 1 na mesa mais ao sul da parede oeste, sentido horário, 28 na mais ao sul da parede leste (§9.2). Sobre o Hamad_3polos: oeste 1–9 = MRV 11, 10, 9, 21, 24, 25, 26, 27, 28; norte 10–18 = MRV 1, 2, 3, 4, 5, 22, 7, 8, 6; leste 19–28 = MRV 12, 13, 14, 15, 23, 16, 17, 18, 19, 20. | `decisoes.numeracao_eleitor()`, `mesas()[*]["eleitor"]`; prancheta, simulador, sinalização, barreiras, instruções, dashboard |
-| 8, 9, 10, 11, 12 | **Unifilas (D4):** só o **1e** fica (adotado); 1, 1i, A, B, B2 e C saem. Novos **1f/1g/1h**, o "desenho em T": canal B isolado por 15/10/5 m e, no topo, braço perpendicular para oeste (guia a fila A) e para leste (guia a fila C), de 6 m (premissa) nos dois primeiros e 3 m no 1h. Regra de mesa igual nos quatro: par = 4 m no meio, vermelha = 10 m, não vermelha sem par = sem unifila. Contagem refeita: 1e 73 postes (81 com reserva, 53 fitas, 106 m), 1f 71, 1g 65, 1h 57; 7 mesas sem guia em todos (MRV 5, 6, 9, 12, 15, 16, 21). Os 100 postes contratados bastam. | `decisoes_abertas.py` D4 (`parametros`: `canal`, `canal_m`, `braco_m`, `filas_mesa_m`), `tensa_barreiras.py` (reescrito: lê o cenário de trabalho por `decisoes.py` e os traçados por D4), **`gera_barreiras_hall2.py`** (novo: planta e `tensa_barreiras.md` gerados; a página escrita à mão de 11/09 foi substituída), dashboard §6 |
+| 4, 11 | **Cenário de trabalho Hamad_Final** (salvo pelo Posto em 13/09). Não está no repositório nem no branch de dados: Salvar grava só no `localStorage` e copia o JSON. `decisoes.cenario_trabalho()` procura `CENARIO_TRABALHO = "hamad-final"` na biblioteca e, enquanto não o encontra, usa `CENARIO_PROVISORIO = "hamad-3polos"` com a marca `provisorio` em todas as saídas. **Colado em 14/09** (`cenarios/hamad-final-20260914-170656.json`, §12.6). | `decisoes.py`, `tensa_barreiras.py`, dashboard §3 e §6 |
+| 5, 6 | **Duas numerações:** OFICIAL = MRV do DJE; ELEITOR = 1 na mesa mais ao sul da parede oeste, sentido horário, 28 na mais ao sul da parede leste (§9.2). Sobre o Hamad_3polos (provisório até 14/09): oeste 1–9 = MRV 11, 10, 9, 21, 24, 25, 26, 27, 28; norte 10–18 = MRV 1, 2, 3, 4, 5, 22, 7, 8, 6; leste 19–28 = MRV 12, 13, 14, 15, 23, 16, 17, 18, 19, 20. Sobre o Hamad_Final, ver §12.6. | `decisoes.numeracao_eleitor()`, `mesas()[*]["eleitor"]`; prancheta, simulador, sinalização, barreiras, instruções, dashboard |
+| 8, 9, 10, 11, 12 | **Unifilas (D4):** só o **1e** fica (adotado); 1, 1i, A, B, B2 e C saem. Novos **1f/1g/1h**, o "desenho em T": canal B isolado por 15/10/5 m e, no topo, braço perpendicular para oeste (guia a fila A) e para leste (guia a fila C), de 6 m (premissa) nos dois primeiros e 3 m no 1h. Regra de mesa igual nos quatro: par = 4 m no meio, vermelha = 10 m, não vermelha sem par = sem unifila. Contagem refeita: 1e 73 postes (81 com reserva, 53 fitas, 106 m), 1f 71, 1g 65, 1h 57; 7 mesas sem guia em todos (MRV 5, 6, 9, 12, 15, 16, 21). Os 100 postes contratados bastam. (Números do Hamad_3polos; sobre o Hamad_Final, ver §12.6.) | `decisoes_abertas.py` D4 (`parametros`: `canal`, `canal_m`, `braco_m`, `filas_mesa_m`), `tensa_barreiras.py` (reescrito: lê o cenário de trabalho por `decisoes.py` e os traçados por D4), **`gera_barreiras_hall2.py`** (novo: planta e `tensa_barreiras.md` gerados; a página escrita à mão de 11/09 foi substituída), dashboard §6 |
 | 13, 14a, 14c, 15 | **Só duas decisões em aberto:** (a) **D9** como fazer a identificação no caderno físico; (b) **D2** checkpoint ou sinalização por fitas. F1 já estava tomada, F4 foi retirada por não fazer sentido, F5 e F6 removidas; o bloco de fatos saiu do dashboard (F2 e F3 viraram uma frase de premissas). D8 decidida: **letra**. D4 recebeu 1e/1f/1g/1h. Matriz "se … então …" refeita só com as opções de D9 e D2. | `decisoes_abertas.py`, dashboard §8, `docs/decisoes_em_aberto.md`, `gera_plano_sinalizacao.py` (letra) |
 
 **Premissas adotadas nesta passagem** (o Posto pode corrigir): braço do T de
@@ -1493,4 +1492,37 @@ dimensionado sobre outro esperado por entrada.
 **Fora desta passagem:** republicar a peça "Barreiras do Hall 2" na URL de
 11/09 (a cópia do dashboard já é a nova); portar o corredor em L ao módulo
 vivo; refazer a varredura do simulador sobre o Hamad_Final quando ele entrar.
+
+### 12.6 O Hamad_Final entra no repositório (14/09/2026, tarde)
+
+O Posto colou o JSON do cenário salvo na prancheta. Ele está em
+`cenarios/hamad-final-20260914-170656.json` (nome `Hamad_Final`; o JSON veio
+com o nome `HamadFINAL` e o id `hamadfinal-20260914170656`, renomeados para o
+prefixo `hamad-final` que `decisoes.CENARIO_TRABALHO` procura; posições,
+`base` A e `criadoEm` intactos). As 28 mesas mudam de lugar em relação à planta
+A: 9 na parede oeste, 9 na norte, 10 na leste, nenhuma no recorte sul. O
+pipeline inteiro de §10.1 foi regenerado sobre ele e a marca `provisorio`
+sumiu de todas as saídas. Não foi gravado no branch `cenarios-hall2`
+(`salva_cenario.py`): a pasta versionada basta, e `cenarios.carrega()` junta
+as duas origens.
+
+| O que mudou | Hamad_3polos (até 14/09) | Hamad_Final |
+|---|---|---|
+| Numeração eleitor, oeste 1–9 | MRV 11, 10, 9, 21, 24, 25, 26, 27, 28 | MRV 5, 6, 12, 17, 1, 4, 24, 9, 11 |
+| Numeração eleitor, norte 10–18 | MRV 1, 2, 3, 4, 5, 22, 7, 8, 6 | MRV 15, 16, 2, 8, 22, 10, 13, 20, 25 |
+| Numeração eleitor, leste 19–28 | MRV 12, 13, 14, 15, 23, 16, 17, 18, 19, 20 | MRV 3, 7, 23, 14, 18, 21, 26, 19, 27, 28 |
+| Vermelhas (número eleitor) | 22 = 15, 23 = 23, 24 = 5 | 22 = 14 (norte), 23 = 21 (leste), 24 = 7 (oeste); polos soltos com 10 m de fita, sem mesa encarada, nenhum aviso |
+| Unifilas 1e (adotado) | 73 postes, 81 com reserva, 53 fitas, 106 m | 82 postes, 91 com reserva, 59 fitas, 118 m |
+| 1f / 1g / 1h (postes) | 71 / 65 / 57 | 80 / 74 / 66 |
+| Mesas sem guia | 7 (MRV 5, 6, 9, 12, 15, 16, 21) | 1 (MRV 19, eleitor 26, leste, a única não vermelha sem par) |
+| Orientadores de piso nas instruções | 6 (32 voluntários) | 4 (30 voluntários) |
+| Mesas por entrada (A/B/C) | 9 / 10 / 9 | 9 / 10 / 9, mesma atribuição de MRVs |
+
+Os 100 postes contratados continuam bastando (sobram 9 sem reserva). A
+atribuição das mesas às portas não depende do cenário, e não mudou; muda o
+número eleitor que cada uma recebe nas peças. `folgas_prancheta.py` acusa
+três folgas laterais apertadas na parede oeste, MRV 5 (0,28 m), MRV 17
+(0,38 m) e MRV 1 (0,47 m), abaixo do pior caso da planta original (0,98 m):
+a conferir com o Posto. A varredura do simulador (§7 do dashboard) continua
+sobre o Três polos.
 

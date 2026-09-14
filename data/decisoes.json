@@ -1,6 +1,14 @@
 {
  "decididoEm": "2026-09-06",
- "numeracao": "MRV do DJE/TRE-DF, identidade unica da mesa; nao depende da posicao",
+ "atualizadoEm": "2026-09-13",
+ "numeracao": "NUMERAÇÃO OFICIAL: MRV do DJE/TRE-DF, identidade da mesa de uso interno; não depende da posição.",
+ "numeracao_eleitor": "NUMERAÇÃO ELEITOR: 1 na mesa mais ao sul da parede oeste, sentido horário, 28 na mais ao sul da parede leste; voltada ao público.",
+ "cenario_trabalho": {
+  "id": "hamad-3polos-20260905-184518",
+  "nome": "Hamad_3polos",
+  "criadoEm": "2026-09-05T18:45:18.238Z",
+  "provisorio": true
+ },
  "comparecimento": {
   "base": "B",
   "rotulo": "taxa de 2022 por domicílio de origem (base B, não oficial)",
@@ -199,7 +207,7 @@
   "S2",
   "S8"
  ],
- "nomenclatura_portas": "em aberto: cor ou letra",
+ "nomenclatura_portas": "letra",
  "mesas": [
   {
    "mrv": 1,
@@ -215,6 +223,8 @@
    "esperado_exato": 374.99,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 10,
+   "parede": "norte",
    "entrada": "B",
    "porta": "S5"
   },
@@ -232,6 +242,8 @@
    "esperado_exato": 355.13,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 11,
+   "parede": "norte",
    "entrada": "C",
    "porta": "S6"
   },
@@ -249,6 +261,8 @@
    "esperado_exato": 351.49,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 12,
+   "parede": "norte",
    "entrada": "A",
    "porta": "S4"
   },
@@ -266,6 +280,8 @@
    "esperado_exato": 348.09,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 13,
+   "parede": "norte",
    "entrada": "B",
    "porta": "S5"
   },
@@ -283,6 +299,8 @@
    "esperado_exato": 327.68,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 14,
+   "parede": "norte",
    "entrada": "A",
    "porta": "S4"
   },
@@ -300,6 +318,8 @@
    "esperado_exato": 327.62,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 18,
+   "parede": "norte",
    "entrada": "C",
    "porta": "S6"
   },
@@ -317,6 +337,8 @@
    "esperado_exato": 325.38,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 16,
+   "parede": "norte",
    "entrada": "B",
    "porta": "S5"
   },
@@ -334,6 +356,8 @@
    "esperado_exato": 310.79,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 17,
+   "parede": "norte",
    "entrada": "B",
    "porta": "S5"
   },
@@ -351,6 +375,8 @@
    "esperado_exato": 466.72,
    "classe": "media",
    "cor": "#d4a017",
+   "eleitor": 3,
+   "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -368,6 +394,8 @@
    "esperado_exato": 465.95,
    "classe": "media",
    "cor": "#d4a017",
+   "eleitor": 2,
+   "parede": "oeste",
    "entrada": "C",
    "porta": "S6"
   },
@@ -385,6 +413,8 @@
    "esperado_exato": 503.78,
    "classe": "media",
    "cor": "#d4a017",
+   "eleitor": 1,
+   "parede": "oeste",
    "entrada": "C",
    "porta": "S6"
   },
@@ -402,6 +432,8 @@
    "esperado_exato": 422.68,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 19,
+   "parede": "leste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -419,6 +451,8 @@
    "esperado_exato": 406.8,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 20,
+   "parede": "leste",
    "entrada": "C",
    "porta": "S6"
   },
@@ -436,6 +470,8 @@
    "esperado_exato": 405.38,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 21,
+   "parede": "leste",
    "entrada": "C",
    "porta": "S6"
   },
@@ -453,6 +489,8 @@
    "esperado_exato": 498.45,
    "classe": "media",
    "cor": "#d4a017",
+   "eleitor": 22,
+   "parede": "leste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -470,6 +508,8 @@
    "esperado_exato": 518.04,
    "classe": "media",
    "cor": "#d4a017",
+   "eleitor": 24,
+   "parede": "leste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -487,6 +527,8 @@
    "esperado_exato": 471.75,
    "classe": "media",
    "cor": "#d4a017",
+   "eleitor": 25,
+   "parede": "leste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -504,6 +546,8 @@
    "esperado_exato": 515.04,
    "classe": "media",
    "cor": "#d4a017",
+   "eleitor": 26,
+   "parede": "leste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -521,6 +565,8 @@
    "esperado_exato": 295.26,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 27,
+   "parede": "leste",
    "entrada": "C",
    "porta": "S6"
   },
@@ -538,6 +584,8 @@
    "esperado_exato": 394.56,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 28,
+   "parede": "leste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -555,6 +603,8 @@
    "esperado_exato": 466.2,
    "classe": "media",
    "cor": "#d4a017",
+   "eleitor": 4,
+   "parede": "oeste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -572,6 +622,8 @@
    "esperado_exato": 589.78,
    "classe": "alta",
    "cor": "#c0392b",
+   "eleitor": 15,
+   "parede": "norte",
    "entrada": "B",
    "porta": "S5"
   },
@@ -589,6 +641,8 @@
    "esperado_exato": 586.08,
    "classe": "alta",
    "cor": "#c0392b",
+   "eleitor": 23,
+   "parede": "leste",
    "entrada": "C",
    "porta": "S6"
   },
@@ -606,6 +660,8 @@
    "esperado_exato": 587.56,
    "classe": "alta",
    "cor": "#c0392b",
+   "eleitor": 5,
+   "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -623,6 +679,8 @@
    "esperado_exato": 294.52,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 6,
+   "parede": "oeste",
    "entrada": "B",
    "porta": "S5"
   },
@@ -640,6 +698,8 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 7,
+   "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
   },
@@ -657,6 +717,8 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 8,
+   "parede": "oeste",
    "entrada": "C",
    "porta": "S6"
   },
@@ -674,6 +736,8 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
+   "eleitor": 9,
+   "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
   }
@@ -702,6 +766,24 @@
   "a_adquirir": 100,
   "custo_eur": 1302,
   "evacuacao_min": 11.4,
-  "largura_saida_exigida": 2.14
+  "largura_saida_exigida": 2.14,
+  "decidido": {
+   "ring3_json": "girado_ccb_na_ponta",
+   "codigo": "HP",
+   "nome": "Serpenteados horizontais (raias leste-oeste) · CCB só na ponta",
+   "capacidade": 1964,
+   "por_entrada": {
+    "A": 626,
+    "B": 712,
+    "C": 626
+   },
+   "separadores": 82,
+   "registrados": 100,
+   "compra": 0,
+   "fita_grossa_m": 576.4,
+   "apoios_da_fita": 66,
+   "meias_voltas": 66,
+   "decidido_em": "2026-09-13"
+  }
  }
 }

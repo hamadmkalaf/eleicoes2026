@@ -23,6 +23,30 @@ Decisoes registradas (Posto, 06/09/2026):
   4. Portas da fachada sul: entradas S4 (A), S5 (B) e S6 (C); saidas S2 e S8.
      Tomada durante o desenho do Ring 3 e em conversa com um colega.
   5. Nomenclatura das entradas para o eleitor (cor ou letra): SEM decisao.
+
+Decisoes de 13/09/2026 (Posto):
+
+  6. Identidade das filas para o eleitor: LETRA (A, B, C). Cor sai das pecas.
+  7. Portas: so 3 entradas (S4, S5, S6) e 2 saidas (S2, S8) -- confirma o
+     item 4; O1 tambem fica fechada no dia (planta_base.py).
+  8. Ring 3: desenho decidido = raias leste-oeste com CCB so na ponta das
+     divisorias (`girado_ccb_na_ponta` em saidas/ring3.json): 82 separadores,
+     registrados como 100 para dar margem. A atribuicao das mesas as
+     entradas nao muda: as quotas continuam as do plano vigente
+     (layout_ring3.py, 31,7/36,6/31,7%), e o desenho decidido foi
+     dimensionado sobre o comparecimento esperado por entrada que sai dessa
+     atribuicao (ring3.py ESPERADO); gera_decisoes.py confere que os dois
+     batem e falha se divergirem. (As capacidades por zona do desenho,
+     626/712/626, nao sao quotas: sao consequencia da largura de cada zona,
+     que e proporcional a esse esperado -- usa-las como quota seria circular
+     e, pelo arredondamento, daria outra atribuicao.)
+  9. Duas numeracoes de mesa. NUMERACAO OFICIAL = MRV do DJE (uso interno,
+     cadernos, convocacao). NUMERACAO ELEITOR = 1 na mesa mais ao sul da
+     parede oeste, sentido horario (oeste sul->norte, norte oeste->leste,
+     leste norte->sul), 28 na mesa mais ao sul da parede leste. Calculada
+     das posicoes do cenario de trabalho da prancheta (CENARIO_TRABALHO).
+ 10. Cenario de trabalho da prancheta: Hamad_Final (salvo em 13/09). Ate o
+     JSON ser colado em cenarios/, vale o provisorio Hamad_3polos, marcado.
 """
 import json
 import os
@@ -34,7 +58,25 @@ sys.path.insert(0, os.path.join(RAIZ, "scripts"))
 import comparecimento as CP                                   # noqa: E402
 
 DECIDIDO_EM = "2026-09-06"
+ATUALIZADO_EM = "2026-09-13"
 ARQUIVO = os.path.join(RAIZ, "data", "decisoes.json")
+PRANCHETA = os.path.join(RAIZ, "data", "prancheta_hall2.json")
+RING3_JSON = os.path.join(RAIZ, "saidas", "ring3.json")
+
+# ------------------------------------------------ cenario de trabalho -----
+# Prefixo do id (nome do arquivo em cenarios/) do arranjo que vale para a
+# numeracao eleitor e para a contagem de unifilas. Hamad_Final ainda nao foi
+# colado no repositorio (a prancheta so grava no navegador); ate la vale o
+# provisorio, e as saidas dizem que e provisorio.
+CENARIO_TRABALHO = "hamad-final"
+CENARIO_PROVISORIO = "hamad-3polos"
+
+# ------------------------------------------------------ Ring 3 decidido ----
+RING3_DESENHO = "girado_ccb_na_ponta"      # chave em saidas/ring3.json
+RING3_SEPARADORES_REGISTRADOS = 100        # 82 contados; 100 com margem (Posto, 13/09)
+
+# Identidade das filas para o eleitor (13/09): letra.
+NOMENCLATURA_PORTAS = "letra"
 
 # ------------------------------------------------------------ portas ------
 # Numeracao de fachada da planta-base (N1.., L1.., S1..S9, O1.., R1).
@@ -113,10 +155,87 @@ def mesas(dados=None):
             "esperado_exato": round(u["esperado_exato"], 2),
         })
     classes = classifica({m["mrv"]: m["esperado"] for m in saida})
+    numero, paredes = numeracao_eleitor(posicoes())
+    parede_de = {n: p for p, ns in paredes.items() for n in ns}
     for m in saida:
         m["classe"] = classes[m["mrv"]]
         m["cor"] = CLASSES[m["classe"]]["hex"]
+        m["eleitor"] = numero[m["mrv"]]
+        m["parede"] = parede_de[m["mrv"]]
     return saida
+
+
+# ------------------------------------------ cenario e numeracao eleitor ----
+PAREDE_POR_ROT = {0: "oeste", 270: "norte", 180: "leste", 90: "sul"}
+
+
+def cenario_trabalho():
+    """O cenario da prancheta que vale (Hamad_Final) ou o provisorio, marcado."""
+    import cenarios as CN                                     # noqa: E402
+    lista = CN.carrega(com_medidas=False, offline=True)
+    for pref in (CENARIO_TRABALHO, CENARIO_PROVISORIO):
+        c = next((c for c in lista if c["id"].startswith(pref)), None)
+        if c:
+            c = dict(c)
+            c["provisorio"] = pref != CENARIO_TRABALHO
+            return c
+    raise SystemExit(f"nenhum cenario com prefixo {CENARIO_TRABALHO} nem "
+                     f"{CENARIO_PROVISORIO} em cenarios/")
+
+
+def posicoes(cen=None):
+    """{mrv: {x, y, rot, lado, ...}} do cenario de trabalho sobre a planta-base."""
+    cen = cen or cenario_trabalho()
+    with open(PRANCHETA, encoding="utf-8") as f:
+        D = json.load(f)
+    base = {m["n"]: dict(m) for m in D["cenarios"][cen.get("base", "A")]["mrvs"]}
+    for a in cen.get("alteracoes") or []:
+        base[a["n"]].update(a)
+    for m in cen.get("mrvs") or []:                          # formato antigo
+        base[m["n"]].update(m)
+    return base
+
+
+def numeracao_eleitor(pos):
+    """NUMERACAO ELEITOR: 1 na mesa mais ao sul da parede oeste, sentido
+    horario (oeste de sul para norte, norte de oeste para leste, leste de
+    norte para sul), 28 na mesa mais ao sul da parede leste.
+
+    Devolve ({mrv: numero}, {parede: [mrv na ordem]}). Falha se alguma mesa
+    estiver na fachada sul ou no recorte: a regra do Posto nao as cobre.
+    """
+    parede = {n: PAREDE_POR_ROT[int(m["rot"]) % 360] for n, m in pos.items()}
+    fora = sorted(n for n, p in parede.items() if p not in ("oeste", "norte", "leste"))
+    if fora:
+        raise SystemExit("numeracao eleitor: mesas fora das paredes oeste/norte/leste "
+                         f"(sul ou recorte): MRV {fora}; defina a regra para elas")
+    ordem = {
+        "oeste": sorted((n for n in pos if parede[n] == "oeste"), key=lambda n: pos[n]["y"]),
+        "norte": sorted((n for n in pos if parede[n] == "norte"), key=lambda n: pos[n]["x"]),
+        "leste": sorted((n for n in pos if parede[n] == "leste"), key=lambda n: -pos[n]["y"]),
+    }
+    seq = ordem["oeste"] + ordem["norte"] + ordem["leste"]
+    if len(seq) != len(pos):
+        raise SystemExit("numeracao eleitor: contagem nao fecha")
+    return {n: i + 1 for i, n in enumerate(seq)}, ordem
+
+
+def ring3_decidido():
+    """O desenho do Ring 3 decidido em 13/09, lido de saidas/ring3.json."""
+    if not os.path.exists(RING3_JSON):
+        return None
+    with open(RING3_JSON, encoding="utf-8") as f:
+        d = json.load(f)[RING3_DESENHO]
+    apoios = d.get("apoios_da_fita") or {}
+    return {
+        "ring3_json": RING3_DESENHO, "codigo": d["codigo"], "nome": d["nome"],
+        "capacidade": int(round(d["capacidade"])),
+        "por_entrada": {k: int(round(v)) for k, v in d["por_entrada"].items()},
+        "separadores": d["separadores"], "registrados": RING3_SEPARADORES_REGISTRADOS,
+        "compra": d["compra"], "fita_grossa_m": d.get("fita_grossa_m", 0.0),
+        "apoios_da_fita": apoios.get("apoios", 0), "meias_voltas": d["meias_voltas"],
+        "decidido_em": ATUALIZADO_EM,
+    }
 
 
 def atribui_entradas(lista, quotas):
@@ -181,9 +300,16 @@ def montar(dados=None):
             portas[num]["entrada"] = ENTRADA_DA_PORTA[num]
             portas[num]["cor"] = CORES_ENTRADA[ENTRADA_DA_PORTA[num]][1]
     contagem = {k: sum(1 for m in lista if m["classe"] == k) for k in ORDEM_CLASSES}
+    cen = cenario_trabalho()
     return {
         "decididoEm": DECIDIDO_EM,
-        "numeracao": "MRV do DJE/TRE-DF, identidade unica da mesa; nao depende da posicao",
+        "atualizadoEm": ATUALIZADO_EM,
+        "numeracao": "NUMERAÇÃO OFICIAL: MRV do DJE/TRE-DF, identidade da mesa de uso interno; "
+                     "não depende da posição.",
+        "numeracao_eleitor": "NUMERAÇÃO ELEITOR: 1 na mesa mais ao sul da parede oeste, sentido "
+                             "horário, 28 na mais ao sul da parede leste; voltada ao público.",
+        "cenario_trabalho": {"id": cen["id"], "nome": cen.get("nome"),
+                             "criadoEm": cen.get("criadoEm"), "provisorio": cen["provisorio"]},
         "comparecimento": {
             "base": CP.BASE, "rotulo": CP.ROTULO,
             "total": sum(m["esperado"] for m in lista),
@@ -202,7 +328,7 @@ def montar(dados=None):
         "portas": portas,
         "entradas": entradas,
         "saidas": list(SAIDAS),
-        "nomenclatura_portas": "em aberto: cor ou letra",
+        "nomenclatura_portas": NOMENCLATURA_PORTAS,
         "mesas": lista,
         "ring3": {
             "largura": R3.LARGURA, "profundidade": R3.PROFUNDIDADE,
@@ -215,6 +341,7 @@ def montar(dados=None):
             "custo_eur": round(r["custo"]),
             "evacuacao_min": round(ev["tempo_atual"], 1),
             "largura_saida_exigida": round(ev["larg_exigida"], 2),
+            "decidido": ring3_decidido(),
         },
     }
 

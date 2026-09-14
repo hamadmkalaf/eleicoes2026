@@ -35,7 +35,7 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARQUIVO_JSON = os.path.join(RAIZ, "data", "decisoes_abertas.json")
 ARQUIVO_MD = os.path.join(RAIZ, "docs", "decisoes_em_aberto.md")
 
-REGISTRADO_EM = "2026-09-13"
+REGISTRADO_EM = "2026-09-14"
 ESTADOS = ("em aberto", "parcial", "decidida", "derivada")
 ABERTOS = ("em aberto", "parcial")
 
@@ -125,13 +125,13 @@ DECISOES = [
     {
         "id": "D2",
         "curto": "Checkpoint ou fitas",
-        "titulo": "(b) Checkpoint ou sinalização por fitas?",
+        "titulo": "(b) Checkpoint ou sinalização por fitas? Decidido: fitas",
         "pergunta": "Depois da porta, o eleitor passa por um ponto onde a equipe confere a "
                     "seção, aponta a mesa e retém quando a fila da mesa está cheia — ou "
                     "segue fitas no piso da porta à mesa, sem ponto de controle?",
         "dono": "Posto",
-        "estado": "em aberto",
-        "vigente": "checkpoint",
+        "estado": "decidida",
+        "vigente": "fitas",
         "depende_de": ["D9"],
         "restricoes": ["F2", "F3"],
         "fontes": ["docs/registro_fitas_no_piso_2026-09-12.md", "docs/alternativa_fitas_no_piso.md",
@@ -151,16 +151,19 @@ DECISOES = [
                  "D6": "O painel seção → mesa fica no checkpoint (P6); o eleitor lê parado, com a equipe ao lado.",
                  "D7": "6 a 9 pessoas em posições fixas (2–3 por porta), mais 1 supervisor do checkpoint.",
              }},
-            {"id": "fitas", "rotulo": "Sinalização por fitas no piso, sem checkpoint",
-             "resumo": "Simulado no motor oficial: fecha às 17h03 (mesmo horário), mas com porta "
-                       "livre 950 pessoas ficam dentro do salão e 5.795 chegam a fila cheia; com "
-                       "porta regulando às cegas o Ring 3 vai a 1.516–2.283. Perder-se custa 1–3 "
-                       "min no P90. O checkpoint não custa vazão; o que ele faz é reter por mesa.",
+            {"id": "fitas", "rotulo": "Sinalização por fitas no piso, sem checkpoint (decidido em 14/09)",
+             "resumo": "Decidido pelo Posto em 14/09. Simulado no motor oficial sobre o Hamad_Final: "
+                       "fecha às 17h03 (mesmo horário do checkpoint); com a porta regulando pelo que "
+                       "cabe nas filas de mesa, espera P90 de 65 min (50 com checkpoint), 122 dentro "
+                       "do salão e 1.429 no Ring 3 (1.600 no dia ruim, contra 1.964 decididos); com "
+                       "porta livre, 951 dentro e 5.809 chegadas a fila cheia. Plano operacional em "
+                       "docs/plano_filas.md.",
              "parametros": {"existe": False, "modo": "nenhum", "posicoes_por_porta": [0, 0],
                             "seg_por_conferencia": 0, "distancia_m": 0},
              "efeitos": {
-                 "D4": "Os postes do canal de entrada viram guia curta (1h: 5 m + braços de 3 m) e "
-                       "as filas de mesa são a única contenção; fitas no piso por parede (214–463 m).",
+                 "D4": "Nenhum poste no canal de entrada: as fitas no piso levam o eleitor da porta "
+                       "à sua mesa (Posto, 14/09) e os postes ficam só nas filas de mesa (traçado so_mesas); "
+                       "as filas de mesa são a única contenção.",
                  "D6": "Painel seção → mesa na soleira da porta (10 s de leitura em pé) e placa alta "
                        "numerada em cada mesa, obrigatória.",
                  "D7": "6 a 9 orientadores volantes no salão; a resposta a uma fila de 40 pessoas "
@@ -259,16 +262,25 @@ DECISOES = [
         "titulo": "Unifilas internas (postes Tensa)",
         "pergunta": "Onde vai a fita retrátil dentro do salão: no canal de entrada e nas filas de mesa. "
                     "Regra de mesa (13/09) em todos os traçados: par = uma linha de 4 m no meio; "
-                    "não vermelha sem par = sem unifila; vermelha = 10 m.",
+                    "não vermelha sem par = sem unifila; vermelha = 10 m. Com fitas no piso e sem "
+                    "checkpoint (D2, 14/09), o canal de entrada fica sem poste: a fita leva da porta à mesa.",
         "dono": "Posto",
         "estado": "decidida",
-        "vigente": "1e",
+        "vigente": "so_mesas",
         "depende_de": ["D1", "D2"],
         "restricoes": [],
         "fontes": ["saidas/tensa_barreiras.md", "saidas/tensa_barreiras.json", "registro_barreiras_hall2.md"],
         "opcoes": [
+            {"id": "so_mesas", "rotulo": "Só as filas de mesa: nenhum poste na entrada, as fitas no piso levam da porta à mesa",
+             "resumo": "Adotado em 14/09, com D2 = fitas. Postes só nas filas de mesa pela regra de 13/09 "
+                       "(4 m no par, 10 m na vermelha, nada na solta não vermelha); as três correntes "
+                       "se separam na soleira seguindo a fita da sua entrada.",
+             "parametros": {"tensa": "so_mesas", "canal": "nenhum", "canal_m": 0.0, "braco_m": 0.0,
+                            "filas_mesa_m": {"par": 4.0, "polo": 10.0, "solta": 0.0}},
+             "efeitos": {"D6": "Painel seção → mesa na soleira e fita por entrada com a letra; placa alta em toda mesa.",
+                         "D7": "Orientadores volantes no salão são a única resposta a fila de mesa cheia; ninguém segura a borda de um canal."}},
             {"id": "1e", "rotulo": "1e: duas divisórias de 20 m (A|B e B|C) até o checkpoint + regra de mesa",
-             "resumo": "Adotado. As duas linhas que separam as três correntes da porta ao checkpoint, "
+             "resumo": "Adotado em 13/09 (com checkpoint). As duas linhas que separam as três correntes da porta ao checkpoint, "
                        "com 6 bochechas de portão; nas mesas, a regra de 13/09.",
              "parametros": {"tensa": "1e", "canal": "meio", "canal_m": 20.0, "braco_m": 0.0,
                             "filas_mesa_m": {"par": 4.0, "polo": 10.0, "solta": 0.0}},

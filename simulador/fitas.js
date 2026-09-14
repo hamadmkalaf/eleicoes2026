@@ -137,8 +137,17 @@ function geometriaFitas(m, rotulo){
 /* ---------------------------------------------------------------- */
 /* Grade de cenários                                                 */
 /* ---------------------------------------------------------------- */
+/* O arranjo simulado e o cenario de trabalho de decisoes.py (data/decisoes.json,
+ * `cenario_trabalho.id`; desde 14/09 o Hamad_Final). Sem ele na pasta cenarios/,
+ * cai no Cenario Claude (Tres polos), como antes. */
+function arranjoDeTrabalho(){
+  const alvo = dec.cenario_trabalho && dec.cenario_trabalho.id;
+  return alvo ? arranjos.find(a => a.id === alvo) : null;
+}
 function cenBase(d){
   const c = Modelo.cenarioClaude(d, arranjos);
+  const tp = arranjoDeTrabalho();
+  if (tp) c.salao = {base: tp.base, alteracoes: tp.alteracoes.map(m => ({...m})), arranjo: tp.id, nome: tp.nome};
   c.sim = {runs: RUNS, seed: 7};
   return c;
 }
@@ -200,7 +209,7 @@ for (const k of Object.keys(geo)) {
   for (const e of g.porEntrada) console.log(`  ${e.entrada} (${e.porta}): mesas ${e.mesas.join(",")} · ${e.esperados} esperados (Ring 3 ${e.capRing3}) · paredes ${e.paredes.join("/")} · ${e.nTroncos} troncos ${e.fitaTroncos_m.toFixed(0)} m · caminho médio ${e.distMedia_m.toFixed(1)} m`);
 }
 
-// planta resolvida para o desenho (arranjo Três polos, sem checkpoint)
+// planta resolvida para o desenho (arranjo do cenario de trabalho, sem checkpoint)
 const planta = {
   salao: base.salao, modulo: base.modulo, portas: base.portas, zonasProtegidas: base.cenarios.A.zonas,
   mesas: mDec.mesas.map(x => ({mrv: x.mrv, x: x.pos.x, y: x.pos.y, rot: x.pos.rot, lado: x.pos.lado, classe: x.classeDecisao, cor: x.cor,
@@ -209,7 +218,8 @@ const planta = {
   entradas: mDec.zonas.map(z => ({letra: z.letra, porta: z.porta, centro: z.portaCentro, cor: z.cor})),
   checkpointClaude: {dist: 16, pontos: Modelo.montar(base, mrvs, cenBase(dec), dec).zonas.map(z => z.checkpoint)},
 };
-const saida = {geradoEm: new Date().toISOString(), runs: RUNS, arranjo: cenBase(dec).salao.nome, resultados, geometria: geo, planta,
+const saida = {geradoEm: new Date().toISOString(), runs: RUNS, arranjo: cenBase(dec).salao.nome, arranjoId: cenBase(dec).salao.arranjo || null,
+               cenarioTrabalho: dec.cenario_trabalho || null, resultados, geometria: geo, planta,
                premissas: {curvaChegada: "a do simulador (fatias de 30 min, 7h–17h)", identificacao: 45, voto: 30, cv: 0.35, velocidade: 1.2, passoFila: 0.6,
                            semCheckpoint: "10 s para ler a sinalização na porta + caminhada direta; erro de sinalização opcional (cen.sinalizacao)"}};
 fs.writeFileSync(path.join(RAIZ, "saidas/fitas_piso.json"), JSON.stringify(saida, null, 1));

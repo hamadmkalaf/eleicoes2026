@@ -1,10 +1,10 @@
-# Separadores Tensa para o Hall 2 — os quatro traçados de 13/09
+# Separadores Tensa para o Hall 2 — os traçados de 13/09 e 14/09
 
 > Gerado por `scripts/gera_barreiras_hall2.py` de `saidas/tensa_barreiras.json` (`scripts/tensa_barreiras.py`, 2026-09-14). Não editar à mão.
 
-> **Traçado adotado: 1e.** 73 postes, 81 com reserva de 10 %, 53 fitas de 2 m (106 m de barreira), EUR 1.295,00 ex-VAT com entrega. Contra os 100 postes já contratados: -19.
+> **Traçado adotado: so_mesas.** 54 postes, 60 com reserva de 10 %, 39 fitas de 2 m (78 m de barreira), EUR 980,00 ex-VAT com entrega. Contra os 100 postes já contratados: -40.
 
-Base: cenário **`Hamad_3polos`** da Prancheta do Hall 2 (salvo em 2026-09-05, sobre a planta A), com as 28 mesas onde ficaram, as portas S4/S5/S6 como entradas A, B e C e as saídas S2 e S8. **Provisório:** o cenário `hamad-final` (o "Hamad_Final" da prancheta) ainda não foi colado em `cenarios/`; a conta e a numeração eleitor mudam quando ele entrar.
+Base: cenário **`Hamad_Final`** da Prancheta do Hall 2 (salvo em 2026-09-14, sobre a planta A), com as 28 mesas onde ficaram, as portas S4/S5/S6 como entradas A, B e C e as saídas S2 e S8.
 
 ## A regra de mesa (Posto, 13/09/2026)
 
@@ -12,30 +12,42 @@ Base: cenário **`Hamad_3polos`** da Prancheta do Hall 2 (salvo em 2026-09-05, s
 - **Mesa vermelha** (as três de maior comparecimento, os polos): **10 m** de unifila do seu lado.
 - **Mesa não vermelha sem par: sem unifila.** Fica com a placa alta e o orientador de piso.
 
-## Os quatro traçados do canal de entrada
+## Os traçados do canal de entrada
 
 | Traçado | Canal | Corridas | Fitas | Postes | Com reserva | Barreira | EUR ex-VAT | Mesas sem guia |
 |---|---|--:|--:|--:|--:|--:|--:|--:|
-| **1e** **(adotado)** | duas divisórias de 20 m + 6 bochechas | 14 | 53 | 73 | 81 | 106 m | 1.295,00 | 7 |
-| **1f** | T: canal B de 15 m, braços de 6 m + 2 bochechas | 14 | 55 | 71 | 79 | 110 m | 1.265,00 | 7 |
-| **1g** | T: canal B de 10 m, braços de 6 m + 2 bochechas | 14 | 49 | 65 | 72 | 98 m | 1.160,00 | 7 |
-| **1h** | T: canal B de 5 m, braços de 3 m + 2 bochechas | 14 | 41 | 57 | 63 | 82 m | 1.025,00 | 7 |
+| **so_mesas** **(adotado)** | nenhum poste: a fita no piso leva da porta à mesa | 15 | 39 | 54 | 60 | 78 m | 980,00 | 1 |
+| **1e** | duas divisórias de 20 m + 6 bochechas | 17 | 59 | 82 | 91 | 118 m | 1.445,00 | 1 |
+| **1f** | T: canal B de 15 m, braços de 6 m + 2 bochechas | 17 | 61 | 80 | 88 | 122 m | 1.400,00 | 1 |
+| **1g** | T: canal B de 10 m, braços de 6 m + 2 bochechas | 17 | 55 | 74 | 82 | 110 m | 1.310,00 | 1 |
+| **1h** | T: canal B de 5 m, braços de 3 m + 2 bochechas | 17 | 47 | 66 | 73 | 94 m | 1.175,00 | 1 |
 
+- **so_mesas** (14/09, com fitas no piso e sem checkpoint): nenhum poste na entrada; as três correntes se separam na soleira seguindo a fita da sua entrada, e os postes ficam só nas filas de mesa.
 - **1e**: as duas divisórias que separam as três correntes, da porta ao checkpoint (20 m), com duas bochechas de portão por canal.
 - **1f, 1g, 1h ("desenho em T")**: só o canal B fica isolado, por 15, 10 ou 5 m; no topo, um braço perpendicular para oeste guia a fila A e um para leste guia a fila C (6 m nos dois primeiros, premissa; 3 m no 1h). Cada lado do T é uma corrida contínua: o canto é um poste com duas fitas.
 
-### Traçado 1e — **adotado**
+### Traçado so_mesas — **adotado**
 
-Adotado. As duas linhas que separam as três correntes da porta ao checkpoint, com 6 bochechas de portão; nas mesas, a regra de 13/09.
+Adotado em 14/09, com D2 = fitas. Postes só nas filas de mesa pela regra de 13/09 (4 m no par, 10 m na vermelha, nada na solta não vermelha); as três correntes se separam na soleira seguindo a fita da sua entrada.
+
+| Item | Corridas | Comp. | Fitas | Postes |
+|---|--:|--:|--:|--:|
+| polo (mesa vermelha) · 10,0 m (3: mesas 14, 21, 7) | 3 | 10,0 m | 15 | 18 |
+| linha do meio de par · 4,0 m (12: mesas 5–6, 12–13, 19–20, 1–2, 8–9, 15–16, 3–4, 22–23, 10–11, 17–18, 24–25, 27–28) | 12 | 4,0 m | 24 | 36 |
+| **Total** | **15** | | **39** | **54** |
+
+### Traçado 1e
+
+Adotado em 13/09 (com checkpoint). As duas linhas que separam as três correntes da porta ao checkpoint, com 6 bochechas de portão; nas mesas, a regra de 13/09.
 
 | Item | Corridas | Comp. | Fitas | Postes |
 |---|--:|--:|--:|--:|
 | divisória A\|B · 20 m | 1 | 20,0 m | 10 | 11 |
 | divisória B\|C · 20 m | 1 | 20,0 m | 10 | 11 |
 | bochechas de portão (6) | — | — | 0 | 6 |
-| polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5) | 3 | 10,0 m | 15 | 18 |
-| linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9) | 9 | 4,0 m | 18 | 27 |
-| **Total** | **14** | | **53** | **73** |
+| polo (mesa vermelha) · 10,0 m (3: mesas 14, 21, 7) | 3 | 10,0 m | 15 | 18 |
+| linha do meio de par · 4,0 m (12: mesas 5–6, 12–13, 19–20, 1–2, 8–9, 15–16, 3–4, 22–23, 10–11, 17–18, 24–25, 27–28) | 12 | 4,0 m | 24 | 36 |
+| **Total** | **17** | | **59** | **82** |
 
 ### Traçado 1f
 
@@ -46,9 +58,9 @@ Duas linhas em x 25,18 e 31,40 da parede sul até 15 m; no metro 15, um braço p
 | lado oeste do T · canal 15 m + braço 6 m (guia a fila A) | 1 | 21,0 m | 11 | 12 |
 | lado leste do T · canal 15 m + braço 6 m (guia a fila C) | 1 | 21,0 m | 11 | 12 |
 | bochechas de portão (2) | — | — | 0 | 2 |
-| polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5) | 3 | 10,0 m | 15 | 18 |
-| linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9) | 9 | 4,0 m | 18 | 27 |
-| **Total** | **14** | | **55** | **71** |
+| polo (mesa vermelha) · 10,0 m (3: mesas 14, 21, 7) | 3 | 10,0 m | 15 | 18 |
+| linha do meio de par · 4,0 m (12: mesas 5–6, 12–13, 19–20, 1–2, 8–9, 15–16, 3–4, 22–23, 10–11, 17–18, 24–25, 27–28) | 12 | 4,0 m | 24 | 36 |
+| **Total** | **17** | | **61** | **80** |
 
 ### Traçado 1g
 
@@ -59,9 +71,9 @@ Como o 1f, com o canal B encurtado para 10 m; braços de 6 m.
 | lado oeste do T · canal 10 m + braço 6 m (guia a fila A) | 1 | 16,0 m | 8 | 9 |
 | lado leste do T · canal 10 m + braço 6 m (guia a fila C) | 1 | 16,0 m | 8 | 9 |
 | bochechas de portão (2) | — | — | 0 | 2 |
-| polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5) | 3 | 10,0 m | 15 | 18 |
-| linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9) | 9 | 4,0 m | 18 | 27 |
-| **Total** | **14** | | **49** | **65** |
+| polo (mesa vermelha) · 10,0 m (3: mesas 14, 21, 7) | 3 | 10,0 m | 15 | 18 |
+| linha do meio de par · 4,0 m (12: mesas 5–6, 12–13, 19–20, 1–2, 8–9, 15–16, 3–4, 22–23, 10–11, 17–18, 24–25, 27–28) | 12 | 4,0 m | 24 | 36 |
+| **Total** | **17** | | **55** | **74** |
 
 ### Traçado 1h
 
@@ -72,31 +84,31 @@ O mínimo que ainda marca a virada: 5 m de canal e 3 m de braço.
 | lado oeste do T · canal 5 m + braço 3 m (guia a fila A) | 1 | 8,0 m | 4 | 5 |
 | lado leste do T · canal 5 m + braço 3 m (guia a fila C) | 1 | 8,0 m | 4 | 5 |
 | bochechas de portão (2) | — | — | 0 | 2 |
-| polo (mesa vermelha) · 10,0 m (3: mesas 15, 23, 5) | 3 | 10,0 m | 15 | 18 |
-| linha do meio de par · 4,0 m (9: mesas 10–11, 12–13, 16–17, 2–1, 20–21, 25–26, 27–28, 6–7, 8–9) | 9 | 4,0 m | 18 | 27 |
-| **Total** | **14** | | **41** | **57** |
+| polo (mesa vermelha) · 10,0 m (3: mesas 14, 21, 7) | 3 | 10,0 m | 15 | 18 |
+| linha do meio de par · 4,0 m (12: mesas 5–6, 12–13, 19–20, 1–2, 8–9, 15–16, 3–4, 22–23, 10–11, 17–18, 24–25, 27–28) | 12 | 4,0 m | 24 | 36 |
+| **Total** | **17** | | **47** | **66** |
 
 ## O pareamento no cenário de trabalho
 
-9 pares (18 mesas), 7 mesas sem par, 3 polos. Regra da própria prancheta: mesmo giro, mesmo recuo da parede, mesários de lados opostos; os polos saem do sorteio antes.
+12 pares (24 mesas), 1 mesas sem par, 3 polos. Regra da própria prancheta: mesmo giro, mesmo recuo da parede, mesários de lados opostos; os polos saem do sorteio antes.
 
 | Par (nº eleitor) | MRV | Corredor | Classes |
 |---|---|--:|---|
-| 10–11 | 1–2 | 3,00 m | baixa/baixa |
-| 12–13 | 3–4 | 3,00 m | baixa/baixa |
-| 16–17 | 7–8 | 2,94 m | baixa/baixa |
-| 2–1 | 10–11 | 2,50 m | media/media |
-| 20–21 | 13–14 | 1,95 m | baixa/baixa |
-| 25–26 | 17–18 | 3,00 m | media/media |
-| 27–28 | 19–20 | 3,00 m | baixa/baixa |
-| 6–7 | 25–26 | 3,10 m | baixa/baixa |
-| 8–9 | 27–28 | 2,50 m | baixa/baixa |
+| 5–6 | 1–4 | 3,00 m | baixa/baixa |
+| 12–13 | 2–8 | 3,00 m | baixa/baixa |
+| 19–20 | 3–7 | 3,00 m | baixa/baixa |
+| 1–2 | 5–6 | 3,00 m | baixa/baixa |
+| 8–9 | 9–11 | 3,00 m | media/media |
+| 15–16 | 10–13 | 3,00 m | media/baixa |
+| 3–4 | 12–17 | 3,00 m | baixa/media |
+| 22–23 | 14–18 | 2,15 m | baixa/media |
+| 10–11 | 15–16 | 3,00 m | media/media |
+| 17–18 | 20–25 | 3,00 m | baixa/baixa |
+| 24–25 | 21–26 | 3,00 m | media/baixa |
+| 27–28 | 27–28 | 3,00 m | baixa/baixa |
 
-- Sem par, **sem unifila**: mesa 14 (MRV 5, baixa), mesa 18 (MRV 6, baixa), mesa 3 (MRV 9, media), mesa 19 (MRV 12, baixa), mesa 22 (MRV 15, media), mesa 24 (MRV 16, media), mesa 4 (MRV 21, media).
-- Polos, 10 m: mesa 15 (MRV 22), mesa 23 (MRV 23), mesa 5 (MRV 24).
-- **Atenção:** MRV 5 e 22 se encaram e um deles e polo: o polo recebe os seus 10 m e o outro fica sem par (regra de 13/09; confirmar com o Posto).
-- **Atenção:** MRV 16 e 23 se encaram e um deles e polo: o polo recebe os seus 10 m e o outro fica sem par (regra de 13/09; confirmar com o Posto).
-- **Atenção:** MRV 21 e 24 se encaram e um deles e polo: o polo recebe os seus 10 m e o outro fica sem par (regra de 13/09; confirmar com o Posto).
+- Sem par, **sem unifila**: mesa 26 (MRV 19, baixa).
+- Polos, 10 m: mesa 14 (MRV 22), mesa 21 (MRV 23), mesa 7 (MRV 24).
 
 ## Fôlego das filas com guia
 
@@ -104,34 +116,34 @@ Minutos de pico (1,8× a média, 60 s por voto) que a fila aguenta antes de tran
 
 | Mesa (nº eleitor) | MRV | Seção | Classe | Esperados | Fila | Cabem | Chegam/min | Lota em |
 |---|---|---|---|--:|--:|--:|--:|--:|
-| 26 | 18 | 3306 | media | 515 | 4 m | 8 | 1,72 | 11 min |
-| 1 | 11 | 3161 | media | 504 | 4 m | 8 | 1,68 | 12 min |
-| 2 | 10 | 3142 | media | 466 | 4 m | 8 | 1,55 | 14 min |
-| 25 | 17 | 3305 | media | 472 | 4 m | 8 | 1,57 | 14 min |
-| 15 | 22 | 3313 | alta | 590 | 10 m | 20 | 1,97 | 21 min |
-| 23 | 23 | 3315 | alta | 586 | 10 m | 20 | 1,95 | 21 min |
-| 5 | 24 | 3322 | alta | 588 | 10 m | 20 | 1,96 | 21 min |
-| 20 | 13 | 3216 | baixa | 407 | 4 m | 8 | 1,36 | 22 min |
-| 21 | 14 | 3229 | baixa | 405 | 4 m | 8 | 1,35 | 23 min |
-| 28 | 20 | 3309 | baixa | 395 | 4 m | 8 | 1,32 | 25 min |
-| 10 | 1 | 511 | baixa | 375 | 4 m | 8 | 1,25 | 32 min |
-| 11 | 2 | 512 | baixa | 355 | 4 m | 8 | 1,18 | 44 min |
-| 12 | 3 | 513 | baixa | 351 | 4 m | 8 | 1,17 | 47 min |
-| 13 | 4 | 517 | baixa | 348 | 4 m | 8 | 1,16 | 50 min |
-| 16 | 7 | 3054 | baixa | 325 | 4 m | 8 | 1,08 | 96 min |
-| 17 | 8 | 3078 | baixa | 311 | 4 m | 8 | 1,04 | 218 min |
-| 27 | 19 | 3308 | baixa | 295 | 4 m | 8 | 0,98 | não lota |
-| 6 | 25 | 3442 | baixa | 295 | 4 m | 8 | 0,98 | não lota |
-| 7 | 26 | 3688 | baixa | 296 | 4 m | 8 | 0,99 | não lota |
-| 8 | 27 | 3832 | baixa | 296 | 4 m | 8 | 0,99 | não lota |
-| 9 | 28 | 3862 | baixa | 296 | 4 m | 8 | 0,99 | não lota |
-| 14 | 5 | 1160 | baixa | 328 | — | — | 1,09 | sem guia |
-| 18 | 6 | 1352 | baixa | 328 | — | — | 1,09 | sem guia |
-| 3 | 9 | 3108 | media | 467 | — | — | 1,56 | sem guia |
-| 19 | 12 | 3179 | baixa | 423 | — | — | 1,41 | sem guia |
-| 22 | 15 | 3245 | media | 498 | — | — | 1,66 | sem guia |
-| 24 | 16 | 3302 | media | 518 | — | — | 1,73 | sem guia |
-| 4 | 21 | 3311 | media | 466 | — | — | 1,55 | sem guia |
+| 11 | 16 | 3302 | media | 518 | 4 m | 8 | 1,73 | 11 min |
+| 23 | 18 | 3306 | media | 515 | 4 m | 8 | 1,72 | 11 min |
+| 9 | 11 | 3161 | media | 504 | 4 m | 8 | 1,68 | 12 min |
+| 10 | 15 | 3245 | media | 498 | 4 m | 8 | 1,66 | 12 min |
+| 8 | 9 | 3108 | media | 467 | 4 m | 8 | 1,56 | 14 min |
+| 15 | 10 | 3142 | media | 466 | 4 m | 8 | 1,55 | 14 min |
+| 4 | 17 | 3305 | media | 472 | 4 m | 8 | 1,57 | 14 min |
+| 24 | 21 | 3311 | media | 466 | 4 m | 8 | 1,55 | 14 min |
+| 3 | 12 | 3179 | baixa | 423 | 4 m | 8 | 1,41 | 20 min |
+| 14 | 22 | 3313 | alta | 590 | 10 m | 20 | 1,97 | 21 min |
+| 21 | 23 | 3315 | alta | 586 | 10 m | 20 | 1,95 | 21 min |
+| 7 | 24 | 3322 | alta | 588 | 10 m | 20 | 1,96 | 21 min |
+| 16 | 13 | 3216 | baixa | 407 | 4 m | 8 | 1,36 | 22 min |
+| 22 | 14 | 3229 | baixa | 405 | 4 m | 8 | 1,35 | 23 min |
+| 17 | 20 | 3309 | baixa | 395 | 4 m | 8 | 1,32 | 25 min |
+| 5 | 1 | 511 | baixa | 375 | 4 m | 8 | 1,25 | 32 min |
+| 12 | 2 | 512 | baixa | 355 | 4 m | 8 | 1,18 | 44 min |
+| 19 | 3 | 513 | baixa | 351 | 4 m | 8 | 1,17 | 47 min |
+| 6 | 4 | 517 | baixa | 348 | 4 m | 8 | 1,16 | 50 min |
+| 1 | 5 | 1160 | baixa | 328 | 4 m | 8 | 1,09 | 86 min |
+| 2 | 6 | 1352 | baixa | 328 | 4 m | 8 | 1,09 | 86 min |
+| 20 | 7 | 3054 | baixa | 325 | 4 m | 8 | 1,08 | 96 min |
+| 13 | 8 | 3078 | baixa | 311 | 4 m | 8 | 1,04 | 218 min |
+| 18 | 25 | 3442 | baixa | 295 | 4 m | 8 | 0,98 | não lota |
+| 25 | 26 | 3688 | baixa | 296 | 4 m | 8 | 0,99 | não lota |
+| 27 | 27 | 3832 | baixa | 296 | 4 m | 8 | 0,99 | não lota |
+| 28 | 28 | 3862 | baixa | 296 | 4 m | 8 | 0,99 | não lota |
+| 26 | 19 | 3308 | baixa | 295 | — | — | 0,98 | sem guia |
 
 ## Como se conta um poste
 

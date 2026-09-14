@@ -243,7 +243,7 @@ def documento():
         fb = next((r for r in (fitas or {}).get("resultados", []) if r["id"] == "fitas-buffer"), None)
         if fb:
             L.append(f"- Simulado: fecha às {fb['fechaP50']}, espera P90 de {fb['p90TotalMin']} min, pico de {fmt(fb['dentroMax'])} dentro e {fmt(fb['ring3Max'])} no Ring 3, {fmt(fb['estouroFilas'])} chegadas a fila cheia.")
-        L.append("- O eleitor lê o painel na soleira (10 s) e segue a fita da cor da sua porta até a parede da sua mesa; a placa alta numerada confirma.")
+        L.append("- O eleitor lê o painel na soleira (10 s) e segue a fita da sua entrada (letra e cor) até a sua mesa; a placa alta com o número eleitor confirma. O detalhe por entrada e por mesa está em `docs/plano_filas.md`.")
         L.append("- Orientadores volantes redirecionam quem se perdeu (custo esperado: 1 a 3 min no P90) e são a única resposta a uma fila de mesa cheia.\n")
 
     L.append("## 6. Salão e filas de mesa\n")
@@ -252,7 +252,7 @@ def documento():
     L.append(f"- Regra das unifilas (13/09): {filas['par']:.0f} m no meio de cada par (uma linha separa as duas filas); {filas['polo']:.0f} m nas três vermelhas, mesas {', '.join(mesa(m['mrv']) for m in altas)}; nenhuma fita nas não vermelhas sem par. A fila só começa depois dos mesários.")
     curtos = sorted((f for f in tb["folego"] if f["guia"] and f["minutos"] is not None and f["minutos"] < 20), key=lambda f: f["minutos"])
     if curtos:
-        L.append(f"- **Mesas que lotam rápido no pico** (menos de 20 min a 60 s por voto): {', '.join(mesa(f['mrv']) + ' em ' + str(f['minutos']) + ' min' for f in curtos)}. O orientador de piso fica com o olho nelas; fila além da fita → chamar o checkpoint para reter, não empurrar a fila pelo corredor.")
+        L.append(f"- **Mesas que lotam rápido no pico** (menos de 20 min a 60 s por voto): {', '.join(mesa(f['mrv']) + ' em ' + str(f['minutos']) + ' min' for f in curtos)}. O orientador de piso fica com o olho nelas; fila além da fita → " + ("chamar o checkpoint para reter" if chk.get("existe") else "o orientador volante redireciona e avisa a coordenação, que segura a porta") + ", não empurrar a fila pelo corredor.")
     nunca = [mesa(f["mrv"]) for f in tb["folego"] if f["guia"] and f["minutos"] is None]
     if nunca:
         L.append(f"- Mesas com guia que não lotam em hipótese nenhuma: {', '.join(nunca)}. Não precisam de orientador dedicado.")
@@ -262,7 +262,7 @@ def documento():
         L.append("- Toda mesa tem placa alta com o número eleitor (MRV ao lado); o orientador aponta a placa, não a mesa.")
     else:
         L.append("- Sinalização interna vigente: faixas suspensas por bloco e totem por mesa (P6), com o número eleitor em destaque. Sem placa alta, o orientador precisa nomear a mesa em voz alta: \"mesa quinze, ali, parede norte\".")
-    L.append("- Quem chega à mesa errada não volta ao checkpoint: o orientador o leva à mesa certa pelo corredor mais curto.")
+    L.append("- Quem chega à mesa errada não volta " + ("ao checkpoint" if chk.get("existe") else "à porta") + ": o orientador o leva à mesa certa pelo corredor mais curto.")
     d9 = V.get("D9")
     L.append("- **Mesa receptora (identificação pelo caderno físico): decisão (a) em aberto (D9)"
              + (f", hoje assumindo *{d9['rotulo']}*" if d9 else ", sem opção assumida") + ".** Com "

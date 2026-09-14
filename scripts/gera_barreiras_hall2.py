@@ -86,11 +86,14 @@ def planta(J, P, dec, c):
     porta_entrada = {e["porta"]: e for e in dec["entradas"]}
     canal = c["canal"]
     o = [poly(sal["contorno"], fill="#fbfaf7", stroke="#1f2c3c", stroke_width="2")]
-    # faixa de entrada: da porta ao checkpoint (1e) ou ao topo do T
+    # faixa de entrada: da porta ao checkpoint (1e) ou ao topo do T; nenhuma no so_mesas
     x0, x1 = J["divisas"]["bordas"]
-    o.append(D.rect(x0, 0, x1, canal["canal_m"], fill="#dfe5ec", opacity=".45"))
-    o.append(D.txt((x0 + x1) / 2, canal["canal_m"] + 0.9,
-                   ("checkpoint a " if canal["canal"] == "meio" else "topo do T a ") + f"{canal['canal_m']:.0f} m", "sub"))
+    if canal["canal"] != "nenhum":
+        o.append(D.rect(x0, 0, x1, canal["canal_m"], fill="#dfe5ec", opacity=".45"))
+        o.append(D.txt((x0 + x1) / 2, canal["canal_m"] + 0.9,
+                       ("checkpoint a " if canal["canal"] == "meio" else "topo do T a ") + f"{canal['canal_m']:.0f} m", "sub"))
+    else:
+        o.append(D.txt((x0 + x1) / 2, 2.2, "sem poste na entrada: a fita no piso leva da porta à mesa", "sub"))
     # portas
     for p in P["portas"]:
         if p["id"] in porta_entrada:
@@ -162,7 +165,7 @@ def planta(J, P, dec, c):
     o.append(D.txt(0, D.H + 2.6, tit, "tit", anchor="start"))
     o.append(D.txt(0, D.H + 1.3, sub, "sub", anchor="start"))
     y = -1.6
-    itens = [(COR_CANAL, "canal de entrada (postes Tensa)"), (COR_PAR, "linha do meio do par · 4 m"),
+    itens = ([(COR_CANAL, "canal de entrada (postes Tensa)")] if canal["canal"] != "nenhum" else []) + [(COR_PAR, "linha do meio do par · 4 m"),
              (COR_POLO, "polo (vermelha) · 10 m"), (CLASSE_COR["alta"], "mesa vermelha"),
              (CLASSE_COR["media"], "amarela"), (CLASSE_COR["baixa"], "verde"), (VERDE_SAIDA, "saída")]
     x = 0
@@ -223,7 +226,7 @@ def markdown(J, dec):
     filas = J["premissas"]["filas_mesa_m"]
     k = ad["custo"]
     L = []
-    L.append("# Separadores Tensa para o Hall 2 — os quatro traçados de 13/09\n")
+    L.append("# Separadores Tensa para o Hall 2 — os traçados de 13/09 e 14/09\n")
     L.append(f"> Gerado por `scripts/gera_barreiras_hall2.py` de `saidas/tensa_barreiras.json` "
              f"(`scripts/tensa_barreiras.py`, {J['geradoEm']}). Não editar à mão.\n")
     L.append(f"> **Traçado adotado: {ad['nome']}.** {ad['postes']} postes, {ad['postes_reserva']} com reserva de 10 %, "
@@ -237,17 +240,19 @@ def markdown(J, dec):
     L.append(f"- **Par de mesas que se encaram:** uma única linha de **{vg(filas['par'])} m** no meio do corredor, separando as duas filas.")
     L.append(f"- **Mesa vermelha** (as três de maior comparecimento, os polos): **{vg(filas['polo'])} m** de unifila do seu lado.")
     L.append("- **Mesa não vermelha sem par: sem unifila.** Fica com a placa alta e o orientador de piso.\n")
-    L.append("## Os quatro traçados do canal de entrada\n")
+    L.append("## Os traçados do canal de entrada\n")
     L.append("| Traçado | Canal | Corridas | Fitas | Postes | Com reserva | Barreira | EUR ex-VAT | Mesas sem guia |")
     L.append("|---|---|--:|--:|--:|--:|--:|--:|--:|")
     for c in J["cenarios"]:
         cn = c["canal"]
-        canal = (f"duas divisórias de {vg(cn['canal_m'])} m + 6 bochechas" if cn["canal"] == "meio"
+        canal = ("nenhum poste: a fita no piso leva da porta à mesa" if cn["canal"] == "nenhum"
+                 else f"duas divisórias de {vg(cn['canal_m'])} m + 6 bochechas" if cn["canal"] == "meio"
                  else f"T: canal B de {vg(cn['canal_m'])} m, braços de {vg(cn['braco_m'])} m + 2 bochechas")
         marca = " **(adotado)**" if c["adotado"] else ""
         L.append(f"| **{c['nome']}**{marca} | {canal} | {c['corridas']} | {c['fitas']} | {c['postes']} | {c['postes_reserva']} | "
                  f"{vg(c['metros'])} m | {vg(c['custo']['lista_ex'], 2)} | {c['mesas_sem_guia']} |")
     L.append("")
+    L.append("- **so_mesas** (14/09, com fitas no piso e sem checkpoint): nenhum poste na entrada; as três correntes se separam na soleira seguindo a fita da sua entrada, e os postes ficam só nas filas de mesa.")
     L.append("- **1e**: as duas divisórias que separam as três correntes, da porta ao checkpoint (20 m), com duas bochechas de portão por canal.")
     L.append("- **1f, 1g, 1h (\"desenho em T\")**: só o canal B fica isolado, por 15, 10 ou 5 m; no topo, um braço perpendicular para oeste guia a fila A e um para leste guia a fila C (6 m nos dois primeiros, premissa; 3 m no 1h). Cada lado do T é uma corrida contínua: o canto é um poste com duas fitas.\n")
     for c in J["cenarios"]:
@@ -374,7 +379,7 @@ th,td{{border-bottom:1px solid var(--line);padding:5px 9px;text-align:left;verti
 ul{{padding-left:1.2em;max-width:80ch}}li{{margin:.25em 0}}
 code{{font-size:.92em;background:var(--line);padding:0 4px;border-radius:3px}}
 </style></head><body><main>
-<h1>Barreiras do Hall 2: os quatro traçados de 13/09 {prov}</h1>
+<h1>Barreiras do Hall 2: os traçados de 13/09 e 14/09 {prov}</h1>
 <p class="lead">Quantos separadores Tensa cada traçado consome, contados sobre o cenário <b>{esc(F["cenario"])}</b> da Prancheta, com a regra de mesa de 13/09 (par = 4 m no meio, vermelha = 10 m, não vermelha sem par = sem unifila). <b>Traçado adotado: {esc(ad["nome"])}.</b> Gerado em {J["geradoEm"]}.</p>
 <dl class="faixa">
 <div><dt>Postes ({esc(ad["nome"])})</dt><dd>{ad["postes"]}<small>{ad["postes_reserva"]} com reserva de 10 %</small></dd></div>
@@ -398,12 +403,14 @@ def main():
     with open(DC.PRANCHETA, encoding="utf-8") as f:
         P = json.load(f)
     dec = DC.montar()
-    if [c["nome"] for c in J["cenarios"]] != ["1e", "1f", "1g", "1h"]:
-        raise SystemExit("tensa_barreiras.json nao tem os quatro tracados 1e/1f/1g/1h: rode tensa_barreiras.py")
+    if not {"so_mesas", "1e", "1f", "1g", "1h"} <= {c["nome"] for c in J["cenarios"]}:
+        raise SystemExit("tensa_barreiras.json nao tem os tracados so_mesas/1e/1f/1g/1h: rode tensa_barreiras.py")
     svgs = []
     for c in J["cenarios"]:
         cn = c["canal"]
-        cap = (f"{c['nome']}: duas divisórias de {vg(cn['canal_m'])} m entre A|B e B|C, 6 bochechas."
+        cap = (f"{c['nome']}: nenhum poste na entrada; as fitas no piso levam da porta à mesa."
+               if cn["canal"] == "nenhum" else
+               f"{c['nome']}: duas divisórias de {vg(cn['canal_m'])} m entre A|B e B|C, 6 bochechas."
                if cn["canal"] == "meio" else
                f"{c['nome']}: canal B isolado por {vg(cn['canal_m'])} m, braços de {vg(cn['braco_m'])} m para oeste (fila A) e leste (fila C), 2 bochechas.")
         cap += f" {c['postes']} postes, {c['fitas']} fitas, {vg(c['metros'])} m; {c['mesas_sem_guia']} mesas sem guia."

@@ -19,7 +19,11 @@ import sys
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(RAIZ, "scripts"))
 import desenho as D                                            # noqa: E402
+import decisoes as DC                                          # noqa: E402
 from desenho import EST, S, esc, px                            # noqa: E402
+
+# numero eleitor por MRV (decisao de 13/09): o rotulo grande da mesa
+ELEITOR = {m["mrv"]: m["eleitor"] for m in DC.mesas()}
 
 SAIDAS = os.path.join(RAIZ, "saidas")
 VERDE_SAIDA = "#16867f"
@@ -121,7 +125,9 @@ def planta(P, titulo, subtitulo, modo, G=None, chave_entrada="entradaDecisao"):
         d = dir_(m["rot"])
         cx, cy = m["x"] + d[0] * mod["prof"] / 2, m["y"] + d[1] * mod["prof"] / 2
         letra = m[chave_entrada]
-        o.append(D.txt(cx, cy, str(m["mrv"]), "cod", dy=4, rot=0 if m["rot"] in (0, 180) else 0))
+        o.append(D.txt(cx, cy, str(ELEITOR.get(m["mrv"], m["mrv"])), "cod", dy=4))
+        bx, by = m["x"] + d[0] * 0.55, m["y"] + d[1] * 0.55
+        o.append(D.txt(bx, by, f"MRV {m['mrv']}", "sub", dy=3, rot={0: 90, 180: -90}.get(m["rot"], 0)).replace('font-size="8"', 'font-size="6.5"'))
         # marca da entrada junto a cauda
         cx2, cy2 = m["cauda"]
         o.append(circulo((cx2, cy2), 0.45, fill=cor_entrada[letra], stroke="#fff", stroke_width=".8"))
@@ -140,7 +146,7 @@ def planta(P, titulo, subtitulo, modo, G=None, chave_entrada="entradaDecisao"):
         o.append(D.rect(x, y - 0.5, x + 0.9, y + 0.5, fill=cor))
         o.append(D.txt(x + 1.3, y, rot, "sub", anchor="start", dy=3))
         x += 1.3 + len(rot) * 0.36 + 1.2
-    o.append(D.txt(0, y - 1.7, "Tracejado curto à frente de cada mesa: a fila prevista (3/4/6 pessoas). Círculo na ponta da fila: entrada que serve a mesa.", "sub", anchor="start"))
+    o.append(D.txt(0, y - 1.7, "Número grande: numeração eleitor; MRV: oficial. Tracejado à frente da mesa: a fila prevista pelo simulador. Círculo na ponta da fila: entrada que serve a mesa.", "sub", anchor="start"))
     W = D.ML + D.W * S + D.MR
     H = D.MT + D.H * S + 70
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W:.0f} {H:.0f}" width="100%" '

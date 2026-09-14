@@ -18,7 +18,9 @@ TRACADOS (decisao D4; o vigente e o que o Posto vai montar):
       um braco perpendicular para oeste guia a fila A e um para leste guia a
       fila C (braco de 6 m, premissa); 2 bochechas no portao do canal B;
   1g  o T com o canal B de 10 m (bracos de 6 m);
-  1h  o T com o canal B de 5 m e bracos de 3 m.
+  1h  o T com o canal B de 5 m e bracos de 3 m;
+  so_mesas  (14/09, com D2 = fitas no piso, sem checkpoint) nenhum poste na
+      entrada: a fita leva da porta a mesa; postes so nas filas de mesa.
 
 Convencao de contagem, valida para o poste Tensa de fita retratil de 2,00 m:
 uma corrida de L metros gasta ceil(L/2) fitas e ceil(L/2)+1 postes -- o poste
@@ -293,6 +295,8 @@ def linhas_do_canal(portas, canal, canal_m, braco_m):
     """
     d = divisas(portas)
     out = []
+    if canal == "nenhum":
+        return out, 0
     if canal == "meio":
         for i, x in enumerate(d["meio"]):
             out.append(dict(tipo="divisoria", L=canal_m, pontos=[[x, 0.0], [x, canal_m]],
@@ -309,7 +313,7 @@ def linhas_do_canal(portas, canal, canal_m, braco_m):
                         pontos=[[xl, 0.0], [xl, canal_m], [round(xl + braco_m, 3), canal_m]],
                         rotulo=f"lado leste do T · canal {canal_m:.0f} m + braço {braco_m:.0f} m (guia a fila C)"))
         return out, BOCHECHAS_POR_CANAL
-    raise SystemExit(f"canal {canal!r} desconhecido (esperado 'meio' ou 'T')")
+    raise SystemExit(f"canal {canal!r} desconhecido (esperado 'nenhum', 'meio' ou 'T')")
 
 
 # --- cenarios -------------------------------------------------------------
@@ -329,7 +333,7 @@ def monta(op, portas, mesas, S, polos):
     """Uma conta por opcao de D4: canal + regra de mesa."""
     P = op["parametros"]
     canal, faixa_y = P["canal"], P["canal_m"]
-    faixa = (portas[0]["x1"], 0.0, portas[-1]["x2"], faixa_y)
+    faixa = None if canal == "nenhum" else (portas[0]["x1"], 0.0, portas[-1]["x2"], faixa_y)
     lm = linhas_de_fila(mesas, S, P["filas_mesa_m"], faixa, polos)
     lc, bochechas = linhas_do_canal(portas, canal, P["canal_m"], P["braco_m"])
     c = Conta(op["id"], op["resumo"])

@@ -1,6 +1,6 @@
 # Decisões de fluxo: as que faltam, as que já saíram e como uma condiciona a outra
 
-> Gerado por `scripts/decisoes_abertas.py` (registro de 2026-09-13). Não editar à mão: mudar uma decisão é editar o módulo e regenerar. A seção "Decisões" do dashboard e `docs/instrucoes_fluxo.md` saem do mesmo registro.
+> Gerado por `scripts/decisoes_abertas.py` (registro de 2026-09-14). Não editar à mão: mudar uma decisão é editar o módulo e regenerar. A seção "Decisões" do dashboard e `docs/instrucoes_fluxo.md` saem do mesmo registro.
 
 ## Premissas
 
@@ -38,33 +38,15 @@ Dono: Posto + Cartório Eleitoral · depende de: nada · condiciona: D2, D6, D7
 
 Fontes: `PENDENCIAS item 5` · `contexto_eleicoes_dublin_2026.md §8.2` · `DOCUMENTACAO_PROJETO.md §4.2 e §9.7`
 
-### D2 — (b) Checkpoint ou sinalização por fitas?
-
-**Pergunta.** Depois da porta, o eleitor passa por um ponto onde a equipe confere a seção, aponta a mesa e retém quando a fila da mesa está cheia — ou segue fitas no piso da porta à mesa, sem ponto de controle?
-
-Dono: Posto · depende de: D9 · condiciona: D4, D6, D7
-
-- **Checkpoint: confere a seção e retém por mesa** **← o que as saídas de hoje assumem**  
-  Cenário Claude: a 16 m da porta, 3 atendentes por entrada, 10 s por conferência; última mesa fecha às 17h03, P90 de 49 min, pico de 321 pessoas dentro e 962 no Ring 3. No pico a porta B recebe 14,1 pessoas/min e precisa de 3 posições. Variante leve: só informativo (aponta, não retém).
-  - se esta: **D4** → As divisórias do canal de entrada levam até o checkpoint (1e: 2 linhas de 20 m + 6 bochechas); nos traçados em T (1f/1g/1h) o checkpoint fica no topo do canal B.
-  - se esta: **D6** → O painel seção → mesa fica no checkpoint (P6); o eleitor lê parado, com a equipe ao lado.
-  - se esta: **D7** → 6 a 9 pessoas em posições fixas (2–3 por porta), mais 1 supervisor do checkpoint.
-- **Sinalização por fitas no piso, sem checkpoint**  
-  Simulado no motor oficial: fecha às 17h03 (mesmo horário), mas com porta livre 950 pessoas ficam dentro do salão e 5.795 chegam a fila cheia; com porta regulando às cegas o Ring 3 vai a 1.516–2.283. Perder-se custa 1–3 min no P90. O checkpoint não custa vazão; o que ele faz é reter por mesa.
-  - se esta: **D4** → Os postes do canal de entrada viram guia curta (1h: 5 m + braços de 3 m) e as filas de mesa são a única contenção; fitas no piso por parede (214–463 m).
-  - se esta: **D6** → Painel seção → mesa na soleira da porta (10 s de leitura em pé) e placa alta numerada em cada mesa, obrigatória.
-  - se esta: **D7** → 6 a 9 orientadores volantes no salão; a resposta a uma fila de 40 pessoas passa a ser deles, sem ponto de controle documentado para o Cartório.
-
-Fontes: `docs/registro_fitas_no_piso_2026-09-12.md` · `docs/alternativa_fitas_no_piso.md` · `saidas/tensa_barreiras.md` · `DOCUMENTACAO_PROJETO.md §4.3`
-
 ## Decididas em 13/09/2026
 
 | Decisão | Escolha | Resumo |
 |---|---|---|
 | **D1** Portas: quantas e quais | 3 entradas (S4 A, S5 B, S6 C) e 2 saídas (S2, S8) | Decisão de 06/09, confirmada em 13/09. Vãos contíguos de 5,93 m; pico de 12,1 / 14,1 / 12,1 pessoas/min. O1 também fica fechada no dia. |
 | **D8** Identidade das filas: letra | Letra (A, B, C), como nos rótulos de planejamento | Decidido em 13/09. Coincide com o simulador, a prancheta e o Ring 3. |
+| **D2** (b) Checkpoint ou sinalização por fitas? Decidido: fitas | Sinalização por fitas no piso, sem checkpoint (decidido em 14/09) | Decidido pelo Posto em 14/09. Simulado no motor oficial sobre o Hamad_Final: fecha às 17h03 (mesmo horário do checkpoint); com a porta regulando pelo que cabe nas filas de mesa, espera P90 de 65 min (50 com checkpoint), 122 dentro do salão e 1.429 no Ring 3 (1.600 no dia ruim, contra 1.964 decididos); com porta livre, 951 dentro e 5.809 chegadas a fila cheia. Plano operacional em docs/plano_filas.md. |
 | **D3** Desenho do Ring 3 e apoios da fita | Raias leste-oeste, CCB só na ponta + fita grossa (1.964 pessoas) | Decidido em 13/09. Entrada pelo canto nordeste, corredor em L de 3,0 m. 82 separadores contados, registrados 100 para dar margem; nenhum a comprar; 576 m de fita grossa com 66 apoios a cada 5 m; 66 meias-voltas. |
-| **D4** Unifilas internas (postes Tensa) | 1e: duas divisórias de 20 m (A|B e B|C) até o checkpoint + regra de mesa | Adotado. As duas linhas que separam as três correntes da porta ao checkpoint, com 6 bochechas de portão; nas mesas, a regra de 13/09. |
+| **D4** Unifilas internas (postes Tensa) | Só as filas de mesa: nenhum poste na entrada, as fitas no piso levam da porta à mesa | Adotado em 14/09, com D2 = fitas. Postes só nas filas de mesa pela regra de 13/09 (4 m no par, 10 m na vermelha, nada na solta não vermelha); as três correntes se separam na soleira seguindo a fita da sua entrada. |
 
 ## Planos derivados (não são decisões)
 
@@ -80,12 +62,10 @@ Fontes: `docs/registro_fitas_no_piso_2026-09-12.md` · `docs/alternativa_fitas_n
 
 ## Matriz "se … então …" (opções das decisões em aberto)
 
-| Se … | D2 Checkpoint ou fitas | D4 Unifilas internas | D6 Sinalização interna | D7 Voluntários |
-|---|---|---|---|---|
-| **D9** = (i) Caderno único em ordem alfabética, um mesário identificando | A mesa é o gargalo e retém por si só: o checkpoint só faz sentido como válvula (reter por mesa) — as fitas no piso não ajudam a mesa. |  |  | Nada muda na equipe de piso; o esforço vai para a mesa (mesários). |
-| **D9** = (ii) Caderno dividido por seção agregada, um mesário por caderno | A mesa deixa de ser o gargalo; o checkpoint pode ser leve (2 por porta) ou ceder lugar às fitas sem que a fila migre para dentro. |  |  | Pré-triagem precisa dizer ao eleitor a SEÇÃO, não só a mesa: o painel seção → mesa ganha a coluna do caderno. |
-| **D9** = (iii) Caderno dividido por faixa de letras, um mesário por faixa | Como (ii). |  |  | Placa da mesa com as faixas de letras (A–L / M–Z); orientador aponta a fila certa. |
-| **D9** = (iv) Identificação em paralelo com o voto (o mesário localiza o próximo enquanto o anterior vota) | Mesa no limite (55 s): o checkpoint como válvula continua necessário nas três críticas. |  |  | Treinamento dos mesários vira parte do plano de fluxo (webinar). |
-| **D9** = (v) Pré-triagem na fila: eleitor chega à mesa com documento na mão e seção sabida | Se houver checkpoint, a pré-triagem acontece nele; sem checkpoint, acontece na fila da mesa, por orientador. |  |  | 1 orientador a cada 3 mesas conferindo documento na fila. |
-| **D2** = Checkpoint: confere a seção e retém por mesa |  | As divisórias do canal de entrada levam até o checkpoint (1e: 2 linhas de 20 m + 6 bochechas); nos traçados em T (1f/1g/1h) o checkpoint fica no topo do canal B. | O painel seção → mesa fica no checkpoint (P6); o eleitor lê parado, com a equipe ao lado. | 6 a 9 pessoas em posições fixas (2–3 por porta), mais 1 supervisor do checkpoint. |
-| **D2** = Sinalização por fitas no piso, sem checkpoint |  | Os postes do canal de entrada viram guia curta (1h: 5 m + braços de 3 m) e as filas de mesa são a única contenção; fitas no piso por parede (214–463 m). | Painel seção → mesa na soleira da porta (10 s de leitura em pé) e placa alta numerada em cada mesa, obrigatória. | 6 a 9 orientadores volantes no salão; a resposta a uma fila de 40 pessoas passa a ser deles, sem ponto de controle documentado para o Cartório. |
+| Se … | D2 Checkpoint ou fitas | D7 Voluntários |
+|---|---|---|
+| **D9** = (i) Caderno único em ordem alfabética, um mesário identificando | A mesa é o gargalo e retém por si só: o checkpoint só faz sentido como válvula (reter por mesa) — as fitas no piso não ajudam a mesa. | Nada muda na equipe de piso; o esforço vai para a mesa (mesários). |
+| **D9** = (ii) Caderno dividido por seção agregada, um mesário por caderno | A mesa deixa de ser o gargalo; o checkpoint pode ser leve (2 por porta) ou ceder lugar às fitas sem que a fila migre para dentro. | Pré-triagem precisa dizer ao eleitor a SEÇÃO, não só a mesa: o painel seção → mesa ganha a coluna do caderno. |
+| **D9** = (iii) Caderno dividido por faixa de letras, um mesário por faixa | Como (ii). | Placa da mesa com as faixas de letras (A–L / M–Z); orientador aponta a fila certa. |
+| **D9** = (iv) Identificação em paralelo com o voto (o mesário localiza o próximo enquanto o anterior vota) | Mesa no limite (55 s): o checkpoint como válvula continua necessário nas três críticas. | Treinamento dos mesários vira parte do plano de fluxo (webinar). |
+| **D9** = (v) Pré-triagem na fila: eleitor chega à mesa com documento na mão e seção sabida | Se houver checkpoint, a pré-triagem acontece nele; sem checkpoint, acontece na fila da mesa, por orientador. | 1 orientador a cada 3 mesas conferindo documento na fila. |

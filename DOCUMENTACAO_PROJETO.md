@@ -90,7 +90,7 @@ mais cópia própria de porta, taxa ou numeração.
 
 | Peça | URL |
 |---|---|
-| **Dashboard do plano** (integra tudo; portas vivas; versão 3 de 14/09 com as decisões de 13/09: Ring 3 decidido, O1 fechada, letra, duas numerações, traçados 1e/1f/1g/1h, só duas decisões em aberto) | https://claude.ai/code/artifact/1c434ede-3d79-439c-b97b-a8121979bd03 |
+| **Dashboard do plano** (integra tudo; portas vivas; versão 4 de 14/09 (tarde) sobre o Hamad_Final, §12.6; a versão 3 trazia as decisões de 13/09: Ring 3 decidido, O1 fechada, letra, duas numerações, traçados 1e/1f/1g/1h, só duas decisões em aberto) | https://claude.ai/code/artifact/1c434ede-3d79-439c-b97b-a8121979bd03 |
 | Urnas de Dublin | https://claude.ai/code/artifact/3d1b9ff8-458d-42c9-b1b6-8aacf15dfd9f |
 | Barreiras do Hall 2 (publicação de 11/09, sete traçados; a versão de 13/09 com os quatro traçados está em `saidas/barreiras_hall2.html` e na cópia do dashboard, ainda não republicada nesta URL) | https://claude.ai/code/artifact/e2db2813-7842-4425-a028-ba64cd790981 |
 | Ring 3, quatro desenhos | https://claude.ai/code/artifact/c1257b13-e450-4bc1-b801-439a32bddb87 |
@@ -98,7 +98,7 @@ mais cópia própria de porta, taxa ou numeração.
 | As 28 Mesas nas Paredes (superado, 31/08) | https://claude.ai/code/artifact/1193fccf-effa-49ca-8ac5-5f4946fe4788 |
 | Planta-base do Hall 2 | https://claude.ai/code/artifact/48817634-cbe1-426e-829f-5b5c674a688c |
 | "Quantas mesas cabem no Hall 2" (planta das 28 mesas) | https://claude.ai/code/artifact/8ea7b55b-ec3f-4dd4-baaf-7702c4d3fcce |
-| Prancheta do Hall 2 | https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0 |
+| Prancheta do Hall 2 (republicada em 14/09 com o Hamad_Final na biblioteca; o link compartilhado pode estar fixado numa versão anterior, conferir no menu da página) | https://claude.ai/code/artifact/f6a9b812-2b5e-4972-bb81-104b018e16b0 |
 | Simulador de fluxo do Hall 2 | https://claude.ai/code/artifact/f2fea148-f618-4d3d-aa63-b0653f4139bc |
 | Rota do Eleitor (plano de sinalização) | https://claude.ai/code/artifact/0320fda4-365e-406e-8aa4-1d0a1b535de8 |
 
@@ -1525,4 +1525,9 @@ três folgas laterais apertadas na parede oeste, MRV 5 (0,28 m), MRV 17
 (0,38 m) e MRV 1 (0,47 m), abaixo do pior caso da planta original (0,98 m):
 a conferir com o Posto. A varredura do simulador (§7 do dashboard) continua
 sobre o Três polos.
+
+Republicados em 14/09 (tarde), nas URLs de sempre: a prancheta (versão 16,
+com o Hamad_Final na lista publicada) e o dashboard inteiro (versão 4). O
+simulador autônomo (URL de 08/09) não foi republicado; a cópia embutida no
+dashboard é a atual.
 

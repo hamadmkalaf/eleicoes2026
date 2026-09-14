@@ -109,3 +109,12 @@ serpentina norte-sul com leste-oeste.
 python3 serpentina_hall2.py   # capacidade, fronteira urnas x fila -> saidas/serpentina_hall2.json
 python3 desenha_serpentina.py # as duas orientações -> saidas/serpentina_hall2.svg
 ```
+
+`plano_filas_prancheta.md` — quanto cabe **sem mudar o desenho atual**: mesas nas
+paredes onde estão, entradas A e B e saída central mantidas. 629 pessoas, e o
+transbordo para a rua em cada tempo de atendimento.
+
+```bash
+python3 prancheta_capacidade.py  # capacidade e transbordo -> saidas/prancheta_capacidade.json
+python3 desenha_prancheta.py     # desenho -> saidas/prancheta_serpentina.svg
+```

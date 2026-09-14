@@ -12,6 +12,7 @@ Uso: python3 scripts/gera_dashboard.py   (depois dos demais geradores)
 """
 import html
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -38,6 +39,8 @@ ARTEFATOS = {
     "fitas": ("Fitas no piso em vez do checkpoint", "https://claude.ai/code/artifact/d36838b6-fb73-47b5-b7d1-d78b5eda8629"),
     "instrucoes": ("Instruções de fluxo (treinamento)", None),
     "decisoes": ("Decisões em aberto (registro)", None),
+    "plano_filas": ("Plano de distribuição de filas", None),
+    "prancheta_secoes": ("Prancheta pelas seções", None),
 }
 
 # origem no repositorio -> caminho dentro de saidas/dashboard/
@@ -54,6 +57,8 @@ COPIAS = {
     "pecas/fitas_piso.html": SAIDAS / "fitas_piso.html",
     "pecas/instrucoes.html": SAIDAS / "instrucoes_fluxo.html",
     "pecas/decisoes.html": SAIDAS / "decisoes_em_aberto.html",
+    "pecas/plano_filas.html": SAIDAS / "plano_filas.html",
+    "pecas/prancheta_secoes.html": SAIDAS / "prancheta_secoes.html",
 }
 # historico/: copias dos artefatos superados, baixadas do claude.ai em 11/09/2026;
 # ficam so em saidas/dashboard/historico/ e nao sao regeradas.
@@ -64,7 +69,8 @@ LOCAL = {
     "fluxo": "historico/fluxo_ilhas_2026-08-28.html", "paredes": "historico/mesas_nas_paredes_2026-08-31.html",
     "ring3vivo": "ferramentas/ring3.html",
     "fitas": "pecas/fitas_piso.html", "instrucoes": "pecas/instrucoes.html",
-    "decisoes": "pecas/decisoes.html",
+    "decisoes": "pecas/decisoes.html", "plano_filas": "pecas/plano_filas.html",
+    "prancheta_secoes": "pecas/prancheta_secoes.html",
 }
 
 esc = html.escape
@@ -198,6 +204,24 @@ def tabela_barreiras(tb):
                       f'<td class="num mono">{c["postes"]}</td><td class="num mono">{c["postes_reserva"]}</td>'
                       f'<td class="num mono">{vg(c["metros"], 0)} m</td><td class="num mono">EUR {fmt(c["custo"]["lista_ex"])}</td>'
                       f'<td class="num mono">{c["mesas_sem_guia"]}</td></tr>')
+    return "\n".join(linhas)
+
+
+def tabela_filas(dec, fp, r3d, fb):
+    """Uma linha por entrada: zona decidida, esperados, pico, troncos de fita e mesas."""
+    eleitor = {m["mrv"]: m["eleitor"] for m in dec["mesas"]}
+    zonas = {z["entrada"]: z for z in r3d["zonas"]}
+    por = {e["entrada"]: e for e in fp["geometria"]["decisao"]["porEntrada"]}
+    pz = {z["nome"].replace("Entrada ", ""): z for z in fb["porZona"]}
+    linhas = []
+    for e in dec["entradas"]:
+        z, g = zonas[e["id"]], por[e["id"]]
+        troncos = [t for t in fp["geometria"]["decisao"]["troncos"] if t["entrada"] == e["id"]]
+        tr = "; ".join(f'{t["parede"]}: ' + " → ".join(str(eleitor[n]) for n in t["mesas"]) for t in sorted(troncos, key=lambda t: -len(t["mesas"])))
+        linhas.append(f'<tr><td><span class="sw" style="background:{e["hex"]}"></span><strong>{e["id"]}</strong> <span class="mono">{e["porta"]}</span></td>'
+                      f'<td class="num mono">{fmt(z["capacidade"])}</td><td class="num mono">{fmt(e["esperado"])}</td>'
+                      f'<td class="num mono">{vg(e["esperado"] * 1.8 / 540, 1)}</td><td class="num mono">{fmt(pz[e["id"]]["ring3Max"]) if e["id"] in pz else "—"}</td>'
+                      f'<td class="num mono">{g["nTroncos"]} · {vg(g["fitaTroncos_m"], 0)} m</td><td class="mesas">{esc(tr)}</td></tr>')
     return "\n".join(linhas)
 
 
@@ -366,6 +390,20 @@ def main():
     VIG = DA.vigentes(reg)
     planta_svg = (SAIDAS / "planta_base.svg").read_text(encoding="utf-8").replace(' width="1058" height="972"', ' style="width:100%;height:auto"', 1)
     modulo_svg = (SAIDAS / "mesas_modulo.svg").read_text(encoding="utf-8")
+    # o desenho decidido do Ring 3 (ring3.py), sem width/height para o CSS escalar
+    r3_svg = (SAIDAS / "ring3_girado_ponta.svg").read_text(encoding="utf-8")
+    r3_svg = re.sub(r'\s(width|height)="\d+"', "", r3_svg, count=2).replace('fill="#fbfaf7"', 'fill="var(--prancha)"', 1)
+    filas_svg = (SAIDAS / "plano_filas_troncos.svg").read_text(encoding="utf-8")
+    secoes_svg = (SAIDAS / "prancheta_secoes.svg").read_text(encoding="utf-8")
+    secoes_svg = re.sub(r'\s(width|height)="\d+"', "", secoes_svg, count=2).replace('fill="#fbfaf7"', 'fill="var(--prancha)"', 1)
+    fbr = next(r for r in fp["resultados"] if r["id"] == "fitas-buffer")
+    refr = next(r for r in fp["resultados"] if r["id"] == "ref")
+    G = fp["geometria"]["decisao"]
+    if fp.get("arranjoId") != dec["cenario_trabalho"]["id"]:
+        raise SystemExit("fitas_piso.json nao foi gerado sobre o cenario de trabalho: rode node simulador/fitas.js 8")
+    abertas = [d for d in reg["decisoes"] if d["aberta"]]
+    dec_lede = ("resta uma decisão: " if len(abertas) == 1 else f"restam {len(abertas)} decisões: ") + "; ".join(
+        f'<a href="#dec-{d["id"]}">{d["id"]}</a> {esc(d["titulo"])}' for d in abertas)
     base = json.loads((BASE / "data" / "prancheta_hall2.json").read_text(encoding="utf-8"))
     portas_js = (BASE / "simulador" / "portas.js").read_text(encoding="utf-8")
     template = (BASE / "scripts" / "dashboard_template.html").read_text(encoding="utf-8")
@@ -416,6 +454,7 @@ def main():
         "TABELA_RING3": tabela_ring3(r3, r3d["ring3_json"], r3d["registrados"]),
         "R3_VIG_NOME": esc(r3_vig["nome"]), "R3_VIG_CAP": fmt(r3_vig["capacidade"]), "R3_VIG_SEP": str(r3_vig["separadores"]),
         "R3_REG": str(r3d["registrados"]), "R3_FITA": vg(r3d["fita_grossa_m"], 0), "R3_APOIOS": str(r3d["apoios_da_fita"]),
+        "R3_DECIDIDO_SVG": r3_svg,
         "R3_A": fmt(r3d["por_entrada"]["A"]), "R3_B": fmt(r3d["por_entrada"]["B"]), "R3_C": fmt(r3d["por_entrada"]["C"]),
         "CEN_TRABALHO": esc(ct["nome"]), "CEN_PROVISORIO": (" (provisório: o cenário Hamad_Final ainda não foi colado em <span class=\"mono\">cenarios/</span>; tudo regenera quando entrar)" if ct["provisorio"] else ""),
         "NUM_ELEITOR": esc(dec["numeracao_eleitor"]),
@@ -431,6 +470,16 @@ def main():
         "B_SEMGUIA": str(adotado["mesas_sem_guia"]), "B_SEMGUIA_LISTA": esc(fol_sem),
         "B_FILA_PAR": vg(tb["premissas"]["filas_mesa_m"]["par"], 0), "B_FILA_POLO": vg(tb["premissas"]["filas_mesa_m"]["polo"], 0),
         "B_AVISOS": "".join(f"<li>{esc(a)}</li>" for a in tb["avisos"]),
+        "B_TRACADO": esc(adotado["nome"]),
+        "FILAS_SVG": filas_svg, "TABELA_FILAS": tabela_filas(dec, fp, r3_vig, fbr),
+        "FILAS_FITA_M": vg(G["fitaTroncos_m"], 0), "FILAS_TRONCOS": str(len(G["troncos"])), "FILAS_CRUZ": str(G["cruzTroncos"]),
+        "FILAS_POSTES": str(adotado["postes"]), "FILAS_RESERVA": str(adotado["postes_reserva"]),
+        "FILAS_RING3_P50": fmt(fbr["ring3Max"]), "FILAS_RING3_P90": fmt(fbr["ring3MaxP90"]), "FILAS_FOLGA": fmt(r3_vig["capacidade"] - fbr["ring3MaxP90"]),
+        "FILAS_P90": str(fbr["p90TotalMin"]), "FILAS_P90_FORA": str(fbr["p90ForaMin"]), "FILAS_REF_P90": str(refr["p90TotalMin"]),
+        "FILAS_ESTOURO": fmt(fbr["estouroFilas"]), "FILAS_DENTRO": fmt(fbr["dentroMax"]), "FILAS_FECHA": esc(fbr["fechaP50"]),
+        "PRANCHETA_SECOES_SVG": secoes_svg, "CEN_ID": esc(dec["cenario_trabalho"]["id"]),
+        "DEC_LEDE": dec_lede,
+        "DEC_TITULO": ("1 decisão de fluxo por tomar, e o que ela puxa" if len(abertas) == 1 else f"{len(abertas)} decisões de fluxo por tomar, e o que cada uma puxa"),
         "FOLEGO_SEM": esc(fol_sem),
         "TABELA_FITAS": tabela_fitas(fp),
         "FIT_FECHA": esc(fb["fechaP50"]), "FIT_LIVRE_DENTRO": fmt(fl["dentroMax"]), "FIT_LIVRE_CHEIA": fmt(fl["estouroFilas"]),
@@ -447,7 +496,8 @@ def main():
         "SIM_FECHA": melhor["fecha90"], "SIM_P90": str(melhor["P90min"]), "SIM_RING3": fmt(melhor["ring3p90"]),
         "SIM_ARRANJO": "Três polos (as três mesas vermelhas em áreas distintas; a varredura ainda não foi refeita sobre o cenário de trabalho da prancheta)",
         "MODULO_FRENTE": vg(mesas["modulo"]["largura"], 2), "MODULO_PROF": vg(mesas["modulo"]["profundidade"], 2),
-        "PECAS_URNAS": pecas("urnas"), "PECAS_PLANTA": pecas("planta"), "PECAS_MESAS": pecas("mesas", "prancheta"),
+        "PECAS_URNAS": pecas("urnas"), "PECAS_PLANTA": pecas("planta"), "PECAS_MESAS": pecas("mesas", "prancheta", "prancheta_secoes"),
+        "PECAS_FILAS": pecas("plano_filas", "fitas", "instrucoes"),
         "PECAS_RING3": pecas("ring3"), "PECAS_ROTA": pecas("rota"), "PECAS_BARREIRAS": pecas("barreiras"),
         "PECAS_SIM": pecas("simulador", "fitas"), "PECAS_HISTORICO": pecas("fluxo", "paredes", "mesas"),
         "PECAS_DECISOES": pecas("instrucoes", "decisoes"),
@@ -460,7 +510,6 @@ def main():
     pagina = template
     for k, v in subst.items():
         pagina = pagina.replace("{{" + k + "}}", v)
-    import re
     faltam = sorted(set(re.findall(r"\{\{([A-Z0-9_]+)\}\}", pagina)))
     if faltam:
         raise SystemExit(f"placeholders sem valor no template: {faltam}")

@@ -31,6 +31,14 @@ recalculaCores();
 const PT = (typeof Portas !== "undefined") ? Portas : null;
 let resolvido = null;          // ultima resolucao das portas (Portas.resolve)
 let publicando = true;         // false enquanto se aplica um estado recebido de outra pagina
+/* O simulador so publica o desenho do Ring 3 quando o usuario escolheu um no
+ * seletor; o "vigente" e o seu modelo interno de referencia (plano anterior,
+ * coerente com a varredura salva), nao uma decisao, e nao deve tirar o
+ * dashboard e o Ring 3 ao vivo do desenho decidido em 13/09. */
+function desenhoEscolhido(){
+  const d = cen.ring3 && cen.ring3.desenho;
+  return d && d !== "vigente" ? (resolvido ? resolvido.desenho : d) : undefined;
+}
 function recalculaDecisao(){
   if (!PT) return;
   const desenho = (cen.ring3 && cen.ring3.desenho) || "vigente";
@@ -38,7 +46,7 @@ function recalculaDecisao(){
   DEC = resolvido.erros.length ? DEC0 : PT.decisaoViva(DEC0, resolvido);
   recalculaCores();
   if (cen.ring3 && !cen.ring3.capManual) cen.ring3.capacidade = DEC.ring3.capacidade;
-  if (publicando) PT.publica(cen.portas, {desenho: resolvido.desenho, origem: "simulador"});
+  if (publicando) PT.publica(cen.portas, {desenho: desenhoEscolhido(), origem: "simulador"});
 }
 const COR_CLASSE = {pesada: "var(--alta)", media: "var(--media)", leve: "var(--baixa)"};
 const CHAVE_RASCUNHO = "simulador-hall2-cenario-v1";

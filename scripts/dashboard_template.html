@@ -73,6 +73,9 @@ header{padding:56px 0 0}
 .vivo .aviso{color:var(--aviso)}
 .vivo .mini{margin-left:auto; max-width:260px; flex:1 1 200px}
 .vivo .mini svg{display:block; width:100%; height:auto}
+.r3-decidido{margin:18px 0 0; max-width:620px}
+.r3-decidido .prancha{padding:6px}
+.r3-decidido .prancha svg{min-width:0; width:100%; height:auto}
 
 /* ---- secoes ---- */
 section{margin:68px 0 0}
@@ -201,7 +204,7 @@ th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
 <nav class="topo" aria-label="Seções"><div class="in">
   <span class="marca">Posto de Dublin 2026</span>
   <a href="#eleitorado">Quem vota</a><a href="#salao">O salão</a><a href="#mesas">As mesas</a>
-  <a href="#ring3">Fila externa</a><a href="#rota">Rota e placas</a><a href="#barreiras">Barreiras</a>
+  <a href="#ring3">Fila externa</a><a href="#rota">Rota e placas</a><a href="#barreiras">Barreiras</a><a href="#filas">Filas</a>
   <a href="#simulacao">O dia simulado</a><a href="#decisoes">Decisões</a><a href="#caminho">Caminho até aqui</a><a href="#fontes">Fontes</a>
 </div></nav>
 
@@ -219,6 +222,10 @@ th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
     <div><dt>Ring 3</dt><dd>44 × 35 m<small>fila externa · {{R3_VIG_CAP}} pessoas no desenho decidido</small></dd></div>
   </dl>
   <div class="vivo" id="vivo"><span class="rot">Portas em vigor</span><span>carregando…</span></div>
+  <figure class="r3-decidido">
+    <div class="prancha">{{R3_DECIDIDO_SVG}}</div>
+    <figcaption>O Ring 3 decidido em 13/09: raias leste-oeste, CCB só na ponta das divisórias e fita grossa no contorno · {{R3_VIG_CAP}} pessoas (A {{R3_A}}, B {{R3_B}}, C {{R3_C}}) · {{R3_VIG_SEP}} separadores contados, {{R3_REG}} registrados · {{R3_FITA}} m de fita grossa com {{R3_APOIOS}} apoios. O eleitor entra pelo canto nordeste, desce o corredor em L e entra na zona da sua entrada.</figcaption>
+  </figure>
 </header>
 
 <!-- ============================ 1 · QUEM VOTA ============================ -->
@@ -283,6 +290,10 @@ th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
       </div>
     </div>
   </div>
+  <figure>
+    <div class="prancha">{{PRANCHETA_SECOES_SVG}}</div>
+    <figcaption>O cenário de trabalho {{CEN_TRABALHO}} com cada mesa identificada pelas seções eleitorais que votam nela (principal e agregada); a cor é a carga, a letra na ponta da fila é a entrada. A tabela seção → mesa está na peça "Prancheta pelas seções".</figcaption>
+  </figure>
   <div class="ferramenta">
     <div class="barra-f"><strong>Prancheta do Hall 2</strong><span>arraste, gire, meça, repareie; salve cenários. Portas, entradas e o Ring 3 seguem o que for clicado no Simulador.</span><a href="{{LINK_PRANCHETA}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
     <iframe src="{{LINK_PRANCHETA}}" title="Prancheta do Hall 2" loading="lazy"></iframe>
@@ -348,7 +359,7 @@ th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
 <section id="barreiras">
   <p class="rotulo"><span class="passo">6</span>Barreiras internas</p>
   <h2>{{B_POSTES}} postes de fita retrátil, contados corrida a corrida</h2>
-  <p class="lede">Dentro do salão a fila de cada mesa é guiada por postes Tensa de fita de 2 m, pela regra que o Posto fixou em 13/09: uma linha de {{B_FILA_PAR}} m no meio de cada par de mesas, {{B_FILA_POLO}} m para cada mesa vermelha, e nenhuma fita nas mesas não vermelhas sem par. O traçado adotado, 1e, acrescenta as duas divisórias de 20 m que separam as entradas A de B e B de C até o checkpoint; 1f, 1g e 1h são o "desenho em T", com só o canal B isolado. Uma corrida de L metros gasta L÷2 fitas e uma a mais de postes; por isso o número de corridas, e não a metragem, manda no consumo.</p>
+  <p class="lede">Dentro do salão a fila de cada mesa é guiada por postes Tensa de fita de 2 m, pela regra que o Posto fixou em 13/09: uma linha de {{B_FILA_PAR}} m no meio de cada par de mesas, {{B_FILA_POLO}} m para cada mesa vermelha, e nenhuma fita nas mesas não vermelhas sem par. Com a decisão de 14/09 (fitas no piso, sem checkpoint) o traçado adotado, <strong>{{B_TRACADO}}</strong>, não põe poste nenhum na entrada: a fita no piso leva da porta à mesa. O 1e (duas divisórias de 20 m até o checkpoint) e o "desenho em T" (1f, 1g, 1h) ficam como alternativas com poste na entrada. Uma corrida de L metros gasta L÷2 fitas e uma a mais de postes; por isso o número de corridas, e não a metragem, manda no consumo.</p>
   <dl class="faixa">
     <div><dt>Postes</dt><dd>{{B_POSTES}}<small>{{B_RESERVA}} com reserva de 10%</small></dd></div>
     <div><dt>Fitas de 2 m</dt><dd>{{B_FITAS}}<small>{{B_METROS}} m de barreira</small></dd></div>
@@ -360,7 +371,7 @@ th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
     <thead><tr><th>Traçado</th><th class="num">Corridas</th><th class="num">Fitas</th><th class="num">Postes</th><th class="num">Com reserva</th><th class="num">Barreira</th><th class="num">EUR ex-VAT</th><th class="num">Mesas sem guia</th></tr></thead>
     <tbody>{{TABELA_BARREIRAS}}</tbody>
   </table></div>
-  <p class="nota"><strong>O desenho em T (1f, 1g, 1h).</strong> Duas linhas isolam o canal B da parede sul até 15, 10 ou 5 m; no topo de cada uma, um braço perpendicular para oeste guia a fila A e um para leste guia a fila C (6 m nos dois primeiros, premissa; 3 m no 1h). Cada lado do T é uma corrida contínua. As hipóteses de corte A, B, B2 e C de 11/09 e os traçados 1 e 1i saíram: valem só como histórico em <span class="mono">saidas/propostas_alternativas.md</span>. <strong>O que a regra de mesa custa:</strong> as três mesas vermelhas encaram uma mesa cada (5, 16 e 21), que por isso fica sem par e sem fita; com as quatro mesas amarelas sem par, são {{B_SEMGUIA}} mesas em que a ordem da fila é do orientador e da placa alta.</p>
+  <p class="nota"><strong>As alternativas com poste na entrada.</strong> O 1e leva duas divisórias de 20 m até um checkpoint que não existe mais; o desenho em T (1f, 1g, 1h) isola o canal B por 15, 10 ou 5 m com braços perpendiculares que guiam A e C. Ficam registradas na decisão D4 para o caso de o Posto voltar atrás. As hipóteses de corte A, B, B2 e C de 11/09 e os traçados 1 e 1i valem só como histórico em <span class="mono">saidas/propostas_alternativas.md</span>. <strong>O que a regra de mesa custa:</strong> {{B_SEMGUIA}} mesa(s) sem fita ({{B_SEMGUIA_LISTA}}), em que a ordem da fila é do orientador e da placa alta.</p>
   <ul class="avisos">{{B_AVISOS}}</ul>
   <div class="duas">
     <figure>
@@ -376,13 +387,37 @@ th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
   {{PECAS_BARREIRAS}}
 </section>
 
-<!-- ============================ 7 · O DIA SIMULADO ============================ -->
+<!-- ============================ 7 · DISTRIBUIÇÃO DAS FILAS ============================ -->
+<section id="filas">
+  <p class="rotulo"><span class="passo">7</span>Distribuição das filas</p>
+  <h2>Da zona do Ring 3 à fila da mesa, guiado por fita no piso, sem checkpoint</h2>
+  <p class="lede">Decisão do Posto de 14/09: o eleitor espera na zona do Ring 3 da sua entrada, a porta o libera enquanto houver lugar nas filas de mesa, na soleira ele lê o painel seção → mesa e segue a fita da sua entrada até a sua mesa. Não há ponto de controle no caminho e nenhum poste na entrada; a fila da mesa, guiada por poste, é a única contenção, e o orientador volante é a única resposta a uma fila cheia. O plano completo, com os troncos de fita, as 28 filas e os gatilhos, é a peça "Plano de distribuição de filas".</p>
+  <dl class="faixa">
+    <div><dt>Fita no piso</dt><dd>{{FILAS_FITA_M}} m<small>{{FILAS_TRONCOS}} troncos, {{FILAS_CRUZ}} cruzamentos entre entradas</small></dd></div>
+    <div><dt>Postes</dt><dd>{{FILAS_POSTES}}<small>só nas filas de mesa; {{FILAS_RESERVA}} com reserva</small></dd></div>
+    <div><dt>Pico no Ring 3</dt><dd>{{FILAS_RING3_P50}}<small>{{FILAS_RING3_P90}} no dia ruim; cabem {{R3_VIG_CAP}}</small></dd></div>
+    <div><dt>Espera P90</dt><dd>{{FILAS_P90}} min<small>{{FILAS_P90_FORA}} no Ring 3 · {{FILAS_REF_P90}} com checkpoint</small></dd></div>
+    <div><dt>Chegadas a fila cheia</dt><dd>{{FILAS_ESTOURO}}<small>por dia simulado; ficam além do poste</small></dd></div>
+  </dl>
+  <figure>
+    <div class="prancha">{{FILAS_SVG}}</div>
+    <figcaption>Os troncos de fita de cada entrada sobre o {{CEN_TRABALHO}}: a fita sai da soleira, ramifica por parede e termina na cauda da fila de cada mesa. Cada entrada serve as três paredes porque as mesas são repartidas pela quota do Ring 3, com uma vermelha por entrada; por isso os troncos se cruzam, o que a fita admite e o poste não.</figcaption>
+  </figure>
+  <div class="rolagem"><table>
+    <thead><tr><th>Entrada</th><th class="num">Cabe na zona</th><th class="num">Esperados</th><th class="num">Pico/min</th><th class="num">Pico simulado na zona</th><th class="num">Troncos</th><th>Ordem das mesas por parede (nº eleitor; o MRV está na peça)</th></tr></thead>
+    <tbody>{{TABELA_FILAS}}</tbody>
+  </table></div>
+  <p class="nota"><strong>O que o regime custa e o que ele não custa.</strong> O fechamento não muda: a última mesa fecha às {{FILAS_FECHA}} com ou sem checkpoint. O preço é a espera lá fora, P90 de {{FILAS_P90}} minutos contra {{FILAS_REF_P90}} com checkpoint, porque a porta só abre quando cabe; e {{FILAS_ESTOURO}} chegadas a uma fila de mesa já cheia por dia, que o orientador volante resolve abrindo uma segunda fila rente à parede. O Ring 3 decidido aguenta o pico com folga de {{FILAS_FOLGA}} pessoas no dia ruim. A porta livre reduziria a espera, mas põe {{FIT_LIVRE_DENTRO}} pessoas dentro do salão: não é opção.</p>
+  {{PECAS_FILAS}}
+</section>
+
+<!-- ============================ 8 · O DIA SIMULADO ============================ -->
 <section id="simulacao">
-  <p class="rotulo"><span class="passo">7</span>O dia simulado</p>
+  <p class="rotulo"><span class="passo">8</span>O dia simulado</p>
   <h2>Eleitor a eleitor, das 7h ao fechamento da última mesa</h2>
   <p class="lede">O simulador percorre o dia inteiro por eventos discretos sobre o arranjo real das 28 mesas: chegada ao Ring 3, triagem, fila da entrada, porta com liberação controlada, checkpoint, fila da mesa, identificação pelo caderno e urna. Onze critérios dão o veredito. As portas clicáveis do bloco "Portas da fachada sul" são o controle mestre deste dashboard: mudar uma entrada ou uma saída redesenha a Prancheta e o Ring 3 acima.</p>
   <div class="respostas">
-    <div class="resposta"><span class="num">Cenário Claude</span><span class="curta">Última mesa fecha às {{SIM_FECHA}} no dia ruim (P90); espera P90 de {{SIM_P90}} minutos.</span><p>Arranjo {{SIM_ARRANJO}}, checkpoint a 16 m com 3 atendentes por entrada, filas 3/4/6 por classe. Pico de cerca de {{SIM_RING3}} pessoas fora, dentro da capacidade do Ring 3. Só a espera fica em atenção; os demais critérios passam.</p></div>
+    <div class="resposta"><span class="num">Cenário Claude (referência)</span><span class="curta">Última mesa fecha às {{SIM_FECHA}} no dia ruim (P90); espera P90 de {{SIM_P90}} minutos.</span><p>Arranjo {{SIM_ARRANJO}}, checkpoint a 16 m com 3 atendentes por entrada, filas 3/4/6 por classe. Pico de cerca de {{SIM_RING3}} pessoas fora, dentro da capacidade do Ring 3. É a referência de calibração; o regime decidido em 14/09 (fitas, sem checkpoint) está na seção 7.</p></div>
     <div class="resposta"><span class="num">O gargalo é a mesa</span><span class="curta">A 60 s por eleitor falham exatamente as três mesas vermelhas; 590 eleitores em 540 minutos dão 54,9 s cada.</span><p>Vinte e três das 28 urnas acumulam duas seções, logo dois cadernos: com os três mesários é possível identificar em paralelo e fechar às 17h mesmo com caderno lento. É a negociação a abrir com o Cartório.</p></div>
     <div class="resposta"><span class="num">Fixo em todos os cenários</span><span class="curta">Caderno físico, liberação controlada, curva de chegada com pico de manhã e repique perto das 17h.</span><p>Comparecimento pela base B (taxa de 2022 por domicílio de origem), com presets de sensibilidade de −15% e +15%. Cada dia simulado sorteia horários e tempos; o resultado mostra a mediana e o dia ruim.</p></div>
   </div>
@@ -390,8 +425,8 @@ th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
     <div class="barra-f"><strong>Simulador do Hall 2</strong><span>clique numa porta da fachada sul para testar outra combinação; "Rodar simulação" refaz o dia.</span><a href="{{LINK_SIMULADOR}}" target="_blank" rel="noopener">abrir em tela cheia</a></div>
     <iframe src="{{LINK_SIMULADOR}}" title="Simulador do Hall 2" loading="lazy"></iframe>
   </div>
-  <h3>Fitas no piso em vez do checkpoint (12/09)</h3>
-  <p>A sugestão de eliminar o checkpoint e guiar o eleitor da porta à mesa por fitas no piso foi simulada no motor oficial. <strong>O checkpoint não custa vazão:</strong> a última mesa fecha às {{FIT_FECHA}} com ou sem ele. O que ele faz é reter por mesa. Sem ele, com a porta livre, {{FIT_LIVRE_DENTRO}} pessoas ficam dentro do salão no pico e {{FIT_LIVRE_CHEIA}} chegam a uma fila já cheia; com a porta regulando às cegas, o Ring 3 sobe de {{FIT_REF_RING3}} para {{FIT_BUFFER_RING3}}. Perder-se custa 1 a 3 minutos no P90. É a opção (c) da decisão D2.</p>
+  <h3>Fitas no piso em vez do checkpoint: a simulação que embasou a decisão de 14/09</h3>
+  <p>O regime decidido foi simulado no motor oficial sobre o {{CEN_TRABALHO}}. <strong>O checkpoint não custa vazão:</strong> a última mesa fecha às {{FIT_FECHA}} com ou sem ele. O que ele fazia era reter por mesa. Sem ele, com a porta livre, {{FIT_LIVRE_DENTRO}} pessoas ficam dentro do salão no pico e {{FIT_LIVRE_CHEIA}} chegam a uma fila já cheia; com a porta regulando pelo que cabe nas filas de mesa, o Ring 3 sobe de {{FIT_REF_RING3}} para {{FIT_BUFFER_RING3}}, dentro dos {{R3_VIG_CAP}} do desenho decidido. Perder-se custa 1 a 3 minutos no P90. É a opção que virou a decisão D2.</p>
   <div class="rolagem"><table>
     <thead><tr><th>Cenário</th><th>Fecha (p50)</th><th class="num">Espera P90 (min)</th><th class="num">fora / dentro</th><th class="num">Pico dentro</th><th class="num">Pico Ring 3</th><th class="num">Chegadas a fila cheia</th></tr></thead>
     <tbody>{{TABELA_FITAS}}</tbody>
@@ -401,26 +436,26 @@ th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
 
 <!-- ============================ 8 · DECISOES EM ABERTO ============================ -->
 <section id="decisoes">
-  <p class="rotulo"><span class="passo">8</span>Decisões em aberto</p>
-  <h2>{{DEC_N}} decisões de fluxo por tomar, e o que cada uma puxa</h2>
-  <p class="lede">Registro de {{DEC_DATA}}. O Posto fechou em 13/09 as portas, o desenho do Ring 3, os unifilas e a letra das filas; restam as duas decisões {{DEC_ABERTAS}}: (a) como fazer a identificação no caderno físico e (b) checkpoint ou sinalização por fitas. Tudo o que esta página mostra assume, em cada decisão, a opção marcada como "o que as saídas de hoje assumem". Mudar uma decisão é editar <span class="mono">scripts/decisoes_abertas.py</span> e regenerar: o dashboard, o documento de decisões e as instruções de fluxo para o treinamento mudam juntos. Premissas que toda opção respeita: {{DEC_PREMISSAS}}.</p>
+  <p class="rotulo"><span class="passo">9</span>Decisões em aberto</p>
+  <h2>{{DEC_TITULO}}</h2>
+  <p class="lede">Registro de {{DEC_DATA}}. O Posto fechou em 13/09 as portas, o desenho do Ring 3, os unifilas e a letra das filas, e em 14/09 o regime de fitas no piso sem checkpoint; {{DEC_LEDE}}. Tudo o que esta página mostra assume, em cada decisão, a opção marcada como "o que as saídas de hoje assumem". Mudar uma decisão é editar <span class="mono">scripts/decisoes_abertas.py</span> e regenerar: o dashboard, o documento de decisões e as instruções de fluxo para o treinamento mudam juntos. Premissas que toda opção respeita: {{DEC_PREMISSAS}}.</p>
   <figure>
     <div class="dec-grafo">{{DEC_GRAFO}}</div>
     <figcaption>Cada seta liga uma decisão às que ela condiciona. As colunas são a ordem recomendada: {{DEC_ORDEM}}. Contorno vermelho: em aberto; verde: decidida em 13/09; cinza: plano derivado, que se ajusta sozinho às decisões. Clique num nó para ir ao cartão.</figcaption>
   </figure>
-  <h3>As duas decisões em aberto</h3>
+  <h3>O que falta decidir</h3>
   <div class="cartoes">{{DEC_CARTOES}}</div>
-  <h3>Decidido em 13/09, e os planos derivados</h3>
+  <h3>Decidido em 13/09 e 14/09, e os planos derivados</h3>
   <div class="respostas">{{DEC_DECIDIDAS}}</div>
   <h3>Matriz "se … então …"</h3>
-  <p>Linhas: uma opção de uma das duas decisões em aberto. Colunas: as decisões e os planos que ela condiciona. A linha destacada é a opção que as saídas de hoje assumem.</p>
+  <p>Linhas: uma opção de uma decisão em aberto. Colunas: as decisões e os planos que ela condiciona. A linha destacada é a opção que as saídas de hoje assumem.</p>
   <div class="rolagem matriz"><table>{{DEC_MATRIZ}}</table></div>
   {{PECAS_DECISOES}}
 </section>
 
 <!-- ============================ 9 · CAMINHO ATE AQUI ============================ -->
 <section id="caminho">
-  <p class="rotulo"><span class="passo">9</span>Caminho até aqui</p>
+  <p class="rotulo"><span class="passo">10</span>Caminho até aqui</p>
   <h2>O que foi testado e descartado antes deste desenho</h2>
   <p class="lede">O plano atual é a quarta ideia de layout e a segunda de portas. As anteriores continuam disponíveis, porque explicam por que o desenho vigente é o que é.</p>
   <ol class="tempo">
@@ -441,7 +476,7 @@ th .sub{display:block; font-weight:400; font-size:.68rem; color:var(--fraco)}
 
 <!-- ============================ 10 · FONTES ============================ -->
 <section id="fontes">
-  <p class="rotulo"><span class="passo">10</span>Fontes e método</p>
+  <p class="rotulo"><span class="passo">11</span>Fontes e método</p>
   <h2>De onde vêm os números</h2>
   <ul class="fontes">
     <li><b>Eleitorado.</b> CSV do TSE de seções do exterior (13/08/2026) e perfil do eleitorado de Dublin (14/07/2026). O processamento falha em vez de gravar saída errada se a soma por seção, por urna e do perfil não fecharem em 16.794 ou se algum total de urna divergir do campo que o TSE publica agregado.</li>
@@ -490,9 +525,10 @@ function pinta(){
   if (r.ring3) V.appendChild(h("span", {text: (r.igualDecisao && r.desenhoDecidido && r3d)
     ? `Ring 3 decidido (${r3d.nome}): ${fmt(r3d.capacidade)} pessoas, ${r3d.separadores} separadores, ${r3d.registrados} registrados`
     : `${r.ring3.nome}: ${fmt(r.ring3.capacidade)} pessoas, ${r.ring3.separadores} separadores`}));
-  V.appendChild(h("span", {class: difere ? "aviso" : "", text: !r.igualDecisao ? "portas diferem da decisão do Posto (S4, S5, S6; S2, S8); mude no Simulador, na seção 7" : (difere ? "portas da decisão; o desenho do Ring 3 não é o decidido em 13/09 (leste-oeste, CCB na ponta)" : "portas da decisão de 06/09 e desenho do Ring 3 decidido em 13/09")}));
+  V.appendChild(h("span", {class: difere ? "aviso" : "", text: !r.igualDecisao ? "portas diferem da decisão do Posto (S4, S5, S6; S2, S8); mude no Simulador, na seção 8" : (difere ? "portas da decisão; o desenho do Ring 3 não é o decidido em 13/09 (leste-oeste, CCB na ponta)" : "portas da decisão de 06/09 e desenho do Ring 3 decidido em 13/09")}));
   for (const a of r.avisos) V.appendChild(h("span", {class: "aviso", text: a}));
-  if (r.ring3) { const m = h("span", {class: "mini"}); m.innerHTML = PT.svgRing3(r, {portas: BASE.portas, escala: 6}); V.appendChild(m); }
+  // o mini-desenho vivo so aparece quando as portas ou o desenho fogem da decisao; o decidido esta na figura abaixo
+  if (r.ring3 && difere) { const m = h("span", {class: "mini"}); m.innerHTML = PT.svgRing3(r, {portas: BASE.portas, escala: 6}); V.appendChild(m); }
 }
 const guardado = PT.le();
 if (guardado && guardado.estado) { estado = PT.normalizaEstado(guardado.estado); if (guardado.desenho) desenho = guardado.desenho; }

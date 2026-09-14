@@ -18,7 +18,11 @@ posto do RDS Ballsbridge, Hall 2, para o 1º turno de 04/10/2026.
 4. `docs/SESSAO_2026-09-13b.md`: passagem da sessão que trouxe Ring 3 (corredor
    em L), barreiras (hipóteses de corte) e fitas no piso para o dashboard e
    criou o registro de decisões em aberto e as instruções de fluxo geradas.
-5. `docs/decisoes_em_aberto.md` e `PENDENCIAS`: o que falta decidir (com
+5. `docs/SESSAO_2026-09-14.md`: transcrição da conversa de 13/09 (tarde) a
+   14/09 (a lista de quinze mudanças do Posto, literal) e a passagem para a
+   próxima sessão: estado, decisões em números, como rodar cada simulador e o
+   que condiciona os resultados (colar o Hamad_Final primeiro).
+6. `docs/decisoes_em_aberto.md` e `PENDENCIAS`: o que falta decidir (com
    dependências) e o que falta fazer. Não confundir: decisão de fluxo vai em
    `scripts/decisoes_abertas.py`; tarefa vai em `PENDENCIAS`.
 

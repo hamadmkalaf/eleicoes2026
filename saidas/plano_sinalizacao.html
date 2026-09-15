@@ -1,0 +1,854 @@
+<title>Sinalização RDS Hall 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --paper:#F5F7F4; --card:#FFFFFF; --ink:#161B18; --mid:#4C554F; --muted:#6B7570;
+  --rule:#D6DDD7; --rule-soft:#E6EBE6;
+  --a:#0E6E78; --b:#9B2860; --c:#8A5A0C;
+  --a-wash:#E4F0F1; --b-wash:#F7E4EC; --c-wash:#F6EDDD;
+  --warn:#9B2860;
+  --disp:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --measure:64ch;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1412; --card:#171E1A; --ink:#E7EDE8; --mid:#B4BEB7; --muted:#8B958E;
+    --rule:#2A332D; --rule-soft:#222A25;
+    --a:#5FC6CF; --b:#EE85B2; --c:#D8A649;
+    --a-wash:#13302F; --b-wash:#331623; --c-wash:#2E2411;
+    --warn:#EE85B2;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1412; --card:#171E1A; --ink:#E7EDE8; --mid:#B4BEB7; --muted:#8B958E;
+  --rule:#2A332D; --rule-soft:#222A25;
+  --a:#5FC6CF; --b:#EE85B2; --c:#D8A649;
+  --a-wash:#13302F; --b-wash:#331623; --c-wash:#2E2411;
+  --warn:#EE85B2;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:17px;line-height:1.62;-webkit-text-size-adjust:100%}
+.page{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
+.col{max-width:var(--measure)}
+h1,h2,h3,h4,.tile-k,.eyebrow,.letra,th{font-family:var(--disp)}
+h1{font-size:clamp(2rem,5.4vw,3.15rem);line-height:1.04;font-weight:800;
+  letter-spacing:-.022em;margin:0;text-wrap:balance}
+h2{font-size:clamp(1.3rem,2.9vw,1.72rem);font-weight:700;letter-spacing:-.014em;
+  line-height:1.16;margin:0;text-wrap:balance}
+h3{font-size:1.05rem;font-weight:600;letter-spacing:-.005em;margin:0}
+h4{font-size:.95rem;font-weight:600;margin:0}
+p{margin:0}
+.eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);margin:0}
+strong{font-weight:600}
+code,.sec,.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---- ritmo vertical ---- */
+header.masthead{display:flex;flex-direction:column;gap:18px;
+  padding-block:56px 30px;border-bottom:2px solid var(--ink)}
+.lede{font-size:1.09rem;color:var(--mid);max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--mono);
+  font-size:.74rem;color:var(--muted);letter-spacing:.02em;padding-top:4px}
+section.band{display:flex;flex-direction:column;gap:20px;padding-block:44px;
+  border-bottom:1px solid var(--rule-soft)}
+section.band:last-of-type{border-bottom:0}
+.band > p, .band > ul, .band > ol{max-width:var(--measure)}
+.hd{display:flex;flex-direction:column;gap:7px}
+
+/* ---- tiles das portas ---- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.tile{background:var(--card);border:1px solid var(--rule);
+  border-top:5px solid var(--k);padding:18px 18px 14px;
+  display:flex;flex-direction:column;gap:12px}
+.tile-k{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;color:var(--k);
+  margin:0;line-height:1}
+.tile-w{font-size:.78rem;color:var(--muted);margin:0;letter-spacing:.04em;
+  text-transform:uppercase;font-family:var(--disp);font-weight:500}
+.tile dl{margin:0;display:flex;flex-direction:column;gap:0}
+.tile dl div{display:flex;justify-content:space-between;align-items:baseline;
+  gap:12px;padding:5px 0;border-top:1px solid var(--rule-soft)}
+.tile dl dt{color:var(--muted);font-size:.8rem}
+.tile dl dd{margin:0;font-family:var(--mono);font-size:.93rem;
+  font-variant-numeric:tabular-nums}
+.tile dl .hi dd{font-weight:600;color:var(--k)}
+
+/* ---- planta ---- */
+figure.plan{margin:0;display:flex;flex-direction:column;gap:12px}
+.plan-wrap{background:var(--card);border:1px solid var(--rule);padding:12px}
+svg.planta{display:block;width:100%;height:auto;max-width:100%}
+.planta .salao{fill:none;stroke:var(--ink);stroke-width:.34}
+.planta .bloco{fill:var(--k);opacity:.12;stroke:none}
+.planta .mesa{fill:var(--k);stroke:none}
+.planta .rot{font-family:var(--mono);font-size:1.28px;fill:var(--k);
+  letter-spacing:-.02em;paint-order:stroke fill;stroke:var(--card);
+  stroke-width:.5px;stroke-linejoin:round}
+.planta .porta{fill:var(--k)}
+.planta .peca{fill:var(--k);stroke:var(--card);stroke-width:.3}
+.planta .tagpeca{font-family:var(--disp);font-weight:700;font-size:2.2px;
+  fill:var(--k);paint-order:stroke fill;stroke:var(--card);stroke-width:.6px;
+  stroke-linejoin:round}
+.planta .letra{font-family:var(--disp);font-weight:800;font-size:4.2px;fill:var(--k)}
+.planta .fluxo{fill:none;stroke:var(--k);stroke-width:.4;stroke-dasharray:1.5 1.2;
+  opacity:.7;stroke-linejoin:round;stroke-linecap:round}
+.planta .ponta{fill:var(--k);opacity:.7;stroke:none}
+.planta .slot{fill:var(--k);fill-opacity:.15;stroke:var(--k);stroke-width:.26;
+  stroke-dasharray:1.1 .7}
+.planta .slot.alerta{fill-opacity:.3;stroke-width:.5;stroke-dasharray:none}
+.planta .via{stroke:var(--k);stroke-width:.18;stroke-dasharray:.8 .6;opacity:.7}
+.planta .centro{font-family:var(--disp);font-weight:600;font-size:1.75px;
+  fill:var(--muted);letter-spacing:.11em}
+.planta .centro.sub{font-family:var(--body);font-weight:400;font-size:1.7px;
+  letter-spacing:0}
+.planta .rosa text{font-family:var(--disp);font-weight:600;font-size:2.7px;
+  fill:var(--muted)}
+figcaption{font-size:.86rem;color:var(--muted);max-width:var(--measure)}
+
+/* ---- percurso ---- */
+ol.journey{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
+  gap:0;counter-reset:n;max-width:none}
+ol.journey li{display:grid;grid-template-columns:62px 1fr;gap:18px;
+  padding:16px 0;border-top:1px solid var(--rule)}
+ol.journey li:last-child{border-bottom:1px solid var(--rule)}
+.lvl{font-family:var(--mono);font-size:.76rem;font-weight:600;color:var(--muted);
+  letter-spacing:.06em;padding-top:4px}
+.j-b{display:flex;flex-direction:column;gap:5px}
+.j-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px}
+.j-h h4{font-size:1rem}
+.qty{font-family:var(--mono);font-size:.75rem;color:var(--muted);
+  border:1px solid var(--rule);padding:1px 7px;border-radius:99px;white-space:nowrap}
+.j-b p{font-size:.95rem;color:var(--mid);max-width:60ch}
+
+/* ---- tabelas ---- */
+.wall{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.wall h3{color:var(--k);display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+.wall h3 span{font-family:var(--mono);font-size:.74rem;color:var(--muted);
+  font-weight:400;letter-spacing:.01em;text-transform:none}
+.scroll{overflow-x:auto;background:var(--card);border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:.88rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule-soft)}
+thead th{font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;border-bottom:1px solid var(--rule);
+  white-space:nowrap}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+tbody th{font-family:var(--mono);font-weight:600;color:var(--k);white-space:nowrap}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;
+  white-space:nowrap;color:var(--mid)}
+td.secs{min-width:210px}
+.sec{display:inline-block;font-size:.85rem;font-weight:600;letter-spacing:.01em;
+  margin:1px 9px 1px 0}
+.tag{font-family:var(--disp);font-size:.65rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;padding:2px 7px;border-radius:2px;white-space:nowrap}
+.tag-par{background:var(--k);color:var(--card)}
+.tag-isolada{background:transparent;color:var(--muted);
+  box-shadow:inset 0 0 0 1px var(--rule)}
+
+/* ---- listas de porta ---- */
+.listas{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.lista{background:var(--card);border:1px solid var(--rule);border-left:5px solid var(--k);
+  padding:16px;display:flex;flex-direction:column;gap:9px}
+.lista h4{color:var(--k);font-size:1rem}
+.lista .sub{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.grid-sec{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 10px}
+.grid-sec .sec{margin:0;color:var(--ink)}
+
+/* ---- lookup ---- */
+ul.lookup{list-style:none;margin:0;padding:0;max-width:none;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:2px 16px}
+ul.lookup li{display:flex;align-items:center;gap:8px;padding:4px 0;
+  border-bottom:1px solid var(--rule-soft);font-size:.86rem}
+ul.lookup .sec{margin:0;min-width:3.4em}
+.porta-pin{font-family:var(--disp);font-weight:800;font-size:.8rem;color:var(--card);
+  background:var(--k);width:1.35rem;height:1.35rem;display:grid;place-items:center;
+  border-radius:2px;flex:none}
+.pd{font-size:.74rem;color:var(--muted);font-family:var(--mono)}
+
+/* ---- achados ---- */
+.finds{display:flex;flex-direction:column;gap:0}
+.find{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:18px 0;
+  border-top:1px solid var(--rule)}
+.finds .find:last-child{border-bottom:1px solid var(--rule)}
+.find .k{font-family:var(--disp);font-size:1.6rem;font-weight:800;color:var(--rule);
+  line-height:1;padding-top:2px}
+.find-b{display:flex;flex-direction:column;gap:6px;max-width:62ch}
+.find h4{font-size:1.02rem}
+.find p{font-size:.95rem;color:var(--mid)}
+.find.alert h4{color:var(--warn)}
+
+/* ---- orçamento ---- */
+.budget{background:var(--card);border:1px solid var(--rule);padding:0}
+.budget dl{margin:0}
+.budget dl div{display:flex;justify-content:space-between;gap:16px;
+  padding:9px 16px;border-bottom:1px solid var(--rule-soft);font-size:.9rem}
+.budget dl div:last-of-type{border-bottom:0}
+.budget dt{color:var(--mid)}
+.budget dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.budget .sum{background:var(--rule-soft);font-weight:600}
+.budget .sum dt{color:var(--ink)}
+.note{border-left:3px solid var(--warn);padding:2px 0 2px 16px;
+  font-size:.95rem;color:var(--mid);max-width:var(--measure)}
+.note b{color:var(--warn);font-weight:600}
+
+ul.plain{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+ul.plain li{display:grid;grid-template-columns:auto 1fr;gap:12px;font-size:.95rem;
+  color:var(--mid);padding-bottom:9px;border-bottom:1px solid var(--rule-soft)}
+ul.plain li:last-child{border-bottom:0;padding-bottom:0}
+ul.plain .n{font-family:var(--mono);font-size:.78rem;color:var(--muted);padding-top:3px}
+ul.plain b{color:var(--ink);font-weight:600}
+footer{padding-block:34px 0;border-top:2px solid var(--ink);margin-top:44px;
+  font-size:.82rem;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+footer code{font-size:.78rem}
+.t-a{--k:var(--a)} .t-b{--k:var(--b)} .t-c{--k:var(--c)}
+@media (max-width:560px){
+  body{font-size:16px}
+  ol.journey li{grid-template-columns:1fr;gap:6px}
+  .find{grid-template-columns:1fr;gap:6px}
+  .find .k{font-size:1.1rem}
+  .grid-sec{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="page">
+
+<header class="masthead">
+  <p class="eyebrow">Posto de Dublin · 1º turno · 04 out 2026</p>
+  <h1>Sinalização interna do RDS&nbsp;Hall&nbsp;2</h1>
+  <p class="lede">Três portas, três paredes, 28 mesas em 16 blocos.
+  Este documento fixa o que vai impresso em cada peça — e o que precisa ser
+  decidido antes de fechar a arte.</p>
+  <div class="meta">
+    <span>prancheta Hamad_Final · Cenário 3 / Ring 3</span>
+    <span>16.794 aptos</span>
+    <span>11.416 comparecimento esperado</span>
+    <span>51 seções</span>
+  </div>
+</header>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">A regra que organiza tudo</p>
+    <h2>Porta A leva ao oeste, B ao norte, C ao leste</h2>
+  </div>
+  <p class="col">O salão está em orientação L-O e as três portas ficam na
+  parede sul, a única livre na prancheta. Cada porta atende uma parede e
+  nenhuma outra: é isso que permite triar o eleitor <em>antes</em> da soleira,
+  e é a premissa da qual todas as peças abaixo dependem.</p>
+  <div class="tiles"><article class="tile t-a"><p class="tile-k">Porta A</p><p class="tile-w">parede oeste</p><dl><div><dt>mesas</dt><dd>9</dd></div><div><dt>blocos</dt><dd>5</dd></div><div><dt>seções</dt><dd>17</dd></div><div><dt>aptos</dt><dd>6.146</dd></div><div class="hi"><dt>compar./mesa</dt><dd>464</dd></div></dl></article>
+<article class="tile t-b"><p class="tile-k">Porta B</p><p class="tile-w">parede norte</p><dl><div><dt>mesas</dt><dd>9</dd></div><div><dt>blocos</dt><dd>5</dd></div><div><dt>seções</dt><dd>17</dd></div><div><dt>aptos</dt><dd>5.412</dd></div><div class="hi"><dt>compar./mesa</dt><dd>407</dd></div></dl></article>
+<article class="tile t-c"><p class="tile-k">Porta C</p><p class="tile-w">parede leste</p><dl><div><dt>mesas</dt><dd>10</dd></div><div><dt>blocos</dt><dd>6</dd></div><div><dt>seções</dt><dd>17</dd></div><div><dt>aptos</dt><dd>5.236</dd></div><div class="hi"><dt>compar./mesa</dt><dd>358</dd></div></dl></article></div>
+  <p class="col"><strong>A carga não está equilibrada.</strong> A porta A
+  recebe 464 comparecentes por mesa; a porta C, 358 — 30% a mais na porta que
+  ainda tem uma mesa a menos. Nenhum banner corrige isso: a carga está
+  fisicamente amarrada às mesas. Ou se movem blocos na prancheta antes de
+  fechar a arte, ou se compensa com pessoal na porta A.</p>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">Planta em escala · 50,2 × 44,5 m</p>
+    <h2>Onde cada banner fica e o que ele diz</h2>
+  </div>
+  <figure class="plan">
+    <div class="plan-wrap"><svg class="planta" viewBox="-10.0 -14.0 70.2 68.5" role="img" aria-label="Planta do Hall 2 com as 28 mesas agrupadas em 16 blocos, coloridos pela porta que os atende">
+<rect x="0" y="0" width="50.2" height="44.5" class="salao"/>
+<g class="rosa"><text x="25.1" y="-10.4" text-anchor="middle">N</text><text x="-4.4" y="22.2" text-anchor="middle">O</text><text x="54.6" y="22.2" text-anchor="middle">L</text></g>
+<rect class="bloco t-a" x="-0.55" y="30.25" width="2.70" height="6.80" rx="0.5"/>
+<rect class="mesa t-a" x="0.00" y="34.70" width="1.6" height="1.8"/>
+<rect class="mesa t-a" x="0.00" y="30.80" width="1.6" height="1.8"/>
+<text class="rot t-a" x="5.00" y="33.65" text-anchor="start">
+<tspan x="5.00" dy="-0.75">517 1292</tspan>
+<tspan x="5.00" dy="1.50">3311 3913</tspan>
+</text>
+<rect class="bloco t-a" x="-0.55" y="23.35" width="2.70" height="6.80" rx="0.5"/>
+<rect class="mesa t-a" x="0.00" y="27.80" width="1.6" height="1.8"/>
+<rect class="mesa t-a" x="0.00" y="23.90" width="1.6" height="1.8"/>
+<text class="rot t-a" x="5.00" y="26.75" text-anchor="start">
+<tspan x="5.00" dy="-0.75">519 3245</tspan>
+<tspan x="5.00" dy="1.50">3313 3889</tspan>
+</text>
+<rect class="bloco t-a" x="-0.55" y="20.05" width="2.70" height="2.90" rx="0.5"/>
+<rect class="mesa t-a" x="0.00" y="20.60" width="1.6" height="1.8"/>
+<text class="rot t-a" x="5.00" y="21.50" text-anchor="start">
+<tspan x="5.00" dy="0.00">3688</tspan>
+</text>
+<rect class="bloco t-a" x="-0.55" y="13.45" width="2.70" height="6.80" rx="0.5"/>
+<rect class="mesa t-a" x="0.00" y="17.90" width="1.6" height="1.8"/>
+<rect class="mesa t-a" x="0.00" y="14.00" width="1.6" height="1.8"/>
+<text class="rot t-a" x="5.00" y="16.85" text-anchor="start">
+<tspan x="5.00" dy="-0.75">3161 3307</tspan>
+<tspan x="5.00" dy="1.50">3315 3778</tspan>
+</text>
+<rect class="bloco t-a" x="-0.55" y="6.80" width="2.70" height="6.80" rx="0.5"/>
+<rect class="mesa t-a" x="0.00" y="11.25" width="1.6" height="1.8"/>
+<rect class="mesa t-a" x="0.00" y="7.35" width="1.6" height="1.8"/>
+<text class="rot t-a" x="5.00" y="10.20" text-anchor="start">
+<tspan x="5.00" dy="-0.75">518 530</tspan>
+<tspan x="5.00" dy="1.50">3179 3306</tspan>
+</text>
+<rect class="porta t-a" x="6.80" y="44.05" width="4.4" height="0.9"/>
+<text class="letra t-a" x="9.00" y="48.70" text-anchor="middle">A</text>
+<path class="fluxo t-a" d="M 9.00 44.5 L 9.00 39.50 L 3.8 39.50 L 3.8 6.50"/>
+<path class="ponta t-a" d="M 3.05 8.00 L 3.80 6.20 L 4.55 8.00 Z"/>
+<circle class="peca t-a" cx="11.50" cy="41.00" r="0.85"/>
+<text class="tagpeca t-a" x="13.00" y="41.60" text-anchor="start">N2</text>
+<rect class="peca t-a" x="12.00" y="37.10" width="3.0" height="0.8"/>
+<text class="tagpeca t-a" x="15.70" y="38.10" text-anchor="start">N3</text>
+<rect class="bloco t-b" x="7.10" y="-0.45" width="6.80" height="2.70" rx="0.5"/>
+<rect class="mesa t-b" x="7.65" y="0.10" width="1.8" height="1.6"/>
+<rect class="mesa t-b" x="11.55" y="0.10" width="1.8" height="1.6"/>
+<text class="rot t-b" x="10.50" y="-3.90" text-anchor="middle">
+<tspan x="10.50" dy="0.00">3322</tspan>
+<tspan x="10.50" dy="1.50">3752</tspan>
+<tspan x="10.50" dy="1.50">3862</tspan>
+</text>
+<rect class="bloco t-b" x="17.90" y="-0.45" width="6.80" height="2.70" rx="0.5"/>
+<rect class="mesa t-b" x="18.45" y="0.10" width="1.8" height="1.6"/>
+<rect class="mesa t-b" x="22.35" y="0.10" width="1.8" height="1.6"/>
+<text class="rot t-b" x="21.30" y="-5.40" text-anchor="middle">
+<tspan x="21.30" dy="0.00">511</tspan>
+<tspan x="21.30" dy="1.50">527</tspan>
+<tspan x="21.30" dy="1.50">1100</tspan>
+<tspan x="21.30" dy="1.50">3216</tspan>
+</text>
+<rect class="bloco t-b" x="26.80" y="-0.45" width="2.90" height="2.70" rx="0.5"/>
+<rect class="mesa t-b" x="27.35" y="0.10" width="1.8" height="1.6"/>
+<text class="rot t-b" x="28.25" y="-2.40" text-anchor="middle">
+<tspan x="28.25" dy="0.00">1099</tspan>
+<tspan x="28.25" dy="1.50">3054</tspan>
+</text>
+<rect class="bloco t-b" x="30.85" y="-0.45" width="6.80" height="2.70" rx="0.5"/>
+<rect class="mesa t-b" x="31.40" y="0.10" width="1.8" height="1.6"/>
+<rect class="mesa t-b" x="35.30" y="0.10" width="1.8" height="1.6"/>
+<text class="rot t-b" x="34.25" y="-5.40" text-anchor="middle">
+<tspan x="34.25" dy="0.00">521</tspan>
+<tspan x="34.25" dy="1.50">3108</tspan>
+<tspan x="34.25" dy="1.50">3305</tspan>
+<tspan x="34.25" dy="1.50">3422</tspan>
+</text>
+<rect class="bloco t-b" x="37.60" y="-0.45" width="6.80" height="2.70" rx="0.5"/>
+<rect class="mesa t-b" x="38.15" y="0.10" width="1.8" height="1.6"/>
+<rect class="mesa t-b" x="42.05" y="0.10" width="1.8" height="1.6"/>
+<text class="rot t-b" x="41.00" y="-5.40" text-anchor="middle">
+<tspan x="41.00" dy="0.00">1160</tspan>
+<tspan x="41.00" dy="1.50">1314</tspan>
+<tspan x="41.00" dy="1.50">3309</tspan>
+<tspan x="41.00" dy="1.50">3845</tspan>
+</text>
+<rect class="porta t-b" x="23.55" y="44.05" width="4.4" height="0.9"/>
+<text class="letra t-b" x="25.75" y="48.70" text-anchor="middle">B</text>
+<path class="fluxo t-b" d="M 25.75 44.5 L 25.75 4.50"/>
+<path class="ponta t-b" d="M 25.00 6.00 L 25.75 4.20 L 26.50 6.00 Z"/>
+<circle class="peca t-b" cx="28.50" cy="41.00" r="0.85"/>
+<text class="tagpeca t-b" x="27.00" y="41.60" text-anchor="end">N2</text>
+<rect class="peca t-b" x="29.00" y="37.10" width="3.0" height="0.8"/>
+<text class="tagpeca t-b" x="28.30" y="38.10" text-anchor="end">N3</text>
+<rect class="bloco t-c" x="45.95" y="33.10" width="2.70" height="6.80" rx="0.5"/>
+<rect class="mesa t-c" x="46.50" y="37.55" width="1.6" height="1.8"/>
+<rect class="mesa t-c" x="46.50" y="33.65" width="1.6" height="1.8"/>
+<text class="rot t-c" x="43.10" y="36.50" text-anchor="end">
+<tspan x="43.10" dy="0.00">3308 3442</tspan>
+</text>
+<rect class="bloco t-c" x="45.95" y="30.10" width="2.70" height="2.90" rx="0.5"/>
+<rect class="mesa t-c" x="46.50" y="30.65" width="1.6" height="1.8"/>
+<text class="rot t-c" x="43.10" y="31.55" text-anchor="end">
+<tspan x="43.10" dy="0.00">512 2855</tspan>
+</text>
+<rect class="bloco t-c" x="45.95" y="23.20" width="2.70" height="6.80" rx="0.5"/>
+<rect class="mesa t-c" x="46.50" y="27.65" width="1.6" height="1.8"/>
+<rect class="mesa t-c" x="46.50" y="23.75" width="1.6" height="1.8"/>
+<text class="rot t-c" x="43.10" y="26.60" text-anchor="end">
+<tspan x="43.10" dy="-0.75">522 1352</tspan>
+<tspan x="43.10" dy="1.50">3832</tspan>
+</text>
+<rect class="bloco t-c" x="45.95" y="16.30" width="2.70" height="6.80" rx="0.5"/>
+<rect class="mesa t-c" x="46.50" y="20.75" width="1.6" height="1.8"/>
+<rect class="mesa t-c" x="46.50" y="16.85" width="1.6" height="1.8"/>
+<text class="rot t-c" x="43.10" y="19.70" text-anchor="end">
+<tspan x="43.10" dy="-0.75">513 1105</tspan>
+<tspan x="43.10" dy="1.50">3229 3821</tspan>
+</text>
+<rect class="bloco t-c" x="45.95" y="13.30" width="2.70" height="2.90" rx="0.5"/>
+<rect class="mesa t-c" x="46.50" y="13.85" width="1.6" height="1.8"/>
+<text class="rot t-c" x="43.10" y="14.75" text-anchor="end">
+<tspan x="43.10" dy="0.00">2847 3078</tspan>
+</text>
+<rect class="bloco t-c" x="45.95" y="6.40" width="2.70" height="6.80" rx="0.5"/>
+<rect class="mesa t-c" x="46.50" y="10.85" width="1.6" height="1.8"/>
+<rect class="mesa t-c" x="46.50" y="6.95" width="1.6" height="1.8"/>
+<text class="rot t-c" x="43.10" y="9.80" text-anchor="end">
+<tspan x="43.10" dy="-0.75">1278 3142</tspan>
+<tspan x="43.10" dy="1.50">3181 3302</tspan>
+</text>
+<rect class="porta t-c" x="38.80" y="44.05" width="4.4" height="0.9"/>
+<text class="letra t-c" x="41.00" y="48.70" text-anchor="middle">C</text>
+<path class="fluxo t-c" d="M 41.00 44.5 L 41.00 41.50 L 44.3 41.50 L 44.3 6.50"/>
+<path class="ponta t-c" d="M 43.55 8.00 L 44.30 6.20 L 45.05 8.00 Z"/>
+<circle class="peca t-c" cx="38.50" cy="41.00" r="0.85"/>
+<text class="tagpeca t-c" x="40.00" y="41.60" text-anchor="start">N2</text>
+<rect class="peca t-c" x="35.00" y="37.10" width="3.0" height="0.8"/>
+<text class="tagpeca t-c" x="38.70" y="38.10" text-anchor="start">N3</text>
+</svg></div>
+    <figcaption>Cada retângulo cheio é uma mesa, na coordenada exata da
+    prancheta; o bloco sombreado ao redor é o par que compartilha o corredor de
+    3,90 m e, portanto, compartilha um banner. Os números ao lado de cada bloco
+    são exatamente o que vai impresso naquele banner. Tracejado: o percurso da
+    porta até a parede.</figcaption>
+  </figure>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">O percurso do eleitor · 25 peças</p>
+    <h2>Quatro níveis, na ordem em que são lidos</h2>
+  </div>
+  <ol class="journey">
+    <li><span class="lvl">N1</span><div class="j-b">
+      <div class="j-h"><h4>Painel de decisão na boca do serpenteado</h4>
+      <span class="qty">3 un · Ring 3</span></div>
+      <p>Uma peça por serpenteado, só na entrada. Depois disso o eleitor não
+      recebe mais nenhuma confirmação até a porta, então esta peça carrega
+      <strong>as 51 seções</strong>, não as 17 de uma porta: três colunas
+      coloridas, A / B / C, em ordem crescente. Letra da porta em 250 mm,
+      número de seção em 80 mm, bilíngue.</p></div></li>
+    <li><span class="lvl">N2</span><div class="j-b">
+      <div class="j-h"><h4>Totem alto de porta</h4><span class="qty">3 un · dentro</span></div>
+      <p>Logo depois da porta, letra de 300 mm. Confirma que o eleitor entrou
+      pela porta certa e é o primeiro ponto em que ele pode descobrir que
+      errou — resolve também a travessia de 44 m da porta B até a parede
+      norte.</p></div></li>
+    <li><span class="lvl">N3</span><div class="j-b">
+      <div class="j-h"><h4>Painel das seções da parede</h4><span class="qty">3 un</span></div>
+      <p>Sete metros depois da porta, fora da linha de caminhada. As 17 seções
+      daquela parede, <strong>agrupadas por bloco e dispostas na ordem física
+      em que o eleitor vai encontrá-las</strong> — o painel espelha a parede.
+      Dentro de cada bloco, ordem crescente. Números de 60 mm.</p></div></li>
+    <li><span class="lvl">N5</span><div class="j-b">
+      <div class="j-h"><h4>Banner de bloco</h4><span class="qty">16 un · peça crítica</span></div>
+      <p>Na boca do corredor de cada par. Lido de dentro da fila, em
+      movimento: números de 120 mm, o que obriga 0,85 × 2,00 m em base
+      alugada. <strong>Sem número de mesa</strong> — só seções.</p></div></li>
+  </ol>
+  <p class="col"><strong>Onde N2 e N3 ficam</strong>, em metros de planta, com
+  a origem no canto sudoeste do Hall 2 e as portas na parede sul (y = 0). Os
+  dois ficam do lado oposto à curva que o eleitor faz ao entrar — A vira a
+  oeste, C vira a leste, B segue reto — para que quem para de ler não represe
+  a porta.</p>
+  <div class="scroll"><table><thead><tr>
+    <th scope="col">Porta</th><th scope="col">Peça</th>
+    <th scope="col">Posição (x, y)</th><th scope="col">Distância da porta</th>
+    <th scope="col">Voltada para</th><th scope="col">Lado do eleitor</th>
+  </tr></thead><tbody>
+    <tr><th scope="row" class="t-a">A</th><td>N2 totem</td><td class="num">11,50 · 3,50</td><td class="num">4,3 m</td><td>sul</td><td>direita</td></tr>
+    <tr><th scope="row" class="t-a">A</th><td>N3 painel</td><td class="num">13,50 · 7,00</td><td class="num">8,1 m</td><td>sudoeste</td><td>direita</td></tr>
+    <tr><th scope="row" class="t-b">B</th><td>N2 totem</td><td class="num">28,50 · 3,50</td><td class="num">4,5 m</td><td>sul</td><td>direita</td></tr>
+    <tr><th scope="row" class="t-b">B</th><td>N3 painel</td><td class="num">30,50 · 7,00</td><td class="num">8,4 m</td><td>sul</td><td>direita</td></tr>
+    <tr><th scope="row" class="t-c">C</th><td>N2 totem</td><td class="num">38,50 · 3,50</td><td class="num">4,3 m</td><td>sul</td><td>esquerda</td></tr>
+    <tr><th scope="row" class="t-c">C</th><td>N3 painel</td><td class="num">36,50 · 7,00</td><td class="num">8,1 m</td><td>sudeste</td><td>esquerda</td></tr>
+  </tbody></table></div>
+  <p class="note"><b>O mapa de entrada foi cortado.</b> Sem ele, o N3 assume
+  sozinho a função de dizer <em>onde</em> na parede — por isso ele deixa de ser
+  uma lista em ordem crescente e passa a espelhar a parede, bloco a bloco, na
+  ordem física. É a forma mais barata de recuperar a informação que o mapa
+  daria, sem uma peça a mais.</p>
+  <p class="col">Em todas as peças: número de seção com <strong>4
+  dígitos</strong>, como no e-Título (<code>0511</code>, não <code>511</code>),
+  em ordem crescente de seção e nunca de mesa; a cor da porta constante do
+  primeiro ao último nível.</p>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">N5 · conteúdo literal</p>
+    <h2>Os 16 banners de bloco</h2>
+  </div>
+  <p class="col">A coluna de posição é para a equipe de montagem — não vai
+  impressa. Nada aqui carrega número de mesa.</p>
+  <section class="wall t-a"><h3>Porta A <span>parede oeste · 4 pares + 1 isolada(s)</span></h3><div class="scroll"><table><thead><tr><th scope="col">Peça</th><th scope="col">Tipo</th><th scope="col">Posição na parede</th><th scope="col">Seções impressas no banner</th><th scope="col">Aptos</th><th scope="col">Compar.</th></tr></thead><tbody><tr><th scope="row">BA1</th><td><span class="tag tag-par">par</span></td><td class="num">8,90–12,80 m</td><td class="secs"><span class="sec">517</span><span class="sec">1292</span><span class="sec">3311</span><span class="sec">3913</span></td><td class="num">1.143</td><td class="num">819</td></tr>
+<tr><th scope="row">BA2</th><td><span class="tag tag-par">par</span></td><td class="num">15,80–19,70 m</td><td class="secs"><span class="sec">519</span><span class="sec">3245</span><span class="sec">3313</span><span class="sec">3889</span></td><td class="num">1.578</td><td class="num">1.076</td></tr>
+<tr><th scope="row">BA3</th><td><span class="tag tag-isolada">isolada</span></td><td class="num">23,00 m</td><td class="secs"><span class="sec">3688</span></td><td class="num">400</td><td class="num">296</td></tr>
+<tr><th scope="row">BA4</th><td><span class="tag tag-par">par</span></td><td class="num">25,70–29,60 m</td><td class="secs"><span class="sec">3161</span><span class="sec">3307</span><span class="sec">3315</span><span class="sec">3778</span></td><td class="num">1.583</td><td class="num">1.077</td></tr>
+<tr><th scope="row">BA5</th><td><span class="tag tag-par">par</span></td><td class="num">32,35–36,25 m</td><td class="secs"><span class="sec">518</span><span class="sec">530</span><span class="sec">3179</span><span class="sec">3306</span></td><td class="num">1.442</td><td class="num">912</td></tr></tbody></table></div></section>
+<section class="wall t-b"><h3>Porta B <span>parede norte · 4 pares + 1 isolada(s)</span></h3><div class="scroll"><table><thead><tr><th scope="col">Peça</th><th scope="col">Tipo</th><th scope="col">Posição na parede</th><th scope="col">Seções impressas no banner</th><th scope="col">Aptos</th><th scope="col">Compar.</th></tr></thead><tbody><tr><th scope="row">BB1</th><td><span class="tag tag-par">par</span></td><td class="num">8,55–12,45 m</td><td class="secs"><span class="sec">3322</span><span class="sec">3752</span><span class="sec">3862</span></td><td class="num">1.194</td><td class="num">884</td></tr>
+<tr><th scope="row">BB2</th><td><span class="tag tag-par">par</span></td><td class="num">19,35–23,25 m</td><td class="secs"><span class="sec">511</span><span class="sec">527</span><span class="sec">1100</span><span class="sec">3216</span></td><td class="num">1.153</td><td class="num">768</td></tr>
+<tr><th scope="row">BB3</th><td><span class="tag tag-isolada">isolada</span></td><td class="num">28,25 m</td><td class="secs"><span class="sec">1099</span><span class="sec">3054</span></td><td class="num">454</td><td class="num">323</td></tr>
+<tr><th scope="row">BB4</th><td><span class="tag tag-par">par</span></td><td class="num">32,30–36,20 m</td><td class="secs"><span class="sec">521</span><span class="sec">3108</span><span class="sec">3305</span><span class="sec">3422</span></td><td class="num">1.523</td><td class="num">952</td></tr>
+<tr><th scope="row">BB5</th><td><span class="tag tag-par">par</span></td><td class="num">39,05–42,95 m</td><td class="secs"><span class="sec">1160</span><span class="sec">1314</span><span class="sec">3309</span><span class="sec">3845</span></td><td class="num">1.088</td><td class="num">736</td></tr></tbody></table></div></section>
+<section class="wall t-c"><h3>Porta C <span>parede leste · 4 pares + 2 isolada(s)</span></h3><div class="scroll"><table><thead><tr><th scope="col">Peça</th><th scope="col">Tipo</th><th scope="col">Posição na parede</th><th scope="col">Seções impressas no banner</th><th scope="col">Aptos</th><th scope="col">Compar.</th></tr></thead><tbody><tr><th scope="row">BC1</th><td><span class="tag tag-par">par</span></td><td class="num">6,05–9,95 m</td><td class="secs"><span class="sec">3308</span><span class="sec">3442</span></td><td class="num">797</td><td class="num">590</td></tr>
+<tr><th scope="row">BC2</th><td><span class="tag tag-isolada">isolada</span></td><td class="num">12,95 m</td><td class="secs"><span class="sec">512</span><span class="sec">2855</span></td><td class="num">476</td><td class="num">334</td></tr>
+<tr><th scope="row">BC3</th><td><span class="tag tag-par">par</span></td><td class="num">15,95–19,85 m</td><td class="secs"><span class="sec">522</span><span class="sec">1352</span><span class="sec">3832</span></td><td class="num">862</td><td class="num">623</td></tr>
+<tr><th scope="row">BC4</th><td><span class="tag tag-par">par</span></td><td class="num">22,85–26,75 m</td><td class="secs"><span class="sec">513</span><span class="sec">1105</span><span class="sec">3229</span><span class="sec">3821</span></td><td class="num">1.108</td><td class="num">746</td></tr>
+<tr><th scope="row">BC5</th><td><span class="tag tag-isolada">isolada</span></td><td class="num">29,75 m</td><td class="secs"><span class="sec">2847</span><span class="sec">3078</span></td><td class="num">429</td><td class="num">310</td></tr>
+<tr><th scope="row">BC6</th><td><span class="tag tag-par">par</span></td><td class="num">32,75–36,65 m</td><td class="secs"><span class="sec">1278</span><span class="sec">3142</span><span class="sec">3181</span><span class="sec">3302</span></td><td class="num">1.564</td><td class="num">973</td></tr></tbody></table></div></section>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">N3 · conteúdo literal</p>
+    <h2>Os 3 banners de porta</h2>
+  </div>
+  <p class="col">Cada porta recebe exatamente 17 seções. Listas sem zero à
+  esquerda porque é assim que saem da base do TSE; na arte, quatro dígitos.</p>
+  <div class="listas"><article class="lista t-a"><h4>Porta A</h4><p class="sub">17 seções · 6.146 aptos</p><div class="grid-sec"><span class="sec">517</span><span class="sec">518</span><span class="sec">519</span><span class="sec">530</span><span class="sec">1292</span><span class="sec">3161</span><span class="sec">3179</span><span class="sec">3245</span><span class="sec">3306</span><span class="sec">3307</span><span class="sec">3311</span><span class="sec">3313</span><span class="sec">3315</span><span class="sec">3688</span><span class="sec">3778</span><span class="sec">3889</span><span class="sec">3913</span></div></article>
+<article class="lista t-b"><h4>Porta B</h4><p class="sub">17 seções · 5.412 aptos</p><div class="grid-sec"><span class="sec">511</span><span class="sec">521</span><span class="sec">527</span><span class="sec">1099</span><span class="sec">1100</span><span class="sec">1160</span><span class="sec">1314</span><span class="sec">3054</span><span class="sec">3108</span><span class="sec">3216</span><span class="sec">3305</span><span class="sec">3309</span><span class="sec">3322</span><span class="sec">3422</span><span class="sec">3752</span><span class="sec">3845</span><span class="sec">3862</span></div></article>
+<article class="lista t-c"><h4>Porta C</h4><p class="sub">17 seções · 5.236 aptos</p><div class="grid-sec"><span class="sec">512</span><span class="sec">513</span><span class="sec">522</span><span class="sec">1105</span><span class="sec">1278</span><span class="sec">1352</span><span class="sec">2847</span><span class="sec">2855</span><span class="sec">3078</span><span class="sec">3142</span><span class="sec">3181</span><span class="sec">3229</span><span class="sec">3302</span><span class="sec">3308</span><span class="sec">3442</span><span class="sec">3821</span><span class="sec">3832</span></div></article></div>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">Filas coladas no piso · simulação a 60 s por voto</p>
+    <h2>Uma via por mesa, nenhuma cruza outra</h2>
+  </div>
+  <p class="col"><strong>A fila é por mesa, não por par.</strong> Cada mesa
+  guarda o caderno de votação das suas próprias seções — o eleitor da 3313 não
+  pode ser atendido na mesa ao lado, ainda que ela esteja vazia. São
+  <strong>28 filas</strong>, não 16. O banner continua sendo do par, mas a
+  fita no chão desce ao nível da mesa: dentro do corredor de 3,90 m do par, a
+  via se bifurca, um ramo para cada conjunto de seções.</p>
+  <p class="col">A regra que garante o não cruzamento é geométrica, não de
+  bom senso: <strong>cada mesa é dona da faixa de piso à sua frente</strong> —
+  tão larga quanto o vão até a mesa vizinha, tão profunda quanto a fila
+  projetada exigir — e essa faixa avança perpendicular à sua própria parede.
+  Faixas paralelas saindo da mesma parede nunca se cruzam, e faixas de paredes
+  diferentes não se alcançam porque param antes da zona livre central. Toda a
+  circulação acontece nessa zona livre: o eleitor entra pela porta, atravessa o
+  miolo vazio do salão e entra na sua via <em>pela cauda</em>, que é onde está
+  o decalque com o número da sua seção.</p>
+  <figure class="plan">
+    <div class="plan-wrap"><svg class="planta piso" viewBox="-10.0 -12.0 70.2 66.5" role="img" aria-label="Plano de colagem das filas no piso: uma via por mesa, perpendicular a sua parede">
+<rect x="0" y="0" width="50.2" height="44.5" class="salao"/>
+<g class="rosa"><text x="25.1" y="-8.4" text-anchor="middle">N</text></g>
+<rect class="slot t-a" x="1.60" y="27.20" width="21.90" height="3.00"/>
+<line class="via t-a" x1="1.60" y1="28.20" x2="23.50" y2="28.20"/>
+<line class="via t-a" x1="1.60" y1="29.20" x2="23.50" y2="29.20"/>
+<text class="rot t-a" x="24.30" y="29.15" text-anchor="start">
+<tspan x="24.30" dy="0.00">3313 3889</tspan>
+</text>
+<rect class="slot t-b alerta" x="6.60" y="1.70" width="3.90" height="8.00"/>
+<line class="via t-b" x1="7.90" y1="1.70" x2="7.90" y2="9.70"/>
+<line class="via t-b" x1="9.20" y1="1.70" x2="9.20" y2="9.70"/>
+<text class="rot t-b" x="8.55" y="11.50" text-anchor="middle">
+<tspan x="8.55" dy="0.00">3322</tspan>
+<tspan x="8.55" dy="1.50">3752</tspan>
+</text>
+<rect class="slot t-c alerta" x="38.50" y="5.90" width="8.00" height="3.90"/>
+<text class="rot t-c" x="47.80" y="8.30" text-anchor="start">
+<tspan x="47.80" dy="0.00">3142 1278</tspan>
+</text>
+<rect class="slot t-a alerta" x="1.60" y="13.52" width="22.00" height="2.75"/>
+<line class="via t-a" x1="1.60" y1="14.90" x2="23.60" y2="14.90"/>
+<text class="rot t-a" x="24.40" y="15.35" text-anchor="start">
+<tspan x="24.40" dy="0.00">3315 3778</tspan>
+</text>
+<rect class="slot t-a" x="1.60" y="17.45" width="13.30" height="2.70"/>
+<text class="rot t-a" x="15.70" y="19.25" text-anchor="start">
+<tspan x="15.70" dy="0.00">3161 3307</tspan>
+</text>
+<rect class="slot t-a" x="1.60" y="23.15" width="8.40" height="3.30"/>
+<text class="rot t-a" x="10.80" y="25.25" text-anchor="start">
+<tspan x="10.80" dy="0.00">3245 519</tspan>
+</text>
+<rect class="slot t-c" x="38.60" y="10.25" width="7.90" height="3.00"/>
+<text class="rot t-c" x="47.80" y="12.20" text-anchor="start">
+<tspan x="47.80" dy="0.00">3302 3181</tspan>
+</text>
+<rect class="slot t-b" x="34.78" y="1.70" width="2.85" height="11.50"/>
+<text class="rot t-b" x="36.20" y="15.00" text-anchor="middle">
+<tspan x="36.20" dy="0.00">3305</tspan>
+<tspan x="36.20" dy="1.50">521</tspan>
+</text>
+<rect class="slot t-a" x="1.60" y="10.77" width="11.40" height="2.75"/>
+<text class="rot t-a" x="13.80" y="12.60" text-anchor="start">
+<tspan x="13.80" dy="0.00">3306 518</tspan>
+</text>
+<rect class="slot t-b" x="30.35" y="1.70" width="3.90" height="7.20"/>
+<text class="rot t-b" x="32.30" y="10.70" text-anchor="middle">
+<tspan x="32.30" dy="0.00">3108</tspan>
+<tspan x="32.30" dy="1.50">3422</tspan>
+</text>
+<rect class="slot t-a" x="1.60" y="6.30" width="3.30" height="3.90"/>
+<text class="rot t-a" x="5.70" y="8.70" text-anchor="start">
+<tspan x="5.70" dy="0.00">3179 530</tspan>
+</text>
+<rect class="slot t-a" x="1.60" y="33.65" width="6.50" height="3.90"/>
+<text class="rot t-a" x="8.90" y="36.05" text-anchor="start">
+<tspan x="8.90" dy="0.00">3311 3913</tspan>
+</text>
+<rect class="slot t-b" x="41.00" y="1.70" width="3.90" height="2.00"/>
+<text class="rot t-b" x="42.95" y="5.50" text-anchor="middle">
+<tspan x="42.95" dy="0.00">3309</tspan>
+<tspan x="42.95" dy="1.50">1314</tspan>
+</text>
+<rect class="slot t-c" x="44.50" y="16.25" width="2.00" height="3.00"/>
+<text class="rot t-c" x="47.80" y="18.20" text-anchor="start">
+<tspan x="47.80" dy="0.00">3229 3821</tspan>
+</text>
+<rect class="slot t-b" x="17.40" y="1.70" width="3.90" height="2.00"/>
+<text class="rot t-b" x="19.35" y="5.50" text-anchor="middle">
+<tspan x="19.35" dy="0.00">511</tspan>
+<tspan x="19.35" dy="1.50">1100</tspan>
+</text>
+<rect class="slot t-b" x="21.30" y="1.70" width="3.90" height="2.00"/>
+<text class="rot t-b" x="23.25" y="5.50" text-anchor="middle">
+<tspan x="23.25" dy="0.00">3216</tspan>
+<tspan x="23.25" dy="1.50">527</tspan>
+</text>
+<rect class="slot t-a" x="1.60" y="30.20" width="2.00" height="3.00"/>
+<text class="rot t-a" x="4.40" y="32.15" text-anchor="start">
+<tspan x="4.40" dy="0.00">517 1292</tspan>
+</text>
+<rect class="slot t-c" x="44.50" y="20.15" width="2.00" height="3.00"/>
+<text class="rot t-c" x="47.80" y="22.10" text-anchor="start">
+<tspan x="47.80" dy="0.00">513 1105</tspan>
+</text>
+<rect class="slot t-c" x="44.50" y="30.05" width="2.00" height="3.00"/>
+<text class="rot t-c" x="47.80" y="32.00" text-anchor="start">
+<tspan x="47.80" dy="0.00">512 2855</tspan>
+</text>
+<rect class="slot t-b" x="37.62" y="1.70" width="2.85" height="3.00"/>
+<text class="rot t-b" x="39.05" y="6.50" text-anchor="middle">
+<tspan x="39.05" dy="0.00">1160</tspan>
+<tspan x="39.05" dy="1.50">3845</tspan>
+</text>
+<rect class="slot t-c" x="44.50" y="23.15" width="2.00" height="3.00"/>
+<text class="rot t-c" x="47.80" y="25.10" text-anchor="start">
+<tspan x="47.80" dy="0.00">1352 522</tspan>
+</text>
+<rect class="slot t-b" x="26.30" y="1.70" width="3.90" height="2.00"/>
+<text class="rot t-b" x="28.25" y="5.50" text-anchor="middle">
+<tspan x="28.25" dy="0.00">3054</tspan>
+<tspan x="28.25" dy="1.50">1099</tspan>
+</text>
+<rect class="slot t-c" x="44.50" y="13.25" width="2.00" height="3.00"/>
+<text class="rot t-c" x="47.80" y="15.20" text-anchor="start">
+<tspan x="47.80" dy="0.00">3078 2847</tspan>
+</text>
+<rect class="slot t-a" x="1.60" y="20.15" width="3.00" height="2.70"/>
+<text class="rot t-a" x="5.40" y="21.95" text-anchor="start">
+<tspan x="5.40" dy="0.00">3688</tspan>
+</text>
+<rect class="slot t-b" x="10.50" y="1.70" width="3.90" height="2.00"/>
+<text class="rot t-b" x="12.45" y="5.50" text-anchor="middle">
+<tspan x="12.45" dy="0.00">3862</tspan>
+</text>
+<rect class="slot t-c" x="44.50" y="27.05" width="2.00" height="3.00"/>
+<text class="rot t-c" x="47.80" y="29.00" text-anchor="start">
+<tspan x="47.80" dy="0.00">3832</tspan>
+</text>
+<rect class="slot t-c" x="44.50" y="33.05" width="2.00" height="3.00"/>
+<text class="rot t-c" x="47.80" y="35.00" text-anchor="start">
+<tspan x="47.80" dy="0.00">3308</tspan>
+</text>
+<rect class="slot t-c" x="44.50" y="36.50" width="2.00" height="3.90"/>
+<text class="rot t-c" x="47.80" y="38.90" text-anchor="start">
+<tspan x="47.80" dy="0.00">3442</tspan>
+</text>
+<rect class="porta t-a" x="6.80" y="44.05" width="4.4" height="0.9"/>
+<text class="letra t-a" x="9.00" y="48.70" text-anchor="middle">A</text>
+<rect class="porta t-b" x="23.55" y="44.05" width="4.4" height="0.9"/>
+<text class="letra t-b" x="25.75" y="48.70" text-anchor="middle">B</text>
+<rect class="porta t-c" x="38.80" y="44.05" width="4.4" height="0.9"/>
+<text class="letra t-c" x="41.00" y="48.70" text-anchor="middle">C</text>
+<text class="centro" x="27.0" y="34.00" text-anchor="middle">ZONA LIVRE DE CIRCULAÇÃO</text>
+<text class="centro sub" x="27.0" y="36.40" text-anchor="middle">o eleitor entra na via pela cauda</text>
+</svg></div>
+    <figcaption>Cada faixa é a via de fila de uma mesa, na cor da sua porta,
+    desenhada na profundidade que a simulação exige. As três faixas em traço
+    cheio e cor mais forte são as que <strong>não cabem</strong> onde a
+    prancheta coloca a mesa. As vias internas tracejadas marcam as
+    serpentinas.</figcaption>
+  </figure>
+  <div class="scroll"><table><thead><tr>
+    <th scope="col">Bloco</th><th scope="col">Seções da via</th>
+    <th scope="col">Compar.</th><th scope="col">Pico da fila</th>
+    <th scope="col">Via necessária</th><th scope="col">Largura · vias</th>
+    <th scope="col">Profundidade</th><th scope="col">Tipo de colagem</th>
+  </tr></thead><tbody><tr><th scope="row" class="t-a">BA2</th><td class="secs"><span class="sec">3313</span><span class="sec">3889</span></td><td class="num">590</td><td class="num">101</td><td class="num">65,7 m</td><td class="num">3,0 m · 3</td><td class="num">21,9 m</td><td>serpentina</td></tr>
+<tr class="alerta"><th scope="row" class="t-b">BB1</th><td class="secs"><span class="sec">3322</span><span class="sec">3752</span></td><td class="num">588</td><td class="num">100</td><td class="num">64,7 m</td><td class="num">3,9 m · 3</td><td class="num">8,0 m</td><td>serpentina ⚠</td></tr>
+<tr class="alerta"><th scope="row" class="t-a">BA4</th><td class="secs"><span class="sec">3315</span><span class="sec">3778</span></td><td class="num">586</td><td class="num">99</td><td class="num">64,0 m</td><td class="num">2,75 m · 2</td><td class="num">22,0 m</td><td>serpentina ⚠</td></tr>
+<tr class="alerta"><th scope="row" class="t-c">BC6</th><td class="secs"><span class="sec">3142</span><span class="sec">1278</span></td><td class="num">492</td><td class="num">41</td><td class="num">26,9 m</td><td class="num">3,9 m · 3</td><td class="num">8,0 m</td><td>via simples ⚠</td></tr>
+<tr><th scope="row" class="t-a">BA4</th><td class="secs"><span class="sec">3161</span><span class="sec">3307</span></td><td class="num">491</td><td class="num">41</td><td class="num">26,6 m</td><td class="num">2,7 m · 2</td><td class="num">13,3 m</td><td>via simples</td></tr>
+<tr><th scope="row" class="t-a">BA2</th><td class="secs"><span class="sec">3245</span><span class="sec">519</span></td><td class="num">486</td><td class="num">39</td><td class="num">25,1 m</td><td class="num">3,3 m · 3</td><td class="num">8,4 m</td><td>via simples</td></tr>
+<tr><th scope="row" class="t-c">BC6</th><td class="secs"><span class="sec">3302</span><span class="sec">3181</span></td><td class="num">481</td><td class="num">36</td><td class="num">23,6 m</td><td class="num">3,0 m · 3</td><td class="num">7,9 m</td><td>via simples</td></tr>
+<tr><th scope="row" class="t-b">BB4</th><td class="secs"><span class="sec">3305</span><span class="sec">521</span></td><td class="num">479</td><td class="num">35</td><td class="num">23,0 m</td><td class="num">2,85 m · 2</td><td class="num">11,5 m</td><td>via simples</td></tr>
+<tr><th scope="row" class="t-a">BA5</th><td class="secs"><span class="sec">3306</span><span class="sec">518</span></td><td class="num">478</td><td class="num">35</td><td class="num">22,8 m</td><td class="num">2,75 m · 2</td><td class="num">11,4 m</td><td>via simples</td></tr>
+<tr><th scope="row" class="t-b">BB4</th><td class="secs"><span class="sec">3108</span><span class="sec">3422</span></td><td class="num">474</td><td class="num">33</td><td class="num">21,5 m</td><td class="num">3,9 m · 3</td><td class="num">7,2 m</td><td>via simples</td></tr>
+<tr><th scope="row" class="t-a">BA1</th><td class="secs"><span class="sec">3311</span><span class="sec">3913</span></td><td class="num">466</td><td class="num">30</td><td class="num">19,4 m</td><td class="num">3,9 m · 3</td><td class="num">6,5 m</td><td>via simples</td></tr>
+<tr><th scope="row" class="t-a">BA5</th><td class="secs"><span class="sec">3179</span><span class="sec">530</span></td><td class="num">434</td><td class="num">15</td><td class="num">9,8 m</td><td class="num">3,9 m · 3</td><td class="num">3,3 m</td><td>via simples</td></tr>
+<tr><th scope="row" class="t-b">BB5</th><td class="secs"><span class="sec">3309</span><span class="sec">1314</span></td><td class="num">403</td><td class="num">5</td><td class="num">6,0 m</td><td class="num">3,9 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-c">BC4</th><td class="secs"><span class="sec">3229</span><span class="sec">3821</span></td><td class="num">399</td><td class="num">4</td><td class="num">6,0 m</td><td class="num">3,0 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-b">BB2</th><td class="secs"><span class="sec">511</span><span class="sec">1100</span></td><td class="num">387</td><td class="num">2</td><td class="num">6,0 m</td><td class="num">3,9 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-b">BB2</th><td class="secs"><span class="sec">3216</span><span class="sec">527</span></td><td class="num">381</td><td class="num">1</td><td class="num">6,0 m</td><td class="num">3,9 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-a">BA1</th><td class="secs"><span class="sec">517</span><span class="sec">1292</span></td><td class="num">352</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,0 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-c">BC4</th><td class="secs"><span class="sec">513</span><span class="sec">1105</span></td><td class="num">347</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,0 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-c">BC2</th><td class="secs"><span class="sec">512</span><span class="sec">2855</span></td><td class="num">334</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,0 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-b">BB5</th><td class="secs"><span class="sec">1160</span><span class="sec">3845</span></td><td class="num">332</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">2,85 m · 2</td><td class="num">3,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-c">BC3</th><td class="secs"><span class="sec">1352</span><span class="sec">522</span></td><td class="num">327</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,0 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-b">BB3</th><td class="secs"><span class="sec">3054</span><span class="sec">1099</span></td><td class="num">323</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,9 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-c">BC5</th><td class="secs"><span class="sec">3078</span><span class="sec">2847</span></td><td class="num">310</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,0 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-a">BA3</th><td class="secs"><span class="sec">3688</span></td><td class="num">296</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">2,7 m · 2</td><td class="num">3,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-b">BB1</th><td class="secs"><span class="sec">3862</span></td><td class="num">296</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,9 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-c">BC3</th><td class="secs"><span class="sec">3832</span></td><td class="num">296</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,0 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-c">BC1</th><td class="secs"><span class="sec">3308</span></td><td class="num">295</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,0 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr>
+<tr><th scope="row" class="t-c">BC1</th><td class="secs"><span class="sec">3442</span></td><td class="num">295</td><td class="num">0</td><td class="num">6,0 m</td><td class="num">3,9 m · 3</td><td class="num">2,0 m</td><td>marca de início</td></tr></tbody></table></div>
+  <p class="col">Premissas da simulação, todas a validar: 60 s por voto,
+  comparecimento de 74% (Dublin) e 50% (interior), perfil de chegada com pico
+  matinal (12-15-16-14-11-9-8-8-7% por hora das 8h às 17h), 0,50 m por pessoa
+  em fila simples, via de 1,00 m de largura e 30% de folga sobre o pico
+  projetado. O perfil horário é a premissa mais frágil — não há série
+  histórica do Posto para calibrá-lo.</p>
+  <div class="budget">
+    <dl>
+      <div><dt>Via de fila projetada, somadas as 28 mesas</dt><dd>489 m</dd></div>
+      <div><dt>Fita de piso (bordas e divisórias)</dt><dd>493 m</dd></div>
+      <div><dt>Decalques de seção (1 na cauda + 1 a cada 5 m)</dt><dd>144 un</dd></div>
+      <div class="sum"><dt>Slots que não cabem onde estão</dt><dd>3 de 28</dd></div>
+    </dl>
+  </div>
+  <p class="note"><b>A 90 s por voto o piso não comporta.</b> A mesma
+  simulação a 90 s dá 2.191 pessoas em fila simultânea contra 592 a 60 s —
+  1.095 m de via, quase metade da área do salão, com as 28 mesas em fila o dia
+  inteiro. Não há plano de colagem que resolva isso; é o mesmo colapso que a
+  simulação de agregação já apontava, agora medido em metros de piso. A
+  colagem deve ser executada para o cenário de 60 s, com o miolo do salão
+  mantido livre como área de transbordo.</p>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">Achados que condicionam o plano</p>
+    <h2>Quatro coisas que não dá para contornar com design</h2>
+  </div>
+  <div class="finds">
+    <div class="find alert"><span class="k">01</span><div class="find-b">
+      <h4>Não existe regra numérica que leve o eleitor à porta certa</h4>
+      <p>As seções 33xx de Dublin estão espalhadas: 3306, 3307, 3311, 3313 e
+      3315 na porta A; 3305, 3309 e 3322 na B; 3302 e 3308 na C. Nenhuma peça
+      pode usar faixa de numeração — “seções 3300–3350 → porta B” é falso.
+      Toda peça de triagem carrega a lista completa.</p></div></div>
+    <div class="find alert"><span class="k">02</span><div class="find-b">
+      <h4>Nem o condado serve de atalho</h4>
+      <p>Cork aparece nas portas A e C, Limerick nas B e C, “outros locais da
+      Irlanda” nas A e C. O eleitor do interior só pode ser triado pelo número
+      da seção — o que torna a tabela de 51 linhas abaixo obrigatória na
+      comunicação prévia, não opcional.</p></div></div>
+    <div class="find"><span class="k">03</span><div class="find-b">
+      <h4>Os dois blocos mais pesados do salão são vizinhos</h4>
+      <p>BA2 (1.578 aptos) e BA4 (1.583) estão na mesma parede, a 6 m um do
+      outro, separados pelo vão mais estreito do salão — 2,70 m, entre 23,00 e
+      25,70 m. A fila de um encosta na do outro. Reforço de separador em
+      ângulo e um orientador fixo ali o dia inteiro.</p></div></div>
+    <div class="find"><span class="k">04</span><div class="find-b">
+      <h4>A porta B é a única cujo destino não se vê da entrada</h4>
+      <p>São ~44 m de travessia pelo miolo do salão até a parede norte. Exige
+      totem alto (N2), não só banner de chão. Com o mapa de entrada cortado, é
+      a porta em que o N3 mais precisa mostrar a ordem física dos blocos — o
+      eleitor decide o rumo antes de ver qualquer mesa.</p></div></div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">Separadores físicos · item (d) do orçamento</p>
+    <h2>A fita muda a conta</h2>
+  </div>
+  <p class="col">Com o vazio central fazendo o papel de corredor-tronco, o
+  separador físico deixa de precisar acompanhar as três paredes. Sobram três
+  usos em que a fita no chão não basta:</p>
+  <ul class="plain">
+    <li><span class="n">01</span><span><b>Canais de aproximação externos</b>
+    das três portas, onde a fila única se parte em três. É fila de rua, com
+    pessoas em pé por muito tempo: precisa de barreira física.</span></li>
+    <li><span class="n">02</span><span><b>A bifurcação dentro do corredor de
+    3,90 m de cada par</b>, onde duas vias se separam a menos de dois metros
+    uma da outra e a fita sozinha não impede corte de fila.</span></li>
+    <li><span class="n">03</span><span><b>O vão de 2,70 m entre BA3 e BA4</b>,
+    o mais estreito do salão, entre os dois blocos mais carregados da parede
+    oeste.</span></li>
+  </ul>
+  <p class="note"><b>Isso inverte o déficit da versão anterior deste plano.</b>
+  A conta anterior — corredor-tronco colado às três paredes — consumia 184,5 m
+  das 100 unidades / 200 m do item (d) e não deixava nada para a fila externa.
+  Substituindo o tronco por fita e vazio central, sobra margem. Quanto
+  exatamente depende de quanto separador a fita substitui na prática: é a
+  pergunta a levar ao fornecedor, agora com folga em vez de déficit.</p>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">Tabela mestra · 51 seções</p>
+    <h2>Seção → porta</h2>
+  </div>
+  <p class="col">A peça mais reaproveitável do plano: alimenta a sinalização
+  externa, o Instagram e o site, o roteiro dos orientadores e o cartão de
+  bolso dos mesários. Ordem crescente de seção, porque é assim que o eleitor
+  procura.</p>
+  <ul class="lookup"><li><span class="sec">511</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">512</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">513</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">517</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">518</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">519</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">521</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">522</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">527</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">530</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">1099</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">1100</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">1105</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">1160</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">1278</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">1292</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">1314</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">1352</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">2847</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">2855</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3054</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3078</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3108</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3142</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3161</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3179</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3181</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3216</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3229</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3245</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3302</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3305</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3306</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3307</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3308</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3309</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3311</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3313</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3315</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3322</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3422</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3442</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3688</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3752</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3778</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3821</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3832</span><span class="porta-pin t-c">C</span><span class="pd">leste</span></li><li><span class="sec">3845</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3862</span><span class="porta-pin t-b">B</span><span class="pd">norte</span></li><li><span class="sec">3889</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li><li><span class="sec">3913</span><span class="porta-pin t-a">A</span><span class="pd">oeste</span></li></ul>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">O que a sinalização interna impõe à externa</p>
+    <h2>Condições, não sugestões</h2>
+  </div>
+  <ul class="plain">
+    <li><span class="n">01</span><span><b>A triagem acontece fora.</b> Se o
+    eleitor só descobre a porta depois de entrar, os banners N3 viram pontos de
+    aglomeração e o fluxo reverte contra a entrada.</span></li>
+    <li><span class="n">02</span><span><b>A peça externa carrega as 51
+    seções</b>, não as 17 de uma porta — pelo achado 01, é lista completa ou
+    nada. Três painéis por porta mais um painel-índice com as 51.</span></li>
+    <li><span class="n">03</span><span><b>Mesma paleta, mesma tipografia,
+    mesmos quatro dígitos.</b> A cor com que o eleitor decidiu lá fora é a cor
+    que ele procura lá dentro; divergência anula o ganho da triagem.</span></li>
+    <li><span class="n">04</span><span><b>Canal de prioridade</b> (idosos,
+    gestantes, PcD) desembocando nas três portas, não numa só — senão concentra
+    toda a demanda prioritária numa parede.</span></li>
+    <li><span class="n">05</span><span><b>Placa de chegada na Merrion
+    Road</b> nomeando o Hall 2 (Shelbourne Hall). O RDS tem seis halls; quem
+    erra de hall perde 5–10 min e volta pelo fim da fila.</span></li>
+  </ul>
+</section>
+
+<section class="band">
+  <div class="hd">
+    <p class="eyebrow">Antes de fechar a arte</p>
+    <h2>Sete pendências</h2>
+  </div>
+  <ul class="plain">
+    <li><span class="n">01</span><span><b>Confirmar que a numeração 1–28 da
+    prancheta corresponde à ordem de volume de <code>dados.json</code>.</b>
+    É a única premissa que muda o conteúdo dos 19 banners numéricos.</span></li>
+    <li><span class="n">02</span><span>Confirmar a posição real das portas na
+    parede sul do Hall 2.</span></li>
+    <li><span class="n">03</span><span>Decidir entre mover blocos na prancheta
+    ou compensar com pessoal os 30% de desbalanceamento da porta A.</span></li>
+    <li><span class="n">04</span><span>Fechar a contratação adicional de
+    separadores para a fila externa.</span></li>
+    <li><span class="n">05</span><span>Validar com o Cartório Eleitoral a
+    realocação de mesários entre paredes a partir das 15h30 — a porta A vai
+    terminar depois das outras duas.</span></li>
+    <li><span class="n">06</span><span>Conferir se os EUR 1.961,00 do item (c)
+    cobrem as 25 peças mais bases alugadas: com o corte do mapa e a redução
+    do N1 a três painéis, dá ~EUR 78 por peça, folgado onde antes era
+    apertado.</span></li>
+    <li><span class="n">07</span><span>Medir o contraste do âmbar da porta C
+    sobre branco antes de imprimir.</span></li>
+  </ul>
+</section>
+
+<footer>
+  <p>Gerado por <code>scripts/plano_sinalizacao.py</code> e
+  <code>scripts/gera_pagina_sinalizacao.py</code>, a partir da prancheta
+  Hamad_Final e de <code>saidas/dados.json</code>.</p>
+  <p>Validação automática: as 51 seções aparecem exatamente uma vez, os aptos
+  somam 16.794 e as 28 mesas fecham — o script falha em vez de gravar um
+  plano que não bata com a base do TSE.</p>
+</footer>
+
+</div>

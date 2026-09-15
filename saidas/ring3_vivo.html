@@ -1,0 +1,760 @@
+<meta charset="utf-8">
+<title>Ring 3 ao vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --papel:#f1efe7; --folha:#fffdf7; --prancha:#fbfaf7; --piso:#eef1f4; --tinta:#16202b;
+  --meio:#57616c; --fraco:#8b9099; --regua:#dbd5c7; --regua2:#eae5d9; --traco:#1c2733;
+  --a:#1f6fb2; --alerta:#b23b2e; --aviso:#b26a12; --ok:#1a7f6b; --realce:rgba(31,111,178,.10);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --papel:#101418; --folha:#181d23; --prancha:#1d232b; --piso:#232a33; --tinta:#e6eaee;
+  --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931; --traco:#c9d1da;
+  --a:#63a6e0; --alerta:#e0796a; --aviso:#dda257; --ok:#4fc0a8; --realce:rgba(99,166,224,.14);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --papel:#101418; --folha:#181d23; --prancha:#1d232b; --piso:#232a33; --tinta:#e6eaee;
+  --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931; --traco:#c9d1da;
+  --a:#63a6e0; --alerta:#e0796a; --aviso:#dda257; --ok:#4fc0a8; --realce:rgba(99,166,224,.14);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:15.5px; line-height:1.58; -webkit-font-smoothing:antialiased}
+.folha{max-width:1120px; margin:0 auto; padding:0 22px 72px}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif; margin:0; font-weight:700; letter-spacing:-.01em; text-wrap:balance}
+h1{font-size:clamp(1.8rem,4vw,2.6rem); line-height:1.08}
+h2{font-size:1.35rem; line-height:1.25}
+p{margin:0 0 1em; max-width:70ch}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums}
+a{color:var(--a)}
+header{padding:44px 0 0}
+.olho{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--meio); margin:0 0 14px}
+.chamada{color:var(--meio); font-size:1.02rem; max-width:64ch; margin:14px 0 0}
+.faixa{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px; background:var(--regua); border:1px solid var(--regua); margin:26px 0 0}
+.faixa div{background:var(--papel); padding:12px 14px}
+.faixa dt{font-size:.68rem; letter-spacing:.09em; text-transform:uppercase; color:var(--meio); margin:0 0 4px}
+.faixa dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.3rem; font-weight:500; line-height:1.15}
+.faixa dd small{display:block; font-family:"IBM Plex Sans",sans-serif; font-size:.72rem; font-weight:400; color:var(--fraco); margin-top:3px}
+.estado{margin:22px 0 0; border:1px solid var(--regua); border-left:3px solid var(--a); background:var(--folha); padding:14px 18px; display:flex; flex-wrap:wrap; gap:10px 22px; align-items:center; font-size:.9rem}
+.estado.difere{border-left-color:var(--aviso)}
+.estado .rot{font-family:"IBM Plex Mono",monospace; font-size:.68rem; letter-spacing:.13em; text-transform:uppercase; color:var(--meio)}
+.chip{display:inline-block; font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.8rem; padding:1px 8px; border:1px solid currentColor; border-radius:2px; margin-right:4px}
+.estado select{font:inherit; font-size:.86rem; padding:4px 8px; background:var(--papel); color:var(--tinta); border:1px solid var(--regua)}
+.aviso{color:var(--aviso); font-size:.86rem}
+.erro{color:var(--alerta); font-size:.86rem; font-weight:600}
+section{margin:44px 0 0}
+.rotulo{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--meio); margin:0 0 8px; padding-bottom:8px; border-bottom:1px solid var(--regua)}
+section>h2{margin-bottom:12px}
+.prancha{background:var(--prancha); border:1px solid var(--regua); padding:6px; overflow-x:auto; margin-top:16px}
+.prancha svg{min-width:520px}
+.rolagem{overflow-x:auto; border:1px solid var(--regua); background:var(--folha); margin:16px 0 0}
+table{border-collapse:collapse; width:100%; font-size:.85rem}
+th,td{text-align:left; padding:8px 11px; border-bottom:1px solid var(--regua2); white-space:nowrap}
+thead th{font-size:.67rem; letter-spacing:.08em; text-transform:uppercase; color:var(--meio); font-weight:500; background:var(--folha)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right}
+tr.total td{border-top:1.5px solid var(--regua); font-weight:600}
+tr.marcada td{background:var(--realce); font-weight:600}
+td.mesas{white-space:normal; font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--meio)}
+.sw{display:inline-block; width:.7rem; height:.7rem; border-radius:2px; margin-right:6px; vertical-align:-1px}
+.nota{border-left:2px solid var(--aviso); padding:2px 0 2px 16px; margin:20px 0 0; color:var(--meio); font-size:.9rem; max-width:70ch}
+.nota strong{color:var(--tinta)}
+footer{margin:56px 0 0; padding-top:18px; border-top:1px solid var(--regua); font-size:.8rem; color:var(--fraco)}
+@media (max-width:640px){ .folha{padding:0 16px 56px} header{padding-top:32px} }
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições 2026 · 1º turno · 4 de outubro · RDS Ballsbridge · fila externa</p>
+  <h1>Ring 3 ao vivo</h1>
+  <p class="chamada">A fila externa redesenhada para as portas em vigor: uma zona de serpenteado por entrada, as mesas repartidas entre as entradas na proporção da capacidade de cada zona, e a barreira contada peça a peça. As portas mudam no Simulador; o desenho da fila escolhe-se aqui ou lá.</p>
+  <dl class="faixa" id="faixa"></dl>
+  <div class="estado" id="estado"></div>
+</header>
+
+<section>
+  <p class="rotulo">A planta</p>
+  <h2 id="tituloPlanta">Em escala, sobre o Ring 3 de 44 × 35 m</h2>
+  <div class="prancha" id="prancha"></div>
+  <p class="nota" id="notaDesenho"></p>
+</section>
+
+<section>
+  <p class="rotulo">Por entrada</p>
+  <h2>Zona, capacidade e mesas de cada entrada</h2>
+  <div class="rolagem"><table id="tabZonas"></table></div>
+</section>
+
+<section>
+  <p class="rotulo">Barreira</p>
+  <h2>Metros e separadores, componente a componente</h2>
+  <div class="rolagem"><table id="tabBarreira"></table></div>
+</section>
+
+<section>
+  <p class="rotulo">Decisão pendente</p>
+  <h2>Os cinco desenhos, para estas portas</h2>
+  <p>O Posto ainda não escolheu entre manter o plano com garganta e pré-triagem (1.402 pessoas com três entradas) e os desenhos sem garganta, que devolvem 8,25 m a cada raia. A tabela refaz os cinco para as portas em vigor; a linha marcada é o desenho selecionado acima.</p>
+  <div class="rolagem"><table id="tabDesenhos"></table></div>
+</section>
+
+<footer>
+  <p>Modelo de fila de <span class="mono">scripts/ring3.py</span> (raia de 1,40 m, 2,0 pessoas/m², baia a 1,8 pessoas/m², separador de 2 m a EUR 13,02, 200 em estoque), portado para o navegador em <span class="mono">simulador/portas.js</span>; regra de atribuição das mesas de <span class="mono">scripts/decisoes.py</span>. Ring 3 nas dimensões oficiais de 44 × 35 m, centrado em S5 por estimativa. O plano vigente é reconstruído a partir do diagrama publicado (blocos de 4,2 / 12,6 / 4,2 m, raias de 23,75 m), o que dá 314 separadores contra os 300 do plano original.</p>
+</footer>
+</div>
+
+<script>
+const BASE = {"portas":[{"id":"N1","rds":"2.13","face":"norte","estado":"fechada","x1":7.41,"y1":44.4,"x2":9.44,"y2":44.4,"larg":2.03},{"id":"N2","rds":"2.14/2.15","face":"norte","estado":"catering","x1":20.66,"y1":44.4,"x2":24.22,"y2":44.4,"larg":3.56},{"id":"L1","rds":"2.16/2.17","face":"leste","estado":"emergencia","x1":50.3,"y1":38.51,"x2":50.3,"y2":41.57,"larg":3.06},{"id":"L2","rds":"2.18/2.19","face":"leste","estado":"emergencia","x1":50.3,"y1":26.66,"x2":50.3,"y2":29.72,"larg":3.06},{"id":"L3","rds":"2.20/2.21","face":"leste","estado":"emergencia","x1":50.3,"y1":14.8,"x2":50.3,"y2":17.87,"larg":3.07},{"id":"L4","rds":"2.22/2.23","face":"leste","estado":"emergencia","x1":50.3,"y1":2.95,"x2":50.3,"y2":6.01,"larg":3.06},{"id":"S1","rds":"carga oeste","face":"sul","estado":"livre","x1":7.83,"y1":0.0,"x2":11.45,"y2":0.0,"larg":3.62},{"id":"S2","rds":"sem codigo RDS","face":"sul","estado":"saida","x1":13.25,"y1":0.0,"x2":14.45,"y2":0.0,"larg":1.2},{"id":"S3","rds":"2.7","face":"sul","estado":"livre","x1":17.22,"y1":0.0,"x2":18.47,"y2":0.0,"larg":1.25},{"id":"S4","rds":"2.5/2.6","face":"sul","estado":"entrada","x1":19.1,"y1":0.0,"x2":25.03,"y2":0.0,"larg":5.93},{"id":"S5","rds":"2.4","face":"sul","estado":"entrada","x1":25.32,"y1":0.0,"x2":31.25,"y2":0.0,"larg":5.93},{"id":"S6","rds":"2.2/2.3","face":"sul","estado":"entrada","x1":31.54,"y1":0.0,"x2":37.47,"y2":0.0,"larg":5.93},{"id":"S7","rds":"2.1","face":"sul","estado":"livre","x1":38.09,"y1":0.0,"x2":39.36,"y2":0.0,"larg":1.27},{"id":"S8","rds":"sem codigo RDS","face":"sul","estado":"saida","x1":42.12,"y1":0.0,"x2":43.32,"y2":0.0,"larg":1.2},{"id":"S9","rds":"carga leste","face":"sul","estado":"livre","x1":45.12,"y1":0.0,"x2":48.75,"y2":0.0,"larg":3.63},{"id":"O1","rds":"acesso Hall 1","face":"oeste","estado":"livre","x1":0.0,"y1":36.8,"x2":0.0,"y2":38.5,"larg":1.7},{"id":"O2","rds":"2.10/2.11","face":"oeste","estado":"livre","x1":0.0,"y1":19.36,"x2":0.0,"y2":22.43,"larg":3.07},{"id":"R1","rds":"2.8/2.9","face":"recorte_v","estado":"livre","x1":7.8,"y1":3.0,"x2":7.8,"y2":6.5,"larg":3.5}],"salao":{"largura":50.3,"altura":44.4,"recorte":[0.0,0.0,7.8,7.0],"contorno":[[7.8,0.0],[50.3,0.0],[50.3,44.4],[0.0,44.4],[0.0,7.0],[7.8,7.0]]}};
+const DECISOES = {"decididoEm":"2026-09-06","numeracao":"MRV do DJE/TRE-DF, identidade unica da mesa; nao depende da posicao","comparecimento":{"base":"B","rotulo":"taxa de 2022 por domicílio de origem (base B, não oficial)","total":11499,"total_exato":11497.7,"aptos":16794,"taxas":{"DUBLIN":{"taxa":0.74,"qualidade":"direto"},"CORK":{"taxa":0.533,"qualidade":"direto"},"OUTROS LOCAIS DA IRLANDA":{"taxa":0.6,"qualidade":"direto"},"GALWAY":{"taxa":0.481,"qualidade":"direto"},"LIMERICK":{"taxa":0.434,"qualidade":"proxy"},"WESTMEATH":{"taxa":0.461,"qualidade":"proxy"},"WATERFORD":{"taxa":0.461,"qualidade":"proxy"},"ROSCOMMON":{"taxa":0.434,"qualidade":"proxy"},"CLARE":{"taxa":0.649,"qualidade":"direto"},"CAVAN":{"taxa":0.461,"qualidade":"proxy"},"MAYO":{"taxa":0.544,"qualidade":"proxy"},"LONGFORD":{"taxa":0.778,"qualidade":"direto"},"DONEGAL":{"taxa":0.51,"qualidade":"genérico (0,49 abst.)"},"KERRY":{"taxa":0.544,"qualidade":"proxy"},"LEITRIM":{"taxa":0.51,"qualidade":"genérico (0,49 abst.)"}}},"classes":{"regra":"as 3 maiores = alta; esperado >= 450 = media; abaixo = baixa","n_alta":3,"limiar_media":450,"cores":{"alta":{"cor":"vermelho","hex":"#c0392b","rotulo":"alto comparecimento"},"media":{"cor":"amarelo","hex":"#d4a017","rotulo":"médio comparecimento"},"baixa":{"cor":"verde","hex":"#1e8449","rotulo":"baixo comparecimento"}},"contagem":{"alta":3,"media":8,"baixa":17}},"portas":{"S4":{"papel":"entrada","entrada":"A","cor":"#2a78d6"},"S5":{"papel":"entrada","entrada":"B","cor":"#e08a00"},"S6":{"papel":"entrada","entrada":"C","cor":"#c2185b"},"S2":{"papel":"saida"},"S8":{"papel":"saida"}},"entradas":[{"id":"A","porta":"S4","cor":"azul","hex":"#2a78d6","balizas":3,"serpenteado":171,"baia":274,"capacidade":445,"quota":0.3171,"mrvs":[3,5,9,12,15,20,24,26,28],"esperado":3642,"alvo":3646},{"id":"B","porta":"S5","cor":"âmbar","hex":"#e08a00","balizas":9,"serpenteado":513,"baia":0,"capacidade":513,"quota":0.3659,"mrvs":[1,4,7,8,16,17,18,21,22,25],"esperado":4215,"alvo":4207},{"id":"C","porta":"S6","cor":"magenta","hex":"#c2185b","balizas":3,"serpenteado":171,"baia":274,"capacidade":445,"quota":0.3171,"mrvs":[2,6,10,11,13,14,19,23,27],"esperado":3642,"alvo":3646}],"saidas":["S2","S8"],"nomenclatura_portas":"em aberto: cor ou letra","mesas":[{"mrv":1,"principal":511,"agregada":1100,"origem_agregada":"ROSCOMMON","aptos":582,"aptos_principal":400,"aptos_agregada":182,"aptos_dublin":400,"aptos_interior":182,"esperado":375,"esperado_exato":374.99,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":2,"principal":512,"agregada":2855,"origem_agregada":"LONGFORD","aptos":476,"aptos_principal":400,"aptos_agregada":76,"aptos_dublin":400,"aptos_interior":76,"esperado":355,"esperado_exato":355.13,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":3,"principal":513,"agregada":1105,"origem_agregada":"MAYO","aptos":502,"aptos_principal":400,"aptos_agregada":102,"aptos_dublin":400,"aptos_interior":102,"esperado":351,"esperado_exato":351.49,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":4,"principal":517,"agregada":1292,"origem_agregada":"CAVAN","aptos":513,"aptos_principal":400,"aptos_agregada":113,"aptos_dublin":400,"aptos_interior":113,"esperado":348,"esperado_exato":348.09,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":5,"principal":1160,"agregada":3845,"origem_agregada":"LIMERICK","aptos":473,"aptos_principal":400,"aptos_agregada":73,"aptos_dublin":400,"aptos_interior":73,"esperado":328,"esperado_exato":327.68,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":6,"principal":1352,"agregada":522,"origem_agregada":"DONEGAL","aptos":462,"aptos_principal":400,"aptos_agregada":62,"aptos_dublin":400,"aptos_interior":62,"esperado":328,"esperado_exato":327.62,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":7,"principal":3054,"agregada":1099,"origem_agregada":"KERRY","aptos":454,"aptos_principal":400,"aptos_agregada":54,"aptos_dublin":400,"aptos_interior":54,"esperado":325,"esperado_exato":325.38,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":8,"principal":3078,"agregada":2847,"origem_agregada":"LEITRIM","aptos":429,"aptos_principal":400,"aptos_agregada":29,"aptos_dublin":400,"aptos_interior":29,"esperado":311,"esperado_exato":310.79,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":9,"principal":3108,"agregada":3422,"origem_agregada":"GALWAY","aptos":756,"aptos_principal":398,"aptos_agregada":358,"aptos_dublin":398,"aptos_interior":358,"esperado":467,"esperado_exato":466.72,"classe":"media","cor":"#d4a017","entrada":"A","porta":"S4"},{"mrv":10,"principal":3142,"agregada":1278,"origem_agregada":"LIMERICK","aptos":793,"aptos_principal":398,"aptos_agregada":395,"aptos_dublin":398,"aptos_interior":395,"esperado":466,"esperado_exato":465.95,"classe":"media","cor":"#d4a017","entrada":"C","porta":"S6"},{"mrv":11,"principal":3161,"agregada":3307,"origem_agregada":"CORK","aptos":791,"aptos_principal":397,"aptos_agregada":394,"aptos_dublin":397,"aptos_interior":394,"esperado":504,"esperado_exato":503.78,"classe":"media","cor":"#d4a017","entrada":"C","porta":"S6"},{"mrv":12,"principal":3179,"agregada":530,"origem_agregada":"WESTMEATH","aptos":676,"aptos_principal":398,"aptos_agregada":278,"aptos_dublin":398,"aptos_interior":278,"esperado":423,"esperado_exato":422.68,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":13,"principal":3216,"agregada":527,"origem_agregada":"CLARE","aptos":571,"aptos_principal":398,"aptos_agregada":173,"aptos_dublin":398,"aptos_interior":173,"esperado":407,"esperado_exato":406.8,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":14,"principal":3229,"agregada":3821,"origem_agregada":"CORK","aptos":606,"aptos_principal":398,"aptos_agregada":208,"aptos_dublin":398,"aptos_interior":208,"esperado":405,"esperado_exato":405.38,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":15,"principal":3245,"agregada":519,"origem_agregada":"CORK","aptos":781,"aptos_principal":397,"aptos_agregada":384,"aptos_dublin":397,"aptos_interior":384,"esperado":498,"esperado_exato":498.45,"classe":"media","cor":"#d4a017","entrada":"A","porta":"S4"},{"mrv":16,"principal":3302,"agregada":3181,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos":771,"aptos_principal":396,"aptos_agregada":375,"aptos_dublin":396,"aptos_interior":375,"esperado":518,"esperado_exato":518.04,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":17,"principal":3305,"agregada":521,"origem_agregada":"GALWAY","aptos":767,"aptos_principal":397,"aptos_agregada":370,"aptos_dublin":397,"aptos_interior":370,"esperado":472,"esperado_exato":471.75,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":18,"principal":3306,"agregada":518,"origem_agregada":"OUTROS LOCAIS DA IRLANDA","aptos":766,"aptos_principal":396,"aptos_agregada":370,"aptos_dublin":396,"aptos_interior":370,"esperado":515,"esperado_exato":515.04,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":19,"principal":3308,"agregada":null,"origem_agregada":null,"aptos":399,"aptos_principal":399,"aptos_agregada":0,"aptos_dublin":399,"aptos_interior":0,"esperado":295,"esperado_exato":295.26,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":20,"principal":3309,"agregada":1314,"origem_agregada":"WATERFORD","aptos":615,"aptos_principal":398,"aptos_agregada":217,"aptos_dublin":398,"aptos_interior":217,"esperado":395,"esperado_exato":394.56,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":21,"principal":3311,"agregada":3913,"origem_agregada":"DUBLIN","aptos":630,"aptos_principal":397,"aptos_agregada":233,"aptos_dublin":630,"aptos_interior":0,"esperado":466,"esperado_exato":466.2,"classe":"media","cor":"#d4a017","entrada":"B","porta":"S5"},{"mrv":22,"principal":3313,"agregada":3889,"origem_agregada":"DUBLIN","aptos":797,"aptos_principal":397,"aptos_agregada":400,"aptos_dublin":797,"aptos_interior":0,"esperado":590,"esperado_exato":589.78,"classe":"alta","cor":"#c0392b","entrada":"B","porta":"S5"},{"mrv":23,"principal":3315,"agregada":3778,"origem_agregada":"DUBLIN","aptos":792,"aptos_principal":395,"aptos_agregada":397,"aptos_dublin":792,"aptos_interior":0,"esperado":586,"esperado_exato":586.08,"classe":"alta","cor":"#c0392b","entrada":"C","porta":"S6"},{"mrv":24,"principal":3322,"agregada":3752,"origem_agregada":"DUBLIN","aptos":794,"aptos_principal":398,"aptos_agregada":396,"aptos_dublin":794,"aptos_interior":0,"esperado":588,"esperado_exato":587.56,"classe":"alta","cor":"#c0392b","entrada":"A","porta":"S4"},{"mrv":25,"principal":3442,"agregada":null,"origem_agregada":null,"aptos":398,"aptos_principal":398,"aptos_agregada":0,"aptos_dublin":398,"aptos_interior":0,"esperado":295,"esperado_exato":294.52,"classe":"baixa","cor":"#1e8449","entrada":"B","porta":"S5"},{"mrv":26,"principal":3688,"agregada":null,"origem_agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"aptos_dublin":400,"aptos_interior":0,"esperado":296,"esperado_exato":296.0,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"},{"mrv":27,"principal":3832,"agregada":null,"origem_agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"aptos_dublin":400,"aptos_interior":0,"esperado":296,"esperado_exato":296.0,"classe":"baixa","cor":"#1e8449","entrada":"C","porta":"S6"},{"mrv":28,"principal":3862,"agregada":null,"origem_agregada":null,"aptos":400,"aptos_principal":400,"aptos_agregada":0,"aptos_dublin":400,"aptos_interior":0,"esperado":296,"esperado_exato":296.0,"classe":"baixa","cor":"#1e8449","entrada":"A","porta":"S4"}],"ring3":{"largura":39.0,"profundidade":35.0,"apron":14.0,"rect":[8.79,-49.0,47.78,-14.0],"eixo":"centrado em S5 (estimativa; aferir o bordo oeste em campo)","serpenteado":28.5,"balizas":[3,9,3],"capacidade":1402,"separadores":300,"metros":596.3,"em_maos":200,"a_adquirir":100,"custo_eur":1302,"evacuacao_min":11.4,"largura_saida_exigida":2.14}};
+</script>
+<script>
+/* Portas vivas do posto de Dublin: o estado das portas da fachada sul e tudo o
+ * que deriva dele, calculado no navegador (e em Node, para os testes).
+ *
+ * Fonte unica da decisao continua sendo scripts/decisoes.py (06/09/2026:
+ * entradas S4 A, S5 B, S6 C; saidas S2 e S8). Este modulo serve ao que a
+ * decisao nao cobre: quando alguem, no Simulador, muda o papel de uma porta,
+ * a Prancheta, o desenho do Ring 3 e o dashboard precisam seguir a mudanca --
+ * com N entradas, N serpenteados, N letras, e cada mesa numa entrada.
+ *
+ * Tres blocos:
+ *   1. estado das portas: validacao, letras e cores das entradas;
+ *   2. Ring 3 parametrico: porte de scripts/ring3.py (Zona/Desenho) para N
+ *      zonas, mais a reconstrucao do plano vigente (3 · 9 · 3 com baias);
+ *   3. atribuicao mesa -> entrada: porte de decisoes.atribui_entradas.
+ * E a sincronizacao entre paginas da mesma origem (localStorage +
+ * BroadcastChannel) com fallback pelo hash da URL.
+ *
+ * Roda no navegador (global `Portas`) e em Node (module.exports). Nao depende
+ * de DOM, exceto `svgRing3`, que devolve texto SVG.
+ */
+(function (raiz) {
+"use strict";
+
+/* ------------------------------------------------------------------ */
+/* 1. Estado das portas                                                */
+/* ------------------------------------------------------------------ */
+const SUL = ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"];
+const PAPEIS = ["fechada", "entrada", "saida"];
+/* Cores das raias: azul, ambar e magenta sao as do plano de sinalizacao
+ * (distinguiveis em deuteranopia e protanopia); as duas extras servem a uma
+ * quarta e uma quinta entrada. */
+const PALETA = [
+  {cor: "azul", hex: "#2a78d6"}, {cor: "âmbar", hex: "#e08a00"},
+  {cor: "magenta", hex: "#c2185b"}, {cor: "verde-água", hex: "#1baf7a"},
+  {cor: "roxo", hex: "#7d3c98"}, {cor: "castanho", hex: "#8a5a2b"},
+  {cor: "cinza", hex: "#5c6c80"}, {cor: "oliva", hex: "#7a8a1a"},
+  {cor: "preto", hex: "#17202b"},
+];
+
+const DECISAO = {S2: "saida", S4: "entrada", S5: "entrada", S6: "entrada", S8: "saida"};
+
+function estadoDaDecisao(dec){
+  const e = {};
+  for (const id of SUL) e[id] = "fechada";
+  const portas = (dec && dec.portas) ? dec.portas : null;
+  if (portas) for (const id of Object.keys(portas)) if (SUL.includes(id)) e[id] = portas[id].papel;
+  else Object.assign(e, DECISAO);
+  return e;
+}
+
+/* Le qualquer coisa parecida com um estado (objeto por porta, ou o `portas`
+ * do cenario do simulador) e devolve os nove papeis, um por porta. */
+function normalizaEstado(obj){
+  const e = {};
+  for (const id of SUL) {
+    const v = obj && obj[id];
+    e[id] = PAPEIS.includes(v) ? v : "fechada";
+  }
+  return e;
+}
+
+function igual(a, b){
+  a = normalizaEstado(a); b = normalizaEstado(b);
+  return SUL.every(id => a[id] === b[id]);
+}
+
+/* Centro em x de cada porta da fachada sul. `portas` e a lista de BASE.portas
+ * (prancheta / simulador), com x1 e x2 em metros do canto sudoeste. */
+function centros(portas){
+  const c = {};
+  for (const p of (portas || [])) if (p.face === "sul" && SUL.includes(p.id)) c[p.id] = (p.x1 + p.x2) / 2;
+  return c;
+}
+
+/* As entradas em ordem de x (oeste -> leste), com letra e cor. */
+function entradas(estado, portas){
+  const e = normalizaEstado(estado), cx = centros(portas);
+  const ids = SUL.filter(id => e[id] === "entrada")
+    .sort((a, b) => (cx[a] ?? SUL.indexOf(a)) - (cx[b] ?? SUL.indexOf(b)));
+  return ids.map((id, i) => ({
+    id: String.fromCharCode(65 + i), porta: id, x: cx[id],
+    cor: PALETA[i % PALETA.length].cor, hex: PALETA[i % PALETA.length].hex,
+  }));
+}
+function saidas(estado){ return SUL.filter(id => normalizaEstado(estado)[id] === "saida"); }
+
+function valida(estado, portas){
+  const e = normalizaEstado(estado), erros = [], avisos = [];
+  const ent = SUL.filter(id => e[id] === "entrada"), sai = SUL.filter(id => e[id] === "saida");
+  if (!ent.length) erros.push("Nenhuma porta de entrada: marque ao menos uma.");
+  if (!sai.length) erros.push("Nenhuma porta de saída: marque ao menos uma.");
+  if (ent.length > PALETA.length) erros.push(`No máximo ${PALETA.length} entradas.`);
+  for (const id of Object.keys(estado || {})) {
+    if (!SUL.includes(id) && estado[id] && estado[id] !== "fechada")
+      erros.push(`${id} não é porta da fachada sul; só S1 a S9 servem ao eleitor.`);
+  }
+  // saida entre duas entradas: quem sai cruza a fila de quem entra
+  const cx = centros(portas);
+  const ex = ent.map(id => cx[id] ?? SUL.indexOf(id));
+  if (ex.length >= 2) {
+    const lo = Math.min(...ex), hi = Math.max(...ex);
+    for (const id of sai) {
+      const x = cx[id] ?? SUL.indexOf(id);
+      if (x > lo && x < hi) avisos.push(`A saída ${id} fica entre duas entradas: quem sai cruza a fila de quem entra.`);
+    }
+  }
+  for (const id of ["S1", "S9"]) if (e[id] !== "fechada")
+    avisos.push(`${id} é porta de carga: depende de ficar aberta e travada as nove horas e de a soleira servir a pedestre.`);
+  return {ok: !erros.length, erros, avisos};
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Ring 3 parametrico (porte de scripts/ring3.py)                   */
+/* ------------------------------------------------------------------ */
+const R3 = {
+  LARG_RING: 44.0, PROF_RING: 35.0, EIXO_S5: 28.285, APRON: 14.0,
+  Y0: -49.0,
+  PASSO_RAIA: 1.40, TOL_PASSO: 0.05, RAIA_UTIL: 1.20, DENS_FILA: 2.00,
+  DENS_BAIA: 1.80, VAO_RETORNO: 1.20, VAO_SAIDA: 1.40,
+  SEPARADOR_M: 2.00, SEPARADOR_EUR: 13.02, ESTOQUE: 200,
+  LARG_BAIA: 6.40, LARG_CORREDOR: 3.00, VAO_ENTRE_ZONAS: 2.60, VAO_MIN: 2.00,
+  // reconstrucao do plano vigente (aferição)
+  BLOCOS_ORIG: {A: [15.16, 19.36], B: [22.09, 34.69], C: [37.19, 41.39]},
+  PROF_PLANO_ORIGINAL: 23.75, CORREDOR_ORIGINAL: 36.70, FUNIL_GARGANTA: 12.0,
+};
+const POR_METRO_RAIA = R3.RAIA_UTIL * R3.DENS_FILA;
+
+function ring(largura){
+  const L = largura || R3.LARG_RING;
+  return {x0: R3.EIXO_S5 - L / 2, x1: R3.EIXO_S5 + L / 2, y0: R3.Y0, y1: R3.Y0 + R3.PROF_RING};
+}
+const PROF_SERP = R3.PROF_RING - R3.LARG_CORREDOR;   // 32,0 m sem faixa de garganta
+
+function raiasQueCabem(dim){
+  let n = Math.round(dim / R3.PASSO_RAIA);
+  while (n > 0 && dim / n < R3.PASSO_RAIA - R3.TOL_PASSO) n--;
+  return Math.max(n, 0);
+}
+const unidades = m => Math.ceil(m / R3.SEPARADOR_M - 1e-9);
+
+/* Uma zona: o retangulo de serpenteado de uma entrada. `eixo` e o x da porta. */
+function zona(nome, x0, x1, prof, orientacao, eixo, oesteGradil, lesteGradil){
+  const larg = x1 - x0, vertical = orientacao === "vertical";
+  const raias = raiasQueCabem(vertical ? larg : prof);
+  const comp = vertical ? prof : larg;
+  const passo = raias ? (vertical ? larg : prof) / raias : 0;
+  let portao, toco;
+  if (vertical) { portao = Math.abs(eixo - x0) <= Math.abs(eixo - x1) ? x0 : x1; toco = 0; }
+  else { portao = Math.min(Math.max(eixo, x0), x1); toco = Math.min(portao - x0, x1 - portao); }
+  const diagonal = Math.hypot(R3.APRON, eixo - portao);
+  const capacidade = (raias * comp - toco) * POR_METRO_RAIA;
+  let perimetro = larg - R3.VAO_SAIDA;
+  if (!oesteGradil) perimetro += prof;
+  if (!lesteGradil) perimetro += prof;
+  const divisorias = raias <= 1 ? 0 : (raias - 1) * Math.max(0, comp - R3.VAO_RETORNO);
+  return {nome, x0, x1, larg, prof, orientacao, raias, passo, comp, portao, toco, diagonal,
+          eixo, capacidade, perimetro, divisorias, barreira: perimetro + divisorias,
+          meiasVoltas: Math.max(0, raias - 1)};
+}
+
+function larguraEquivalenteDaBaia(){ return R3.LARG_BAIA * R3.DENS_BAIA / (POR_METRO_RAIA / R3.PASSO_RAIA); }
+
+/* Reparte a largura entre N zonas na proporcao do esperado de cada uma.
+ * `esperado` e uma lista alinhada com as entradas (oeste -> leste). Onde ha
+ * baia de flanco, a primeira e a ultima zona ja ganham lotacao da baia e
+ * recebem menos largura, exatamente o equivalente. `snap` arredonda para um
+ * numero inteiro de raias (orientacao vertical). */
+function reparteLargura(disponivel, esperado, snap, comBaias){
+  const n = esperado.length, total = esperado.reduce((s, v) => s + v, 0) || n;
+  const baia = comBaias ? larguraEquivalenteDaBaia() : 0;
+  const flancos = i => (n === 1 ? 2 : ((i === 0 || i === n - 1) ? 1 : 0));
+  const equivalente = disponivel + 2 * baia;
+  const alvo = esperado.map((v, i) => equivalente * (total ? v / total : 1 / n) - baia * flancos(i));
+  if (!snap) return alvo;
+  const totalRaias = Math.floor(disponivel / R3.PASSO_RAIA + 0.02);
+  const exato = alvo.map(v => Math.max(0, v) / R3.PASSO_RAIA);
+  const nr = exato.map(v => Math.floor(v));
+  const sobra = totalRaias - nr.reduce((s, v) => s + v, 0);
+  const ordem = exato.map((v, i) => i).sort((a, b) => (exato[b] - nr[b]) - (exato[a] - nr[a]));
+  for (let i = 0; i < Math.max(0, sobra); i++) nr[ordem[i % n]]++;
+  return nr.map(v => v * R3.PASSO_RAIA);
+}
+
+/* Monta as N zonas dentro do Ring, com ou sem baias, e devolve o desenho
+ * completo (capacidade, barreira, separadores). `ents` vem de entradas():
+ * cada uma com x (eixo da porta); `esperado` alinhado com `ents`. */
+function desenho(ents, esperado, opts){
+  opts = opts || {};
+  const orientacao = opts.orientacao === "horizontal" ? "horizontal" : "vertical";
+  const comBaias = !!opts.baias;
+  const RG = ring(opts.largura);
+  const L = RG.x1 - RG.x0, n = ents.length;
+  if (!n) return null;
+  const prof = opts.prof || PROF_SERP;
+  const vaoMin = comBaias ? R3.VAO_MIN : (orientacao === "horizontal" ? R3.VAO_ENTRE_ZONAS : R3.VAO_MIN);
+  const borda = comBaias ? R3.LARG_BAIA : 0;
+  const disponivel = L - 2 * borda - (n - 1) * vaoMin;
+  const larg = reparteLargura(disponivel, esperado, orientacao === "vertical", comBaias);
+  const somaLarg = larg.reduce((s, v) => s + v, 0);
+  const vao = n > 1 ? (L - 2 * borda - somaLarg) / (n - 1) : 0;
+  const zonas = [];
+  let x = RG.x0 + borda;
+  ents.forEach((e, i) => {
+    const x1 = x + larg[i];
+    zonas.push(zona(e.id, x, x1, prof, orientacao, e.x,
+      !comBaias && Math.abs(x - RG.x0) < 0.05, !comBaias && Math.abs(x1 - RG.x1) < 0.05));
+    x = x1 + vao;
+  });
+  const baias = {};
+  if (comBaias) {
+    baias[ents[0].id] = {rotulo: "baia do flanco oeste", area: R3.LARG_BAIA * prof, x0: RG.x0, x1: RG.x0 + R3.LARG_BAIA};
+    baias[ents[n - 1].id] = {rotulo: "baia do flanco leste", area: R3.LARG_BAIA * prof, x0: RG.x1 - R3.LARG_BAIA, x1: RG.x1};
+    if (n === 1) baias[ents[0].id].area *= 2;
+  }
+  const extra = {"corredor de fundo (parede norte)": L - n * R3.VAO_SAIDA};
+  if (comBaias) extra["fechamento das baias de flanco"] = 2 * R3.LARG_BAIA;
+  return fecha({codigo: orientacao === "vertical" ? (comBaias ? "V" : "VS") : (comBaias ? "HB" : "H"),
+    nome: (orientacao === "vertical" ? "Raias norte-sul" : "Raias leste-oeste") + (comBaias ? ", com baias" : ", sem baias"),
+    ring: RG, apron: R3.APRON, prof, vao, orientacao, comBaias, zonas, baias, extra});
+}
+
+/* Reconstrucao do plano vigente (3 · 9 · 3 raias, 23,75 m, garganta ao sul),
+ * so valida com tres entradas: serve de aferição e de preset "vigente". */
+function desenhoPlanoVigente(ents){
+  if (ents.length !== 3) return null;
+  const RG = ring(R3.LARG_RING);
+  const prof = R3.PROF_PLANO_ORIGINAL;
+  const zonas = ents.map((e, i) => {
+    const b = R3.BLOCOS_ORIG[["A", "B", "C"][i]];
+    return zona(e.id, b[0], b[1], prof, "vertical", e.x, false, false);
+  });
+  const baias = {};
+  baias[ents[0].id] = {rotulo: "baia do flanco oeste", area: R3.LARG_BAIA * prof, x0: RG.x0 + 2.5, x1: RG.x0 + 2.5 + R3.LARG_BAIA};
+  baias[ents[2].id] = {rotulo: "baia do flanco leste", area: R3.LARG_BAIA * prof, x0: RG.x1 - 2.5 - R3.LARG_BAIA, x1: RG.x1 - 2.5};
+  const extra = {"corredor de fundo (2 lados)": 2 * R3.CORREDOR_ORIGINAL,
+                 "fechamento das baias de flanco": 2 * R3.LARG_BAIA,
+                 "funil da garganta sudeste": 2 * R3.FUNIL_GARGANTA};
+  return fecha({codigo: "PV", nome: "Plano vigente (3 · 9 · 3, com garganta)", ring: RG, apron: R3.APRON,
+    prof, vao: null, orientacao: "vertical", comBaias: true, zonas, baias, extra, garganta: true});
+}
+
+function fecha(d){
+  const capRaias = d.zonas.reduce((s, z) => s + z.capacidade, 0);
+  const capBaias = Object.values(d.baias).reduce((s, b) => s + b.area * R3.DENS_BAIA, 0);
+  const porEntrada = {};
+  for (const z of d.zonas) porEntrada[z.nome] = z.capacidade + (d.baias[z.nome] ? d.baias[z.nome].area * R3.DENS_BAIA : 0);
+  const barreira = {"perímetro das zonas": d.zonas.reduce((s, z) => s + z.perimetro, 0),
+                    "divisórias entre as raias": d.zonas.reduce((s, z) => s + z.divisorias, 0)};
+  Object.assign(barreira, d.extra);
+  barreira["raias do apron até as portas"] = d.zonas.reduce((s, z) => s + 2 * z.diagonal, 0);
+  const total = Object.values(barreira).reduce((s, v) => s + v, 0);
+  const separadores = unidades(total);
+  d.capacidade = capRaias + capBaias; d.capRaias = capRaias; d.capBaias = capBaias;
+  d.porEntrada = porEntrada; d.barreira = barreira; d.barreiraTotal = total;
+  d.separadores = separadores; d.compra = Math.max(0, separadores - R3.ESTOQUE);
+  d.custoCompra = d.compra * R3.SEPARADOR_EUR;
+  d.meiasVoltas = d.zonas.reduce((s, z) => s + z.meiasVoltas, 0);
+  return d;
+}
+
+const DESENHOS = [
+  {id: "vigente", nome: "Plano vigente · 3·9·3 com baias e garganta", so3: true},
+  {id: "VS", nome: "Norte-sul, sem baias", orientacao: "vertical", baias: false},
+  {id: "V", nome: "Norte-sul, com baias", orientacao: "vertical", baias: true},
+  {id: "H", nome: "Leste-oeste, sem baias", orientacao: "horizontal", baias: false},
+  {id: "HB", nome: "Leste-oeste, com baias", orientacao: "horizontal", baias: true},
+];
+
+function desenhoPorId(id, ents, esperado, opts){
+  if (id === "vigente") return desenhoPlanoVigente(ents);
+  const d = DESENHOS.find(x => x.id === id) || DESENHOS[1];
+  return desenho(ents, esperado, Object.assign({}, opts || {}, {orientacao: d.orientacao, baias: d.baias}));
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Atribuicao mesa -> entrada (porte de decisoes.atribui_entradas)  */
+/* ------------------------------------------------------------------ */
+/* `lista`: [{mrv, esperado, classe}]; `quotas`: {entrada: fracao}. Uma mesa de
+ * classe alta em cada entrada (as tres criticas nunca na mesma fila), depois
+ * as demais, sempre para a entrada mais distante da sua quota. */
+function atribuiEntradas(lista, quotas){
+  const total = lista.reduce((s, m) => s + m.esperado, 0);
+  const chaves = Object.keys(quotas);
+  const alvo = {}, grupos = {}, carga = {};
+  for (const k of chaves) { alvo[k] = quotas[k] * total; grupos[k] = []; carga[k] = 0; }
+  const ordenadas = lista.slice().sort((a, b) => (b.esperado - a.esperado) || (a.mrv - b.mrv));
+  const altas = ordenadas.filter(m => m.classe === "alta");
+  const porQuota = chaves.slice().sort((a, b) => quotas[b] - quotas[a]);
+  const postas = new Set();
+  porQuota.forEach((k, i) => {
+    if (i >= altas.length) return;
+    grupos[k].push(altas[i].mrv); carga[k] += altas[i].esperado; postas.add(altas[i].mrv);
+  });
+  for (const m of ordenadas) {
+    if (postas.has(m.mrv)) continue;
+    let melhor = chaves[0], folga = -Infinity;
+    for (const k of chaves) { const f = alvo[k] - carga[k]; if (f > folga) { folga = f; melhor = k; } }
+    grupos[melhor].push(m.mrv); carga[melhor] += m.esperado;
+  }
+  for (const k of chaves) grupos[k].sort((a, b) => a - b);
+  return {grupos, carga, alvo};
+}
+
+/* As 28 mesas com esperado e classe, lidas do bloco de decisoes (objeto por
+ * MRV na prancheta, lista no simulador). */
+function mesasDaDecisao(dec){
+  const m = dec && dec.mesas;
+  if (!m) return [];
+  if (Array.isArray(m)) return m.map(x => ({mrv: x.mrv, esperado: x.esperado, classe: x.classe, principal: x.principal}));
+  return Object.keys(m).map(k => ({mrv: +k, esperado: m[k].esperado, classe: m[k].classe, principal: m[k].principal}))
+    .sort((a, b) => a.mrv - b.mrv);
+}
+
+/* ------------------------------------------------------------------ */
+/* Resolucao: do estado das portas ao quadro completo                  */
+/* ------------------------------------------------------------------ */
+/* ctx = {portas: BASE.portas, dec: DECISOES, desenho: id, largura}. Devolve
+ * {estado, entradas, saidas, mesas: {mrv: {entrada, porta}}, ring3, avisos,
+ * erros, igualDecisao}. Com as portas da decisao e o desenho "vigente", a
+ * atribuicao e a da decisao (data/decisoes.json), letra por letra. */
+function resolve(estado, ctx){
+  ctx = ctx || {};
+  const e = normalizaEstado(estado);
+  const v = valida(e, ctx.portas);
+  const ents = entradas(e, ctx.portas);
+  const lista = mesasDaDecisao(ctx.dec);
+  const igualDecisao = igual(e, estadoDaDecisao(ctx.dec));
+  let desenhoId = ctx.desenho || "vigente";
+  if (desenhoId === "vigente" && ents.length !== 3) desenhoId = "VS";
+  const out = {estado: e, entradas: ents, saidas: saidas(e), mesas: {}, avisos: v.avisos.slice(),
+               erros: v.erros.slice(), igualDecisao, desenho: desenhoId, ring3: null};
+  if (!ents.length || !lista.length) return out;
+
+  let esperado = ents.map(() => 1), grupos = null, r3 = null;
+  if (desenhoId === "vigente" && igualDecisao && ctx.dec && Array.isArray(ctx.dec.entradas)) {
+    // a decisao, tal como esta em decisoes.py
+    r3 = desenhoPlanoVigente(ents);
+    ctx.dec.entradas.forEach((de, i) => { ents[i].capacidade = de.capacidade; ents[i].quota = de.quota; });
+    grupos = {}; ctx.dec.entradas.forEach((de, i) => { grupos[ents[i].id] = de.mrvs.slice(); });
+  } else {
+    // itera: largura das zonas <- esperado <- atribuicao <- capacidade das zonas
+    let anterior = "";
+    for (let it = 0; it < 8; it++) {
+      r3 = desenhoPorId(desenhoId, ents, esperado, {largura: ctx.largura});
+      const tot = Object.values(r3.porEntrada).reduce((s, x) => s + x, 0);
+      const quotas = {}; for (const z of ents) quotas[z.id] = r3.porEntrada[z.id] / tot;
+      const a = atribuiEntradas(lista, quotas);
+      grupos = a.grupos;
+      esperado = ents.map(z => a.carga[z.id]);
+      const chave = JSON.stringify(grupos);
+      if (chave === anterior) break;
+      anterior = chave;
+    }
+    const tot = Object.values(r3.porEntrada).reduce((s, x) => s + x, 0);
+    ents.forEach(z => { z.capacidade = Math.round(r3.porEntrada[z.id]); z.quota = r3.porEntrada[z.id] / tot; });
+  }
+  const porMrv = {}; for (const m of lista) porMrv[m.mrv] = m;
+  ents.forEach(z => {
+    z.mrvs = grupos[z.id] || [];
+    z.esperado = z.mrvs.reduce((s, n) => s + (porMrv[n] ? porMrv[n].esperado : 0), 0);
+    for (const n of z.mrvs) out.mesas[n] = {entrada: z.id, porta: z.porta, hex: z.hex};
+  });
+  out.ring3 = r3;
+  out.ring3.rect = [r3.ring.x0, r3.ring.y0, r3.ring.x1, r3.ring.y1];
+  if (r3.zonas.some(z => z.raias === 0)) out.avisos.push("Alguma zona do Ring 3 ficou sem raia: entradas demais para a largura do Ring.");
+  return out;
+}
+
+/* O bloco de decisoes com o estado vivo aplicado: portas, entradas, mesas e
+ * Ring 3 substituidos; o resto (classes, comparecimento) igual. Serve tanto
+ * ao simulador (mesas em lista) quanto a prancheta (mesas por MRV). Com a
+ * decisao e o desenho vigente devolve o proprio `dec`. */
+function decisaoViva(dec, res){
+  if (!dec || !res || !res.ring3) return dec;
+  if (res.igualDecisao && res.desenho === "vigente") return dec;
+  const portas = {};
+  for (const id of SUL) {
+    if (res.estado[id] === "saida") portas[id] = {papel: "saida"};
+    else if (res.estado[id] === "entrada") {
+      const e = res.entradas.find(z => z.porta === id);
+      portas[id] = {papel: "entrada", entrada: e.id, cor: e.hex};
+    }
+  }
+  const entradas = res.entradas.map(e => ({id: e.id, porta: e.porta, cor: e.cor, hex: e.hex,
+    mrvs: e.mrvs.slice(), esperado: e.esperado, capacidade: e.capacidade, quota: e.quota}));
+  let mesas;
+  if (Array.isArray(dec.mesas)) mesas = dec.mesas.map(m => Object.assign({}, m, res.mesas[m.mrv] ? {entrada: res.mesas[m.mrv].entrada, porta: res.mesas[m.mrv].porta} : {}));
+  else { mesas = {}; for (const k of Object.keys(dec.mesas)) mesas[k] = Object.assign({}, dec.mesas[k], res.mesas[k] ? {entrada: res.mesas[k].entrada, porta: res.mesas[k].porta} : {}); }
+  const r = res.ring3;
+  const ring3 = Object.assign({}, dec.ring3 || {}, {
+    largura: r.ring.x1 - r.ring.x0, profundidade: R3.PROF_RING, apron: r.apron, rect: r.rect,
+    capacidade: Math.round(r.capacidade), separadores: r.separadores, metros: Math.round(r.barreiraTotal * 10) / 10,
+    a_adquirir: r.compra, custo_eur: Math.round(r.custoCompra), desenho: res.desenho, nome_desenho: r.nome,
+    eixo: "centrado em S5 (estimativa; aferir o bordo oeste em campo)",
+  });
+  return Object.assign({}, dec, {portas, entradas, saidas: res.saidas.slice(), mesas, ring3, vivo: true});
+}
+
+/* ------------------------------------------------------------------ */
+/* SVG do Ring 3 (porte de ring3.svg), em escala                       */
+/* ------------------------------------------------------------------ */
+function svgRing3(res, opts){
+  opts = opts || {};
+  const d = res && res.ring3;
+  if (!d) return "";
+  const RG = d.ring, ESC = opts.escala || 12, MG = 40;
+  const px = (x, y) => [MG + (x - RG.x0 + 6) * ESC, MG + (2.0 - y) * ESC];
+  const larg = (RG.x1 - RG.x0 + 12) * ESC + 2 * MG, alt = (RG.y1 - RG.y0 + d.apron + 6) * ESC + 2 * MG;
+  const s = [];
+  const ret = (x0, y0, x1, y1, at) => { const [ax, ay] = px(x0, y1), [bx, by] = px(x1, y0);
+    s.push(`<rect x="${ax.toFixed(1)}" y="${ay.toFixed(1)}" width="${(bx - ax).toFixed(1)}" height="${(by - ay).toFixed(1)}" ${at}/>`); };
+  const lin = (x0, y0, x1, y1, at) => { const [ax, ay] = px(x0, y0), [bx, by] = px(x1, y1);
+    s.push(`<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${bx.toFixed(1)}" y2="${by.toFixed(1)}" ${at}/>`); };
+  const txt = (x, y, t, size, peso, cor, anchor, rot) => { const [ax, ay] = px(x, y);
+    const r = rot ? ` transform="rotate(${rot} ${ax.toFixed(1)} ${ay.toFixed(1)})"` : "";
+    s.push(`<text x="${ax.toFixed(1)}" y="${ay.toFixed(1)}" text-anchor="${anchor || "middle"}" font-family="IBM Plex Sans,ui-sans-serif,system-ui,sans-serif" font-size="${size}" font-weight="${peso || 400}" fill="${cor}" paint-order="stroke" stroke="var(--prancha,#fbfaf7)" stroke-width="3" stroke-linejoin="round"${r}>${t}</text>`); };
+  s.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${larg.toFixed(0)} ${alt.toFixed(0)}" role="img" aria-label="Ring 3 com ${d.zonas.length} zona(s) de fila, uma por entrada" style="width:100%;height:auto;display:block">`);
+  s.push(`<rect width="${larg.toFixed(0)}" height="${alt.toFixed(0)}" fill="var(--prancha,#fbfaf7)"/>`);
+  ret(RG.x0 - 5, -d.apron, RG.x1 + 5, 0, 'fill="var(--piso,#eef1f4)"');
+  ret(RG.x0, RG.y0, RG.x1, RG.y1, 'fill="var(--folha,#f6f4ef)" stroke="var(--traco,#1c2733)" stroke-width="2"');
+  lin(RG.x0 - 5, 0, RG.x1 + 5, 0, 'stroke="var(--traco,#1c2733)" stroke-width="3"');
+  txt((RG.x0 + RG.x1) / 2, 1.3, "FACHADA SUL DO HALL 2", 10, 700, "var(--meio,#5c6c80)");
+  const portas = (opts.portas || []).filter(p => p.face === "sul");
+  for (const p of portas) {
+    const papel = res.estado[p.id] || "fechada";
+    const ent = res.entradas.find(z => z.porta === p.id);
+    const cor = ent ? ent.hex : (papel === "saida" ? "#b26a12" : "#b2bcc8");
+    lin(p.x1, 0, p.x2, 0, `stroke="${cor}" stroke-width="${ent ? 6 : (papel === "saida" ? 6 : 3)}"`);
+    if (ent) txt((p.x1 + p.x2) / 2, -1.7, `${p.id} · ${ent.id}`, 10, 700, cor);
+    else if (papel === "saida") txt((p.x1 + p.x2) / 2, -1.7, `${p.id} saída`, 9, 400, cor);
+  }
+  txt(RG.x0 - 4.2, -d.apron / 2, `apron pavimentado · ${d.apron} m`, 9, 400, "var(--meio,#5c6c80)", "middle", -90);
+  const yTopo = RG.y1, yBase = RG.y1 - d.prof;
+  for (const z of d.zonas) {
+    const c = (res.entradas.find(e => e.id === z.nome) || {}).hex || "#5c6c80";
+    ret(z.x0, yBase, z.x1, yTopo, `fill="${c}" fill-opacity=".13" stroke="${c}" stroke-width="1.4"`);
+    if (z.orientacao === "vertical") {
+      for (let i = 1; i < z.raias; i++) {
+        const x = z.x0 + i * z.passo;
+        lin(x, i % 2 ? yBase + R3.VAO_RETORNO : yBase, x, i % 2 ? yTopo : yTopo - R3.VAO_RETORNO, `stroke="${c}" stroke-width="1" stroke-opacity=".6"`);
+      }
+      txt((z.x0 + z.x1) / 2, yTopo + 1.3, `${z.nome} · ${z.raias} raias de ${z.comp.toFixed(1).replace(".", ",")} m`, 10, 700, c);
+    } else {
+      for (let i = 1; i < z.raias; i++) {
+        const y = yBase + i * z.passo;
+        lin(i % 2 ? z.x0 + R3.VAO_RETORNO : z.x0, y, i % 2 ? z.x1 : z.x1 - R3.VAO_RETORNO, y, `stroke="${c}" stroke-width="1" stroke-opacity=".6"`);
+      }
+      txt((z.x0 + z.x1) / 2, yTopo + 1.3, `${z.nome} · ${z.raias} × ${z.larg.toFixed(1).replace(".", ",")} m`, 10, 700, c);
+    }
+    lin(z.portao, yTopo, z.eixo, -0.4, `stroke="${c}" stroke-width="2" stroke-dasharray="4 3"`);
+  }
+  for (const k of Object.keys(d.baias)) {
+    const b = d.baias[k];
+    if (b.x0 === undefined) continue;
+    ret(b.x0, yBase, b.x1, yTopo, 'fill="#8a919b" fill-opacity=".16" stroke="#8a919b" stroke-width="1.2" stroke-dasharray="4 3"');
+    txt((b.x0 + b.x1) / 2, (yBase + yTopo) / 2, b.rotulo, 9, 400, "var(--meio,#5c6c80)", "middle", -90);
+  }
+  ret(RG.x0, RG.y0, RG.x1, RG.y0 + R3.LARG_CORREDOR, 'fill="none" stroke="#5c6c80" stroke-width="1.2"');
+  txt((RG.x0 + RG.x1) / 2, RG.y0 + R3.LARG_CORREDOR / 2 - 0.4, "CORREDOR DE FUNDO · 3,0 m", 9, 600, "var(--meio,#5c6c80)");
+  txt(RG.x0, RG.y0 - 1.8, `Ring 3 · ${(RG.x1 - RG.x0).toFixed(1).replace(".", ",")} × ${R3.PROF_RING.toFixed(1).replace(".", ",")} m · ${Math.round(d.capacidade).toLocaleString("pt-BR")} pessoas · ${d.separadores} separadores`, 9, 400, "#8a919b", "start");
+  s.push("</svg>");
+  return s.join("\n");
+}
+
+/* ------------------------------------------------------------------ */
+/* Sincronizacao entre paginas                                         */
+/* ------------------------------------------------------------------ */
+const CHAVE = "posto-dublin/portas", CANAL = "posto-dublin";
+let canal = null;
+function abreCanal(){
+  if (canal !== null) return canal;
+  try { canal = (typeof BroadcastChannel !== "undefined") ? new BroadcastChannel(CANAL) : false; }
+  catch (e) { canal = false; }
+  return canal;
+}
+function guarda(msg){ try { localStorage.setItem(CHAVE, JSON.stringify(msg)); } catch (e) {} }
+function le(){
+  try { const s = JSON.parse(localStorage.getItem(CHAVE) || "null"); if (s && s.estado) return s; } catch (e) {}
+  const h = deHash(typeof location !== "undefined" ? location.hash : "");
+  return h ? {estado: h.estado, desenho: h.desenho, origem: "hash"} : null;
+}
+/* Publica o estado para as outras paginas da mesma origem. `origem` e um nome
+ * curto da pagina que publicou, para cada uma ignorar o proprio eco. */
+function publica(estado, extra){
+  const msg = Object.assign({}, extra || {}, {estado: normalizaEstado(estado), quando: Date.now()});
+  guarda(msg);
+  const c = abreCanal();
+  if (c) { try { c.postMessage(msg); } catch (e) {} }
+  return msg;
+}
+function assina(fn){
+  const c = abreCanal();
+  if (c) c.addEventListener("message", ev => { if (ev.data && ev.data.estado) fn(ev.data); });
+  if (typeof window !== "undefined") window.addEventListener("storage", ev => {
+    if (ev.key !== CHAVE || !ev.newValue) return;
+    try { const m = JSON.parse(ev.newValue); if (m && m.estado) fn(m); } catch (e) {}
+  });
+}
+/* #portas=S4:A,S5:B,S6:C,S2:x,S8:x&desenho=VS  (x = saida; letra = entrada) */
+function paraHash(estado, desenho){
+  const e = normalizaEstado(estado), ents = entradas(e);
+  const partes = [];
+  for (const id of SUL) {
+    if (e[id] === "entrada") partes.push(`${id}:${(ents.find(z => z.porta === id) || {}).id || "E"}`);
+    else if (e[id] === "saida") partes.push(`${id}:x`);
+  }
+  return "portas=" + partes.join(",") + (desenho ? "&desenho=" + desenho : "");
+}
+function deHash(hash){
+  const m = /portas=([^&]+)/.exec(hash || "");
+  if (!m) return null;
+  const e = {}; for (const id of SUL) e[id] = "fechada";
+  for (const par of m[1].split(",")) {
+    const [id, v] = par.split(":");
+    if (SUL.includes(id)) e[id] = (v === "x" ? "saida" : "entrada");
+  }
+  const d = /desenho=([A-Za-z]+)/.exec(hash || "");
+  return {estado: e, desenho: d ? d[1] : null};
+}
+
+const Portas = {
+  SUL, PAPEIS, PALETA, DECISAO, R3, DESENHOS,
+  estadoDaDecisao, normalizaEstado, igual, centros, entradas, saidas, valida,
+  ring, raiasQueCabem, desenho, desenhoPlanoVigente, desenhoPorId, atribuiEntradas,
+  mesasDaDecisao, resolve, decisaoViva, svgRing3,
+  CHAVE, CANAL, publica, assina, le, paraHash, deHash,
+};
+if (typeof module !== "undefined" && module.exports) module.exports = Portas;
+else raiz.Portas = Portas;
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+(function(){
+"use strict";
+const PT = Portas, $ = id => document.getElementById(id);
+const fmt = n => Math.round(n).toLocaleString("pt-BR");
+const vg = (v, c = 1) => Number(v).toFixed(c).replace(".", ",");
+const eur = v => "EUR " + Number(v).toLocaleString("pt-BR", {minimumFractionDigits: 0, maximumFractionDigits: 0});
+const porMrv = Object.fromEntries(DECISOES.mesas.map(m => [m.mrv, m]));
+let estado = PT.estadoDaDecisao(DECISOES), desenho = "vigente", publicando = true;
+
+function h(tag, attrs, ...filhos){
+  const e = document.createElement(tag);
+  for (const k in (attrs || {})) { if (k === "class") e.className = attrs[k]; else if (k === "text") e.textContent = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  for (const f of filhos) if (f != null) e.appendChild(typeof f === "string" ? document.createTextNode(f) : f);
+  return e;
+}
+
+function pinta(){
+  const ctx = {portas: BASE.portas, dec: DECISOES, desenho};
+  const r = PT.resolve(estado, ctx);
+  const difere = !(r.igualDecisao && r.desenho === "vigente");
+  // estado
+  const E = $("estado"); E.innerHTML = ""; E.classList.toggle("difere", difere);
+  E.appendChild(h("span", {class: "rot", text: "Portas em vigor"}));
+  const ent = h("span"); for (const e of r.entradas) ent.appendChild(h("span", {class: "chip", style: `color:${e.hex}`, text: `${e.porta} ${e.id}`}));
+  E.appendChild(h("span", null, "entradas ", ent));
+  const sai = h("span"); for (const s of r.saidas) sai.appendChild(h("span", {class: "chip", style: "color:var(--aviso)", text: s}));
+  E.appendChild(h("span", null, "saídas ", sai));
+  const sel = h("select", {"aria-label": "Desenho da fila externa"});
+  for (const d of PT.DESENHOS) { const o = h("option", {value: d.id, text: d.nome}); if (d.so3 && r.entradas.length !== 3) o.disabled = true; sel.appendChild(o); }
+  sel.value = r.desenho;
+  sel.addEventListener("change", () => { desenho = sel.value; pinta(); if (publicando) PT.publica(estado, {desenho, origem: "ring3"}); });
+  E.appendChild(h("label", null, "desenho ", sel));
+  E.appendChild(h("span", {class: difere ? "aviso" : "", text: difere ? "difere da decisão de 06/09 (entradas S4, S5, S6; saídas S2, S8)" : "é a decisão do Posto de 06/09/2026"}));
+  for (const a of r.avisos) E.appendChild(h("span", {class: "aviso", text: a}));
+  for (const a of r.erros) E.appendChild(h("span", {class: "erro", text: a}));
+  if (!r.ring3) { $("prancha").innerHTML = ""; return; }
+  const d = r.ring3;
+  // faixa
+  const F = $("faixa"); F.innerHTML = "";
+  const tile = (k, v, s) => F.appendChild(h("div", null, h("dt", {text: k}), h("dd", null, v, s ? h("small", {text: s}) : null)));
+  tile("Entradas", String(r.entradas.length), r.entradas.map(e => e.id + " por " + e.porta).join(" · "));
+  tile("Lotação", fmt(d.capacidade), d.capBaias ? `${fmt(d.capRaias)} em raia + ${fmt(d.capBaias)} em baia` : "toda em raia");
+  tile("Separadores", String(d.separadores), `${vg(d.barreiraTotal, 0)} m de barreira`);
+  tile("A comprar", String(d.compra), `sobre os ${PT.R3.ESTOQUE} da organizadora · ${eur(d.custoCompra)}`);
+  tile("Comparecimento", fmt(DECISOES.comparecimento.total), "base B, estimativa não oficial");
+  // planta
+  $("tituloPlanta").textContent = `${d.nome}, em escala sobre o Ring 3 de ${vg(d.ring.x1 - d.ring.x0, 0)} × ${vg(PT.R3.PROF_RING, 0)} m`;
+  $("prancha").innerHTML = PT.svgRing3(r, {portas: BASE.portas});
+  $("notaDesenho").innerHTML = d.garganta
+    ? "<strong>Plano vigente.</strong> Raias de 23,75 m, baias de flanco e 8,25 m de faixa de garganta ao sul para a pré-triagem; a barreira inclui o funil da garganta e os dois lados do corredor de fundo."
+    : `<strong>Sem garganta.</strong> O corredor de fundo encosta no gradil sul e as raias medem ${vg(d.prof, 2)} m. Onde a pré-triagem passa a acontecer é decisão em aberto. ${d.comBaias ? "As baias de flanco guardam gente em massa, sem ordem de chegada." : "Toda a lotação é fila em raia medida, com ordem de chegada preservada."}`;
+  // zonas
+  const T = $("tabZonas"); T.innerHTML = "";
+  T.appendChild(h("thead", null, h("tr", null, h("th", {text: "Entrada"}), h("th", {text: "Porta"}), h("th", {class: "num", text: "Raias"}),
+    h("th", {class: "num", text: "Comprimento"}), h("th", {class: "num", text: "Em raia"}), h("th", {class: "num", text: "Em baia"}), h("th", {class: "num", text: "Capacidade"}),
+    h("th", {class: "num", text: "Mesas"}), h("th", {class: "num", text: "Esperados"}), h("th", {class: "num", text: "Cap./esperado"}), h("th", {text: "MRV"}))));
+  const tb = h("tbody");
+  let tot = {cap: 0, esp: 0, mesas: 0};
+  for (const e of r.entradas) {
+    const z = d.zonas.find(x => x.nome === e.id), baia = d.baias[e.id] ? d.baias[e.id].area * PT.R3.DENS_BAIA : 0;
+    tot.cap += e.capacidade; tot.esp += e.esperado; tot.mesas += e.mrvs.length;
+    tb.appendChild(h("tr", null,
+      h("td", null, h("span", {class: "sw", style: `background:${e.hex}`}), h("strong", {text: e.id}), ` ${e.cor}`),
+      h("td", {class: "mono", text: e.porta}), h("td", {class: "num mono", text: String(z.raias)}),
+      h("td", {class: "num mono", text: vg(z.comp, 1) + " m"}), h("td", {class: "num mono", text: fmt(z.capacidade)}),
+      h("td", {class: "num mono", text: baia ? fmt(baia) : "—"}), h("td", {class: "num mono", text: fmt(e.capacidade)}),
+      h("td", {class: "num mono", text: String(e.mrvs.length)}), h("td", {class: "num mono", text: fmt(e.esperado)}),
+      h("td", {class: "num mono", text: vg(e.capacidade / Math.max(1, e.esperado), 3)}),
+      h("td", {class: "mesas", text: e.mrvs.map(n => `${n} (${porMrv[n] ? porMrv[n].principal : "?"})`).join(", ")})));
+  }
+  tb.appendChild(h("tr", {class: "total"}, h("td", {text: "Total"}), h("td"), h("td"), h("td"), h("td", {class: "num mono", text: fmt(d.capRaias)}),
+    h("td", {class: "num mono", text: d.capBaias ? fmt(d.capBaias) : "—"}), h("td", {class: "num mono", text: fmt(tot.cap)}),
+    h("td", {class: "num mono", text: String(tot.mesas)}), h("td", {class: "num mono", text: fmt(tot.esp)}), h("td", {class: "num mono", text: vg(tot.cap / Math.max(1, tot.esp), 3)}), h("td")));
+  T.appendChild(tb);
+  // barreira
+  const B = $("tabBarreira"); B.innerHTML = "";
+  B.appendChild(h("thead", null, h("tr", null, h("th", {text: "Componente"}), h("th", {class: "num", text: "Metros"}), h("th", {class: "num", text: "Separadores de 2 m"}))));
+  const bb = h("tbody");
+  for (const [k, v] of Object.entries(d.barreira)) bb.appendChild(h("tr", null, h("td", {text: k}), h("td", {class: "num mono", text: vg(v, 1)}), h("td", {class: "num mono", text: String(Math.ceil(v / PT.R3.SEPARADOR_M - 1e-9))})));
+  bb.appendChild(h("tr", {class: "total"}, h("td", {text: "Total"}), h("td", {class: "num mono", text: vg(d.barreiraTotal, 1)}), h("td", {class: "num mono", text: String(d.separadores)})));
+  bb.appendChild(h("tr", null, h("td", {text: "Fornecidos pela organizadora"}), h("td"), h("td", {class: "num mono", text: "−" + PT.R3.ESTOQUE})));
+  bb.appendChild(h("tr", {class: "total"}, h("td", {text: "A comprar"}), h("td", {class: "num mono", text: eur(d.custoCompra)}), h("td", {class: "num mono", text: String(d.compra)})));
+  B.appendChild(bb);
+  // cinco desenhos
+  const D = $("tabDesenhos"); D.innerHTML = "";
+  D.appendChild(h("thead", null, h("tr", null, h("th", {text: "Desenho"}), h("th", {class: "num", text: "Lotação"}), h("th", {class: "num", text: "Em raia"}),
+    h("th", {class: "num", text: "Raia mais curta"}), h("th", {class: "num", text: "Meias-voltas"}), h("th", {class: "num", text: "Barreira"}), h("th", {class: "num", text: "Separadores"}), h("th", {class: "num", text: "A comprar"}), h("th", {class: "num", text: "Custo"}))));
+  const db = h("tbody");
+  for (const dd of PT.DESENHOS) {
+    if (dd.so3 && r.entradas.length !== 3) continue;
+    const rr = PT.resolve(estado, Object.assign({}, ctx, {desenho: dd.id}));
+    const x = rr.ring3; if (!x) continue;
+    db.appendChild(h("tr", {class: dd.id === r.desenho ? "marcada" : ""}, h("td", {text: dd.nome}), h("td", {class: "num mono", text: fmt(x.capacidade)}),
+      h("td", {class: "num mono", text: fmt(x.capRaias)}), h("td", {class: "num mono", text: vg(Math.min(...x.zonas.map(z => z.comp)), 1) + " m"}),
+      h("td", {class: "num mono", text: String(x.meiasVoltas)}), h("td", {class: "num mono", text: vg(x.barreiraTotal, 1) + " m"}),
+      h("td", {class: "num mono", text: String(x.separadores)}), h("td", {class: "num mono", text: String(x.compra)}), h("td", {class: "num mono", text: eur(x.custoCompra)})));
+  }
+  D.appendChild(db);
+}
+
+const guardado = PT.le();
+if (guardado && guardado.estado) { estado = PT.normalizaEstado(guardado.estado); if (guardado.desenho) desenho = guardado.desenho; }
+pinta();
+PT.assina(msg => {
+  if (msg.origem === "ring3") return;
+  publicando = false;
+  try { estado = PT.normalizaEstado(msg.estado); if (msg.desenho) desenho = msg.desenho; pinta(); }
+  finally { publicando = true; }
+});
+})();
+</script>

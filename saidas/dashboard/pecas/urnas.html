@@ -1,0 +1,1056 @@
+<title>Urnas de Dublin</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ground:      #f4f6f9;
+    --surface:     #ffffff;
+    --surface-2:   #eef1f6;
+    --ink:         #11151c;
+    --ink-2:       #515b6b;
+    --ink-3:       #7a8494;
+    --rule:        #dde3ea;
+    --rule-forte:  #c3ccd8;
+    --s1:          #2a78d6;
+    --s2:          #eb6834;
+    --s1-fraco:    #dce9f9;
+    --s2-fraco:    #fbe3d8;
+
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ground:     #0e1116;
+      --surface:    #171b22;
+      --surface-2:  #1f242d;
+      --ink:        #eef1f5;
+      --ink-2:      #a0aab8;
+      --ink-3:      #76808e;
+      --rule:       #282e38;
+      --rule-forte: #3a4250;
+      --s1:         #3987e5;
+      --s2:         #d95926;
+      --s1-fraco:   #1b2f47;
+      --s2-fraco:   #3a2318;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground:     #0e1116;
+    --surface:    #171b22;
+    --surface-2:  #1f242d;
+    --ink:        #eef1f5;
+    --ink-2:      #a0aab8;
+    --ink-3:      #76808e;
+    --rule:       #282e38;
+    --rule-forte: #3a4250;
+    --s1:         #3987e5;
+    --s2:         #d95926;
+    --s1-fraco:   #1b2f47;
+    --s2-fraco:   #3a2318;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px 24px 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+  }
+
+  /* ---------- cabecalho ---------- */
+  header { display: flex; flex-direction: column; gap: 22px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(30px, 4.6vw, 46px);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -.015em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .sub {
+    margin: 0;
+    max-width: 64ch;
+    color: var(--ink-2);
+    font-size: 16px;
+  }
+  .local-band {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--s1);
+    border-radius: 3px;
+  }
+  .local-band .nome { font-family: var(--serif); font-size: 17px; font-weight: 600; }
+  .local-band .end { color: var(--ink-2); font-size: 14px; }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .tile { background: var(--surface); padding: 18px 20px; display: flex; flex-direction: column; gap: 3px; }
+  .tile .n { font-family: var(--mono); font-size: 30px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .tile .k { font-size: 12.5px; color: var(--ink-2); }
+
+  /* ---------- secoes ---------- */
+  section { display: flex; flex-direction: column; gap: 16px; }
+  h2 {
+    font-family: var(--serif);
+    font-size: 25px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -.01em;
+    padding-bottom: 9px;
+    border-bottom: 2px solid var(--rule-forte);
+  }
+  .nota { margin: 0; color: var(--ink-2); max-width: 74ch; font-size: 14.5px; }
+  .nota strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- legenda ---------- */
+  .legenda { display: flex; flex-wrap: wrap; gap: 18px; font-size: 13px; color: var(--ink-2); }
+  .legenda span { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 11px; height: 11px; border-radius: 2px; flex: none; }
+  .sw-p { background: var(--s1); }
+  .sw-a { background: var(--s2); }
+
+  /* ---------- tabelas ---------- */
+  .scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  thead th {
+    position: sticky; top: 0;
+    background: var(--surface-2);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    font-weight: 600;
+    text-align: left;
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--rule-forte);
+    white-space: nowrap;
+  }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover td { background: var(--surface-2); }
+
+  .rank { font-family: var(--mono); font-size: 12px; color: var(--ink-3); width: 34px; font-variant-numeric: tabular-nums; }
+  .urna { font-family: var(--mono); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .urna.dim { font-weight: 400; color: var(--ink-2); }
+  .col-sec { white-space: nowrap; }
+  .col-sec .sec { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .col-sec .qt { font-family: var(--mono); font-size: 12px; color: var(--ink-2); margin-left: 9px; font-variant-numeric: tabular-nums; }
+  .col-sec .vazio, .col-origem .vazio { color: var(--ink-3); font-size: 13px; font-style: italic; }
+  .col-origem .local, .col-local { font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+  .total { font-family: var(--mono); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .total.dim { font-weight: 400; color: var(--ink-2); }
+  .pct { font-family: var(--mono); font-size: 12px; color: var(--ink-2); text-align: right; font-variant-numeric: tabular-nums; }
+
+  .col-bar { width: 40%; min-width: 190px; }
+  .bar { display: flex; gap: 2px; align-items: center; height: 14px; }
+  .seg { height: 100%; border-radius: 0 3px 3px 0; }
+  .seg:first-child { border-radius: 3px; }
+  .seg-p { background: var(--s1); }
+  .seg-a { background: var(--s2); }
+
+  .chip {
+    display: inline-block; padding: 2px 8px; border-radius: 2px;
+    font-size: 11px; font-weight: 600; letter-spacing: .02em;
+  }
+  .chip-principal { background: var(--s1-fraco); color: var(--s1); }
+  .chip-agregada { background: var(--s2-fraco); color: var(--s2); }
+
+  /* ---------- destaques ---------- */
+  .achados { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 14px; }
+  .achado {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-top: 2px solid var(--s2); border-radius: 3px;
+    padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;
+  }
+  .achado .t { font-family: var(--serif); font-size: 16.5px; font-weight: 600; }
+  .achado .d { font-size: 13.5px; color: var(--ink-2); }
+
+  .metodo { background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 20px 24px; }
+  .metodo ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 9px; }
+  .metodo li { font-size: 13.5px; color: var(--ink-2); }
+  .metodo strong { color: var(--ink); font-weight: 600; }
+
+  footer { color: var(--ink-3); font-size: 12.5px; border-top: 1px solid var(--rule); padding-top: 16px; }
+
+  @media (max-width: 720px) {
+    .col-bar { display: none; }
+    .wrap { padding: 28px 16px 56px; gap: 34px; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Elei&ccedil;&otilde;es 2026 &middot; 1&ordm; turno &middot; 04/10/2026 &middot; Zona 1 &middot; ZZ</div>
+    <h1>Eleitorado por se&ccedil;&atilde;o e por urna em Dublin</h1>
+    <p class="sub">O mapa de agrega&ccedil;&otilde;es do TSE concentra as 51 se&ccedil;&otilde;es da Irlanda em 28 urnas,
+    todas num &uacute;nico local. Abaixo, quantos eleitores cada se&ccedil;&atilde;o traz e onde eles residem.</p>
+    <div class="local-band">
+      <span class="nome">Royal Dublin Society - Hall 2</span>
+      <span class="end">RDS, Merrion Road, Ballsbridge, Dublin 4 D04 AK83</span>
+    </div>
+    <div class="tiles">
+      <div class="tile"><span class="n">16.794</span><span class="k">eleitores na zona de Dublin</span></div>
+      <div class="tile"><span class="n">51</span><span class="k">se&ccedil;&otilde;es (28 principais + 23 agregadas)</span></div>
+      <div class="tile"><span class="n">28</span><span class="k">urnas no Royal Dublin Society</span></div>
+      <div class="tile"><span class="n">797</span><span class="k">eleitores na urna mais carregada</span></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>As 28 urnas, da mais carregada &agrave; menos</h2>
+    <p class="nota">Cada urna &eacute; identificada pela sua se&ccedil;&atilde;o principal e re&uacute;ne, em 23 casos,
+    uma se&ccedil;&atilde;o agregada. A coluna <strong>origem</strong> indica onde residem os eleitores da
+    se&ccedil;&atilde;o agregada &mdash; todas as se&ccedil;&otilde;es principais s&atilde;o de residentes em Dublin.</p>
+    <div class="legenda">
+      <span><i class="swatch sw-p"></i>Se&ccedil;&atilde;o principal</span>
+      <span><i class="swatch sw-a"></i>Se&ccedil;&atilde;o agregada</span>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Se&ccedil;&atilde;o principal</th><th>Se&ccedil;&atilde;o agregada</th>
+          <th>Origem da agregada</th><th>Composi&ccedil;&atilde;o</th><th style="text-align:right">Total na urna</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+          <td class="rank">1</td>
+          <td class="col-sec"><span class="urna">3313</span><span class="qt">397</span></td>
+          <td class="col-sec"><span class="sec">3889</span><span class="qt">400</span></td>
+          <td class="col-origem"><span class="local">DUBLIN</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.812%"></span><span class="seg seg-a" style="width:50.188%"></span></span></td>
+          <td class="total">797</td>
+        </tr>
+        <tr>
+          <td class="rank">2</td>
+          <td class="col-sec"><span class="urna">3322</span><span class="qt">398</span></td>
+          <td class="col-sec"><span class="sec">3752</span><span class="qt">396</span></td>
+          <td class="col-origem"><span class="local">DUBLIN</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.937%"></span><span class="seg seg-a" style="width:49.686%"></span></span></td>
+          <td class="total">794</td>
+        </tr>
+        <tr>
+          <td class="rank">3</td>
+          <td class="col-sec"><span class="urna">3142</span><span class="qt">398</span></td>
+          <td class="col-sec"><span class="sec">1278</span><span class="qt">395</span></td>
+          <td class="col-origem"><span class="local">LIMERICK</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.937%"></span><span class="seg seg-a" style="width:49.561%"></span></span></td>
+          <td class="total">793</td>
+        </tr>
+        <tr>
+          <td class="rank">4</td>
+          <td class="col-sec"><span class="urna">3315</span><span class="qt">395</span></td>
+          <td class="col-sec"><span class="sec">3778</span><span class="qt">397</span></td>
+          <td class="col-origem"><span class="local">DUBLIN</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.561%"></span><span class="seg seg-a" style="width:49.812%"></span></span></td>
+          <td class="total">792</td>
+        </tr>
+        <tr>
+          <td class="rank">5</td>
+          <td class="col-sec"><span class="urna">3161</span><span class="qt">397</span></td>
+          <td class="col-sec"><span class="sec">3307</span><span class="qt">394</span></td>
+          <td class="col-origem"><span class="local">CORK</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.812%"></span><span class="seg seg-a" style="width:49.435%"></span></span></td>
+          <td class="total">791</td>
+        </tr>
+        <tr>
+          <td class="rank">6</td>
+          <td class="col-sec"><span class="urna">3245</span><span class="qt">397</span></td>
+          <td class="col-sec"><span class="sec">0519</span><span class="qt">384</span></td>
+          <td class="col-origem"><span class="local">CORK</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.812%"></span><span class="seg seg-a" style="width:48.181%"></span></span></td>
+          <td class="total">781</td>
+        </tr>
+        <tr>
+          <td class="rank">7</td>
+          <td class="col-sec"><span class="urna">3302</span><span class="qt">396</span></td>
+          <td class="col-sec"><span class="sec">3181</span><span class="qt">375</span></td>
+          <td class="col-origem"><span class="local">OUTROS LOCAIS DA IRLANDA</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.686%"></span><span class="seg seg-a" style="width:47.051%"></span></span></td>
+          <td class="total">771</td>
+        </tr>
+        <tr>
+          <td class="rank">8</td>
+          <td class="col-sec"><span class="urna">3305</span><span class="qt">397</span></td>
+          <td class="col-sec"><span class="sec">0521</span><span class="qt">370</span></td>
+          <td class="col-origem"><span class="local">GALWAY</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.812%"></span><span class="seg seg-a" style="width:46.424%"></span></span></td>
+          <td class="total">767</td>
+        </tr>
+        <tr>
+          <td class="rank">9</td>
+          <td class="col-sec"><span class="urna">3306</span><span class="qt">396</span></td>
+          <td class="col-sec"><span class="sec">0518</span><span class="qt">370</span></td>
+          <td class="col-origem"><span class="local">OUTROS LOCAIS DA IRLANDA</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.686%"></span><span class="seg seg-a" style="width:46.424%"></span></span></td>
+          <td class="total">766</td>
+        </tr>
+        <tr>
+          <td class="rank">10</td>
+          <td class="col-sec"><span class="urna">3108</span><span class="qt">398</span></td>
+          <td class="col-sec"><span class="sec">3422</span><span class="qt">358</span></td>
+          <td class="col-origem"><span class="local">GALWAY</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.937%"></span><span class="seg seg-a" style="width:44.918%"></span></span></td>
+          <td class="total">756</td>
+        </tr>
+        <tr>
+          <td class="rank">11</td>
+          <td class="col-sec"><span class="urna">3179</span><span class="qt">398</span></td>
+          <td class="col-sec"><span class="sec">0530</span><span class="qt">278</span></td>
+          <td class="col-origem"><span class="local">WESTMEATH</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.937%"></span><span class="seg seg-a" style="width:34.881%"></span></span></td>
+          <td class="total">676</td>
+        </tr>
+        <tr>
+          <td class="rank">12</td>
+          <td class="col-sec"><span class="urna">3311</span><span class="qt">397</span></td>
+          <td class="col-sec"><span class="sec">3913</span><span class="qt">233</span></td>
+          <td class="col-origem"><span class="local">DUBLIN</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.812%"></span><span class="seg seg-a" style="width:29.235%"></span></span></td>
+          <td class="total">630</td>
+        </tr>
+        <tr>
+          <td class="rank">13</td>
+          <td class="col-sec"><span class="urna">3309</span><span class="qt">398</span></td>
+          <td class="col-sec"><span class="sec">1314</span><span class="qt">217</span></td>
+          <td class="col-origem"><span class="local">WATERFORD</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.937%"></span><span class="seg seg-a" style="width:27.227%"></span></span></td>
+          <td class="total">615</td>
+        </tr>
+        <tr>
+          <td class="rank">14</td>
+          <td class="col-sec"><span class="urna">3229</span><span class="qt">398</span></td>
+          <td class="col-sec"><span class="sec">3821</span><span class="qt">208</span></td>
+          <td class="col-origem"><span class="local">CORK</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.937%"></span><span class="seg seg-a" style="width:26.098%"></span></span></td>
+          <td class="total">606</td>
+        </tr>
+        <tr>
+          <td class="rank">15</td>
+          <td class="col-sec"><span class="urna">0511</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="sec">1100</span><span class="qt">182</span></td>
+          <td class="col-origem"><span class="local">ROSCOMMON</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span><span class="seg seg-a" style="width:22.836%"></span></span></td>
+          <td class="total">582</td>
+        </tr>
+        <tr>
+          <td class="rank">16</td>
+          <td class="col-sec"><span class="urna">3216</span><span class="qt">398</span></td>
+          <td class="col-sec"><span class="sec">0527</span><span class="qt">173</span></td>
+          <td class="col-origem"><span class="local">CLARE</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.937%"></span><span class="seg seg-a" style="width:21.706%"></span></span></td>
+          <td class="total">571</td>
+        </tr>
+        <tr>
+          <td class="rank">17</td>
+          <td class="col-sec"><span class="urna">0517</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="sec">1292</span><span class="qt">113</span></td>
+          <td class="col-origem"><span class="local">CAVAN</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span><span class="seg seg-a" style="width:14.178%"></span></span></td>
+          <td class="total">513</td>
+        </tr>
+        <tr>
+          <td class="rank">18</td>
+          <td class="col-sec"><span class="urna">0513</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="sec">1105</span><span class="qt">102</span></td>
+          <td class="col-origem"><span class="local">MAYO</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span><span class="seg seg-a" style="width:12.798%"></span></span></td>
+          <td class="total">502</td>
+        </tr>
+        <tr>
+          <td class="rank">19</td>
+          <td class="col-sec"><span class="urna">0512</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="sec">2855</span><span class="qt">76</span></td>
+          <td class="col-origem"><span class="local">LONGFORD</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span><span class="seg seg-a" style="width:9.536%"></span></span></td>
+          <td class="total">476</td>
+        </tr>
+        <tr>
+          <td class="rank">20</td>
+          <td class="col-sec"><span class="urna">1160</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="sec">3845</span><span class="qt">73</span></td>
+          <td class="col-origem"><span class="local">LIMERICK</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span><span class="seg seg-a" style="width:9.159%"></span></span></td>
+          <td class="total">473</td>
+        </tr>
+        <tr>
+          <td class="rank">21</td>
+          <td class="col-sec"><span class="urna">1352</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="sec">0522</span><span class="qt">62</span></td>
+          <td class="col-origem"><span class="local">DONEGAL</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span><span class="seg seg-a" style="width:7.779%"></span></span></td>
+          <td class="total">462</td>
+        </tr>
+        <tr>
+          <td class="rank">22</td>
+          <td class="col-sec"><span class="urna">3054</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="sec">1099</span><span class="qt">54</span></td>
+          <td class="col-origem"><span class="local">KERRY</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span><span class="seg seg-a" style="width:6.775%"></span></span></td>
+          <td class="total">454</td>
+        </tr>
+        <tr>
+          <td class="rank">23</td>
+          <td class="col-sec"><span class="urna">3078</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="sec">2847</span><span class="qt">29</span></td>
+          <td class="col-origem"><span class="local">LEITRIM</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span><span class="seg seg-a" style="width:3.639%"></span></span></td>
+          <td class="total">429</td>
+        </tr>
+        <tr>
+          <td class="rank">24</td>
+          <td class="col-sec"><span class="urna">3688</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="vazio">sem agregada</span></td>
+          <td class="col-origem"><span class="vazio">&mdash;</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span></span></td>
+          <td class="total">400</td>
+        </tr>
+        <tr>
+          <td class="rank">25</td>
+          <td class="col-sec"><span class="urna">3862</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="vazio">sem agregada</span></td>
+          <td class="col-origem"><span class="vazio">&mdash;</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span></span></td>
+          <td class="total">400</td>
+        </tr>
+        <tr>
+          <td class="rank">26</td>
+          <td class="col-sec"><span class="urna">3832</span><span class="qt">400</span></td>
+          <td class="col-sec"><span class="vazio">sem agregada</span></td>
+          <td class="col-origem"><span class="vazio">&mdash;</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.188%"></span></span></td>
+          <td class="total">400</td>
+        </tr>
+        <tr>
+          <td class="rank">27</td>
+          <td class="col-sec"><span class="urna">3308</span><span class="qt">399</span></td>
+          <td class="col-sec"><span class="vazio">sem agregada</span></td>
+          <td class="col-origem"><span class="vazio">&mdash;</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:50.063%"></span></span></td>
+          <td class="total">399</td>
+        </tr>
+        <tr>
+          <td class="rank">28</td>
+          <td class="col-sec"><span class="urna">3442</span><span class="qt">398</span></td>
+          <td class="col-sec"><span class="vazio">sem agregada</span></td>
+          <td class="col-origem"><span class="vazio">&mdash;</span></td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:49.937%"></span></span></td>
+          <td class="total">398</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>O que os n&uacute;meros mostram</h2>
+    <div class="achados">
+      <div class="achado">
+        <span class="t">23 urnas com duas se&ccedil;&otilde;es</span>
+        <span class="d">V&atilde;o de 429 a 797 eleitores.
+        As 5 urnas restantes operam com uma se&ccedil;&atilde;o s&oacute;, entre 398 e 400.</span>
+      </div>
+      <div class="achado">
+        <span class="t">Duas naturezas de urna cheia</span>
+        <span class="d">No topo convivem urnas que somam duas se&ccedil;&otilde;es de Dublin (3313, 3322, 3315)
+        e urnas que somam uma se&ccedil;&atilde;o de Dublin com uma se&ccedil;&atilde;o inteira do interior
+        (3142 com Limerick, 3161 e 3245 com Cork, 3305 e 3108 com Galway).</span>
+      </div>
+      <div class="achado">
+        <span class="t">Cada se&ccedil;&atilde;o &eacute; de uma s&oacute; localidade</span>
+        <span class="d">Nas 51 se&ccedil;&otilde;es, 100% dos eleitores v&ecirc;m de um &uacute;nico local de origem.
+        As 28 principais somam 11.155 eleitores, todos de Dublin.</span>
+      </div>
+      <div class="achado">
+        <span class="t">4.213 eleitores fora de Dublin</span>
+        <span class="d">25% do eleitorado da zona reside em outros condados e
+        passa a votar em Dublin. Em sete urnas essa parcela chega perto da metade.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>De onde v&ecirc;m os eleitores</h2>
+    <p class="nota">Local de vota&ccedil;&atilde;o de origem de cada eleitor, usado aqui como refer&ecirc;ncia de resid&ecirc;ncia.
+    Com a agrega&ccedil;&atilde;o, todos passam a votar no Royal Dublin Society.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>Localidade</th><th>Distribui&ccedil;&atilde;o</th>
+          <th style="text-align:right">Eleitores</th><th style="text-align:right">Share</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+          <td class="col-local">DUBLIN</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-p" style="width:100.000%"></span></span></td>
+          <td class="total">12.581</td>
+          <td class="pct">74.9%</td>
+        </tr>
+        <tr>
+          <td class="col-local">CORK</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:7.837%"></span></span></td>
+          <td class="total">986</td>
+          <td class="pct">5.9%</td>
+        </tr>
+        <tr>
+          <td class="col-local">OUTROS LOCAIS DA IRLANDA</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:5.922%"></span></span></td>
+          <td class="total">745</td>
+          <td class="pct">4.4%</td>
+        </tr>
+        <tr>
+          <td class="col-local">GALWAY</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:5.787%"></span></span></td>
+          <td class="total">728</td>
+          <td class="pct">4.3%</td>
+        </tr>
+        <tr>
+          <td class="col-local">LIMERICK</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:3.720%"></span></span></td>
+          <td class="total">468</td>
+          <td class="pct">2.8%</td>
+        </tr>
+        <tr>
+          <td class="col-local">WESTMEATH</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:2.210%"></span></span></td>
+          <td class="total">278</td>
+          <td class="pct">1.7%</td>
+        </tr>
+        <tr>
+          <td class="col-local">WATERFORD</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:1.725%"></span></span></td>
+          <td class="total">217</td>
+          <td class="pct">1.3%</td>
+        </tr>
+        <tr>
+          <td class="col-local">ROSCOMMON</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:1.447%"></span></span></td>
+          <td class="total">182</td>
+          <td class="pct">1.1%</td>
+        </tr>
+        <tr>
+          <td class="col-local">CLARE</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:1.375%"></span></span></td>
+          <td class="total">173</td>
+          <td class="pct">1.0%</td>
+        </tr>
+        <tr>
+          <td class="col-local">CAVAN</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:0.898%"></span></span></td>
+          <td class="total">113</td>
+          <td class="pct">0.7%</td>
+        </tr>
+        <tr>
+          <td class="col-local">MAYO</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:0.811%"></span></span></td>
+          <td class="total">102</td>
+          <td class="pct">0.6%</td>
+        </tr>
+        <tr>
+          <td class="col-local">LONGFORD</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:0.604%"></span></span></td>
+          <td class="total">76</td>
+          <td class="pct">0.5%</td>
+        </tr>
+        <tr>
+          <td class="col-local">DONEGAL</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:0.493%"></span></span></td>
+          <td class="total">62</td>
+          <td class="pct">0.4%</td>
+        </tr>
+        <tr>
+          <td class="col-local">KERRY</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:0.429%"></span></span></td>
+          <td class="total">54</td>
+          <td class="pct">0.3%</td>
+        </tr>
+        <tr>
+          <td class="col-local">LEITRIM</td>
+          <td class="col-bar"><span class="bar"><span class="seg seg-a" style="width:0.231%"></span></span></td>
+          <td class="total">29</td>
+          <td class="pct">0.2%</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>As 51 se&ccedil;&otilde;es, uma a uma</h2>
+    <p class="nota">A &uacute;ltima coluna reproduz o campo <code>QT_ELEITOR_ELEICAO_FEDERAL</code> do TSE, que
+    j&aacute; traz o total agregado da urna na se&ccedil;&atilde;o principal e vem zerado nas agregadas.
+    Ele confere com o total calculado aqui nas 28 urnas.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr>
+          <th>Se&ccedil;&atilde;o</th><th>Papel</th><th>Urna</th><th>Resid&ecirc;ncia</th>
+          <th style="text-align:right">Eleitores</th><th style="text-align:right">Total na urna (TSE)</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+          <td class="urna">0511</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">0511</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">582</td>
+        </tr>
+        <tr>
+          <td class="urna">0512</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">0512</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">476</td>
+        </tr>
+        <tr>
+          <td class="urna">0513</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">0513</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">502</td>
+        </tr>
+        <tr>
+          <td class="urna">0517</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">0517</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">513</td>
+        </tr>
+        <tr>
+          <td class="urna">0518</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3306</td>
+          <td class="col-local">OUTROS LOCAIS DA IRLANDA</td>
+          <td class="total">370</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">0519</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3245</td>
+          <td class="col-local">CORK</td>
+          <td class="total">384</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">0521</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3305</td>
+          <td class="col-local">GALWAY</td>
+          <td class="total">370</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">0522</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">1352</td>
+          <td class="col-local">DONEGAL</td>
+          <td class="total">62</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">0527</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3216</td>
+          <td class="col-local">CLARE</td>
+          <td class="total">173</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">0530</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3179</td>
+          <td class="col-local">WESTMEATH</td>
+          <td class="total">278</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">1099</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3054</td>
+          <td class="col-local">KERRY</td>
+          <td class="total">54</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">1100</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">0511</td>
+          <td class="col-local">ROSCOMMON</td>
+          <td class="total">182</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">1105</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">0513</td>
+          <td class="col-local">MAYO</td>
+          <td class="total">102</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">1160</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">1160</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">473</td>
+        </tr>
+        <tr>
+          <td class="urna">1278</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3142</td>
+          <td class="col-local">LIMERICK</td>
+          <td class="total">395</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">1292</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">0517</td>
+          <td class="col-local">CAVAN</td>
+          <td class="total">113</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">1314</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3309</td>
+          <td class="col-local">WATERFORD</td>
+          <td class="total">217</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">1352</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">1352</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">462</td>
+        </tr>
+        <tr>
+          <td class="urna">2847</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3078</td>
+          <td class="col-local">LEITRIM</td>
+          <td class="total">29</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">2855</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">0512</td>
+          <td class="col-local">LONGFORD</td>
+          <td class="total">76</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">3054</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3054</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">454</td>
+        </tr>
+        <tr>
+          <td class="urna">3078</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3078</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">429</td>
+        </tr>
+        <tr>
+          <td class="urna">3108</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3108</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">398</td>
+          <td class="total dim">756</td>
+        </tr>
+        <tr>
+          <td class="urna">3142</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3142</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">398</td>
+          <td class="total dim">793</td>
+        </tr>
+        <tr>
+          <td class="urna">3161</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3161</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">397</td>
+          <td class="total dim">791</td>
+        </tr>
+        <tr>
+          <td class="urna">3179</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3179</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">398</td>
+          <td class="total dim">676</td>
+        </tr>
+        <tr>
+          <td class="urna">3181</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3302</td>
+          <td class="col-local">OUTROS LOCAIS DA IRLANDA</td>
+          <td class="total">375</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">3216</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3216</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">398</td>
+          <td class="total dim">571</td>
+        </tr>
+        <tr>
+          <td class="urna">3229</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3229</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">398</td>
+          <td class="total dim">606</td>
+        </tr>
+        <tr>
+          <td class="urna">3245</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3245</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">397</td>
+          <td class="total dim">781</td>
+        </tr>
+        <tr>
+          <td class="urna">3302</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3302</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">396</td>
+          <td class="total dim">771</td>
+        </tr>
+        <tr>
+          <td class="urna">3305</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3305</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">397</td>
+          <td class="total dim">767</td>
+        </tr>
+        <tr>
+          <td class="urna">3306</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3306</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">396</td>
+          <td class="total dim">766</td>
+        </tr>
+        <tr>
+          <td class="urna">3307</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3161</td>
+          <td class="col-local">CORK</td>
+          <td class="total">394</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">3308</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3308</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">399</td>
+          <td class="total dim">399</td>
+        </tr>
+        <tr>
+          <td class="urna">3309</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3309</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">398</td>
+          <td class="total dim">615</td>
+        </tr>
+        <tr>
+          <td class="urna">3311</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3311</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">397</td>
+          <td class="total dim">630</td>
+        </tr>
+        <tr>
+          <td class="urna">3313</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3313</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">397</td>
+          <td class="total dim">797</td>
+        </tr>
+        <tr>
+          <td class="urna">3315</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3315</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">395</td>
+          <td class="total dim">792</td>
+        </tr>
+        <tr>
+          <td class="urna">3322</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3322</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">398</td>
+          <td class="total dim">794</td>
+        </tr>
+        <tr>
+          <td class="urna">3422</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3108</td>
+          <td class="col-local">GALWAY</td>
+          <td class="total">358</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">3442</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3442</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">398</td>
+          <td class="total dim">398</td>
+        </tr>
+        <tr>
+          <td class="urna">3688</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3688</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">400</td>
+        </tr>
+        <tr>
+          <td class="urna">3752</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3322</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">396</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">3778</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3315</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">397</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">3821</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3229</td>
+          <td class="col-local">CORK</td>
+          <td class="total">208</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">3832</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3832</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">400</td>
+        </tr>
+        <tr>
+          <td class="urna">3845</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">1160</td>
+          <td class="col-local">LIMERICK</td>
+          <td class="total">73</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">3862</td>
+          <td><span class="chip chip-principal">Principal</span></td>
+          <td class="urna dim">3862</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">400</td>
+        </tr>
+        <tr>
+          <td class="urna">3889</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3313</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">400</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="urna">3913</td>
+          <td><span class="chip chip-agregada">Agregada</span></td>
+          <td class="urna dim">3311</td>
+          <td class="col-local">DUBLIN</td>
+          <td class="total">233</td>
+          <td class="total dim">&mdash;</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Como estes n&uacute;meros foram apurados</h2>
+    <div class="metodo">
+      <ul>
+        <li><strong>Fontes.</strong> <code>eleitorado_local_votacao_2026_ZZ.csv</code> (TSE, gerado em 13/08/2026)
+        para se&ccedil;&otilde;es, papel e eleitorado; <code>Filtrado_Dublin.csv</code> (TSE, 14/07/2026) para a
+        origem dos eleitores; e o PNG do mapa de agrega&ccedil;&otilde;es do TSE.</li>
+        <li><strong>Reconcilia&ccedil;&atilde;o.</strong> As duas bases batem se&ccedil;&atilde;o a se&ccedil;&atilde;o,
+        somando 16.794 eleitores em ambas.</li>
+        <li><strong>Confer&ecirc;ncia independente.</strong> O total somado aqui para cada uma das 28 urnas
+        coincide com o campo <code>QT_ELEITOR_ELEICAO_FEDERAL</code>, que o TSE j&aacute; publica agregado
+        na se&ccedil;&atilde;o principal. Os dois caminhos de c&aacute;lculo chegam ao mesmo n&uacute;mero.</li>
+        <li><strong>Seção agregada 3752.</strong> O PNG do TSE indica a seção principal 3222; o CSV oficial indica 3322. A seção 3222 não existe em Dublin — pertence ao PORTO —, então o PNG traz erro de digitação e o CSV prevalece.</li><li><strong>5 urnas sem seção agregada.</strong> As seções 3308, 3442, 3688, 3832, 3862 operam sozinhas na urna.</li><li><strong>Datas de geração.</strong> Locais de votação gerado em 13/08/2026; perfil do eleitorado em 14/07/2026.</li>
+        <li><strong>Sem crit&eacute;rio de gargalo.</strong> A pedido, nenhum modelo de tempo de vota&ccedil;&atilde;o
+        foi aplicado: a p&aacute;gina entrega os totais ordenados e o corte fica a cargo de quem analisa.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>Elaborado a partir dos dados abertos do TSE para as Elei&ccedil;&otilde;es 2026, 1&ordm; turno.</footer>
+</div>

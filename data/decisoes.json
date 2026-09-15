@@ -1,0 +1,707 @@
+{
+ "decididoEm": "2026-09-06",
+ "numeracao": "MRV do DJE/TRE-DF, identidade unica da mesa; nao depende da posicao",
+ "comparecimento": {
+  "base": "B",
+  "rotulo": "taxa de 2022 por domicílio de origem (base B, não oficial)",
+  "total": 11499,
+  "total_exato": 11497.7,
+  "aptos": 16794,
+  "taxas": {
+   "DUBLIN": {
+    "taxa": 0.74,
+    "qualidade": "direto"
+   },
+   "CORK": {
+    "taxa": 0.533,
+    "qualidade": "direto"
+   },
+   "OUTROS LOCAIS DA IRLANDA": {
+    "taxa": 0.6,
+    "qualidade": "direto"
+   },
+   "GALWAY": {
+    "taxa": 0.481,
+    "qualidade": "direto"
+   },
+   "LIMERICK": {
+    "taxa": 0.434,
+    "qualidade": "proxy"
+   },
+   "WESTMEATH": {
+    "taxa": 0.461,
+    "qualidade": "proxy"
+   },
+   "WATERFORD": {
+    "taxa": 0.461,
+    "qualidade": "proxy"
+   },
+   "ROSCOMMON": {
+    "taxa": 0.434,
+    "qualidade": "proxy"
+   },
+   "CLARE": {
+    "taxa": 0.649,
+    "qualidade": "direto"
+   },
+   "CAVAN": {
+    "taxa": 0.461,
+    "qualidade": "proxy"
+   },
+   "MAYO": {
+    "taxa": 0.544,
+    "qualidade": "proxy"
+   },
+   "LONGFORD": {
+    "taxa": 0.778,
+    "qualidade": "direto"
+   },
+   "DONEGAL": {
+    "taxa": 0.51,
+    "qualidade": "genérico (0,49 abst.)"
+   },
+   "KERRY": {
+    "taxa": 0.544,
+    "qualidade": "proxy"
+   },
+   "LEITRIM": {
+    "taxa": 0.51,
+    "qualidade": "genérico (0,49 abst.)"
+   }
+  }
+ },
+ "classes": {
+  "regra": "as 3 maiores = alta; esperado >= 450 = media; abaixo = baixa",
+  "n_alta": 3,
+  "limiar_media": 450,
+  "cores": {
+   "alta": {
+    "cor": "vermelho",
+    "hex": "#c0392b",
+    "rotulo": "alto comparecimento"
+   },
+   "media": {
+    "cor": "amarelo",
+    "hex": "#d4a017",
+    "rotulo": "médio comparecimento"
+   },
+   "baixa": {
+    "cor": "verde",
+    "hex": "#1e8449",
+    "rotulo": "baixo comparecimento"
+   }
+  },
+  "contagem": {
+   "alta": 3,
+   "media": 8,
+   "baixa": 17
+  }
+ },
+ "portas": {
+  "S4": {
+   "papel": "entrada",
+   "entrada": "A",
+   "cor": "#2a78d6"
+  },
+  "S5": {
+   "papel": "entrada",
+   "entrada": "B",
+   "cor": "#e08a00"
+  },
+  "S6": {
+   "papel": "entrada",
+   "entrada": "C",
+   "cor": "#c2185b"
+  },
+  "S2": {
+   "papel": "saida"
+  },
+  "S8": {
+   "papel": "saida"
+  }
+ },
+ "entradas": [
+  {
+   "id": "A",
+   "porta": "S4",
+   "cor": "azul",
+   "hex": "#2a78d6",
+   "balizas": 3,
+   "serpenteado": 171,
+   "baia": 274,
+   "capacidade": 445,
+   "quota": 0.3171,
+   "mrvs": [
+    3,
+    5,
+    9,
+    12,
+    15,
+    20,
+    24,
+    26,
+    28
+   ],
+   "esperado": 3642,
+   "alvo": 3646
+  },
+  {
+   "id": "B",
+   "porta": "S5",
+   "cor": "âmbar",
+   "hex": "#e08a00",
+   "balizas": 9,
+   "serpenteado": 513,
+   "baia": 0,
+   "capacidade": 513,
+   "quota": 0.3659,
+   "mrvs": [
+    1,
+    4,
+    7,
+    8,
+    16,
+    17,
+    18,
+    21,
+    22,
+    25
+   ],
+   "esperado": 4215,
+   "alvo": 4207
+  },
+  {
+   "id": "C",
+   "porta": "S6",
+   "cor": "magenta",
+   "hex": "#c2185b",
+   "balizas": 3,
+   "serpenteado": 171,
+   "baia": 274,
+   "capacidade": 445,
+   "quota": 0.3171,
+   "mrvs": [
+    2,
+    6,
+    10,
+    11,
+    13,
+    14,
+    19,
+    23,
+    27
+   ],
+   "esperado": 3642,
+   "alvo": 3646
+  }
+ ],
+ "saidas": [
+  "S2",
+  "S8"
+ ],
+ "nomenclatura_portas": "em aberto: cor ou letra",
+ "mesas": [
+  {
+   "mrv": 1,
+   "principal": 511,
+   "agregada": 1100,
+   "origem_agregada": "ROSCOMMON",
+   "aptos": 582,
+   "aptos_principal": 400,
+   "aptos_agregada": 182,
+   "aptos_dublin": 400,
+   "aptos_interior": 182,
+   "esperado": 375,
+   "esperado_exato": 374.99,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 2,
+   "principal": 512,
+   "agregada": 2855,
+   "origem_agregada": "LONGFORD",
+   "aptos": 476,
+   "aptos_principal": 400,
+   "aptos_agregada": 76,
+   "aptos_dublin": 400,
+   "aptos_interior": 76,
+   "esperado": 355,
+   "esperado_exato": 355.13,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 3,
+   "principal": 513,
+   "agregada": 1105,
+   "origem_agregada": "MAYO",
+   "aptos": 502,
+   "aptos_principal": 400,
+   "aptos_agregada": 102,
+   "aptos_dublin": 400,
+   "aptos_interior": 102,
+   "esperado": 351,
+   "esperado_exato": 351.49,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 4,
+   "principal": 517,
+   "agregada": 1292,
+   "origem_agregada": "CAVAN",
+   "aptos": 513,
+   "aptos_principal": 400,
+   "aptos_agregada": 113,
+   "aptos_dublin": 400,
+   "aptos_interior": 113,
+   "esperado": 348,
+   "esperado_exato": 348.09,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 5,
+   "principal": 1160,
+   "agregada": 3845,
+   "origem_agregada": "LIMERICK",
+   "aptos": 473,
+   "aptos_principal": 400,
+   "aptos_agregada": 73,
+   "aptos_dublin": 400,
+   "aptos_interior": 73,
+   "esperado": 328,
+   "esperado_exato": 327.68,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 6,
+   "principal": 1352,
+   "agregada": 522,
+   "origem_agregada": "DONEGAL",
+   "aptos": 462,
+   "aptos_principal": 400,
+   "aptos_agregada": 62,
+   "aptos_dublin": 400,
+   "aptos_interior": 62,
+   "esperado": 328,
+   "esperado_exato": 327.62,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 7,
+   "principal": 3054,
+   "agregada": 1099,
+   "origem_agregada": "KERRY",
+   "aptos": 454,
+   "aptos_principal": 400,
+   "aptos_agregada": 54,
+   "aptos_dublin": 400,
+   "aptos_interior": 54,
+   "esperado": 325,
+   "esperado_exato": 325.38,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 8,
+   "principal": 3078,
+   "agregada": 2847,
+   "origem_agregada": "LEITRIM",
+   "aptos": 429,
+   "aptos_principal": 400,
+   "aptos_agregada": 29,
+   "aptos_dublin": 400,
+   "aptos_interior": 29,
+   "esperado": 311,
+   "esperado_exato": 310.79,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 9,
+   "principal": 3108,
+   "agregada": 3422,
+   "origem_agregada": "GALWAY",
+   "aptos": 756,
+   "aptos_principal": 398,
+   "aptos_agregada": 358,
+   "aptos_dublin": 398,
+   "aptos_interior": 358,
+   "esperado": 467,
+   "esperado_exato": 466.72,
+   "classe": "media",
+   "cor": "#d4a017",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 10,
+   "principal": 3142,
+   "agregada": 1278,
+   "origem_agregada": "LIMERICK",
+   "aptos": 793,
+   "aptos_principal": 398,
+   "aptos_agregada": 395,
+   "aptos_dublin": 398,
+   "aptos_interior": 395,
+   "esperado": 466,
+   "esperado_exato": 465.95,
+   "classe": "media",
+   "cor": "#d4a017",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 11,
+   "principal": 3161,
+   "agregada": 3307,
+   "origem_agregada": "CORK",
+   "aptos": 791,
+   "aptos_principal": 397,
+   "aptos_agregada": 394,
+   "aptos_dublin": 397,
+   "aptos_interior": 394,
+   "esperado": 504,
+   "esperado_exato": 503.78,
+   "classe": "media",
+   "cor": "#d4a017",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 12,
+   "principal": 3179,
+   "agregada": 530,
+   "origem_agregada": "WESTMEATH",
+   "aptos": 676,
+   "aptos_principal": 398,
+   "aptos_agregada": 278,
+   "aptos_dublin": 398,
+   "aptos_interior": 278,
+   "esperado": 423,
+   "esperado_exato": 422.68,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 13,
+   "principal": 3216,
+   "agregada": 527,
+   "origem_agregada": "CLARE",
+   "aptos": 571,
+   "aptos_principal": 398,
+   "aptos_agregada": 173,
+   "aptos_dublin": 398,
+   "aptos_interior": 173,
+   "esperado": 407,
+   "esperado_exato": 406.8,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 14,
+   "principal": 3229,
+   "agregada": 3821,
+   "origem_agregada": "CORK",
+   "aptos": 606,
+   "aptos_principal": 398,
+   "aptos_agregada": 208,
+   "aptos_dublin": 398,
+   "aptos_interior": 208,
+   "esperado": 405,
+   "esperado_exato": 405.38,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 15,
+   "principal": 3245,
+   "agregada": 519,
+   "origem_agregada": "CORK",
+   "aptos": 781,
+   "aptos_principal": 397,
+   "aptos_agregada": 384,
+   "aptos_dublin": 397,
+   "aptos_interior": 384,
+   "esperado": 498,
+   "esperado_exato": 498.45,
+   "classe": "media",
+   "cor": "#d4a017",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 16,
+   "principal": 3302,
+   "agregada": 3181,
+   "origem_agregada": "OUTROS LOCAIS DA IRLANDA",
+   "aptos": 771,
+   "aptos_principal": 396,
+   "aptos_agregada": 375,
+   "aptos_dublin": 396,
+   "aptos_interior": 375,
+   "esperado": 518,
+   "esperado_exato": 518.04,
+   "classe": "media",
+   "cor": "#d4a017",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 17,
+   "principal": 3305,
+   "agregada": 521,
+   "origem_agregada": "GALWAY",
+   "aptos": 767,
+   "aptos_principal": 397,
+   "aptos_agregada": 370,
+   "aptos_dublin": 397,
+   "aptos_interior": 370,
+   "esperado": 472,
+   "esperado_exato": 471.75,
+   "classe": "media",
+   "cor": "#d4a017",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 18,
+   "principal": 3306,
+   "agregada": 518,
+   "origem_agregada": "OUTROS LOCAIS DA IRLANDA",
+   "aptos": 766,
+   "aptos_principal": 396,
+   "aptos_agregada": 370,
+   "aptos_dublin": 396,
+   "aptos_interior": 370,
+   "esperado": 515,
+   "esperado_exato": 515.04,
+   "classe": "media",
+   "cor": "#d4a017",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 19,
+   "principal": 3308,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 399,
+   "aptos_principal": 399,
+   "aptos_agregada": 0,
+   "aptos_dublin": 399,
+   "aptos_interior": 0,
+   "esperado": 295,
+   "esperado_exato": 295.26,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 20,
+   "principal": 3309,
+   "agregada": 1314,
+   "origem_agregada": "WATERFORD",
+   "aptos": 615,
+   "aptos_principal": 398,
+   "aptos_agregada": 217,
+   "aptos_dublin": 398,
+   "aptos_interior": 217,
+   "esperado": 395,
+   "esperado_exato": 394.56,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 21,
+   "principal": 3311,
+   "agregada": 3913,
+   "origem_agregada": "DUBLIN",
+   "aptos": 630,
+   "aptos_principal": 397,
+   "aptos_agregada": 233,
+   "aptos_dublin": 630,
+   "aptos_interior": 0,
+   "esperado": 466,
+   "esperado_exato": 466.2,
+   "classe": "media",
+   "cor": "#d4a017",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 22,
+   "principal": 3313,
+   "agregada": 3889,
+   "origem_agregada": "DUBLIN",
+   "aptos": 797,
+   "aptos_principal": 397,
+   "aptos_agregada": 400,
+   "aptos_dublin": 797,
+   "aptos_interior": 0,
+   "esperado": 590,
+   "esperado_exato": 589.78,
+   "classe": "alta",
+   "cor": "#c0392b",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 23,
+   "principal": 3315,
+   "agregada": 3778,
+   "origem_agregada": "DUBLIN",
+   "aptos": 792,
+   "aptos_principal": 395,
+   "aptos_agregada": 397,
+   "aptos_dublin": 792,
+   "aptos_interior": 0,
+   "esperado": 586,
+   "esperado_exato": 586.08,
+   "classe": "alta",
+   "cor": "#c0392b",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 24,
+   "principal": 3322,
+   "agregada": 3752,
+   "origem_agregada": "DUBLIN",
+   "aptos": 794,
+   "aptos_principal": 398,
+   "aptos_agregada": 396,
+   "aptos_dublin": 794,
+   "aptos_interior": 0,
+   "esperado": 588,
+   "esperado_exato": 587.56,
+   "classe": "alta",
+   "cor": "#c0392b",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 25,
+   "principal": 3442,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 398,
+   "aptos_principal": 398,
+   "aptos_agregada": 0,
+   "aptos_dublin": 398,
+   "aptos_interior": 0,
+   "esperado": 295,
+   "esperado_exato": 294.52,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 26,
+   "principal": 3688,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 400,
+   "aptos_principal": 400,
+   "aptos_agregada": 0,
+   "aptos_dublin": 400,
+   "aptos_interior": 0,
+   "esperado": 296,
+   "esperado_exato": 296.0,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 27,
+   "principal": 3832,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 400,
+   "aptos_principal": 400,
+   "aptos_agregada": 0,
+   "aptos_dublin": 400,
+   "aptos_interior": 0,
+   "esperado": 296,
+   "esperado_exato": 296.0,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 28,
+   "principal": 3862,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 400,
+   "aptos_principal": 400,
+   "aptos_agregada": 0,
+   "aptos_dublin": 400,
+   "aptos_interior": 0,
+   "esperado": 296,
+   "esperado_exato": 296.0,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "entrada": "A",
+   "porta": "S4"
+  }
+ ],
+ "ring3": {
+  "largura": 39.0,
+  "profundidade": 35.0,
+  "apron": 14.0,
+  "rect": [
+   8.79,
+   -49.0,
+   47.78,
+   -14.0
+  ],
+  "eixo": "centrado em S5 (estimativa; aferir o bordo oeste em campo)",
+  "serpenteado": 28.5,
+  "balizas": [
+   3,
+   9,
+   3
+  ],
+  "capacidade": 1402,
+  "separadores": 300,
+  "metros": 596.3,
+  "em_maos": 200,
+  "a_adquirir": 100,
+  "custo_eur": 1302,
+  "evacuacao_min": 11.4,
+  "largura_saida_exigida": 2.14
+ }
+}

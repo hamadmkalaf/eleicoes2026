@@ -206,6 +206,20 @@ def confere_equidade(c, mesas, parede_de, nome):
     if amplitude > 0.01 * alvo:
         c.observa("equidade", f"amplitude entre paredes de {amplitude} eleitores "
                               f"({100 * amplitude / alvo:.1f}% do alvo) — acima de 1%")
+    # Decisão de 15/09: cada entrada serve uma parede inteira e só ela.
+    por_entrada = {}
+    for m in mesas:
+        por_entrada.setdefault(m["entrada"], set()).add(parede_de[m["mrv"]])
+    bagunca = {e: sorted(ps) for e, ps in por_entrada.items() if len(ps) != 1}
+    if bagunca:
+        c.diverge("entradas", "entrada servindo mais de uma parede: "
+                              + "; ".join(f"{e} → {', '.join(ps)}" for e, ps in bagunca.items()))
+    elif len({next(iter(ps)) for ps in por_entrada.values()}) != len(por_entrada):
+        c.diverge("entradas", "duas entradas caem na mesma parede")
+    else:
+        print("  uma entrada por parede: "
+              + " · ".join(f"{e} → {next(iter(por_entrada[e]))}" for e in sorted(por_entrada)))
+
     altas = sorted(mesas, key=lambda m: -m["esperado"])[:3]
     onde = {parede_de[m["mrv"]] for m in altas}
     print("  as três mesas de maior carga: "

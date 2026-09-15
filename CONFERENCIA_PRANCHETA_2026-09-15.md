@@ -278,10 +278,94 @@ O que ainda merece uma decisão do Posto, em ordem de urgência:
 
 1. **Mesários da MRV 24 e da MRV 11** (item 4 do `PENDENCIAS`) — é o único
    item que pode desfazer o equilíbrio no dia.
-2. **Adotar "uma entrada por parede"** e regerar `data/decisoes.json`: leva a
-   amplitude entre entradas de 573 para 4, e alinha o arquivo de decisões ao
-   gerador que produziu o arranjo.
+2. ~~**Adotar "uma entrada por parede"** e regerar `data/decisoes.json`.~~
+   **Feito em 15/09** — ver o adendo do item 9.
 3. **Trocar o 11.416 de `plano_filas.py`** pela base B.
 4. **Baixar o `perfil_comparecimento_abstencao_2022` (ZZ) do TSE** e conferir
    as taxas proxy. Não bloqueia nada — melhora a defesa do número diante do
    TRE.
+
+---
+
+## 9. Adendo de 15/09 — uma entrada por parede, e o rearranjo que ela pede
+
+Depois desta conferência o Posto fechou a regra que o item 6.1 propunha, e foi
+além dela: **cada entrada serve uma parede inteira e só ela.**
+
+| Entrada | Porta | Parede | Mesas | Esperados | % | Metros | Por metro |
+|---|---|---|---:|---:|---:|---:|---:|
+| A | S4 | oeste | 9 | 3.833 | 33,3% | 29,53 | 129,8 |
+| B | S5 | norte | 9 | 3.835 | 33,4% | 27,64 | 138,7 |
+| C | S6 | leste | 10 | 3.831 | 33,3% | 36,30 | 105,5 |
+
+Com isso **equilibrar as entradas e equilibrar as paredes passaram a ser o
+mesmo problema**, e a amplitude entre filas caiu de **573 para 4 eleitores**.
+A geometria ajuda: S4 (centro em x = 22,07), S5 (28,29) e S6 (34,50) estão na
+ordem oeste → centro → leste, então cada porta manda para o lado que já é o
+seu. Ninguém atravessa o salão, e nenhuma fila cruza outra.
+
+O cenário de trabalho passou a ser `Paredes_ABC`
+(`cenarios/paredes-abc-20260915.json`), gerado por
+`scripts/arranjo_paredes.py`.
+
+### 9.1 O que mudou, e o que não mudou
+
+| | |
+|---|---:|
+| Mesas que mudam de **parede** | **0** de 28 |
+| Mesas que mudam de **entrada** | **16** de 28 |
+| Mesas que mudam de **número eleitor** | 5 de 28 |
+| Mesas repareadas (posição refeita) | 28 de 28 |
+
+**A agregação de seções não foi tocada.** O par principal → agregada de cada
+urna é do Cartório Eleitoral, foi conferido no item 2 contra o PDF oficial, e
+os mesários já estão nomeados por MRV. O que se repartiu foi a mesa inteira,
+com as suas duas seções juntas.
+
+### 9.2 Por que a composição das paredes ficou como estava
+
+`scripts/arranjo_paredes.py` varreu as **21 repartições** (n_oeste, n_norte,
+n_leste) que cabem fisicamente nas três paredes, com as duplas de 3,90 m e os
+2,40 m entre unidades da planta oficial, e otimizou cada uma:
+
+| Mesas o/n/l | Amplitude | Mesas trocando de parede | Metros por mesa | Menor folga livre |
+|---|---:|---:|---|---|
+| 10/8/10 | **0** | 16 | 2,95 · 3,45 · 3,63 | 1,83 · 2,10 · 2,10 |
+| 10/10/8 | **0** | 16 | 2,95 · 2,76 · 4,54 | 1,83 · 2,06 · 2,10 |
+| 9/9/10 | **0** | 19 | 3,28 · 3,07 · 3,63 | 1,83 · 2,06 · 2,10 |
+| **9/9/10 (a de hoje, repareada)** | **4** | **0** | 3,28 · 3,07 · 3,63 | 1,83 · 2,06 · 2,10 |
+
+A amplitude zero existe — e custa **mover 16 das 28 mesas de parede para ganhar
+4 eleitores**, 0,03% do terço. Não é uma troca que se faça: muda a entrada de
+uns 6.500 eleitores e a numeração de quase toda a sinalização para um ganho
+que nenhum mesário sentiria. A composição de hoje ficou.
+
+### 9.3 O que o repareamento ganhou
+
+As posições foram refeitas pelo empacotador — duplas de 3,90 m, uma mesa de
+alta carga isolada por parede, folga repartida por igual dentro de cada trecho.
+O ganho é de folga, não de carga:
+
+| Parede | Menor folga livre, antes | Depois |
+|---|---:|---:|
+| oeste | 2,10 m | 1,83 m |
+| norte | **1,50 m** | 2,06 m |
+| leste | 2,10 m | 2,10 m |
+| **pior do salão** | **1,50 m** | **1,83 m** |
+
+O Hamad_Final tinha dois pontos de 1,50 m na parede norte — o mínimo do padrão,
+sem margem nenhuma. O arranjo novo não tem nada abaixo de 1,83 m.
+
+### 9.4 O que isto não resolve
+
+- **A densidade continua desigual, e agora importa mais.** Sem o Ring 3, a fila
+  de cada entrada vive dentro do salão, na frente da sua parede. A norte leva
+  138,7 esperados por metro contra 105,5 da leste — 31% mais densa para a mesma
+  carga, porque é 8,7 m mais curta. Carga igual não é fila igual: é a parede
+  norte que enche primeiro.
+- **O gargalo por mesa é estrutural.** As 28 mesas continuam indo de 295 a 590
+  esperados (razão 2,00×). Isso não é pareamento ruim: com 32 seções de Dublin
+  e 28 mesas, a casa dos pombos força 4 pares Dublin+Dublin de ~790 aptos.
+  Só desagregar, com o TSE, baixa esse teto.
+- **A pendência de mesário segue igual** (item 6.3): MRV 24 e MRV 11, as duas
+  lacunas, continuam na parede oeste.

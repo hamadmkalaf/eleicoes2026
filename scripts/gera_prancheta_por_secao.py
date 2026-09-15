@@ -80,7 +80,11 @@ def monta(planta, decisoes, dados, cenario):
         "cenario": {"id": cenario.get("id", decisoes["cenario_trabalho"]["id"]),
                     "nome": cenario["nome"]},
         "salao": planta["salao"], "modulo": planta["modulo"], "portas": planta["portas"],
-        "entradas": [{"id": e["id"], "porta": e["porta"]} for e in decisoes["entradas"]],
+        "entradas": [{"id": e["id"], "porta": e["porta"], "parede": e["parede"],
+                      "mesas": len(e["mrvs"]), "esperado": e["esperado"],
+                      "quota": e["quota"], "metros": e["metros_de_parede"],
+                      "por_metro": e["por_metro"]}
+                     for e in decisoes["entradas"]],
         "saidas": decisoes["saidas"],
         "classes": {"n_alta": decisoes["classes"]["n_alta"],
                     "limiar_media": decisoes["classes"]["limiar_media"]},

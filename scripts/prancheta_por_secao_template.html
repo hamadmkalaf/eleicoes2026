@@ -54,6 +54,24 @@ h1{font-family:"Source Serif 4",Georgia,serif; font-weight:700; font-size:clamp(
 .sub{color:var(--meio); font-size:.94rem; margin:0; max-width:62ch}
 .sub strong{color:var(--tinta); font-weight:600}
 
+/* ---------- as três paredes ---------- */
+.paredes{padding-block:20px 0}
+.paredes ol{list-style:none; margin:0; padding:0; display:grid; gap:10px;
+  grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.paredes li{background:var(--folha); border:1px solid var(--regua);
+  border-top:4px solid var(--cor); padding:12px 14px 13px}
+.paredes .topo{display:flex; align-items:baseline; gap:8px; margin-bottom:7px}
+.paredes .letra{font-family:"IBM Plex Mono",monospace; font-size:1.6rem; font-weight:700;
+  line-height:1; color:var(--cor)}
+.paredes .onde{font-weight:600; font-size:.95rem}
+.paredes .porta{margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:.78rem;
+  color:var(--meio)}
+.paredes .carga{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+  font-size:1.35rem; font-weight:600; line-height:1.1}
+.paredes .detalhe{color:var(--meio); font-size:.8rem; margin:3px 0 0}
+.regra{color:var(--meio); font-size:.85rem; margin:12px 0 0; max-width:74ch}
+.regra strong{color:var(--tinta)}
+
 /* ---------- busca ---------- */
 .busca{padding-block:20px}
 .campo{display:flex; gap:8px; align-items:stretch; flex-wrap:wrap}
@@ -168,6 +186,13 @@ td.num{text-align:right; font-variant-numeric:tabular-nums}
   1º turno de 04/10/2026.</p>
 </header>
 
+<section class="paredes" aria-label="As três entradas e as paredes que elas servem">
+  <ol id="faixaParedes"></ol>
+  <p class="regra">Decisão do Posto de 15/09/2026: <strong>cada entrada serve uma parede
+  inteira e só ela</strong>. Quem entra pela porta vai direto à sua mesa sem atravessar o
+  salão, e a fila de cada porta é a fila daquela parede.</p>
+</section>
+
 <section class="busca" aria-labelledby="qlab">
   <div class="campo">
     <label for="q" id="qlab">Número da seção ou da mesa</label>
@@ -233,10 +258,12 @@ para ver as seções dela. No celular, o índice abaixo costuma ser mais rápido
   comparecimento esperado, amarela a partir de <span id="nLimiar">—</span> esperados, verde para
   as demais. A estimativa aplica a taxa de comparecimento de 2022 do condado onde o eleitor mora
   aos aptos de 2026 — <span id="nBase">—</span>. Não é número oficial do TSE.</p>
-  <p><b>A letra na ponta da fila é a entrada</b> pela qual os eleitores daquela mesa chegam, na
-  atribuição hoje registrada em <span class="mono">data/decisoes.json</span>. Ela ainda segue a
-  cota do antigo Ring 3 e está em revisão junto com o plano de filas — confira antes de mandar
-  imprimir.</p>
+  <p><b>A letra na ponta da fila é a entrada</b> pela qual os eleitores daquela mesa chegam —
+  e agora ela é a mesma em toda a parede. A atribuição anterior repartia as mesas pela cota do
+  antigo Ring 3, que deixava a entrada B com 4.215 esperados contra 3.642 das outras duas e
+  espalhava cada entrada pelas três paredes. Com o Ring 3 abandonado, a regra passou a ser
+  geográfica, e o desequilíbrio entre as filas caiu de 573 para <span id="nAmpl">—</span>
+  eleitores.</p>
   <p>Gerado por <span class="mono">scripts/gera_prancheta_por_secao.py</span> sobre o arranjo
   <span id="nCenario" class="mono">—</span>. Fontes: os três PDFs do Cartório Eleitoral em
   <span class="mono">data/oficiais/</span>, conferidos em
@@ -593,6 +620,26 @@ function montaLegenda() {
   }));
 }
 
+function montaParedes() {
+  const faixa = document.getElementById("faixaParedes");
+  faixa.replaceChildren(...D.entradas.map(e => {
+    const li = document.createElement("li");
+    li.style.setProperty("--cor", `var(--ent${e.id})`);
+    li.innerHTML = `
+      <p class="topo"><span class="letra">${e.id}</span>
+        <span class="onde">parede ${e.parede}</span>
+        <span class="porta">porta ${e.porta}</span></p>
+      <p class="carga">${e.esperado.toLocaleString("pt-BR")}</p>
+      <p class="detalhe">eleitores esperados · ${(100 * e.quota).toFixed(1)}% do total<br>
+      ${e.mesas} mesas em ${String(e.metros).replace(".", ",")} m de parede
+      · ${String(e.por_metro).replace(".", ",")} por metro</p>`;
+    return li;
+  }));
+}
+montaParedes();
+
+const cargas = D.entradas.map(e => e.esperado);
+document.getElementById("nAmpl").textContent = Math.max(...cargas) - Math.min(...cargas);
 document.getElementById("hNome").textContent = D.cenario.nome;
 document.getElementById("hSecoes").textContent = D.secoes.length;
 document.getElementById("hAptos").textContent = D.comparecimento.aptos.toLocaleString("pt-BR");

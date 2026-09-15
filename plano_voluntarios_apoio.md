@@ -121,9 +121,48 @@ Pico = janela de maior chegada (premissa: 10h–14h). Fora do pico = 8h–10h e 
 | | Reserva flutuante 15% (novo — K) | 6 | 4 |
 | | **Total em operação** | **50** | **31** |
 
-Os postos 4 e 5 escalam com a geometria real do salão: **+1 voluntário por zona
-adicional e +1 por porta de entrada adicional**. O quadro assume 3 zonas (A/B/C),
-3 portas de entrada e 1 de saída.
+Geometria confirmada (15/09/2026): o **Hall 2** é a área de chegada e fila, com
+três portas de entrada **A, B e C**; o **Ring 3** é o salão de votação, dividido em
+três zonas **A, B e C**, uma por porta. O quadro acima já reflete isso — 3 zonas,
+3 portas de entrada e 1 saída dedicada. Caso o número de zonas ou de portas mude,
+some **+1 voluntário por zona e +1 por porta**.
+
+### 4.1 A porta é o ponto a proteger
+
+Com uma única porta por zona, cada porta recebe no pico **12–14 pessoas/min**. Um
+vão de 1 m escoa muito mais que isso em fluxo contínuo, então a porta não é gargalo
+— **desde que ninguém pare nela**. Qualquer verificação, pergunta ou conferência
+feita no batente converte a porta no gargalo de toda a zona. O posto 5 controla
+ritmo e sentido; não confere nada.
+
+### 4.2 Balanceamento das três zonas
+
+As zonas devem ser equilibradas por **comparecimento esperado**, não por número de
+urnas — as urnas vão de 398 a 797 aptos. Distribuição proposta (a validar com o
+Cartório Eleitoral, que decide o arranjo físico das mesas):
+
+| Zona | Urnas | Aptos | Interior | Comparecimento esperado |
+|---|---|---|---|---|
+| A | 9 | 5.526 | 1.539 | 3.720 |
+| B | 9 | 5.365 | 1.150 | 3.695 |
+| C | 10 | 5.903 | 1.524 | 4.003 |
+
+Spread de 8,3% entre a maior e a menor; reproduzível com
+`python3 scripts/zonas_balanceadas.py`, que também imprime a lista de urnas de cada
+zona. Duas razões para não agrupar por faixa
+numérica de seção: os números de urna não são contíguos (511, 1.160, 3.054…), então
+faixa não gera sinalização mais simples; e o agrupamento por faixa desequilibra a
+carga sem contrapartida.
+
+Dois cuidados no arranjo:
+
+- **Espalhar as urnas grandes** (756–797 aptos) pelas três zonas, uma por zona — é a
+  mesma recomendação já registrada em `contexto_eleicoes_dublin_2026.md` §4, e a
+  distribuição acima a respeita.
+- **Espalhar as urnas do interior.** Os 4.213 eleitores de fora de Dublin chegam em
+  grupo, de ônibus e carona, não em fluxo contínuo. Concentrar Cork, Galway e
+  Limerick numa mesma zona produz um pico local que nenhum dimensionamento médio
+  cobre. A distribuição acima deixa 1.539 / 1.150 / 1.524 interioranos por zona.
 
 ---
 
@@ -178,11 +217,10 @@ de coordenação. 12 aparelhos cobrem 4 coordenadores + 8 postos-chave.
 
 ## 8. Pendências que alteram estes números
 
-1. **Definir o espaço final.** Este repositório e o floorplan contratado descrevem o
-   **Hall 2 (Shelbourne Hall, 50,2 × 44,5 m)**. O desenho de fluxo em discussão fala
-   em **Ring 3, com zonas A/B/C**, que não consta da documentação aqui. Os postos 4 e
-   5 dependem diretamente de quantas zonas e quantas portas existem de fato.
-2. **Número de portas de entrada por zona** e se haverá porta exclusiva de saída.
+1. **Confirmar a porta de saída.** A geometria de entrada está definida (Hall 2 com
+   portas A/B/C → zonas A/B/C do Ring 3); falta fixar por onde se sai e garantir que
+   a saída não cruze nenhuma das três entradas.
+2. **Validar a distribuição de urnas por zona** (§4.2) com o Cartório Eleitoral.
 3. **Método de identificação do eleitor** (`PENDENCIAS` item 5). Se for por caderno
    físico, o tempo por eleitor sobe, a fila migra para dentro do salão e o balcão
    "Onde eu voto?" (posto 2b) passa de conveniência a item crítico.

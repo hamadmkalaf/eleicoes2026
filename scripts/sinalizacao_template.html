@@ -85,12 +85,21 @@ svg.planta{display:block;width:100%;height:auto;max-width:100%}
 .planta .bloco{fill:var(--k);opacity:.12;stroke:none}
 .planta .mesa{fill:var(--k);stroke:none}
 .planta .rot{font-family:var(--mono);font-size:1.28px;fill:var(--k);
-  letter-spacing:-.02em}
+  letter-spacing:-.02em;paint-order:stroke fill;stroke:var(--card);
+  stroke-width:.5px;stroke-linejoin:round}
 .planta .porta{fill:var(--k)}
 .planta .letra{font-family:var(--disp);font-weight:800;font-size:4.2px;fill:var(--k)}
 .planta .fluxo{fill:none;stroke:var(--k);stroke-width:.4;stroke-dasharray:1.5 1.2;
   opacity:.7;stroke-linejoin:round;stroke-linecap:round}
 .planta .ponta{fill:var(--k);opacity:.7;stroke:none}
+.planta .slot{fill:var(--k);fill-opacity:.15;stroke:var(--k);stroke-width:.26;
+  stroke-dasharray:1.1 .7}
+.planta .slot.alerta{fill-opacity:.3;stroke-width:.5;stroke-dasharray:none}
+.planta .via{stroke:var(--k);stroke-width:.18;stroke-dasharray:.8 .6;opacity:.7}
+.planta .centro{font-family:var(--disp);font-weight:600;font-size:1.75px;
+  fill:var(--muted);letter-spacing:.11em}
+.planta .centro.sub{font-family:var(--body);font-weight:400;font-size:1.7px;
+  letter-spacing:0}
 .planta .rosa text{font-family:var(--disp);font-weight:600;font-size:2.7px;
   fill:var(--muted)}
 figcaption{font-size:.86rem;color:var(--muted);max-width:var(--measure)}
@@ -311,6 +320,63 @@ footer code{font-size:.78rem}
 
 <section class="band">
   <div class="hd">
+    <p class="eyebrow">Filas coladas no piso · simulação a 60 s por voto</p>
+    <h2>Uma via por mesa, nenhuma cruza outra</h2>
+  </div>
+  <p class="col"><strong>A fila é por mesa, não por par.</strong> Cada mesa
+  guarda o caderno de votação das suas próprias seções — o eleitor da 3313 não
+  pode ser atendido na mesa ao lado, ainda que ela esteja vazia. São
+  <strong>28 filas</strong>, não 16. O banner continua sendo do par, mas a
+  fita no chão desce ao nível da mesa: dentro do corredor de 3,90 m do par, a
+  via se bifurca, um ramo para cada conjunto de seções.</p>
+  <p class="col">A regra que garante o não cruzamento é geométrica, não de
+  bom senso: <strong>cada mesa é dona da faixa de piso à sua frente</strong> —
+  tão larga quanto o vão até a mesa vizinha, tão profunda quanto a fila
+  projetada exigir — e essa faixa avança perpendicular à sua própria parede.
+  Faixas paralelas saindo da mesma parede nunca se cruzam, e faixas de paredes
+  diferentes não se alcançam porque param antes da zona livre central. Toda a
+  circulação acontece nessa zona livre: o eleitor entra pela porta, atravessa o
+  miolo vazio do salão e entra na sua via <em>pela cauda</em>, que é onde está
+  o decalque com o número da sua seção.</p>
+  <figure class="plan">
+    <div class="plan-wrap"><!--PISO--></div>
+    <figcaption>Cada faixa é a via de fila de uma mesa, na cor da sua porta,
+    desenhada na profundidade que a simulação exige. As três faixas em traço
+    cheio e cor mais forte são as que <strong>não cabem</strong> onde a
+    prancheta coloca a mesa. As vias internas tracejadas marcam as
+    serpentinas.</figcaption>
+  </figure>
+  <div class="scroll"><table><thead><tr>
+    <th scope="col">Bloco</th><th scope="col">Seções da via</th>
+    <th scope="col">Compar.</th><th scope="col">Pico da fila</th>
+    <th scope="col">Via necessária</th><th scope="col">Largura · vias</th>
+    <th scope="col">Profundidade</th><th scope="col">Tipo de colagem</th>
+  </tr></thead><tbody><!--TABPISO--></tbody></table></div>
+  <p class="col">Premissas da simulação, todas a validar: 60 s por voto,
+  comparecimento de 74% (Dublin) e 50% (interior), perfil de chegada com pico
+  matinal (12-15-16-14-11-9-8-8-7% por hora das 8h às 17h), 0,50 m por pessoa
+  em fila simples, via de 1,00 m de largura e 30% de folga sobre o pico
+  projetado. O perfil horário é a premissa mais frágil — não há série
+  histórica do Posto para calibrá-lo.</p>
+  <div class="budget">
+    <dl>
+      <div><dt>Via de fila projetada, somadas as 28 mesas</dt><dd>{{VIA}} m</dd></div>
+      <div><dt>Fita de piso (bordas e divisórias)</dt><dd>{{FITA}} m</dd></div>
+      <div><dt>Decalques de seção (1 na cauda + 1 a cada 5 m)</dt><dd>{{DECAIS}} un</dd></div>
+      <div class="sum"><dt>Slots que não cabem onde estão</dt><dd>{{NESTOURA}} de 28</dd></div>
+    </dl>
+  </div>
+  <p class="note"><b>A 90 s por voto o piso não comporta.</b> A mesma
+  simulação a 90 s dá 2.191 pessoas em fila simultânea contra 592 a 60 s —
+  1.095 m de via, quase metade da área do salão, com as 28 mesas em fila o dia
+  inteiro. Não há plano de colagem que resolva isso; é o mesmo colapso que a
+  simulação de agregação já apontava, agora medido em metros de piso. A
+  colagem deve ser executada para o cenário de 60 s, com o miolo do salão
+  mantido livre como área de transbordo.</p>
+</section>
+
+<section class="band">
+  <div class="hd">
     <p class="eyebrow">Achados que condicionam o plano</p>
     <h2>Quatro coisas que não dá para contornar com design</h2>
   </div>
@@ -343,34 +409,29 @@ footer code{font-size:.78rem}
 
 <section class="band">
   <div class="hd">
-    <p class="eyebrow">Filas e separadores</p>
-    <h2>Cabe dentro — a fila de fora é que não</h2>
+    <p class="eyebrow">Separadores físicos · item (d) do orçamento</p>
+    <h2>A fita muda a conta</h2>
   </div>
-  <p class="col">Cada porta entrega num corredor-tronco paralelo à sua parede,
-  com espinhas de espera derivando para cada bloco. A fila é <strong>por
-  bloco</strong>, não por mesa: as duas mesas do par já compartilham o corredor
-  de 3,90 m por desenho da prancheta, e uma fila única atendida pelas duas
-  absorve a diferença entre as duas seções sem deixar mesa ociosa com fila ao
-  lado. É a razão de o banner ser por par.</p>
-  <div class="budget">
-    <dl>
-      <div><dt>Corredor-tronco oeste (y 7 → 38 m)</dt><dd>31,0 m</dd></div>
-      <div><dt>Divisórias entre os 5 blocos da oeste</dt><dd>14,0 m</dd></div>
-      <div><dt>Corredor-tronco norte (x 7 → 45 m)</dt><dd>38,0 m</dd></div>
-      <div><dt>Divisórias entre os 5 blocos da norte</dt><dd>14,0 m</dd></div>
-      <div><dt>Corredor-tronco leste (y 4 → 38 m)</dt><dd>34,0 m</dd></div>
-      <div><dt>Divisórias entre os 6 blocos da leste</dt><dd>17,5 m</dd></div>
-      <div><dt>Canais internos das três portas (3 × 12 m)</dt><dd>36,0 m</dd></div>
-      <div class="sum"><dt>Total interno</dt><dd>184,5 m · 92 un</dd></div>
-      <div><dt>Orçamento aprovado, item (d) — EUR 1.303,00</dt><dd>200,0 m · 100 un</dd></div>
-      <div class="sum"><dt>Folga</dt><dd>15,5 m · 8 un</dd></div>
-    </dl>
-  </div>
-  <p class="note"><b>Único item que estoura orçamento.</b> A fila externa com
-  triagem em três canais consome sozinha 60–100 m, dependendo do recuo
-  disponível na entrada do RDS. Com 15,5 m de folga, o plano externo exige
-  contratação adicional de separadores — ou balizadores leves, que não estavam
-  nos EUR 15.703,32 revisados. Melhor descobrir agora do que na véspera.</p>
+  <p class="col">Com o vazio central fazendo o papel de corredor-tronco, o
+  separador físico deixa de precisar acompanhar as três paredes. Sobram três
+  usos em que a fita no chão não basta:</p>
+  <ul class="plain">
+    <li><span class="n">01</span><span><b>Canais de aproximação externos</b>
+    das três portas, onde a fila única se parte em três. É fila de rua, com
+    pessoas em pé por muito tempo: precisa de barreira física.</span></li>
+    <li><span class="n">02</span><span><b>A bifurcação dentro do corredor de
+    3,90 m de cada par</b>, onde duas vias se separam a menos de dois metros
+    uma da outra e a fita sozinha não impede corte de fila.</span></li>
+    <li><span class="n">03</span><span><b>O vão de 2,70 m entre BA3 e BA4</b>,
+    o mais estreito do salão, entre os dois blocos mais carregados da parede
+    oeste.</span></li>
+  </ul>
+  <p class="note"><b>Isso inverte o déficit da versão anterior deste plano.</b>
+  A conta anterior — corredor-tronco colado às três paredes — consumia 184,5 m
+  das 100 unidades / 200 m do item (d) e não deixava nada para a fila externa.
+  Substituindo o tronco por fita e vazio central, sobra margem. Quanto
+  exatamente depende de quanto separador a fita substitui na prática: é a
+  pergunta a levar ao fornecedor, agora com folga em vez de déficit.</p>
 </section>
 
 <section class="band">

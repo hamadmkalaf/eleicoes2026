@@ -6,7 +6,16 @@ sua porta, rotulado com as secoes que o banner daquele bloco vai exibir.
 """
 
 import json
+import math
 from pathlib import Path
+
+from plano_sinalizacao import (
+    PAREDE_POR_ROT,
+    PRANCHETA,
+    carrega_urnas,
+    descreve_mesa,
+    eixo,
+)
 
 BASE = Path(__file__).resolve().parent.parent
 SAIDAS = BASE / "saidas"
@@ -119,6 +128,134 @@ def planta(plano: dict) -> str:
     return "\n".join(p)
 
 
+
+# --- piso: um slot de fila por mesa ------------------------------------------
+LANE, PESSOA, FOLGA, MINCAP = 1.0, 0.5, 1.3, 6.0
+CANTO = 8.0                                  # quadrado de canto sem fila
+PROF_MAX = {"OESTE": 22.0, "LESTE": 22.0, "NORTE": 19.0}
+# perfil horario assumido de chegada, 8h-17h, com pico matinal
+PERFIL = [.12, .15, .16, .14, .11, .09, .08, .08, .07]
+SEG_POR_VOTO = 60
+
+
+def fila_maxima(comparecimento: float) -> float:
+    """Pessoas na fila da mesa no pior momento do dia, modelo horario simples."""
+    servico = 3600 / SEG_POR_VOTO
+    q = pico = 0.0
+    for fatia in PERFIL:
+        q = max(0.0, q + comparecimento * fatia - servico)
+        pico = max(pico, q)
+    return pico
+
+
+def slots(plano: dict) -> list:
+    """Dimensiona o slot de piso de cada mesa: largura pelo vao ate a vizinha,
+    profundidade pelo tamanho projetado da fila daquela mesa."""
+    urnas, residencia = carrega_urnas()
+    porta = {p["parede"]: p["porta"] for p in plano["paredes"]}
+    bloco = {m: f'B{p["porta"]}{b["ordem"]}'
+             for p in plano["paredes"] for b in p["blocos"] for m in b["mesas"]}
+    paredes = {}
+    for mesa in PRANCHETA:
+        paredes.setdefault(PAREDE_POR_ROT[mesa["rot"]], []).append(mesa)
+
+    out = []
+    for parede, mesas in paredes.items():
+        mesas = sorted(mesas, key=eixo)
+        for i, m in enumerate(mesas):
+            c = eixo(m)
+            ant = c - eixo(mesas[i - 1]) if i else 6.0
+            pos = eixo(mesas[i + 1]) - c if i < len(mesas) - 1 else 6.0
+            larg = min(3.9, max(2.0, min(ant, pos)))
+            vias = max(1, int(larg // LANE))
+            d = descreve_mesa(m["n"], urnas, residencia)
+            metros = fila_maxima(d["comparecimento"]) * PESSOA
+            cap = max(MINCAP, FOLGA * metros)
+            prof = cap / vias
+            no_canto = ((parede in ("OESTE", "LESTE") and c > 43.6 - CANTO)
+                        or (parede == "NORTE" and not 12.5 < c < 39.0))
+            limite = CANTO if no_canto else PROF_MAX[parede]
+            out.append({
+                "mesa": m["n"], "bloco": bloco[m["n"]], "porta": porta[parede],
+                "parede": parede, "coord": c, "secoes": d["secoes"],
+                "comparecimento": round(d["comparecimento"]),
+                "fila": round(metros, 1), "cap": round(cap, 1),
+                "larg": round(larg, 2), "vias": vias, "prof": round(prof, 1),
+                "limite": limite, "estoura": prof > limite + .05,
+                "tipo": 1 if cap <= 6.5 else (2 if vias == 1 or cap <= 30 else 3),
+            })
+    return sorted(out, key=lambda s: -s["cap"])
+
+
+def caixa_slot(s: dict) -> tuple:
+    """Retangulo do slot em coordenadas de planta (x, y, largura, altura)."""
+    prof = min(s["prof"], s["limite"])
+    if s["parede"] == "OESTE":
+        return 1.6, sy(s["coord"]) - s["larg"] / 2, prof, s["larg"]
+    if s["parede"] == "LESTE":
+        return 46.5 - prof, sy(s["coord"]) - s["larg"] / 2, prof, s["larg"]
+    return s["coord"] - s["larg"] / 2, sy(43.6) + 0.8, s["larg"], prof
+
+
+def planta_piso(plano: dict, ss: list) -> str:
+    """SVG do plano de colagem: cada mesa com a sua via de fila."""
+    M, TOPO = 10.0, 12.0
+    p = [f'<svg class="planta piso" viewBox="{-M} {-TOPO} {HALL_X + 2 * M} '
+         f'{HALL_Y + TOPO + M}" role="img" aria-label="Plano de colagem das '
+         f'filas no piso: uma via por mesa, perpendicular a sua parede">']
+    p.append(f'<rect x="0" y="0" width="{HALL_X}" height="{HALL_Y}" class="salao"/>')
+    p.append(f'<g class="rosa"><text x="{HALL_X/2:.1f}" y="-8.4" '
+             f'text-anchor="middle">N</text></g>')
+
+    for s in sorted(ss, key=lambda k: k["mesa"]):
+        c = COR[s["porta"]]
+        x, y, w, h = caixa_slot(s)
+        alerta = " alerta" if s["estoura"] else ""
+        p.append(f'<rect class="slot t-{c}{alerta}" x="{x:.2f}" y="{y:.2f}" '
+                 f'width="{w:.2f}" height="{h:.2f}"/>')
+        # divisorias internas da serpentina
+        if s["tipo"] == 3:
+            for k in range(1, s["vias"]):
+                if s["parede"] == "NORTE":
+                    dx = x + w * k / s["vias"]
+                    p.append(f'<line class="via t-{c}" x1="{dx:.2f}" y1="{y:.2f}" '
+                             f'x2="{dx:.2f}" y2="{y+h:.2f}"/>')
+                else:
+                    dy = y + h * k / s["vias"]
+                    p.append(f'<line class="via t-{c}" x1="{x:.2f}" y1="{dy:.2f}" '
+                             f'x2="{x+w:.2f}" y2="{dy:.2f}"/>')
+        # rotulo na cauda da fila, que e por onde o eleitor entra
+        if s["parede"] == "OESTE":
+            tx, ty, anc = x + w + 0.8, y + h / 2 + 0.45, "start"
+            linhas = [" ".join(str(v) for v in s["secoes"])]
+        elif s["parede"] == "LESTE":
+            # fora do salao: dentro, colidiria com os rotulos da parede norte
+            tx, ty, anc = 47.8, y + h / 2 + 0.45, "start"
+            linhas = [" ".join(str(v) for v in s["secoes"])]
+        else:   # norte: coluna, senao os rotulos vizinhos se sobrepoem
+            tx, ty, anc = x + w / 2, y + h + 1.8, "middle"
+            linhas = [str(v) for v in s["secoes"]]
+        p.append(f'<text class="rot t-{c}" x="{tx:.2f}" y="{ty:.2f}" '
+                 f'text-anchor="{anc}">')
+        for i, ln in enumerate(linhas):
+            p.append(f'<tspan x="{tx:.2f}" dy="{0 if i == 0 else 1.5:.2f}">{ln}</tspan>')
+        p.append('</text>')
+
+    for parede in ("OESTE", "NORTE", "LESTE"):
+        pt = {"OESTE": "A", "NORTE": "B", "LESTE": "C"}[parede]
+        px = PORTAS_X[pt]
+        p.append(f'<rect class="porta t-{COR[pt]}" x="{px-2.2:.2f}" '
+                 f'y="{HALL_Y-0.45:.2f}" width="4.4" height="0.9"/>')
+        p.append(f'<text class="letra t-{COR[pt]}" x="{px:.2f}" '
+                 f'y="{HALL_Y+4.2:.2f}" text-anchor="middle">{pt}</text>')
+    p.append(f'<text class="centro" x="27.0" y="{sy(10.5):.2f}" text-anchor="middle">'
+             f'ZONA LIVRE DE CIRCULAÇÃO</text>')
+    p.append(f'<text class="centro sub" x="27.0" y="{sy(8.1):.2f}" '
+             f'text-anchor="middle">o eleitor entra na via pela cauda</text>')
+    p.append('</svg>')
+    return "\n".join(p)
+
+
 def tabela_blocos(parede: dict) -> str:
     linhas = []
     for b in parede["blocos"]:
@@ -140,6 +277,10 @@ def tabela_blocos(parede: dict) -> str:
 
 def main() -> None:
     plano = json.loads((SAIDAS / "sinalizacao.json").read_text(encoding="utf-8"))
+    ss = slots(plano)
+    plano["piso"] = ss
+    (SAIDAS / "sinalizacao.json").write_text(
+        json.dumps(plano, ensure_ascii=False, indent=2), encoding="utf-8")
     html = (BASE / "scripts" / "sinalizacao_template.html").read_text(encoding="utf-8")
 
     tiles, tabelas, listas = [], [], []
@@ -182,7 +323,34 @@ def main() -> None:
         f'<span class="porta-pin t-{COR[pt]}">{pt}</span>'
         f'<span class="pd">{pr.lower()}</span></li>' for s, pt, pr in lookup)
 
+    fita = 0.0
+    decais = 0
+    linhas_piso = []
+    for s in sorted(ss, key=lambda k: (-k["cap"], k["mesa"])):
+        prof = min(s["prof"], s["limite"])
+        fita += prof if s["tipo"] == 1 else (s["vias"] + 1) * prof
+        decais += 1 + math.ceil(s["cap"] / 5)
+        nome = {1: "marca de início", 2: "via simples", 3: "serpentina"}[s["tipo"]]
+        aviso = ' class="alerta"' if s["estoura"] else ""
+        secs = "".join(f'<span class="sec">{v}</span>' for v in s["secoes"])
+        linhas_piso.append(
+            f'<tr{aviso}><th scope="row" class="t-{COR[s["porta"]]}">{s["bloco"]}</th>'
+            f'<td class="secs">{secs}</td>'
+            f'<td class="num">{fmt(s["comparecimento"])}</td>'
+            f'<td class="num">{round(s["fila"] / PESSOA)}</td>'
+            f'<td class="num">{str(s["cap"]).replace(".", ",")} m</td>'
+            f'<td class="num">{str(s["larg"]).replace(".", ",")} m · {s["vias"]}</td>'
+            f'<td class="num">{str(round(prof, 1)).replace(".", ",")} m</td>'
+            f'<td>{nome}{" ⚠" if s["estoura"] else ""}</td></tr>')
+    estouram = [s for s in ss if s["estoura"]]
+
     html = (html
+            .replace("<!--PISO-->", planta_piso(plano, ss))
+            .replace("<!--TABPISO-->", "\n".join(linhas_piso))
+            .replace("{{FITA}}", f"{fita:.0f}")
+            .replace("{{DECAIS}}", str(decais))
+            .replace("{{VIA}}", f'{sum(s["cap"] for s in ss):.0f}')
+            .replace("{{NESTOURA}}", str(len(estouram)))
             .replace("<!--TILES-->", "\n".join(tiles))
             .replace("<!--PLANTA-->", planta(plano))
             .replace("<!--TABELAS-->", "\n".join(tabelas))

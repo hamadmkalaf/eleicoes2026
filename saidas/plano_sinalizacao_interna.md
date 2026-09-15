@@ -276,55 +276,107 @@ mesários. Ordem crescente de seção, porque é assim que o eleitor procura.
 
 ---
 
-## 9. Filas e separadores
+## 9. Filas: uma por mesa, coladas no piso
 
-Modelo de dois níveis já definido no contexto do Posto, agora amarrado à
-geometria real da prancheta:
+### Correção ao desenho anterior
 
-1. **Fila única externa** → triagem em três canais (N1) → portas A, B, C.
-2. **Dentro:** cada porta entrega num corredor-tronco que corre paralelo à sua
-   parede, com **espinhas de espera** derivando para cada bloco. As filas se
-   formam **entre os separadores**, nos corredores de 3,90 m dos pares.
+A primeira versão deste plano previa **uma fila por par de mesas**, com o
+argumento de que as duas mesas do par compartilham o corredor de 3,90 m e
+poderiam se revezar no atendimento. **Está errado.** Cada mesa guarda o
+caderno de votação das suas próprias seções: o eleitor da 3313 só pode ser
+atendido na mesa que tem o caderno da 3313, ainda que a mesa vizinha esteja
+vazia. Não há ganho de enfileiramento único porque não há substituição
+possível entre as duas mesas.
 
-Por que a espinha e não uma fila por mesa: o par de mesas compartilha o
-corredor de 3,90 m por desenho da prancheta. Uma fila única por bloco,
-atendida pelas duas mesas, absorve a variação entre as duas seções sem que
-uma mesa fique ociosa com fila ao lado — é o mesmo ganho de uma fila única
-de caixa de supermercado, e é a razão de o banner ser **por par**, não por
-mesa.
+Portanto: **28 filas, não 16.** O banner continua sendo do par — a instrução
+do Posto de não numerar mesas se mantém, porque as duas mesas do par se
+distinguem pelas seções, não por número. Mas a fita no chão desce ao nível da
+mesa: dentro do corredor do par, a via se bifurca, um ramo para cada conjunto
+de seções.
 
-### Dimensionamento dos separadores (unidades de 2,0 m)
+### Quanta fila cada mesa vai ter
 
-| Trecho | Extensão |
-|---|---|
-| Corredor-tronco parede oeste (y 7 → 38 m) | 31,0 m |
-| Divisórias entre os 5 blocos da parede oeste (4 × 3,5 m) | 14,0 m |
-| Corredor-tronco parede norte (x 7 → 45 m) | 38,0 m |
-| Divisórias entre os 5 blocos da parede norte (4 × 3,5 m) | 14,0 m |
-| Corredor-tronco parede leste (y 4 → 38 m) | 34,0 m |
-| Divisórias entre os 6 blocos da parede leste (5 × 3,5 m) | 17,5 m |
-| Canais internos das três portas (3 × 12 m) | 36,0 m |
-| **Total interno** | **184,5 m ≈ 92 unidades** |
+Modelo determinístico por hora, comparecimento ponderado (74% Dublin / 50%
+interior), perfil de chegada com pico matinal
+(12-15-16-14-11-9-8-8-7% das 8h às 17h), 0,50 m por pessoa em fila simples.
 
-O orçamento aprovado tem **100 unidades / 200 m** (item (d), EUR 1.303,00).
-O interior cabe, com **8 unidades / 15,5 m de folga**.
+| Segundos por voto | Pessoas em fila no pico | Mesas com fila | Via linear total |
+|---|---|---|---|
+| 30 s | 0 | 0 | — |
+| **60 s** | **592 (às 12h)** | **13 de 28** | **296 m** |
+| 90 s | 2.191 (às 13h) | 28 de 28 | 1.095 m |
 
-**Mas a fila externa não está coberta.** Uma fila única externa com triagem
-em três canais consome sozinha 60–100 m dependendo do recuo disponível na
-entrada do RDS. Com 15,5 m de folga, **o plano externo precisa de contratação
-adicional de separadores** — ou de uma solução alternativa (fita e balizadores
-leves, corda e pedestal) que não estava no orçamento revisado de EUR 15.703,32.
-Este é o único item do plano que estoura orçamento, e é melhor descobrir agora
-do que na véspera.
+A 60 s a fila se concentra: a mediana das mesas não forma fila nenhuma e três
+mesas sozinhas concentram 300 pessoas. A 90 s o salão inteiro vira fila —
+1.095 m de via ocupariam cerca de metade da área útil do Hall 2. **Não existe
+plano de colagem que resolva o cenário de 90 s**; é o mesmo colapso que a
+simulação de agregação já apontava, agora medido em metros de piso. A colagem
+é executada para 60 s, com o miolo do salão mantido livre como transbordo.
 
-### Reforço no ponto de estrangulamento
+### A regra que garante o não cruzamento
 
-O vão de 2,70 m entre os blocos BA3 e BA4 (y 23,00–25,70 m) é o mais estreito
-do salão e fica entre os dois blocos mais carregados da parede oeste. Dedicar
-ali **2 unidades de separador em ângulo** e **1 orientador fixo** durante todo
-o dia. Isso sai da folga de 8 unidades.
+Não é bom senso, é geometria:
 
----
+1. **Cada mesa é dona da faixa de piso à sua frente** — tão larga quanto o vão
+   até a mesa vizinha (2,0 a 3,9 m), tão profunda quanto a fila projetada
+   exigir.
+2. **A faixa avança perpendicular à sua própria parede.** Faixas paralelas
+   saindo da mesma parede nunca se cruzam.
+3. **Nenhuma faixa alcança a parede oposta.** A mais profunda tem 22 m num
+   salão de 44,5 m; sobra um miolo livre de 14 m de largura.
+4. **Quadrado de canto de 8 m sem fila**, nos dois cantos norte, onde as
+   faixas da parede norte e das paredes leste/oeste se aproximariam.
+5. **Toda a circulação acontece no miolo livre.** O eleitor entra pela porta,
+   atravessa o vazio central e entra na sua via **pela cauda** — que é onde
+   fica o decalque com o número da seção. Não há corredor-tronco colado: o
+   tronco é o próprio vazio, o que também economiza fita.
+
+Com essas cinco regras, as 28 vias são disjuntas por construção. Não é preciso
+verificar cruzamento caso a caso.
+
+### Três mesas não cabem onde a prancheta as coloca
+
+| Mesa | Bloco | Seções | Via necessária | Profundidade que exigiria | Limite | Motivo |
+|---|---|---|---|---|---|---|
+| 2 | BB1 | 3322 / 3752 | 65 m | 22 m | 8 m | canto noroeste |
+| 4 | BA4 | 3315 / 3778 | 64 m | 32 m | 22 m | vão de 2,75 m → só 2 vias |
+| 3 | BC6 | 3142 / 1278 | 27 m | 9 m | 8 m | canto nordeste |
+
+O padrão é claro e vale como regra de projeto para qualquer revisão da
+prancheta: **mesa pesada não pode ir para canto nem para vão estreito.** As
+três mesas de ~590 comparecentes precisam de posição de meio de parede com
+vão de 3,9 m. Posições que hoje têm folga e fila zero — BB3 (norte, isolada,
+3,9 m), BB2 (norte, 3,9 m), BC1 (leste, 3,9 m) — são destino natural para
+elas. É uma troca na prancheta, custo zero se feita antes da colagem.
+
+### Tipos de colagem e quantitativo
+
+| Tipo | Quando | Slots | O que se cola |
+|---|---|---|---|
+| **1 — marca de início** | via até 6,5 m | 16 | linha-guia simples + decalque de seção na cauda |
+| **2 — via simples** | 6,5 a 30 m | 9 | duas bordas contínuas |
+| **3 — serpentina** | acima de 30 m | 3 | 3 vias de 1,00 m, 4 linhas longitudinais |
+
+- **Via de fila projetada:** 489 m (pico de 60 s + 30% de folga)
+- **Fita de piso:** 493 m
+- **Decalques de seção:** 144 (1 na cauda + 1 a cada 5 m de via)
+
+Especificação da fita: largura 75 mm, vinil de piso antiderrapante com
+classificação de resistência ao escorregamento, na cor da porta. Decalques
+com número de seção em 4 dígitos, altura de caractere 150 mm, legíveis de pé.
+Confirmar com o RDS se há restrição de adesivo no piso do Hall 2 — alguns
+contratos de locação proíbem fita de piso ou exigem remoção sem resíduo.
+
+### Separadores físicos (item (d) do orçamento)
+
+Com o vazio central fazendo o papel de tronco, os separadores físicos ficam
+reservados a três usos: (a) os canais de aproximação externos das três portas,
+(b) a bifurcação dentro do corredor de 3,90 m de cada par, onde a fita sozinha
+não impede corte de fila, e (c) o reforço do vão de 2,70 m entre BA3 e BA4.
+Isso reduz a demanda interna estimada na versão anterior deste plano (184,5 m)
+e **libera folga para a fila externa**, que era o item que estourava o
+orçamento. O número exato depende de quanta fita substitui separador — decisão
+a tomar com o fornecedor, mas agora com margem em vez de déficit.
 
 ## 10. Impactos sobre a sinalização externa
 
@@ -400,6 +452,10 @@ depois do fato.
 6. Conferir se EUR 1.961,00 (item (c) do orçamento) cobre 49 peças mais
    bases alugadas — dá ~EUR 40 por peça, apertado para grande formato.
 7. Medir o contraste da cor âmbar da porta C sobre branco antes de imprimir.
+8. Confirmar com o RDS se o contrato de locação admite fita e decalque no
+   piso do Hall 2, e em que condições de remoção.
+9. Trocar de posição, na prancheta, as três mesas pesadas que hoje caem em
+   canto ou vão estreito (seção 9) — antes de colar qualquer coisa.
 
 ---
 

@@ -429,5 +429,562 @@
     }
   ],
   "total_aptos": 16794,
-  "total_comparecimento": 11416
+  "total_comparecimento": 11416,
+  "piso": [
+    {
+      "mesa": 1,
+      "bloco": "BA2",
+      "porta": "A",
+      "parede": "OESTE",
+      "coord": 15.8,
+      "secoes": [
+        3313,
+        3889
+      ],
+      "comparecimento": 590,
+      "fila": 50.5,
+      "cap": 65.7,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 21.9,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 3
+    },
+    {
+      "mesa": 2,
+      "bloco": "BB1",
+      "porta": "B",
+      "parede": "NORTE",
+      "coord": 8.55,
+      "secoes": [
+        3322,
+        3752
+      ],
+      "comparecimento": 588,
+      "fila": 49.8,
+      "cap": 64.7,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 21.6,
+      "limite": 8.0,
+      "estoura": true,
+      "tipo": 3
+    },
+    {
+      "mesa": 4,
+      "bloco": "BA4",
+      "porta": "A",
+      "parede": "OESTE",
+      "coord": 29.6,
+      "secoes": [
+        3315,
+        3778
+      ],
+      "comparecimento": 586,
+      "fila": 49.3,
+      "cap": 64.0,
+      "larg": 2.75,
+      "vias": 2,
+      "prof": 32.0,
+      "limite": 22.0,
+      "estoura": true,
+      "tipo": 3
+    },
+    {
+      "mesa": 3,
+      "bloco": "BC6",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 36.65,
+      "secoes": [
+        3142,
+        1278
+      ],
+      "comparecimento": 492,
+      "fila": 20.7,
+      "cap": 26.9,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 9.0,
+      "limite": 8.0,
+      "estoura": true,
+      "tipo": 2
+    },
+    {
+      "mesa": 5,
+      "bloco": "BA4",
+      "porta": "A",
+      "parede": "OESTE",
+      "coord": 25.7,
+      "secoes": [
+        3161,
+        3307
+      ],
+      "comparecimento": 491,
+      "fila": 20.4,
+      "cap": 26.6,
+      "larg": 2.7,
+      "vias": 2,
+      "prof": 13.3,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 2
+    },
+    {
+      "mesa": 6,
+      "bloco": "BA2",
+      "porta": "A",
+      "parede": "OESTE",
+      "coord": 19.7,
+      "secoes": [
+        3245,
+        519
+      ],
+      "comparecimento": 486,
+      "fila": 19.3,
+      "cap": 25.1,
+      "larg": 3.3,
+      "vias": 3,
+      "prof": 8.4,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 2
+    },
+    {
+      "mesa": 7,
+      "bloco": "BC6",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 32.75,
+      "secoes": [
+        3302,
+        3181
+      ],
+      "comparecimento": 481,
+      "fila": 18.1,
+      "cap": 23.6,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 7.9,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 2
+    },
+    {
+      "mesa": 8,
+      "bloco": "BB4",
+      "porta": "B",
+      "parede": "NORTE",
+      "coord": 36.2,
+      "secoes": [
+        3305,
+        521
+      ],
+      "comparecimento": 479,
+      "fila": 17.7,
+      "cap": 23.0,
+      "larg": 2.85,
+      "vias": 2,
+      "prof": 11.5,
+      "limite": 19.0,
+      "estoura": false,
+      "tipo": 2
+    },
+    {
+      "mesa": 9,
+      "bloco": "BA5",
+      "porta": "A",
+      "parede": "OESTE",
+      "coord": 32.35,
+      "secoes": [
+        3306,
+        518
+      ],
+      "comparecimento": 478,
+      "fila": 17.6,
+      "cap": 22.8,
+      "larg": 2.75,
+      "vias": 2,
+      "prof": 11.4,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 2
+    },
+    {
+      "mesa": 10,
+      "bloco": "BB4",
+      "porta": "B",
+      "parede": "NORTE",
+      "coord": 32.3,
+      "secoes": [
+        3108,
+        3422
+      ],
+      "comparecimento": 474,
+      "fila": 16.5,
+      "cap": 21.5,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 7.2,
+      "limite": 19.0,
+      "estoura": false,
+      "tipo": 2
+    },
+    {
+      "mesa": 12,
+      "bloco": "BA1",
+      "porta": "A",
+      "parede": "OESTE",
+      "coord": 8.9,
+      "secoes": [
+        3311,
+        3913
+      ],
+      "comparecimento": 466,
+      "fila": 14.9,
+      "cap": 19.4,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 6.5,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 2
+    },
+    {
+      "mesa": 11,
+      "bloco": "BA5",
+      "porta": "A",
+      "parede": "OESTE",
+      "coord": 36.25,
+      "secoes": [
+        3179,
+        530
+      ],
+      "comparecimento": 434,
+      "fila": 7.5,
+      "cap": 9.8,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 3.3,
+      "limite": 8.0,
+      "estoura": false,
+      "tipo": 2
+    },
+    {
+      "mesa": 17,
+      "bloco": "BA1",
+      "porta": "A",
+      "parede": "OESTE",
+      "coord": 12.8,
+      "secoes": [
+        517,
+        1292
+      ],
+      "comparecimento": 352,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 24,
+      "bloco": "BA3",
+      "porta": "A",
+      "parede": "OESTE",
+      "coord": 23.0,
+      "secoes": [
+        3688
+      ],
+      "comparecimento": 296,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 2.7,
+      "vias": 2,
+      "prof": 3.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 25,
+      "bloco": "BB1",
+      "porta": "B",
+      "parede": "NORTE",
+      "coord": 12.45,
+      "secoes": [
+        3862
+      ],
+      "comparecimento": 296,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 8.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 15,
+      "bloco": "BB2",
+      "porta": "B",
+      "parede": "NORTE",
+      "coord": 19.35,
+      "secoes": [
+        511,
+        1100
+      ],
+      "comparecimento": 387,
+      "fila": 1.0,
+      "cap": 6.0,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 19.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 16,
+      "bloco": "BB2",
+      "porta": "B",
+      "parede": "NORTE",
+      "coord": 23.25,
+      "secoes": [
+        3216,
+        527
+      ],
+      "comparecimento": 381,
+      "fila": 0.5,
+      "cap": 6.0,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 19.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 22,
+      "bloco": "BB3",
+      "porta": "B",
+      "parede": "NORTE",
+      "coord": 28.25,
+      "secoes": [
+        3054,
+        1099
+      ],
+      "comparecimento": 323,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 19.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 20,
+      "bloco": "BB5",
+      "porta": "B",
+      "parede": "NORTE",
+      "coord": 39.05,
+      "secoes": [
+        1160,
+        3845
+      ],
+      "comparecimento": 332,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 2.85,
+      "vias": 2,
+      "prof": 3.0,
+      "limite": 8.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 13,
+      "bloco": "BB5",
+      "porta": "B",
+      "parede": "NORTE",
+      "coord": 42.95,
+      "secoes": [
+        3309,
+        1314
+      ],
+      "comparecimento": 403,
+      "fila": 2.5,
+      "cap": 6.0,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 8.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 28,
+      "bloco": "BC1",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 6.05,
+      "secoes": [
+        3442
+      ],
+      "comparecimento": 295,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.9,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 27,
+      "bloco": "BC1",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 9.95,
+      "secoes": [
+        3308
+      ],
+      "comparecimento": 295,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 19,
+      "bloco": "BC2",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 12.95,
+      "secoes": [
+        512,
+        2855
+      ],
+      "comparecimento": 334,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 26,
+      "bloco": "BC3",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 15.95,
+      "secoes": [
+        3832
+      ],
+      "comparecimento": 296,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 21,
+      "bloco": "BC3",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 19.85,
+      "secoes": [
+        1352,
+        522
+      ],
+      "comparecimento": 327,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 18,
+      "bloco": "BC4",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 22.85,
+      "secoes": [
+        513,
+        1105
+      ],
+      "comparecimento": 347,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 14,
+      "bloco": "BC4",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 26.75,
+      "secoes": [
+        3229,
+        3821
+      ],
+      "comparecimento": 399,
+      "fila": 1.9,
+      "cap": 6.0,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    },
+    {
+      "mesa": 23,
+      "bloco": "BC5",
+      "porta": "C",
+      "parede": "LESTE",
+      "coord": 29.75,
+      "secoes": [
+        3078,
+        2847
+      ],
+      "comparecimento": 310,
+      "fila": 0.0,
+      "cap": 6.0,
+      "larg": 3.0,
+      "vias": 3,
+      "prof": 2.0,
+      "limite": 22.0,
+      "estoura": false,
+      "tipo": 1
+    }
+  ]
 }

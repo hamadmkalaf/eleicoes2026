@@ -1,0 +1,368 @@
+{
+  "portas": {
+    "S1": 13.2,
+    "S2": 17.0,
+    "S3": 20.7,
+    "S4": 24.6,
+    "S5": 30.2,
+    "S6": 35.9,
+    "S7": 39.7,
+    "S8": 43.5,
+    "S9": 47.3
+  },
+  "variantes": [
+    {
+      "s2_aberta": true,
+      "k": 1,
+      "resumo": {
+        "blocos": 3,
+        "canais": 20,
+        "metros_canal": 328,
+        "curvas": 17,
+        "barreira_m": 379,
+        "unifila_un": 190,
+        "capacidade": {
+          "confortavel": 356,
+          "projeto": 497,
+          "maximo": 648
+        },
+        "por_porta": {
+          "A": {
+            "blocos": 1,
+            "canais": 6,
+            "metros": 110,
+            "projeto": 166,
+            "maximo": 216
+          },
+          "B": {
+            "blocos": 1,
+            "canais": 6,
+            "metros": 110,
+            "projeto": 166,
+            "maximo": 216
+          },
+          "C": {
+            "blocos": 1,
+            "canais": 8,
+            "metros": 110,
+            "projeto": 165,
+            "maximo": 216
+          }
+        }
+      },
+      "blocos": [
+        {
+          "nome": "A1",
+          "porta": "A",
+          "canais": 6,
+          "x0": 18.5,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 109.5
+        },
+        {
+          "nome": "B1",
+          "porta": "B",
+          "canais": 6,
+          "x0": 26.3,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 109.5
+        },
+        {
+          "nome": "C1",
+          "porta": "C",
+          "canais": 8,
+          "x0": 34.1,
+          "y0": 8.56,
+          "prof": 13.69,
+          "oeste": false,
+          "recuado": true,
+          "metros": 109.5
+        }
+      ]
+    },
+    {
+      "s2_aberta": true,
+      "k": 2,
+      "resumo": {
+        "blocos": 6,
+        "canais": 25,
+        "metros_canal": 383,
+        "curvas": 19,
+        "barreira_m": 479,
+        "unifila_un": 240,
+        "capacidade": {
+          "confortavel": 416,
+          "projeto": 580,
+          "maximo": 757
+        },
+        "por_porta": {
+          "A": {
+            "blocos": 2,
+            "canais": 10,
+            "metros": 128,
+            "projeto": 193,
+            "maximo": 252
+          },
+          "B": {
+            "blocos": 2,
+            "canais": 7,
+            "metros": 128,
+            "projeto": 194,
+            "maximo": 253
+          },
+          "C": {
+            "blocos": 2,
+            "canais": 8,
+            "metros": 128,
+            "projeto": 194,
+            "maximo": 253
+          }
+        }
+      },
+      "blocos": [
+        {
+          "nome": "A1",
+          "porta": "A",
+          "canais": 7,
+          "x0": 7.0,
+          "y0": 10.4,
+          "prof": 11.85,
+          "oeste": true,
+          "metros": 83.0
+        },
+        {
+          "nome": "A2",
+          "porta": "A",
+          "canais": 3,
+          "x0": 18.5,
+          "y0": 7.32,
+          "prof": 14.93,
+          "oeste": false,
+          "recuado": true,
+          "metros": 44.8
+        },
+        {
+          "nome": "B1",
+          "porta": "B",
+          "canais": 3,
+          "x0": 23.0,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 54.8
+        },
+        {
+          "nome": "B2",
+          "porta": "B",
+          "canais": 4,
+          "x0": 27.5,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 73.0
+        },
+        {
+          "nome": "C1",
+          "porta": "C",
+          "canais": 3,
+          "x0": 33.1,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 54.8
+        },
+        {
+          "nome": "C2",
+          "porta": "C",
+          "canais": 5,
+          "x0": 37.6,
+          "y0": 7.65,
+          "prof": 14.6,
+          "oeste": false,
+          "recuado": true,
+          "metros": 73.0
+        }
+      ]
+    },
+    {
+      "s2_aberta": false,
+      "k": 1,
+      "resumo": {
+        "blocos": 3,
+        "canais": 26,
+        "metros_canal": 438,
+        "curvas": 23,
+        "barreira_m": 489,
+        "unifila_un": 245,
+        "capacidade": {
+          "confortavel": 475,
+          "projeto": 662,
+          "maximo": 864
+        },
+        "por_porta": {
+          "A": {
+            "blocos": 1,
+            "canais": 8,
+            "metros": 146,
+            "projeto": 221,
+            "maximo": 288
+          },
+          "B": {
+            "blocos": 1,
+            "canais": 8,
+            "metros": 146,
+            "projeto": 221,
+            "maximo": 288
+          },
+          "C": {
+            "blocos": 1,
+            "canais": 10,
+            "metros": 146,
+            "projeto": 220,
+            "maximo": 288
+          }
+        }
+      },
+      "blocos": [
+        {
+          "nome": "A1",
+          "porta": "A",
+          "canais": 8,
+          "x0": 11.7,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 146.0
+        },
+        {
+          "nome": "B1",
+          "porta": "B",
+          "canais": 8,
+          "x0": 21.7,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 146.0
+        },
+        {
+          "nome": "C1",
+          "porta": "C",
+          "canais": 10,
+          "x0": 31.7,
+          "y0": 7.65,
+          "prof": 14.6,
+          "oeste": false,
+          "recuado": true,
+          "metros": 146.0
+        }
+      ]
+    },
+    {
+      "s2_aberta": false,
+      "k": 2,
+      "resumo": {
+        "blocos": 6,
+        "canais": 28,
+        "metros_canal": 493,
+        "curvas": 22,
+        "barreira_m": 598,
+        "unifila_un": 300,
+        "capacidade": {
+          "confortavel": 537,
+          "projeto": 747,
+          "maximo": 975
+        },
+        "por_porta": {
+          "A": {
+            "blocos": 2,
+            "canais": 10,
+            "metros": 164,
+            "projeto": 249,
+            "maximo": 324
+          },
+          "B": {
+            "blocos": 2,
+            "canais": 9,
+            "metros": 164,
+            "projeto": 249,
+            "maximo": 325
+          },
+          "C": {
+            "blocos": 2,
+            "canais": 9,
+            "metros": 164,
+            "projeto": 249,
+            "maximo": 325
+          }
+        }
+      },
+      "blocos": [
+        {
+          "nome": "A1",
+          "porta": "A",
+          "canais": 4,
+          "x0": 7.0,
+          "y0": 7.4,
+          "prof": 14.85,
+          "oeste": true,
+          "metros": 59.4
+        },
+        {
+          "nome": "A2",
+          "porta": "A",
+          "canais": 6,
+          "x0": 11.7,
+          "y0": 4.78,
+          "prof": 17.47,
+          "oeste": false,
+          "recuado": true,
+          "metros": 104.8
+        },
+        {
+          "nome": "B1",
+          "porta": "B",
+          "canais": 3,
+          "x0": 19.5,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 54.8
+        },
+        {
+          "nome": "B2",
+          "porta": "B",
+          "canais": 6,
+          "x0": 24.0,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 109.5
+        },
+        {
+          "nome": "C1",
+          "porta": "C",
+          "canais": 3,
+          "x0": 31.8,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 54.8
+        },
+        {
+          "nome": "C2",
+          "porta": "C",
+          "canais": 6,
+          "x0": 36.3,
+          "y0": 4.0,
+          "prof": 18.25,
+          "oeste": false,
+          "metros": 109.5
+        }
+      ]
+    }
+  ]
+}

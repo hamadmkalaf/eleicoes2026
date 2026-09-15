@@ -118,3 +118,12 @@ transbordo para a rua em cada tempo de atendimento.
 python3 prancheta_capacidade.py  # capacidade e transbordo -> saidas/prancheta_capacidade.json
 python3 desenha_prancheta.py     # desenho -> saidas/prancheta_serpentina.svg
 ```
+
+`plano_filas_tres_portas.md` — a prancheta **Hamad_Final**: entradas S4/S5/S6,
+saídas S2/S8, mesas onde estão. Seis blocos, dois por porta, mesma capacidade
+por porta: 580 pessoas. Variante com S2 fechada: 747.
+
+```bash
+python3 tres_portas.py          # busca da repartição balanceada -> saidas/tres_portas.json
+python3 desenha_tres_portas.py  # desenhos -> saidas/tres_portas_serpentina.svg e _s2_fechada.svg
+```

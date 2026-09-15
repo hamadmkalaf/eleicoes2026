@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1152 763" width="1152" height="763">
+<defs><marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#c0392b"/></marker></defs>
+<rect width="1152" height="763" fill="#fbfaf8"/>
+<path d="M 223.8,693.0 L 762.8,693.0 L 762.8,70.0 L 60.0,70.0 L 60.0,589.4 L 223.8,589.4 Z" fill="#ffffff" stroke="#1f2933" stroke-width="3"/>
+<rect x="60.0" y="168.0" width="98.0" height="427.0" fill="#f2f0ea" stroke="none"/>
+<rect x="60.0" y="70.0" width="702.8" height="98.0" fill="#f2f0ea" stroke="none"/>
+<rect x="664.8" y="168.0" width="98.0" height="427.0" fill="#f2f0ea" stroke="none"/>
+<rect x="223.8" y="581.0" width="539.0" height="112.0" fill="#fdf6e8" stroke="#c9a227" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="438.0" y="625.8" font-size="11" text-anchor="middle" fill="#9a7b0a" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif">ZONA DE TRIAGEM E ACOLHIMENTO</text>
+<text x="438.0" y="649.6" font-size="9.5" text-anchor="middle" fill="#9a7b0a" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">postos de consulta · faixa prioritária · cadeiras</text>
+<rect x="265.8" y="275.8" width="291.2" height="305.2" fill="#e9edf1" stroke="#6b7785" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="411.4" y="352.1" font-size="14" text-anchor="middle" fill="#6b7785" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif">NÚCLEO LIVRE</text>
+<text x="411.4" y="377.3" font-size="11" text-anchor="middle" fill="#6b7785" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">474 m² — circulação, faixa</text>
+<text x="411.4" y="395.5" font-size="11" text-anchor="middle" fill="#6b7785" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">prioritária, apoio médico e</text>
+<text x="411.4" y="413.7" font-size="11" text-anchor="middle" fill="#6b7785" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">reserva p/ +806 pessoas</text>
+<rect x="158.0" y="374.5" width="107.8" height="206.5" fill="#2a6f97" fill-opacity="0.12" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="173.4" y1="567.0" x2="173.4" y2="374.5" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="188.8" y1="581.0" x2="188.8" y2="388.5" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="204.2" y1="567.0" x2="204.2" y2="374.5" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="219.6" y1="581.0" x2="219.6" y2="388.5" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="235.0" y1="567.0" x2="235.0" y2="374.5" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="250.4" y1="581.0" x2="250.4" y2="388.5" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<text x="211.9" y="477.8" font-size="17" text-anchor="middle" fill="#2a6f97" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 211.9 477.8)">A1</text>
+<text x="230.1" y="477.8" font-size="9.5" text-anchor="middle" fill="#2a6f97" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 230.1 477.8)">1883 eleitores</text>
+<rect x="158.0" y="168.0" width="107.8" height="206.5" fill="#2a6f97" fill-opacity="0.12" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="173.4" y1="360.5" x2="173.4" y2="168.0" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="188.8" y1="374.5" x2="188.8" y2="182.0" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="204.2" y1="360.5" x2="204.2" y2="168.0" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="219.6" y1="374.5" x2="219.6" y2="182.0" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="235.0" y1="360.5" x2="235.0" y2="168.0" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="250.4" y1="374.5" x2="250.4" y2="182.0" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<text x="211.9" y="271.2" font-size="17" text-anchor="middle" fill="#2a6f97" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 211.9 271.2)">A2</text>
+<text x="230.1" y="271.2" font-size="9.5" text-anchor="middle" fill="#2a6f97" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 230.1 271.2)">1880 eleitores</text>
+<rect x="265.8" y="168.0" width="145.6" height="107.8" fill="#2a6f97" fill-opacity="0.12" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="279.8" y1="260.4" x2="411.4" y2="260.4" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="265.8" y1="245.0" x2="397.4" y2="245.0" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="279.8" y1="229.6" x2="411.4" y2="229.6" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="265.8" y1="214.2" x2="397.4" y2="214.2" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="279.8" y1="198.8" x2="411.4" y2="198.8" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="265.8" y1="183.4" x2="397.4" y2="183.4" stroke="#2a6f97" stroke-width="0.9" stroke-opacity="0.55"/>
+<text x="338.6" y="209.3" font-size="17" text-anchor="middle" fill="#2a6f97" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif">A3</text>
+<text x="338.6" y="240.1" font-size="9.5" text-anchor="middle" fill="#2a6f97" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">1927 eleitores</text>
+<rect x="411.4" y="168.0" width="145.6" height="107.8" fill="#7b3f9d" fill-opacity="0.12" stroke="#7b3f9d" stroke-width="1.6"/>
+<line x1="425.4" y1="260.4" x2="557.0" y2="260.4" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="411.4" y1="245.0" x2="543.0" y2="245.0" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="425.4" y1="229.6" x2="557.0" y2="229.6" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="411.4" y1="214.2" x2="543.0" y2="214.2" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="425.4" y1="198.8" x2="557.0" y2="198.8" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="411.4" y1="183.4" x2="543.0" y2="183.4" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<text x="484.2" y="209.3" font-size="17" text-anchor="middle" fill="#7b3f9d" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif">B1</text>
+<text x="484.2" y="240.1" font-size="9.5" text-anchor="middle" fill="#7b3f9d" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">1908 eleitores</text>
+<rect x="557.0" y="168.0" width="107.8" height="206.5" fill="#7b3f9d" fill-opacity="0.12" stroke="#7b3f9d" stroke-width="1.6"/>
+<line x1="572.4" y1="360.5" x2="572.4" y2="168.0" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="587.8" y1="374.5" x2="587.8" y2="182.0" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="603.2" y1="360.5" x2="603.2" y2="168.0" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="618.6" y1="374.5" x2="618.6" y2="182.0" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="634.0" y1="360.5" x2="634.0" y2="168.0" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="649.4" y1="374.5" x2="649.4" y2="182.0" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<text x="610.9" y="271.2" font-size="17" text-anchor="middle" fill="#7b3f9d" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 610.9 271.2)">B2</text>
+<text x="629.1" y="271.2" font-size="9.5" text-anchor="middle" fill="#7b3f9d" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 629.1 271.2)">1920 eleitores</text>
+<rect x="557.0" y="374.5" width="107.8" height="206.5" fill="#7b3f9d" fill-opacity="0.12" stroke="#7b3f9d" stroke-width="1.6"/>
+<line x1="572.4" y1="567.0" x2="572.4" y2="374.5" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="587.8" y1="581.0" x2="587.8" y2="388.5" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="603.2" y1="567.0" x2="603.2" y2="374.5" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="618.6" y1="581.0" x2="618.6" y2="388.5" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="634.0" y1="567.0" x2="634.0" y2="374.5" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<line x1="649.4" y1="581.0" x2="649.4" y2="388.5" stroke="#7b3f9d" stroke-width="0.9" stroke-opacity="0.55"/>
+<text x="610.9" y="477.8" font-size="17" text-anchor="middle" fill="#7b3f9d" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 610.9 477.8)">B3</text>
+<text x="629.1" y="477.8" font-size="9.5" text-anchor="middle" fill="#7b3f9d" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 629.1 477.8)">1900 eleitores</text>
+<rect x="72.6" y="538.2" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="72.6" y="475.0" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="72.6" y="411.9" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="72.6" y="348.7" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="72.6" y="285.5" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="72.6" y="222.3" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="72.6" y="159.2" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="72.6" y="96.0" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="88.8" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="157.7" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="226.6" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="295.5" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="364.4" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="433.2" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="502.1" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="571.0" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="639.9" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="708.8" y="82.6" width="25.2" height="11.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="642.9" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="582.1" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="521.2" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="460.3" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="399.3" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="338.4" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="277.5" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="216.7" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="155.8" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<rect x="739.0" y="94.9" width="11.2" height="25.2" fill="#2f4858" stroke="none"/>
+<text x="120.2" y="423.5" font-size="11" text-anchor="middle" fill="#2f4858" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 120.2 423.5)">8 MRV</text>
+<text x="411.4" y="134.4" font-size="11" text-anchor="middle" fill="#2f4858" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif">10 MRV</text>
+<text x="715.2" y="423.5" font-size="11" text-anchor="middle" fill="#2f4858" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 715.2 423.5)">10 MRV</text>
+<rect x="275.6" y="686.7" width="44.8" height="12.6" fill="#0e8a8a" stroke="none"/>
+<text x="298.0" y="729.4" font-size="12" text-anchor="middle" fill="#0e8a8a" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif">ENTRADA A</text>
+<text x="298.0" y="751.8" font-size="9.5" text-anchor="middle" fill="#0e8a8a" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">triagem + consulta</text>
+<rect x="555.6" y="686.7" width="44.8" height="12.6" fill="#8b2f8b" stroke="none"/>
+<text x="578.0" y="729.4" font-size="12" text-anchor="middle" fill="#8b2f8b" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif">ENTRADA B</text>
+<text x="578.0" y="751.8" font-size="9.5" text-anchor="middle" fill="#8b2f8b" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">triagem + consulta</text>
+<path d="M 298.0,686.0 L 298.0,296.8" stroke="#0e8a8a" stroke-width="7" stroke-opacity="0.30" fill="none"/>
+<path d="M 298.0,539.0 L 272.8,539.0" stroke="#0e8a8a" stroke-width="4" stroke-opacity="0.28" fill="none"/>
+<circle cx="272.8" cy="539.0" r="4" fill="#0e8a8a" fill-opacity="0.7"/>
+<path d="M 298.0,346.5 L 272.8,346.5" stroke="#0e8a8a" stroke-width="4" stroke-opacity="0.28" fill="none"/>
+<circle cx="272.8" cy="346.5" r="4" fill="#0e8a8a" fill-opacity="0.7"/>
+<path d="M 298.0,296.8 L 272.8,296.8" stroke="#0e8a8a" stroke-width="4" stroke-opacity="0.28" fill="none"/>
+<circle cx="272.8" cy="296.8" r="4" fill="#0e8a8a" fill-opacity="0.7"/>
+<path d="M 578.0,686.0 L 578.0,296.8" stroke="#8b2f8b" stroke-width="7" stroke-opacity="0.30" fill="none"/>
+<path d="M 578.0,539.0 L 550.0,539.0" stroke="#8b2f8b" stroke-width="4" stroke-opacity="0.28" fill="none"/>
+<circle cx="550.0" cy="539.0" r="4" fill="#8b2f8b" fill-opacity="0.7"/>
+<path d="M 578.0,346.5 L 550.0,346.5" stroke="#8b2f8b" stroke-width="4" stroke-opacity="0.28" fill="none"/>
+<circle cx="550.0" cy="346.5" r="4" fill="#8b2f8b" fill-opacity="0.7"/>
+<path d="M 578.0,296.8 L 550.0,296.8" stroke="#8b2f8b" stroke-width="4" stroke-opacity="0.28" fill="none"/>
+<circle cx="550.0" cy="296.8" r="4" fill="#8b2f8b" fill-opacity="0.7"/>
+<rect x="756.5" y="509.6" width="12.6" height="30.8" fill="#c0392b" stroke="none"/>
+<path d="M 699.8,525.0 L 788.0,525.0" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#seta)"/>
+<rect x="756.5" y="369.6" width="12.6" height="30.8" fill="#c0392b" stroke="none"/>
+<path d="M 699.8,385.0 L 788.0,385.0" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#seta)"/>
+<rect x="756.5" y="229.6" width="12.6" height="30.8" fill="#c0392b" stroke="none"/>
+<path d="M 699.8,245.0 L 788.0,245.0" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#seta)"/>
+<rect x="756.5" y="131.6" width="12.6" height="30.8" fill="#c0392b" stroke="none"/>
+<path d="M 699.8,147.0 L 788.0,147.0" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#seta)"/>
+<rect x="53.7" y="509.6" width="12.6" height="30.8" fill="#c0392b" stroke="none"/>
+<path d="M 123.0,525.0 L 34.8,525.0" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#seta)"/>
+<rect x="53.7" y="383.6" width="12.6" height="30.8" fill="#c0392b" stroke="none"/>
+<path d="M 123.0,399.0 L 34.8,399.0" stroke="#c0392b" stroke-width="2" fill="none" marker-end="url(#seta)"/>
+<text x="684.4" y="329.0" font-size="10.5" text-anchor="middle" fill="#c0392b" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 684.4 329.0)">SAÍDAS</text>
+<text x="148.2" y="462.0" font-size="10.5" text-anchor="middle" fill="#c0392b" font-weight="700" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 148.2 462.0)">SAÍDAS</text>
+<line x1="60.0" y1="47.6" x2="762.8" y2="47.6" stroke="#6b7785" stroke-width="1"/>
+<text x="411.4" y="39.2" font-size="11" text-anchor="middle" fill="#6b7785" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">50,20 m</text>
+<line x1="23.6" y1="693.0" x2="23.6" y2="70.0" stroke="#6b7785" stroke-width="1"/>
+<text x="15.2" y="381.5" font-size="11" text-anchor="middle" fill="#6b7785" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif" transform="rotate(-90 15.2 381.5)">44,50 m</text>
+<line x1="564.0" y1="740.6" x2="704.0" y2="740.6" stroke="#1f2933" stroke-width="2"/>
+<line x1="564.0" y1="747.6" x2="564.0" y2="733.6" stroke="#1f2933" stroke-width="1.4"/>
+<line x1="634.0" y1="747.6" x2="634.0" y2="733.6" stroke="#1f2933" stroke-width="1.4"/>
+<line x1="704.0" y1="747.6" x2="704.0" y2="733.6" stroke="#1f2933" stroke-width="1.4"/>
+<text x="634.0" y="771.4" font-size="9.5" text-anchor="middle" fill="#1f2933" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">0          5         10 m</text>
+<text x="211.9" y="568.4" font-size="9" text-anchor="middle" fill="#2a6f97" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">anel 7,7 m</text>
+<text x="109.0" y="568.4" font-size="9" text-anchor="middle" fill="#2f4858" font-weight="400" font-family="Inter, Helvetica, Arial, sans-serif">faixa MRV 7,0 m</text>
+<text x="796.8000000000001" y="76" font-size="19" font-weight="700" fill="#1f2933" font-family="Inter, Helvetica, Arial, sans-serif">Filas sem o Ring 3</text>
+<text x="796.8000000000001" y="96" font-size="12" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">RDS Hall 2 · 50,2 × 44,5 m · 2.238 m²</text>
+<text x="796.8000000000001" y="112" font-size="12" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">28 urnas · 16.794 aptos · 11.416 esperados</text>
+<text x="796.8000000000001" y="142" font-size="13" font-weight="700" fill="#1f2933" font-family="Inter, Helvetica, Arial, sans-serif">ANEL DE ESPERA</text>
+<text x="796.8000000000001" y="159" font-size="11.5" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">622 m² · 7 canais de 1,10 m</text>
+<text x="796.8000000000001" y="174" font-size="11.5" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">capacidade de projeto: 1058 pessoas</text>
+<text x="796.8000000000001" y="189" font-size="11.5" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">283 unifilas (566 m de barreira)</text>
+<text x="796.8000000000001" y="212" font-size="13" font-weight="700" fill="#1f2933" font-family="Inter, Helvetica, Arial, sans-serif">AS 6 FILAS (3 por porta)</text>
+<rect x="796.8000000000001" y="221" width="11" height="11" rx="2" fill="#2a6f97" fill-opacity="0.25" stroke="#2a6f97"/>
+<text x="814.8000000000001" y="230" font-size="11.5" font-weight="700" fill="#2a6f97" font-family="Inter, Helvetica, Arial, sans-serif">A1</text>
+<text x="838.8000000000001" y="230" font-size="11" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">1883 eleitores</text>
+<text x="814.8000000000001" y="244" font-size="10" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">urnas 3179, 3216, 3305, 3313</text>
+<rect x="796.8000000000001" y="253" width="11" height="11" rx="2" fill="#2a6f97" fill-opacity="0.25" stroke="#2a6f97"/>
+<text x="814.8000000000001" y="262" font-size="11.5" font-weight="700" fill="#2a6f97" font-family="Inter, Helvetica, Arial, sans-serif">A2</text>
+<text x="838.8000000000001" y="262" font-size="11" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">1880 eleitores</text>
+<text x="814.8000000000001" y="276" font-size="10" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">urnas 517, 3108, 3311, 3322</text>
+<rect x="796.8000000000001" y="285" width="11" height="11" rx="2" fill="#2a6f97" fill-opacity="0.25" stroke="#2a6f97"/>
+<text x="814.8000000000001" y="294" font-size="11.5" font-weight="700" fill="#2a6f97" font-family="Inter, Helvetica, Arial, sans-serif">A3</text>
+<text x="838.8000000000001" y="294" font-size="11" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">1927 eleitores</text>
+<text x="814.8000000000001" y="308" font-size="10" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">urnas 513, 3309, 3315, 3442, 3688</text>
+<rect x="796.8000000000001" y="317" width="11" height="11" rx="2" fill="#7b3f9d" fill-opacity="0.25" stroke="#7b3f9d"/>
+<text x="814.8000000000001" y="326" font-size="11.5" font-weight="700" fill="#7b3f9d" font-family="Inter, Helvetica, Arial, sans-serif">B1</text>
+<text x="838.8000000000001" y="326" font-size="11" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">1908 eleitores</text>
+<text x="814.8000000000001" y="340" font-size="10" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">urnas 511, 512, 3142, 3229, 3862</text>
+<rect x="796.8000000000001" y="349" width="11" height="11" rx="2" fill="#7b3f9d" fill-opacity="0.25" stroke="#7b3f9d"/>
+<text x="814.8000000000001" y="358" font-size="11.5" font-weight="700" fill="#7b3f9d" font-family="Inter, Helvetica, Arial, sans-serif">B2</text>
+<text x="838.8000000000001" y="358" font-size="11" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">1920 eleitores</text>
+<text x="814.8000000000001" y="372" font-size="10" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">urnas 1160, 3054, 3161, 3306, 3308</text>
+<rect x="796.8000000000001" y="381" width="11" height="11" rx="2" fill="#7b3f9d" fill-opacity="0.25" stroke="#7b3f9d"/>
+<text x="814.8000000000001" y="390" font-size="11.5" font-weight="700" fill="#7b3f9d" font-family="Inter, Helvetica, Arial, sans-serif">B3</text>
+<text x="838.8000000000001" y="390" font-size="11" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">1900 eleitores</text>
+<text x="814.8000000000001" y="404" font-size="10" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">urnas 1352, 3078, 3245, 3302, 3832</text>
+<text x="796.8000000000001" y="428" font-size="13" font-weight="700" fill="#1f2933" font-family="Inter, Helvetica, Arial, sans-serif">FLUXO</text>
+<text x="796.8000000000001" y="447" font-size="11.5" font-weight="400" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">1. triagem na porta (A ou B)</text>
+<text x="796.8000000000001" y="463" font-size="11.5" font-weight="400" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">2. corredor até a fila indicada</text>
+<text x="796.8000000000001" y="479" font-size="11.5" font-weight="400" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">3. anel de espera (serpentina)</text>
+<text x="796.8000000000001" y="495" font-size="11.5" font-weight="400" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">4. liberação para a micro-fila da urna</text>
+<text x="796.8000000000001" y="511" font-size="11.5" font-weight="400" fill="#6b7785" font-family="Inter, Helvetica, Arial, sans-serif">5. voto e saída pela parede lateral</text>
+<text x="796.8000000000001" y="527" font-size="11.5" font-weight="400" fill="#c0392b" font-family="Inter, Helvetica, Arial, sans-serif">— sem cruzamento entre entrada e saída —</text>
+</svg>

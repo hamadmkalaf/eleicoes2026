@@ -1,0 +1,419 @@
+{
+  "premissas": {
+    "passos_m_por_pessoa": {
+      "confortavel": 0.9,
+      "projeto": 0.65,
+      "maximo": 0.5
+    },
+    "canal_m": 1.1,
+    "apron_m": 4.0,
+    "margem_m": 2.0,
+    "gap_min_m": 1.2,
+    "perda_por_curva": 0.5
+  },
+  "layouts": [
+    {
+      "orientacao": "N-S",
+      "blocos": 6,
+      "area_m2": 662,
+      "metros_canal": 602,
+      "curvas": 30,
+      "barreira_m": 702,
+      "unifila_un": 352,
+      "densidade_projeto_p_m2": 1.38,
+      "capacidade": {
+        "confortavel": 654,
+        "projeto": 911,
+        "maximo": 1189
+      },
+      "por_bloco": [
+        {
+          "nome": "A1",
+          "canais": 6,
+          "larg_m": 6.6,
+          "prof_m": 13.65,
+          "metros_canal": 82,
+          "cap_projeto": 124
+        },
+        {
+          "nome": "A2",
+          "canais": 6,
+          "larg_m": 6.6,
+          "prof_m": 13.65,
+          "metros_canal": 82,
+          "cap_projeto": 124
+        },
+        {
+          "nome": "A3",
+          "canais": 6,
+          "larg_m": 6.6,
+          "prof_m": 18.25,
+          "metros_canal": 110,
+          "cap_projeto": 166
+        },
+        {
+          "nome": "B1",
+          "canais": 6,
+          "larg_m": 6.6,
+          "prof_m": 18.25,
+          "metros_canal": 110,
+          "cap_projeto": 166
+        },
+        {
+          "nome": "B2",
+          "canais": 6,
+          "larg_m": 6.6,
+          "prof_m": 18.25,
+          "metros_canal": 110,
+          "cap_projeto": 166
+        },
+        {
+          "nome": "B3",
+          "canais": 6,
+          "larg_m": 6.6,
+          "prof_m": 18.25,
+          "metros_canal": 110,
+          "cap_projeto": 166
+        }
+      ]
+    },
+    {
+      "orientacao": "L-O",
+      "blocos": 6,
+      "area_m2": 541,
+      "metros_canal": 492,
+      "curvas": 18,
+      "barreira_m": 614,
+      "unifila_un": 308,
+      "densidade_projeto_p_m2": 1.38,
+      "capacidade": {
+        "confortavel": 537,
+        "projeto": 747,
+        "maximo": 974
+      },
+      "por_bloco": [
+        {
+          "nome": "A1",
+          "canais": 4,
+          "larg_m": 12.4,
+          "prof_m": 4.4,
+          "metros_canal": 50,
+          "cap_projeto": 75
+        },
+        {
+          "nome": "A2",
+          "canais": 4,
+          "larg_m": 22.1,
+          "prof_m": 4.4,
+          "metros_canal": 88,
+          "cap_projeto": 134
+        },
+        {
+          "nome": "A3",
+          "canais": 4,
+          "larg_m": 22.1,
+          "prof_m": 4.4,
+          "metros_canal": 88,
+          "cap_projeto": 134
+        },
+        {
+          "nome": "B1",
+          "canais": 4,
+          "larg_m": 22.1,
+          "prof_m": 4.4,
+          "metros_canal": 88,
+          "cap_projeto": 134
+        },
+        {
+          "nome": "B2",
+          "canais": 4,
+          "larg_m": 22.1,
+          "prof_m": 4.4,
+          "metros_canal": 88,
+          "cap_projeto": 134
+        },
+        {
+          "nome": "B3",
+          "canais": 4,
+          "larg_m": 22.1,
+          "prof_m": 4.4,
+          "metros_canal": 88,
+          "cap_projeto": 134
+        }
+      ]
+    }
+  ],
+  "curva_linha_divisoria": [
+    {
+      "y_div": 16,
+      "area_m2": 414,
+      "cap_projeto": 565,
+      "cap_maximo": 739,
+      "parede_m": 107.2,
+      "passo_por_urna_m": 3.83,
+      "vao_livre_m": 2.03,
+      "area_norte_m2": 1431,
+      "area_ilhas_necessaria_m2": 645,
+      "ilhas_cabem": true,
+      "folga_ilhas_m2": 786
+    },
+    {
+      "y_div": 18,
+      "area_m2": 494,
+      "cap_projeto": 675,
+      "cap_maximo": 883,
+      "parede_m": 103.2,
+      "passo_por_urna_m": 3.69,
+      "vao_livre_m": 1.89,
+      "area_norte_m2": 1330,
+      "area_ilhas_necessaria_m2": 645,
+      "ilhas_cabem": true,
+      "folga_ilhas_m2": 685
+    },
+    {
+      "y_div": 20,
+      "area_m2": 573,
+      "cap_projeto": 786,
+      "cap_maximo": 1027,
+      "parede_m": 99.2,
+      "passo_por_urna_m": 3.54,
+      "vao_livre_m": 1.74,
+      "area_norte_m2": 1230,
+      "area_ilhas_necessaria_m2": 645,
+      "ilhas_cabem": true,
+      "folga_ilhas_m2": 585
+    },
+    {
+      "y_div": 22.25,
+      "area_m2": 662,
+      "cap_projeto": 911,
+      "cap_maximo": 1189,
+      "parede_m": 94.7,
+      "passo_por_urna_m": 3.38,
+      "vao_livre_m": 1.58,
+      "area_norte_m2": 1117,
+      "area_ilhas_necessaria_m2": 645,
+      "ilhas_cabem": true,
+      "folga_ilhas_m2": 472
+    },
+    {
+      "y_div": 24,
+      "area_m2": 731,
+      "cap_projeto": 1008,
+      "cap_maximo": 1315,
+      "parede_m": 91.2,
+      "passo_por_urna_m": 3.26,
+      "vao_livre_m": 1.46,
+      "area_norte_m2": 1029,
+      "area_ilhas_necessaria_m2": 645,
+      "ilhas_cabem": true,
+      "folga_ilhas_m2": 384
+    },
+    {
+      "y_div": 26,
+      "area_m2": 810,
+      "cap_projeto": 1119,
+      "cap_maximo": 1459,
+      "parede_m": 87.2,
+      "passo_por_urna_m": 3.11,
+      "vao_livre_m": 1.31,
+      "area_norte_m2": 929,
+      "area_ilhas_necessaria_m2": 645,
+      "ilhas_cabem": true,
+      "folga_ilhas_m2": 284
+    },
+    {
+      "y_div": 28,
+      "area_m2": 890,
+      "cap_projeto": 1229,
+      "cap_maximo": 1603,
+      "parede_m": 83.2,
+      "passo_por_urna_m": 2.97,
+      "vao_livre_m": 1.17,
+      "area_norte_m2": 828,
+      "area_ilhas_necessaria_m2": 645,
+      "ilhas_cabem": true,
+      "folga_ilhas_m2": 183
+    }
+  ],
+  "viabilidade": [
+    {
+      "urnas": 28,
+      "t_max_base_s": 69,
+      "t_max_pico_s": 60
+    },
+    {
+      "urnas": 32,
+      "t_max_base_s": 86,
+      "t_max_pico_s": 72
+    },
+    {
+      "urnas": 36,
+      "t_max_base_s": 97,
+      "t_max_pico_s": 81
+    },
+    {
+      "urnas": 38,
+      "t_max_base_s": 103,
+      "t_max_pico_s": 86
+    },
+    {
+      "urnas": 40,
+      "t_max_base_s": 108,
+      "t_max_pico_s": 90
+    }
+  ],
+  "teto_projeto": 911,
+  "ocupacao_projeto": {
+    "fila": 911,
+    "operacao": 210,
+    "total": 1121
+  },
+  "ocupacao_máximo": {
+    "fila": 1189,
+    "operacao": 210,
+    "total": 1399
+  },
+  "fronteira": [
+    {
+      "urnas": 28,
+      "y_div_max": 31.6,
+      "capacidade_fila": 1431,
+      "cenarios": [
+        {
+          "t_servico": 45,
+          "pico": 511,
+          "cabe": true
+        },
+        {
+          "t_servico": 60,
+          "pico": 899,
+          "cabe": true
+        },
+        {
+          "t_servico": 75,
+          "pico": 1746,
+          "cabe": false
+        },
+        {
+          "t_servico": 90,
+          "pico": 2671,
+          "cabe": false
+        }
+      ]
+    },
+    {
+      "urnas": 32,
+      "y_div_max": 29.8,
+      "capacidade_fila": 1330,
+      "cenarios": [
+        {
+          "t_servico": 45,
+          "pico": 484,
+          "cabe": true
+        },
+        {
+          "t_servico": 60,
+          "pico": 537,
+          "cabe": true
+        },
+        {
+          "t_servico": 75,
+          "pico": 1060,
+          "cabe": true
+        },
+        {
+          "t_servico": 90,
+          "pico": 1958,
+          "cabe": false
+        }
+      ]
+    },
+    {
+      "urnas": 36,
+      "y_div_max": 28.0,
+      "capacidade_fila": 1228,
+      "cenarios": [
+        {
+          "t_servico": 45,
+          "pico": 457,
+          "cabe": true
+        },
+        {
+          "t_servico": 60,
+          "pico": 517,
+          "cabe": true
+        },
+        {
+          "t_servico": 75,
+          "pico": 553,
+          "cabe": true
+        },
+        {
+          "t_servico": 90,
+          "pico": 1348,
+          "cabe": false
+        }
+      ]
+    },
+    {
+      "urnas": 38,
+      "y_div_max": 27.1,
+      "capacidade_fila": 1177,
+      "cenarios": [
+        {
+          "t_servico": 45,
+          "pico": 444,
+          "cabe": true
+        },
+        {
+          "t_servico": 60,
+          "pico": 507,
+          "cabe": true
+        },
+        {
+          "t_servico": 75,
+          "pico": 545,
+          "cabe": true
+        },
+        {
+          "t_servico": 90,
+          "pico": 1108,
+          "cabe": true
+        }
+      ]
+    },
+    {
+      "urnas": 40,
+      "y_div_max": 26.1,
+      "capacidade_fila": 1126,
+      "cenarios": [
+        {
+          "t_servico": 45,
+          "pico": 431,
+          "cabe": true
+        },
+        {
+          "t_servico": 60,
+          "pico": 497,
+          "cabe": true
+        },
+        {
+          "t_servico": 75,
+          "pico": 537,
+          "cabe": true
+        },
+        {
+          "t_servico": 90,
+          "pico": 868,
+          "cabe": true
+        }
+      ]
+    }
+  ],
+  "curral": {
+    "area_m2": 782,
+    "cap_1_5": 1174,
+    "cap_2_0": 1565
+  }
+}

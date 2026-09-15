@@ -87,3 +87,43 @@ de Dublin e passam a votar lá.
 
 Nenhum modelo de tempo de votação foi aplicado, a pedido: as saídas entregam os
 totais ordenados e o critério de gargalo fica a cargo de quem analisa.
+
+## Plano de filas sem o Ring 3
+
+`plano_filas_sem_ring3.md` — desenho de formação de filas dentro do Hall 2 sem
+depender do Ring 3, com dimensionamento de unifila/CCB e avaliação da
+alternativa de fila na rua.
+
+```bash
+cd scripts
+python3 filas_sem_ring3.py   # pico de fila por cenário -> saidas/filas_sem_ring3.json
+python3 plano_filas.py       # clusters, anel, equipe, materiais -> saidas/plano_filas.json
+python3 desenha_plano.py     # desenho em escala -> saidas/plano_filas_sem_ring3.svg
+```
+
+`plano_filas_confinado_hall2.md` — supersede as seções 3 a 5 do anterior depois que
+o RDS proibiu fila em seu terreno: dimensiona toda a fila dentro do Hall 2 e compara
+serpentina norte-sul com leste-oeste.
+
+```bash
+python3 serpentina_hall2.py   # capacidade, fronteira urnas x fila -> saidas/serpentina_hall2.json
+python3 desenha_serpentina.py # as duas orientações -> saidas/serpentina_hall2.svg
+```
+
+`plano_filas_prancheta.md` — quanto cabe **sem mudar o desenho atual**: mesas nas
+paredes onde estão, entradas A e B e saída central mantidas. 629 pessoas, e o
+transbordo para a rua em cada tempo de atendimento.
+
+```bash
+python3 prancheta_capacidade.py  # capacidade e transbordo -> saidas/prancheta_capacidade.json
+python3 desenha_prancheta.py     # desenho -> saidas/prancheta_serpentina.svg
+```
+
+`plano_filas_tres_portas.md` — a prancheta **Hamad_Final**: entradas S4/S5/S6,
+saídas S2/S8, mesas onde estão. Seis blocos, dois por porta, mesma capacidade
+por porta: 580 pessoas. Variante com S2 fechada: 747.
+
+```bash
+python3 tres_portas.py          # busca da repartição balanceada -> saidas/tres_portas.json
+python3 desenha_tres_portas.py  # desenhos -> saidas/tres_portas_serpentina.svg e _s2_fechada.svg
+```

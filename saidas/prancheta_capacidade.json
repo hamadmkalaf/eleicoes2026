@@ -1,0 +1,506 @@
+{
+  "premissas": {
+    "faixa_perimetral_m": 7.0,
+    "apron_m": 4.0,
+    "saida_central_m": 3.0,
+    "canal_m": 1.1,
+    "passos": {
+      "confortavel": 0.9,
+      "projeto": 0.65,
+      "maximo": 0.5
+    },
+    "portas": {
+      "A": 25.2,
+      "saida": 29.3,
+      "B": 34.4
+    }
+  },
+  "zona": {
+    "x0": 7.0,
+    "x1": 43.2,
+    "y0": 4.0,
+    "y1": 22.25,
+    "larg": 36.2,
+    "prof": 18.25
+  },
+  "variantes": {
+    "N-S · saída central mantida": {
+      "orientacao": "N-S",
+      "saida_central": true,
+      "blocos": 6,
+      "canais": 24,
+      "area_m2": 457,
+      "metros_canal": 415,
+      "curvas": 18,
+      "barreira_m": 520,
+      "unifila_un": 260,
+      "capacidade": {
+        "confortavel": 452,
+        "projeto": 629,
+        "maximo": 821
+      },
+      "por_bloco": [
+        {
+          "nome": "A1",
+          "canais": 5,
+          "larg_m": 5.5,
+          "prof_m": 13.65,
+          "metros_canal": 68,
+          "cap": 103
+        },
+        {
+          "nome": "A2",
+          "canais": 5,
+          "larg_m": 5.5,
+          "prof_m": 18.25,
+          "metros_canal": 91,
+          "cap": 138
+        },
+        {
+          "nome": "A3",
+          "canais": 5,
+          "larg_m": 5.5,
+          "prof_m": 18.25,
+          "metros_canal": 91,
+          "cap": 138
+        },
+        {
+          "nome": "B1",
+          "canais": 3,
+          "larg_m": 3.3,
+          "prof_m": 18.25,
+          "metros_canal": 55,
+          "cap": 83
+        },
+        {
+          "nome": "B2",
+          "canais": 3,
+          "larg_m": 3.3,
+          "prof_m": 18.25,
+          "metros_canal": 55,
+          "cap": 83
+        },
+        {
+          "nome": "B3",
+          "canais": 3,
+          "larg_m": 3.3,
+          "prof_m": 18.25,
+          "metros_canal": 55,
+          "cap": 83
+        }
+      ]
+    },
+    "N-S · saída pela faixa perimetral": {
+      "orientacao": "N-S",
+      "saida_central": false,
+      "blocos": 6,
+      "canais": 24,
+      "area_m2": 462,
+      "metros_canal": 420,
+      "curvas": 18,
+      "barreira_m": 524,
+      "unifila_un": 263,
+      "capacidade": {
+        "confortavel": 457,
+        "projeto": 637,
+        "maximo": 830
+      },
+      "por_bloco": [
+        {
+          "nome": "F1",
+          "canais": 4,
+          "larg_m": 4.4,
+          "prof_m": 13.65,
+          "metros_canal": 55,
+          "cap": 82
+        },
+        {
+          "nome": "F2",
+          "canais": 4,
+          "larg_m": 4.4,
+          "prof_m": 18.25,
+          "metros_canal": 73,
+          "cap": 111
+        },
+        {
+          "nome": "F3",
+          "canais": 4,
+          "larg_m": 4.4,
+          "prof_m": 18.25,
+          "metros_canal": 73,
+          "cap": 111
+        },
+        {
+          "nome": "F4",
+          "canais": 4,
+          "larg_m": 4.4,
+          "prof_m": 18.25,
+          "metros_canal": 73,
+          "cap": 111
+        },
+        {
+          "nome": "F5",
+          "canais": 4,
+          "larg_m": 4.4,
+          "prof_m": 18.25,
+          "metros_canal": 73,
+          "cap": 111
+        },
+        {
+          "nome": "F6",
+          "canais": 4,
+          "larg_m": 4.4,
+          "prof_m": 18.25,
+          "metros_canal": 73,
+          "cap": 111
+        }
+      ]
+    },
+    "L-O · saída central mantida": {
+      "orientacao": "L-O",
+      "saida_central": true,
+      "blocos": 6,
+      "canais": 24,
+      "area_m2": 418,
+      "metros_canal": 380,
+      "curvas": 18,
+      "barreira_m": 474,
+      "unifila_un": 238,
+      "capacidade": {
+        "confortavel": 413,
+        "projeto": 575,
+        "maximo": 750
+      },
+      "por_bloco": [
+        {
+          "nome": "A1",
+          "canais": 4,
+          "larg_m": 16.1,
+          "prof_m": 4.4,
+          "metros_canal": 64,
+          "cap": 98
+        },
+        {
+          "nome": "A2",
+          "canais": 4,
+          "larg_m": 20.8,
+          "prof_m": 4.4,
+          "metros_canal": 83,
+          "cap": 126
+        },
+        {
+          "nome": "A3",
+          "canais": 4,
+          "larg_m": 20.8,
+          "prof_m": 4.4,
+          "metros_canal": 83,
+          "cap": 126
+        },
+        {
+          "nome": "B1",
+          "canais": 4,
+          "larg_m": 12.4,
+          "prof_m": 4.4,
+          "metros_canal": 50,
+          "cap": 75
+        },
+        {
+          "nome": "B2",
+          "canais": 4,
+          "larg_m": 12.4,
+          "prof_m": 4.4,
+          "metros_canal": 50,
+          "cap": 75
+        },
+        {
+          "nome": "B3",
+          "canais": 4,
+          "larg_m": 12.4,
+          "prof_m": 4.4,
+          "metros_canal": 50,
+          "cap": 75
+        }
+      ]
+    },
+    "L-O · saída pela faixa perimetral": {
+      "orientacao": "L-O",
+      "saida_central": false,
+      "blocos": 6,
+      "canais": 24,
+      "area_m2": 431,
+      "metros_canal": 392,
+      "curvas": 18,
+      "barreira_m": 490,
+      "unifila_un": 245,
+      "capacidade": {
+        "confortavel": 426,
+        "projeto": 593,
+        "maximo": 774
+      },
+      "por_bloco": [
+        {
+          "nome": "A1",
+          "canais": 4,
+          "larg_m": 12.4,
+          "prof_m": 4.4,
+          "metros_canal": 50,
+          "cap": 75
+        },
+        {
+          "nome": "A2",
+          "canais": 4,
+          "larg_m": 17.1,
+          "prof_m": 4.4,
+          "metros_canal": 68,
+          "cap": 104
+        },
+        {
+          "nome": "A3",
+          "canais": 4,
+          "larg_m": 17.1,
+          "prof_m": 4.4,
+          "metros_canal": 68,
+          "cap": 104
+        },
+        {
+          "nome": "B1",
+          "canais": 4,
+          "larg_m": 17.1,
+          "prof_m": 4.4,
+          "metros_canal": 68,
+          "cap": 104
+        },
+        {
+          "nome": "B2",
+          "canais": 4,
+          "larg_m": 17.1,
+          "prof_m": 4.4,
+          "metros_canal": 68,
+          "cap": 104
+        },
+        {
+          "nome": "B3",
+          "canais": 4,
+          "larg_m": 17.1,
+          "prof_m": 4.4,
+          "metros_canal": 68,
+          "cap": 104
+        }
+      ]
+    }
+  },
+  "transbordo_projeto": [
+    {
+      "perfil": "base",
+      "t_servico": 45,
+      "pico": 248,
+      "transbordo_pico": 0,
+      "horas_acima": 0.0,
+      "inicio": null,
+      "fim": null,
+      "calcada_m": 0
+    },
+    {
+      "perfil": "base",
+      "t_servico": 60,
+      "pico": 415,
+      "transbordo_pico": 0,
+      "horas_acima": 0.0,
+      "inicio": null,
+      "fim": null,
+      "calcada_m": 0
+    },
+    {
+      "perfil": "base",
+      "t_servico": 75,
+      "pico": 1188,
+      "transbordo_pico": 559,
+      "horas_acima": 6.6,
+      "inicio": 10.42,
+      "fim": 16.92,
+      "calcada_m": 363
+    },
+    {
+      "perfil": "base",
+      "t_servico": 90,
+      "pico": 2013,
+      "transbordo_pico": 1384,
+      "horas_acima": 7.4,
+      "inicio": 9.58,
+      "fim": 16.92,
+      "calcada_m": 900
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 45,
+      "pico": 511,
+      "transbordo_pico": 0,
+      "horas_acima": 0.0,
+      "inicio": null,
+      "fim": null,
+      "calcada_m": 0
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 60,
+      "pico": 899,
+      "transbordo_pico": 270,
+      "horas_acima": 4.0,
+      "inicio": 9.67,
+      "fim": 13.58,
+      "calcada_m": 176
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 75,
+      "pico": 1746,
+      "transbordo_pico": 1117,
+      "horas_acima": 8.7,
+      "inicio": 8.33,
+      "fim": 16.92,
+      "calcada_m": 726
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 90,
+      "pico": 2671,
+      "transbordo_pico": 2042,
+      "horas_acima": 8.9,
+      "inicio": 8.08,
+      "fim": 16.92,
+      "calcada_m": 1327
+    }
+  ],
+  "transbordo_maximo": [
+    {
+      "perfil": "base",
+      "t_servico": 45,
+      "pico": 248,
+      "transbordo_pico": 0,
+      "horas_acima": 0.0,
+      "inicio": null,
+      "fim": null,
+      "calcada_m": 0
+    },
+    {
+      "perfil": "base",
+      "t_servico": 60,
+      "pico": 415,
+      "transbordo_pico": 0,
+      "horas_acima": 0.0,
+      "inicio": null,
+      "fim": null,
+      "calcada_m": 0
+    },
+    {
+      "perfil": "base",
+      "t_servico": 75,
+      "pico": 1188,
+      "transbordo_pico": 367,
+      "horas_acima": 6.0,
+      "inicio": 11.0,
+      "fim": 16.92,
+      "calcada_m": 238
+    },
+    {
+      "perfil": "base",
+      "t_servico": 90,
+      "pico": 2013,
+      "transbordo_pico": 1192,
+      "horas_acima": 6.9,
+      "inicio": 10.08,
+      "fim": 16.92,
+      "calcada_m": 775
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 45,
+      "pico": 511,
+      "transbordo_pico": 0,
+      "horas_acima": 0.0,
+      "inicio": null,
+      "fim": null,
+      "calcada_m": 0
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 60,
+      "pico": 899,
+      "transbordo_pico": 78,
+      "horas_acima": 1.9,
+      "inicio": 10.58,
+      "fim": 12.42,
+      "calcada_m": 51
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 75,
+      "pico": 1746,
+      "transbordo_pico": 925,
+      "horas_acima": 7.9,
+      "inicio": 9.08,
+      "fim": 16.92,
+      "calcada_m": 601
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 90,
+      "pico": 2671,
+      "transbordo_pico": 1850,
+      "horas_acima": 8.4,
+      "inicio": 8.58,
+      "fim": 16.92,
+      "calcada_m": 1203
+    }
+  ],
+  "alavancas": [
+    {
+      "faixa_m": 7.0,
+      "apron_m": 4.0,
+      "canais": 24,
+      "projeto": 629
+    },
+    {
+      "faixa_m": 7.0,
+      "apron_m": 2.5,
+      "canais": 24,
+      "projeto": 673
+    },
+    {
+      "faixa_m": 6.0,
+      "apron_m": 4.0,
+      "canais": 24,
+      "projeto": 629
+    },
+    {
+      "faixa_m": 6.0,
+      "apron_m": 2.5,
+      "canais": 24,
+      "projeto": 673
+    },
+    {
+      "faixa_m": 5.5,
+      "apron_m": 4.0,
+      "canais": 27,
+      "projeto": 705
+    },
+    {
+      "faixa_m": 5.5,
+      "apron_m": 2.5,
+      "canais": 27,
+      "projeto": 754
+    },
+    {
+      "faixa_m": 5.0,
+      "apron_m": 4.0,
+      "canais": 27,
+      "projeto": 705
+    },
+    {
+      "faixa_m": 5.0,
+      "apron_m": 2.5,
+      "canais": 27,
+      "projeto": 754
+    }
+  ]
+}

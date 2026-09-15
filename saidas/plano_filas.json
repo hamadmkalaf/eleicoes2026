@@ -1,0 +1,280 @@
+{
+  "clusters": [
+    {
+      "fila": "A1",
+      "urnas": [
+        3313,
+        3179,
+        3216,
+        3305
+      ],
+      "aptos": 2811,
+      "esperado": 1883
+    },
+    {
+      "fila": "A2",
+      "urnas": [
+        3322,
+        3311,
+        3108,
+        517
+      ],
+      "aptos": 2693,
+      "esperado": 1880
+    },
+    {
+      "fila": "A3",
+      "urnas": [
+        3315,
+        513,
+        3688,
+        3442,
+        3309
+      ],
+      "aptos": 2707,
+      "esperado": 1927
+    },
+    {
+      "fila": "B1",
+      "urnas": [
+        3142,
+        511,
+        512,
+        3862,
+        3229
+      ],
+      "aptos": 2857,
+      "esperado": 1908
+    },
+    {
+      "fila": "B2",
+      "urnas": [
+        3161,
+        1160,
+        3308,
+        3054,
+        3306
+      ],
+      "aptos": 2883,
+      "esperado": 1920
+    },
+    {
+      "fila": "B3",
+      "urnas": [
+        3245,
+        3302,
+        1352,
+        3832,
+        3078
+      ],
+      "aptos": 2843,
+      "esperado": 1900
+    }
+  ],
+  "anel": {
+    "prof_m": 7.7,
+    "area_m2": 622,
+    "capacidade_p": 1058,
+    "capacidade_max_p": 1244,
+    "nucleo_livre_m2": 474,
+    "nucleo_reserva_p": 806,
+    "barreira_m": 566,
+    "unifila_un": 283,
+    "canais": 7,
+    "col_oeste_m2": 227,
+    "col_leste_m2": 235,
+    "tira_norte_m2": 160
+  },
+  "cenarios": [
+    {
+      "perfil": "base",
+      "t_servico": 45,
+      "pico": 248,
+      "situacao": "cabe no anel"
+    },
+    {
+      "perfil": "base",
+      "t_servico": 60,
+      "pico": 415,
+      "situacao": "cabe no anel"
+    },
+    {
+      "perfil": "base",
+      "t_servico": 75,
+      "pico": 1188,
+      "situacao": "consome o nucleo"
+    },
+    {
+      "perfil": "base",
+      "t_servico": 90,
+      "pico": 2013,
+      "situacao": "NAO CABE no salao"
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 45,
+      "pico": 511,
+      "situacao": "cabe no anel"
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 60,
+      "pico": 899,
+      "situacao": "cabe no anel"
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 75,
+      "pico": 1746,
+      "situacao": "consome o nucleo"
+    },
+    {
+      "perfil": "pico_manha",
+      "t_servico": 90,
+      "pico": 2671,
+      "situacao": "NAO CABE no salao"
+    }
+  ],
+  "equipe": {
+    "base_30": {
+      "chegada_pico_h": 1712,
+      "frac_sem_secao": 0.3,
+      "triadores_porta": 3,
+      "postos_consulta": 7,
+      "liberadores_cluster": 6,
+      "coordenadores_parede": 3,
+      "volantes": 2,
+      "total": 21
+    },
+    "base_10": {
+      "chegada_pico_h": 1712,
+      "frac_sem_secao": 0.1,
+      "triadores_porta": 3,
+      "postos_consulta": 3,
+      "liberadores_cluster": 6,
+      "coordenadores_parede": 3,
+      "volantes": 2,
+      "total": 17
+    },
+    "pico_manha_30": {
+      "chegada_pico_h": 1941,
+      "frac_sem_secao": 0.3,
+      "triadores_porta": 3,
+      "postos_consulta": 8,
+      "liberadores_cluster": 6,
+      "coordenadores_parede": 3,
+      "volantes": 2,
+      "total": 22
+    },
+    "pico_manha_10": {
+      "chegada_pico_h": 1941,
+      "frac_sem_secao": 0.1,
+      "triadores_porta": 3,
+      "postos_consulta": 3,
+      "liberadores_cluster": 6,
+      "coordenadores_parede": 3,
+      "volantes": 2,
+      "total": 17
+    }
+  },
+  "rua": [
+    {
+      "pessoas": 300,
+      "calcada_m": 2.5,
+      "pessoas_lado_a_lado": 1,
+      "comprimento_m": 195,
+      "equivalente_anel_m2": 176
+    },
+    {
+      "pessoas": 300,
+      "calcada_m": 4.0,
+      "pessoas_lado_a_lado": 4,
+      "comprimento_m": 49,
+      "equivalente_anel_m2": 176
+    },
+    {
+      "pessoas": 400,
+      "calcada_m": 2.5,
+      "pessoas_lado_a_lado": 1,
+      "comprimento_m": 260,
+      "equivalente_anel_m2": 235
+    },
+    {
+      "pessoas": 400,
+      "calcada_m": 4.0,
+      "pessoas_lado_a_lado": 4,
+      "comprimento_m": 65,
+      "equivalente_anel_m2": 235
+    },
+    {
+      "pessoas": 600,
+      "calcada_m": 2.5,
+      "pessoas_lado_a_lado": 1,
+      "comprimento_m": 390,
+      "equivalente_anel_m2": 353
+    },
+    {
+      "pessoas": 600,
+      "calcada_m": 4.0,
+      "pessoas_lado_a_lado": 4,
+      "comprimento_m": 98,
+      "equivalente_anel_m2": 353
+    },
+    {
+      "pessoas": 900,
+      "calcada_m": 2.5,
+      "pessoas_lado_a_lado": 1,
+      "comprimento_m": 585,
+      "equivalente_anel_m2": 529
+    },
+    {
+      "pessoas": 900,
+      "calcada_m": 4.0,
+      "pessoas_lado_a_lado": 4,
+      "comprimento_m": 146,
+      "equivalente_anel_m2": 529
+    }
+  ],
+  "materiais": [
+    {
+      "zona": "A. Retenção externa (pátio do RDS)",
+      "unifila": 0,
+      "ccb": 66,
+      "obs": "600 pessoas em 300 m2 (20x15 m), 3 divisores"
+    },
+    {
+      "zona": "B. Corredor portão -> porta",
+      "unifila": 0,
+      "ccb": 40,
+      "obs": "2 linhas x 40 m"
+    },
+    {
+      "zona": "C. Funis de porta e triagem",
+      "unifila": 0,
+      "ccb": 16,
+      "obs": "2 portas x 2 linhas x 8 m"
+    },
+    {
+      "zona": "D. Anel de espera interno",
+      "unifila": 283,
+      "ccb": 0,
+      "obs": "622 m2, 7 canais, 566 m"
+    },
+    {
+      "zona": "E. Micro-filas de seção",
+      "unifila": 56,
+      "ccb": 0,
+      "obs": "28 urnas x 4 m (mesa/parede como 2º lado)"
+    },
+    {
+      "zona": "F. Canal de saída e sinalização de piso",
+      "unifila": 25,
+      "ccb": 0,
+      "obs": "50 m"
+    }
+  ],
+  "materiais_total": {
+    "unifila": 364,
+    "ccb": 122
+  }
+}

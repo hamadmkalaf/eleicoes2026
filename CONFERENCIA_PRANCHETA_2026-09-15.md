@@ -1,0 +1,287 @@
+# Conferência final da prancheta do Hall 2 — 15/09/2026
+
+Duas perguntas, respondidas contra as três fontes oficiais que o Cartório
+Eleitoral entregou em julho e setembro de 2026:
+
+1. **Os dados que estimam o número de eleitores esperado estão certos?**
+   Sim. Nenhuma divergência em 51 seções, 28 agregações e 28 mesas.
+2. **O cenário Hamad_Final reparte o esperado por igual entre as paredes?**
+   Sim, e com margem larga: **3.833 · 3.835 · 3.831**, amplitude de **4
+   eleitores em 11.499** (0,10% do terço perfeito).
+
+Tudo abaixo sai de `scripts/confere_prancheta.py`, que refaz as contas do zero
+a partir dos PDFs e sai com código 1 se qualquer número divergir:
+
+```bash
+pip install pdfplumber
+python3 scripts/confere_prancheta.py            # cenário de trabalho (Hamad_Final)
+python3 scripts/confere_prancheta.py equitativo # qualquer cenário de cenarios/
+```
+
+---
+
+## 1. As fontes
+
+Os três PDFs ficam em `data/oficiais/`. Eles são **fonte primária** e
+substituem o `data/raw/mapa_agregacoes_TSE.png`, que trazia erro de digitação.
+
+| Arquivo | Emissão | O que traz |
+|---|---|---|
+| `aptos_por_secao_dublin_2026-07-13.pdf` | ELO, 13/07/2026 16:24 | as 51 seções com aptos, agrupadas pelo local de origem do eleitor · 16.794 aptos em 15 localidades |
+| `secoes_agregadas_dublin_2026.pdf` | Cartório Eleitoral | os 28 pares principal → agregada |
+| `mrv_mesarios_dublin_2026-09-13.pdf` | ELO/Convoca+, 13/09/2026 11:32 | 109 mesários nomeados, seção a seção, com a situação de cada nomeação |
+
+**Comparabilidade.** As três fotografias são de datas diferentes (13/07, sem
+data no PDF de agregações, 13/09) e o repositório trabalhava com CSVs de 14/07
+e 13/08. Os três caminhos fecham no mesmo 16.794, seção a seção — não há
+mistura de safras.
+
+## 2. Aptos e agregações: batem, um a um
+
+- As **51 seções** do PDF existem no repositório com o **mesmo aptos** e a
+  **mesma localidade de origem**. Zero divergências.
+- Os **28 pares** do PDF de agregações são exatamente as 28 mesas da
+  prancheta. Cada uma das 51 seções aparece em **exatamente uma** mesa:
+  nenhuma sobra, nenhuma falta. (É o que desfaz, em definitivo, a
+  inconsistência das "7 seções não contabilizadas" que a proposta antiga do
+  TSE carregava — ver `contexto_eleicoes_dublin_2026.md` §2.1.)
+- O par **3322 → 3752** é oficial, e as duas seções são de Dublin (398 e 396
+  aptos). O erro registrado na aba `Inconsistencias` era de digitação do PNG
+  na *principal* (3222, que é do Porto, em vez de 3322) e está resolvido: com
+  o PDF em mãos, o PNG deixa de ser fonte.
+- As 5 mesas que rodam com uma seção só — 3308, 3442, 3688, 3832, 3862 —
+  constam do PDF com `---` na coluna da agregada. Confere.
+
+## 3. O comparecimento esperado, refeito do zero
+
+Método: `aptos da seção × taxa de 2022 do condado de domicílio`, somado por
+mesa e arredondado por mesa (base B, decisão do Posto de 06/09/2026,
+`scripts/comparecimento.py`). Recalculado a partir do PDF, mesa a mesa, bate
+com `data/decisoes.json` nas 28 — em aptos, em esperado e na origem da
+agregada. Total **11.499** (soma exata 11.497,7).
+
+| MRV | principal | agregada | origem da agregada | aptos | esperado |
+|---:|---:|---:|---|---:|---:|
+| 1 | 0511 | 1100 | Roscommon | 582 | 375 |
+| 2 | 0512 | 2855 | Longford | 476 | 355 |
+| 3 | 0513 | 1105 | Mayo | 502 | 351 |
+| 4 | 0517 | 1292 | Cavan | 513 | 348 |
+| 5 | 1160 | 3845 | Limerick | 473 | 328 |
+| 6 | 1352 | 0522 | Donegal | 462 | 328 |
+| 7 | 3054 | 1099 | Kerry | 454 | 325 |
+| 8 | 3078 | 2847 | Leitrim | 429 | 311 |
+| 9 | 3108 | 3422 | Galway | 756 | 467 |
+| 10 | 3142 | 1278 | Limerick | 793 | 466 |
+| 11 | 3161 | 3307 | Cork | 791 | 504 |
+| 12 | 3179 | 0530 | Westmeath | 676 | 423 |
+| 13 | 3216 | 0527 | Clare | 571 | 407 |
+| 14 | 3229 | 3821 | Cork | 606 | 405 |
+| 15 | 3245 | 0519 | Cork | 781 | 498 |
+| 16 | 3302 | 3181 | Outros locais da Irlanda | 771 | 518 |
+| 17 | 3305 | 0521 | Galway | 767 | 472 |
+| 18 | 3306 | 0518 | Outros locais da Irlanda | 766 | 515 |
+| 19 | 3308 | — | — | 399 | 295 |
+| 20 | 3309 | 1314 | Waterford | 615 | 395 |
+| 21 | 3311 | 3913 | Dublin | 630 | 466 |
+| 22 | 3313 | 3889 | Dublin | 797 | **590** |
+| 23 | 3315 | 3778 | Dublin | 792 | **586** |
+| 24 | 3322 | 3752 | Dublin | 794 | **588** |
+| 25 | 3442 | — | — | 398 | 295 |
+| 26 | 3688 | — | — | 400 | 296 |
+| 27 | 3832 | — | — | 400 | 296 |
+| 28 | 3862 | — | — | 400 | 296 |
+| | | | **total** | **16.794** | **11.499** |
+
+## 4. Equidade por parede do Hamad_Final
+
+| Parede | Mesas | Esperado | Desvio do terço | Metros úteis | Por metro | Maior mesa |
+|---|---:|---:|---:|---:|---:|---:|
+| norte | 9 | 3.835 | +2 | 50,3 | 76,2 | 590 (MRV 22) |
+| oeste | 9 | 3.833 | ±0 | 37,4 | 102,5 | 588 (MRV 24) |
+| leste | 10 | 3.831 | −2 | 44,4 | 86,3 | 586 (MRV 23) |
+
+**Amplitude de 4 eleitores. CV de 0,04%.** Na prática, o arranjo está no
+ótimo: não existe repartição melhor das 28 mesas em três grupos sob a regra de
+uma mesa vermelha por parede. E as três mesas de maior carga — 22, 23 e 24,
+que são os três pares Dublin+Dublin — ficam **uma em cada parede**, que é a
+razão de a coisa fechar tão bem.
+
+Duas observações sobre o que esse número *não* diz:
+
+- **A composição das paredes não é mérito do Hamad_Final: veio do cenário
+  `Equitativo`,** gerado por `simulador/equitativo.js`, que busca exatamente
+  isso (minimizar máx−mín do esperado entre as três paredes). O Hamad_Final
+  move 16 das 28 mesas **ao longo** das paredes, sem trocar nenhuma de parede
+  — e por isso herda o equilíbrio intacto. Mexer numa mesa de parede desfaz a
+  otimização; mexer na posição dela dentro da parede, não.
+- **Por metro de parede o quadro é outro.** A oeste é a parede mais curta
+  (37,4 m, por causa do recorte sudoeste) e leva o mesmo terço: **102,5
+  esperados por metro, contra 76,2 na norte** — 35% mais denso. Equidade de
+  carga não é equidade de espaço de fila.
+
+## 5. Quão robusto é esse equilíbrio
+
+O equilíbrio é **ajustado à base B**, não uma propriedade do arranjo. Trocando
+a base de comparecimento e mantendo as mesmas mesas nas mesmas paredes:
+
+| Base de comparecimento | Total | Amplitude | % do terço |
+|---|---:|---:|---:|
+| **B — taxa de 2022 por condado (a que a prancheta usa)** | 11.498 | **3** | **0,08%** |
+| A — binária: 74% Dublin, 50% interior | 11.416 | 92 | 2,42% |
+| Dublin 80%, interior 45% | 11.961 | 95 | 2,37% |
+| Dublin 70%, interior 60% | 11.334 | 216 | 5,71% |
+| uniforme de 68,5% (mesmo total, sem contraste entre condados) | 11.499 | 318 | 8,31% |
+| nota verbal: uniforme de 71,5% (≈12.000) | 12.000 | 332 | 8,31% |
+
+Como ler a tabela:
+
+1. **Errar o *nível* do comparecimento não desequilibra nada.** Se todas as
+   taxas subirem ou descerem juntas, as três paredes se movem juntas: a linha
+   "uniforme de 71,5%" tem a mesma amplitude relativa que a "uniforme de
+   68,5%". O risco não está em acertar os 11.499.
+2. **O que desequilibra é errar o *contraste* entre condados.** No pior caso
+   testado (taxas uniformes, isto é, o contraste inteiro errado) a amplitude
+   vai a 8,3% — 318 eleitores entre a parede mais carregada e a menos
+   carregada, o que diluído em 9 mesas e 9 horas dá ~4 eleitores por mesa por
+   hora, ou 4 minutos de trabalho a mais por hora a 60 s por eleitor.
+   **Nenhuma das bases testadas quebra o desenho.**
+3. **A parede oeste é a mais exposta a taxa de qualidade fraca** (proxy ou
+   genérica): 323 dos seus 3.833 esperados, contra 85 na leste. Se *todas* as
+   taxas fracas errarem 20% na mesma direção, a oeste anda ±65 e a leste ±17 —
+   um descolamento de ~48 eleitores, 1,3% do terço. Tolerável.
+
+**A qualidade da base, em números:** das 15 localidades, 6 têm taxa "direto" e
+cobrem **91,0% do eleitorado** (Dublin sozinha é 74,9%); 7 são proxy (8,4%) e
+2 são genéricas (0,5%). O grosso do modelo está em terreno firme.
+
+**A ressalva honesta:** as taxas de 2022 por condado foram transcritas de
+`handoff_agregacao_dublin_2026.md` §2 e **o repositório não registra a fonte
+primária de nenhuma delas**. O único dado de 2022 com origem citada é
+agregado: 7.492 de 11.946 aptos no 2º turno, 62,7%
+([eDublin](https://www.edublin.com.br/eleicoes-brasileiras-na-irlanda-2022/),
+em `pesquisa_horarios_pico_votacao.md` §4) — abaixo dos 68,5% que a base B
+implica, mas os dois não são comparáveis (turnos diferentes, e o eleitorado
+cresceu 40% desde então). Quem fecha isso é o
+[`perfil_comparecimento_abstencao_2022`](https://dadosabertos.tse.jus.br/dataset/comparecimento-e-abstencao-2022)
+do Portal de Dados Abertos do TSE, no recorte ZZ, que dá comparecimento
+observado seção a seção. Não foi possível baixá-lo deste ambiente (a política
+de rede bloqueia `cdn.tse.jus.br`). Fica como a pendência §9.1 já registrava —
+mas, pelo item 1 acima, ela **não bloqueia** o congelamento da prancheta.
+
+## 6. O que a conferência achou de fora da pergunta
+
+### 6.1 A atribuição mesa → entrada não é equitativa, e podia ser
+
+`data/decisoes.json` reparte as 28 mesas entre as três entradas por **cota do
+Ring 3** — a zona de fila de B era mais larga, então B levou mais carga:
+
+| Entrada | Por cota do Ring 3 | Desvio | Se a regra fosse "uma entrada por parede" | Desvio |
+|---|---:|---:|---:|---:|
+| A (S4) | 3.642 | −191 | 3.833 (oeste) | ±0 |
+| B (S5) | **4.215** | **+382** | 3.835 (norte) | +2 |
+| C (S6) | 3.642 | −191 | 3.831 (leste) | −2 |
+| | amplitude **573** | | amplitude **4** | |
+
+Três razões para trocar:
+
+1. **O Ring 3 não existe mais.** O RDS proibiu fila no terreno dele e não
+   houve autorização de Brasília (`plano_filas_sem_ring3.md`). A cota que
+   justificava os +10% de B morreu com ele.
+2. **`simulador/equitativo.js` já assume a regra por parede**
+   (`ENTRADA = {oeste: "A", norte: "B", leste: "C"}`). Hoje o gerador do
+   arranjo e o arquivo de decisões dizem coisas diferentes sobre a mesma
+   mesa.
+3. **A geometria ajuda.** S4 (centro em x = 22,07), S5 (28,29) e S6 (34,50)
+   estão na ordem oeste → centro → leste; mandar cada porta para a parede
+   correspondente é o percurso curto, não um desvio.
+
+Não é decisão desta conferência — é do Posto, e depende do desenho de fila
+confinado que substituiu o Ring 3. Mas é barato e melhora 573 → 4.
+
+### 6.2 Uma base de comparecimento fora do lugar
+
+`scripts/plano_filas.py`, no branch `claude/filas-sem-ring-3-b9qvqi`, dimensiona
+a fila com **11.416** fixo no código (base A: 74%/50%), não com os 11.499 da
+base B decidida em 06/09. A diferença no total é de 0,7% e não muda conclusão
+nenhuma daquele documento, mas é a inconsistência §9.1 voltando por uma porta
+lateral. Vale trocar a constante por `comparecimento.total()`.
+
+### 6.3 Os mesários: a parede mais densa é a mais descoberta
+
+O relatório Convoca+ cobre exatamente as 28 seções principais — confirmando
+que o TSE nomeou **uma junta por MRV, não uma por seção**. São **109 nomeados
+para 112 lugares** (4 × 28) e só **83 confirmados**.
+
+| Parede | Mesas | Esperado | Nomeados | de | Confirmados | Por mesa |
+|---|---:|---:|---:|---:|---:|---:|
+| norte | 9 | 3.835 | 36 | 36 | 31 | 3,44 |
+| leste | 10 | 3.831 | 39 | 40 | 28 | 2,80 |
+| **oeste** | 9 | 3.833 | 34 | 36 | **24** | **2,67** |
+
+O cruzamento incomoda: a **oeste** é a parede mais densa por metro (102,5/m) e
+é também a mais descoberta — e as duas lacunas de nomeação dela caem nas mesas
+erradas:
+
+- **MRV 24** (seção 3322, 588 esperados, **2ª maior carga do salão**) — 3
+  nomeados, falta o 2º Mesário, e só 2 confirmados;
+- **MRV 11** (seção 3161, 504 esperados, 6ª maior) — 3 nomeados e **sem
+  Presidente nomeado**, com 1 confirmado.
+
+Na leste, **MRV 19** (seção 3308) tem 4 nomeados mas 3 sem resposta, e **MRV
+26** (3688) está sem 2º Mesário. Se as 25 pendências não virarem confirmação,
+sobram 83 pessoas para 28 mesas — 2,96 por mesa, contra as 4 previstas.
+
+Isso é matéria do item 4 do `PENDENCIAS` (plano de comunicação com mesários),
+não da prancheta. Mas a prancheta diz **por onde começar a ligar**: MRV 24 e
+MRV 11, nessa ordem.
+
+## 7. Efeitos de segunda e terceira ordem
+
+- **Segunda ordem — a equidade por parede não é equidade por mesa.** As 28
+  mesas vão de 295 a 590 esperados (razão 2,00×, CV 23,3%). Equilibrar as
+  paredes reparte o *fluxo pelo salão*; não reparte o *tempo de fila do
+  eleitor*, que é função da mesa dele. Quem cai na MRV 22 tem o dobro de
+  gente à frente de quem cai na 25 (e, numa fila, a espera cresce mais que
+  proporcionalmente à carga), e nenhum arranjo de posição conserta isso — só desagregar
+  os três pares Dublin+Dublin conserta, e isso é negociação com o TSE, não
+  desenho de piso. O ganho real do equilíbrio é outro: **as três filas de
+  entrada crescem no mesmo ritmo**, então não há uma porta que colapse antes
+  das outras, e a equipe pode ser dividida em três partes iguais sem
+  remanejamento durante o dia.
+- **Segunda ordem — densidade linear vira profundidade de fila.** Com 102,5
+  esperados por metro na oeste contra 76,2 na norte, a fila da parede oeste é
+  ~35% mais profunda para a mesma carga. No plano de fila confinado dentro do
+  Hall 2, é a oeste que estoura primeiro, e não porque leve mais gente.
+- **Terceira ordem — o equilíbrio é frágil ao congelamento tardio.** A
+  numeração eleitor (1 a 28, sentido horário) é calculada *sobre o cenário de
+  trabalho*, e a atribuição mesa → entrada também. Toda peça impressa —
+  sinalização, cadernos, crachá de mesário, o mapa que o eleitor olha na
+  porta — depende dos três congelarem juntos. Mudar uma mesa de parede depois
+  da impressão não custa só a reimpressão: custa o equilíbrio, porque a
+  composição por parede é o resultado de uma otimização, não um arranjo que
+  tolere troca manual.
+- **Terceira ordem — o risco de mesário é o que pode anular tudo.** Uma mesa
+  que abre com 3 pessoas em vez de 4 perde a posição de identificação
+  redundante e desce de patamar de velocidade — exatamente o cenário que
+  `saidas/analise_gargalos.md` mostra não fechar às 17h com caderno físico.
+  Se isso acontecer na MRV 24 (588 esperados), a parede oeste deixa de ser
+  um terço equilibrado e vira o gargalo do salão. **O equilíbrio desenhado
+  em metros se perde por falta de gente, não por falta de espaço.**
+
+## 8. Veredito
+
+A prancheta pode ser congelada. Os números estão certos e o Hamad_Final está,
+de fato, equitativo por parede — no ótimo, e robusto a todas as bases de
+comparecimento testadas.
+
+O que ainda merece uma decisão do Posto, em ordem de urgência:
+
+1. **Mesários da MRV 24 e da MRV 11** (item 4 do `PENDENCIAS`) — é o único
+   item que pode desfazer o equilíbrio no dia.
+2. **Adotar "uma entrada por parede"** e regerar `data/decisoes.json`: leva a
+   amplitude entre entradas de 573 para 4, e alinha o arquivo de decisões ao
+   gerador que produziu o arranjo.
+3. **Trocar o 11.416 de `plano_filas.py`** pela base B.
+4. **Baixar o `perfil_comparecimento_abstencao_2022` (ZZ) do TSE** e conferir
+   as taxas proxy. Não bloqueia nada — melhora a defesa do número diante do
+   TRE.

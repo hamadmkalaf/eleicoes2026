@@ -15,6 +15,23 @@ D04 AK83).
 eleitores. As 23 urnas que somam duas seções vão de 429 a 797; as 5 restantes
 operam com uma seção só, perto de 400.
 
+## Conferência final (15/09/2026)
+
+`CONFERENCIA_PRANCHETA_2026-09-15.md` confere estes números contra os três
+PDFs oficiais do Cartório Eleitoral, agora em `data/oficiais/`, e verifica a
+equidade do cenário de trabalho da prancheta. Resultado: **nenhuma
+divergência** em 51 seções, 28 agregações e 28 mesas; o cenário `Hamad_Final`
+reparte 3.833 · 3.835 · 3.831 esperados entre as paredes oeste, norte e leste.
+Para refazer a conferência:
+
+```bash
+pip install pdfplumber
+python3 scripts/confere_prancheta.py
+```
+
+Os PDFs são fonte primária e **substituem o `data/raw/mapa_agregacoes_TSE.png`**,
+que trazia o erro de digitação descrito em "Achados".
+
 ## Fontes
 
 Os três arquivos em `data/raw/` vieram da pasta do Google Drive do usuário:

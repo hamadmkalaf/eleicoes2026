@@ -1,0 +1,1106 @@
+<title>Ring 3, cenários de fila</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  --papel:#f1efe7; --folha:#fffdf7; --prancha:#fbfaf7; --tinta:#16202b;
+  --meio:#57616c; --fraco:#8b9099; --regua:#dbd5c7; --regua2:#eae5d9;
+  --a:#1f6fb2; --b:#b26a12; --c:#b0245e; --alerta:#b23b2e; --ok:#1a7f6b;
+  --realce:rgba(31,111,178,.10);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --papel:#101418; --folha:#181d23; --prancha:#f4f2ee; --tinta:#e6eaee;
+  --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931;
+  --a:#63a6e0; --b:#dda257; --c:#e77aa4; --alerta:#e0796a; --ok:#4fc0a8;
+  --realce:rgba(99,166,224,.14);
+}}
+:root[data-theme="dark"]{
+  --papel:#101418; --folha:#181d23; --prancha:#f4f2ee; --tinta:#e6eaee;
+  --meio:#a2aab4; --fraco:#767f89; --regua:#2b323a; --regua2:#222931;
+  --a:#63a6e0; --b:#dda257; --c:#e77aa4; --alerta:#e0796a; --ok:#4fc0a8;
+  --realce:rgba(99,166,224,.14);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased}
+.folha{max-width:1080px; margin:0 auto; padding:0 26px 92px}
+.prosa{max-width:68ch}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+  margin:0; font-weight:700; letter-spacing:-.01em; text-wrap:balance}
+h1{font-size:clamp(2.1rem,4.6vw,3.1rem); line-height:1.06}
+h2{font-size:clamp(1.4rem,2.4vw,1.85rem); line-height:1.2}
+h3{font-size:1.02rem; font-weight:600}
+p{margin:0 0 1.05em}
+strong{font-weight:600}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+a{color:var(--a)}
+
+header{padding:70px 0 0}
+.olho{font-family:"IBM Plex Mono",monospace; font-size:.71rem; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 18px}
+.chamada{font-family:"Source Serif 4",Georgia,serif; font-size:clamp(1.08rem,2vw,1.3rem);
+  line-height:1.5; color:var(--meio); max-width:58ch; margin:20px 0 0; font-weight:600}
+.faixa{display:grid; grid-template-columns:repeat(auto-fit,minmax(146px,1fr));
+  gap:1px; background:var(--regua); border:1px solid var(--regua); margin:40px 0 0}
+.faixa div{background:var(--papel); padding:14px 15px}
+.faixa dt{font-size:.71rem; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--meio); margin:0 0 5px}
+.faixa dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.4rem;
+  font-weight:500; font-variant-numeric:tabular-nums; line-height:1.14}
+.faixa dd small{display:block; font-family:"IBM Plex Sans",sans-serif; font-size:.73rem;
+  font-weight:400; color:var(--fraco); letter-spacing:0; margin-top:4px}
+.faixa .delta{color:var(--ok)}
+
+section{margin:66px 0 0}
+.rotulo{font-family:"IBM Plex Mono",monospace; font-size:.71rem; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 10px; padding-bottom:9px;
+  border-bottom:1px solid var(--regua)}
+section>h2{margin-bottom:16px}
+
+.plantas{display:grid; gap:20px; grid-template-columns:1fr; margin:28px 0 0}
+@media (min-width:900px){ .plantas{grid-template-columns:1fr 1fr} }
+@media (min-width:1180px){ .plantas{width:min(1240px,calc(100vw - 52px));
+  margin-left:calc((1080px - min(1240px,100vw - 52px)) / 2)} }
+figure{margin:0}
+.prancha{background:var(--prancha); border:1px solid var(--regua); padding:6px;
+  overflow-x:auto}
+svg.planta{display:block; width:100%; height:auto; min-width:430px}
+figcaption{font-size:.84rem; color:var(--meio); margin-top:11px}
+figcaption b{color:var(--tinta); font-weight:600}
+
+.rolagem{overflow-x:auto; border:1px solid var(--regua); background:var(--folha);
+  margin:24px 0 0}
+table{border-collapse:collapse; width:100%; font-size:.86rem}
+th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--regua2);
+  white-space:nowrap}
+thead th{font-size:.68rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--meio); font-weight:500; border-bottom:1px solid var(--regua);
+  background:var(--folha)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right}
+tr.total td{border-top:1.5px solid var(--regua); font-weight:600}
+tr.marcada td{background:var(--realce); font-weight:600}
+td.ganho{color:var(--ok); font-weight:600}
+span.sub{display:block; font-size:.72rem; color:var(--fraco); font-weight:400}
+td.perda{color:var(--alerta); font-weight:600}
+.faixa dd.alerta{color:var(--alerta)}
+caption{caption-side:bottom; text-align:left; font-size:.8rem; color:var(--fraco);
+  padding:9px 12px}
+
+.pin{display:inline-block; width:18px; text-align:center; font-family:"IBM Plex Mono",monospace;
+  font-weight:600; font-size:.74rem; border:1px solid currentColor; margin-right:6px}
+.pin.a{color:var(--a)} .pin.b{color:var(--b)} .pin.c{color:var(--c)}
+
+ul.marcas{list-style:none; padding:0; margin:22px 0 0; display:grid; gap:13px;
+  max-width:70ch}
+ul.marcas li{padding-left:22px; position:relative; color:var(--meio)}
+ul.marcas li::before{content:""; position:absolute; left:0; top:.66em; width:9px;
+  height:1px; background:var(--fraco)}
+ul.marcas li strong{color:var(--tinta)}
+ul.marcas.contra li::before{background:var(--alerta)}
+
+.veredito{margin-top:30px; border:1px solid var(--regua); border-left:3px solid var(--a);
+  background:var(--folha); padding:22px 24px; display:flex; flex-direction:column; gap:9px}
+.veredito .curta{font-family:"Source Serif 4",Georgia,serif; font-size:1.26rem;
+  font-weight:700; line-height:1.3}
+.veredito p{margin:0; color:var(--meio); font-size:.93rem; max-width:68ch}
+.nota{border-left:2px solid var(--b); padding:2px 0 2px 18px; margin:26px 0 0;
+  color:var(--meio); font-size:.94rem; max-width:70ch}
+.nota strong{color:var(--tinta)}
+
+ol.pend{counter-reset:p; list-style:none; padding:0; margin:24px 0 0; display:grid; gap:14px}
+ol.pend li{counter-increment:p; display:grid; grid-template-columns:28px 1fr; gap:14px;
+  align-items:start; max-width:72ch}
+ol.pend li::before{content:counter(p); font-family:"IBM Plex Mono",monospace; font-size:.76rem;
+  color:var(--a); border:1px solid var(--regua); width:28px; height:28px; display:grid;
+  place-items:center; margin-top:2px}
+ol.pend p{margin:5px 0 0; color:var(--meio); font-size:.92rem}
+
+footer{margin:80px 0 0; padding-top:20px; border-top:1px solid var(--regua);
+  font-size:.82rem; color:var(--fraco)}
+footer p{margin:0 0 .5em; max-width:74ch}
+:focus-visible{outline:2px solid var(--a); outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:640px){ .folha{padding:0 18px 60px} header{padding-top:44px} }
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições 2026 · 1º turno · 4 de outubro · RDS Ballsbridge · fila externa</p>
+  <h1>Ring 3, cenários de fila</h1>
+  <p class="chamada">O eleitor entra pelo canto nordeste, desce rente ao gradil leste e vira no
+  fundo: o corredor de chegada é um L. As três zonas são alimentadas pelo trecho de fundo e
+  descarregam ao norte em S4, S5 e S6. Só duas coisas são separador — as divisórias das raias e a
+  parede que separa a zona C da corrente que desce.</p>
+  <dl class="faixa">
+    <div><dt>Ring</dt><dd>44 × 35 m<small>medida oficial · 41,0 m úteis para as zonas</small></dd></div>
+    <div><dt>Separadores</dt><dd class="delta">371<small>708 m de divisória + 32 m na zona C</small></dd></div>
+    <div><dt>A comprar</dt><dd>171<small>sobre os 200 da organizadora · EUR 2.226</small></dd></div>
+    <div><dt>Fora da conta</dt><dd class="ganho">−144<small>288 m que saíram por decisão do Posto</small></dd></div>
+    <div><dt>CCB só na ponta</dt><dd class="ganho">39<small>cenário 3 · 662 m de fita grossa</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <p class="rotulo">O percurso</p>
+  <h2>Entrada pelo canto nordeste, corredor em L</h2>
+  <div class="prosa">
+  <p>A entrada não é pelo fundo. O eleitor entra pelo <strong>canto nordeste</strong> do Ring — o
+  lado mais perto da porta C —, desce rente ao gradil leste e vira no fundo. O corredor de chegada
+  é um <strong>L</strong>: um trecho lateral a leste e um trecho de fundo ao sul, ambos de
+  3,0 m. As zonas são alimentadas pelo trecho de fundo.</p>
+  <p>Duas consequências, uma de área e outra de barreira. O trecho lateral consome
+  3,0 m da largura: sobram <strong>41,0 m</strong> para as
+  três zonas, não os 44 m inteiros. E a zona C fica encostada nesse trecho, com a
+  fila parada de um lado e a corrente que desce do outro — <strong>é a única contenção de verdade
+  que o desenho ainda pede</strong>, e o único separador fora das divisórias.</p>
+  </div>
+  <div class="plantas"><figure><div class="prancha"><svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 876 862" data-w="876" data-h="862" role="img">
+<rect width="876" height="862" fill="var(--prancha)"/>
+<defs><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Serpenteados verticais (raias norte-sul)</text>
+<rect x="60.0" y="74.0" width="756.0" height="196.0" fill="#eef1f4"/>
+<rect x="130.0" y="270.0" width="616.0" height="490.0" fill="#f6f4ef" stroke="#1c2733" stroke-width="2.2"/>
+<line x1="60.0" y1="74.0" x2="816.0" y2="74.0" stroke="#1c2733" stroke-width="3"/>
+<text x="438.0" y="57.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#5c6c80">FACHADA SUL DO HALL 2</text>
+<line x1="309.4" y1="74.0" x2="392.4" y2="74.0" stroke="#2a78d6" stroke-width="6"/>
+<text x="350.9" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6">S4 · A</text>
+<line x1="396.5" y1="74.0" x2="479.5" y2="74.0" stroke="#e08a00" stroke-width="6"/>
+<text x="438.0" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00">S5 · B</text>
+<line x1="483.6" y1="74.0" x2="566.6" y2="74.0" stroke="#c2185b" stroke-width="6"/>
+<text x="525.1" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b">S6 · C</text>
+<line x1="227.5" y1="74.0" x2="244.3" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<text x="235.9" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="9.5" font-weight="400" fill="#b26a12">S2 saída</text>
+<line x1="631.7" y1="74.0" x2="648.5" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<text x="640.1" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="9.5" font-weight="400" fill="#b26a12">S8 saída</text>
+<text x="67.0" y="172.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 67.0 172.0)">apron pavimentado · 14 m</text>
+<rect x="130.0" y="270.0" width="156.8" height="448.0" fill="#2a78d6" fill-opacity=".13" stroke="#2a78d6" stroke-width="1.4"/>
+<line x1="149.6" y1="701.2" x2="149.6" y2="270.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="169.2" y1="718.0" x2="169.2" y2="286.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="188.8" y1="701.2" x2="188.8" y2="270.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="208.4" y1="718.0" x2="208.4" y2="286.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="228.0" y1="701.2" x2="228.0" y2="270.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="247.6" y1="718.0" x2="247.6" y2="286.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="267.2" y1="701.2" x2="267.2" y2="270.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<text x="208.4" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">A · 8 raias de 32,0 m</text>
+<line x1="286.8" y1="270.0" x2="350.9" y2="79.6" stroke="#2a78d6" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="319.0" y="270.0" width="196.0" height="448.0" fill="#e08a00" fill-opacity=".13" stroke="#e08a00" stroke-width="1.4"/>
+<line x1="338.6" y1="701.2" x2="338.6" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="358.2" y1="718.0" x2="358.2" y2="286.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="377.8" y1="701.2" x2="377.8" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="397.4" y1="718.0" x2="397.4" y2="286.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="417.0" y1="701.2" x2="417.0" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="436.6" y1="718.0" x2="436.6" y2="286.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="456.2" y1="701.2" x2="456.2" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="475.8" y1="718.0" x2="475.8" y2="286.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="495.4" y1="701.2" x2="495.4" y2="270.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<text x="417.0" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">B · 10 raias de 32,0 m</text>
+<line x1="515.0" y1="270.0" x2="438.0" y2="79.6" stroke="#e08a00" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="547.2" y="270.0" width="156.8" height="448.0" fill="#c2185b" fill-opacity=".13" stroke="#c2185b" stroke-width="1.4"/>
+<line x1="566.8" y1="701.2" x2="566.8" y2="270.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="586.4" y1="718.0" x2="586.4" y2="286.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="606.0" y1="701.2" x2="606.0" y2="270.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="625.6" y1="718.0" x2="625.6" y2="286.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="645.2" y1="701.2" x2="645.2" y2="270.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="664.8" y1="718.0" x2="664.8" y2="286.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="684.4" y1="701.2" x2="684.4" y2="270.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<text x="625.6" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">C · 8 raias de 32,0 m</text>
+<line x1="547.2" y1="270.0" x2="525.1" y2="79.6" stroke="#c2185b" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="704.0" y="270.0" width="42.0" height="490.0" fill="#16867f" fill-opacity=".10" stroke="#5c6c80" stroke-width="1"/>
+<rect x="130.0" y="718.0" width="574.0" height="42.0" fill="#16867f" fill-opacity=".10" stroke="#5c6c80" stroke-width="1"/>
+<text x="725.0" y="396.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="600" fill="#0f6b64" paint-order="stroke" stroke="#f6f4ef" stroke-width="3.5" stroke-linejoin="round" transform="rotate(-90 725.0 396.0)">CORREDOR · 3,0 m</text>
+<text x="417.0" y="744.6" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="600" fill="#0f6b64">TRECHO DE FUNDO</text>
+<line x1="725.0" y1="225.2" x2="725.0" y2="291.0" stroke="#0f6b64" stroke-width="2.2" marker-end="url(#seta)"/>
+<text x="692.8" y="236.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#0f6b64">entrada · canto nordeste</text>
+<text x="124.4" y="782.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 44,0 × 35,0 m</text>
+</svg>
+</div><figcaption><b>Raias norte-sul.</b> 1.997 pessoas · 371 separadores · 23 meias-voltas</figcaption></figure>
+<figure><div class="prancha"><svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 876 862" data-w="876" data-h="862" role="img">
+<rect width="876" height="862" fill="var(--prancha)"/>
+<defs><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Serpenteados horizontais (raias leste-oeste)</text>
+<rect x="60.0" y="74.0" width="756.0" height="196.0" fill="#eef1f4"/>
+<rect x="130.0" y="270.0" width="616.0" height="490.0" fill="#f6f4ef" stroke="#1c2733" stroke-width="2.2"/>
+<line x1="60.0" y1="74.0" x2="816.0" y2="74.0" stroke="#1c2733" stroke-width="3"/>
+<text x="438.0" y="57.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#5c6c80">FACHADA SUL DO HALL 2</text>
+<line x1="309.4" y1="74.0" x2="392.4" y2="74.0" stroke="#2a78d6" stroke-width="6"/>
+<text x="350.9" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6">S4 · A</text>
+<line x1="396.5" y1="74.0" x2="479.5" y2="74.0" stroke="#e08a00" stroke-width="6"/>
+<text x="438.0" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00">S5 · B</text>
+<line x1="483.6" y1="74.0" x2="566.6" y2="74.0" stroke="#c2185b" stroke-width="6"/>
+<text x="525.1" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b">S6 · C</text>
+<line x1="227.5" y1="74.0" x2="244.3" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<text x="235.9" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="9.5" font-weight="400" fill="#b26a12">S2 saída</text>
+<line x1="631.7" y1="74.0" x2="648.5" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<text x="640.1" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="9.5" font-weight="400" fill="#b26a12">S8 saída</text>
+<text x="67.0" y="172.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#5c6c80" transform="rotate(-90 67.0 172.0)">apron pavimentado · 14 m</text>
+<rect x="130.0" y="270.0" width="158.7" height="448.0" fill="#2a78d6" fill-opacity=".13" stroke="#2a78d6" stroke-width="1.4"/>
+<line x1="146.8" y1="698.5" x2="288.7" y2="698.5" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="679.0" x2="271.9" y2="679.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="659.6" x2="288.7" y2="659.6" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="640.1" x2="271.9" y2="640.1" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="620.6" x2="288.7" y2="620.6" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="601.1" x2="271.9" y2="601.1" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="581.7" x2="288.7" y2="581.7" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="562.2" x2="271.9" y2="562.2" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="542.7" x2="288.7" y2="542.7" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="523.2" x2="271.9" y2="523.2" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="503.7" x2="288.7" y2="503.7" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="484.3" x2="271.9" y2="484.3" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="464.8" x2="288.7" y2="464.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="445.3" x2="271.9" y2="445.3" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="425.8" x2="288.7" y2="425.8" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="406.3" x2="271.9" y2="406.3" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="386.9" x2="288.7" y2="386.9" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="367.4" x2="271.9" y2="367.4" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="347.9" x2="288.7" y2="347.9" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="328.4" x2="271.9" y2="328.4" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="146.8" y1="309.0" x2="288.7" y2="309.0" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<line x1="130.0" y1="289.5" x2="271.9" y2="289.5" stroke="#2a78d6" stroke-width="1" stroke-opacity=".6"/>
+<text x="209.4" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">A · 23 × 11,3 m</text>
+<line x1="288.7" y1="270.0" x2="350.9" y2="79.6" stroke="#2a78d6" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="325.1" y="270.0" width="183.7" height="448.0" fill="#e08a00" fill-opacity=".13" stroke="#e08a00" stroke-width="1.4"/>
+<line x1="341.9" y1="698.5" x2="508.9" y2="698.5" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="679.0" x2="492.1" y2="679.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="659.6" x2="508.9" y2="659.6" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="640.1" x2="492.1" y2="640.1" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="620.6" x2="508.9" y2="620.6" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="601.1" x2="492.1" y2="601.1" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="581.7" x2="508.9" y2="581.7" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="562.2" x2="492.1" y2="562.2" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="542.7" x2="508.9" y2="542.7" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="523.2" x2="492.1" y2="523.2" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="503.7" x2="508.9" y2="503.7" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="484.3" x2="492.1" y2="484.3" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="464.8" x2="508.9" y2="464.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="445.3" x2="492.1" y2="445.3" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="425.8" x2="508.9" y2="425.8" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="406.3" x2="492.1" y2="406.3" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="386.9" x2="508.9" y2="386.9" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="367.4" x2="492.1" y2="367.4" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="347.9" x2="508.9" y2="347.9" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="328.4" x2="492.1" y2="328.4" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="341.9" y1="309.0" x2="508.9" y2="309.0" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<line x1="325.1" y1="289.5" x2="492.1" y2="289.5" stroke="#e08a00" stroke-width="1" stroke-opacity=".6"/>
+<text x="417.0" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">B · 23 × 13,1 m</text>
+<line x1="438.0" y1="270.0" x2="438.0" y2="79.6" stroke="#e08a00" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="545.3" y="270.0" width="158.7" height="448.0" fill="#c2185b" fill-opacity=".13" stroke="#c2185b" stroke-width="1.4"/>
+<line x1="562.1" y1="698.5" x2="704.0" y2="698.5" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="679.0" x2="687.2" y2="679.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="659.6" x2="704.0" y2="659.6" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="640.1" x2="687.2" y2="640.1" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="620.6" x2="704.0" y2="620.6" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="601.1" x2="687.2" y2="601.1" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="581.7" x2="704.0" y2="581.7" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="562.2" x2="687.2" y2="562.2" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="542.7" x2="704.0" y2="542.7" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="523.2" x2="687.2" y2="523.2" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="503.7" x2="704.0" y2="503.7" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="484.3" x2="687.2" y2="484.3" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="464.8" x2="704.0" y2="464.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="445.3" x2="687.2" y2="445.3" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="425.8" x2="704.0" y2="425.8" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="406.3" x2="687.2" y2="406.3" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="386.9" x2="704.0" y2="386.9" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="367.4" x2="687.2" y2="367.4" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="347.9" x2="704.0" y2="347.9" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="328.4" x2="687.2" y2="328.4" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="562.1" y1="309.0" x2="704.0" y2="309.0" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<line x1="545.3" y1="289.5" x2="687.2" y2="289.5" stroke="#c2185b" stroke-width="1" stroke-opacity=".6"/>
+<text x="624.6" y="251.8" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b" paint-order="stroke" stroke="#eef1f4" stroke-width="3.5" stroke-linejoin="round">C · 23 × 11,3 m</text>
+<line x1="545.3" y1="270.0" x2="525.1" y2="79.6" stroke="#c2185b" stroke-width="2" marker-end="url(#seta)"/>
+<rect x="704.0" y="270.0" width="42.0" height="490.0" fill="#16867f" fill-opacity=".10" stroke="#5c6c80" stroke-width="1"/>
+<rect x="130.0" y="718.0" width="574.0" height="42.0" fill="#16867f" fill-opacity=".10" stroke="#5c6c80" stroke-width="1"/>
+<text x="725.0" y="396.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="600" fill="#0f6b64" paint-order="stroke" stroke="#f6f4ef" stroke-width="3.5" stroke-linejoin="round" transform="rotate(-90 725.0 396.0)">CORREDOR · 3,0 m</text>
+<text x="417.0" y="744.6" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="600" fill="#0f6b64">TRECHO DE FUNDO</text>
+<line x1="725.0" y1="225.2" x2="725.0" y2="291.0" stroke="#0f6b64" stroke-width="2.2" marker-end="url(#seta)"/>
+<text x="692.8" y="236.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#0f6b64">entrada · canto nordeste</text>
+<text x="124.4" y="782.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 44,0 × 35,0 m</text>
+</svg>
+</div><figcaption><b>Raias leste-oeste.</b> 1.964 pessoas · 371 separadores · 66 meias-voltas</figcaption></figure></div>
+</section>
+
+<section>
+  <p class="rotulo">A conta</p>
+  <h2>O que ainda é separador</h2>
+  <div class="prosa">
+  <p>Três itens que o modelo contava saíram por decisão do Posto. Ficam registrados com a metragem
+  que tinham — para dar o tamanho do que se está abrindo mão, e para a conta voltar a fechar se
+  alguma dessas decisões mudar.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Item retirado</th><th>Por quê</th><th class="num">Quanto era</th><th class="num">Separadores</th></tr></thead>
+    <tbody>
+      <tr><td>Contorno das zonas</td><td>O gradil já fecha o compound; entre zonas, a delimitação é <strong>fita</strong></td><td class="mono num">160,2 m</td><td class="mono num ganho">−81</td></tr>
+      <tr><td>Parede do corredor de chegada</td><td>Fora da conta</td><td class="mono num">39,8 m</td><td class="mono num ganho">−20</td></tr>
+      <tr><td>Raias do apron até as portas</td><td>Fora da conta</td><td class="mono num">87,7 m</td><td class="mono num ganho">−44</td></tr>
+      <tr class="total"><td>Total retirado</td><td></td><td class="mono num">287,7 m</td><td class="mono num ganho">−144</td></tr>
+    </tbody>
+  </table></div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Componente</th><th class="num">Raias N–S</th><th class="num">Raias L–O</th></tr></thead>
+    <tbody><tr><td>Divisórias entre as raias</td><td class="mono num">708,4 m</td><td class="mono num">708,4 m</td></tr>
+<tr><td>Separação da zona C / corredor</td><td class="mono num">32,0 m</td><td class="mono num">32,0 m</td></tr>
+<tr class=total><td>Barreira total</td><td class="mono num">740,4 m</td><td class="mono num">740,4 m</td></tr>
+<tr class=total><td>Separadores de 2 m</td><td class="mono num">371</td><td class="mono num">371</td></tr>
+<tr><td>A comprar (estoque 200)</td><td class="mono num">171</td><td class="mono num">171</td></tr>
+<tr><td>Custo da compra</td><td class="mono num">EUR 2.226,42</td><td class="mono num">EUR 2.226,42</td></tr></tbody>
+    <caption>O que sobra são dois componentes. A fita de delimitação é outro material e outro
+    fornecedor: 160,2 m no desenho N–S,
+    159,6 m no girado.</caption>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">O mapa</p>
+  <h2>Onde cada metro é gasto, e o que ele segura</h2>
+  <div class="prosa">
+  <p>Cada corrida que a conta soma está desenhada, colorida pelo componente — o mapa <em>é</em> a
+  conta, gerado dos mesmos segmentos, e o script recusa a gerar a planta se os dois não fecharem.
+  O gradil permanente aparece tracejado em cinza; o contorno das zonas, pontilhado em azul, é fita
+  e não entra na conta.</p>
+  </div>
+  <div class="plantas"><figure><div class="prancha"><svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 876 1086" data-w="876" data-h="1086" role="img">
+<rect width="876" height="1086" fill="var(--prancha)"/>
+<defs><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Mapa dos separadores · Serpenteados verticais (raias norte-sul)</text>
+<rect x="60.0" y="74.0" width="756.0" height="196.0" fill="#eef1f4"/>
+<rect x="130.0" y="270.0" width="616.0" height="490.0" fill="#faf9f5" stroke="#8a919b" stroke-width="2.0" stroke-dasharray="7 4"/>
+<line x1="60.0" y1="74.0" x2="816.0" y2="74.0" stroke="#1c2733" stroke-width="3"/>
+<text x="438.0" y="57.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#5c6c80">FACHADA SUL DO HALL 2</text>
+<line x1="309.4" y1="74.0" x2="392.4" y2="74.0" stroke="#2a78d6" stroke-width="6"/>
+<text x="350.9" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6">S4 · A</text>
+<line x1="396.5" y1="74.0" x2="479.5" y2="74.0" stroke="#e08a00" stroke-width="6"/>
+<text x="438.0" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00">S5 · B</text>
+<line x1="483.6" y1="74.0" x2="566.6" y2="74.0" stroke="#c2185b" stroke-width="6"/>
+<text x="525.1" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b">S6 · C</text>
+<line x1="227.5" y1="74.0" x2="244.3" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<line x1="631.7" y1="74.0" x2="648.5" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<rect x="130.0" y="270.0" width="156.8" height="448.0" fill="#2a78d6" fill-opacity=".07"/>
+<text x="208.4" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#2a78d6" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona A</text>
+<rect x="319.0" y="270.0" width="196.0" height="448.0" fill="#e08a00" fill-opacity=".07"/>
+<text x="417.0" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#e08a00" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona B</text>
+<rect x="547.2" y="270.0" width="156.8" height="448.0" fill="#c2185b" fill-opacity=".07"/>
+<text x="625.6" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#c2185b" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona C</text>
+<rect x="704.0" y="270.0" width="42.0" height="490.0" fill="#16867f" fill-opacity=".10"/>
+<rect x="130.0" y="718.0" width="574.0" height="42.0" fill="#16867f" fill-opacity=".10"/>
+<text x="725.0" y="396.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#0f6b64" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round" transform="rotate(-90 725.0 396.0)">corredor de chegada</text>
+<text x="417.0" y="744.6" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#0f6b64" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">trecho de fundo</text>
+<line x1="725.0" y1="228.0" x2="725.0" y2="298.0" stroke="#0f6b64" stroke-width="2.4" marker-end="url(#seta)"/>
+<text x="692.8" y="242.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#0f6b64">entrada · canto nordeste</text>
+<line x1="130.0" y1="270.0" x2="267.2" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="286.8" y1="718.0" x2="286.8" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="319.0" y1="270.0" x2="495.4" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="319.0" y1="718.0" x2="319.0" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="515.0" y1="718.0" x2="515.0" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="566.8" y1="270.0" x2="704.0" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="547.2" y1="718.0" x2="547.2" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="149.6" y1="701.2" x2="149.6" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="169.2" y1="286.8" x2="169.2" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="188.8" y1="701.2" x2="188.8" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="208.4" y1="286.8" x2="208.4" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="228.0" y1="701.2" x2="228.0" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="247.6" y1="286.8" x2="247.6" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="267.2" y1="701.2" x2="267.2" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="338.6" y1="701.2" x2="338.6" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="358.2" y1="286.8" x2="358.2" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="377.8" y1="701.2" x2="377.8" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="397.4" y1="286.8" x2="397.4" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="417.0" y1="701.2" x2="417.0" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="436.6" y1="286.8" x2="436.6" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="456.2" y1="701.2" x2="456.2" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="475.8" y1="286.8" x2="475.8" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="495.4" y1="701.2" x2="495.4" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="566.8" y1="701.2" x2="566.8" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="586.4" y1="286.8" x2="586.4" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="606.0" y1="701.2" x2="606.0" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="625.6" y1="286.8" x2="625.6" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="645.2" y1="701.2" x2="645.2" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="664.8" y1="286.8" x2="664.8" y2="718.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="684.4" y1="701.2" x2="684.4" y2="270.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="704.0" y1="718.0" x2="704.0" y2="270.0" stroke="#b23b2e" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="277.0" y1="270.0" x2="296.6" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="277.0" y1="270.0" x2="296.6" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<line x1="505.2" y1="270.0" x2="524.8" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="505.2" y1="270.0" x2="524.8" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<line x1="537.4" y1="270.0" x2="557.0" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="537.4" y1="270.0" x2="557.0" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<text x="130.0" y="782.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 44,0 × 35,0 m · não entra na conta</text>
+<text x="746.0" y="782.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#b26a12">portões de 1,4 m, descontados</text>
+<text x="130.0" y="816.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">O QUE CADA COR CUSTA</text>
+<line x1="130.0" y1="844.0" x2="160.8" y2="844.0" stroke="#7a8794" stroke-width="3.0" stroke-linecap="round"/>
+<text x="172.0" y="837.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">divisórias entre as raias</text>
+<text x="550.0" y="837.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">708,4 m</text>
+<text x="704.0" y="837.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">355 separadores</text>
+<line x1="130.0" y1="874.8" x2="160.8" y2="874.8" stroke="#b23b2e" stroke-width="3.4" stroke-linecap="round"/>
+<text x="172.0" y="867.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">separação entre a zona C e o corredor</text>
+<text x="550.0" y="867.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">32,0 m</text>
+<text x="704.0" y="867.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">16 separadores</text>
+<line x1="130.0" y1="891.6" x2="704.0" y2="891.6" stroke="#c6cfc8" stroke-width="1"/>
+<text x="172.0" y="902.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">total</text>
+<text x="550.0" y="902.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">740,4 m</text>
+<text x="704.0" y="902.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">371 separadores</text>
+<line x1="130.0" y1="942.0" x2="160.8" y2="942.0" stroke="#1f6fb2" stroke-width="3" stroke-dasharray="3 4"/>
+<text x="172.0" y="935.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">contorno das zonas — fita, não separador</text>
+<text x="550.0" y="935.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">160,2 m</text>
+<line x1="130.0" y1="972.8" x2="160.8" y2="972.8" stroke="#8a919b" stroke-width="3" stroke-dasharray="7 4"/>
+<text x="172.0" y="965.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">gradil permanente do Ring — já existe</text>
+</svg>
+</div><figcaption><b>Raias norte-sul.</b> o que é separador, o que é fita, o que já existe</figcaption></figure>
+<figure><div class="prancha"><svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 876 1086" data-w="876" data-h="1086" role="img">
+<rect width="876" height="1086" fill="var(--prancha)"/>
+<defs><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Mapa dos separadores · Serpenteados horizontais (raias leste-oeste)</text>
+<rect x="60.0" y="74.0" width="756.0" height="196.0" fill="#eef1f4"/>
+<rect x="130.0" y="270.0" width="616.0" height="490.0" fill="#faf9f5" stroke="#8a919b" stroke-width="2.0" stroke-dasharray="7 4"/>
+<line x1="60.0" y1="74.0" x2="816.0" y2="74.0" stroke="#1c2733" stroke-width="3"/>
+<text x="438.0" y="57.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#5c6c80">FACHADA SUL DO HALL 2</text>
+<line x1="309.4" y1="74.0" x2="392.4" y2="74.0" stroke="#2a78d6" stroke-width="6"/>
+<text x="350.9" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6">S4 · A</text>
+<line x1="396.5" y1="74.0" x2="479.5" y2="74.0" stroke="#e08a00" stroke-width="6"/>
+<text x="438.0" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00">S5 · B</text>
+<line x1="483.6" y1="74.0" x2="566.6" y2="74.0" stroke="#c2185b" stroke-width="6"/>
+<text x="525.1" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b">S6 · C</text>
+<line x1="227.5" y1="74.0" x2="244.3" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<line x1="631.7" y1="74.0" x2="648.5" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<rect x="130.0" y="270.0" width="158.7" height="448.0" fill="#2a78d6" fill-opacity=".07"/>
+<text x="209.4" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#2a78d6" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona A</text>
+<rect x="325.1" y="270.0" width="183.7" height="448.0" fill="#e08a00" fill-opacity=".07"/>
+<text x="417.0" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#e08a00" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona B</text>
+<rect x="545.3" y="270.0" width="158.7" height="448.0" fill="#c2185b" fill-opacity=".07"/>
+<text x="624.6" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#c2185b" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona C</text>
+<rect x="704.0" y="270.0" width="42.0" height="490.0" fill="#16867f" fill-opacity=".10"/>
+<rect x="130.0" y="718.0" width="574.0" height="42.0" fill="#16867f" fill-opacity=".10"/>
+<text x="725.0" y="396.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#0f6b64" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round" transform="rotate(-90 725.0 396.0)">corredor de chegada</text>
+<text x="417.0" y="744.6" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#0f6b64" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">trecho de fundo</text>
+<line x1="725.0" y1="228.0" x2="725.0" y2="298.0" stroke="#0f6b64" stroke-width="2.4" marker-end="url(#seta)"/>
+<text x="692.8" y="242.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#0f6b64">entrada · canto nordeste</text>
+<line x1="130.0" y1="270.0" x2="269.1" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="288.7" y1="718.0" x2="288.7" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="325.1" y1="270.0" x2="428.2" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="447.8" y1="270.0" x2="508.9" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="325.1" y1="718.0" x2="325.1" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="508.9" y1="718.0" x2="508.9" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="564.9" y1="270.0" x2="704.0" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="545.3" y1="718.0" x2="545.3" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="146.8" y1="698.5" x2="288.7" y2="698.5" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="679.0" x2="130.0" y2="679.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="659.6" x2="288.7" y2="659.6" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="640.1" x2="130.0" y2="640.1" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="620.6" x2="288.7" y2="620.6" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="601.1" x2="130.0" y2="601.1" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="581.7" x2="288.7" y2="581.7" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="562.2" x2="130.0" y2="562.2" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="542.7" x2="288.7" y2="542.7" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="523.2" x2="130.0" y2="523.2" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="503.7" x2="288.7" y2="503.7" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="484.3" x2="130.0" y2="484.3" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="464.8" x2="288.7" y2="464.8" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="445.3" x2="130.0" y2="445.3" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="425.8" x2="288.7" y2="425.8" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="406.3" x2="130.0" y2="406.3" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="386.9" x2="288.7" y2="386.9" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="367.4" x2="130.0" y2="367.4" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="347.9" x2="288.7" y2="347.9" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="328.4" x2="130.0" y2="328.4" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="309.0" x2="288.7" y2="309.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="289.5" x2="130.0" y2="289.5" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="698.5" x2="508.9" y2="698.5" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="679.0" x2="325.1" y2="679.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="659.6" x2="508.9" y2="659.6" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="640.1" x2="325.1" y2="640.1" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="620.6" x2="508.9" y2="620.6" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="601.1" x2="325.1" y2="601.1" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="581.7" x2="508.9" y2="581.7" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="562.2" x2="325.1" y2="562.2" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="542.7" x2="508.9" y2="542.7" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="523.2" x2="325.1" y2="523.2" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="503.7" x2="508.9" y2="503.7" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="484.3" x2="325.1" y2="484.3" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="464.8" x2="508.9" y2="464.8" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="445.3" x2="325.1" y2="445.3" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="425.8" x2="508.9" y2="425.8" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="406.3" x2="325.1" y2="406.3" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="386.9" x2="508.9" y2="386.9" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="367.4" x2="325.1" y2="367.4" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="347.9" x2="508.9" y2="347.9" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="328.4" x2="325.1" y2="328.4" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="309.0" x2="508.9" y2="309.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="289.5" x2="325.1" y2="289.5" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="698.5" x2="704.0" y2="698.5" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="679.0" x2="545.3" y2="679.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="659.6" x2="704.0" y2="659.6" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="640.1" x2="545.3" y2="640.1" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="620.6" x2="704.0" y2="620.6" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="601.1" x2="545.3" y2="601.1" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="581.7" x2="704.0" y2="581.7" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="562.2" x2="545.3" y2="562.2" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="542.7" x2="704.0" y2="542.7" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="523.2" x2="545.3" y2="523.2" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="503.7" x2="704.0" y2="503.7" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="484.3" x2="545.3" y2="484.3" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="464.8" x2="704.0" y2="464.8" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="445.3" x2="545.3" y2="445.3" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="425.8" x2="704.0" y2="425.8" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="406.3" x2="545.3" y2="406.3" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="386.9" x2="704.0" y2="386.9" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="367.4" x2="545.3" y2="367.4" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="347.9" x2="704.0" y2="347.9" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="328.4" x2="545.3" y2="328.4" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="309.0" x2="704.0" y2="309.0" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="289.5" x2="545.3" y2="289.5" stroke="#7a8794" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="704.0" y1="718.0" x2="704.0" y2="270.0" stroke="#b23b2e" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="278.9" y1="270.0" x2="298.5" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="278.9" y1="270.0" x2="298.5" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<line x1="428.2" y1="270.0" x2="447.8" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="428.2" y1="270.0" x2="447.8" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<line x1="535.5" y1="270.0" x2="555.1" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="535.5" y1="270.0" x2="555.1" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<text x="130.0" y="782.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 44,0 × 35,0 m · não entra na conta</text>
+<text x="746.0" y="782.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#b26a12">portões de 1,4 m, descontados</text>
+<text x="130.0" y="816.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">O QUE CADA COR CUSTA</text>
+<line x1="130.0" y1="844.0" x2="160.8" y2="844.0" stroke="#7a8794" stroke-width="3.0" stroke-linecap="round"/>
+<text x="172.0" y="837.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">divisórias entre as raias</text>
+<text x="550.0" y="837.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">708,4 m</text>
+<text x="704.0" y="837.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">355 separadores</text>
+<line x1="130.0" y1="874.8" x2="160.8" y2="874.8" stroke="#b23b2e" stroke-width="3.4" stroke-linecap="round"/>
+<text x="172.0" y="867.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">separação entre a zona C e o corredor</text>
+<text x="550.0" y="867.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">32,0 m</text>
+<text x="704.0" y="867.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">16 separadores</text>
+<line x1="130.0" y1="891.6" x2="704.0" y2="891.6" stroke="#c6cfc8" stroke-width="1"/>
+<text x="172.0" y="902.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">total</text>
+<text x="550.0" y="902.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">740,4 m</text>
+<text x="704.0" y="902.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">371 separadores</text>
+<line x1="130.0" y1="942.0" x2="160.8" y2="942.0" stroke="#1f6fb2" stroke-width="3" stroke-dasharray="3 4"/>
+<text x="172.0" y="935.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">contorno das zonas — fita, não separador</text>
+<text x="550.0" y="935.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">159,6 m</text>
+<line x1="130.0" y1="972.8" x2="160.8" y2="972.8" stroke="#8a919b" stroke-width="3" stroke-dasharray="7 4"/>
+<text x="172.0" y="965.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">gradil permanente do Ring — já existe</text>
+</svg>
+</div><figcaption><b>Raias leste-oeste.</b> o que é separador, o que é fita, o que já existe</figcaption></figure></div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Elemento</th><th class="num">N–S</th><th>O que segura</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pin" style="color:#7a8794">▬</span> Divisórias entre as raias</td>
+        <td class="mono num">708,4 m<span class="sub">355 sep.</span></td>
+        <td>São o serpenteado. Sem elas não há fila: há uma massa dentro de um retângulo cercado, sem ordem de chegada nem vazão previsível. É 96% da conta, e a única alavanca real é o comprimento da raia.</td></tr>
+      <tr><td><span class="pin" style="color:#b23b2e">▬</span> Separação da zona C / corredor</td>
+        <td class="mono num">32,0 m<span class="sub">16 sep.</span></td>
+        <td>De um lado a fila parada da zona C, do outro a corrente que desce do canto nordeste para o fundo. Dois fluxos em sentidos diferentes, encostados: fita não segura isso.</td></tr>
+      <tr><td><span class="pin" style="color:#1f6fb2">┈</span> Contorno das zonas</td>
+        <td class="mono num">160,2 m<span class="sub">fita</span></td>
+        <td>Delimita, não contém. Enquanto a fila está ordenada, resolve; num pico, nada impede fisicamente a passagem de uma zona para a outra.</td></tr>
+      <tr><td><span class="pin" style="color:#8a919b">┄</span> Gradil do Ring</td>
+        <td class="mono num">0</td>
+        <td>Fecha o compound inteiro e serve de lado oeste da zona A e de parede externa do corredor. Já existe.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Os dois desenhos</p>
+  <h2>Norte-sul ou leste-oeste</h2>
+  <div class="rolagem"><table>
+    <thead><tr><th></th><th class="num">Raias N–S</th><th class="num">Raias L–O</th></tr></thead>
+    <tbody><tr class=total><td>Lotação — toda em raia medida</td><td class="mono num">1.997</td><td class="mono num">1.964</td></tr>
+<tr><td>Raias por zona</td><td class="mono num">8/10/8</td><td class="mono num">23/23/23</td></tr>
+<tr><td>Raia</td><td class="mono num">32,0–32,0 m</td><td class="mono num">11,3–13,1 m</td></tr>
+<tr><td>Meias-voltas</td><td class="mono num">23</td><td class="mono num">66</td></tr>
+<tr><td>Caminhada máxima</td><td class="mono num">320 m</td><td class="mono num">297 m</td></tr>
+<tr><td>Separadores</td><td class="mono num">371</td><td class="mono num">371</td></tr>
+<tr><td>Metros por pessoa</td><td class="mono num">0,371</td><td class="mono num">0,377</td></tr></tbody>
+  </table></div>
+  <div class="prosa" style="margin-top:22px">
+  <p>Na barreira os dois empatam: com o contorno fora da conta, o que sobra são as divisórias, e
+  elas mudam <span class="mono">0,14 × (profundidade − largura)</span> por zona — ruído. O que
+  separa os dois é a <strong>descarga</strong>. Na horizontal a última raia corre rente à borda
+  norte, que é linha contínua, e o portão vai para o eixo da porta; na vertical a fila sai pelo fim
+  da última raia, num canto do bloco.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Zona</th><th class="num">Desvio · N–S</th><th class="num">Desvio · L–O</th></tr></thead>
+    <tbody><tr><td><span class="pin a">A</span> S4</td><td class="mono num">4,58 m</td><td class="mono num">4,44 m</td></tr>
+<tr><td><span class="pin b">B</span> S5</td><td class="mono num">5,50 m</td><td class="mono num ganho">0,00 m</td></tr>
+<tr><td><span class="pin c">C</span> S6</td><td class="mono num">1,58 m</td><td class="mono num">1,44 m</td></tr></tbody>
+    <caption>Distância lateral entre o ponto de descarga da zona e o eixo da sua porta, no apron —
+    que agora se atravessa sem raias de barreira.</caption>
+  </table></div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Zona</th><th class="num">Largura</th><th class="num">Raias</th>
+    <th class="num">Raia</th><th class="num">Caminhada</th><th class="num">Lotação</th>
+    <th class="num">Esperado</th><th class="num">por eleitor</th></tr></thead>
+    <tbody><tr><td><span class="pin a">A</span> S4</td><td class="mono num">11,20 m</td><td class="mono num">8</td><td class="mono num">32,00 m</td><td class="mono num">256 m</td><td class="mono num">614</td><td class="mono num">3.642</td><td class="mono num">0,1687</td></tr>
+<tr><td><span class="pin b">B</span> S5</td><td class="mono num">14,00 m</td><td class="mono num">10</td><td class="mono num">32,00 m</td><td class="mono num">320 m</td><td class="mono num">768</td><td class="mono num">4.215</td><td class="mono num">0,1822</td></tr>
+<tr><td><span class="pin c">C</span> S6</td><td class="mono num">11,20 m</td><td class="mono num">8</td><td class="mono num">32,00 m</td><td class="mono num">256 m</td><td class="mono num">614</td><td class="mono num">3.642</td><td class="mono num">0,1687</td></tr></tbody>
+    <caption>Desenho norte-sul, zona a zona. A largura sai da lotação que cada entrada precisa, não
+    da largura disponível.</caption>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Cenário 3</p>
+  <h2>CCB só na ponta, fita grossa no resto</h2>
+  <div class="prosa">
+  <p>A divisória deixa de ser barreira de ponta a ponta. Vira <strong>fita grossa</strong> — do
+  tipo que a polícia usa para isolar — ancorada por <strong>um único CCB na ponta livre</strong>,
+  no vão da meia-volta, que é por onde a pessoa passa e onde a fila empurra. A separação da zona C
+  continua sendo barreira inteira: ali são dois fluxos encostados, e fita não segura isso.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th></th><th class="num">N–S · barreira inteira</th><th class="num">N–S · CCB na ponta</th><th class="num">L–O · CCB na ponta</th></tr></thead>
+    <tbody>
+      <tr><td>Divisórias (uma por vão de raia)</td><td class="mono num">23</td><td class="mono num">23</td><td class="mono num">66</td></tr>
+      <tr><td>Barreira</td><td class="mono num">740,4 m</td><td class="mono num">78,0 m</td><td class="mono num">164,0 m</td></tr>
+      <tr class="total"><td>Separadores</td><td class="mono num">371</td><td class="mono num ganho">39</td><td class="mono num">82</td></tr>
+      <tr><td>A comprar (estoque 200)</td><td class="mono num">171</td><td class="mono num ganho">0</td><td class="mono num">0</td></tr>
+      <tr><td>Fita grossa</td><td class="mono num">—</td><td class="mono num">662,4 m</td><td class="mono num">576,4 m</td></tr>
+      <tr><td>Lotação</td><td class="mono num">1.997</td><td class="mono num">1.997</td><td class="mono num">1.964</td></tr>
+    </tbody>
+    <caption>A lotação não muda: as raias são as mesmas, só o material que as separa é outro.</caption>
+  </table></div>
+  <p class="nota"><strong>A inversão.</strong> A barreira deixa de ser proporcional ao
+  <em>comprimento</em> da raia e passa a ser proporcional ao <em>número</em> de raias. Por isso o
+  girado, com 66 divisórias curtas, custa mais (82) que o N–S com
+  23 longas (39) — o contrário do que acontecia antes.</p>
+  <div class="plantas"><figure><div class="prancha"><svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 876 1086" data-w="876" data-h="1086" role="img">
+<rect width="876" height="1086" fill="var(--prancha)"/>
+<defs><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Mapa dos separadores · Serpenteados verticais (raias norte-sul) · CCB só na ponta</text>
+<rect x="60.0" y="74.0" width="756.0" height="196.0" fill="#eef1f4"/>
+<rect x="130.0" y="270.0" width="616.0" height="490.0" fill="#faf9f5" stroke="#8a919b" stroke-width="2.0" stroke-dasharray="7 4"/>
+<line x1="60.0" y1="74.0" x2="816.0" y2="74.0" stroke="#1c2733" stroke-width="3"/>
+<text x="438.0" y="57.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#5c6c80">FACHADA SUL DO HALL 2</text>
+<line x1="309.4" y1="74.0" x2="392.4" y2="74.0" stroke="#2a78d6" stroke-width="6"/>
+<text x="350.9" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6">S4 · A</text>
+<line x1="396.5" y1="74.0" x2="479.5" y2="74.0" stroke="#e08a00" stroke-width="6"/>
+<text x="438.0" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00">S5 · B</text>
+<line x1="483.6" y1="74.0" x2="566.6" y2="74.0" stroke="#c2185b" stroke-width="6"/>
+<text x="525.1" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b">S6 · C</text>
+<line x1="227.5" y1="74.0" x2="244.3" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<line x1="631.7" y1="74.0" x2="648.5" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<rect x="130.0" y="270.0" width="156.8" height="448.0" fill="#2a78d6" fill-opacity=".07"/>
+<text x="208.4" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#2a78d6" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona A</text>
+<rect x="319.0" y="270.0" width="196.0" height="448.0" fill="#e08a00" fill-opacity=".07"/>
+<text x="417.0" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#e08a00" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona B</text>
+<rect x="547.2" y="270.0" width="156.8" height="448.0" fill="#c2185b" fill-opacity=".07"/>
+<text x="625.6" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#c2185b" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona C</text>
+<rect x="704.0" y="270.0" width="42.0" height="490.0" fill="#16867f" fill-opacity=".10"/>
+<rect x="130.0" y="718.0" width="574.0" height="42.0" fill="#16867f" fill-opacity=".10"/>
+<text x="725.0" y="396.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#0f6b64" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round" transform="rotate(-90 725.0 396.0)">corredor de chegada</text>
+<text x="417.0" y="744.6" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#0f6b64" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">trecho de fundo</text>
+<line x1="725.0" y1="228.0" x2="725.0" y2="298.0" stroke="#0f6b64" stroke-width="2.4" marker-end="url(#seta)"/>
+<text x="692.8" y="242.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#0f6b64">entrada · canto nordeste</text>
+<line x1="130.0" y1="270.0" x2="267.2" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="286.8" y1="718.0" x2="286.8" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="319.0" y1="270.0" x2="495.4" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="319.0" y1="718.0" x2="319.0" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="515.0" y1="718.0" x2="515.0" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="566.8" y1="270.0" x2="704.0" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="547.2" y1="718.0" x2="547.2" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="149.6" y1="701.2" x2="149.6" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="149.6" y1="673.2" x2="149.6" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="169.2" y1="286.8" x2="169.2" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="169.2" y1="314.8" x2="169.2" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="188.8" y1="701.2" x2="188.8" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="188.8" y1="673.2" x2="188.8" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="208.4" y1="286.8" x2="208.4" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="208.4" y1="314.8" x2="208.4" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="228.0" y1="701.2" x2="228.0" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="228.0" y1="673.2" x2="228.0" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="247.6" y1="286.8" x2="247.6" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="247.6" y1="314.8" x2="247.6" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="267.2" y1="701.2" x2="267.2" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="267.2" y1="673.2" x2="267.2" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="338.6" y1="701.2" x2="338.6" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="338.6" y1="673.2" x2="338.6" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="358.2" y1="286.8" x2="358.2" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="358.2" y1="314.8" x2="358.2" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="377.8" y1="701.2" x2="377.8" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="377.8" y1="673.2" x2="377.8" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="397.4" y1="286.8" x2="397.4" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="397.4" y1="314.8" x2="397.4" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="417.0" y1="701.2" x2="417.0" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="417.0" y1="673.2" x2="417.0" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="436.6" y1="286.8" x2="436.6" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="436.6" y1="314.8" x2="436.6" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="456.2" y1="701.2" x2="456.2" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="456.2" y1="673.2" x2="456.2" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="475.8" y1="286.8" x2="475.8" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="475.8" y1="314.8" x2="475.8" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="495.4" y1="701.2" x2="495.4" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="495.4" y1="673.2" x2="495.4" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="566.8" y1="701.2" x2="566.8" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="566.8" y1="673.2" x2="566.8" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="586.4" y1="286.8" x2="586.4" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="586.4" y1="314.8" x2="586.4" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="606.0" y1="701.2" x2="606.0" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="606.0" y1="673.2" x2="606.0" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="625.6" y1="286.8" x2="625.6" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="625.6" y1="314.8" x2="625.6" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="645.2" y1="701.2" x2="645.2" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="645.2" y1="673.2" x2="645.2" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="664.8" y1="286.8" x2="664.8" y2="314.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="664.8" y1="314.8" x2="664.8" y2="718.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="684.4" y1="701.2" x2="684.4" y2="673.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="684.4" y1="673.2" x2="684.4" y2="270.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="704.0" y1="718.0" x2="704.0" y2="270.0" stroke="#b23b2e" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="277.0" y1="270.0" x2="296.6" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="277.0" y1="270.0" x2="296.6" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<line x1="505.2" y1="270.0" x2="524.8" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="505.2" y1="270.0" x2="524.8" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<line x1="537.4" y1="270.0" x2="557.0" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="537.4" y1="270.0" x2="557.0" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<text x="130.0" y="782.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 44,0 × 35,0 m · não entra na conta</text>
+<text x="746.0" y="782.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#b26a12">portões de 1,4 m, descontados</text>
+<text x="130.0" y="816.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">O QUE CADA COR CUSTA</text>
+<line x1="130.0" y1="844.0" x2="160.8" y2="844.0" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<text x="172.0" y="837.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">CCB na ponta das divisórias</text>
+<text x="550.0" y="837.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">46,0 m</text>
+<text x="704.0" y="837.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">23 separadores</text>
+<line x1="130.0" y1="874.8" x2="160.8" y2="874.8" stroke="#e0a800" stroke-width="3.0" stroke-linecap="round"/>
+<text x="172.0" y="867.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">fita grossa nas divisórias</text>
+<text x="550.0" y="867.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">662,4 m</text>
+<text x="704.0" y="867.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">fita, não separador</text>
+<line x1="130.0" y1="905.6" x2="160.8" y2="905.6" stroke="#b23b2e" stroke-width="3.4" stroke-linecap="round"/>
+<text x="172.0" y="898.6" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">separação entre a zona C e o corredor</text>
+<text x="550.0" y="898.6" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">32,0 m</text>
+<text x="704.0" y="898.6" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">16 separadores</text>
+<line x1="130.0" y1="922.4" x2="704.0" y2="922.4" stroke="#c6cfc8" stroke-width="1"/>
+<text x="172.0" y="933.6" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">total</text>
+<text x="550.0" y="933.6" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">78,0 m</text>
+<text x="704.0" y="933.6" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">39 separadores</text>
+<line x1="130.0" y1="972.8" x2="160.8" y2="972.8" stroke="#1f6fb2" stroke-width="3" stroke-dasharray="3 4"/>
+<text x="172.0" y="965.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">contorno das zonas — fita, não separador</text>
+<text x="550.0" y="965.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">160,2 m</text>
+<line x1="130.0" y1="1003.6" x2="160.8" y2="1003.6" stroke="#8a919b" stroke-width="3" stroke-dasharray="7 4"/>
+<text x="172.0" y="996.6" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">gradil permanente do Ring — já existe</text>
+</svg>
+</div><figcaption><b>Raias norte-sul.</b> 39 separadores · 662 m de fita grossa</figcaption></figure>
+<figure><div class="prancha"><svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 876 1086" data-w="876" data-h="1086" role="img">
+<rect width="876" height="1086" fill="var(--prancha)"/>
+<defs><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<text x="130.0" y="26.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#243244">Mapa dos separadores · Serpenteados horizontais (raias leste-oeste) · CCB só na ponta</text>
+<rect x="60.0" y="74.0" width="756.0" height="196.0" fill="#eef1f4"/>
+<rect x="130.0" y="270.0" width="616.0" height="490.0" fill="#faf9f5" stroke="#8a919b" stroke-width="2.0" stroke-dasharray="7 4"/>
+<line x1="60.0" y1="74.0" x2="816.0" y2="74.0" stroke="#1c2733" stroke-width="3"/>
+<text x="438.0" y="57.2" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#5c6c80">FACHADA SUL DO HALL 2</text>
+<line x1="309.4" y1="74.0" x2="392.4" y2="74.0" stroke="#2a78d6" stroke-width="6"/>
+<text x="350.9" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#2a78d6">S4 · A</text>
+<line x1="396.5" y1="74.0" x2="479.5" y2="74.0" stroke="#e08a00" stroke-width="6"/>
+<text x="438.0" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#e08a00">S5 · B</text>
+<line x1="483.6" y1="74.0" x2="566.6" y2="74.0" stroke="#c2185b" stroke-width="6"/>
+<text x="525.1" y="96.4" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#c2185b">S6 · C</text>
+<line x1="227.5" y1="74.0" x2="244.3" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<line x1="631.7" y1="74.0" x2="648.5" y2="74.0" stroke="#b26a12" stroke-width="6"/>
+<rect x="130.0" y="270.0" width="158.7" height="448.0" fill="#2a78d6" fill-opacity=".07"/>
+<text x="209.4" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#2a78d6" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona A</text>
+<rect x="325.1" y="270.0" width="183.7" height="448.0" fill="#e08a00" fill-opacity=".07"/>
+<text x="417.0" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#e08a00" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona B</text>
+<rect x="545.3" y="270.0" width="158.7" height="448.0" fill="#c2185b" fill-opacity=".07"/>
+<text x="624.6" y="494.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#c2185b" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">zona C</text>
+<rect x="704.0" y="270.0" width="42.0" height="490.0" fill="#16867f" fill-opacity=".10"/>
+<rect x="130.0" y="718.0" width="574.0" height="42.0" fill="#16867f" fill-opacity=".10"/>
+<text x="725.0" y="396.0" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#0f6b64" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round" transform="rotate(-90 725.0 396.0)">corredor de chegada</text>
+<text x="417.0" y="744.6" text-anchor="middle" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#0f6b64" paint-order="stroke" stroke="#faf9f5" stroke-width="3.5" stroke-linejoin="round">trecho de fundo</text>
+<line x1="725.0" y1="228.0" x2="725.0" y2="298.0" stroke="#0f6b64" stroke-width="2.4" marker-end="url(#seta)"/>
+<text x="692.8" y="242.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#0f6b64">entrada · canto nordeste</text>
+<line x1="130.0" y1="270.0" x2="269.1" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="288.7" y1="718.0" x2="288.7" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="325.1" y1="270.0" x2="428.2" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="447.8" y1="270.0" x2="508.9" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="325.1" y1="718.0" x2="325.1" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="508.9" y1="718.0" x2="508.9" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="564.9" y1="270.0" x2="704.0" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="545.3" y1="718.0" x2="545.3" y2="270.0" stroke="#1f6fb2" stroke-width="1.4" stroke-dasharray="3 5"/>
+<line x1="146.8" y1="698.5" x2="174.8" y2="698.5" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="698.5" x2="288.7" y2="698.5" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="679.0" x2="243.9" y2="679.0" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="679.0" x2="130.0" y2="679.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="659.6" x2="174.8" y2="659.6" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="659.6" x2="288.7" y2="659.6" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="640.1" x2="243.9" y2="640.1" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="640.1" x2="130.0" y2="640.1" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="620.6" x2="174.8" y2="620.6" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="620.6" x2="288.7" y2="620.6" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="601.1" x2="243.9" y2="601.1" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="601.1" x2="130.0" y2="601.1" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="581.7" x2="174.8" y2="581.7" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="581.7" x2="288.7" y2="581.7" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="562.2" x2="243.9" y2="562.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="562.2" x2="130.0" y2="562.2" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="542.7" x2="174.8" y2="542.7" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="542.7" x2="288.7" y2="542.7" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="523.2" x2="243.9" y2="523.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="523.2" x2="130.0" y2="523.2" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="503.7" x2="174.8" y2="503.7" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="503.7" x2="288.7" y2="503.7" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="484.3" x2="243.9" y2="484.3" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="484.3" x2="130.0" y2="484.3" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="464.8" x2="174.8" y2="464.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="464.8" x2="288.7" y2="464.8" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="445.3" x2="243.9" y2="445.3" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="445.3" x2="130.0" y2="445.3" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="425.8" x2="174.8" y2="425.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="425.8" x2="288.7" y2="425.8" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="406.3" x2="243.9" y2="406.3" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="406.3" x2="130.0" y2="406.3" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="386.9" x2="174.8" y2="386.9" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="386.9" x2="288.7" y2="386.9" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="367.4" x2="243.9" y2="367.4" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="367.4" x2="130.0" y2="367.4" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="347.9" x2="174.8" y2="347.9" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="347.9" x2="288.7" y2="347.9" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="328.4" x2="243.9" y2="328.4" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="328.4" x2="130.0" y2="328.4" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="146.8" y1="309.0" x2="174.8" y2="309.0" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="174.8" y1="309.0" x2="288.7" y2="309.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="271.9" y1="289.5" x2="243.9" y2="289.5" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="243.9" y1="289.5" x2="130.0" y2="289.5" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="698.5" x2="369.9" y2="698.5" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="698.5" x2="508.9" y2="698.5" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="679.0" x2="464.1" y2="679.0" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="679.0" x2="325.1" y2="679.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="659.6" x2="369.9" y2="659.6" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="659.6" x2="508.9" y2="659.6" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="640.1" x2="464.1" y2="640.1" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="640.1" x2="325.1" y2="640.1" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="620.6" x2="369.9" y2="620.6" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="620.6" x2="508.9" y2="620.6" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="601.1" x2="464.1" y2="601.1" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="601.1" x2="325.1" y2="601.1" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="581.7" x2="369.9" y2="581.7" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="581.7" x2="508.9" y2="581.7" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="562.2" x2="464.1" y2="562.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="562.2" x2="325.1" y2="562.2" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="542.7" x2="369.9" y2="542.7" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="542.7" x2="508.9" y2="542.7" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="523.2" x2="464.1" y2="523.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="523.2" x2="325.1" y2="523.2" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="503.7" x2="369.9" y2="503.7" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="503.7" x2="508.9" y2="503.7" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="484.3" x2="464.1" y2="484.3" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="484.3" x2="325.1" y2="484.3" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="464.8" x2="369.9" y2="464.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="464.8" x2="508.9" y2="464.8" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="445.3" x2="464.1" y2="445.3" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="445.3" x2="325.1" y2="445.3" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="425.8" x2="369.9" y2="425.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="425.8" x2="508.9" y2="425.8" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="406.3" x2="464.1" y2="406.3" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="406.3" x2="325.1" y2="406.3" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="386.9" x2="369.9" y2="386.9" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="386.9" x2="508.9" y2="386.9" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="367.4" x2="464.1" y2="367.4" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="367.4" x2="325.1" y2="367.4" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="347.9" x2="369.9" y2="347.9" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="347.9" x2="508.9" y2="347.9" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="328.4" x2="464.1" y2="328.4" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="328.4" x2="325.1" y2="328.4" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="341.9" y1="309.0" x2="369.9" y2="309.0" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="369.9" y1="309.0" x2="508.9" y2="309.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="492.1" y1="289.5" x2="464.1" y2="289.5" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="464.1" y1="289.5" x2="325.1" y2="289.5" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="698.5" x2="590.1" y2="698.5" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="698.5" x2="704.0" y2="698.5" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="679.0" x2="659.2" y2="679.0" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="679.0" x2="545.3" y2="679.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="659.6" x2="590.1" y2="659.6" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="659.6" x2="704.0" y2="659.6" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="640.1" x2="659.2" y2="640.1" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="640.1" x2="545.3" y2="640.1" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="620.6" x2="590.1" y2="620.6" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="620.6" x2="704.0" y2="620.6" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="601.1" x2="659.2" y2="601.1" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="601.1" x2="545.3" y2="601.1" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="581.7" x2="590.1" y2="581.7" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="581.7" x2="704.0" y2="581.7" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="562.2" x2="659.2" y2="562.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="562.2" x2="545.3" y2="562.2" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="542.7" x2="590.1" y2="542.7" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="542.7" x2="704.0" y2="542.7" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="523.2" x2="659.2" y2="523.2" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="523.2" x2="545.3" y2="523.2" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="503.7" x2="590.1" y2="503.7" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="503.7" x2="704.0" y2="503.7" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="484.3" x2="659.2" y2="484.3" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="484.3" x2="545.3" y2="484.3" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="464.8" x2="590.1" y2="464.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="464.8" x2="704.0" y2="464.8" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="445.3" x2="659.2" y2="445.3" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="445.3" x2="545.3" y2="445.3" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="425.8" x2="590.1" y2="425.8" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="425.8" x2="704.0" y2="425.8" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="406.3" x2="659.2" y2="406.3" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="406.3" x2="545.3" y2="406.3" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="386.9" x2="590.1" y2="386.9" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="386.9" x2="704.0" y2="386.9" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="367.4" x2="659.2" y2="367.4" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="367.4" x2="545.3" y2="367.4" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="347.9" x2="590.1" y2="347.9" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="347.9" x2="704.0" y2="347.9" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="328.4" x2="659.2" y2="328.4" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="328.4" x2="545.3" y2="328.4" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="562.1" y1="309.0" x2="590.1" y2="309.0" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="590.1" y1="309.0" x2="704.0" y2="309.0" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="687.2" y1="289.5" x2="659.2" y2="289.5" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="659.2" y1="289.5" x2="545.3" y2="289.5" stroke="#e0a800" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="704.0" y1="718.0" x2="704.0" y2="270.0" stroke="#b23b2e" stroke-width="3.4" stroke-linecap="round"/>
+<line x1="278.9" y1="270.0" x2="298.5" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="278.9" y1="270.0" x2="298.5" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<line x1="428.2" y1="270.0" x2="447.8" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="428.2" y1="270.0" x2="447.8" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<line x1="535.5" y1="270.0" x2="555.1" y2="270.0" stroke="#faf9f5" stroke-width="5"/>
+<line x1="535.5" y1="270.0" x2="555.1" y2="270.0" stroke="#b26a12" stroke-width="1.6" stroke-dasharray="2 2"/>
+<text x="130.0" y="782.4" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#8a919b">gradil permanente do Ring 3 · 44,0 × 35,0 m · não entra na conta</text>
+<text x="746.0" y="782.4" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" fill="#b26a12">portões de 1,4 m, descontados</text>
+<text x="130.0" y="816.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">O QUE CADA COR CUSTA</text>
+<line x1="130.0" y1="844.0" x2="160.8" y2="844.0" stroke="#7a8794" stroke-width="3.4" stroke-linecap="round"/>
+<text x="172.0" y="837.0" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">CCB na ponta das divisórias</text>
+<text x="550.0" y="837.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">132,0 m</text>
+<text x="704.0" y="837.0" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">66 separadores</text>
+<line x1="130.0" y1="874.8" x2="160.8" y2="874.8" stroke="#e0a800" stroke-width="3.0" stroke-linecap="round"/>
+<text x="172.0" y="867.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">fita grossa nas divisórias</text>
+<text x="550.0" y="867.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">576,4 m</text>
+<text x="704.0" y="867.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">fita, não separador</text>
+<line x1="130.0" y1="905.6" x2="160.8" y2="905.6" stroke="#b23b2e" stroke-width="3.4" stroke-linecap="round"/>
+<text x="172.0" y="898.6" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">separação entre a zona C e o corredor</text>
+<text x="550.0" y="898.6" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#243244">32,0 m</text>
+<text x="704.0" y="898.6" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">16 separadores</text>
+<line x1="130.0" y1="922.4" x2="704.0" y2="922.4" stroke="#c6cfc8" stroke-width="1"/>
+<text x="172.0" y="933.6" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">total</text>
+<text x="550.0" y="933.6" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">164,0 m</text>
+<text x="704.0" y="933.6" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#1f2c3c">82 separadores</text>
+<line x1="130.0" y1="972.8" x2="160.8" y2="972.8" stroke="#1f6fb2" stroke-width="3" stroke-dasharray="3 4"/>
+<text x="172.0" y="965.8" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">contorno das zonas — fita, não separador</text>
+<text x="550.0" y="965.8" text-anchor="end" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">159,6 m</text>
+<line x1="130.0" y1="1003.6" x2="160.8" y2="1003.6" stroke="#8a919b" stroke-width="3" stroke-dasharray="7 4"/>
+<text x="172.0" y="996.6" text-anchor="start" font-family="ui-sans-serif,system-ui,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" fill="#5c6c80">gradil permanente do Ring — já existe</text>
+</svg>
+</div><figcaption><b>Raias leste-oeste.</b> 82 separadores · 576 m de fita grossa</figcaption></figure></div>
+
+  <h3 style="margin-top:34px">O que a fita pede, e o modelo não cobra</h3>
+  <div class="prosa">
+  <p>Cada divisória do desenho N–S fica com <strong>28,8 m de vão livre</strong>
+  depois do CCB da ponta. Fita não se sustenta nesse vão: ela cede, e uma fila encostada atravessa.
+  Mantendo o vão em 5 m, seriam <strong>5
+  apoios por divisória</strong>, 115 no total.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th>Se o apoio for…</th><th>Consequência</th></tr></thead>
+    <tbody>
+      <tr><td>Um CCB</td><td class="mono">154 separadores no total — -46 além do estoque; ainda bem abaixo dos 371 do regime inteiro, mas 3× o do cenário como pedido</td></tr>
+      <tr><td>Um poste leve com base</td><td>Outro item de orçamento, mais barato e mais leve: 115 postes</td></tr>
+      <tr><td>Nada</td><td>A fita cede entre as pontas e a raia deixa de existir na prática, justamente quando a fila enche</td></tr>
+    </tbody>
+  </table></div>
+  <p class="nota"><strong>A decisão não é entre fita e barreira — é sobre quantos apoios a fita vai
+  ter.</strong> O número de CCB cai de verdade só se os apoios intermediários forem outro
+  material.</p>
+</section>
+
+<section>
+  <p class="rotulo">Dimensionamento</p>
+  <h2>Quanta barreira comprar</h2>
+  <div class="prosa">
+  <p>O estoque da organizadora é de 200 separadores
+  (400 m) e o que faltar pode ser adquirido. Com a
+  conta reduzida às divisórias, a alavanca é o comprimento da raia — no N–S, a profundidade; no
+  girado, o número de raias.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th class="num">Profundidade</th><th class="num">Lotação</th>
+    <th class="num">Separadores</th><th class="num">A comprar</th><th class="num">Custo</th></tr></thead>
+    <tbody><tr><td class="mono num">12,00 m</td><td class="mono num">749</td><td class="mono num">131</td><td class="mono num">0</td><td class="mono num">EUR 0,00</td></tr>
+<tr><td class="mono num">16,00 m</td><td class="mono num">998</td><td class="mono num">179</td><td class="mono num">0</td><td class="mono num">EUR 0,00</td></tr>
+<tr><td class="mono num">20,00 m</td><td class="mono num">1.248</td><td class="mono num">227</td><td class="mono num">27</td><td class="mono num">EUR 351,54</td></tr>
+<tr><td class="mono num">24,00 m</td><td class="mono num">1.498</td><td class="mono num">275</td><td class="mono num">75</td><td class="mono num">EUR 976,50</td></tr>
+<tr><td class="mono num">28,00 m</td><td class="mono num">1.747</td><td class="mono num">323</td><td class="mono num">123</td><td class="mono num">EUR 1.601,46</td></tr>
+<tr class="marcada"><td class="mono num">32,00 m</td><td class="mono num">1.997</td><td class="mono num">371</td><td class="mono num">171</td><td class="mono num">EUR 2.226,42</td></tr></tbody>
+    <caption>Desenho norte-sul. Linha destacada: a faixa inteira, do corredor de fundo à borda
+    norte do Ring.</caption>
+  </table></div>
+  <p class='nota'><strong>Dentro do estoque, sem comprar nada:</strong> 16,0 m de raia, 998 pessoas — -404 a mais que o plano vigente inteiro, que tinha 1.402 com 314 separadores.</p>
+  <div class="rolagem"><table>
+    <thead><tr><th class="num">Raias por zona</th><th class="num">Profundidade</th>
+    <th class="num">Lotação</th><th class="num">Separadores</th><th class="num">A comprar</th></tr></thead>
+    <tbody><tr><td class="mono num">6</td><td class="mono num">8,4 m</td><td class="mono num">503</td><td class="mono num">85</td><td class="mono num">0</td></tr>
+<tr><td class="mono num">7</td><td class="mono num">9,8 m</td><td class="mono num">589</td><td class="mono num">102</td><td class="mono num">0</td></tr>
+<tr><td class="mono num">8</td><td class="mono num">11,2 m</td><td class="mono num">675</td><td class="mono num">119</td><td class="mono num">0</td></tr>
+<tr><td class="mono num">9</td><td class="mono num">12,6 m</td><td class="mono num">761</td><td class="mono num">136</td><td class="mono num">0</td></tr>
+<tr><td class="mono num">10</td><td class="mono num">14,0 m</td><td class="mono num">847</td><td class="mono num">152</td><td class="mono num">0</td></tr>
+<tr><td class="mono num">11</td><td class="mono num">15,4 m</td><td class="mono num">933</td><td class="mono num">169</td><td class="mono num">0</td></tr>
+<tr><td class="mono num">12</td><td class="mono num">16,8 m</td><td class="mono num">1.019</td><td class="mono num">186</td><td class="mono num">0</td></tr>
+<tr><td class="mono num">13</td><td class="mono num">18,2 m</td><td class="mono num">1.105</td><td class="mono num">203</td><td class="mono num">3</td></tr>
+<tr><td class="mono num">14</td><td class="mono num">19,6 m</td><td class="mono num">1.191</td><td class="mono num">220</td><td class="mono num">20</td></tr>
+<tr><td class="mono num">15</td><td class="mono num">21,0 m</td><td class="mono num">1.277</td><td class="mono num">236</td><td class="mono num">36</td></tr>
+<tr><td class="mono num">16</td><td class="mono num">22,4 m</td><td class="mono num">1.363</td><td class="mono num">253</td><td class="mono num">53</td></tr>
+<tr><td class="mono num">17</td><td class="mono num">23,8 m</td><td class="mono num">1.448</td><td class="mono num">270</td><td class="mono num">70</td></tr>
+<tr><td class="mono num">18</td><td class="mono num">25,2 m</td><td class="mono num">1.534</td><td class="mono num">287</td><td class="mono num">87</td></tr>
+<tr><td class="mono num">19</td><td class="mono num">26,6 m</td><td class="mono num">1.620</td><td class="mono num">304</td><td class="mono num">104</td></tr>
+<tr><td class="mono num">20</td><td class="mono num">28,0 m</td><td class="mono num">1.706</td><td class="mono num">320</td><td class="mono num">120</td></tr>
+<tr><td class="mono num">21</td><td class="mono num">29,4 m</td><td class="mono num">1.792</td><td class="mono num">337</td><td class="mono num">137</td></tr>
+<tr><td class="mono num">22</td><td class="mono num">30,8 m</td><td class="mono num">1.878</td><td class="mono num">354</td><td class="mono num">154</td></tr>
+<tr class="marcada"><td class="mono num">23</td><td class="mono num">32,0 m</td><td class="mono num">1.964</td><td class="mono num">371</td><td class="mono num">171</td></tr></tbody>
+    <caption>Desenho leste-oeste.</caption>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Método</p>
+  <h2>Premissas, e o que se sabe do plano vigente</h2>
+  <div class="rolagem"><table>
+    <thead><tr><th>Premissa</th><th class="num">Valor</th><th>Origem</th></tr></thead>
+    <tbody>
+      <tr><td>Ring</td><td class="mono num">44,0 × 35,0 m</td><td>medida oficial</td></tr>
+      <tr><td>Corredor de chegada</td><td class="mono num">3,0 m</td><td>em L (leste + fundo), decisão do Posto</td></tr>
+      <tr><td>Profundidade da raia</td><td class="mono num">32,00 m</td><td>Ring menos o corredor de fundo</td></tr>
+      <tr><td>Módulo da raia</td><td class="mono num">1,40 m</td><td>reconstruído dos blocos de 4,2 e 12,6 m</td></tr>
+      <tr><td>Largura livre da raia</td><td class="mono num">1,20 m</td><td>reconstruído</td></tr>
+      <tr><td>Densidade em raia</td><td class="mono num">2,0 p/m²</td><td>reconstruído</td></tr>
+      <tr><td>Vão de meia-volta</td><td class="mono num">1,2 m</td><td>premissa</td></tr>
+      <tr><td>Separador de fila</td><td class="mono num">2,0 m · EUR 13,02</td><td>item d do orçamento</td></tr>
+      <tr><td>Estoque da organizadora</td><td class="mono num">200 un.</td><td>informado pelo Posto</td></tr>
+    </tbody>
+  </table></div>
+  <p class="nota">O plano vigente (<span class="mono">scripts/layout_ring3.py</span>,
+  <span class="mono">saidas/plano_ring3.md</span>) não está no repositório — foi produzido em sessão
+  anterior e não chegou a ser versionado. Reconstruído das cotas publicadas, ele continua servindo
+  de aferição do modelo de densidade: 855,0 contra
+  855 publicados nos serpenteados, 547,2
+  contra 547 nas baias.</p>
+</section>
+
+<section>
+  <p class="rotulo">Antes de contratar</p>
+  <h2>O que decidir</h2>
+  <ol class="pend">
+    <li><div><h3>Fita delimita, não contém</h3><p>A decisão de marcar as zonas com fita vale
+    enquanto a fila estiver ordenada. Num pico, nada impede fisicamente alguém de passar da zona A
+    para a B — e a separação por porta, que é a razão de existir da pré-triagem, depende disso.
+    Vale decidir se algum trecho volta a ser barreira, sobretudo junto às cabeças de fila, onde a
+    pressão é maior.</p></div></li>
+    <li><div><h3>A corrente que desce e a saída S8</h3><p>A entrada pelo canto nordeste cruza o
+    apron a leste, que é onde S8 despeja quem já votou. Sem raias no apron, os dois fluxos dividem
+    o mesmo espaço — resolver com sinalização, fiscal ou separação no tempo.</p></div></li>
+    <li><div><h3>A largura do trecho lateral</h3><p>Os 3,0 m assumidos
+    vêm do corredor de fundo. Se a corrente de entrada pedir mais, cada metro sai da largura das
+    zonas — e no desenho N–S tirar 1,4 m tira uma raia inteira.</p></div></li>
+    <li><div><h3>Onde a pré-triagem acontece</h3><p>Continua sem endereço dentro do Ring: o
+    corredor em L é de passagem, não de parada. A entrega do cartão de roteamento precisa acontecer
+    a montante — no portão da Merrion Road ou no corredor da lateral leste do Hall.</p></div></li>
+  </ol>
+</section>
+
+<footer>
+  <p>Geometria do salão e das portas de <span class="mono">scripts/salao.py</span>; comparecimento
+  esperado e papéis das portas das decisões do Posto de 06/09/2026. Modelo, plantas e todos os
+  números desta página gerados por <span class="mono">scripts/ring3.py</span> e
+  <span class="mono">scripts/gera_pagina_ring3.py</span>.</p>
+  <p>Plantas em escala real sobre o contorno medido do Hall 2 (50,3 × 44,4 m) e o retângulo do
+  Ring 3 (44,0 × 35,0 m medidos, apron de 14 m). Números de lotação são
+  estimativa, não limite de segurança homologado.</p>
+</footer>
+</div>

@@ -51,6 +51,10 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
   `Residencia x Urna` e `Inconsistencias`.
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
+- **`saidas/plano_ring3_horizontal.md`**, **`saidas/ring3.json`**,
+  **`saidas/ring3_horizontal.html`** e **`saidas/ring3_*.svg`** — o Ring 3
+  girado, os números por entrada e as plantas em escala das geometrias
+  comparadas.
 
 ## Validações
 
@@ -82,6 +86,61 @@ duas seções de Dublin (3313, 3322, 3315) e urnas que somam uma seção de Dubl
 com uma seção inteira do interior (3142 com Limerick, 3161 e 3245 com Cork,
 3305 e 3108 com Galway). São 4.213 eleitores — 25% da zona — que residem fora
 de Dublin e passam a votar lá.
+
+## Ring 3 — a fila externa
+
+`scripts/ring3.py` modela o compound de fila ao ar livre do RDS, **44,0 × 35,0 m
+(medida oficial)**, 14 m ao sul da fachada do Hall 2. O eleitor entra pelo
+**canto nordeste**, desce rente ao gradil leste e vira no fundo: o corredor de
+chegada é um **L** de 3,0 m, e as três zonas são alimentadas pelo trecho de
+fundo. Restam dois desenhos, pela direção das raias.
+
+```bash
+python3 scripts/ring3.py              # plano, JSON e as plantas em SVG
+python3 scripts/gera_pagina_ring3.py  # a página
+```
+
+| | Raias N–S | Raias L–O |
+|---|---:|---:|
+| Lotação (toda em raia) | 1.997 | 1.964 |
+| Raias por zona | 8/10/8 | 23/23/23 |
+| Meias-voltas | 23 | 66 |
+| Separadores | 371 | 371 |
+| A comprar (estoque 200) | 171 | 171 |
+
+**Só duas coisas são separador**, por decisão do Posto: as divisórias entre as
+raias (708,4 m) e a parede que separa a zona C da corrente que desce pelo
+corredor lateral (32,0 m). Saíram da conta o contorno das zonas — que passa a
+ser fita, 160,2 m —, a parede do corredor de chegada (39,8 m) e as raias do
+apron até as portas (87,7 m): 288 m, 144 separadores a menos.
+
+### Cenário 3 — CCB só na ponta, fita grossa no resto
+
+A divisória vira fita do tipo de isolamento, ancorada por **um CCB na ponta
+livre** (o vão da meia-volta). A separação da zona C continua barreira inteira.
+
+| | N–S barreira inteira | N–S CCB na ponta | L–O CCB na ponta |
+|---|---:|---:|---:|
+| Separadores | 371 | **39** | 82 |
+| A comprar (estoque 200) | 171 | **0** | 0 |
+| Fita grossa | — | 662,4 m | 576,4 m |
+| Lotação | 1.997 | 1.997 | 1.964 |
+
+A barreira deixa de ser proporcional ao *comprimento* da raia e passa a ser
+proporcional ao *número* de raias — por isso o girado, com 66 divisórias curtas,
+custa mais que o N–S com 23 longas. Ressalva registrada no plano: cada divisória
+fica com 28,8 m de vão livre de fita; com apoio a cada 5 m seriam 115 apoios, e
+se forem CCB o total volta a 154.
+
+Cada corrida que a conta soma está desenhada em `saidas/ring3_barreiras_*.svg`,
+colorida pelo componente; o mapa **é** a conta, e `scripts/ring3.py` recusa a
+gerar a planta se os dois não fecharem (`confere_mapa`).
+
+O plano vigente (`scripts/layout_ring3.py`, `saidas/plano_ring3.md`) não está
+neste repositório: foi produzido em sessão anterior e não chegou a ser
+versionado. Reconstruído das cotas publicadas, continua servindo de aferição do
+modelo de densidade — reproduz os 855 dos serpenteados e os 547 das baias.
+
 
 ## Escopo
 

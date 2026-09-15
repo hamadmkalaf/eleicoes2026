@@ -1,16 +1,23 @@
-"""Dimensionamento e alocacao da equipe de voluntarios (apoio logistico) do
-posto de votacao de Dublin, Eleicoes 2026.
+"""Postos de voluntario do posto de votacao de Dublin, Eleicoes 2026.
 
-Le saidas/dados.json (produzido por mapa_agregacoes.py) e converte eleitorado
-apto em fluxo esperado por hora; de cada hora deriva a equipe simultanea
-necessaria por funcao; das horas deriva a escala de turnos e o total de
-pessoas a recrutar.
+Conta POSTOS (funcoes a cobrir), nao pessoas. Quantas pessoas ocupam cada
+posto e por quantos turnos e decisao de quem recruta.
 
-Produz saidas/dimensionamento_voluntarios.json e .md. O plano narrativo
-que consome esses numeros e o plano_voluntarios.md na raiz do repositorio.
+Le saidas/dados.json, converte eleitorado apto em fluxo esperado por hora e
+usa o pico desse fluxo para dimensionar os postos que dependem de vazao
+(triagem movel na fila, balcao de casos, orientacao de corredor). Os demais
+sao posicionais: existem porque ha um lugar a cobrir.
 
-Premissas explicitas ficam todas em PREMISSAS -- nenhuma delas e dado do TSE.
-Mudar um numero la e recalcular e o modo de testar sensibilidade.
+Tres zonas, na ordem em que o eleitor as atravessa:
+  1. Rota   — calcada da Merrion Road, portao unico e caminho interno.
+  2. Ring 3 — area de espera a ceu aberto, onde a fila se acumula.
+  3. Hall 2 — dentro do salao de votacao.
+
+Os codigos (R1, G2-G5, H5-H13...) sao gerados a partir da ordem e das
+quantidades desta lista; os dois desenhos conferem os codigos contra o JSON
+gerado aqui, entao modelo, mapa e texto nao podem divergir.
+
+Saida: saidas/postos_voluntarios.json e saidas/postos_voluntarios.md
 """
 
 import json
@@ -19,324 +26,206 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent.parent
 SAIDAS = BASE / "saidas"
 
-# Variacoes de premissa testadas para mostrar a que o numero e sensivel.
-CENARIOS = {
-    "Enxuto": {
-        "frac_precisa_triagem": 0.40, "seg_por_triagem": 15,
-        "urnas_por_orientador_corredor": 6, "urnas_por_runner": 14,
-        "frac_precisa_consulta": 0.05,
-    },
-    "Base": {},
-    "Reforcado": {
-        "frac_precisa_triagem": 0.75, "seg_por_triagem": 25,
-        "urnas_por_orientador_corredor": 3, "urnas_por_runner": 5,
-        "frac_precisa_consulta": 0.12,
-    },
-}
-
 PREMISSAS = {
-    # Taxas de comparecimento de 2022 por domicilio do eleitor (contexto_*.md).
+    # Taxas de comparecimento de 2022 por domicilio do eleitor.
     "taxa_comparecimento_dublin": 0.74,
     "taxa_comparecimento_interior": 0.50,
     # Curva de chegada ao longo das 9h de votacao. Assumida: nao ha serie
-    # historica hora a hora do posto. Pico no meio da manha, cauda a tarde.
+    # historica hora a hora do posto.
     "curva_chegada": {
         "08-09": 0.08, "09-10": 0.12, "10-11": 0.15, "11-12": 0.15,
         "12-13": 0.13, "13-14": 0.11, "14-15": 0.10, "15-16": 0.09,
         "16-17": 0.07,
     },
-    # Triagem na entrada: fracao que precisa de interacao falada (o resto
-    # segue sinalizacao por conta propria) e duracao dessa interacao.
+    # Triagem movel: o voluntario percorre a fila do Ring 3 e resolve o
+    # destino do eleitor enquanto ele ja esta esperando.
     "frac_precisa_triagem": 0.60,
     "seg_por_triagem": 20,
-    # Balcao de consulta: eleitor sem seção identificada, titulo, duvida.
-    "frac_precisa_consulta": 0.08,
-    "seg_por_consulta": 90,
-    # Utilizacao alvo de um posto de atendimento. Acima disso a fila explode.
-    "utilizacao_alvo": 0.80,
-    # Cobertura de fila: 1 orientador por N eleitores em fila visivel.
-    "eleitores_por_orientador_fila": 60,
-    # Fila acumulada antes da abertura: fracao do fluxo da 1a hora que ja
-    # esta na calcada as 08h00 (comportamento observado em posto no exterior:
-    # eleitor chega cedo para "resolver" o voto). Assumida.
-    "frac_fila_na_abertura": 0.45,
-    # Corredor interno: 1 orientador por N urnas.
-    "urnas_por_orientador_corredor": 3.5,
-    # Prioritarios (idoso, PcD, gestante, crianca de colo) sobre o fluxo.
-    "frac_prioritarios": 0.10,
-    "prioritarios_por_apoio_hora": 60,
-    # Runner de apoio aos mesarios: 1 por N urnas.
-    "urnas_por_runner": 7,
-    # Postos fixos independentes de fluxo.
-    "fixos_saida": 2,
-    "fixos_coordenacao": 3,
-    # Reserva para pausas, atrasos e substituicao.
-    "margem_reserva": 0.15,
-    # Absenteismo de voluntario entre confirmacao e comparecimento.
-    "absenteismo_recrutamento": 0.25,
+    # Eleitores por interacao: gente chega em dupla e em familia, e uma
+    # pergunta respondida em voz alta serve ao grupo todo.
+    "eleitores_por_interacao": 1.5,
+    # Balcao de casos: so o que a triagem movel nao resolve de pe.
+    "frac_caso_dificil": 0.03,
+    "seg_por_caso_dificil": 120,
+    "utilizacao_alvo_balcao": 0.80,
+    # Corredor: o desenho do Hall 2 tem 30 posicoes de mesa em 9 blocos
+    # geograficos (4+4+2+2+4+4+4+3+3), um posto por bloco.
+    "mesas_por_bloco_corredor": 3.5,
+    "mesas_no_desenho": 30,
 }
 
-# Dois turnos longos que cobrem o dia inteiro, mais um bloco curto de reforco
-# so no pico. Turnos que se sobrepoem somam cobertura na hora sobreposta.
-TURNOS = {
-    "T1 Manha (07h00-13h30)": ["08-09", "09-10", "10-11", "11-12", "12-13"],
-    "T2 Tarde (12h30-encerramento)": ["12-13", "13-14", "14-15", "15-16", "16-17"],
-    "T3 Reforco de pico (09h30-14h00)": ["10-11", "11-12", "12-13", "13-14"],
-}
+# (zona, nome, o que faz, quantidade | "vazao:<chave>")
+POSTOS = [
+    ("1. Rota", "Cabeca de fila na calcada",
+     "Mantem a calcada da Merrion Road transitavel e encaminha quem chega a "
+     "pe do DART e do onibus para o portao.", 1),
+    ("1. Rota", "Fim de fila movel",
+     "Carrega a placa de fim de fila e caminha com ela. Sem esse posto "
+     "ninguem sabe onde a fila comeca.", 1),
+    ("1. Rota", "Portao da Merrion Road",
+     "Primeiro contato: confirma que o eleitor esta no lugar certo e manda "
+     "preparar o documento. Dobra de efetivo na abertura.", 1),
+    ("1. Rota", "Desvio prioritario no portao",
+     "Identifica idoso, PcD, gestante e crianca de colo ja no portao e os "
+     "poe na rota curta, antes da fila geral.", 1),
+    ("1. Rota", "Balizamento da rota interna",
+     "Fica na curva entre o portao e o Ring 3, onde o eleitor tem duvida de "
+     "para onde ir. Um posto por bifurcacao do tracado real.", 1),
+    ("1. Rota", "Rota de saida",
+     "Separa quem sai de quem entra. Contrafluxo num caminho estreito custa "
+     "mais fila que qualquer gargalo de mesa.", 1),
+
+    ("2. Ring 3", "Boca da serpentina",
+     "Entrada da area de espera: organiza a entrada na primeira baia e "
+     "impede que a fila unica se parta em varias.", 1),
+    ("2. Ring 3", "Triagem movel na fila",
+     "Percorre a serpentina perguntando a secao, entrega o cartao de cor A "
+     "ou B e resolve a duvida enquanto o eleitor ja espera. E o posto que "
+     "decide se a porta do Hall 2 vira gargalo.", "vazao:triagem"),
+    ("2. Ring 3", "Balcao de casos",
+     "Mesa fixa fora da fila, com listagem impressa e consulta eletronica, "
+     "para o que nao se resolve de pe: titulo, eleitor nao localizado, "
+     "transferencia.", "vazao:balcao"),
+    ("2. Ring 3", "Bifurcacao A / B",
+     "Onde a fila unica vira duas. Le o cartao de cor entregue pela triagem "
+     "movel e manda o eleitor para a porta certa.", 1),
+    ("2. Ring 3", "Fila prioritaria",
+     "Conduz a fila paralela de prioritarios ate a porta, sem passar pela "
+     "serpentina.", 1),
+    ("2. Ring 3", "Apoio geral da espera",
+     "Agua, abrigo de chuva, mal-estar, crianca perdida, WC. O Ring 3 e a "
+     "ceu aberto: este e o posto que mais depende do tempo no dia.", 1),
+    ("2. Ring 3", "Enlace com seguranca e RDS",
+     "Ponto unico de contato com os 20 segurancas contratados e com o staff "
+     "do RDS. Requer ingles funcional.", 1),
+
+    ("3. Hall 2", "Porta A — dosagem de entrada",
+     "Admite eleitores enquanto houver fila util dentro. Se o salao encher, "
+     "a espera fica no Ring 3, que tem espaco.", 1),
+    ("3. Hall 2", "Porta B — dosagem de entrada", "Idem, na porta B.", 1),
+    ("3. Hall 2", "No de despacho A",
+     "No ponto onde as filas se abrem em leque: confirma o destino e "
+     "recupera quem chegou sem triagem ou na porta errada.", 1),
+    ("3. Hall 2", "No de despacho B", "Idem, no leque da porta B.", 1),
+    ("3. Hall 2", "Orientacao de corredor",
+     "Um posto por bloco de mesas: organiza a fila curta de cada bloco e "
+     "mantem livres os corredores de circulacao.", "vazao:corredor"),
+    ("3. Hall 2", "Acessibilidade e fila prioritaria",
+     "Recebe a fila prioritaria dentro do salao e acompanha ate a mesa.", 1),
+    ("3. Hall 2", "WC — orientacao de ida e volta",
+     "Os WC ficam fora do salao, num corredor lateral: sem orientacao, quem "
+     "sai para o WC perde o lugar e volta pela porta errada.", 1),
+    ("3. Hall 2", "Sala de transmissao",
+     "Controle de acesso a area restrita de transmissao de resultados.", 1),
+    ("3. Hall 2", "Saida — pos-voto e contrafluxo",
+     "Conduz quem votou para fora pela saida central e impede o retorno "
+     "contra o fluxo de entrada.", 1),
+    ("3. Hall 2", "Posto de comando",
+     "Coordenacao do salao, em ponto fixo e visivel. E para ca que o "
+     "problema sobe quando o voluntario nao resolve.", 1),
+]
+
+PREFIXO = {"1. Rota": "R", "2. Ring 3": "G", "3. Hall 2": "H"}
+
 
 def teto(x: float) -> int:
     return int(-(-x // 1))
 
 
-def comparecimento_por_urna(dados: dict, p: dict = None) -> list[dict]:
-    """Converte aptos por urna em comparecimento esperado, ponderado pelo
-    domicilio do eleitor (Dublin vs. interior)."""
-    p = p or PREMISSAS
-    td = p["taxa_comparecimento_dublin"]
-    ti = p["taxa_comparecimento_interior"]
-    linhas = []
+def fluxo_de_pico(dados: dict, p: dict) -> tuple[int, int, float]:
+    """Aptos, comparecimento esperado e pico de chegadas por minuto."""
+    aptos = esperado = 0
     for reg in dados["residencia_urna"]:
-        esperado = 0.0
+        aptos += reg["TOTAL"]
         for local, qtd in reg.items():
             if local in ("Urna", "TOTAL"):
                 continue
-            esperado += qtd * (td if local == "DUBLIN" else ti)
-        linhas.append({
-            "Urna": reg["Urna"],
-            "Aptos": reg["TOTAL"],
-            "Comparecimento_esperado": round(esperado),
-        })
-    linhas.sort(key=lambda r: -r["Comparecimento_esperado"])
-    return linhas
+            esperado += qtd * (p["taxa_comparecimento_dublin"] if local == "DUBLIN"
+                               else p["taxa_comparecimento_interior"])
+    pico_hora = esperado * max(p["curva_chegada"].values())
+    return aptos, round(esperado), pico_hora / 60
 
 
-def equipe_da_hora(fluxo_hora: float, n_urnas: int, fila_inicial: float = 0.0,
-                   p: dict = None) -> dict:
-    """Equipe simultanea necessaria numa hora com o fluxo dado."""
-    p = p or PREMISSAS
-    por_min = fluxo_hora / 60
-
-    triagem = (por_min * p["frac_precisa_triagem"]) / (
-        (60 / p["seg_por_triagem"]) * p["utilizacao_alvo"])
-    consulta = (fluxo_hora * p["frac_precisa_consulta"] * p["seg_por_consulta"]) / (
-        3600 * p["utilizacao_alvo"])
-    # Fila externa: acumulo de ~4 min de chegadas, mais a fila que ja existe
-    # na calcada quando a hora comeca (relevante so na abertura).
-    fila = (por_min * 4 + fila_inicial) / p["eleitores_por_orientador_fila"]
-    corredor = n_urnas / p["urnas_por_orientador_corredor"]
-    prioritarios = (fluxo_hora * p["frac_prioritarios"]) / p["prioritarios_por_apoio_hora"]
-    runners = n_urnas / p["urnas_por_runner"]
-
-    linha = {
-        "Fila externa e recepcao": max(2, teto(fila)),
-        "Triagem nas entradas A e B": max(2, teto(triagem)),
-        "Balcao de consulta e casos": max(2, teto(consulta)),
-        "Orientacao de corredor": teto(corredor),
-        "Atendimento prioritario": max(2, teto(prioritarios)),
-        "Apoio as mesas (runner)": teto(runners),
-        "Saida e pos-voto": p["fixos_saida"],
-        "Coordenacao": p["fixos_coordenacao"],
-    }
-    linha["Subtotal"] = sum(linha.values())
-    linha["Reserva"] = teto(linha["Subtotal"] * p["margem_reserva"])
-    linha["Total"] = linha["Subtotal"] + linha["Reserva"]
-    return linha
-
-
-def clusters_de_corredor(urnas: list[dict], n_clusters: int) -> list[dict]:
-    """Divide as urnas em clusters de corredor equilibrados por comparecimento
-    (distribuicao em serpentina sobre a lista ordenada) e reparte os clusters
-    entre as entradas A e B minimizando a diferenca de carga."""
-    grupos = [[] for _ in range(n_clusters)]
-    for i, u in enumerate(urnas):  # urnas ja vem ordenada por comparecimento
-        volta = i // n_clusters
-        idx = i % n_clusters if volta % 2 == 0 else n_clusters - 1 - (i % n_clusters)
-        grupos[idx].append(u)
-
-    carga = [sum(u["Comparecimento_esperado"] for u in g) for g in grupos]
-    # Reparticao A/B: testa todas as combinacoes e fica com a mais equilibrada.
-    melhor, dif_min = None, None
-    total = sum(carga)
-    for mascara in range(1 << n_clusters):
-        a = sum(carga[i] for i in range(n_clusters) if mascara >> i & 1)
-        n_a = sum(1 for i in range(n_clusters) if mascara >> i & 1)
-        # Entradas simetricas: metade dos clusters em cada uma.
-        if n_a != n_clusters // 2:
-            continue
-        dif = abs(2 * a - total)
-        if dif_min is None or dif < dif_min:
-            melhor, dif_min = mascara, dif
-
-    return [{
-        "Cluster": f"C{i + 1}",
-        "Entrada": "A" if melhor >> i & 1 else "B",
-        "Urnas": [u["Urna"] for u in g],
-        "Comparecimento_esperado": carga[i],
-    } for i, g in enumerate(grupos)]
-
-
-def roda(dados: dict, override: dict | None = None) -> dict:
-    """Roda o modelo inteiro com as premissas, aplicando override por cima."""
-    p = dict(PREMISSAS)
-    p.update(override or {})
-    n_urnas = dados["total_urnas"]
-
-    urnas = comparecimento_por_urna(dados, p)
-    aptos = sum(u["Aptos"] for u in urnas)
-    esperado = sum(u["Comparecimento_esperado"] for u in urnas)
-
-    horas = {}
-    for faixa, peso in p["curva_chegada"].items():
-        fluxo = esperado * peso
-        fila_inicial = fluxo * p["frac_fila_na_abertura"] if faixa == "08-09" else 0.0
-        horas[faixa] = {
-            "Fluxo_esperado": round(fluxo),
-            "Eleitores_por_minuto": round(fluxo / 60, 1),
-            "Fila_na_abertura": round(fila_inicial),
-            "Equipe": equipe_da_hora(fluxo, n_urnas, fila_inicial, p),
-        }
-
-    funcoes = list(next(iter(horas.values()))["Equipe"].keys())
-    pico = {f: max(h["Equipe"][f] for h in horas.values()) for f in funcoes}
-
-    exigencia = {f: horas[f]["Equipe"]["Total"] for f in horas}
-    nomes = list(TURNOS)
-    limite = max(exigencia.values()) + 1
-    melhor = None
-    for a in range(limite):
-        for b in range(limite):
-            for c in range(limite):
-                alocacao = dict(zip(nomes, (a, b, c)))
-                if any(
-                    sum(n for t, n in alocacao.items() if faixa in TURNOS[t]) < preciso
-                    for faixa, preciso in exigencia.items()
-                ):
-                    continue
-                if melhor is None or a + b + c < sum(melhor.values()):
-                    melhor = alocacao
-    pessoas = sum(melhor.values())
-    clusters = clusters_de_corredor(urnas, pico["Orientacao de corredor"])
-
+def quantidades_por_vazao(por_min: float, p: dict) -> dict[str, int]:
+    """Postos cujo numero sai do fluxo de eleitores, nao da planta."""
     return {
-        "clusters": clusters,
-        "premissas": p,
-        "aptos": aptos,
-        "comparecimento_esperado": esperado,
-        "urnas": n_urnas,
-        "urnas_detalhe": urnas,
-        "horas": horas,
-        "pico_por_funcao": pico,
-        "equipe_simultanea_pico": max(exigencia.values()),
-        "exigencia_por_hora": exigencia,
-        "escala_turnos": melhor,
-        "pessoas_distintas_dia": pessoas,
-        "voluntarios_a_recrutar": teto(pessoas / (1 - p["absenteismo_recrutamento"])),
+        # A fila anda de qualquer jeito, entao nao se reserva folga de
+        # utilizacao: quem escapa da triagem e recuperado no despacho.
+        "triagem": teto(
+            (por_min * p["frac_precisa_triagem"] / p["eleitores_por_interacao"])
+            / (60 / p["seg_por_triagem"])),
+        # O balcao tem fila propria, sem valvula de escape: a folga de
+        # utilizacao aqui e obrigatoria.
+        "balcao": teto(
+            (por_min * 60 * p["frac_caso_dificil"] * p["seg_por_caso_dificil"])
+            / (3600 * p["utilizacao_alvo_balcao"])),
+        "corredor": teto(p["mesas_no_desenho"] / p["mesas_por_bloco_corredor"]),
     }
 
 
-def markdown(base: dict, cenarios: dict[str, dict]) -> str:
-    """Tabelas do dimensionamento, para anexar ao plano."""
-    L = ["# Dimensionamento de voluntarios — anexo quantitativo",
-         "",
-         "Gerado por `scripts/voluntarios.py`. Todas as premissas estao no",
-         "dicionario `PREMISSAS` do script; mudar um valor e rodar de novo",
-         "refaz este anexo.",
-         "",
-         f"Base: **{base['aptos']} aptos**, **{base['urnas']} urnas**, "
-         f"comparecimento esperado **{base['comparecimento_esperado']}** "
-         f"({base['comparecimento_esperado'] / base['aptos']:.0%}).",
-         "",
-         "## Fluxo e equipe necessaria, hora a hora",
-         "",
-         "| Hora | Eleitores | Por minuto | Fila ext. | Triagem | Consulta | "
-         "Corredor | Prioritario | Runner | Saida | Coord. | Reserva | **Total** |",
-         "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
-    ordem = ["Fila externa e recepcao", "Triagem nas entradas A e B",
-             "Balcao de consulta e casos", "Orientacao de corredor",
-             "Atendimento prioritario", "Apoio as mesas (runner)",
-             "Saida e pos-voto", "Coordenacao", "Reserva"]
-    for faixa, h in base["horas"].items():
-        e = h["Equipe"]
-        cels = " | ".join(str(e[f]) for f in ordem)
-        L.append(f"| {faixa} | {h['Fluxo_esperado']} | "
-                 f"{h['Eleitores_por_minuto']} | {cels} | **{e['Total']}** |")
-    L += ["",
-          f"Pico de equipe simultanea: **{base['equipe_simultanea_pico']} pessoas** "
-          f"(entre 10h e 12h).",
-          "",
-          "## Escala de turnos",
-          "",
-          "| Turno | Pessoas |", "|---|---|"]
-    for t, n in base["escala_turnos"].items():
-        L.append(f"| {t} | {n} |")
-    L += [f"| **Pessoas distintas no dia** | **{base['pessoas_distintas_dia']}** |",
-          f"| **A recrutar** (absenteismo de "
-          f"{base['premissas']['absenteismo_recrutamento']:.0%}) | "
-          f"**{base['voluntarios_a_recrutar']}** |",
-          "",
-          "## Sensibilidade",
-          "",
-          "| Cenario | Pico simultaneo | Pessoas no dia | A recrutar |",
-          "|---|---|---|---|"]
-    for nome, r in cenarios.items():
-        L.append(f"| {nome} | {r['equipe_simultanea_pico']} | "
-                 f"{r['pessoas_distintas_dia']} | {r['voluntarios_a_recrutar']} |")
-    L += ["",
-          "## Alocacao fisica: clusters de corredor e entradas",
-          "",
-          "Um orientador de corredor por cluster. A reparticao entre as",
-          "entradas A e B equilibra o comparecimento esperado, nao a",
-          "contagem de urnas.",
-          "",
-          "| Cluster | Entrada | Urnas | Comparecimento esperado |",
-          "|---|---|---|---|"]
-    for c in base["clusters"]:
-        L.append(f"| {c['Cluster']} | {c['Entrada']} | "
-                 f"{', '.join(str(u) for u in c['Urnas'])} | "
-                 f"{c['Comparecimento_esperado']} |")
-    for entrada in ("A", "B"):
-        sel = [c for c in base["clusters"] if c["Entrada"] == entrada]
-        L.append(f"| **Entrada {entrada}** | | "
-                 f"**{sum(len(c['Urnas']) for c in sel)} urnas** | "
-                 f"**{sum(c['Comparecimento_esperado'] for c in sel)}** |")
-    L += ["",
-          "## Comparecimento esperado por urna",
-          "",
-          "| Urna | Aptos | Comparecimento esperado |", "|---|---|---|"]
-    for u in base["urnas_detalhe"]:
-        L.append(f"| {u['Urna']} | {u['Aptos']} | {u['Comparecimento_esperado']} |")
-    return "\n".join(L) + "\n"
+def numera(postos: list, vazao: dict[str, int]) -> list[dict]:
+    """Atribui codigo sequencial por zona, respeitando a ordem da lista."""
+    contador: dict[str, int] = {}
+    saida = []
+    for zona, nome, funcao, qtd in postos:
+        if isinstance(qtd, str):
+            qtd = vazao[qtd.split(":", 1)[1]]
+        pref = PREFIXO[zona]
+        inicio = contador.get(pref, 0) + 1
+        contador[pref] = inicio + qtd - 1
+        codigo = f"{pref}{inicio}" if qtd == 1 else f"{pref}{inicio}-{pref}{inicio + qtd - 1}"
+        saida.append({"Codigo": codigo, "Zona": zona, "Posto": nome,
+                      "Funcao": funcao, "Postos": qtd})
+    return saida
 
 
 def main() -> None:
     dados = json.loads((SAIDAS / "dados.json").read_text(encoding="utf-8"))
-    cenarios = {nome: roda(dados, ov) for nome, ov in CENARIOS.items()}
-    base = cenarios["Base"]
+    p = PREMISSAS
+    aptos, esperado, por_min = fluxo_de_pico(dados, p)
+    vazao = quantidades_por_vazao(por_min, p)
+    postos = numera(POSTOS, vazao)
 
-    (SAIDAS / "dimensionamento_voluntarios.json").write_text(
-        json.dumps({"base": base,
-                    "cenarios": {n: {k: v for k, v in r.items()
-                                     if k not in ("urnas_detalhe", "horas",
-                                                  "clusters")}
-                                 for n, r in cenarios.items()}},
-                   ensure_ascii=False, indent=2), encoding="utf-8")
-    (SAIDAS / "dimensionamento_voluntarios.md").write_text(
-        markdown(base, cenarios), encoding="utf-8")
+    zonas: dict[str, int] = {}
+    for r in postos:
+        zonas[r["Zona"]] = zonas.get(r["Zona"], 0) + r["Postos"]
+    total = sum(zonas.values())
 
-    print(f"Aptos {base['aptos']} | comparecimento esperado "
-          f"{base['comparecimento_esperado']} | urnas {base['urnas']}")
-    print(f"Pico de fluxo: {max(h['Fluxo_esperado'] for h in base['horas'].values())}/h")
-    for nome, r in cenarios.items():
-        print(f"  {nome:11s} pico {r['equipe_simultanea_pico']:3d} | "
-              f"dia {r['pessoas_distintas_dia']:3d} | "
-              f"recrutar {r['voluntarios_a_recrutar']:3d}")
-    print("Escala (cenario base):")
-    for t, n in base["escala_turnos"].items():
-        print(f"  {t}: {n}")
-    print("Pico por funcao (cenario base):")
-    for f, n in base["pico_por_funcao"].items():
-        if f not in ("Subtotal", "Total"):
-            print(f"  {f}: {n}")
+    (SAIDAS / "postos_voluntarios.json").write_text(json.dumps({
+        "premissas": p,
+        "aptos": aptos,
+        "comparecimento_esperado": esperado,
+        "pico_eleitores_por_minuto": round(por_min, 1),
+        "quantidades_por_vazao": vazao,
+        "postos": postos,
+        "postos_por_zona": zonas,
+        "total_postos": total,
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    L = ["# Postos de voluntario — anexo quantitativo", "",
+         "Gerado por `scripts/voluntarios.py`. Conta **postos**, nao pessoas:",
+         "um posto pode ser ocupado por uma ou duas pessoas e trocar de",
+         "ocupante a cada turno.", "",
+         f"Base: {aptos} aptos, comparecimento esperado {esperado}, pico de "
+         f"{round(por_min, 1)} eleitores por minuto (10h-12h).", "",
+         "| Codigo | Zona | Posto | Postos no pico | O que faz |",
+         "|---|---|---|---|---|"]
+    for r in postos:
+        L.append(f"| {r['Codigo']} | {r['Zona']} | {r['Posto']} | "
+                 f"{r['Postos']} | {r['Funcao']} |")
+    L += ["", "| Zona | Postos |", "|---|---|"]
+    for z, q in sorted(zonas.items()):
+        L.append(f"| {z} | {q} |")
+    L.append(f"| **Total** | **{total}** |")
+    (SAIDAS / "postos_voluntarios.md").write_text("\n".join(L) + "\n",
+                                                  encoding="utf-8")
+
+    print(f"Aptos {aptos} | esperado {esperado} | pico {por_min:.1f}/min")
+    for r in postos:
+        print(f"  {r['Codigo']:9s} {r['Zona']:10s} {r['Posto']}")
+    for z, q in sorted(zonas.items()):
+        print(f"  {z}: {q} postos")
+    print(f"  TOTAL: {total} postos")
 
 
 if __name__ == "__main__":

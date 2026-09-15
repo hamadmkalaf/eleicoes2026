@@ -1,320 +1,224 @@
-# Plano de voluntários — Dublin, 1º turno de 04/10/2026
+# Postos de voluntário — Dublin, 1º turno de 04/10/2026
 
-Quantos voluntários o posto precisa para auxiliar os eleitores no RDS Hall 2,
-onde alocá-los e como recrutá-los a tempo. Os números saem de
-`scripts/voluntarios.py`, que lê o eleitorado real (`saidas/dados.json`) e o
-converte em fluxo por hora; as tabelas completas estão em
-`saidas/dimensionamento_voluntarios.md`.
+Onde cada voluntário fica e o que faz, em três zonas: a rota do eleitor até o
+Ring 3, o Ring 3 e o interior do Hall 2. Conta **postos**, não pessoas — quantas
+pessoas ocupam cada posto e em quantos turnos é decisão de quem recruta.
+
+Os números saem de `scripts/voluntarios.py`, que lê o eleitorado real
+(`saidas/dados.json`). A tabela completa está em
+`saidas/postos_voluntarios.md`.
 
 ## Resultado em uma linha
 
-**41 voluntários simultâneos no pico** (10h–12h), **77 pessoas distintas no
-dia** em dois turnos com um reforço de pico, e **~100 a recrutar** para
-absorver 25% de absenteísmo. Dois cenários alternativos de premissa colocam a
-faixa entre 56 e 96 pessoas no dia.
+**36 postos no pico**: 6 na rota, 12 no Ring 3 e 18 dentro do Hall 2.
 
-## 1. O que um voluntário pode fazer — e o que não pode
-
-Esta é a restrição que estrutura o plano inteiro, e ela precede qualquer
-cálculo.
-
-A Mesa Receptora de Votos (MRV) é a **mesa**, não a urna: é composta por
-presidente, 1º e 2º mesários e secretários, e cabe a ela receber o voto,
-identificar o eleitor e manusear o caderno de votação. Quem faz isso são
-mesários **nomeados pela Justiça Eleitoral**. Um voluntário do posto não
-identifica eleitor, não manuseia caderno e não opera urna.
-
-Existe, porém, uma categoria formal para o que este plano descreve: a Justiça
-Eleitoral nomeia eleitores como **apoio logístico**, "no número e nos períodos
-necessários", como pessoal auxiliar dos trabalhos eleitorais — função distinta
-da de mesário. É sob esse enquadramento que os 77 devem ser nomeados.
-
-> **Pendência urgente.** O prazo para os juízes nomearem mesários e apoio
-> logístico das Eleições 2026 terminou em **28/08/2026** — já vencido na data
-> deste plano. Antes de recrutar qualquer pessoa, é preciso confirmar com o
-> Cartório Eleitoral/ZZ: (a) se o posto já tem apoio logístico nomeado e
-> quantos; (b) se há nomeação complementar possível para seções no exterior;
-> (c) se não houver, sob que figura os colaboradores do posto atuarão
-> (colaborador consular sem vínculo com a Justiça Eleitoral), o que muda
-> cobertura de seguro, direito a folga compensatória e crachá.
->
-> Fontes: [TSE — prazo de nomeação de mesários e apoio logístico](https://www.tse.jus.br/comunicacao/noticias/2026/Agosto/termina-nesta-sexta-feira-28-prazo-para-nomeacao-de-mesarios-e-apoio-logistico)
-> e [TSE — como funcionam as mesas receptoras de votos](https://www.tse.jus.br/comunicacao/noticias/2026/Abril/por-dentro-das-eleicoes-entenda-o-que-sao-e-como-funcionam-as-mesas-receptoras-de-votos).
-> Conteúdo obtido por busca; o texto integral da
-> [Resolução TSE nº 23.751/2026](https://www.tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-751-de-26-de-fevereiro-de-2026)
-> não foi lido e deve ser conferido pelo Cartório.
-
-Consequência prática: **todo voluntário trabalha fora da mesa**. O ganho que
-ele entrega não é velocidade de votação — essa é limitada pelos mesários e
-pela urna —, é impedir que o eleitor chegue à mesa errada, na fila errada, sem
-documento, ou desista antes de chegar.
-
-## 2. Base de cálculo
-
-| Parâmetro | Valor | Origem |
+| Zona | Postos | Códigos |
 |---|---|---|
-| Eleitores aptos | 16.794 | CSV do TSE, 51 seções em 28 urnas |
-| Comparecimento esperado | 11.418 (68%) | 74% dos domiciliados em Dublin, 50% do interior (taxas de 2022) |
-| Janela de votação | 8h–17h | nota verbal |
-| Pico de fluxo | 1.713 eleitores/h = 28,5/min | curva de chegada assumida, pico entre 10h e 12h |
-| Fila já formada às 8h | ~411 pessoas | premissa: 45% do fluxo da 1ª hora chega antes da abertura |
+| 1. Rota — calçada, portão e caminho interno | 6 | R1–R6 |
+| 2. Ring 3 — área de espera a céu aberto | 12 | G1–G12 |
+| 3. Hall 2 — salão de votação | 18 | H1–H18 |
+| **Total** | **36** | |
 
-Os 11.418 usam a mesma base de aptos e as mesmas taxas de 2022 para todos os
-cenários — comparabilidade que o `contexto_eleicoes_dublin_2026.md` já
-recomendava explicitar.
+## O que é um posto
 
-**A curva de chegada é a premissa mais frágil do modelo.** Não há série
-histórica hora a hora do posto. Se o comparecimento for mais concentrado do
-que os 15%/hora assumidos no pico, as funções sensíveis a fluxo (triagem,
-consulta, prioritário) sobem proporcionalmente; as posicionais (corredor,
-runner, coordenação) não mudam. Se o posto tiver a contagem horária de 2022,
-substituí-la em `PREMISSAS["curva_chegada"]` e rodar o script de novo é a
-primeira coisa a fazer com este plano.
+Um posto é uma função a cobrir num lugar. Pode ser ocupado por uma pessoa ou
+por duas, e trocar de ocupante a cada turno. Catorze dos 36 são postos
+**móveis** — a triagem na fila (G2–G5), o fim de fila (R2) e a orientação de
+corredor (H5–H13): o lugar é um trecho, não um ponto.
 
-## 3. Dimensionamento por função
+Os 36 são a contagem **no pico**, entre 10h e 12h. Os dois postos calculados
+por vazão encolhem junto com o fluxo:
 
-Pico simultâneo, cenário base. Cada número vem de um critério explícito, não
-de arredondamento.
-
-| Função | Pico | Critério |
-|---|---|---|
-| Fila externa e recepção | 8 | 1 por 60 pessoas em fila; dimensionado pela fila de abertura (~411), não pelo pico de fluxo |
-| Triagem nas entradas A e B | 8 | 60% dos eleitores pedem orientação falada, 20 s cada, utilização de 80% |
-| Balcão de consulta e casos | 5 | 8% dos eleitores (seção não localizada, título, dúvida), 90 s cada |
-| Orientação de corredor | 8 | 1 por cluster de 3–4 urnas |
-| Atendimento prioritário | 3 | 10% do fluxo é prioritário; 60 atendimentos/hora por apoio |
-| Apoio às mesas (runner) | 4 | 1 por 7 urnas |
-| Saída e pós-voto | 2 | posto fixo no EXIT |
-| Coordenação | 3 | 1 coordenador-geral + 1 supervisor por entrada |
-| Reserva | 6 | 15% para pausas, atrasos e substituição |
-| **Total no pico** | **41** | |
-
-Dois números merecem atenção. O primeiro é a **fila externa às 8h**: é o único
-momento em que a demanda é de contenção de multidão na Merrion Road, não de
-atendimento — 8 pessoas na calçada às 7h45 valem mais que 8 pessoas dentro do
-salão. O segundo é a **triagem**: 8 postos de triagem a 20 s por eleitor é o
-que sustenta 28,5 chegadas por minuto com utilização de 80%. Acima de 80% a
-fila de triagem cresce sem limite, e a triagem vira o gargalo que o próprio
-`contexto` já sinalizava — um ponto de estrangulamento não paralelizável,
-independente de como as urnas estejam distribuídas.
-
-### Sensibilidade
-
-| Cenário | Pico simultâneo | Pessoas no dia | A recrutar |
+| Hora | Eleitores/min | Triagem móvel | Balcão de casos |
 |---|---|---|---|
-| Enxuto (40% pedem triagem a 15 s; 1 orientador por 6 urnas) | 30 | 56 | 75 |
-| **Base** | **41** | **77** | **103** |
-| Reforçado (75% a 25 s; 1 orientador por 3 urnas) | 52 | 96 | 128 |
+| 08–09 | 15,2 | 3 | 2 |
+| 10–12 (pico) | 28,5 | 4 | 3 |
+| 13–16 | 21 a 17 | 3 | 2 |
+| 16–17 | 13,3 | 2 | 1 |
 
-O intervalo 56–96 é largo porque depende de uma variável que o posto controla:
-**quanto da orientação é resolvida por sinalização em vez de por pessoa**. Os
-EUR 1.961 já orçados em banners são, nesse sentido, um investimento que reduz
-headcount — cada 10 pontos percentuais a menos de eleitores que precisam
-perguntar algo tiram cerca de 1,2 voluntário do pico da triagem. Divulgação
-prévia da seção pelo Instagram e pelo e-Título puxa na mesma direção.
+Os outros 31 postos existem enquanto houver votação. R3 é o único que **dobra**
+de efetivo, na abertura, por causa da fila já formada às 8h.
 
-## 4. Alocação física
+## A restrição que estrutura tudo
 
-O salão tem duas entradas (A e B) com um ponto de triagem cada, mesas nas três
-paredes e uma saída central, conforme `PLANO COM FLUXOS MELHORADO.png`.
+A Mesa Receptora de Votos é a **mesa**, não a urna: presidente, 1º e 2º
+mesários e secretários. Identificar o eleitor e manusear o caderno de votação é
+função de mesário **nomeado pela Justiça Eleitoral**. Nenhum dos 36 postos
+encosta na mesa.
 
-### 4.1 Divisão das 28 urnas entre as entradas
+A figura formal para o que este plano descreve é **apoio logístico**, também
+nomeado pela Justiça Eleitoral. O prazo de nomeação das Eleições 2026 terminou
+em **28/08/2026**, já vencido — confirmar a situação com o Cartório Eleitoral
+antes de escalar qualquer pessoa. Fontes e detalhe em
+[§ Pendências](#pendências).
 
-As urnas foram agrupadas em 8 clusters equilibrados por comparecimento
-esperado e repartidos 4 e 4 entre as entradas:
+O ganho do voluntário não é velocidade de votação — essa é limitada pelos
+mesários e pela urna. É impedir que o eleitor chegue à mesa errada, na fila
+errada, sem documento, ou desista antes de chegar.
 
-| Cluster | Entrada | Urnas | Comparecimento esperado |
+## A decisão de desenho que muda o resto
+
+**A triagem saiu da porta e foi para dentro da fila do Ring 3.**
+
+Na versão anterior deste plano, a triagem ficava nas entradas A e B: 8 postos
+atendendo 28,5 eleitores por minuto, com utilização de 80% para a fila não
+explodir. Era o gargalo não paralelizável que o `contexto_eleicoes_dublin_2026.md`
+já apontava.
+
+Com o Ring 3 confirmado como área de espera a céu aberto, a triagem passa a ser
+feita por voluntários que **percorrem a serpentina** (G2–G5), perguntam a seção,
+entregam um cartão de cor A ou B e resolvem a dúvida enquanto o eleitor já está
+parado esperando. Três consequências:
+
+1. **Sai do caminho crítico.** A triagem deixa de ser uma etapa que o eleitor
+   atravessa e passa a acontecer durante uma espera que existiria de qualquer
+   forma.
+2. **A falha vira suave.** Quem escapar da triagem não trava ninguém: é
+   recuperado no nó de despacho dentro do salão (H3/H4). Por isso os postos de
+   triagem móvel não precisam da folga de utilização de 80% — podem trabalhar
+   no talo.
+3. **Ganha o efeito de grupo.** Eleitor chega em dupla e em família; uma
+   pergunta respondida em voz alta serve a 1,5 pessoa em média.
+
+O efeito combinado derruba a triagem de 8 postos para 4. Não é mágica
+aritmética: é (a) remover a folga de utilização, que só era necessária porque a
+fila da triagem não tinha válvula de escape, e (b) contar interações em vez de
+pessoas.
+
+## Zona 1 — Rota do eleitor até o Ring 3
+
+![Postos na rota e no Ring 3](saidas/postos_rota_ring3.png)
+
+| Código | Posto | Onde fica | O que faz |
 |---|---|---|---|
-| C1 | A | 3313, 3216, 517 | 1.323 |
-| C4 | A | 3142, 3309, 1160 | 1.227 |
-| C6 | A | 3245, 3311, 3054, 3308 | 1.570 |
-| C7 | A | 3302, 3108, 3078, 3832 | 1.561 |
-| **Entrada A** | | **14 urnas** | **5.681** |
-| C2 | B | 3322, 511, 513 | 1.322 |
-| C3 | B | 3315, 3229, 512 | 1.319 |
-| C5 | B | 3161, 3179, 1352, 3442 | 1.547 |
-| C8 | B | 3305, 3306, 3688, 3862 | 1.549 |
-| **Entrada B** | | **14 urnas** | **5.737** |
+| R1 | Cabeça de fila na calçada | Calçada da Merrion Road, junto ao portão | Mantém o passeio transitável e encaminha quem chega a pé |
+| R2 | Fim de fila móvel | Extremidade da fila, onde ela estiver | Carrega a placa de fim de fila e caminha com ela |
+| R3 | Portão da Merrion Road | No portão | 1º contato: confirma que é o lugar certo, manda preparar o documento. Dobra na abertura |
+| R4 | Desvio prioritário | Logo após o portão | Tira idoso, PcD, gestante e criança de colo da fila geral antes que entrem nela |
+| R5 | Balizamento da curva | Na curva entre o portão e o Ring 3 | Um posto por bifurcação do traçado real |
+| R6 | Rota de saída | No caminho de retorno ao portão | Separa quem sai de quem entra |
 
-O desequilíbrio entre as portas é de 56 eleitores (0,5%). As cinco urnas mais
-pesadas — 3313, 3322, 3315 (≈590 comparecentes cada) e 3142, 3161 (≈490) —
-ficam **repartidas entre as duas entradas** (A: 3313, 3142; B: 3322, 3315,
-3161), seguindo a recomendação já registrada no contexto de não concentrar
-volume numa porta só.
+Duas observações de desenho.
 
-Esta tabela é uma alocação **lógica**. Ela precisa ser conferida contra a
-posição física das mesas no Hall 2: se um cluster da entrada A estiver fisicamente
-na parede de trás à direita, o eleitor atravessa o salão inteiro e a
-economia de fila se perde. **Regra de ouro: cluster da entrada A = mesas da
-metade esquerda do salão.** Se a numeração das urnas no salão não permitir
-isso, é a numeração que se ajusta, não o eleitor.
+**O portão único é a fragilidade da zona 1.** Entrada e saída pelo mesmo ponto
+significa que os dois fluxos se cruzam em algum lugar — no desenho, entre a
+saída do Hall 2 e o portão. R6 existe só por causa disso. Se o RDS liberar um
+segundo portão para saída, R6 desaparece e o risco de contrafluxo com ele. Vale
+pedir.
 
-### 4.2 Postos no dia
+**R2 parece supérfluo e não é.** Numa fila de rua sem fim visível, o eleitor que
+chega não sabe onde ela começa e ou fura sem querer, ou desiste. Uma placa que
+caminha com a cauda da fila resolve os dois.
 
-| Posto | Quantos | Onde |
+## Zona 2 — No Ring 3
+
+| Código | Posto | Onde fica | O que faz |
+|---|---|---|---|
+| G1 | Boca da serpentina | Entrada da área de espera | Organiza a entrada na primeira baia; impede que a fila única se parta em várias |
+| G2–G5 | Triagem móvel | Percorrendo a serpentina | Pergunta a seção, entrega o cartão A/B, resolve dúvida de pé |
+| G6–G8 | Balcão de casos | Mesa fixa **fora** da fila | Título, eleitor não localizado, transferência — com listagem impressa e consulta eletrônica |
+| G9 | Bifurcação A / B | Saída da serpentina | Lê o cartão de cor e manda para a porta certa |
+| G10 | Fila prioritária | Rota paralela, por fora da serpentina | Conduz prioritários direto à porta |
+| G11 | Apoio da espera | Dentro do Ring 3 | Água, abrigo de chuva, mal-estar, criança perdida, WC |
+| G12 | Enlace com segurança e RDS | Borda do Ring 3 | Ponto único de contato com os 20 seguranças e com o staff do RDS. Requer inglês |
+
+**Por que o balcão fica fora da fila.** Um eleitor com problema parado dentro da
+serpentina trava os 300 que estão atrás dele. Fora dela, trava só a si mesmo. É
+a mesma lógica de uma faixa de escape numa descida.
+
+**G11 é o posto mais sensível ao clima.** O Ring 3 é a céu aberto em 4 de
+outubro em Dublin. Se chover no pico, este posto sozinho decide quanta gente
+desiste da fila — e vale dimensionar abrigo antes de dimensionar gente.
+
+## Zona 3 — Dentro do Hall 2
+
+![Postos no Hall 2](saidas/postos_hall2.png)
+
+| Código | Posto | O que faz |
 |---|---|---|
-| Portão externo / Merrion Road | 4 (8 na abertura) | calçada e acesso ao RDS |
-| Triagem A | 4 | hub azul-claro, à frente da entrada A |
-| Triagem B | 4 | hub roxo, à frente da entrada B |
-| Balcão de consulta | 5 | lateral, fora do caminho das duas filas |
-| Corredor C1–C8 | 1 por cluster (8) | junto ao bloco de mesas |
-| Prioritário | 3 | 1 por entrada + 1 volante interno |
-| Runner de mesa | 4 | 1 por bloco de ~7 urnas |
-| Saída | 2 | EXIT central |
-| Coordenação | 3 | 1 geral (móvel) + 1 por entrada |
-| Reserva | 6 | ponto de apoio, junto à sala de transmissão |
+| H1, H2 | Portas A e B — dosagem de entrada | Só admitem enquanto houver fila útil dentro. Se o salão encher, a espera fica no Ring 3, que tem espaço |
+| H3, H4 | Nós de despacho A e B | No ponto onde as filas se abrem em leque: confirmam o destino e recuperam quem escapou da triagem |
+| H5–H13 | Orientação de corredor | Um posto por bloco de mesas (9 blocos: 4+4+2+2+4+4+4+3+3) |
+| H14 | Acessibilidade e fila prioritária | Recebe a fila prioritária e acompanha até a mesa |
+| H15 | WC | Os WC ficam fora do salão, num corredor lateral — sem orientação, quem sai perde o lugar e volta pela porta errada |
+| H16 | Sala de transmissão | Controle de acesso à área restrita |
+| H17 | Saída — pós-voto | Conduz para fora e impede retorno contra o fluxo |
+| H18 | Posto de comando | Coordenação do salão, em ponto fixo e visível |
 
-O balcão de consulta é o posto que mais depende de ferramenta: precisa de
-listagem impressa por ordem alfabética **e** consulta eletrônica. É o único
-ponto onde uma fila de 90 s por pessoa é aceitável, exatamente porque ele
-existe para tirar essa fila de dentro da triagem.
+**H1 e H2 são o posto mais contraintuitivo do plano.** A tentação é deixar
+entrar sempre que há espaço na porta. O certo é o oposto: fila dentro do salão
+bloqueia circulação e acesso às mesas, e não há para onde ela crescer. Fila no
+Ring 3 tem espaço, tem apoio e tem triagem acontecendo. A porta deve segurar.
 
-## 5. Escala
+**Não há balcão de casos dentro do salão.** O que não se resolve de pé foi
+resolvido no Ring 3, antes da porta. Dentro do salão, caso de eleitor é do
+presidente da mesa — e o voluntário encaminha, não decide.
 
-| Turno | Horário | Pessoas |
+## De onde vem cada número
+
+Três postos são calculados a partir do fluxo; os outros 27 são posicionais —
+existem porque há um lugar a cobrir.
+
+| Posto | Qtd. | Cálculo |
 |---|---|---|
-| T1 Manhã | 07h00–13h30 | 40 |
-| T3 Reforço de pico | 09h30–14h00 | 3 |
-| T2 Tarde | 12h30–encerramento | 34 |
-| **Distintas no dia** | | **77** |
+| G2–G5 triagem móvel | 4 | 28,5 eleitores/min × 60% que pedem orientação ÷ 1,5 eleitor por interação × 20 s |
+| G6–G8 balcão de casos | 3 | 28,5/min × 3% de casos difíceis × 120 s, com utilização de 80% |
+| H5–H13 corredor | 9 | 30 posições de mesa ÷ 3,5 por bloco |
 
-Notas de escala:
+O pico de 28,5 eleitores por minuto vem de 16.794 aptos → 11.416 comparecimentos
+esperados (74% Dublin, 50% interior, taxas de 2022) → 1.713 eleitores na hora
+de pico, entre 10h e 12h.
 
-- **T1 entra às 7h**, uma hora antes da abertura, porque a fila de abertura é o
-  primeiro pico e porque a montagem de sinalização e separadores de fila
-  precisa estar pronta às 7h45.
-- **A passagem de turno às 12h30–13h30 se sobrepõe de propósito**: trocar a
-  equipe inteira no meio da cauda do pico é como se perde o controle da fila.
-- **T2 fica até o encerramento**, não até as 17h. Eleitor que chegou antes das
-  17h vota depois das 17h; a fila interna não acaba com o relógio, e a equipe
-  que a organiza não pode ir embora antes dela.
-- Cada turno se organiza em **equipes de 8 com um líder**, e o líder é o único
-  ponto de contato com a coordenação. Sem essa camada, 40 pessoas viram 40
-  interrupções do coordenador.
-- Além dos 77 do dia, prever **8 voluntários na véspera (03/10)** para montagem
-  de sinalização, unifila e conferência de layout.
+**A curva de chegada horária continua sendo a premissa mais frágil.** É
+assumida; não há série histórica do posto. Se houver a contagem horária de
+2022, substituir em `PREMISSAS["curva_chegada"]` e rodar de novo.
 
-## 6. Recrutamento
+## O que muda o número de postos
 
-Meta: **100 pessoas confirmadas** para 77 postos (absenteísmo de 25%, típico
-de voluntariado não remunerado num domingo). Se o recrutamento fechar abaixo
-de 85 confirmados, o corte deve ser feito por função, nesta ordem inversa de
-prioridade: reserva → runner → saída → prioritário. Triagem e corredor não se
-cortam.
+1. **Um segundo portão para saída** — elimina R6 e o cruzamento de fluxos.
+2. **Sinalização e divulgação prévia da seção.** Cada 10 pontos percentuais a
+   menos de eleitores que precisam perguntar algo tiram cerca de 0,6 posto da
+   triagem móvel. Os EUR 1.961 já orçados em banners e a divulgação pelo
+   Instagram e pelo e-Título puxam nessa direção.
+3. **Renegociação da agregação com o TSE.** Se as 28 urnas virarem 32–38, os
+   blocos de corredor sobem para 10–11. A triagem e a rota não mudam: dependem
+   do fluxo de eleitores, não do número de urnas.
+4. **Chuva no pico** — não muda a contagem, muda a prioridade: G11 e abrigo
+   passam à frente de tudo.
 
-| Etapa | Prazo | Responsável |
-|---|---|---|
-| Confirmar enquadramento com o Cartório (seção 1) | imediato | posto |
-| Abrir chamada pública (Instagram, site da Embaixada, lista de e-mails) | até 20/09 | comunicação |
-| Ativar multiplicadores | até 20/09 | posto |
-| Fechar lista de 100 confirmados | 27/09 | coordenação |
-| Webinar de treinamento (2 sessões, 1h) | 28/09–30/09 | coordenação |
-| Confirmação individual final + escala nominal | 01/10 | coordenação |
-| Briefing presencial no local | 03/10 | coordenação |
+## Pendências
 
-Fontes de recrutamento, por rendimento esperado: associações de brasileiros e
-igrejas com comunidade brasileira em Dublin; estudantes de intercâmbio
-(alta disponibilidade num domingo, baixa retenção — recrutar com folga);
-familiares dos próprios mesários já nomeados; e voluntários das eleições de
-2022, que já conhecem o fluxo e devem ser buscados nominalmente primeiro.
+1. **Nomeação de apoio logístico fora do prazo (28/08/2026).** Confirmar com o
+   Cartório Eleitoral/ZZ: se já há apoio logístico nomeado e quantos; se cabe
+   nomeação complementar para seções no exterior; ou sob que figura os
+   colaboradores atuarão. Muda seguro, folga compensatória e crachá — não o
+   número de postos. Fontes:
+   [TSE — prazo de nomeação](https://www.tse.jus.br/comunicacao/noticias/2026/Agosto/termina-nesta-sexta-feira-28-prazo-para-nomeacao-de-mesarios-e-apoio-logistico),
+   [TSE — mesas receptoras](https://www.tse.jus.br/comunicacao/noticias/2026/Abril/por-dentro-das-eleicoes-entenda-o-que-sao-e-como-funcionam-as-mesas-receptoras-de-votos),
+   [Resolução TSE nº 23.751/2026](https://www.tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-751-de-26-de-fevereiro-de-2026)
+   (texto integral não lido — conferir).
+2. **Geometria real do recinto.** O mapa das zonas 1 e 2 é esquemático: a
+   sequência rua → portão → Ring 3 → portas está correta, as distâncias e o
+   formato do recinto não. O site map do RDS não pôde ser obtido. Corrigir
+   antes de virar sinalização.
+3. **Capacidade do Ring 3.** O número de baias da serpentina desenhado é
+   ilustrativo. Dimensionar contra a área real e contra o pico de 28,5
+   eleitores por minuto.
+4. **30 posições de mesa no desenho, 28 urnas na agregação do TSE.** Confirmar
+   as duas sobrando — servem de reserva se uma urna falhar.
+5. **Dimensões do Hall 2 confirmadas:** 50,2 × 44,5 m, 2.238 m² (ficha técnica
+   do RDS em `RDS_Hall_2_Floorplan_(1).pdf`), coerente com os 50 × 44,5 usados
+   nas simulações de layout. Esta pendência do contexto original está fechada.
 
-Um filtro que economiza trabalho: **inglês funcional é requisito só para o
-portão externo e a coordenação** (interlocução com staff do RDS, segurança
-contratada e Gardaí). Nos demais postos, o atendimento é em português.
-
-## 7. Treinamento
-
-Webinar de 1h, com material de 2 páginas, cobrindo:
-
-1. **O que você não pode fazer** — não tocar em caderno, urna ou documento do
-   eleitor; não orientar voto; não discutir política no salão. Esta é a
-   primeira parte da pauta, não a última.
-2. O mapa do salão, os 8 clusters e a regra A/B.
-3. As três perguntas que 90% dos eleitores farão ("qual é a minha seção?",
-   "esqueci o título", "moro em Cork, voto aqui?") e a resposta padrão de cada
-   uma.
-4. Atendimento prioritário: quem tem direito e como conduzir.
-5. Escalonamento: o que vai para o líder de equipe, o que vai para o
-   coordenador, o que vai para o presidente da mesa — e a regra de que
-   problema de eleitor específico **sempre** termina no presidente da mesa,
-   nunca no voluntário.
-
-O webinar dos voluntários é distinto do webinar de mesários já previsto na
-`PENDENCIAS` (item 4), mas as duas pautas devem ser escritas juntas, para que
-a divisão de papéis seja explicada com as mesmas palavras dos dois lados.
-
-## 8. Custo estimado
-
-Não orçado ainda; ordem de grandeza para entrar na tabela final da
-`PENDENCIAS` (item 2).
-
-| Item | Estimativa (EUR) |
-|---|---|
-| Coletes identificadores (100, cor distinta da segurança contratada) | 600 |
-| Crachás e cordões | 150 |
-| Alimentação e água (77 pessoas + 8 da véspera) | 1.300 |
-| Impressão de material de treinamento e listagens do balcão | 200 |
-| Contingência de transporte | 250 |
-| **Total** | **~2.500** |
-
-Comparação útil: são ~2.500 EUR para 77 pessoas contra os 6.775 EUR já
-contratados para 20 seguranças. O voluntariado é a linha mais barata do
-orçamento por pessoa-hora e a que mais afeta a experiência do eleitor.
-
-## 9. Efeitos de segunda e terceira ordem
-
-**Segunda ordem.** Voluntário de colete é lido pelo eleitor como autoridade,
-independentemente do que diga o crachá. Isso corta nos dois sentidos: acelera
-o fluxo porque a orientação é aceita sem discussão, e cria risco porque uma
-informação errada dita por um voluntário tem peso de informação oficial. Daí a
-regra do item 7.5 — o voluntário encaminha, não decide. Um segundo efeito: se
-a triagem funcionar bem, a fila visível desaparece da calçada e migra para
-dentro do salão, o que muda a percepção pública do evento (foto de fila na rua
-é o que vira notícia) sem mudar o tempo de espera real.
-
-**Terceira ordem.** Os 4.213 eleitores do interior que viajam a Dublin
-(Cork, Galway, Limerick) têm custo de deslocamento alto e tolerância a fila
-baixa — quem dirigiu 3h não vai esperar 2h. Se esse grupo desistir, a queda de
-comparecimento aparecerá concentrada nos condados, e o argumento de 2030 para
-abrir seções fora de Dublin ficará mais forte com base num dado que é, na
-verdade, artefato de fila. O inverso também vale: uma operação que funcione em
-2026 com 16.794 eleitores estabelece a referência de custo e de equipe contra
-a qual o crescimento seguinte do eleitorado será julgado — vale registrar as
-métricas do dia (fluxo horário real, tempo de fila por hora, atendimentos no
-balcão de consulta) exatamente para que a próxima negociação com o TSE não
-recomece do zero.
-
-## 10. Segundo turno (25/10)
-
-Mesmo dimensionamento, com dois ajustes. O comparecimento de 2º turno tende a
-ser igual ou levemente menor, mas a **curva costuma ser mais concentrada**
-(eleitor já sabe onde é sua seção e vai mais cedo) — o que sustenta o mesmo
-pico com menos gente na consulta e mais na triagem. E a retenção de
-voluntários entre turnos raramente passa de 70%: manter a lista de 100 ativa e
-reconfirmar na semana de 19/10, sem recomeçar o recrutamento.
-
-## 11. O que pode invalidar estes números
-
-1. **Nomeação de apoio logístico fora do prazo** (seção 1) — muda a figura
-   jurídica dos 77, não a quantidade.
-2. **Renegociação da agregação com o TSE.** Se as 28 urnas virarem 32–38
-   (Cenários 4/5 do contexto), a orientação de corredor sobe para 10–11 e os
-   runners para 5–6; a triagem e a fila externa não mudam, porque dependem do
-   fluxo de eleitores, não do número de urnas. Efeito líquido: +4 a +6 no pico.
-3. **Método de identificação do eleitor.** Caderno físico em vez de consulta
-   eletrônica aumenta o tempo por eleitor na mesa e alonga as filas internas,
-   o que exige mais orientação de corredor — mas não mais triagem.
-4. **Curva de chegada real** diferente da assumida (seção 2).
-5. **Dimensões e circulação reais do Hall 2**, ainda não confirmadas contra as
-   simulações de layout.
-
-## Como recalcular
+## Como recalcular e redesenhar
 
 ```bash
 cd scripts
-python3 voluntarios.py   # gera saidas/dimensionamento_voluntarios.{json,md}
+python3 voluntarios.py         # postos_voluntarios.{json,md}
+python3 postos_hall2.py        # postos_hall2.png  (sobre o desenho atual)
+python3 postos_rota_ring3.py   # postos_rota_ring3.png
 ```
 
-As premissas estão todas no dicionário `PREMISSAS` de `scripts/voluntarios.py`,
-e os três cenários em `CENARIOS`. Nenhum número deste plano foi arredondado à
-mão: mudar uma premissa e rodar de novo refaz todas as tabelas.
+Os códigos dos postos são gerados pelo modelo a partir da ordem e das
+quantidades, e os dois desenhos conferem os códigos que marcam contra o JSON —
+se o modelo mudar e o mapa não, o desenho falha em vez de sair errado.

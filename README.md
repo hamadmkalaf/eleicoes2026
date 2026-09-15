@@ -40,7 +40,9 @@ pip install pandas openpyxl
 cd scripts
 python3 mapa_agregacoes.py   # gera saidas/Dublin_2026_agregacoes.xlsx e saidas/dados.json
 python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
-python3 voluntarios.py       # gera saidas/dimensionamento_voluntarios.{json,md}
+python3 voluntarios.py       # gera saidas/postos_voluntarios.{json,md}
+python3 postos_hall2.py      # gera saidas/postos_hall2.png
+python3 postos_rota_ring3.py # gera saidas/postos_rota_ring3.png
 ```
 
 `parse_dados.py` também roda sozinho e imprime um resumo da carga.
@@ -52,9 +54,10 @@ python3 voluntarios.py       # gera saidas/dimensionamento_voluntarios.{json,md}
   `Residencia x Urna` e `Inconsistencias`.
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
-- **`saidas/dimensionamento_voluntarios.md`** e **`.json`** — equipe de
-  voluntários hora a hora, escala de turnos, clusters de corredor e divisão
-  das urnas entre as entradas A e B.
+- **`saidas/postos_voluntarios.md`** e **`.json`** — os postos de voluntário,
+  por zona, com o que cada um faz.
+- **`saidas/postos_hall2.png`** e **`saidas/postos_rota_ring3.png`** — os
+  mesmos postos marcados em mapa.
 
 ## Validações
 
@@ -89,10 +92,11 @@ de Dublin e passam a votar lá.
 
 ## Plano de voluntários
 
-`plano_voluntarios.md` dimensiona e aloca a equipe de apoio ao eleitor a
-partir destes mesmos dados: 41 voluntários simultâneos no pico, 77 pessoas no
-dia, ~100 a recrutar. O cálculo está em `scripts/voluntarios.py`, com todas as
-premissas reunidas no dicionário `PREMISSAS`.
+`plano_voluntarios.md` marca os postos de apoio ao eleitor a partir destes
+mesmos dados: 36 postos no pico — 6 na rota até o Ring 3, 12 no Ring 3 e 18
+dentro do Hall 2. Conta postos, não pessoas. O cálculo está em
+`scripts/voluntarios.py`, com as premissas reunidas no dicionário `PREMISSAS`,
+e o histórico da decisão em `contexto_voluntarios_dublin_2026.md`.
 
 ## Escopo
 

@@ -1,0 +1,202 @@
+{
+  "premissas": {
+    "taxa_comparecimento_dublin": 0.74,
+    "taxa_comparecimento_interior": 0.5,
+    "curva_chegada": {
+      "08-09": 0.08,
+      "09-10": 0.12,
+      "10-11": 0.15,
+      "11-12": 0.15,
+      "12-13": 0.13,
+      "13-14": 0.11,
+      "14-15": 0.1,
+      "15-16": 0.09,
+      "16-17": 0.07
+    },
+    "frac_precisa_triagem": 0.6,
+    "seg_por_triagem": 20,
+    "eleitores_por_interacao": 1.5,
+    "frac_caso_dificil": 0.03,
+    "seg_por_caso_dificil": 120,
+    "utilizacao_alvo_balcao": 0.8,
+    "mesas_por_bloco_corredor": 3.5,
+    "mesas_no_desenho": 30
+  },
+  "aptos": 16794,
+  "comparecimento_esperado": 11416,
+  "pico_eleitores_por_minuto": 28.5,
+  "quantidades_por_vazao": {
+    "triagem": 4,
+    "balcao": 3,
+    "corredor": 9
+  },
+  "postos": [
+    {
+      "Codigo": "R1",
+      "Zona": "1. Rota",
+      "Posto": "Cabeca de fila na calcada",
+      "Funcao": "Mantem a calcada da Merrion Road transitavel e encaminha quem chega a pe do DART e do onibus para o portao.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "R2",
+      "Zona": "1. Rota",
+      "Posto": "Fim de fila movel",
+      "Funcao": "Carrega a placa de fim de fila e caminha com ela. Sem esse posto ninguem sabe onde a fila comeca.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "R3",
+      "Zona": "1. Rota",
+      "Posto": "Portao da Merrion Road",
+      "Funcao": "Primeiro contato: confirma que o eleitor esta no lugar certo e manda preparar o documento. Dobra de efetivo na abertura.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "R4",
+      "Zona": "1. Rota",
+      "Posto": "Desvio prioritario no portao",
+      "Funcao": "Identifica idoso, PcD, gestante e crianca de colo ja no portao e os poe na rota curta, antes da fila geral.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "R5",
+      "Zona": "1. Rota",
+      "Posto": "Balizamento da rota interna",
+      "Funcao": "Fica na curva entre o portao e o Ring 3, onde o eleitor tem duvida de para onde ir. Um posto por bifurcacao do tracado real.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "R6",
+      "Zona": "1. Rota",
+      "Posto": "Rota de saida",
+      "Funcao": "Separa quem sai de quem entra. Contrafluxo num caminho estreito custa mais fila que qualquer gargalo de mesa.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "G1",
+      "Zona": "2. Ring 3",
+      "Posto": "Boca da serpentina",
+      "Funcao": "Entrada da area de espera: organiza a entrada na primeira baia e impede que a fila unica se parta em varias.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "G2-G5",
+      "Zona": "2. Ring 3",
+      "Posto": "Triagem movel na fila",
+      "Funcao": "Percorre a serpentina perguntando a secao, entrega o cartao de cor A ou B e resolve a duvida enquanto o eleitor ja espera. E o posto que decide se a porta do Hall 2 vira gargalo.",
+      "Postos": 4
+    },
+    {
+      "Codigo": "G6-G8",
+      "Zona": "2. Ring 3",
+      "Posto": "Balcao de casos",
+      "Funcao": "Mesa fixa fora da fila, com listagem impressa e consulta eletronica, para o que nao se resolve de pe: titulo, eleitor nao localizado, transferencia.",
+      "Postos": 3
+    },
+    {
+      "Codigo": "G9",
+      "Zona": "2. Ring 3",
+      "Posto": "Bifurcacao A / B",
+      "Funcao": "Onde a fila unica vira duas. Le o cartao de cor entregue pela triagem movel e manda o eleitor para a porta certa.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "G10",
+      "Zona": "2. Ring 3",
+      "Posto": "Fila prioritaria",
+      "Funcao": "Conduz a fila paralela de prioritarios ate a porta, sem passar pela serpentina.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "G11",
+      "Zona": "2. Ring 3",
+      "Posto": "Apoio geral da espera",
+      "Funcao": "Agua, abrigo de chuva, mal-estar, crianca perdida, WC. O Ring 3 e a ceu aberto: este e o posto que mais depende do tempo no dia.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "G12",
+      "Zona": "2. Ring 3",
+      "Posto": "Enlace com seguranca e RDS",
+      "Funcao": "Ponto unico de contato com os 20 segurancas contratados e com o staff do RDS. Requer ingles funcional.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "H1",
+      "Zona": "3. Hall 2",
+      "Posto": "Porta A — dosagem de entrada",
+      "Funcao": "Admite eleitores enquanto houver fila util dentro. Se o salao encher, a espera fica no Ring 3, que tem espaco.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "H2",
+      "Zona": "3. Hall 2",
+      "Posto": "Porta B — dosagem de entrada",
+      "Funcao": "Idem, na porta B.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "H3",
+      "Zona": "3. Hall 2",
+      "Posto": "No de despacho A",
+      "Funcao": "No ponto onde as filas se abrem em leque: confirma o destino e recupera quem chegou sem triagem ou na porta errada.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "H4",
+      "Zona": "3. Hall 2",
+      "Posto": "No de despacho B",
+      "Funcao": "Idem, no leque da porta B.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "H5-H13",
+      "Zona": "3. Hall 2",
+      "Posto": "Orientacao de corredor",
+      "Funcao": "Um posto por bloco de mesas: organiza a fila curta de cada bloco e mantem livres os corredores de circulacao.",
+      "Postos": 9
+    },
+    {
+      "Codigo": "H14",
+      "Zona": "3. Hall 2",
+      "Posto": "Acessibilidade e fila prioritaria",
+      "Funcao": "Recebe a fila prioritaria dentro do salao e acompanha ate a mesa.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "H15",
+      "Zona": "3. Hall 2",
+      "Posto": "WC — orientacao de ida e volta",
+      "Funcao": "Os WC ficam fora do salao, num corredor lateral: sem orientacao, quem sai para o WC perde o lugar e volta pela porta errada.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "H16",
+      "Zona": "3. Hall 2",
+      "Posto": "Sala de transmissao",
+      "Funcao": "Controle de acesso a area restrita de transmissao de resultados.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "H17",
+      "Zona": "3. Hall 2",
+      "Posto": "Saida — pos-voto e contrafluxo",
+      "Funcao": "Conduz quem votou para fora pela saida central e impede o retorno contra o fluxo de entrada.",
+      "Postos": 1
+    },
+    {
+      "Codigo": "H18",
+      "Zona": "3. Hall 2",
+      "Posto": "Posto de comando",
+      "Funcao": "Coordenacao do salao, em ponto fixo e visivel. E para ca que o problema sobe quando o voluntario nao resolve.",
+      "Postos": 1
+    }
+  ],
+  "postos_por_zona": {
+    "1. Rota": 6,
+    "2. Ring 3": 12,
+    "3. Hall 2": 18
+  },
+  "total_postos": 36
+}

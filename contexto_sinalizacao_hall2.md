@@ -109,35 +109,64 @@ basta para reconstruir o resto.
 Documento, planta e tabelas se regeram sozinhos.
 
 ---
+## 5. Arquitetura da sinalização — 25 peças em 4 níveis
 
-## 5. Arquitetura da sinalização — 49 peças em 5 níveis
+Revisado em 15/09 por decisão do Posto: **N1 deixou de ser capa de barreira ao
+longo da fila** (era 24 un) e virou uma peça única na boca de cada serpenteado
+do Ring 3; **N4, o mapa de entrada, foi cortado**.
 
-| Nível | Peça | Qtd | Altura de caractere |
-|---|---|---|---|
-| N1 | Capas de barreira A/B/C, nos separadores externos | 24 | 250 mm |
-| N2 | Totem alto de porta, logo depois da entrada | 3 | 300 mm |
-| N3 | Banner de porta — as 17 seções daquela parede | 3 | 60 mm |
-| N4 | Mapa "você está aqui", ao lado do N3 | 3 | 20 mm |
-| N5 | Banner de bloco, na boca do corredor do par | 16 | **120 mm** |
+| Nível | Peça | Onde | Qtd | Altura de caractere |
+|---|---|---|---|---|
+| N1 | Painel de decisão A/B/C com as 51 seções | boca do serpenteado, Ring 3 | 3 | 250 mm (letra) · 80 mm (seção) |
+| N2 | Totem alto de porta | dentro, 4,3 m da porta | 3 | 300 mm |
+| N3 | Painel das seções da parede | dentro, 8,1 m da porta | 3 | 60 mm |
+| N5 | Banner de bloco | boca do corredor do par | 16 | **120 mm** |
 
 Alturas pela regra prática de 10 mm por metro de distância de leitura — regra
 de projeto, **não** norma citável.
+
+**Posição de N2 e N3**, em metros de planta (origem no canto sudoeste, portas
+em y = 0). Ficam do lado oposto à curva que o eleitor faz ao entrar — A vira a
+oeste, C vira a leste, B segue reto — para que quem para de ler não represe a
+soleira. N2 vem antes porque responde uma pergunta binária lida em movimento;
+N3 exige parar.
+
+| Porta | N2 (x · y) | N3 (x · y) |
+|---|---|---|
+| A | 11,50 · 3,50 | 13,50 · 7,00 |
+| B | 28,50 · 3,50 | 30,50 · 7,00 |
+| C | 38,50 · 3,50 | 36,50 · 7,00 |
+
+Nenhuma das seis posições cai sobre via de fila: a banda y < 4 m está livre de
+ponta a ponta e a faixa y = 7 m só é ocupada junto às paredes.
 
 **Regras de conteúdo (valem para todas as peças):**
 
 - Nunca aparece número de mesa. Só número de seção.
 - Seção sempre em **4 dígitos**, como no e-Título (`0511`, não `511`).
-- Ordem crescente de seção, nunca ordem de mesa.
+- Ordem crescente de seção, nunca ordem de mesa. **Exceção no N3:** os blocos
+  vêm na ordem física da parede, e as seções em ordem crescente dentro de cada
+  bloco.
 - Cor por porta constante do primeiro ao último nível: A = ciano,
   B = magenta, C = âmbar (âmbar precisa ser escurecido — conferir contraste).
-- Bilíngue só em N1 e N2. N3/N4/N5 são numéricos.
+- Bilíngue só em N1 e N2. N3 e N5 são numéricos.
 - Rodapé obrigatório do N3: *"não encontrou a sua? procure um mesário — sua
   seção está em outra porta."*
 
-**Mapas N4:** norte sempre para cima (as três portas ficam na mesma parede,
-todo eleitor entra olhando para o norte); parede de destino em cor cheia, as
-outras duas em cinza; blocos na posição física real, rotulados com os mesmos
-números que o eleitor vai reencontrar no N5.
+**O N3 mudou de formato porque o mapa saiu.** Sem o N4, o N3 é a única peça
+que pode dizer *onde* na parede, e uma lista em ordem crescente não faz isso.
+Passa a espelhar a parede: 5 ou 6 colunas, uma por bloco, da esquerda para a
+direita na ordem física; cada coluna traz os mesmos números do banner N5 que o
+eleitor vai encontrar lá na frente. Apaisado, mínimo 2,40 × 1,20 m.
+
+**Risco aberto pela decisão do N1.** Com um único ponto de decisão em todo o
+percurso, quem entra no serpenteado errado só descobre no N2, já dentro do
+salão, e a correção custa refazer a fila inteira. Três atenuantes: (1) o N1
+carrega as 51 seções, não as 17 de uma porta; (2) um orientador fixo na boca
+de cada serpenteado, com a mesma lista em prancheta; (3) **recomendado, não
+decidido** — um A-frame de repetição no meio de cada serpenteado, com o índice
+das 51 seções, que dá uma segunda chance de correção sem reintroduzir a capa
+de barreira.
 
 ---
 
@@ -225,8 +254,10 @@ reservado a três usos: (a) canais de aproximação externos das três portas,
 vão de 2,70 m entre BA3 e BA4. **Isso inverte o déficit.** Quanto exatamente
 depende de quanto separador a fita substitui — pergunta para o fornecedor.
 
-Item (c), banners — EUR 1.961,00 para 49 peças mais bases alugadas dá ~EUR 40
-por peça, apertado para grande formato. Conferir.
+Item (c), banners — EUR 1.961,00 para 25 peças mais bases alugadas dá ~EUR 78
+por peça. Era ~EUR 40 e apertado; o corte do mapa e a redução do N1 a três
+painéis abriram folga. Ela deve ser gasta no N1, que virou a peça mais
+crítica do plano.
 
 ---
 
@@ -234,12 +265,12 @@ por peça, apertado para grande formato. Conferir.
 
 A externa ainda não existe. Condições, não sugestões:
 
-1. **A triagem acontece fora.** Se o eleitor só descobre a porta depois de
-   entrar, os banners N3 viram ponto de aglomeração e o fluxo reverte contra a
-   entrada.
-2. **A peça externa carrega as 51 seções**, não as 17 de uma porta — como não
-   há regra numérica nem por condado, é lista completa ou nada. Três painéis
-   por porta mais um painel-índice com as 51 em ordem crescente.
+1. **A triagem acontece na boca do serpenteado do Ring 3, e em nenhum outro
+   lugar** — decisão do Posto de 15/09. É o único ponto de decisão do
+   percurso; ver o risco e os atenuantes na seção 5.
+2. **O N1 carrega as 51 seções**, não as 17 de uma porta — como não há regra
+   numérica nem por condado, é lista completa ou nada. Três colunas
+   coloridas, A / B / C, em ordem crescente.
 3. **Mesma paleta, mesma tipografia, mesmos 4 dígitos.** A cor com que o
    eleitor decidiu lá fora é a que ele procura lá dentro.
 4. **Canal de prioridade** (idosos, gestantes, PcD) desembocando nas três
@@ -265,7 +296,11 @@ A externa ainda não existe. Condições, não sugestões:
    pavilhão proíbem.
 7. Validar com o Cartório Eleitoral a realocação de mesários entre paredes a
    partir das 15h30 — a porta A vai terminar depois das outras duas.
-8. Conferir se EUR 1.961,00 cobrem 49 peças mais bases.
+8. Conferir se EUR 1.961,00 cobrem as 25 peças mais bases (~EUR 78 por peça,
+   folgado onde antes era apertado). A folga deve ir para o N1, que virou a
+   peça mais crítica do plano.
+10. Decidir sobre o A-frame de repetição no meio do serpenteado (seção 5) —
+    recomendado, ainda não decidido.
 9. Medir o contraste do âmbar da porta C sobre branco antes de imprimir.
 
 ---

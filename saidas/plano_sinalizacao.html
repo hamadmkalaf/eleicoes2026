@@ -88,6 +88,10 @@ svg.planta{display:block;width:100%;height:auto;max-width:100%}
   letter-spacing:-.02em;paint-order:stroke fill;stroke:var(--card);
   stroke-width:.5px;stroke-linejoin:round}
 .planta .porta{fill:var(--k)}
+.planta .peca{fill:var(--k);stroke:var(--card);stroke-width:.3}
+.planta .tagpeca{font-family:var(--disp);font-weight:700;font-size:2.2px;
+  fill:var(--k);paint-order:stroke fill;stroke:var(--card);stroke-width:.6px;
+  stroke-linejoin:round}
 .planta .letra{font-family:var(--disp);font-weight:800;font-size:4.2px;fill:var(--k)}
 .planta .fluxo{fill:none;stroke:var(--k);stroke-width:.4;stroke-dasharray:1.5 1.2;
   opacity:.7;stroke-linejoin:round;stroke-linecap:round}
@@ -291,6 +295,10 @@ footer code{font-size:.78rem}
 <text class="letra t-a" x="9.00" y="48.70" text-anchor="middle">A</text>
 <path class="fluxo t-a" d="M 9.00 44.5 L 9.00 39.50 L 3.8 39.50 L 3.8 6.50"/>
 <path class="ponta t-a" d="M 3.05 8.00 L 3.80 6.20 L 4.55 8.00 Z"/>
+<circle class="peca t-a" cx="11.50" cy="41.00" r="0.85"/>
+<text class="tagpeca t-a" x="13.00" y="41.60" text-anchor="start">N2</text>
+<rect class="peca t-a" x="12.00" y="37.10" width="3.0" height="0.8"/>
+<text class="tagpeca t-a" x="15.70" y="38.10" text-anchor="start">N3</text>
 <rect class="bloco t-b" x="7.10" y="-0.45" width="6.80" height="2.70" rx="0.5"/>
 <rect class="mesa t-b" x="7.65" y="0.10" width="1.8" height="1.6"/>
 <rect class="mesa t-b" x="11.55" y="0.10" width="1.8" height="1.6"/>
@@ -336,6 +344,10 @@ footer code{font-size:.78rem}
 <text class="letra t-b" x="25.75" y="48.70" text-anchor="middle">B</text>
 <path class="fluxo t-b" d="M 25.75 44.5 L 25.75 4.50"/>
 <path class="ponta t-b" d="M 25.00 6.00 L 25.75 4.20 L 26.50 6.00 Z"/>
+<circle class="peca t-b" cx="28.50" cy="41.00" r="0.85"/>
+<text class="tagpeca t-b" x="27.00" y="41.60" text-anchor="end">N2</text>
+<rect class="peca t-b" x="29.00" y="37.10" width="3.0" height="0.8"/>
+<text class="tagpeca t-b" x="28.30" y="38.10" text-anchor="end">N3</text>
 <rect class="bloco t-c" x="45.95" y="33.10" width="2.70" height="6.80" rx="0.5"/>
 <rect class="mesa t-c" x="46.50" y="37.55" width="1.6" height="1.8"/>
 <rect class="mesa t-c" x="46.50" y="33.65" width="1.6" height="1.8"/>
@@ -377,6 +389,10 @@ footer code{font-size:.78rem}
 <text class="letra t-c" x="41.00" y="48.70" text-anchor="middle">C</text>
 <path class="fluxo t-c" d="M 41.00 44.5 L 41.00 41.50 L 44.3 41.50 L 44.3 6.50"/>
 <path class="ponta t-c" d="M 43.55 8.00 L 44.30 6.20 L 45.05 8.00 Z"/>
+<circle class="peca t-c" cx="38.50" cy="41.00" r="0.85"/>
+<text class="tagpeca t-c" x="40.00" y="41.60" text-anchor="start">N2</text>
+<rect class="peca t-c" x="35.00" y="37.10" width="3.0" height="0.8"/>
+<text class="tagpeca t-c" x="38.70" y="38.10" text-anchor="start">N3</text>
 </svg></div>
     <figcaption>Cada retângulo cheio é uma mesa, na coordenada exata da
     prancheta; o bloco sombreado ao redor é o par que compartilha o corredor de
@@ -388,38 +404,58 @@ footer code{font-size:.78rem}
 
 <section class="band">
   <div class="hd">
-    <p class="eyebrow">O percurso do eleitor · 49 peças</p>
-    <h2>Cinco níveis, na ordem em que são lidos</h2>
+    <p class="eyebrow">O percurso do eleitor · 25 peças</p>
+    <h2>Quatro níveis, na ordem em que são lidos</h2>
   </div>
   <ol class="journey">
     <li><span class="lvl">N1</span><div class="j-b">
-      <div class="j-h"><h4>Capas de barreira A / B / C</h4><span class="qty">24 un · fora</span></div>
-      <p>Sobre os separadores dos canais de aproximação, antes da porta. Letra
-      de 250 mm, bilíngue (<code>ENTRADA A / ENTRANCE A</code>). É aqui que a
-      fila única se parte em três.</p></div></li>
+      <div class="j-h"><h4>Painel de decisão na boca do serpenteado</h4>
+      <span class="qty">3 un · Ring 3</span></div>
+      <p>Uma peça por serpenteado, só na entrada. Depois disso o eleitor não
+      recebe mais nenhuma confirmação até a porta, então esta peça carrega
+      <strong>as 51 seções</strong>, não as 17 de uma porta: três colunas
+      coloridas, A / B / C, em ordem crescente. Letra da porta em 250 mm,
+      número de seção em 80 mm, bilíngue.</p></div></li>
     <li><span class="lvl">N2</span><div class="j-b">
       <div class="j-h"><h4>Totem alto de porta</h4><span class="qty">3 un · dentro</span></div>
-      <p>Logo depois da porta, letra de 300 mm, visível do fundo do salão.
-      Confirma ao eleitor que ele entrou pela porta certa — e é a única peça
-      que resolve a travessia de 44 m da porta B até a parede norte.</p></div></li>
+      <p>Logo depois da porta, letra de 300 mm. Confirma que o eleitor entrou
+      pela porta certa e é o primeiro ponto em que ele pode descobrir que
+      errou — resolve também a travessia de 44 m da porta B até a parede
+      norte.</p></div></li>
     <li><span class="lvl">N3</span><div class="j-b">
-      <div class="j-h"><h4>Banner de porta — todas as seções</h4><span class="qty">3 un</span></div>
-      <p>Três a quatro metros depois da porta. As 17 seções daquela parede em
-      grade de 3 × 6, números de 60 mm. Rodapé obrigatório: <em>“não encontrou
-      a sua? procure um mesário — sua seção está em outra porta.”</em></p></div></li>
-    <li><span class="lvl">N4</span><div class="j-b">
-      <div class="j-h"><h4>Mapa “você está aqui”</h4><span class="qty">3 un</span></div>
-      <p>Ao lado do N3, mesmo ponto de parada. Norte sempre para cima — como
-      as três portas ficam na mesma parede, todo eleitor entra olhando para o
-      norte e a leitura é automática. A parede de destino em cor cheia, as
-      outras duas em cinza; os blocos desenhados na posição real e rotulados
-      com os mesmos números que o eleitor vai reencontrar no N5.</p></div></li>
+      <div class="j-h"><h4>Painel das seções da parede</h4><span class="qty">3 un</span></div>
+      <p>Sete metros depois da porta, fora da linha de caminhada. As 17 seções
+      daquela parede, <strong>agrupadas por bloco e dispostas na ordem física
+      em que o eleitor vai encontrá-las</strong> — o painel espelha a parede.
+      Dentro de cada bloco, ordem crescente. Números de 60 mm.</p></div></li>
     <li><span class="lvl">N5</span><div class="j-b">
       <div class="j-h"><h4>Banner de bloco</h4><span class="qty">16 un · peça crítica</span></div>
       <p>Na boca do corredor de cada par. Lido de dentro da fila, em
       movimento: números de 120 mm, o que obriga 0,85 × 2,00 m em base
       alugada. <strong>Sem número de mesa</strong> — só seções.</p></div></li>
   </ol>
+  <p class="col"><strong>Onde N2 e N3 ficam</strong>, em metros de planta, com
+  a origem no canto sudoeste do Hall 2 e as portas na parede sul (y = 0). Os
+  dois ficam do lado oposto à curva que o eleitor faz ao entrar — A vira a
+  oeste, C vira a leste, B segue reto — para que quem para de ler não represe
+  a porta.</p>
+  <div class="scroll"><table><thead><tr>
+    <th scope="col">Porta</th><th scope="col">Peça</th>
+    <th scope="col">Posição (x, y)</th><th scope="col">Distância da porta</th>
+    <th scope="col">Voltada para</th><th scope="col">Lado do eleitor</th>
+  </tr></thead><tbody>
+    <tr><th scope="row" class="t-a">A</th><td>N2 totem</td><td class="num">11,50 · 3,50</td><td class="num">4,3 m</td><td>sul</td><td>direita</td></tr>
+    <tr><th scope="row" class="t-a">A</th><td>N3 painel</td><td class="num">13,50 · 7,00</td><td class="num">8,1 m</td><td>sudoeste</td><td>direita</td></tr>
+    <tr><th scope="row" class="t-b">B</th><td>N2 totem</td><td class="num">28,50 · 3,50</td><td class="num">4,5 m</td><td>sul</td><td>direita</td></tr>
+    <tr><th scope="row" class="t-b">B</th><td>N3 painel</td><td class="num">30,50 · 7,00</td><td class="num">8,4 m</td><td>sul</td><td>direita</td></tr>
+    <tr><th scope="row" class="t-c">C</th><td>N2 totem</td><td class="num">38,50 · 3,50</td><td class="num">4,3 m</td><td>sul</td><td>esquerda</td></tr>
+    <tr><th scope="row" class="t-c">C</th><td>N3 painel</td><td class="num">36,50 · 7,00</td><td class="num">8,1 m</td><td>sudeste</td><td>esquerda</td></tr>
+  </tbody></table></div>
+  <p class="note"><b>O mapa de entrada foi cortado.</b> Sem ele, o N3 assume
+  sozinho a função de dizer <em>onde</em> na parede — por isso ele deixa de ser
+  uma lista em ordem crescente e passa a espelhar a parede, bloco a bloco, na
+  ordem física. É a forma mais barata de recuperar a informação que o mapa
+  daria, sem uma peça a mais.</p>
   <p class="col">Em todas as peças: número de seção com <strong>4
   dígitos</strong>, como no e-Título (<code>0511</code>, não <code>511</code>),
   em ordem crescente de seção e nunca de mesa; a cor da porta constante do
@@ -710,8 +746,9 @@ footer code{font-size:.78rem}
     <div class="find"><span class="k">04</span><div class="find-b">
       <h4>A porta B é a única cujo destino não se vê da entrada</h4>
       <p>São ~44 m de travessia pelo miolo do salão até a parede norte. Exige
-      peça aérea ou totem alto (N2), não só banner de chão — e é a porta em
-      que a seta do mapa N4 precisa atravessar o desenho inteiro.</p></div></div>
+      totem alto (N2), não só banner de chão. Com o mapa de entrada cortado, é
+      a porta em que o N3 mais precisa mostrar a ordem física dos blocos — o
+      eleitor decide o rumo antes de ver qualquer mesa.</p></div></div>
   </div>
 </section>
 
@@ -797,8 +834,9 @@ footer code{font-size:.78rem}
     realocação de mesários entre paredes a partir das 15h30 — a porta A vai
     terminar depois das outras duas.</span></li>
     <li><span class="n">06</span><span>Conferir se os EUR 1.961,00 do item (c)
-    cobrem 49 peças mais bases alugadas: dá ~EUR 40 por peça, apertado para
-    grande formato.</span></li>
+    cobrem as 25 peças mais bases alugadas: com o corte do mapa e a redução
+    do N1 a três painéis, dá ~EUR 78 por peça, folgado onde antes era
+    apertado.</span></li>
     <li><span class="n">07</span><span>Medir o contraste do âmbar da porta C
     sobre branco antes de imprimir.</span></li>
   </ul>

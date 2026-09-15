@@ -23,6 +23,16 @@ SAIDAS = BASE / "saidas"
 HALL_X, HALL_Y = 50.2, 44.5          # m, planta do RDS Hall 2
 MESA_LARG, MESA_PROF = 1.8, 1.6      # m, modulo assumido da mesa
 PORTAS_X = {"A": 9.0, "B": 25.75, "C": 41.0}   # premissa P3
+
+# Posicao das pecas fixas dentro do salao, em metros de planta (x, y).
+# N2 = totem alto de confirmacao de porta; N3 = painel das secoes da parede.
+# Ambos ficam fora da linha de caminhada: do lado oposto a curva que o eleitor
+# faz ao entrar (porta A vira a oeste, C vira a leste, B segue reto).
+PECAS = {
+    "A": {"N2": (11.5, 3.5), "N3": (13.5, 7.0)},
+    "B": {"N2": (28.5, 3.5), "N3": (30.5, 7.0)},
+    "C": {"N2": (38.5, 3.5), "N3": (36.5, 7.0)},
+}
 COR = {"A": "a", "B": "b", "C": "c"}
 
 
@@ -123,6 +133,19 @@ def planta(plano: dict) -> str:
         p.append(f'<path class="ponta t-{c}" d="M {ponta[0]-0.75:.2f} '
                  f'{ponta[1]+1.5:.2f} L {ponta[0]:.2f} {ponta[1]-0.3:.2f} '
                  f'L {ponta[0]+0.75:.2f} {ponta[1]+1.5:.2f} Z"/>')
+
+        # pecas fixas: totem de porta (N2) e painel das secoes da parede (N3)
+        n2x, n2y = PECAS[parede["porta"]]["N2"]
+        p.append(f'<circle class="peca t-{c}" cx="{n2x:.2f}" cy="{sy(n2y):.2f}" r="0.85"/>')
+        lado = -1 if parede["porta"] == "B" else 1   # evita colisao B/C
+        anc = "start" if lado > 0 else "end"
+        p.append(f'<text class="tagpeca t-{c}" x="{n2x+1.5*lado:.2f}" '
+                 f'y="{sy(n2y)+0.6:.2f}" text-anchor="{anc}">N2</text>')
+        n3x, n3y = PECAS[parede["porta"]]["N3"]
+        p.append(f'<rect class="peca t-{c}" x="{n3x-1.5:.2f}" '
+                 f'y="{sy(n3y)-0.4:.2f}" width="3.0" height="0.8"/>')
+        p.append(f'<text class="tagpeca t-{c}" x="{n3x+2.2*lado:.2f}" '
+                 f'y="{sy(n3y)+0.6:.2f}" text-anchor="{anc}">N3</text>')
 
     p.append('</svg>')
     return "\n".join(p)

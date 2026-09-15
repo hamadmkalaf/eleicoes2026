@@ -80,19 +80,46 @@ de chão.
 
 ---
 
-## 4. Arquitetura da sinalização — cinco níveis
+## 4. Arquitetura da sinalização — quatro níveis, 25 peças
 
 | Nível | Peça | Onde | Função | Qtd |
 |---|---|---|---|---|
-| **N1** | Capas de barreira A / B / C | Canais de aproximação externos, sobre os separadores | Separar a fila única em três antes da porta | 24 |
-| **N2** | Totem alto de porta | Logo após cada porta, à altura do olhar | Confirmar "você entrou na porta certa" | 3 |
-| **N3** | Banner de porta — todas as seções | 3–4 m depois da porta, à direita do fluxo | Lista completa das 17 seções daquela porta | 3 |
-| **N4** | Mapa "você está aqui" | Ao lado do N3, mesmo ponto de parada | Mostrar a parede de destino e a posição da seção nela | 3 |
-| **N5** | Banner de bloco | Na boca do corredor de cada par / mesa isolada | Identificar as seções daquele par | 16 |
+| **N1** | Painel de decisão | Boca de cada serpenteado, no Ring 3 | Única triagem A/B/C do percurso | 3 |
+| **N2** | Totem alto de porta | Logo após cada porta, dentro do Hall 2 | Confirmar que o eleitor entrou certo | 3 |
+| **N3** | Painel das seções da parede | 7 m depois da porta, fora da linha de caminhada | Dizer qual bloco, na ordem física da parede | 3 |
+| **N5** | Banner de bloco | Na boca do corredor de cada par | Identificar as seções daquele par | 16 |
 
-Total: **49 peças** (24 capas + 25 banners, totens e mapas). Somar 10% de
-reserva → 3 banners de bloco extras impressos em branco preenchíveis, caso
-a premissa P1 mude depois da impressão.
+Total: **25 peças**. Somar 3 banners de bloco em branco como reserva, caso a
+premissa P1 mude depois da impressão.
+
+**O que mudou em relação à versão anterior deste plano:**
+
+- **N1 deixou de ser capa de barreira ao longo da fila** e virou uma peça
+  única na boca de cada serpenteado, por decisão do Posto. De 24 capas para
+  3 painéis.
+- **N4, o mapa de entrada, foi cortado.** Sua função — dizer *onde* na parede
+  — passou para o N3, que por isso muda de formato (ver seção 7).
+
+### A consequência de sinalizar só a boca do serpenteado
+
+Com a capa de barreira eliminada ao longo da fila, **o eleitor tem um único
+ponto de decisão em todo o percurso**, e a próxima confirmação só chega no N2,
+já dentro do salão. Quem entrar no serpenteado errado só descobre no fim dele,
+e a correção custa refazer a fila inteira — no pior horário, é a diferença
+entre votar e desistir.
+
+Três medidas atenuam isso sem reintroduzir a capa:
+
+1. **O N1 carrega as 51 seções**, não as 17 de uma porta. É a peça mais densa
+   do plano: três colunas coloridas, A / B / C, em ordem crescente, para que a
+   decisão seja verificável ali mesmo.
+2. **Um orientador fixo na boca de cada serpenteado**, com a mesma lista em
+   prancheta. É a barreira contra o erro que a sinalização sozinha não dá.
+3. **Recomendo um totem de repetição no meio de cada serpenteado** — um
+   A-frame com o índice das 51 seções, não uma capa de barreira. Dá uma
+   segunda chance de correção enquanto ainda é barato sair da fila. Fica como
+   recomendação, não como premissa: se o Posto preferir manter o serpenteado
+   limpo, as medidas 1 e 2 seguem valendo.
 
 ### Regra de conteúdo, válida para todas as peças
 
@@ -100,13 +127,15 @@ a premissa P1 mude depois da impressão.
 - Número de seção sempre em **4 dígitos**, como no e-Título — inclusive as de
   três dígitos, grafadas `0511`, `0517` etc. Evita que o eleitor procure
   "511" numa lista que mostra "0511" e conclua que não está lá.
-- Ordem crescente de seção dentro da peça, nunca ordem de mesa.
+- Ordem crescente de seção dentro da peça, nunca ordem de mesa. No N3 a
+  ordenação desce um nível: os blocos vêm na ordem física da parede, e as
+  seções em ordem crescente dentro de cada bloco.
 - Cor por porta, constante em todos os níveis: **A = ciano, B = magenta,
   C = âmbar** — as duas primeiras já aparecem no `PLANO COM FLUXOS
   MELHORADO.png`. Verificar contraste ≥ 4,5:1 sobre branco antes de fechar a
   arte; âmbar puro costuma reprovar e precisa de escurecimento.
 - Toda peça leva a letra da porta no canto superior, sempre na mesma posição.
-- Bilíngue apenas em N1 e N2 (`ENTRADA A / ENTRANCE A`). N3, N4 e N5 são
+- Bilíngue apenas em N1 e N2 (`ENTRADA A / ENTRANCE A`). N3 e N5 são
   numéricos e dispensam tradução.
 
 ### Alturas de caractere (premissa P4)
@@ -114,9 +143,9 @@ a premissa P1 mude depois da impressão.
 | Peça | Distância de leitura | Altura mínima do caractere |
 |---|---|---|
 | N1 letra da porta | 25 m | 250 mm |
+| N1 números de seção | 8 m | 80 mm |
 | N2 letra da porta | 30 m (visível do fundo do salão) | 300 mm |
 | N3 números de seção | 6 m | 60 mm |
-| N4 rótulos do mapa | 2 m | 20 mm |
 | **N5 números de seção** | **12 m** | **120 mm** |
 
 O N5 é a peça crítica: é lida de dentro da fila, em movimento. 120 mm para
@@ -218,34 +247,51 @@ acha na lista e caminha pelo salão inteiro procurando, na contramão do fluxo.
 
 ---
 
-## 7. Mapas de entrada (N4) — um por porta
+## 7. Onde N2 e N3 ficam dentro do Hall 2
 
-Requisito do Posto: ao entrar, o eleitor vê um mapa apontando onde está a sua
-seção na parede específica.
+Coordenadas em metros de planta, origem no canto sudoeste, portas na parede
+sul (y = 0). A premissa P3 coloca as portas em x = 9,00 (A), 25,75 (B) e
+41,00 (C).
 
-Especificação:
+| Porta | Peça | Posição (x · y) | Distância da porta | Voltada para | Lado do eleitor |
+|---|---|---|---|---|---|
+| A | N2 totem | 11,50 · 3,50 | 4,3 m | sul | direita |
+| A | N3 painel | 13,50 · 7,00 | 8,1 m | sudoeste | direita |
+| B | N2 totem | 28,50 · 3,50 | 4,5 m | sul | direita |
+| B | N3 painel | 30,50 · 7,00 | 8,4 m | sul | direita |
+| C | N2 totem | 38,50 · 3,50 | 4,3 m | sul | esquerda |
+| C | N3 painel | 36,50 · 7,00 | 8,1 m | sudeste | esquerda |
 
-- **Orientação fixa, norte para cima**, igual nos três mapas. Como as três
-  portas ficam na mesma parede sul, todo eleitor entra olhando para o norte —
-  a leitura "heads-up" é automática e um único desenho-base serve aos três.
-- Planta simplificada do Hall 2 (50,2 × 44,5 m) com as três paredes de mesas,
-  as três portas e os sanitários. Sem cotas, sem número de mesa.
-- **A parede da porta aparece em cor cheia; as outras duas em cinza 30%.**
-  O mapa não é de orientação geral: é um mapa de destino.
-- Sobre a parede colorida, os 5 ou 6 blocos desenhados **na posição física
-  real** (as coordenadas da coluna "Posição na parede" da seção 5), cada um
-  rotulado com as suas seções — os mesmos números do banner N5 que o eleitor
-  vai encontrar lá na frente. A correspondência literal entre mapa e banner é
-  o que faz o mapa funcionar.
-- Marcador **"VOCÊ ESTÁ AQUI"** na porta correspondente, na cor da porta.
-- Seta de fluxo da porta até a parede. No mapa da porta B, a seta atravessa o
-  salão — é exatamente a informação que o eleitor da parede norte precisa
-  receber antes de dar o primeiro passo.
-- Tamanho mínimo 1,0 × 1,4 m (retrato) em base alugada, imediatamente ao lado
-  do N3, formando um único ponto de parada. Dois pontos de parada separados
-  dobram o tempo de decisão e criam dois pontos de aglomeração.
+**Por que fora do eixo da porta.** O eleitor que entra pela A vira a oeste,
+pela C vira a leste, e pela B segue reto. As duas peças ficam do lado oposto à
+curva: quem para para ler sai da linha de caminhada em vez de represar a
+soleira. É o mesmo motivo de o N3 estar a 7 m e não a 3 m — a 3 m, a
+aglomeração de quem lê alcança a porta.
 
----
+**Por que o N2 vem antes do N3.** O N2 responde a uma pergunta binária
+("entrei certo?") e é lido em movimento, de 30 m; o N3 exige parar. Invertê-los
+faria o eleitor parar antes de saber se está no lugar certo.
+
+**Verificação de folga.** Nenhuma das seis posições cai sobre via de fila: a
+faixa de piso mais ao sul da parede oeste começa em y = 7,4 m e x ≤ 3,6 m; a
+da leste, em y = 4,1 m e x ≥ 44,5 m. Toda a banda y < 4 m está livre de ponta
+a ponta, e a faixa y = 7 m só é ocupada junto às paredes.
+
+### O N3 muda de formato porque o mapa saiu
+
+Com o N4 cortado, o N3 é a única peça que pode dizer **onde** na parede. Uma
+lista em ordem crescente não faz isso. Portanto:
+
+- O painel **espelha a parede**: os 5 ou 6 blocos dispostos da esquerda para a
+  direita na mesma ordem física em que o eleitor vai encontrá-los.
+- Dentro de cada bloco, as seções em ordem crescente — a regra de ordenação
+  continua valendo, só desce um nível.
+- Cada célula de bloco traz os mesmos números que estarão no banner N5 lá na
+  frente. A correspondência literal entre os dois é o que substitui o mapa.
+- Formato apaisado, mínimo 2,40 × 1,20 m, para caber seis colunas legíveis.
+
+É a forma mais barata de recuperar a informação que o mapa daria, sem uma peça
+a mais no orçamento.
 
 ## 8. Tabela mestra seção → porta (51 seções)
 
@@ -384,15 +430,14 @@ A sinalização externa ainda não existe. Estes são os requisitos que o plano
 interno impõe a ela — não são sugestões, são condições para o interno
 funcionar:
 
-1. **A triagem tem de acontecer fora.** Se o eleitor descobrir a porta só
-   depois de entrar, os banners N3 viram pontos de aglomeração e o fluxo
-   reverte contra a entrada. A decisão "A, B ou C" tem de estar tomada antes
-   da soleira.
-2. **A peça externa de triagem carrega as 51 seções**, não as 17 de uma porta.
-   Pela seção 3, achado (1), não há atalho numérico: é lista completa ou nada.
-   Formato recomendado: três painéis lado a lado, um por porta, com as 17
-   seções de cada, mais um painel-índice com as 51 em ordem crescente (a
-   tabela da seção 8).
+1. **A triagem acontece na boca do serpenteado, no Ring 3, e em nenhum outro
+   lugar.** É a decisão do Posto e ela concentra todo o risco num ponto: quem
+   entra no serpenteado errado só descobre no N2, já dentro do salão. Ver as
+   três medidas atenuantes da seção 4.
+2. **O N1 carrega as 51 seções**, não as 17 de uma porta. Pela seção 3, achado
+   (1), não há atalho numérico: é lista completa ou nada. Três colunas
+   coloridas, A / B / C, em ordem crescente — é a tabela da seção 8 impressa
+   em grande formato.
 3. **Mesma paleta, mesma tipografia, mesmos 4 dígitos.** A cor com que o
    eleitor decidiu lá fora é a cor que ele procura lá dentro. Qualquer
    divergência entre externo e interno anula o ganho da triagem.
@@ -440,7 +485,7 @@ depois do fato.
 ## 12. Pendências antes de fechar a arte
 
 1. **Confirmar a premissa P1** (prancheta 1–28 ↔ `Posicao` de `dados.json`).
-   É o que decide o conteúdo de todos os 19 banners numéricos. Se mudar,
+   É o que decide o conteúdo de todos os 19 banners numéricos (16 N5 + 3 N3). Se mudar,
    rodar `python3 scripts/plano_sinalizacao.py` com o novo `MAPA_MESA_URNA`.
 2. Confirmar posição real das portas na parede sul do Hall 2 (P2/P3).
 3. Decidir entre mover blocos na prancheta ou compensar com pessoal o
@@ -449,8 +494,10 @@ depois do fato.
    (seção 9) — é o item que estoura o orçamento revisado.
 5. Validar com o Cartório Eleitoral a realocação de mesários entre paredes
    no fim do dia (seção 11).
-6. Conferir se EUR 1.961,00 (item (c) do orçamento) cobre 49 peças mais
-   bases alugadas — dá ~EUR 40 por peça, apertado para grande formato.
+6. Conferir se EUR 1.961,00 (item (c) do orçamento) cobrem as 25 peças mais
+   bases alugadas — com o corte do mapa e a redução do N1 a três painéis, dá
+   ~EUR 78 por peça, folgado onde antes era apertado. A folga deve ser
+   gasta no N1, que virou a peça mais crítica do plano.
 7. Medir o contraste da cor âmbar da porta C sobre branco antes de imprimir.
 8. Confirmar com o RDS se o contrato de locação admite fita e decalque no
    piso do Hall 2, e em que condições de remoção.

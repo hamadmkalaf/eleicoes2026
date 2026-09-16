@@ -369,3 +369,72 @@ sem margem nenhuma. O arranjo novo não tem nada abaixo de 1,83 m.
   Só desagregar, com o TSE, baixa esse teto.
 - **A pendência de mesário segue igual** (item 6.3): MRV 24 e MRV 11, as duas
   lacunas, continuam na parede oeste.
+
+---
+
+## 10. Adendo de 16/09 — portas, zonas livres e as vermelhas ao centro
+
+Seis pedidos do Posto, todos verificados por `scripts/confere_arranjo.py`, que
+sai com código 1 se algum falhar:
+
+```bash
+python3 scripts/confere_arranjo.py
+```
+
+| # | Pedido | Como ficou |
+|---|---|---|
+| 1 | Sinalização das portas nas paredes oeste, norte e leste | N1, N2, L1–L4, O1, O2 e R1 com rótulo e papel em `decisoes.sinalizacao_portas`, desenhados na planta |
+| 2 | N2 e O2 desbloqueadas | vão livre (3,56 m e 3,07 m) mais recuo de 3 m sem mesa **e sem fila** |
+| 3 | Emergência da parede leste | faixa protegida de 3,00 m em toda a fachada (x 47,3 → 50,3), cobrindo L1 a L4 |
+| 4 | S7 preferencial | `papel: preferencial` — idoso, gestante, PcD e acompanhante, sem fila, para qualquer parede |
+| 5 | Vermelhas ao centro, verdes em volta | MRV 22 a 1,27 m do meio da norte; MRV 23 a 2,30 m do meio da oeste; MRV 24 a 3,15 m do meio da leste — todas com verde dos dois lados |
+| 6 | 3,00 m na dupla, 1,50 m entre duplas | 12 vãos de 3,00 m e 10 de 1,50 m, exatos; os 3 vãos restantes são portas separando trechos |
+
+### 10.1 O item 5 custou a amplitude
+
+A regra "vermelha no meio, verde em volta" é uma restrição geométrica dura, e
+ela derrubou a repartição 9/9/10:
+
+- a parede norte tem dois trechos, de 10,01 m e 17,63 m;
+- pôr a vermelha no trecho central com uma unidade verde de cada lado reserva
+  **12,60 m**, e o que sobra não cabe: duas duplas no trecho de 10,01 m pedem
+  10,20 m;
+- com 9 mesas, a norte só fecha com a vermelha no trecho oeste — a 8,54 m do
+  meio da fileira, fora do terço central.
+
+Das 21 repartições que cabiam ontem, **9 sobrevivem** aos itens 5 e 6. A melhor
+é **9/8/11**:
+
+| Parede | Entrada | Mesas | Esperados | Desvio | Por metro |
+|---|---|---:|---:|---:|---:|
+| oeste | A · S4 | 9 | 3.871 | +38 | 131,1 |
+| norte | B · S5 | 8 | 3.757 | −76 | 135,9 |
+| leste | C · S6 | 11 | 3.871 | +38 | 106,6 |
+
+**Amplitude 114 eleitores (2,97% do terço), contra 4 ontem.** É o preço do item
+5, e é um preço barato: 114 eleitores repartidos em nove horas são ~13 por hora
+entre a parede mais cheia e a mais vazia. Continua dentro de "mais ou menos o
+mesmo número de eleitores por parede".
+
+### 10.2 O que mudou desde o Hamad_Final
+
+| | |
+|---|---:|
+| Mesas que mudam de parede | 14 de 28 |
+| Mesas que mudam de entrada | 17 de 28 |
+| Mesas que mudam de número eleitor | 28 de 28 |
+
+A numeração eleitor mudou inteira porque ela é posicional e as posições foram
+todas refeitas. **Nada disso toca a agregação de seções nem a nomeação de
+mesários**, que são por MRV.
+
+### 10.3 O que continua em aberto
+
+- **A densidade segue desigual**, e o item 5 a piorou um pouco: a norte agora
+  leva 135,9 esperados por metro contra 106,6 da leste. Sem o Ring 3, é a
+  parede norte que enche primeiro.
+- **S7 tem 1,27 m de vão.** Serve a um fluxo preferencial pequeno, mas é o
+  ponto a medir em campo antes de imprimir a sinalização: se a fila
+  preferencial crescer, 1,27 m não absorve.
+- **A pendência de mesário segue** (item 6.3): MRV 24 e MRV 11 continuam as
+  duas lacunas, agora nas paredes leste e norte respectivamente.

@@ -55,6 +55,14 @@ PAREDES = {
               "trechos": [(3.20, 39.50)]},
 }
 ORDEM = ("oeste", "norte", "leste")
+# A vermelha de cada parede precisa de uma unidade verde de cada lado. Uma
+# unidade verde e uma dupla de dois verdes ou uma isolada verde, entao quatro
+# verdes por parede bastam para as duas: duas duplas inteiramente verdes.
+MIN_VERDES = 4
+# Quanta amplitude a mais a composicao de hoje pode ter e ainda vencer a otima.
+# Zerar a amplitude custa mover 16 das 28 mesas de parede; 20 eleitores sao
+# 0,5% do terco, abaixo do que qualquer mesario notaria num dia de nove horas.
+TOLERANCIA_AMPLITUDE = 20
 ENTRADA = {"oeste": "A", "norte": "B", "leste": "C"}   # a decisao de 15/09
 PORTA = {"A": "S4", "B": "S5", "C": "S6"}
 
@@ -125,10 +133,12 @@ def equilibra(mesas, contas, altas, iteracoes=90):
     """A atribuicao mesa -> parede que mais aproxima o esperado das tres.
 
     Uma das tres mesas de maior carga em cada parede (elas nunca dividem fila),
-    e busca local sobre as demais: troca pares entre paredes enquanto o maior
-    intervalo entre paredes diminuir.
+    pelo menos MIN_VERDES mesas verdes em cada uma (para ladear a vermelha), e
+    busca local sobre as demais: troca pares entre paredes enquanto o maior
+    intervalo entre paredes diminuir, sem quebrar o minimo de verdes.
     """
     esperado = {m["mrv"]: m["esperado"] for m in mesas}
+    verde = {m["mrv"]: m["classe"] == "baixa" for m in mesas}
     outras = sorted((m["mrv"] for m in mesas if m["mrv"] not in altas),
                     key=lambda n: -esperado[n])
     melhor = None
@@ -138,12 +148,26 @@ def equilibra(mesas, contas, altas, iteracoes=90):
         # semeadura guloso: a proxima mesa vai para a parede mais longe da cota
         grupos = {p: list(v) for p, v in base.items()}
         alvo = {p: sum(esperado.values()) * contas[p] / len(mesas) for p in ORDEM}
+        # primeiro o piso de verdes de cada parede, depois o equilibrio de carga
+        verdes_livres = sorted((n for n in outras if verde[n]), key=lambda n: -esperado[n])
+        for p in ORDEM:
+            while (sum(1 for x in grupos[p] if verde[x]) < min(MIN_VERDES, contas[p] - 1)
+                   and len(grupos[p]) < contas[p] and verdes_livres):
+                grupos[p].append(verdes_livres.pop())
+        postas = {x for g in grupos.values() for x in g}
         for n in outras:
+            if n in postas:
+                continue
             cabem = [p for p in ORDEM if len(grupos[p]) < contas[p]]
             p = max(cabem, key=lambda p: alvo[p] - sum(esperado[x] for x in grupos[p]))
             grupos[p].append(n)
         custo = lambda g: (max(sum(esperado[x] for x in g[p]) for p in ORDEM)
                            - min(sum(esperado[x] for x in g[p]) for p in ORDEM))
+        def valido(g):
+            return all(sum(1 for x in g[p] if verde[x]) >= min(MIN_VERDES, contas[p] - 1)
+                       for p in ORDEM)
+        if not valido(grupos):
+            continue
         c = custo(grupos)
         for _ in range(iteracoes):
             achou = False
@@ -155,7 +179,7 @@ def equilibra(mesas, contas, altas, iteracoes=90):
                         if y in altas:
                             continue
                         grupos[a][i], grupos[b][j] = y, x
-                        novo = custo(grupos)
+                        novo = custo(grupos) if valido(grupos) else float("inf")
                         if novo < c - 1e-9:
                             c, achou = novo, True
                         else:
@@ -173,76 +197,229 @@ def equilibra(mesas, contas, altas, iteracoes=90):
     return melhor
 
 
-def unidades_da_parede(mrvs, altas, esperado):
-    """As unidades da parede: as isoladas primeiro, depois as duplas."""
-    isoladas = [n for n in mrvs if n in altas]
+def unidades_da_parede(mrvs, altas, esperado, classe):
+    """As unidades da parede: a vermelha isolada, a avulsa da paridade, e as duplas.
+
+    As duplas emparelham **verde com verde primeiro**, para sobrar unidade
+    inteiramente verde para ladear a vermelha (regra do Posto de 16/09: a mesa
+    de maior carga fica no meio da parede, com verdes em volta).
+    """
+    vermelhas = [n for n in mrvs if n in altas]
     resto = [n for n in mrvs if n not in altas]
+    isoladas = []
     if len(resto) % 2:
         # a avulsa e a de menor carga: e a que menos precisa de vizinha
         avulsa = min(resto, key=lambda n: esperado[n])
         resto.remove(avulsa)
         isoladas.append(avulsa)
-    resto.sort()
-    return ([{"tipo": "isolada", "mrvs": [n]} for n in isoladas]
-            + [{"tipo": "dupla", "mrvs": [resto[i], resto[i + 1]]}
-               for i in range(0, len(resto), 2)])
+    verdes = sorted(n for n in resto if classe[n] == "baixa")
+    demais = sorted(n for n in resto if classe[n] != "baixa")
+    duplas = []
+    while len(verdes) >= 2:
+        duplas.append([verdes.pop(0), verdes.pop(0)])
+    sobra = verdes + demais                      # o verde solto, se houver, e os amarelos
+    while len(sobra) >= 2:
+        duplas.append([sobra.pop(0), sobra.pop(0)])
+    if sobra:
+        raise SystemExit(f"sobrou mesa sem par na parede com {mrvs}")
+
+    def unidade(tipo, ns, **extra):
+        return {"tipo": tipo, "mrvs": list(ns),
+                "verde": all(classe[n] == "baixa" for n in ns), **extra}
+
+    return ([unidade("isolada", [n], vermelha=True) for n in vermelhas]
+            + [unidade("isolada", [n]) for n in isoladas]
+            + [unidade("dupla", d) for d in duplas])
 
 
-def distribui(parede, unidades):
-    """Empacota as unidades nos trechos da parede. None se não couber."""
-    trechos = [{"ini": a, "fim": b, "span": b - a, "u": []}
-               for a, b in PAREDES[parede]["trechos"]]
-    # duplas primeiro, que são as maiores
-    for u in sorted(unidades, key=lambda u: u["tipo"] != "dupla"):
-        candidatos = []
-        for t in trechos:
-            d = sum(1 for x in t["u"] if x["tipo"] == "dupla") + (u["tipo"] == "dupla")
-            iso = sum(1 for x in t["u"] if x["tipo"] == "isolada") + (u["tipo"] == "isolada")
-            if not cabe(t["span"], d, iso):
-                continue
-            usado = d * PASSO_DUPLA + (d + iso - 1) * PASSO_UNID
-            # uma isolada prefere um trecho que já tem gente: sozinha num
-            # trecho de ponta, a mesa de maior carga fica no canto do salão
-            abre_vazio = 1 if (u["tipo"] == "isolada" and not t["u"]) else 0
-            candidatos.append(((abre_vazio, -(t["span"] - usado)), t))
-        if not candidatos:
-            return None
-        min(candidatos, key=lambda c: c[0])[1]["u"].append(u)
-    return trechos
+def largura(unidades):
+    """Quanto um bloco de unidades ocupa, de encosto a encosto."""
+    n = len(unidades)
+    if not n:
+        return 0.0
+    return sum(PASSO_DUPLA for u in unidades if u["tipo"] == "dupla") + (n - 1) * PASSO_UNID
 
 
-def posicoes(parede, trechos):
-    """As unidades empacotadas viram posições de mesa, em x/y/rot/lado."""
-    P = PAREDES[parede]
+def _reparticoes_de_trecho(n_trechos, duplas, isoladas):
+    """Todas as formas de repartir D duplas e I isoladas por N trechos."""
+    def parte(total, n):
+        if n == 1:
+            yield (total,)
+            return
+        for k in range(total + 1):
+            for resto in parte(total - k, n - 1):
+                yield (k,) + resto
+    for d in parte(duplas, n_trechos):
+        for i in parte(isoladas, n_trechos):
+            yield list(zip(d, i))
+
+
+def _coloca(trechos, seqs):
+    """Do bloco de cada trecho para o eixo de cada mesa.
+
+    O bloco fica centrado no trecho, e o encosto do primeiro modulo e
+    arredondado ao centimetro **antes** de somar os passos: assim os vaos
+    saem exatos (3,90 e 2,40 m de encosto a encosto) e nao acumulam um
+    centimetro de arredondamento.
+    """
     saida = []
-    for t in trechos:
-        if not t["u"]:
+    for (ini, fim), seq in zip(trechos, seqs):
+        if not seq:
             continue
-        nd = sum(1 for u in t["u"] if u["tipo"] == "dupla")
-        n = len(t["u"])
-        usado = nd * PASSO_DUPLA + (n - 1) * PASSO_UNID
-        # a folga vira respiro entre unidades, com teto de 0,60 m: sem teto o
-        # bloco encosta no vão de porta da borda; com teto, fica centrado e o
-        # vão entre unidades nunca chega aos 3,90 m que separam uma dupla
-        extra = min((t["span"] - usado) / (n - 1), 0.60) if n > 1 else 0
-        cur = t["ini"] + (t["span"] - (usado + (n - 1) * extra)) / 2
-        for u in _intercala(t["u"]):
+        cur = round(ini + ((fim - ini) - largura(seq)) / 2, 2)
+        for u in seq:
             if u["tipo"] == "dupla":
-                saida.append({"n": u["mrvs"][0], "u": cur, "lado": 1})
-                saida.append({"n": u["mrvs"][1], "u": cur + PASSO_DUPLA, "lado": -1})
+                saida.append((u["mrvs"][0], round(cur, 2), 1))
+                saida.append((u["mrvs"][1], round(cur + PASSO_DUPLA, 2), -1))
                 cur += PASSO_DUPLA
             else:
-                saida.append({"n": u["mrvs"][0], "u": cur, "lado": 1})
-            cur += PASSO_UNID + extra
-    todos = [v for t in P["trechos"] for v in t]
-    espelho = min(todos) + max(todos)
+                saida.append((u["mrvs"][0], round(cur, 2), 1))
+            cur += PASSO_UNID
+    return saida
+
+
+def _centralidade(postas, mrv_vermelha, verde_de):
+    """Distância da vermelha ao meio da fileira, ou None se a regra falhar.
+
+    A regra de 16/09 é dupla: a vermelha fica **no terço central** da fileira
+    e as duas mesas imediatamente ao lado dela são **verdes**. O "ao lado" é
+    global, não por trecho: um vão de porta separa, mas continua sendo o que o
+    eleitor vê em volta da mesa cheia.
+    """
+    ordenadas = sorted(postas, key=lambda t: t[1])
+    eixos = [c for _, c, _ in ordenadas]
+    i = next(k for k, (m, _, _) in enumerate(ordenadas) if m == mrv_vermelha)
+    vizinhas = [ordenadas[j][0] for j in (i - 1, i + 1) if 0 <= j < len(ordenadas)]
+    if len(vizinhas) < 2 or any(not verde_de(v) for v in vizinhas):
+        return None
+    meio = (min(eixos) + max(eixos)) / 2
+    desvio = abs(eixos[i] - meio)
+    if desvio > (max(eixos) - min(eixos)) / 4:          # fora do terço central
+        return None
+    return desvio
+
+
+def arranja_parede(parede, unidades, verde_de=lambda n: True):
+    """As posições da parede, com a vermelha no meio e verdes ao lado.
+
+    Varre todas as repartições das unidades pelos trechos e, em cada uma, todas
+    as posições possíveis da vermelha, e fica com a que põe a vermelha mais
+    perto do meio da fileira de mesas — sempre com uma unidade verde de cada
+    lado dela. `None` se nada couber.
+    """
+    P = PAREDES[parede]
+    trechos = P["trechos"]
+    vermelha = next((u for u in unidades if u.get("vermelha")), None)
+    demais = [u for u in unidades if u is not vermelha]
+    n_duplas = sum(1 for u in unidades if u["tipo"] == "dupla")
+    n_isoladas = sum(1 for u in unidades if u["tipo"] == "isolada")
+
+    melhor = None
+    for corte in _reparticoes_de_trecho(len(trechos), n_duplas, n_isoladas):
+        if any(not cabe(b - a, d, i) for (a, b), (d, i) in zip(trechos, corte)):
+            continue
+        if vermelha is None:
+            seqs = _preenche(corte, demais, None, None)
+            if seqs is None:
+                continue
+            postas = _coloca(trechos, seqs)
+            chave = (0, 0.0)
+        else:
+            melhor_local = None
+            for t_red, (d, i) in enumerate(corte):
+                if i == 0:
+                    continue
+                n = d + i
+                for k in range(n):
+                    seqs = _preenche(corte, demais, t_red, k, vermelha)
+                    if seqs is None:
+                        continue
+                    postas = _coloca(trechos, seqs)
+                    desvio = _centralidade(postas, vermelha["mrvs"][0], verde_de)
+                    if desvio is None:
+                        continue
+                    if melhor_local is None or desvio < melhor_local[0]:
+                        melhor_local = (desvio, postas)
+            if melhor_local is None:
+                continue
+            chave, postas = melhor_local
+            chave = (0, chave)
+        if melhor is None or chave < melhor[0]:
+            melhor = (chave, postas)
+
+    if melhor is None:
+        return None
+    todos = [v for t in trechos for v in t]
+    espelho = round(min(todos) + max(todos), 2)
     fora = []
-    for o in saida:
-        c = round(o["u"] if P["sentido"] > 0 else espelho - o["u"], 2)
-        fora.append({"n": o["n"], "rot": P["rot"], "lado": o["lado"],
-                     **({"x": c, "y": P["fixo"]} if P["eixo"] == "x"
-                        else {"x": P["fixo"], "y": c})})
+    for mrv, c, lado in melhor[1]:
+        v = round(c if P["sentido"] > 0 else espelho - c, 2)
+        fora.append({"n": mrv, "rot": P["rot"], "lado": lado,
+                     **({"x": v, "y": P["fixo"]} if P["eixo"] == "x"
+                        else {"x": P["fixo"], "y": v})})
     return fora
+
+
+def _preenche(corte, demais, t_red, k_red, vermelha=None):
+    """Distribui as unidades pelos trechos, verdes ao lado da vermelha.
+
+    `corte` diz quantas duplas e isoladas cada trecho leva; `t_red`/`k_red`
+    dizem onde a vermelha entra. Devolve uma lista de sequências, uma por
+    trecho, ou None se faltar unidade do tipo certo.
+    """
+    duplas = [u for u in demais if u["tipo"] == "dupla"]
+    isoladas = [u for u in demais if u["tipo"] == "isolada"]
+    # verdes primeiro na fila de saque, para sobrarem para ladear a vermelha
+    verdes = [u for u in duplas + isoladas if u["verde"]]
+    outras = [u for u in duplas + isoladas if not u["verde"]]
+
+    seqs = []
+    for t, (d, i) in enumerate(corte):
+        n = d + i
+        if t == t_red:
+            if i < 1:
+                return None
+            seq = [None] * n
+            seq[k_red] = vermelha
+            faltam_d, faltam_i = d, i - 1
+        else:
+            seq = [None] * n
+            faltam_d, faltam_i = d, i
+        seqs.append({"seq": seq, "d": faltam_d, "i": faltam_i})
+
+    def saca(tipo, preferir_verde):
+        fontes = (verdes, outras) if preferir_verde else (outras, verdes)
+        for fonte in fontes:
+            for u in fonte:
+                if u["tipo"] == tipo:
+                    fonte.remove(u)
+                    return u
+        return None
+
+    # 1. as duas vizinhas da vermelha, verdes
+    if vermelha is not None:
+        alvo = seqs[t_red]
+        for v in (k_red - 1, k_red + 1):
+            if not (0 <= v < len(alvo["seq"])) or alvo["seq"][v] is not None:
+                continue
+            tipo = "dupla" if alvo["d"] else "isolada"
+            u = saca(tipo, True)
+            if u is None or not u["verde"]:
+                return None
+            alvo["seq"][v] = u
+            alvo["d" if tipo == "dupla" else "i"] -= 1
+    # 2. o resto, duplas antes das isoladas
+    for bloco in seqs:
+        for idx, val in enumerate(bloco["seq"]):
+            if val is not None:
+                continue
+            tipo = "dupla" if bloco["d"] else "isolada"
+            u = saca(tipo, False)
+            if u is None:
+                return None
+            bloco["seq"][idx] = u
+            bloco["d" if tipo == "dupla" else "i"] -= 1
+    return [b["seq"] for b in seqs]
 
 
 def _intercala(unidades):
@@ -268,13 +445,15 @@ def _intercala(unidades):
 def monta(mesas, grupos, altas):
     """Do agrupamento por parede às 28 posições. None se algo não couber."""
     esperado = {m["mrv"]: m["esperado"] for m in mesas}
+    classe = {m["mrv"]: m["classe"] for m in mesas}
     alteracoes, relatorio = [], {}
     for parede in ORDEM:
-        unidades = unidades_da_parede(grupos[parede], altas, esperado)
-        trechos = distribui(parede, unidades)
-        if trechos is None:
+        unidades = unidades_da_parede(grupos[parede], altas, esperado, classe)
+        postas = arranja_parede(parede, unidades,
+                                lambda n: classe.get(n) == "baixa")
+        if postas is None:
             return None
-        alteracoes.extend(posicoes(parede, trechos))
+        alteracoes.extend(postas)
         relatorio[parede] = {
             "entrada": ENTRADA[parede], "porta": PORTA[ENTRADA[parede]],
             "mesas": grupos[parede],
@@ -383,30 +562,55 @@ def main(argv):
     # folga do salao.
     altas = tuple(sorted(m["mrv"] for m in mesas if m["classe"] == "alta"))
     grupos_atual = {p: sorted(n for n, q in atual.items() if q == p) for p in ORDEM}
-    mantido = monta(mesas, grupos_atual, altas)
-    if mantido is None:
-        raise SystemExit("a composição atual não coube no empacotador")
-    f = folgas(mantido["alteracoes"], grupos_atual)
-    cargas = [mantido["relatorio"][p]["esperado"] for p in ORDEM]
-    print(f"\nAlternativa — composição de hoje, só o pareamento refeito "
-          f"(0 mesas trocam de parede):")
-    for p in ORDEM:
-        d = mantido["relatorio"][p]
-        print(f"  {p:<6} entrada {d['entrada']} (porta {d['porta']}) · "
-              f"{len(d['mesas'])} mesas · {d['esperado']} esperados · "
-              f"{d['esperado'] / d['metros']:.1f} por metro · "
-              f"menor folga {f[p]:.2f} m")
-        print(f"         duplas: {' '.join('(' + '+'.join(map(str, x)) + ')' for x in d['duplas'])}")
-        print(f"         isoladas: {', '.join(map(str, d['isoladas']))}")
-    print(f"  amplitude {max(cargas) - min(cargas)} eleitores "
-          f"({100 * (max(cargas) - min(cargas)) / (total / 3):.2f}% do terço)")
+    verde = {m["mrv"]: m["classe"] == "baixa" for m in mesas}
+    sem_verde = [p for p in ORDEM
+                 if sum(1 for n in grupos_atual[p] if verde[n])
+                 < min(MIN_VERDES, len(grupos_atual[p]) - 1)]
+    mantido = None if sem_verde else monta(mesas, grupos_atual, altas)
+    if sem_verde:
+        print(f"\nAlternativa — composição de hoje: NÃO SERVE MAIS.\n  A parede "
+              f"{', '.join(sem_verde)} não tem as {MIN_VERDES} mesas verdes que a "
+              f"regra de 16/09 exige para ladear a vermelha.")
+    elif mantido is None:
+        print("\nAlternativa — composição de hoje, só o pareamento refeito: "
+              "NÃO CABE MAIS.\n  A regra de 16/09 (vermelha no meio da parede, com "
+              "duas unidades verdes ao lado) reserva 12,60 m no trecho central, e a\n"
+              "  parede norte com 9 mesas não fecha: o trecho oeste dela tem 10,01 m "
+              "e duas duplas pedem 10,20 m.\n  A repartição escolhida acima passa a "
+              "ser a única saída.")
+        mantido = None
+    else:
+      f = folgas(mantido["alteracoes"], grupos_atual)
+      cargas = [mantido["relatorio"][p]["esperado"] for p in ORDEM]
+      print(f"\nAlternativa — composição de hoje, só o pareamento refeito "
+            f"(0 mesas trocam de parede):")
+      for p in ORDEM:
+          d = mantido["relatorio"][p]
+          print(f"  {p:<6} entrada {d['entrada']} (porta {d['porta']}) · "
+                f"{len(d['mesas'])} mesas · {d['esperado']} esperados · "
+                f"{d['esperado'] / d['metros']:.1f} por metro · "
+                f"menor folga {f[p]:.2f} m")
+          print(f"         duplas: {' '.join('(' + '+'.join(map(str, x)) + ')' for x in d['duplas'])}")
+          print(f"         isoladas: {', '.join(map(str, d['isoladas']))}")
+      print(f"  amplitude {max(cargas) - min(cargas)} eleitores "
+            f"({100 * (max(cargas) - min(cargas)) / (total / 3):.2f}% do terço)")
 
     if "--grava" not in argv:
         print("\n(nada gravado; use --grava para aplicar, e --otimo para a "
               "repartição de amplitude zero em vez da composição de hoje)")
         return mantido
 
-    usa_otimo = "--otimo" in argv
+    if mantido is not None:
+        cargas = [mantido["relatorio"][p]["esperado"] for p in ORDEM]
+        excesso = (max(cargas) - min(cargas)) - melhor["amplitude"]
+        if excesso > TOLERANCIA_AMPLITUDE:
+            print(f"  → descartada: {excesso} eleitores de amplitude a mais que a "
+                  f"repartição ótima, acima da tolerância de {TOLERANCIA_AMPLITUDE}.")
+            mantido = None
+        else:
+            print(f"  → escolhida: {excesso} eleitores de amplitude a mais que a ótima, "
+                  f"e nenhuma mesa troca de parede.")
+    usa_otimo = "--otimo" in argv or mantido is None
     grupos = melhor["grupos"] if usa_otimo else grupos_atual
     arranjo = melhor["arranjo"] if usa_otimo else mantido
     decisoes, cenario = grava(decisoes, grupos, arranjo)
@@ -431,6 +635,72 @@ ID_CENARIO = "paredes-abc-20260915"
 NOME_CENARIO = "Paredes_ABC"
 CORES = {"A": ("azul", "#2a78d6"), "B": ("âmbar", "#e08a00"), "C": ("magenta", "#c2185b")}
 
+RECUO_PORTA = 3.00        # desobstrucao na frente de N2 e O2 (decisao de 16/09)
+FAIXA_LESTE = 3.00        # faixa protegida da fachada leste, das saidas L1 a L4
+
+# Papel de cada porta que nao e entrada nem saida de eleitor. As entradas e
+# saidas saem de ENTRADA/PORTA e de decisoes["saidas"].
+PAPEIS_PORTA = {
+    "N1": ("fechada", "porta de serviço, fechada no dia"),
+    "N2": ("livre", "acesso de serviço — mantida desobstruída"),
+    "L1": ("emergencia", "saída de emergência"),
+    "L2": ("emergencia", "saída de emergência"),
+    "L3": ("emergencia", "saída de emergência"),
+    "L4": ("emergencia", "saída de emergência"),
+    "O1": ("fechada", "acesso ao Hall 1, fechado no dia"),
+    "O2": ("livre", "acesso de serviço — mantida desobstruída"),
+    "R1": ("livre", "recorte sudoeste — recuo de emergência"),
+    "S1": ("livre", "porta de carga, sem papel de eleitor"),
+    "S3": ("livre", "recuo de emergência"),
+    "S7": ("preferencial", "entrada preferencial — idoso, gestante, PcD, "
+                           "com acompanhante, sem fila"),
+    "S9": ("livre", "porta de carga, sem papel de eleitor"),
+}
+
+
+def sinalizacao_e_zonas(planta, decisoes):
+    """O rotulo de cada porta e as areas que ficam livres de mesa e de fila."""
+    portas = {p["id"]: p for p in planta["portas"]}
+    sinal = {}
+    for pid, p in portas.items():
+        if pid in PORTA.values():
+            e = next(k for k, v in PORTA.items() if v == pid)
+            parede = next(w for w, x in ENTRADA.items() if x == e)
+            sinal[pid] = {"papel": "entrada", "entrada": e, "parede": parede,
+                          "rotulo": f"entrada {e} — parede {parede}"}
+        elif pid in decisoes["saidas"]:
+            sinal[pid] = {"papel": "saida", "rotulo": "saída de eleitor"}
+        else:
+            papel, rotulo = PAPEIS_PORTA[pid]
+            sinal[pid] = {"papel": papel, "rotulo": rotulo}
+        sinal[pid]["face"] = p["face"]
+        sinal[pid]["rds"] = p["rds"]
+        sinal[pid]["larg"] = p["larg"]
+
+    zonas = [{"tipo": "faixa_emergencia", "porta": "L1 a L4",
+              "rect": [50.3 - FAIXA_LESTE, 0.0, 50.3, 44.4],
+              "rotulo": f"fachada leste · faixa protegida de {FAIXA_LESTE:.0f} m "
+                        f"para as saídas de emergência"}]
+    for pid in ("N2", "O2"):
+        p = portas[pid]
+        if p["face"] == "norte":
+            rect = [p["x1"], p["y1"] - RECUO_PORTA, p["x2"], p["y2"]]
+        else:                                    # fachada oeste
+            rect = [p["x1"], p["y1"], p["x2"] + RECUO_PORTA, p["y2"]]
+        zonas.append({"tipo": "recuo_porta", "porta": pid, "rect": rect,
+                      "rotulo": f"{pid} · recuo de {RECUO_PORTA:.0f} m, "
+                                f"sem mesa e sem fila"})
+    zonas.append({"tipo": "recuo_porta", "porta": "S7",
+                  "rect": [35.09, 0.0, 42.36, 3.0],
+                  "rotulo": "S7 · recuo da entrada preferencial"})
+    zonas.append({"tipo": "recuo_porta", "porta": "R1",
+                  "rect": [7.8, 0.0, 10.8, 7.0],
+                  "rotulo": "R1 · recuo de emergência"})
+    zonas.append({"tipo": "recuo_porta", "porta": "S3",
+                  "rect": [14.22, 0.0, 21.47, 3.0],
+                  "rotulo": "S3 · recuo de emergência"})
+    return sinal, zonas
+
 
 def numeracao_eleitor(alteracoes, grupos):
     """1 na mesa mais ao sul da parede oeste, sentido horario ate 28.
@@ -446,7 +716,12 @@ def numeracao_eleitor(alteracoes, grupos):
     return {n: i + 1 for i, n in enumerate(ordem)}
 
 
-def grava(decisoes, grupos, arranjo, quando="2026-09-15"):
+def _planta():
+    with open(os.path.join(RAIZ, "data", "prancheta_hall2.json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def grava(decisoes, grupos, arranjo, quando="2026-09-16"):
     """Aplica o arranjo ao bloco de decisoes e devolve (decisoes, cenario)."""
     eleitor = numeracao_eleitor(arranjo["alteracoes"], grupos)
     parede_de = {n: p for p, ns in grupos.items() for n in ns}
@@ -481,6 +756,9 @@ def grava(decisoes, grupos, arranjo, quando="2026-09-15"):
     decisoes["cenario_trabalho"] = {"id": ID_CENARIO, "nome": NOME_CENARIO,
                                     "criadoEm": quando + "T00:00:00.000Z",
                                     "provisorio": False}
+    sinal, zonas = sinalizacao_e_zonas(_planta(), decisoes)
+    decisoes["sinalizacao_portas"] = sinal
+    decisoes["zonas_protegidas"] = zonas
     decisoes["entradas_por_parede"] = (
         "Decisão do Posto de 15/09/2026: cada entrada serve uma parede inteira e só ela — "
         "A (S4) a oeste, B (S5) ao norte, C (S6) a leste. Equilibrar as entradas e "

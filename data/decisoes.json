@@ -1,12 +1,12 @@
 {
  "decididoEm": "2026-09-06",
- "atualizadoEm": "2026-09-15",
+ "atualizadoEm": "2026-09-16",
  "numeracao": "NUMERAÇÃO OFICIAL: MRV do DJE/TRE-DF, identidade da mesa de uso interno; não depende da posição.",
  "numeracao_eleitor": "NUMERAÇÃO ELEITOR: 1 na mesa mais ao sul da parede oeste, sentido horário, 28 na mais ao sul da parede leste; voltada ao público.",
  "cenario_trabalho": {
   "id": "paredes-abc-20260915",
   "nome": "Paredes_ABC",
-  "criadoEm": "2026-09-15T00:00:00.000Z",
+  "criadoEm": "2026-09-16T00:00:00.000Z",
   "provisorio": false
  },
  "comparecimento": {
@@ -140,19 +140,19 @@
    "parede": "oeste",
    "mrvs": [
     1,
-    4,
+    3,
     5,
     6,
     9,
-    11,
-    12,
+    15,
     17,
-    24
+    21,
+    23
    ],
-   "esperado": 3833,
-   "quota": 0.3333,
+   "esperado": 3871,
+   "quota": 0.3366,
    "metros_de_parede": 29.53,
-   "por_metro": 129.8
+   "por_metro": 131.1
   },
   {
    "id": "B",
@@ -161,20 +161,19 @@
    "hex": "#e08a00",
    "parede": "norte",
    "mrvs": [
-    2,
-    8,
-    10,
+    11,
+    12,
     13,
-    15,
+    14,
     16,
+    18,
     20,
-    22,
-    25
+    22
    ],
-   "esperado": 3835,
-   "quota": 0.3335,
+   "esperado": 3757,
+   "quota": 0.3267,
    "metros_de_parede": 27.64,
-   "por_metro": 138.7
+   "por_metro": 135.9
   },
   {
    "id": "C",
@@ -183,21 +182,22 @@
    "hex": "#c2185b",
    "parede": "leste",
    "mrvs": [
-    3,
+    2,
+    4,
     7,
-    14,
-    18,
+    8,
+    10,
     19,
-    21,
-    23,
+    24,
+    25,
     26,
     27,
     28
    ],
-   "esperado": 3831,
-   "quota": 0.3332,
+   "esperado": 3871,
+   "quota": 0.3366,
    "metros_de_parede": 36.3,
-   "por_metro": 105.5
+   "por_metro": 106.6
   }
  ],
  "saidas": [
@@ -220,7 +220,7 @@
    "esperado_exato": 374.99,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 5,
+   "eleitor": 3,
    "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
@@ -239,10 +239,10 @@
    "esperado_exato": 355.13,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 13,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 22,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 3,
@@ -258,10 +258,10 @@
    "esperado_exato": 351.49,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 19,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 4,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 4,
@@ -277,10 +277,10 @@
    "esperado_exato": 348.09,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 6,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 23,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 5,
@@ -296,7 +296,7 @@
    "esperado_exato": 327.68,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 1,
+   "eleitor": 6,
    "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
@@ -315,7 +315,7 @@
    "esperado_exato": 327.62,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 2,
+   "eleitor": 7,
    "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
@@ -334,7 +334,7 @@
    "esperado_exato": 325.38,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 20,
+   "eleitor": 25,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -353,10 +353,10 @@
    "esperado_exato": 310.79,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 14,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 26,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 9,
@@ -372,7 +372,7 @@
    "esperado_exato": 466.72,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 8,
+   "eleitor": 1,
    "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
@@ -391,10 +391,10 @@
    "esperado_exato": 465.95,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 15,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 19,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 11,
@@ -410,10 +410,10 @@
    "esperado_exato": 503.78,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 9,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 11,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 12,
@@ -429,10 +429,10 @@
    "esperado_exato": 422.68,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 3,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 14,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 13,
@@ -448,7 +448,7 @@
    "esperado_exato": 406.8,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 16,
+   "eleitor": 15,
    "parede": "norte",
    "entrada": "B",
    "porta": "S5"
@@ -467,10 +467,10 @@
    "esperado_exato": 405.38,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 22,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 10,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 15,
@@ -486,10 +486,10 @@
    "esperado_exato": 498.45,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 11,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 2,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 16,
@@ -505,7 +505,7 @@
    "esperado_exato": 518.04,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 12,
+   "eleitor": 16,
    "parede": "norte",
    "entrada": "B",
    "porta": "S5"
@@ -524,7 +524,7 @@
    "esperado_exato": 471.75,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 4,
+   "eleitor": 8,
    "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
@@ -543,10 +543,10 @@
    "esperado_exato": 515.04,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 23,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 17,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 19,
@@ -562,7 +562,7 @@
    "esperado_exato": 295.26,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 26,
+   "eleitor": 20,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -581,7 +581,7 @@
    "esperado_exato": 394.56,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 17,
+   "eleitor": 12,
    "parede": "norte",
    "entrada": "B",
    "porta": "S5"
@@ -600,10 +600,10 @@
    "esperado_exato": 466.2,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 24,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 9,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 22,
@@ -619,7 +619,7 @@
    "esperado_exato": 589.78,
    "classe": "alta",
    "cor": "#c0392b",
-   "eleitor": 10,
+   "eleitor": 13,
    "parede": "norte",
    "entrada": "B",
    "porta": "S5"
@@ -638,10 +638,10 @@
    "esperado_exato": 586.08,
    "classe": "alta",
    "cor": "#c0392b",
-   "eleitor": 21,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 5,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 24,
@@ -657,10 +657,10 @@
    "esperado_exato": 587.56,
    "classe": "alta",
    "cor": "#c0392b",
-   "eleitor": 7,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 24,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 25,
@@ -676,10 +676,10 @@
    "esperado_exato": 294.52,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 18,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 21,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 26,
@@ -695,7 +695,7 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 25,
+   "eleitor": 27,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -714,7 +714,7 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 27,
+   "eleitor": 28,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -733,7 +733,7 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 28,
+   "eleitor": 18,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -742,5 +742,207 @@
  "ring3": {
   "situacao": "abandonado em 15/09/2026 — o RDS proibiu fila no terreno e não houve autorização de Brasília; a fila passa a ser dimensionada dentro do Hall 2, uma por parede."
  },
- "entradas_por_parede": "Decisão do Posto de 15/09/2026: cada entrada serve uma parede inteira e só ela — A (S4) a oeste, B (S5) ao norte, C (S6) a leste. Equilibrar as entradas e equilibrar as paredes passaram a ser o mesmo problema. Substitui a atribuição por cota do Ring 3, que não existe mais."
+ "entradas_por_parede": "Decisão do Posto de 15/09/2026: cada entrada serve uma parede inteira e só ela — A (S4) a oeste, B (S5) ao norte, C (S6) a leste. Equilibrar as entradas e equilibrar as paredes passaram a ser o mesmo problema. Substitui a atribuição por cota do Ring 3, que não existe mais.",
+ "sinalizacao_portas": {
+  "N1": {
+   "papel": "fechada",
+   "rotulo": "porta de serviço, fechada no dia",
+   "face": "norte",
+   "rds": "2.13",
+   "larg": 2.03
+  },
+  "N2": {
+   "papel": "livre",
+   "rotulo": "acesso de serviço — mantida desobstruída",
+   "face": "norte",
+   "rds": "2.14/2.15",
+   "larg": 3.56
+  },
+  "L1": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.16/2.17",
+   "larg": 3.06
+  },
+  "L2": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.18/2.19",
+   "larg": 3.06
+  },
+  "L3": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.20/2.21",
+   "larg": 3.07
+  },
+  "L4": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.22/2.23",
+   "larg": 3.06
+  },
+  "S1": {
+   "papel": "livre",
+   "rotulo": "porta de carga, sem papel de eleitor",
+   "face": "sul",
+   "rds": "carga oeste",
+   "larg": 3.62
+  },
+  "S2": {
+   "papel": "saida",
+   "rotulo": "saída de eleitor",
+   "face": "sul",
+   "rds": "sem codigo RDS",
+   "larg": 1.2
+  },
+  "S3": {
+   "papel": "livre",
+   "rotulo": "recuo de emergência",
+   "face": "sul",
+   "rds": "2.7",
+   "larg": 1.25
+  },
+  "S4": {
+   "papel": "entrada",
+   "entrada": "A",
+   "parede": "oeste",
+   "rotulo": "entrada A — parede oeste",
+   "face": "sul",
+   "rds": "2.5/2.6",
+   "larg": 5.93
+  },
+  "S5": {
+   "papel": "entrada",
+   "entrada": "B",
+   "parede": "norte",
+   "rotulo": "entrada B — parede norte",
+   "face": "sul",
+   "rds": "2.4",
+   "larg": 5.93
+  },
+  "S6": {
+   "papel": "entrada",
+   "entrada": "C",
+   "parede": "leste",
+   "rotulo": "entrada C — parede leste",
+   "face": "sul",
+   "rds": "2.2/2.3",
+   "larg": 5.93
+  },
+  "S7": {
+   "papel": "preferencial",
+   "rotulo": "entrada preferencial — idoso, gestante, PcD, com acompanhante, sem fila",
+   "face": "sul",
+   "rds": "2.1",
+   "larg": 1.27
+  },
+  "S8": {
+   "papel": "saida",
+   "rotulo": "saída de eleitor",
+   "face": "sul",
+   "rds": "sem codigo RDS",
+   "larg": 1.2
+  },
+  "S9": {
+   "papel": "livre",
+   "rotulo": "porta de carga, sem papel de eleitor",
+   "face": "sul",
+   "rds": "carga leste",
+   "larg": 3.63
+  },
+  "O1": {
+   "papel": "fechada",
+   "rotulo": "acesso ao Hall 1, fechado no dia",
+   "face": "oeste",
+   "rds": "acesso Hall 1",
+   "larg": 1.7
+  },
+  "O2": {
+   "papel": "livre",
+   "rotulo": "acesso de serviço — mantida desobstruída",
+   "face": "oeste",
+   "rds": "2.10/2.11",
+   "larg": 3.07
+  },
+  "R1": {
+   "papel": "livre",
+   "rotulo": "recorte sudoeste — recuo de emergência",
+   "face": "recorte_v",
+   "rds": "2.8/2.9",
+   "larg": 3.5
+  }
+ },
+ "zonas_protegidas": [
+  {
+   "tipo": "faixa_emergencia",
+   "porta": "L1 a L4",
+   "rect": [
+    47.3,
+    0.0,
+    50.3,
+    44.4
+   ],
+   "rotulo": "fachada leste · faixa protegida de 3 m para as saídas de emergência"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "N2",
+   "rect": [
+    20.66,
+    41.4,
+    24.22,
+    44.4
+   ],
+   "rotulo": "N2 · recuo de 3 m, sem mesa e sem fila"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "O2",
+   "rect": [
+    0.0,
+    19.36,
+    3.0,
+    22.43
+   ],
+   "rotulo": "O2 · recuo de 3 m, sem mesa e sem fila"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "S7",
+   "rect": [
+    35.09,
+    0.0,
+    42.36,
+    3.0
+   ],
+   "rotulo": "S7 · recuo da entrada preferencial"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "R1",
+   "rect": [
+    7.8,
+    0.0,
+    10.8,
+    7.0
+   ],
+   "rotulo": "R1 · recuo de emergência"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "S3",
+   "rect": [
+    14.22,
+    0.0,
+    21.47,
+    3.0
+   ],
+   "rotulo": "S3 · recuo de emergência"
+  }
+ ]
 }

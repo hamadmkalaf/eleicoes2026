@@ -86,6 +86,8 @@ def monta(planta, decisoes, dados, cenario):
                       "por_metro": e["por_metro"]}
                      for e in decisoes["entradas"]],
         "saidas": decisoes["saidas"],
+        "sinalizacao": decisoes["sinalizacao_portas"],
+        "zonas": decisoes["zonas_protegidas"],
         "classes": {"n_alta": decisoes["classes"]["n_alta"],
                     "limiar_media": decisoes["classes"]["limiar_media"]},
         "comparecimento": {k: decisoes["comparecimento"][k] for k in ("base", "rotulo", "total", "aptos")},

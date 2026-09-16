@@ -1,0 +1,2097 @@
+{
+ "gerado_por": "scripts/sinalizacao_v2.py",
+ "prancheta": {
+  "id": "paredes-abc-20260915",
+  "nome": "Paredes_ABC"
+ },
+ "salao": {
+  "largura": 50.3,
+  "altura": 44.4,
+  "recorte": [
+   0.0,
+   0.0,
+   7.8,
+   7.0
+  ],
+  "contorno": [
+   [
+    7.8,
+    0.0
+   ],
+   [
+    50.3,
+    0.0
+   ],
+   [
+    50.3,
+    44.4
+   ],
+   [
+    0.0,
+    44.4
+   ],
+   [
+    0.0,
+    7.0
+   ],
+   [
+    7.8,
+    7.0
+   ]
+  ]
+ },
+ "portas_salao": [
+  {
+   "id": "N1",
+   "rds": "2.13",
+   "face": "norte",
+   "estado": "fechada",
+   "x1": 7.41,
+   "y1": 44.4,
+   "x2": 9.44,
+   "y2": 44.4,
+   "larg": 2.03
+  },
+  {
+   "id": "N2",
+   "rds": "2.14/2.15",
+   "face": "norte",
+   "estado": "catering",
+   "x1": 20.66,
+   "y1": 44.4,
+   "x2": 24.22,
+   "y2": 44.4,
+   "larg": 3.56
+  },
+  {
+   "id": "L1",
+   "rds": "2.16/2.17",
+   "face": "leste",
+   "estado": "emergencia",
+   "x1": 50.3,
+   "y1": 38.51,
+   "x2": 50.3,
+   "y2": 41.57,
+   "larg": 3.06
+  },
+  {
+   "id": "L2",
+   "rds": "2.18/2.19",
+   "face": "leste",
+   "estado": "emergencia",
+   "x1": 50.3,
+   "y1": 26.66,
+   "x2": 50.3,
+   "y2": 29.72,
+   "larg": 3.06
+  },
+  {
+   "id": "L3",
+   "rds": "2.20/2.21",
+   "face": "leste",
+   "estado": "emergencia",
+   "x1": 50.3,
+   "y1": 14.8,
+   "x2": 50.3,
+   "y2": 17.87,
+   "larg": 3.07
+  },
+  {
+   "id": "L4",
+   "rds": "2.22/2.23",
+   "face": "leste",
+   "estado": "emergencia",
+   "x1": 50.3,
+   "y1": 2.95,
+   "x2": 50.3,
+   "y2": 6.01,
+   "larg": 3.06
+  },
+  {
+   "id": "S1",
+   "rds": "carga oeste",
+   "face": "sul",
+   "estado": "livre",
+   "x1": 7.83,
+   "y1": 0.0,
+   "x2": 11.45,
+   "y2": 0.0,
+   "larg": 3.62
+  },
+  {
+   "id": "S2",
+   "rds": "sem codigo RDS",
+   "face": "sul",
+   "estado": "saida",
+   "x1": 13.25,
+   "y1": 0.0,
+   "x2": 14.45,
+   "y2": 0.0,
+   "larg": 1.2
+  },
+  {
+   "id": "S3",
+   "rds": "2.7",
+   "face": "sul",
+   "estado": "livre",
+   "x1": 17.22,
+   "y1": 0.0,
+   "x2": 18.47,
+   "y2": 0.0,
+   "larg": 1.25
+  },
+  {
+   "id": "S4",
+   "rds": "2.5/2.6",
+   "face": "sul",
+   "estado": "entrada",
+   "x1": 19.1,
+   "y1": 0.0,
+   "x2": 25.03,
+   "y2": 0.0,
+   "larg": 5.93
+  },
+  {
+   "id": "S5",
+   "rds": "2.4",
+   "face": "sul",
+   "estado": "entrada",
+   "x1": 25.32,
+   "y1": 0.0,
+   "x2": 31.25,
+   "y2": 0.0,
+   "larg": 5.93
+  },
+  {
+   "id": "S6",
+   "rds": "2.2/2.3",
+   "face": "sul",
+   "estado": "entrada",
+   "x1": 31.54,
+   "y1": 0.0,
+   "x2": 37.47,
+   "y2": 0.0,
+   "larg": 5.93
+  },
+  {
+   "id": "S7",
+   "rds": "2.1",
+   "face": "sul",
+   "estado": "livre",
+   "x1": 38.09,
+   "y1": 0.0,
+   "x2": 39.36,
+   "y2": 0.0,
+   "larg": 1.27
+  },
+  {
+   "id": "S8",
+   "rds": "sem codigo RDS",
+   "face": "sul",
+   "estado": "saida",
+   "x1": 42.12,
+   "y1": 0.0,
+   "x2": 43.32,
+   "y2": 0.0,
+   "larg": 1.2
+  },
+  {
+   "id": "S9",
+   "rds": "carga leste",
+   "face": "sul",
+   "estado": "livre",
+   "x1": 45.12,
+   "y1": 0.0,
+   "x2": 48.75,
+   "y2": 0.0,
+   "larg": 3.63
+  },
+  {
+   "id": "O1",
+   "rds": "acesso Hall 1",
+   "face": "oeste",
+   "estado": "fechada",
+   "x1": 0.0,
+   "y1": 36.8,
+   "x2": 0.0,
+   "y2": 38.5,
+   "larg": 1.7
+  },
+  {
+   "id": "O2",
+   "rds": "2.10/2.11",
+   "face": "oeste",
+   "estado": "livre",
+   "x1": 0.0,
+   "y1": 19.36,
+   "x2": 0.0,
+   "y2": 22.43,
+   "larg": 3.07
+  },
+  {
+   "id": "R1",
+   "rds": "2.8/2.9",
+   "face": "recorte_v",
+   "estado": "livre",
+   "x1": 7.8,
+   "y1": 3.0,
+   "x2": 7.8,
+   "y2": 6.5,
+   "larg": 3.5
+  }
+ ],
+ "sinalizacao_portas": {
+  "N1": {
+   "papel": "fechada",
+   "rotulo": "porta de serviço, fechada no dia",
+   "face": "norte",
+   "rds": "2.13",
+   "larg": 2.03
+  },
+  "N2": {
+   "papel": "livre",
+   "rotulo": "acesso de serviço — mantida desobstruída",
+   "face": "norte",
+   "rds": "2.14/2.15",
+   "larg": 3.56
+  },
+  "L1": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.16/2.17",
+   "larg": 3.06
+  },
+  "L2": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.18/2.19",
+   "larg": 3.06
+  },
+  "L3": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.20/2.21",
+   "larg": 3.07
+  },
+  "L4": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.22/2.23",
+   "larg": 3.06
+  },
+  "S1": {
+   "papel": "livre",
+   "rotulo": "porta de carga, sem papel de eleitor",
+   "face": "sul",
+   "rds": "carga oeste",
+   "larg": 3.62
+  },
+  "S2": {
+   "papel": "saida",
+   "rotulo": "saída de eleitor",
+   "face": "sul",
+   "rds": "sem codigo RDS",
+   "larg": 1.2
+  },
+  "S3": {
+   "papel": "livre",
+   "rotulo": "recuo de emergência",
+   "face": "sul",
+   "rds": "2.7",
+   "larg": 1.25
+  },
+  "S4": {
+   "papel": "entrada",
+   "entrada": "A",
+   "parede": "oeste",
+   "rotulo": "entrada A — parede oeste",
+   "face": "sul",
+   "rds": "2.5/2.6",
+   "larg": 5.93
+  },
+  "S5": {
+   "papel": "entrada",
+   "entrada": "B",
+   "parede": "norte",
+   "rotulo": "entrada B — parede norte",
+   "face": "sul",
+   "rds": "2.4",
+   "larg": 5.93
+  },
+  "S6": {
+   "papel": "entrada",
+   "entrada": "C",
+   "parede": "leste",
+   "rotulo": "entrada C — parede leste",
+   "face": "sul",
+   "rds": "2.2/2.3",
+   "larg": 5.93
+  },
+  "S7": {
+   "papel": "preferencial",
+   "rotulo": "entrada preferencial — idoso, gestante, PcD, com acompanhante, sem fila",
+   "face": "sul",
+   "rds": "2.1",
+   "larg": 1.27
+  },
+  "S8": {
+   "papel": "saida",
+   "rotulo": "saída de eleitor",
+   "face": "sul",
+   "rds": "sem codigo RDS",
+   "larg": 1.2
+  },
+  "S9": {
+   "papel": "livre",
+   "rotulo": "porta de carga, sem papel de eleitor",
+   "face": "sul",
+   "rds": "carga leste",
+   "larg": 3.63
+  },
+  "O1": {
+   "papel": "fechada",
+   "rotulo": "acesso ao Hall 1, fechado no dia",
+   "face": "oeste",
+   "rds": "acesso Hall 1",
+   "larg": 1.7
+  },
+  "O2": {
+   "papel": "livre",
+   "rotulo": "acesso de serviço — mantida desobstruída",
+   "face": "oeste",
+   "rds": "2.10/2.11",
+   "larg": 3.07
+  },
+  "R1": {
+   "papel": "livre",
+   "rotulo": "recorte sudoeste — recuo de emergência",
+   "face": "recorte_v",
+   "rds": "2.8/2.9",
+   "larg": 3.5
+  }
+ },
+ "zonas_livres": [
+  {
+   "tipo": "faixa_emergencia",
+   "porta": "L1 a L4",
+   "rect": [
+    47.3,
+    0.0,
+    50.3,
+    44.4
+   ],
+   "rotulo": "fachada leste · faixa protegida de 3 m para as saídas de emergência"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "N2",
+   "rect": [
+    20.66,
+    41.4,
+    24.22,
+    44.4
+   ],
+   "rotulo": "N2 · recuo de 3 m, sem mesa e sem fila"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "O2",
+   "rect": [
+    0.0,
+    19.36,
+    3.0,
+    22.43
+   ],
+   "rotulo": "O2 · recuo de 3 m, sem mesa e sem fila"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "S7",
+   "rect": [
+    35.09,
+    0.0,
+    42.36,
+    3.0
+   ],
+   "rotulo": "S7 · recuo da entrada preferencial"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "R1",
+   "rect": [
+    7.8,
+    0.0,
+    10.8,
+    7.0
+   ],
+   "rotulo": "R1 · recuo de emergência"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "S3",
+   "rect": [
+    14.22,
+    0.0,
+    21.47,
+    3.0
+   ],
+   "rotulo": "S3 · recuo de emergência"
+  },
+  {
+   "tipo": "sala_apoio",
+   "porta": "O1",
+   "rect": [
+    0.0,
+    38.5,
+    7.8,
+    44.4
+   ],
+   "rotulo": "sala de apoio — vão entre O1 e a parede norte (profundidade a confirmar em campo)"
+  }
+ ],
+ "serpenteados": [
+  {
+   "tipo": "serpenteado",
+   "parede": "oeste",
+   "mrv": 22,
+   "rect": [
+    4.1,
+    21.72,
+    8.3,
+    24.52
+   ],
+   "raias": 2,
+   "passo_raia": 1.4,
+   "profundidade": 4.2,
+   "pessoas": 20,
+   "rotulo": "MRV 22 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"
+  },
+  {
+   "tipo": "serpenteado",
+   "parede": "norte",
+   "mrv": 23,
+   "rect": [
+    17.16,
+    36.1,
+    19.96,
+    40.3
+   ],
+   "raias": 2,
+   "passo_raia": 1.4,
+   "profundidade": 4.2,
+   "pessoas": 20,
+   "rotulo": "MRV 23 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"
+  },
+  {
+   "tipo": "serpenteado",
+   "parede": "leste",
+   "mrv": 24,
+   "rect": [
+    39.0,
+    27.45,
+    43.2,
+    30.25
+   ],
+   "raias": 2,
+   "passo_raia": 1.4,
+   "profundidade": 4.2,
+   "pessoas": 20,
+   "rotulo": "MRV 24 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"
+  }
+ ],
+ "ring": {
+  "x0": 6.285,
+  "x1": 50.285,
+  "y_norte": -14.0,
+  "y_sul": -49.0,
+  "apron": 14.0,
+  "corredor": 3.0,
+  "fundo": 3.0,
+  "vao_zonas": 1.2,
+  "zonas": {
+   "A": [
+    6.285,
+    18.515
+   ],
+   "B": [
+    19.715,
+    33.855
+   ],
+   "C": [
+    35.055,
+    47.285
+   ]
+  },
+  "raias": 23,
+  "passo_raia": 1.4,
+  "bocas": {
+   "A": [
+    16.285,
+    18.515
+   ],
+   "B": [
+    31.715,
+    33.855
+   ],
+   "C": [
+    45.055,
+    47.285
+   ]
+  },
+  "entrada": "canto nordeste"
+ },
+ "parede_leste": {
+  "comprimento": 44.0,
+  "saidas_emergencia": [
+   4.7,
+   16.8,
+   28.2,
+   39.6
+  ],
+  "paineis": [
+   10.75,
+   22.5,
+   33.9
+  ]
+ },
+ "cores": {
+  "A": "#1f5fa8",
+  "B": "#b8760a",
+  "C": "#8b3a8e"
+ },
+ "cores_escuro": {
+  "A": "#79b0ea",
+  "B": "#e8b354",
+  "C": "#cb8ace"
+ },
+ "portas": [
+  {
+   "letra": "A",
+   "parede": "oeste",
+   "porta": "S4",
+   "cor": "#1f5fa8",
+   "nome_cor": "azul",
+   "mesas": 9,
+   "blocos": [
+    {
+     "id": "BA1",
+     "tipo": "par",
+     "mrvs": [
+      20,
+      10
+     ],
+     "coord": [
+      8.03,
+      11.93
+     ],
+     "secoes": [
+      1278,
+      1314,
+      3142,
+      3309
+     ],
+     "por_mesa": [
+      [
+       1314,
+       3309
+      ],
+      [
+       1278,
+       3142
+      ]
+     ],
+     "aptos": 1408,
+     "esperado": 861,
+     "classe": "media",
+     "pos_banner": [
+      4.6,
+      9.98
+     ]
+    },
+    {
+     "id": "BA2",
+     "tipo": "par",
+     "mrvs": [
+      11,
+      21
+     ],
+     "coord": [
+      14.33,
+      18.23
+     ],
+     "secoes": [
+      3161,
+      3307,
+      3311,
+      3913
+     ],
+     "por_mesa": [
+      [
+       3161,
+       3307
+      ],
+      [
+       3311,
+       3913
+      ]
+     ],
+     "aptos": 1421,
+     "esperado": 970,
+     "classe": "media",
+     "pos_banner": [
+      4.6,
+      16.28
+     ]
+    },
+    {
+     "id": "BA3",
+     "tipo": "isolada",
+     "mrvs": [
+      22
+     ],
+     "coord": [
+      23.12
+     ],
+     "secoes": [
+      3313,
+      3889
+     ],
+     "por_mesa": [
+      [
+       3313,
+       3889
+      ]
+     ],
+     "aptos": 797,
+     "esperado": 590,
+     "classe": "alta",
+     "pos_banner": [
+      4.6,
+      23.12
+     ]
+    },
+    {
+     "id": "BA4",
+     "tipo": "par",
+     "mrvs": [
+      3,
+      6
+     ],
+     "coord": [
+      25.92,
+      29.82
+     ],
+     "secoes": [
+      513,
+      522,
+      1105,
+      1352
+     ],
+     "por_mesa": [
+      [
+       513,
+       1105
+      ],
+      [
+       522,
+       1352
+      ]
+     ],
+     "aptos": 964,
+     "esperado": 679,
+     "classe": "baixa",
+     "pos_banner": [
+      4.6,
+      27.87
+     ]
+    },
+    {
+     "id": "BA5",
+     "tipo": "par",
+     "mrvs": [
+      8,
+      12
+     ],
+     "coord": [
+      32.22,
+      36.12
+     ],
+     "secoes": [
+      530,
+      2847,
+      3078,
+      3179
+     ],
+     "por_mesa": [
+      [
+       2847,
+       3078
+      ],
+      [
+       530,
+       3179
+      ]
+     ],
+     "aptos": 1105,
+     "esperado": 734,
+     "classe": "baixa",
+     "pos_banner": [
+      4.6,
+      34.17
+     ]
+    }
+   ],
+   "pares": 4,
+   "isoladas": 1,
+   "secoes": [
+    513,
+    522,
+    530,
+    1105,
+    1278,
+    1314,
+    1352,
+    2847,
+    3078,
+    3142,
+    3161,
+    3179,
+    3307,
+    3309,
+    3311,
+    3313,
+    3889,
+    3913
+   ],
+   "secoes_em_ordem_fisica": [
+    [
+     1278,
+     1314,
+     3142,
+     3309
+    ],
+    [
+     3161,
+     3307,
+     3311,
+     3913
+    ],
+    [
+     3313,
+     3889
+    ],
+    [
+     513,
+     522,
+     1105,
+     1352
+    ],
+    [
+     530,
+     2847,
+     3078,
+     3179
+    ]
+   ],
+   "aptos": 5695,
+   "esperado": 3834,
+   "metros": 24.63
+  },
+  {
+   "letra": "B",
+   "parede": "norte",
+   "porta": "S5",
+   "cor": "#b8760a",
+   "nome_cor": "âmbar",
+   "mesas": 9,
+   "blocos": [
+    {
+     "id": "BB1",
+     "tipo": "par",
+     "mrvs": [
+      2,
+      5
+     ],
+     "coord": [
+      11.86,
+      15.76
+     ],
+     "secoes": [
+      512,
+      1160,
+      2855,
+      3845
+     ],
+     "por_mesa": [
+      [
+       512,
+       2855
+      ],
+      [
+       1160,
+       3845
+      ]
+     ],
+     "aptos": 949,
+     "esperado": 683,
+     "classe": "baixa",
+     "pos_banner": [
+      13.81,
+      39.8
+     ]
+    },
+    {
+     "id": "BB2",
+     "tipo": "isolada",
+     "mrvs": [
+      23
+     ],
+     "coord": [
+      18.56
+     ],
+     "secoes": [
+      3315,
+      3778
+     ],
+     "por_mesa": [
+      [
+       3315,
+       3778
+      ]
+     ],
+     "aptos": 792,
+     "esperado": 586,
+     "classe": "alta",
+     "pos_banner": [
+      18.56,
+      39.8
+     ]
+    },
+    {
+     "id": "BB3",
+     "tipo": "par",
+     "mrvs": [
+      9,
+      16
+     ],
+     "coord": [
+      25.23,
+      29.13
+     ],
+     "secoes": [
+      3108,
+      3181,
+      3302,
+      3422
+     ],
+     "por_mesa": [
+      [
+       3108,
+       3422
+      ],
+      [
+       3181,
+       3302
+      ]
+     ],
+     "aptos": 1527,
+     "esperado": 985,
+     "classe": "media",
+     "pos_banner": [
+      27.18,
+      39.8
+     ]
+    },
+    {
+     "id": "BB4",
+     "tipo": "par",
+     "mrvs": [
+      17,
+      18
+     ],
+     "coord": [
+      31.53,
+      35.43
+     ],
+     "secoes": [
+      518,
+      521,
+      3305,
+      3306
+     ],
+     "por_mesa": [
+      [
+       521,
+       3305
+      ],
+      [
+       518,
+       3306
+      ]
+     ],
+     "aptos": 1533,
+     "esperado": 987,
+     "classe": "media",
+     "pos_banner": [
+      33.48,
+      39.8
+     ]
+    },
+    {
+     "id": "BB5",
+     "tipo": "par",
+     "mrvs": [
+      19,
+      27
+     ],
+     "coord": [
+      37.83,
+      41.73
+     ],
+     "secoes": [
+      3308,
+      3832
+     ],
+     "por_mesa": [
+      [
+       3308
+      ],
+      [
+       3832
+      ]
+     ],
+     "aptos": 799,
+     "esperado": 591,
+     "classe": "baixa",
+     "pos_banner": [
+      39.78,
+      39.8
+     ]
+    }
+   ],
+   "pares": 4,
+   "isoladas": 1,
+   "secoes": [
+    512,
+    518,
+    521,
+    1160,
+    2855,
+    3108,
+    3181,
+    3302,
+    3305,
+    3306,
+    3308,
+    3315,
+    3422,
+    3778,
+    3832,
+    3845
+   ],
+   "secoes_em_ordem_fisica": [
+    [
+     512,
+     1160,
+     2855,
+     3845
+    ],
+    [
+     3315,
+     3778
+    ],
+    [
+     3108,
+     3181,
+     3302,
+     3422
+    ],
+    [
+     518,
+     521,
+     3305,
+     3306
+    ],
+    [
+     3308,
+     3832
+    ]
+   ],
+   "aptos": 5600,
+   "esperado": 3832,
+   "metros": 27.64
+  },
+  {
+   "letra": "C",
+   "parede": "leste",
+   "porta": "S6",
+   "cor": "#8b3a8e",
+   "nome_cor": "magenta",
+   "mesas": 10,
+   "blocos": [
+    {
+     "id": "BC1",
+     "tipo": "isolada",
+     "mrvs": [
+      25
+     ],
+     "coord": [
+      7.15
+     ],
+     "secoes": [
+      3442
+     ],
+     "por_mesa": [
+      [
+       3442
+      ]
+     ],
+     "aptos": 398,
+     "esperado": 295,
+     "classe": "baixa",
+     "pos_banner": [
+      45.7,
+      7.15
+     ]
+    },
+    {
+     "id": "BC2",
+     "tipo": "par",
+     "mrvs": [
+      26,
+      14
+     ],
+     "coord": [
+      9.55,
+      13.45
+     ],
+     "secoes": [
+      3229,
+      3688,
+      3821
+     ],
+     "por_mesa": [
+      [
+       3688
+      ],
+      [
+       3229,
+       3821
+      ]
+     ],
+     "aptos": 1006,
+     "esperado": 701,
+     "classe": "baixa",
+     "pos_banner": [
+      45.7,
+      11.5
+     ]
+    },
+    {
+     "id": "BC3",
+     "tipo": "par",
+     "mrvs": [
+      15,
+      28
+     ],
+     "coord": [
+      15.85,
+      19.75
+     ],
+     "secoes": [
+      519,
+      3245,
+      3862
+     ],
+     "por_mesa": [
+      [
+       519,
+       3245
+      ],
+      [
+       3862
+      ]
+     ],
+     "aptos": 1181,
+     "esperado": 794,
+     "classe": "media",
+     "pos_banner": [
+      45.7,
+      17.8
+     ]
+    },
+    {
+     "id": "BC4",
+     "tipo": "par",
+     "mrvs": [
+      13,
+      7
+     ],
+     "coord": [
+      22.15,
+      26.05
+     ],
+     "secoes": [
+      527,
+      1099,
+      3054,
+      3216
+     ],
+     "por_mesa": [
+      [
+       527,
+       3216
+      ],
+      [
+       1099,
+       3054
+      ]
+     ],
+     "aptos": 1025,
+     "esperado": 732,
+     "classe": "baixa",
+     "pos_banner": [
+      45.7,
+      24.1
+     ]
+    },
+    {
+     "id": "BC5",
+     "tipo": "isolada",
+     "mrvs": [
+      24
+     ],
+     "coord": [
+      28.85
+     ],
+     "secoes": [
+      3322,
+      3752
+     ],
+     "por_mesa": [
+      [
+       3322,
+       3752
+      ]
+     ],
+     "aptos": 794,
+     "esperado": 588,
+     "classe": "alta",
+     "pos_banner": [
+      45.7,
+      28.85
+     ]
+    },
+    {
+     "id": "BC6",
+     "tipo": "par",
+     "mrvs": [
+      4,
+      1
+     ],
+     "coord": [
+      31.65,
+      35.55
+     ],
+     "secoes": [
+      511,
+      517,
+      1100,
+      1292
+     ],
+     "por_mesa": [
+      [
+       517,
+       1292
+      ],
+      [
+       511,
+       1100
+      ]
+     ],
+     "aptos": 1095,
+     "esperado": 723,
+     "classe": "baixa",
+     "pos_banner": [
+      45.7,
+      33.6
+     ]
+    }
+   ],
+   "pares": 4,
+   "isoladas": 2,
+   "secoes": [
+    511,
+    517,
+    519,
+    527,
+    1099,
+    1100,
+    1292,
+    3054,
+    3216,
+    3229,
+    3245,
+    3322,
+    3442,
+    3688,
+    3752,
+    3821,
+    3862
+   ],
+   "secoes_em_ordem_fisica": [
+    [
+     3442
+    ],
+    [
+     3229,
+     3688,
+     3821
+    ],
+    [
+     519,
+     3245,
+     3862
+    ],
+    [
+     527,
+     1099,
+     3054,
+     3216
+    ],
+    [
+     3322,
+     3752
+    ],
+    [
+     511,
+     517,
+     1100,
+     1292
+    ]
+   ],
+   "aptos": 5499,
+   "esperado": 3833,
+   "metros": 36.3
+  }
+ ],
+ "mestra": [
+  {
+   "secao": 511,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 512,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 513,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 517,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 518,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Outros Locais Da Irlanda",
+   "aptos": 370
+  },
+  {
+   "secao": 519,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Cork",
+   "aptos": 384
+  },
+  {
+   "secao": 521,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Galway",
+   "aptos": 370
+  },
+  {
+   "secao": 522,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Donegal",
+   "aptos": 62
+  },
+  {
+   "secao": 527,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Clare",
+   "aptos": 173
+  },
+  {
+   "secao": 530,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Westmeath",
+   "aptos": 278
+  },
+  {
+   "secao": 1099,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Kerry",
+   "aptos": 54
+  },
+  {
+   "secao": 1100,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Roscommon",
+   "aptos": 182
+  },
+  {
+   "secao": 1105,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Mayo",
+   "aptos": 102
+  },
+  {
+   "secao": 1160,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 1278,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Limerick",
+   "aptos": 395
+  },
+  {
+   "secao": 1292,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Cavan",
+   "aptos": 113
+  },
+  {
+   "secao": 1314,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Waterford",
+   "aptos": 217
+  },
+  {
+   "secao": 1352,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 2847,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Leitrim",
+   "aptos": 29
+  },
+  {
+   "secao": 2855,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Longford",
+   "aptos": 76
+  },
+  {
+   "secao": 3054,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 3078,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 3108,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 398
+  },
+  {
+   "secao": 3142,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 398
+  },
+  {
+   "secao": 3161,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 397
+  },
+  {
+   "secao": 3179,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 398
+  },
+  {
+   "secao": 3181,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Outros Locais Da Irlanda",
+   "aptos": 375
+  },
+  {
+   "secao": 3216,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 398
+  },
+  {
+   "secao": 3229,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 398
+  },
+  {
+   "secao": 3245,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 397
+  },
+  {
+   "secao": 3302,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 396
+  },
+  {
+   "secao": 3305,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 397
+  },
+  {
+   "secao": 3306,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 396
+  },
+  {
+   "secao": 3307,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Cork",
+   "aptos": 394
+  },
+  {
+   "secao": 3308,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 399
+  },
+  {
+   "secao": 3309,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 398
+  },
+  {
+   "secao": 3311,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 397
+  },
+  {
+   "secao": 3313,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 397
+  },
+  {
+   "secao": 3315,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 395
+  },
+  {
+   "secao": 3322,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 398
+  },
+  {
+   "secao": 3422,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Galway",
+   "aptos": 358
+  },
+  {
+   "secao": 3442,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 398
+  },
+  {
+   "secao": 3688,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 3752,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 396
+  },
+  {
+   "secao": 3778,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 397
+  },
+  {
+   "secao": 3821,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Cork",
+   "aptos": 208
+  },
+  {
+   "secao": 3832,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 3845,
+   "porta": "B",
+   "parede": "norte",
+   "origem": "Limerick",
+   "aptos": 73
+  },
+  {
+   "secao": 3862,
+   "porta": "C",
+   "parede": "leste",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 3889,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 400
+  },
+  {
+   "secao": 3913,
+   "porta": "A",
+   "parede": "oeste",
+   "origem": "Dublin",
+   "aptos": 233
+  }
+ ],
+ "condados_ambiguos": [
+  "Cork",
+  "Limerick"
+ ],
+ "comparecimento": {
+  "base": "B",
+  "rotulo": "taxa de 2022 por domicílio de origem (base B, não oficial)",
+  "total": 11499,
+  "aptos": 16794
+ },
+ "modelos": {
+  "mesh": {
+   "nome": "Banner em mesh 2,0 × 1,0 m",
+   "desc": "Poliéster perfurado (70/30), bainha e ilhós a cada 50 cm. Deixa o vento passar; é a única peça admissível em grade, gradil e CCB.",
+   "preco": 60.0,
+   "fonte": "mesh 'from €20 + VAT' (Kaizen Print, Printroom); PVC 2×4 ft €25–45 (PrintNPack). Valor de 2×1 m é extrapolação."
+  },
+  "pvc": {
+   "nome": "Banner PVC 440 g 1,8 × 1,2 m",
+   "desc": "Lona fechada com ilhós, só onde a parede abriga do vento (lateral leste do Hall 2).",
+   "preco": 55.0,
+   "fonte": "banners maiores €60–150 (PrintNPack); £15/m² no Reino Unido (Synegraphics)."
+  },
+  "pullup": {
+   "nome": "Pull-up 850 × 2000 mm",
+   "desc": "Cassete com base própria; interno. Letra da porta em 300 mm e as seções da parede em 60 mm.",
+   "preco": 85.0,
+   "fonte": "€80 (PrintNPack) a €90 (Bannerz.ie), inc. IVA."
+  },
+  "xbanner": {
+   "nome": "X-banner 600 × 1600 mm",
+   "desc": "Tripé em X com lona tensionada; o formato autoportante mais barato. Interno, um por bloco de mesas.",
+   "preco": 40.0,
+   "fonte": "PREMISSA — não verificado em fonte irlandesa; ordem de grandeza de pull-up de entrada menos a cassete."
+  },
+  "correx": {
+   "nome": "Placa correx 4 mm A2",
+   "desc": "Placa rígida leve, furada nos cantos para abraçadeira.",
+   "preco": 15.0,
+   "fonte": "correx 'from €5' (Printco Dublin); A1 £35 + VAT no Reino Unido."
+  },
+  "vinil": {
+   "nome": "Vinil recortado por porta",
+   "desc": "Letra da porta em 300 mm + ENTRADA, colado por dentro do vidro da fachada sul. Sem estrutura.",
+   "preco": 30.0,
+   "fonte": "PREMISSA — recorte simples de 4–8 caracteres."
+  },
+  "fixacao": {
+   "nome": "Fixação (abraçadeiras, ímãs, fita)",
+   "desc": "200 abraçadeiras de nylon 300 mm, 12 ganchos magnéticos para as portas de aço, fita dupla-face para o vinil.",
+   "preco": 40.0,
+   "fonte": "PREMISSA — itens de ferragem."
+  }
+ },
+ "pecas": [
+  {
+   "ponto": "P0",
+   "nome": "Ponto “descubra sua seção”",
+   "onde": "Calçada da Merrion Road, no gradil do RDS, 20–30 m antes do portão, fora do fluxo: mesa, 2–3 operadores com o caderno impresso e o e-Título",
+   "diz": "NÃO SABE SUA SEÇÃO? · Don’t know your section? · Consulte aqui ANTES de entrar · QR do e-Título",
+   "modelo": "mesh",
+   "qtd": 1,
+   "fixacao": "amarrado no gradil de ferro fundido, ilhós a ilhós",
+   "externo": true,
+   "corpo": "letra 150 mm · lido a 30 m"
+  },
+  {
+   "ponto": "P0",
+   "nome": "Tabela mestra na calçada",
+   "onde": "Gradil da Merrion Road, ao lado do ponto de consulta e no trecho onde a fila da calçada se forma",
+   "diz": "SEÇÃO → PORTA · 51 linhas em 3 colunas, cor e letra da porta",
+   "modelo": "mesh",
+   "qtd": 2,
+   "fixacao": "amarrado no gradil",
+   "externo": true,
+   "corpo": "dígitos 30 mm · lido a 6 m"
+  },
+  {
+   "ponto": "P1",
+   "nome": "Portão de entrada do RDS",
+   "onde": "Nas grades do portão de eleitores (Merrion Road), uma folha de cada lado do vão",
+   "diz": "ELEIÇÕES BRASIL 2026 · ENTRADA DE ELEITORES → Hall 2 (Shelbourne Hall) · Preferencial: idoso, gestante, PcD →",
+   "modelo": "mesh",
+   "qtd": 1,
+   "fixacao": "amarrado nas grades do portão",
+   "externo": true,
+   "corpo": "letra 150 mm"
+  },
+  {
+   "ponto": "P1",
+   "nome": "Tabela mestra no portão",
+   "onde": "Na outra folha da grade do portão",
+   "diz": "SEÇÃO → PORTA · 51 linhas",
+   "modelo": "mesh",
+   "qtd": 1,
+   "fixacao": "amarrado nas grades do portão",
+   "externo": true,
+   "corpo": "dígitos 30 mm"
+  },
+  {
+   "ponto": "P2",
+   "nome": "Tabela mestra na parede leste do Hall 2",
+   "onde": "Nos três vãos entre as quatro saídas de emergência da lateral leste, a 10,75 · 22,50 · 33,90 m do canto norte; borda inferior a 1,0 m",
+   "diz": "SEÇÃO → PORTA · 51 linhas + seta “Ring 3 ↓”",
+   "modelo": "pvc",
+   "qtd": 3,
+   "fixacao": "pendurado nas folhas das portas de serviço (aço pintado) com ganchos magnéticos; 4 cantos presos — parede abriga do vento",
+   "externo": true,
+   "corpo": "dígitos 40 mm · lido a 8 m"
+  },
+  {
+   "ponto": "P3",
+   "nome": "Entrada do Ring 3",
+   "onde": "Na CCB do corredor de chegada, logo depois do canto nordeste, virada para quem entra",
+   "diz": "SEÇÃO → PORTA · 51 linhas · “siga o corredor: C, depois B, depois A”",
+   "modelo": "mesh",
+   "qtd": 1,
+   "fixacao": "amarrado na CCB (painel de 2,0 m)",
+   "externo": true,
+   "corpo": "dígitos 30 mm"
+  },
+  {
+   "ponto": "P4",
+   "nome": "Boca da zona A",
+   "onde": "Na CCB de fechamento imediatamente antes da boca da zona A, virada para o trecho de fundo (quem caminha para oeste lê antes de chegar)",
+   "diz": "ZONA A · PORTA A · 18 seções em 80 mm · “não está aqui? siga em frente / volte”",
+   "modelo": "mesh",
+   "qtd": 1,
+   "fixacao": "amarrado na CCB (painel de 2,0 m × 1,1 m)",
+   "externo": true,
+   "corpo": "letra 400 mm · seções 80 mm · lido a 15 m"
+  },
+  {
+   "ponto": "P4",
+   "nome": "Boca da zona B",
+   "onde": "Na CCB de fechamento imediatamente antes da boca da zona B, virada para o trecho de fundo (quem caminha para oeste lê antes de chegar)",
+   "diz": "ZONA B · PORTA B · 16 seções em 80 mm · “não está aqui? siga em frente / volte”",
+   "modelo": "mesh",
+   "qtd": 1,
+   "fixacao": "amarrado na CCB (painel de 2,0 m × 1,1 m)",
+   "externo": true,
+   "corpo": "letra 400 mm · seções 80 mm · lido a 15 m"
+  },
+  {
+   "ponto": "P4",
+   "nome": "Boca da zona C",
+   "onde": "Na CCB de fechamento imediatamente antes da boca da zona C, virada para o trecho de fundo (quem caminha para oeste lê antes de chegar)",
+   "diz": "ZONA C · PORTA C · 17 seções em 80 mm · “não está aqui? siga em frente / volte”",
+   "modelo": "mesh",
+   "qtd": 1,
+   "fixacao": "amarrado na CCB (painel de 2,0 m × 1,1 m)",
+   "externo": true,
+   "corpo": "letra 400 mm · seções 80 mm · lido a 15 m"
+  },
+  {
+   "ponto": "P5",
+   "nome": "Letra da porta no vidro",
+   "onde": "Por dentro da cortina de vidro da fachada sul, sobre cada vão de entrada S4 · S5 · S6",
+   "diz": "ENTRADA + letra e cor da porta em 300 mm",
+   "modelo": "vinil",
+   "qtd": 3,
+   "fixacao": "colado no vidro; sai sem resíduo",
+   "externo": true,
+   "corpo": "300 mm · lido a 60 m, do Ring 3"
+  },
+  {
+   "ponto": "P5",
+   "nome": "Entrada preferencial",
+   "onde": "Gradil branco de pedestres do apron, junto à porta S7",
+   "diz": "ENTRADA PREFERENCIAL · Priority entrance · idoso, gestante, PcD, acompanhante · qualquer porta",
+   "modelo": "mesh",
+   "qtd": 1,
+   "fixacao": "amarrado no gradil do apron",
+   "externo": true,
+   "corpo": "letra 150 mm"
+  },
+  {
+   "ponto": "P6",
+   "nome": "Painel da porta A",
+   "onde": "Logo depois da porta S4, dentro do salão, do lado oposto à curva do eleitor",
+   "diz": "PORTA A · parede oeste · as 18 seções da parede, agrupadas por bloco, na ordem física",
+   "modelo": "pullup",
+   "qtd": 1,
+   "fixacao": "autoportante (cassete)",
+   "externo": false,
+   "corpo": "letra 300 mm · seções 60 mm"
+  },
+  {
+   "ponto": "P6",
+   "nome": "Painel da porta B",
+   "onde": "Logo depois da porta S5, dentro do salão, do lado oposto à curva do eleitor",
+   "diz": "PORTA B · parede norte · as 16 seções da parede, agrupadas por bloco, na ordem física",
+   "modelo": "pullup",
+   "qtd": 1,
+   "fixacao": "autoportante (cassete)",
+   "externo": false,
+   "corpo": "letra 300 mm · seções 60 mm"
+  },
+  {
+   "ponto": "P6",
+   "nome": "Painel da porta C",
+   "onde": "Logo depois da porta S6, dentro do salão, do lado oposto à curva do eleitor",
+   "diz": "PORTA C · parede leste · as 17 seções da parede, agrupadas por bloco, na ordem física",
+   "modelo": "pullup",
+   "qtd": 1,
+   "fixacao": "autoportante (cassete)",
+   "externo": false,
+   "corpo": "letra 300 mm · seções 60 mm"
+  },
+  {
+   "ponto": "P6",
+   "nome": "Banners de bloco — porta A",
+   "onde": "Na boca do corredor de cada bloco da parede oeste, a 4,6 m da parede",
+   "diz": "Só as seções do bloco (2 a 4 números), 4 dígitos, sem número de mesa",
+   "modelo": "xbanner",
+   "qtd": 5,
+   "fixacao": "autoportante (tripé em X)",
+   "externo": false,
+   "corpo": "seções 120 mm · lido a 20 m"
+  },
+  {
+   "ponto": "P6",
+   "nome": "Banners de bloco — porta B",
+   "onde": "Na boca do corredor de cada bloco da parede norte, a 4,6 m da parede",
+   "diz": "Só as seções do bloco (2 a 4 números), 4 dígitos, sem número de mesa",
+   "modelo": "xbanner",
+   "qtd": 5,
+   "fixacao": "autoportante (tripé em X)",
+   "externo": false,
+   "corpo": "seções 120 mm · lido a 20 m"
+  },
+  {
+   "ponto": "P6",
+   "nome": "Banners de bloco — porta C",
+   "onde": "Na boca do corredor de cada bloco da parede leste, a 4,6 m da parede",
+   "diz": "Só as seções do bloco (2 a 4 números), 4 dígitos, sem número de mesa",
+   "modelo": "xbanner",
+   "qtd": 6,
+   "fixacao": "autoportante (tripé em X)",
+   "externo": false,
+   "corpo": "seções 120 mm · lido a 20 m"
+  },
+  {
+   "ponto": "P7",
+   "nome": "Saídas S2 e S8",
+   "onde": "Dentro do salão, sobre cada vão de saída",
+   "diz": "SAÍDA · WAY OUT → Merrion Road",
+   "modelo": "correx",
+   "qtd": 2,
+   "fixacao": "abraçadeira no batente / fita",
+   "externo": false,
+   "corpo": "letra 150 mm"
+  },
+  {
+   "ponto": "—",
+   "nome": "Fixação",
+   "onde": "Todas as peças",
+   "diz": "—",
+   "modelo": "fixacao",
+   "qtd": 1,
+   "fixacao": "—",
+   "externo": true,
+   "corpo": "—"
+  }
+ ],
+ "orcamento": {
+  "linhas": [
+   {
+    "peca": "Ponto “descubra sua seção”",
+    "ponto": "P0",
+    "modelo": "mesh",
+    "qtd": 1,
+    "unit": 60.0,
+    "total": 60.0
+   },
+   {
+    "peca": "Tabela mestra na calçada",
+    "ponto": "P0",
+    "modelo": "mesh",
+    "qtd": 2,
+    "unit": 60.0,
+    "total": 120.0
+   },
+   {
+    "peca": "Portão de entrada do RDS",
+    "ponto": "P1",
+    "modelo": "mesh",
+    "qtd": 1,
+    "unit": 60.0,
+    "total": 60.0
+   },
+   {
+    "peca": "Tabela mestra no portão",
+    "ponto": "P1",
+    "modelo": "mesh",
+    "qtd": 1,
+    "unit": 60.0,
+    "total": 60.0
+   },
+   {
+    "peca": "Tabela mestra na parede leste do Hall 2",
+    "ponto": "P2",
+    "modelo": "pvc",
+    "qtd": 3,
+    "unit": 55.0,
+    "total": 165.0
+   },
+   {
+    "peca": "Entrada do Ring 3",
+    "ponto": "P3",
+    "modelo": "mesh",
+    "qtd": 1,
+    "unit": 60.0,
+    "total": 60.0
+   },
+   {
+    "peca": "Boca da zona A",
+    "ponto": "P4",
+    "modelo": "mesh",
+    "qtd": 1,
+    "unit": 60.0,
+    "total": 60.0
+   },
+   {
+    "peca": "Boca da zona B",
+    "ponto": "P4",
+    "modelo": "mesh",
+    "qtd": 1,
+    "unit": 60.0,
+    "total": 60.0
+   },
+   {
+    "peca": "Boca da zona C",
+    "ponto": "P4",
+    "modelo": "mesh",
+    "qtd": 1,
+    "unit": 60.0,
+    "total": 60.0
+   },
+   {
+    "peca": "Letra da porta no vidro",
+    "ponto": "P5",
+    "modelo": "vinil",
+    "qtd": 3,
+    "unit": 30.0,
+    "total": 90.0
+   },
+   {
+    "peca": "Entrada preferencial",
+    "ponto": "P5",
+    "modelo": "mesh",
+    "qtd": 1,
+    "unit": 60.0,
+    "total": 60.0
+   },
+   {
+    "peca": "Painel da porta A",
+    "ponto": "P6",
+    "modelo": "pullup",
+    "qtd": 1,
+    "unit": 85.0,
+    "total": 85.0
+   },
+   {
+    "peca": "Painel da porta B",
+    "ponto": "P6",
+    "modelo": "pullup",
+    "qtd": 1,
+    "unit": 85.0,
+    "total": 85.0
+   },
+   {
+    "peca": "Painel da porta C",
+    "ponto": "P6",
+    "modelo": "pullup",
+    "qtd": 1,
+    "unit": 85.0,
+    "total": 85.0
+   },
+   {
+    "peca": "Banners de bloco — porta A",
+    "ponto": "P6",
+    "modelo": "xbanner",
+    "qtd": 5,
+    "unit": 40.0,
+    "total": 200.0
+   },
+   {
+    "peca": "Banners de bloco — porta B",
+    "ponto": "P6",
+    "modelo": "xbanner",
+    "qtd": 5,
+    "unit": 40.0,
+    "total": 200.0
+   },
+   {
+    "peca": "Banners de bloco — porta C",
+    "ponto": "P6",
+    "modelo": "xbanner",
+    "qtd": 6,
+    "unit": 40.0,
+    "total": 240.0
+   },
+   {
+    "peca": "Saídas S2 e S8",
+    "ponto": "P7",
+    "modelo": "correx",
+    "qtd": 2,
+    "unit": 15.0,
+    "total": 30.0
+   },
+   {
+    "peca": "Fixação",
+    "ponto": "—",
+    "modelo": "fixacao",
+    "qtd": 1,
+    "unit": 40.0,
+    "total": 40.0
+   }
+  ],
+  "por_modelo": {
+   "mesh": {
+    "qtd": 10,
+    "total": 600.0
+   },
+   "pvc": {
+    "qtd": 3,
+    "total": 165.0
+   },
+   "vinil": {
+    "qtd": 3,
+    "total": 90.0
+   },
+   "pullup": {
+    "qtd": 3,
+    "total": 255.0
+   },
+   "xbanner": {
+    "qtd": 16,
+    "total": 640.0
+   },
+   "correx": {
+    "qtd": 2,
+    "total": 30.0
+   },
+   "fixacao": {
+    "qtd": 1,
+    "total": 40.0
+   }
+  },
+  "total": 1820.0
+ },
+ "faixa_orcamento": [
+  1700,
+  1900
+ ]
+}

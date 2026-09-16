@@ -12,6 +12,7 @@
   --entA:#2a78d6; --entB:#c26a00; --entC:#c2185b;
   --saida:#16867f; --realce:#1f6fb2;
   --emerg:#0e8a74; --pref:#6d3fa0; --fechada:#9aa4b0; --servico:#4a7a9b;
+  --apoio:#8a5a2b; --serp:#c0392b;
   --sombra:0 1px 2px rgba(22,32,43,.07), 0 8px 22px rgba(22,32,43,.07);
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
@@ -23,6 +24,7 @@
   --entA:#63a6e0; --entB:#e0a257; --entC:#e2789f;
   --saida:#3cb8ab; --realce:#63a6e0;
   --emerg:#42c0a5; --pref:#b18ede; --fechada:#6a737d; --servico:#7fb0cc;
+  --apoio:#c08e56; --serp:#e8806f;
   --sombra:0 1px 2px rgba(0,0,0,.45), 0 10px 26px rgba(0,0,0,.38);
 }}
 :root[data-theme="dark"]{
@@ -34,6 +36,7 @@
   --entA:#63a6e0; --entB:#e0a257; --entC:#e2789f;
   --saida:#3cb8ab; --realce:#63a6e0;
   --emerg:#42c0a5; --pref:#b18ede; --fechada:#6a737d; --servico:#7fb0cc;
+  --apoio:#c08e56; --serp:#e8806f;
   --sombra:0 1px 2px rgba(0,0,0,.45), 0 10px 26px rgba(0,0,0,.38);
 }
 
@@ -272,8 +275,16 @@ para ver as seções dela. No celular, o índice abaixo costuma ser mais rápido
   <span class="mono">N2</span> e <span class="mono">O2</span>, que são acessos de serviço e
   precisam abrir o dia inteiro; e os recuos de <span class="mono">S3</span>,
   <span class="mono">S7</span> e <span class="mono">R1</span>.
+  Na parede oeste, o trecho entre a porta <span class="mono">O1</span> e a parede norte
+  virou a <b>sala de apoio</b> e não recebe mesa.
   <span class="mono">S7</span> é a <b>entrada preferencial</b> — idoso, gestante, pessoa com
   deficiência e acompanhante entram por ali, sem fila, para qualquer uma das três paredes.</p>
+  <p><b>À frente de cada mesa vermelha</b> fica reservado o retângulo de um serpenteado de
+  ~<span id="nSerp">—</span> pessoas — <span id="nRaias">—</span> raias de
+  <span id="nProf">—</span> m, na medida de raia que o projeto já usa (1,40 m de passo,
+  2,4 pessoas por metro). O serpenteado <b>não está desenhado</b>: o que a planta garante é
+  que o espaço existe, com 1,90 m de folga dos dois lados da mesa, sem tomar a frente da
+  fila vizinha.</p>
   <p>Gerado por <span class="mono">scripts/gera_prancheta_por_secao.py</span> sobre o arranjo
   <span id="nCenario" class="mono">—</span>. Fontes: os três PDFs do Cartório Eleitoral em
   <span class="mono">data/oficiais/</span>, conferidos em
@@ -353,13 +364,45 @@ function desenha() {
     const [zx0, zy0, zx1, zy1] = z.rect;
     const [ax, ay] = px(zx0, zy1), [bx, by] = px(zx1, zy0);
     const emerg = z.tipo === "faixa_emergencia";
-    const cor = emerg ? tok("--emerg") : tok("--fraco");
+    const apoio = z.tipo === "sala_apoio";
+    const cor = emerg ? tok("--emerg") : (apoio ? tok("--apoio") : tok("--fraco"));
     mundo.appendChild(el("rect", {
       x: ax.toFixed(1), y: ay.toFixed(1),
       width: (bx - ax).toFixed(1), height: (by - ay).toFixed(1),
-      fill: cor, "fill-opacity": emerg ? .09 : .07,
-      stroke: cor, "stroke-width": 1.2, "stroke-dasharray": "5 4",
+      fill: cor, "fill-opacity": apoio ? .13 : (emerg ? .09 : .07),
+      stroke: cor, "stroke-width": apoio ? 1.6 : 1.2, "stroke-dasharray": "5 4",
     }));
+    if (apoio) {
+      const [tx, ty] = px((zx0 + zx1) / 2, (zy0 + zy1) / 2);
+      mundo.appendChild(el("text", {
+        x: tx.toFixed(1), y: ty.toFixed(1), "text-anchor": "middle", fill: cor,
+        "font-family": '"IBM Plex Sans",system-ui,sans-serif', "font-size": 12,
+        "font-weight": 700, "letter-spacing": "0.09em",
+      }, "SALA DE APOIO"));
+    }
+  }
+
+  // o espaço reservado ao serpenteado de cada mesa vermelha, à frente dela
+  for (const sp of D.serpenteados) {
+    const [px0, py0, px1, py1] = sp.rect;
+    const [ax, ay] = px(px0, py1), [bx, by] = px(px1, py0);
+    const cor = tok("--serp");
+    mundo.appendChild(el("rect", {
+      x: ax.toFixed(1), y: ay.toFixed(1),
+      width: (bx - ax).toFixed(1), height: (by - ay).toFixed(1),
+      fill: cor, "fill-opacity": .10, stroke: cor, "stroke-width": 1.4,
+      "stroke-dasharray": "3 3",
+    }));
+    const vertical = (by - ay) > (bx - ax);
+    const [tx, ty] = px((px0 + px1) / 2, (py0 + py1) / 2);
+    const t = el("text", {
+      x: tx.toFixed(1), y: (ty + 4).toFixed(1), "text-anchor": "middle", fill: cor,
+      "font-family": '"IBM Plex Sans",system-ui,sans-serif', "font-size": 10,
+      "font-weight": 700, "paint-order": "stroke", stroke: piso, "stroke-width": 3,
+    }, `serp. ~${sp.pessoas}`);
+    if (vertical) t.setAttribute("transform",
+      `rotate(-90 ${tx.toFixed(1)} ${(ty + 4).toFixed(1)})`);
+    mundo.appendChild(t);
   }
   // rótulo da faixa de emergência, ao longo dela
   const faixa = D.zonas.find(z => z.tipo === "faixa_emergencia");
@@ -415,19 +458,22 @@ function desenha() {
   }
 
   // rótulos das paredes, bem apagados, só para orientar
-  const parede = (x, y, texto, giro) => {
+  const parede = (x, y, nome, giro) => {
+    const e = D.entradas.find(z => z.parede === nome);
     const [a, b] = px(x, y);
     const t = el("text", {
-      x: a.toFixed(1), y: b.toFixed(1), "text-anchor": "middle", fill: meio, opacity: .3,
-      "font-family": '"IBM Plex Sans",system-ui,sans-serif', "font-size": 13, "font-weight": 600,
-      "letter-spacing": "0.18em",
-    }, texto);
+      x: a.toFixed(1), y: b.toFixed(1), "text-anchor": "middle",
+      fill: e ? corEntrada(e.id) : meio, opacity: .55,
+      "font-family": '"IBM Plex Sans",system-ui,sans-serif', "font-size": 13, "font-weight": 700,
+      "letter-spacing": "0.16em",
+      "paint-order": "stroke", stroke: piso, "stroke-width": 4,
+    }, e ? `PAREDE ${nome.toUpperCase()} · ENTRADA ${e.id}` : nome.toUpperCase());
     if (giro) t.setAttribute("transform", `rotate(${giro} ${a.toFixed(1)} ${b.toFixed(1)})`);
     mundo.appendChild(t);
   };
-  parede(LARG / 2, ALT - 6.6, "PAREDE NORTE");
-  parede(6.6, ALT / 2, "PAREDE OESTE", -90);
-  parede(LARG - 9.8, ALT / 2, "PAREDE LESTE", 90);
+  parede(LARG / 2, ALT - 12.5, "norte");
+  parede(13.0, ALT / 2 - 4, "oeste", -90);
+  parede(LARG - 16.5, ALT / 2 - 4, "leste", 90);
 
   // mesas
   for (const m of D.mesas) {
@@ -448,14 +494,6 @@ function desenha() {
     }, rotuloDe(m));
     if (giro) t.setAttribute("transform", `rotate(${giro} ${cx.toFixed(1)} ${(cy + 4).toFixed(1)})`);
     g.appendChild(t);
-
-    // disco da entrada, na ponta onde a fila se forma
-    const [ex, ey] = px(m.x + dx * (D.modulo.prof + 0.85), m.y + dy * (D.modulo.prof + 0.85));
-    g.appendChild(el("circle", {cx: ex.toFixed(1), cy: ey.toFixed(1), r: 11,
-      fill: corEntrada(m.entrada), stroke: folha, "stroke-width": 1.6}));
-    g.appendChild(el("text", {x: ex.toFixed(1), y: (ey + 4).toFixed(1), "text-anchor": "middle",
-      fill: "#fff", "font-family": '"IBM Plex Sans",system-ui,sans-serif', "font-size": 11,
-      "font-weight": 700}, m.entrada));
 
     g.addEventListener("click", () => seleciona(m.mrv, true));
     g.addEventListener("keydown", ev => {
@@ -675,6 +713,9 @@ function montaLegenda() {
   itens.push(["--emerg", "quadrado", "saída de emergência e faixa livre de 3 m"]);
   itens.push(["--servico", "quadrado", "porta de serviço, mantida desobstruída"]);
   itens.push(["--fechada", "quadrado", "porta fechada no dia"]);
+  itens.push(["--serp", "quadrado",
+    `espaço reservado ao serpenteado das vermelhas · ~${D.serpenteados[0].pessoas} pessoas`]);
+  itens.push(["--apoio", "quadrado", "sala de apoio · sem mesa"]);
   L.replaceChildren(...itens.map(([tok, forma, texto]) => {
     const s = document.createElement("span");
     s.innerHTML = `<i class="sw${forma === "disco" ? " disco" : ""}" style="background:var(${tok})"></i>${texto}`;
@@ -709,6 +750,10 @@ document.getElementById("iSecoes").textContent = D.secoes.length;
 document.getElementById("nLimiar").textContent = D.classes.limiar_media;
 document.getElementById("nBase").textContent = D.comparecimento.rotulo;
 document.getElementById("nCenario").textContent = D.cenario.id;
+document.getElementById("nSerp").textContent = D.serpenteados[0].pessoas;
+document.getElementById("nRaias").textContent = D.serpenteados[0].raias;
+document.getElementById("nProf").textContent =
+  String(D.serpenteados[0].profundidade).replace(".", ",");
 
 montaTabela();
 montaLegenda();

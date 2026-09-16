@@ -139,20 +139,21 @@
    "hex": "#2a78d6",
    "parede": "oeste",
    "mrvs": [
-    1,
     3,
-    5,
     6,
-    9,
-    15,
-    17,
+    8,
+    10,
+    11,
+    12,
+    20,
     21,
-    23
+    22
    ],
-   "esperado": 3871,
-   "quota": 0.3366,
-   "metros_de_parede": 29.53,
-   "por_metro": 131.1
+   "esperado": 3834,
+   "quota": 0.3334,
+   "metros_de_parede": 24.63,
+   "por_metro": 155.7,
+   "vao_dupla": 3.0
   },
   {
    "id": "B",
@@ -161,19 +162,21 @@
    "hex": "#e08a00",
    "parede": "norte",
    "mrvs": [
-    11,
-    12,
-    13,
-    14,
+    2,
+    5,
+    9,
     16,
+    17,
     18,
-    20,
-    22
+    19,
+    23,
+    27
    ],
-   "esperado": 3757,
-   "quota": 0.3267,
+   "esperado": 3832,
+   "quota": 0.3332,
    "metros_de_parede": 27.64,
-   "por_metro": 135.9
+   "por_metro": 138.6,
+   "vao_dupla": 3.0
   },
   {
    "id": "C",
@@ -182,22 +185,22 @@
    "hex": "#c2185b",
    "parede": "leste",
    "mrvs": [
-    2,
+    1,
     4,
     7,
-    8,
-    10,
-    19,
+    13,
+    14,
+    15,
     24,
     25,
     26,
-    27,
     28
    ],
-   "esperado": 3871,
-   "quota": 0.3366,
+   "esperado": 3833,
+   "quota": 0.3333,
    "metros_de_parede": 36.3,
-   "por_metro": 106.6
+   "por_metro": 105.6,
+   "vao_dupla": 3.0
   }
  ],
  "saidas": [
@@ -220,10 +223,10 @@
    "esperado_exato": 374.99,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 3,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 19,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 2,
@@ -239,10 +242,10 @@
    "esperado_exato": 355.13,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 22,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 10,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 3,
@@ -258,7 +261,7 @@
    "esperado_exato": 351.49,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 4,
+   "eleitor": 6,
    "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
@@ -277,7 +280,7 @@
    "esperado_exato": 348.09,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 23,
+   "eleitor": 20,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -296,10 +299,10 @@
    "esperado_exato": 327.68,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 6,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 11,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 6,
@@ -334,7 +337,7 @@
    "esperado_exato": 325.38,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 25,
+   "eleitor": 22,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -353,10 +356,10 @@
    "esperado_exato": 310.79,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 26,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 8,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 9,
@@ -372,10 +375,10 @@
    "esperado_exato": 466.72,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 1,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 13,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 10,
@@ -391,10 +394,10 @@
    "esperado_exato": 465.95,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 19,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 2,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 11,
@@ -410,10 +413,10 @@
    "esperado_exato": 503.78,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 11,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 3,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 12,
@@ -429,10 +432,10 @@
    "esperado_exato": 422.68,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 14,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 9,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 13,
@@ -448,10 +451,10 @@
    "esperado_exato": 406.8,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 15,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 23,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 14,
@@ -467,10 +470,10 @@
    "esperado_exato": 405.38,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 10,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 26,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 15,
@@ -486,10 +489,10 @@
    "esperado_exato": 498.45,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 2,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 25,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
   },
   {
    "mrv": 16,
@@ -505,7 +508,7 @@
    "esperado_exato": 518.04,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 16,
+   "eleitor": 14,
    "parede": "norte",
    "entrada": "B",
    "porta": "S5"
@@ -524,10 +527,10 @@
    "esperado_exato": 471.75,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 8,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 15,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 18,
@@ -543,7 +546,7 @@
    "esperado_exato": 515.04,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 17,
+   "eleitor": 16,
    "parede": "norte",
    "entrada": "B",
    "porta": "S5"
@@ -562,10 +565,10 @@
    "esperado_exato": 295.26,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 20,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 17,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 20,
@@ -581,10 +584,10 @@
    "esperado_exato": 394.56,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 12,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 1,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 21,
@@ -600,7 +603,7 @@
    "esperado_exato": 466.2,
    "classe": "media",
    "cor": "#d4a017",
-   "eleitor": 9,
+   "eleitor": 4,
    "parede": "oeste",
    "entrada": "A",
    "porta": "S4"
@@ -619,10 +622,10 @@
    "esperado_exato": 589.78,
    "classe": "alta",
    "cor": "#c0392b",
-   "eleitor": 13,
-   "parede": "norte",
-   "entrada": "B",
-   "porta": "S5"
+   "eleitor": 5,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
   },
   {
    "mrv": 23,
@@ -638,10 +641,10 @@
    "esperado_exato": 586.08,
    "classe": "alta",
    "cor": "#c0392b",
-   "eleitor": 5,
-   "parede": "oeste",
-   "entrada": "A",
-   "porta": "S4"
+   "eleitor": 12,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 24,
@@ -657,7 +660,7 @@
    "esperado_exato": 587.56,
    "classe": "alta",
    "cor": "#c0392b",
-   "eleitor": 24,
+   "eleitor": 21,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -676,7 +679,7 @@
    "esperado_exato": 294.52,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 21,
+   "eleitor": 28,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -714,10 +717,10 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 28,
-   "parede": "leste",
-   "entrada": "C",
-   "porta": "S6"
+   "eleitor": 18,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
   },
   {
    "mrv": 28,
@@ -733,7 +736,7 @@
    "esperado_exato": 296.0,
    "classe": "baixa",
    "cor": "#1e8449",
-   "eleitor": 18,
+   "eleitor": 24,
    "parede": "leste",
    "entrada": "C",
    "porta": "S6"
@@ -943,6 +946,72 @@
     3.0
    ],
    "rotulo": "S3 · recuo de emergência"
+  },
+  {
+   "tipo": "sala_apoio",
+   "porta": "O1",
+   "rect": [
+    0.0,
+    38.5,
+    7.8,
+    44.4
+   ],
+   "rotulo": "sala de apoio — vão entre O1 e a parede norte (profundidade a confirmar em campo)"
   }
- ]
+ ],
+ "serpenteados": [
+  {
+   "tipo": "serpenteado",
+   "parede": "oeste",
+   "mrv": 22,
+   "rect": [
+    4.1,
+    21.72,
+    8.3,
+    24.52
+   ],
+   "raias": 2,
+   "passo_raia": 1.4,
+   "profundidade": 4.2,
+   "pessoas": 20,
+   "rotulo": "MRV 22 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"
+  },
+  {
+   "tipo": "serpenteado",
+   "parede": "norte",
+   "mrv": 23,
+   "rect": [
+    17.16,
+    36.1,
+    19.96,
+    40.3
+   ],
+   "raias": 2,
+   "passo_raia": 1.4,
+   "profundidade": 4.2,
+   "pessoas": 20,
+   "rotulo": "MRV 23 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"
+  },
+  {
+   "tipo": "serpenteado",
+   "parede": "leste",
+   "mrv": 24,
+   "rect": [
+    39.0,
+    27.45,
+    43.2,
+    30.25
+   ],
+   "raias": 2,
+   "passo_raia": 1.4,
+   "profundidade": 4.2,
+   "pessoas": 20,
+   "rotulo": "MRV 24 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"
+  }
+ ],
+ "vao_dupla_por_parede": {
+  "oeste": 3.0,
+  "norte": 3.0,
+  "leste": 3.0
+ }
 }

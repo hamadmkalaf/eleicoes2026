@@ -15,7 +15,10 @@ Este modulo refaz a reparticao do zero:
   4. desempata pela densidade -- esperados por metro util de parede --, que e
      o que decide a profundidade da fila agora que cada parede tem a sua;
   5. monta as posicoes: as tres mesas de maior carga isoladas, uma por parede,
-     e as demais em duplas.
+     e as demais em duplas;
+  6. reserva, na frente de cada mesa de maior carga, o retangulo de um
+     serpenteado de ~20 pessoas (decisao de 16/09), sem tirar frente das
+     filas vizinhas.
 
 Nao mexe na agregacao de secoes. O par principal -> agregada de cada urna e do
 Cartorio Eleitoral (data/oficiais/secoes_agregadas_dublin_2026.pdf, conferido
@@ -24,10 +27,11 @@ mesa inteira, com as suas duas secoes juntas.
 
 Geometria e convencoes vindas de simulador/equitativo.js, que por sua vez as
 leu da planta oficial A:
-  dupla   = dois modulos a 3,90 m, o primeiro com lado +1 e o segundo com -1,
-            para os mesarios ficarem de frente um para o outro;
-  unidade = dupla ou mesa isolada; 2,40 m de eixo a eixo entre unidades, que
-            sao 1,50 m livres de corpo a corpo.
+  dupla   = dois modulos com 3,00 m livres entre eles (2,50 m quando so assim
+            couber), o primeiro com lado +1 e o segundo com -1, para os
+            mesarios ficarem de frente um para o outro;
+  unidade = dupla ou mesa isolada; 1,50 m livres entre unidades, e 1,90 m dos
+            dois lados da mesa vermelha, que e o que o serpenteado dela pede.
 
     python3 scripts/arranjo_paredes.py            # relatorio, sem gravar
     python3 scripts/arranjo_paredes.py --grava    # grava o cenario e decisoes
@@ -39,26 +43,57 @@ import sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-PASSO_DUPLA = 3.90      # entre as duas mesas de uma dupla
-PASSO_UNID = 2.40       # entre unidades (1,50 m livres de corpo a corpo)
+LARG_MODULO = 0.90      # largura do corpo do modulo
+PROF_MODULO = 4.10      # profundidade do modulo; a fila comeca depois dela
+
+VAO_DUPLA = 3.00        # livre entre as duas mesas de uma dupla
+VAO_DUPLA_APERTADO = 2.50   # o aperto que o Posto autorizou em 16/09
+VAO_UNID = 1.50         # livre entre uma unidade e a seguinte
+
+# O serpenteado da mesa vermelha (16/09): duas raias na frente da mesa, com os
+# parametros de fila do proprio projeto (scripts/ring3.py) -- raia de 1,40 m
+# de passo e 1,20 m util, 2,00 pessoas por m2, ou seja 2,4 por metro de raia.
+SERP_RAIAS = 2
+SERP_PASSO = 1.40
+SERP_PROF = 4.20                              # profundidade de cada raia
+SERP_LARG = SERP_RAIAS * SERP_PASSO           # 2,80 m ao longo da parede
+SERP_PESSOAS = SERP_RAIAS * SERP_PROF * 1.20 * 2.00      # ~20 pessoas
+# Para o serpenteado nao roubar frente da fila vizinha, ele nao passa do meio
+# do vao ate a mesa do lado: sobra (2,80 - 0,90) / 2 = 0,95 m de cada lado.
+VAO_VERMELHA = round(SERP_LARG - LARG_MODULO, 2)         # 1,90 m
+
+passo_dupla = lambda vao: round(LARG_MODULO + vao, 2)
+PASSO_UNID = round(LARG_MODULO + VAO_UNID, 2)            # 2,40 m
+PASSO_VERMELHA = round(LARG_MODULO + VAO_VERMELHA, 2)    # 2,80 m
 
 # Trechos livres do eixo de cada parede, no ponto de encosto do modulo. Ja
 # descontam meia largura do corpo, os vaos de porta, a faixa protegida da
 # fachada leste e os dois cantos onde a fila de uma parede cortaria o corpo da
 # outra. Transcritos de simulador/equitativo.js.
+# O trecho (39,05–43,95) da parede oeste saiu em 16/09: o vao entre a porta O1
+# e a parede norte passa a ser a sala de apoio, e nao recebe mesa.
+SALA_APOIO = {"rect": [0.0, 38.5, 7.8, 44.4],
+              "rotulo": "sala de apoio — vão entre O1 e a parede norte "
+                        "(profundidade a confirmar em campo)"}
 PAREDES = {
     "oeste": {"rot": 0,   "eixo": "y", "fixo": 0.0,  "sentido": +1,
-              "trechos": [(7.45, 18.81), (22.98, 36.25), (39.05, 43.95)]},
+              "trechos": [(7.45, 18.81), (22.98, 36.25)]},
     "norte": {"rot": 270, "eixo": "x", "fixo": 44.4, "sentido": +1,
               "trechos": [(10.20, 20.21), (24.67, 42.30)]},
     "leste": {"rot": 180, "eixo": "y", "fixo": 47.3, "sentido": -1,
               "trechos": [(3.20, 39.50)]},
 }
+# Zonas que ja estavam protegidas e que o serpenteado tambem nao pode invadir.
+ZONAS_FIXAS = [
+    {"rect": [47.3, 0.0, 50.3, 44.4], "rotulo": "faixa de emergência da fachada leste"},
+    {"rect": [14.22, 0.0, 21.47, 3.0], "rotulo": "S3 · recuo de emergência"},
+    {"rect": [35.09, 0.0, 42.36, 3.0], "rotulo": "S7 · recuo da entrada preferencial"},
+    {"rect": [7.8, 0.0, 10.8, 7.0], "rotulo": "R1 · recuo de emergência"},
+]
 ORDEM = ("oeste", "norte", "leste")
-# A vermelha de cada parede precisa de uma unidade verde de cada lado. Uma
-# unidade verde e uma dupla de dois verdes ou uma isolada verde, entao quatro
-# verdes por parede bastam para as duas: duas duplas inteiramente verdes.
-MIN_VERDES = 4
+# Verde bastante em cada parede para dar chance de ladear a vermelha com verde
+# -- que em 16/09 voltou a ser preferencia, nao regra.
+MIN_VERDES = 2
 # Quanta amplitude a mais a composicao de hoje pode ter e ainda vencer a otima.
 # Zerar a amplitude custa mover 16 das 28 mesas de parede; 20 eleitores sao
 # 0,5% do terco, abaixo do que qualquer mesario notaria num dia de nove horas.
@@ -70,11 +105,16 @@ comprimento = lambda p: sum(b - a for a, b in PAREDES[p]["trechos"])
 
 
 def cabe(span, duplas, isoladas):
-    """Uma composicao de unidades cabe num trecho?"""
+    """Limite superior: cabe no trecho com os passos apertados?
+
+    Serve so para descartar reparticoes impossiveis antes da busca; quem decide
+    de verdade e arranja_parede, que monta a sequencia e mede os vaos reais.
+    """
     n = duplas + isoladas
     if n == 0:
         return True
-    return duplas * PASSO_DUPLA + (n - 1) * PASSO_UNID <= span + 1e-9
+    return (duplas * passo_dupla(VAO_DUPLA_APERTADO) + (n - 1) * PASSO_UNID
+            <= span + 1e-9)
 
 
 def capacidade(parede, isoladas_totais):
@@ -232,12 +272,24 @@ def unidades_da_parede(mrvs, altas, esperado, classe):
             + [unidade("dupla", d) for d in duplas])
 
 
-def largura(unidades):
-    """Quanto um bloco de unidades ocupa, de encosto a encosto."""
-    n = len(unidades)
-    if not n:
+def passo_entre(a, b):
+    """Encosto a encosto entre a última mesa de `a` e a primeira de `b`.
+
+    A vermelha pede 1,90 m livres dos dois lados — é o que abre espaço para o
+    serpenteado dela sem tirar frente da fila vizinha. O resto anda a 1,50 m.
+    """
+    if a.get("vermelha") or b.get("vermelha"):
+        return PASSO_VERMELHA
+    return PASSO_UNID
+
+
+def largura(seq, vao_dupla=VAO_DUPLA):
+    """Quanto uma sequência de unidades ocupa, de encosto a encosto."""
+    if not seq:
         return 0.0
-    return sum(PASSO_DUPLA for u in unidades if u["tipo"] == "dupla") + (n - 1) * PASSO_UNID
+    w = sum(passo_dupla(vao_dupla) for u in seq if u["tipo"] == "dupla")
+    w += sum(passo_entre(a, b) for a, b in zip(seq, seq[1:]))
+    return round(w, 4)
 
 
 def _reparticoes_de_trecho(n_trechos, duplas, isoladas):
@@ -254,58 +306,72 @@ def _reparticoes_de_trecho(n_trechos, duplas, isoladas):
             yield list(zip(d, i))
 
 
-def _coloca(trechos, seqs):
+def _coloca(trechos, seqs, vao_dupla):
     """Do bloco de cada trecho para o eixo de cada mesa.
 
-    O bloco fica centrado no trecho, e o encosto do primeiro modulo e
-    arredondado ao centimetro **antes** de somar os passos: assim os vaos
-    saem exatos (3,90 e 2,40 m de encosto a encosto) e nao acumulam um
-    centimetro de arredondamento.
+    O bloco fica centrado no trecho, e o encosto do primeiro módulo é
+    arredondado ao centímetro **antes** de somar os passos: assim os vãos saem
+    exatos e não acumulam um centímetro de arredondamento.
     """
+    pd = passo_dupla(vao_dupla)
     saida = []
     for (ini, fim), seq in zip(trechos, seqs):
         if not seq:
             continue
-        cur = round(ini + ((fim - ini) - largura(seq)) / 2, 2)
-        for u in seq:
+        cur = round(ini + ((fim - ini) - largura(seq, vao_dupla)) / 2, 2)
+        for i, u in enumerate(seq):
             if u["tipo"] == "dupla":
                 saida.append((u["mrvs"][0], round(cur, 2), 1))
-                saida.append((u["mrvs"][1], round(cur + PASSO_DUPLA, 2), -1))
-                cur += PASSO_DUPLA
+                saida.append((u["mrvs"][1], round(cur + pd, 2), -1))
+                cur += pd
             else:
                 saida.append((u["mrvs"][0], round(cur, 2), 1))
-            cur += PASSO_UNID
+            if i < len(seq) - 1:
+                cur += passo_entre(u, seq[i + 1])
     return saida
 
 
-def _centralidade(postas, mrv_vermelha, verde_de):
-    """Distância da vermelha ao meio da fileira, ou None se a regra falhar.
+def serpenteado(parede, eixo_vermelha):
+    """O retângulo reservado ao serpenteado da mesa vermelha, em x/y do salão.
 
-    A regra de 16/09 é dupla: a vermelha fica **no terço central** da fileira
-    e as duas mesas imediatamente ao lado dela são **verdes**. O "ao lado" é
-    global, não por trecho: um vão de porta separa, mas continua sendo o que o
-    eleitor vê em volta da mesa cheia.
+    Fica **à frente da mesa**: começa onde o módulo acaba (4,10 m da parede) e
+    avança SERP_PROF para dentro do salão, centrado no eixo da mesa. Não é
+    desenhado como raia — é só o espaço garantido para que o serpenteado possa
+    existir depois.
     """
-    ordenadas = sorted(postas, key=lambda t: t[1])
-    eixos = [c for _, c, _ in ordenadas]
-    i = next(k for k, (m, _, _) in enumerate(ordenadas) if m == mrv_vermelha)
-    vizinhas = [ordenadas[j][0] for j in (i - 1, i + 1) if 0 <= j < len(ordenadas)]
-    if len(vizinhas) < 2 or any(not verde_de(v) for v in vizinhas):
-        return None
-    meio = (min(eixos) + max(eixos)) / 2
-    desvio = abs(eixos[i] - meio)
-    if desvio > (max(eixos) - min(eixos)) / 4:          # fora do terço central
-        return None
-    return desvio
+    P = PAREDES[parede]
+    meia = SERP_LARG / 2
+    d0, d1 = PROF_MODULO, PROF_MODULO + SERP_PROF
+    if P["eixo"] == "y":                      # paredes oeste e leste
+        x = P["fixo"]
+        x0, x1 = (x + d0, x + d1) if parede == "oeste" else (x - d1, x - d0)
+        return [round(min(x0, x1), 2), round(eixo_vermelha - meia, 2),
+                round(max(x0, x1), 2), round(eixo_vermelha + meia, 2)]
+    y = P["fixo"]                             # parede norte, cresce para o sul
+    return [round(eixo_vermelha - meia, 2), round(y - d1, 2),
+            round(eixo_vermelha + meia, 2), round(y - d0, 2)]
 
 
-def arranja_parede(parede, unidades, verde_de=lambda n: True):
-    """As posições da parede, com a vermelha no meio e verdes ao lado.
+# O salao, para o serpenteado nao cair no recorte sudoeste nem fora das paredes
+SALAO = (0.0, 0.0, 50.3, 44.4)
+RECORTE = (0.0, 0.0, 7.8, 7.0)
 
-    Varre todas as repartições das unidades pelos trechos e, em cada uma, todas
-    as posições possíveis da vermelha, e fica com a que põe a vermelha mais
-    perto do meio da fileira de mesas — sempre com uma unidade verde de cada
-    lado dela. `None` se nada couber.
+
+def _dentro_do_salao(rect):
+    x0, y0, x1, y1 = rect
+    if not (SALAO[0] <= x0 and x1 <= SALAO[2] and SALAO[1] <= y0 and y1 <= SALAO[3]):
+        return False
+    return not (x0 < RECORTE[2] and y0 < RECORTE[3])      # recorte sudoeste
+
+
+def arranja_parede(parede, unidades, verde_de=lambda n: True, zonas=()):
+    """As posições da parede. None se nada couber.
+
+    Regras duras: os vãos exatos; 1,90 m dos dois lados da vermelha; e o
+    retângulo do serpenteado dela livre — dentro do salão, sem encostar em
+    zona protegida e sem passar do meio do vão até a mesa vizinha.
+    Preferências, nesta ordem: vão de dupla de 3,00 m antes do de 2,50 m;
+    vizinhas verdes; e mais folga lateral sobrando para a vermelha.
     """
     P = PAREDES[parede]
     trechos = P["trechos"]
@@ -313,51 +379,86 @@ def arranja_parede(parede, unidades, verde_de=lambda n: True):
     demais = [u for u in unidades if u is not vermelha]
     n_duplas = sum(1 for u in unidades if u["tipo"] == "dupla")
     n_isoladas = sum(1 for u in unidades if u["tipo"] == "isolada")
+    todos = [v for t in trechos for v in t]
+    espelho = round(min(todos) + max(todos), 2)
+    para_salao = lambda c: round(c if P["sentido"] > 0 else espelho - c, 2)
 
     melhor = None
-    for corte in _reparticoes_de_trecho(len(trechos), n_duplas, n_isoladas):
-        if any(not cabe(b - a, d, i) for (a, b), (d, i) in zip(trechos, corte)):
-            continue
-        if vermelha is None:
-            seqs = _preenche(corte, demais, None, None)
-            if seqs is None:
-                continue
-            postas = _coloca(trechos, seqs)
-            chave = (0, 0.0)
-        else:
-            melhor_local = None
-            for t_red, (d, i) in enumerate(corte):
-                if i == 0:
+    for aperto, vao_dupla in enumerate((VAO_DUPLA, VAO_DUPLA_APERTADO)):
+        for corte in _reparticoes_de_trecho(len(trechos), n_duplas, n_isoladas):
+            for t_red in range(len(trechos)):
+                if vermelha is not None and corte[t_red][1] == 0:
                     continue
-                n = d + i
-                for k in range(n):
+                n = corte[t_red][0] + corte[t_red][1]
+                for k in (range(n) if vermelha is not None else [None]):
                     seqs = _preenche(corte, demais, t_red, k, vermelha)
                     if seqs is None:
                         continue
-                    postas = _coloca(trechos, seqs)
-                    desvio = _centralidade(postas, vermelha["mrvs"][0], verde_de)
-                    if desvio is None:
+                    if any(largura(seq, vao_dupla) > (b - a) + 1e-9
+                           for (a, b), seq in zip(trechos, seqs)):
                         continue
-                    if melhor_local is None or desvio < melhor_local[0]:
-                        melhor_local = (desvio, postas)
-            if melhor_local is None:
-                continue
-            chave, postas = melhor_local
-            chave = (0, chave)
-        if melhor is None or chave < melhor[0]:
-            melhor = (chave, postas)
+                    postas = _coloca(trechos, seqs, vao_dupla)
+                    nota = _avalia(parede, postas, seqs, vermelha, verde_de,
+                                   zonas, para_salao)
+                    if nota is None:
+                        continue
+                    chave = (aperto,) + nota
+                    if melhor is None or chave < melhor[0]:
+                        melhor = (chave, postas, vao_dupla)
+        if melhor is not None:
+            break          # o vao de 3,00 m coube; nao precisa apertar
 
     if melhor is None:
         return None
-    todos = [v for t in trechos for v in t]
-    espelho = round(min(todos) + max(todos), 2)
+    _, postas, vao_dupla = melhor
     fora = []
-    for mrv, c, lado in melhor[1]:
-        v = round(c if P["sentido"] > 0 else espelho - c, 2)
+    for mrv, c, lado in postas:
+        v = para_salao(c)
         fora.append({"n": mrv, "rot": P["rot"], "lado": lado,
                      **({"x": v, "y": P["fixo"]} if P["eixo"] == "x"
                         else {"x": P["fixo"], "y": v})})
-    return fora
+    return {"posicoes": fora, "vao_dupla": vao_dupla,
+            "serpenteado": (serpenteado(parede,
+                            para_salao(next(c for m, c, _ in postas
+                                            if m == vermelha["mrvs"][0])))
+                            if vermelha is not None else None)}
+
+
+def _avalia(parede, postas, seqs, vermelha, verde_de, zonas, para_salao):
+    """(não-verdes ao lado, −folga lateral) da vermelha, ou None se inviável."""
+    if vermelha is None:
+        return (0, 0, 0.0)
+    mrv = vermelha["mrvs"][0]
+    ordenadas = sorted(postas, key=lambda t: t[1])
+    i = next(k for k, (m, _, _) in enumerate(ordenadas) if m == mrv)
+    eixo = ordenadas[i][1]
+
+    # folga de cada lado, ate o corpo da mesa vizinha; a ponta e folga livre
+    folgas = []
+    for j in (i - 1, i + 1):
+        if 0 <= j < len(ordenadas):
+            folgas.append(abs(ordenadas[j][1] - eixo) - LARG_MODULO)
+    if folgas and min(folgas) < VAO_VERMELHA - 1e-6:
+        return None
+
+    rect = serpenteado(parede, para_salao(eixo))
+    if not _dentro_do_salao(rect):
+        return None
+    for z in zonas:
+        if _cruza(rect, z):
+            return None
+    # Ponta de parede e canto de salao: o percurso ate la e o mais longo, e e
+    # justamente a mesa que menos pode ficar sem alimentacao. Vem antes da cor
+    # das vizinhas na ordem de preferencia.
+    ponta = 2 - len(folgas)
+    nao_verdes = sum(1 for j in (i - 1, i + 1) if 0 <= j < len(ordenadas)
+                     and not verde_de(ordenadas[j][0]))
+    return (ponta, nao_verdes, -round(min(folgas) if folgas else 99.0, 2))
+
+
+def _cruza(a, b):
+    return (a[0] < b[2] - 1e-6 and b[0] < a[2] - 1e-6
+            and a[1] < b[3] - 1e-6 and b[1] < a[3] - 1e-6)
 
 
 def _preenche(corte, demais, t_red, k_red, vermelha=None):
@@ -449,12 +550,14 @@ def monta(mesas, grupos, altas):
     alteracoes, relatorio = [], {}
     for parede in ORDEM:
         unidades = unidades_da_parede(grupos[parede], altas, esperado, classe)
-        postas = arranja_parede(parede, unidades,
-                                lambda n: classe.get(n) == "baixa")
-        if postas is None:
+        zonas = [SALA_APOIO["rect"]] + [z["rect"] for z in ZONAS_FIXAS]
+        r = arranja_parede(parede, unidades,
+                           lambda n: classe.get(n) == "baixa", zonas)
+        if r is None:
             return None
-        alteracoes.extend(postas)
+        alteracoes.extend(r["posicoes"])
         relatorio[parede] = {
+            "vao_dupla": r["vao_dupla"], "serpenteado": r["serpenteado"],
             "entrada": ENTRADA[parede], "porta": PORTA[ENTRADA[parede]],
             "mesas": grupos[parede],
             "esperado": sum(esperado[n] for n in grupos[parede]),
@@ -472,7 +575,7 @@ def folgas(alteracoes, grupos):
     Dentro de uma dupla os modulos ficam a 3,90 m de eixo a eixo, o que da
     3,00 m livres; entre unidades, 2,40 m de eixo, 1,50 m livres.
     """
-    LARG = 0.90
+    LARG = LARG_MODULO
     pos = {a["n"]: a for a in alteracoes}
     saida = {}
     for parede, mrvs in grupos.items():
@@ -528,8 +631,9 @@ def main(argv):
     melhor, candidatas, total = melhor_arranjo(mesas, atual)
 
     print(f"{len(mesas)} mesas · {total} esperados · terço perfeito {total / 3:.0f}")
-    print(f"\nCapacidade física de cada parede (duplas de {PASSO_DUPLA} m, "
-          f"{PASSO_UNID} m entre unidades):")
+    print(f"\nCapacidade física de cada parede ({VAO_DUPLA:.2f} m livres na dupla "
+          f"({VAO_DUPLA_APERTADO:.2f} apertada), {VAO_UNID:.2f} entre unidades, "
+          f"{VAO_VERMELHA:.2f} ao lado da vermelha):")
     for p in ORDEM:
         print(f"  {p:<6} {comprimento(p):>5.2f} m em {len(PAREDES[p]['trechos'])} trecho(s)"
               f" · cabem até {capacidade(p, 1)} mesas com uma isolada, "
@@ -699,6 +803,8 @@ def sinalizacao_e_zonas(planta, decisoes):
     zonas.append({"tipo": "recuo_porta", "porta": "S3",
                   "rect": [14.22, 0.0, 21.47, 3.0],
                   "rotulo": "S3 · recuo de emergência"})
+    zonas.append({"tipo": "sala_apoio", "porta": "O1",
+                  "rect": SALA_APOIO["rect"], "rotulo": SALA_APOIO["rotulo"]})
     return sinal, zonas
 
 
@@ -734,6 +840,26 @@ def grava(decisoes, grupos, arranjo, quando="2026-09-16"):
         m["porta"] = PORTA[ENTRADA[p]]
         m["eleitor"] = eleitor[m["mrv"]]
 
+    serpenteados = []
+    for p in ORDEM:
+        r = arranjo["relatorio"][p]
+        if not r.get("serpenteado"):
+            continue
+        vermelha = next(n for n in grupos[p]
+                        if next(m for m in decisoes["mesas"] if m["mrv"] == n)["classe"] == "alta")
+        serpenteados.append({
+            "tipo": "serpenteado", "parede": p, "mrv": vermelha,
+            "rect": r["serpenteado"], "raias": SERP_RAIAS,
+            "passo_raia": SERP_PASSO, "profundidade": SERP_PROF,
+            "pessoas": round(SERP_PESSOAS),
+            "rotulo": f"MRV {vermelha} · espaço reservado para serpenteado de "
+                      f"~{round(SERP_PESSOAS)} pessoas ({SERP_RAIAS} raias de "
+                      f"{SERP_PROF:.2f} m), à frente da mesa",
+        })
+    decisoes["serpenteados"] = serpenteados
+    decisoes["vao_dupla_por_parede"] = {p: arranjo["relatorio"][p]["vao_dupla"]
+                                        for p in ORDEM}
+
     entradas = []
     for p in ORDEM:
         e = ENTRADA[p]
@@ -745,6 +871,7 @@ def grava(decisoes, grupos, arranjo, quando="2026-09-16"):
             "quota": round(esperado / total, 4),
             "metros_de_parede": round(comprimento(p), 2),
             "por_metro": round(esperado / comprimento(p), 1),
+            "vao_dupla": arranjo["relatorio"][p]["vao_dupla"],
         })
     decisoes["entradas"] = entradas
     decisoes["portas"] = {

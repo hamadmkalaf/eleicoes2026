@@ -88,6 +88,7 @@ def monta(planta, decisoes, dados, cenario):
         "saidas": decisoes["saidas"],
         "sinalizacao": decisoes["sinalizacao_portas"],
         "zonas": decisoes["zonas_protegidas"],
+        "serpenteados": decisoes["serpenteados"],
         "classes": {"n_alta": decisoes["classes"]["n_alta"],
                     "limiar_media": decisoes["classes"]["limiar_media"]},
         "comparecimento": {k: decisoes["comparecimento"][k] for k in ("base", "rotulo", "total", "aptos")},

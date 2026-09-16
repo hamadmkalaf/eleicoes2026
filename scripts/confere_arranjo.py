@@ -5,8 +5,11 @@
      invadem o vao nem o recuo de 3 m na frente dele;
   3. as saidas de emergencia da parede leste tem a faixa protegida de 3 m;
   4. S7 esta marcada como entrada preferencial;
-  5. cada mesa vermelha fica no meio da sua parede e so tem mesa verde ao redor;
-  6. o vao livre e de 3,00 m dentro de uma dupla e de 1,50 m entre duplas.
+  5. cada mesa vermelha tem, a frente, o retangulo reservado de um serpenteado
+     de ~20 pessoas, que nao invade fila vizinha nem zona protegida;
+  6. o vao livre e de 3,00 m dentro de uma dupla (2,50 m se apertado), 1,50 m
+     entre unidades e 1,90 m dos dois lados da vermelha;
+  7. a sala de apoio, entre a porta O1 e a parede norte, nao recebe mesa.
 
 Sai com codigo 1 se algum item falhar.
 
@@ -22,7 +25,9 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LARG = 0.90            # largura do corpo do modulo
 PROF = 4.10            # profundidade do modulo, onde a fila se forma
 VAO_DUPLA = 3.00       # livre entre as duas mesas de uma dupla
+VAO_DUPLA_APERTADO = 2.50   # o aperto autorizado em 16/09
 VAO_PAR = 1.50         # livre entre uma unidade e a seguinte
+VAO_VERMELHA = 1.90    # livre dos dois lados da vermelha, para o serpenteado
 TOL = 0.01
 RECUO_PORTA = 3.00     # desobstrucao exigida na frente de N2 e O2
 FAIXA_LESTE = 3.00     # faixa protegida da fachada leste
@@ -34,7 +39,7 @@ EIXO = {"oeste": "y", "norte": "x", "leste": "y"}
 # em trechos diferentes estao separadas por um vao de porta, nao por um vao
 # entre unidades -- comparar as duas seria acusar a porta de ser folga errada.
 TRECHOS = {
-    "oeste": [(7.45, 18.81), (22.98, 36.25), (39.05, 43.95)],
+    "oeste": [(7.45, 18.81), (22.98, 36.25)],
     "norte": [(10.20, 20.21), (24.67, 42.30)],
     "leste": [(3.20, 39.50)],
 }
@@ -174,54 +179,92 @@ def main(argv):
               f"{s7.get('rotulo', 'entrada preferencial')}")
 
     # ---------------------------------------------------------------- 5
-    it.item(5, "Mesas vermelhas no meio da parede, com verdes ao redor")
+    it.item(5, "Espaço de serpenteado à frente de cada mesa vermelha")
     por_parede = {}
     for n, m in pos.items():
         por_parede.setdefault(PAREDE_POR_ROT[int(m["rot"]) % 360], []).append(n)
-    for parede, ns in por_parede.items():
+    serps = {s["mrv"]: s for s in decisoes.get("serpenteados", [])}
+    vermelhas = [n for n, m in mesas.items() if m["classe"] == "alta"]
+    if set(serps) != set(vermelhas):
+        it.erro(f"serpenteado registrado para {sorted(serps)}, "
+                f"vermelhas são {sorted(vermelhas)}")
+    for n in sorted(vermelhas):
+        sp = serps.get(n)
+        if sp is None:
+            continue
+        rect = tuple(sp["rect"])
+        parede = PAREDE_POR_ROT[int(pos[n]["rot"]) % 360]
+        # o retângulo fica à frente da mesa, não em cima dela nem de outra
+        choca = [k for k, m in pos.items() if cruza(retangulo(m), rect)]
+        zonas_rect = [tuple(z["rect"]) for z in zonas]
+        em_zona = [z["rotulo"] for z in zonas if cruza(rect, tuple(z["rect"]))]
+        # folga lateral: quanto a vermelha tem de cada lado até a mesa vizinha
         eixo = EIXO[parede]
-        ordenadas = sorted(ns, key=lambda n: pos[n][eixo])
-        cs = [pos[n][eixo] for n in ordenadas]
-        meio = (min(cs) + max(cs)) / 2
-        vermelhas = [n for n in ns if mesas[n]["classe"] == "alta"]
-        for v in vermelhas:
-            i = ordenadas.index(v)
-            vizinhas = [ordenadas[j] for j in (i - 1, i + 1) if 0 <= j < len(ordenadas)]
-            cores = [mesas[w]["classe"] for w in vizinhas]
-            desvio = abs(pos[v][eixo] - meio)
-            metade = (max(cs) - min(cs)) / 2
-            centro = f"a {desvio:.2f} m do meio da parede ({100 * desvio / metade:.0f}% do semi-eixo)"
-            if any(c != "baixa" for c in cores):
-                it.erro(f"{parede}: MRV {v} tem vizinha não-verde "
-                        f"({', '.join(f'{w}={c}' for w, c in zip(vizinhas, cores))})")
-            elif desvio > metade / 2:
-                it.erro(f"{parede}: MRV {v} está {centro} — fora do terço central")
-            else:
-                it.ok(f"{parede:<6} MRV {v} ({mesas[v]['esperado']}) {centro}; "
-                      f"vizinhas {', '.join(f'MRV {w} verde' for w in vizinhas)}")
+        ordenadas = sorted(por_parede[parede], key=lambda k: pos[k][eixo])
+        i = ordenadas.index(n)
+        lados = [round(abs(pos[ordenadas[j]][eixo] - pos[n][eixo]) - LARG, 2)
+                 for j in (i - 1, i + 1) if 0 <= j < len(ordenadas)]
+        cap = sp["raias"] * sp["profundidade"] * 1.20 * 2.00
+        if choca:
+            it.erro(f"{parede}: o serpenteado da MRV {n} encosta nas mesas {sorted(choca)}")
+        elif em_zona:
+            it.erro(f"{parede}: o serpenteado da MRV {n} invade {em_zona}")
+        elif lados and min(lados) < VAO_VERMELHA - TOL:
+            it.erro(f"{parede}: MRV {n} tem só {min(lados):.2f} m de folga lateral, "
+                    f"menos que os {VAO_VERMELHA:.2f} m que o serpenteado pede")
+        elif cap < 19:
+            it.erro(f"{parede}: o serpenteado da MRV {n} comporta {cap:.0f} pessoas, "
+                    f"menos que as ~20 pedidas")
+        else:
+            prof = sp["profundidade"]
+            it.ok(f"{parede:<6} MRV {n} ({mesas[n]['esperado']}) · {sp['raias']} raias de "
+                  f"{prof:.2f} m à frente da mesa = {cap:.0f} pessoas · "
+                  f"folga lateral {min(lados):.2f} m dos dois lados")
 
     # ---------------------------------------------------------------- 6
-    it.item(6, "3,00 m dentro da dupla e 1,50 m entre duplas")
+    it.item(6, "Vãos: 3,00 m na dupla (2,50 se apertada), 1,50 entre unidades, "
+               "1,90 ao lado da vermelha")
+    aceitos = {VAO_DUPLA, VAO_DUPLA_APERTADO, VAO_PAR, VAO_VERMELHA}
     for parede in ("oeste", "norte", "leste"):
         eixo = EIXO[parede]
         ordenadas = sorted(por_parede[parede], key=lambda n: pos[n][eixo])
-        vaos, entre_trechos = [], 0
+        contagem, entre_trechos, outros = {}, 0, []
         for a, b in zip(ordenadas, ordenadas[1:]):
             if trecho_de(parede, pos[a][eixo]) != trecho_de(parede, pos[b][eixo]):
                 entre_trechos += 1
                 continue
-            vaos.append(round(pos[b][eixo] - pos[a][eixo] - LARG, 2))
-        duplas = [v for v in vaos if abs(v - VAO_DUPLA) <= TOL]
-        pares = [v for v in vaos if abs(v - VAO_PAR) <= TOL]
-        outros = [v for v in vaos if v not in duplas and v not in pares]
+            v = round(pos[b][eixo] - pos[a][eixo] - LARG, 2)
+            casa = next((x for x in aceitos if abs(v - x) <= TOL), None)
+            if casa is None:
+                outros.append(v)
+            else:
+                contagem[casa] = contagem.get(casa, 0) + 1
         if outros:
-            it.erro(f"{parede}: vãos fora do padrão: {outros} "
-                    f"(esperado {VAO_DUPLA:.2f} ou {VAO_PAR:.2f})")
+            it.erro(f"{parede}: vãos fora do padrão: {outros}")
         else:
-            it.ok(f"{parede:<6} {len(vaos)} vãos medidos: {len(duplas)} de "
-                  f"{VAO_DUPLA:.2f} m (dentro da dupla) e {len(pares)} de "
-                  f"{VAO_PAR:.2f} m (entre unidades); {entre_trechos} vão(s) de porta "
-                  f"separando trechos, fora da conta")
+            resumo = " · ".join(f"{k} de {v:.2f} m" for v, k in sorted(contagem.items()))
+            it.ok(f"{parede:<6} {resumo}; {entre_trechos} vão(s) de porta, fora da conta")
+    apertadas = [p for p, v in decisoes.get("vao_dupla_por_parede", {}).items()
+                 if abs(v - VAO_DUPLA_APERTADO) <= TOL]
+    it.ok(f"duplas apertadas para {VAO_DUPLA_APERTADO:.2f} m: "
+          + (", ".join(apertadas) if apertadas else "nenhuma — os 3,00 m couberam"))
+
+    # ---------------------------------------------------------------- 7
+    it.item(7, "Sala de apoio entre a porta O1 e a parede norte, sem mesa")
+    sala = next((z for z in zonas if z.get("tipo") == "sala_apoio"), None)
+    if sala is None:
+        it.erro("nenhuma sala de apoio registrada em decisoes.zonas_protegidas")
+    else:
+        rect = tuple(sala["rect"])
+        dentro = [n for n, m in pos.items() if cruza(retangulo(m), rect)]
+        o1 = portas["O1"]
+        if dentro:
+            it.erro(f"mesas {sorted(dentro)} dentro da sala de apoio")
+        elif abs(rect[1] - o1["y2"]) > 0.2:
+            it.erro(f"a sala começa em y={rect[1]}, não na borda norte de O1 (y={o1['y2']})")
+        else:
+            it.ok(f"reservada de y={rect[1]} (borda de O1) a y={rect[3]} (parede norte), "
+                  f"{rect[2] - rect[0]:.1f} m de profundidade · nenhuma mesa dentro")
 
     # brindes: nada fora do salão nem sobreposto
     it.item("+", "Verificações de sanidade")

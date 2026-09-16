@@ -387,7 +387,7 @@ python3 scripts/confere_arranjo.py
 | 2 | N2 e O2 desbloqueadas | vão livre (3,56 m e 3,07 m) mais recuo de 3 m sem mesa **e sem fila** |
 | 3 | Emergência da parede leste | faixa protegida de 3,00 m em toda a fachada (x 47,3 → 50,3), cobrindo L1 a L4 |
 | 4 | S7 preferencial | `papel: preferencial` — idoso, gestante, PcD e acompanhante, sem fila, para qualquer parede |
-| 5 | Vermelhas ao centro, verdes em volta | MRV 22 a 1,27 m do meio da norte; MRV 23 a 2,30 m do meio da oeste; MRV 24 a 3,15 m do meio da leste — todas com verde dos dois lados |
+| 5 | Vermelhas ao centro, verdes em volta | **revisto em 16/09 — ver §11**: o objetivo era espaço de serpenteado, não a posição |
 | 6 | 3,00 m na dupla, 1,50 m entre duplas | 12 vãos de 3,00 m e 10 de 1,50 m, exatos; os 3 vãos restantes são portas separando trechos |
 
 ### 10.1 O item 5 custou a amplitude
@@ -438,3 +438,94 @@ mesários**, que são por MRV.
   preferencial crescer, 1,27 m não absorve.
 - **A pendência de mesário segue** (item 6.3): MRV 24 e MRV 11 continuam as
   duas lacunas, agora nas paredes leste e norte respectivamente.
+
+---
+
+## 11. Revisão de 16/09 — o que o item 5 realmente queria
+
+O pedido de pôr a mesa vermelha no meio da parede tinha um objetivo por trás:
+**abrir espaço para serpentear mais eleitores em volta dela**, com unifila, sem
+comer a fila das vizinhas. Com o objetivo explícito, a posição deixou de
+importar e a geometria ficou muito mais fácil.
+
+### 11.1 O que se reserva, e com que conta
+
+Cada mesa vermelha ganha, **à frente dela**, um retângulo reservado:
+
+| | |
+|---|---|
+| Footprint | 2,80 m ao longo da parede × 4,20 m de profundidade |
+| Onde começa | onde o módulo acaba, a 4,10 m da parede |
+| Composição | 2 raias de 4,20 m, no passo de raia de 1,40 m do projeto |
+| Capacidade | 2 × 4,20 × 1,20 × 2,00 = **20,2 pessoas** |
+| Folga lateral exigida | **1,90 m** de cada lado da mesa |
+
+Os parâmetros de fila são os do próprio `scripts/ring3.py` — passo de raia
+1,40 m, largura útil 1,20 m, 2,00 pessoas por m², ou seja 2,4 por metro de
+raia. **O serpenteado não é desenhado**, como pedido: o que a planta garante é
+que o espaço existe, livre de mesa, de fila vizinha e de zona protegida.
+
+A folga de 1,90 m sai de uma conta simples: o serpenteado tem 2,80 m e o corpo
+da mesa 0,90 m, então ele avança 0,95 m para cada lado. Exigir 1,90 m de vão
+garante que ele não passe do meio do caminho até a mesa vizinha — é isso que
+significa "sem afetar as outras filas".
+
+### 11.2 Os três serpenteados
+
+| Parede | MRV | Retângulo reservado (x, y) | Pessoas |
+|---|---:|---|---:|
+| oeste | 22 (590) | x 4,10–8,30 · y 21,72–24,52 | 20 |
+| norte | 23 (586) | x 17,16–19,96 · y 36,10–40,30 | 20 |
+| leste | 24 (588) | x 39,00–43,20 · y 27,45–30,25 | 20 |
+
+Todas as três com 1,90 m de folga dos **dois** lados, e nenhuma na ponta da
+parede — o canto do salão é o pior lugar para a mesa mais cheia, porque é o
+percurso mais longo da entrada até ela.
+
+### 11.3 Soltar o centro devolveu o equilíbrio
+
+| Regra do item 5 | Repartições viáveis | Amplitude |
+|---|---:|---:|
+| vermelha no terço central + verdes obrigatórios (15/09) | 9 de 21 | 114 |
+| **serpenteado reservado, posição livre (16/09)** | **13 de 21** | **2** |
+
+**3.834 · 3.832 · 3.833** — amplitude de **2 eleitores em 11.499**, o melhor
+de toda a série. A restrição geométrica ficou mais útil e menos apertada ao
+mesmo tempo: o que travava não era o espaço de fila, era a exigência de
+posição.
+
+Verdes ao redor voltou a ser **preferência**, como o pedido original dizia
+("preferencialmente"), e não regra — foi por tê-la endurecido em 15/09 que a
+amplitude tinha subido para 114.
+
+### 11.4 Sala de apoio na parede oeste
+
+O trecho entre a porta **O1** e a parede norte saiu da lista de trechos
+utilizáveis: é onde fica a sala de apoio.
+
+- zona reservada: x 0,00–7,80 · y 38,50–44,40, começando na borda norte de O1;
+- a parede oeste perde o trecho (39,05–43,95) e cai de **29,53 m para 24,63 m**
+  de comprimento útil;
+- com 9 mesas em 24,63 m, ela passa a 2,74 m por mesa — a mais apertada das
+  três, e a mais densa em eleitores por metro.
+
+**A profundidade de 7,80 m é suposição minha**, alinhada ao recorte sudoeste do
+salão. O que o pedido fixa é o trecho de parede; a profundidade da sala precisa
+ser medida em campo antes de imprimir.
+
+### 11.5 O aperto de 2,50 m não foi preciso
+
+A autorização para comprimir a dupla de 3,00 m para 2,50 m entrou no motor como
+**segunda tentativa**: ele monta tudo a 3,00 m e só aperta se não couber. Nas
+três paredes os 3,00 m couberam, então **nenhuma dupla foi apertada**. A
+autorização fica registrada em `decisoes.vao_dupla_por_parede` e é usada
+automaticamente se uma mudança futura exigir.
+
+### 11.6 O que isto custou
+
+| | |
+|---|---:|
+| Mesas que mudam de parede (vs. 15/09) | 17 de 28 |
+| Amplitude | 114 → **2** |
+| Comprimento útil da parede oeste | 29,53 → 24,63 m |
+| Duplas apertadas | nenhuma |

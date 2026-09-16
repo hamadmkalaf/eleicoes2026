@@ -14,20 +14,46 @@ Organização logística do 1º turno (04/10/2026, 8h–17h) e do eventual 2º t
 | Local | RDS, Merrion Road, Ballsbridge, Dublin 4 | contrato |
 | Segurança contratada | 20 pessoas, 7h30–17h30, + 1 na véspera | orçamento (EUR 6.774,84) |
 
-## Geometria do local (decisão registrada em 15/09/2026)
+## Geometria do local (planta de 16/09/2026)
 
-- O **Hall 2 (Shelbourne Hall, 50,2 × 44,5 m)** é a área de chegada, fila e
-  sinalização. Tem três portas de entrada nomeadas **A, B e C**.
-- O **Ring 3** é o salão de votação, dividido em **três zonas, nomeadas A, B e C
-  segundo as portas do Hall 2**. Cada zona corresponde a uma porta: porta A → zona
-  A, porta B → zona B, porta C → zona C.
-- Consequência para dimensionamento: **3 zonas e 3 portas de entrada**, mais a saída
-  dedicada. Postos de voluntário em frente às zonas e em frente às portas escalam
-  1:1 com esses números.
+O percurso tem três trechos físicos distintos. **Ring 3 é o pátio de fila ao ar
+livre; Hall 2 é o salão de votação.**
 
-O `RDS_Hall_2_Floorplan_(1).pdf` e o `PLANO COM FLUXOS MELHORADO.png` são do Hall 2
-e descrevem apenas duas entradas (A e B) — material anterior a esta decisão, a ser
-relido como planta do espaço de chegada, não do salão de votação.
+**Ring 3 — pátio de fila.** Recinto ao ar livre de gradil permanente, 44,0 × 35,0 m,
+ao sul do Hall 2. Entrada única pelo **canto nordeste**. Um **corredor de chegada de
+3,0 m** desce pelo lado leste; um **trecho de fundo de 3,0 m** corre na base e
+distribui para as três zonas. Zonas lado a lado, separadas por vãos de 1,20 m:
+**zona C 12,23 m (leste, a primeira que se alcança), zona B 14,14 m (centro), zona A
+12,23 m (oeste, a mais distante)**. Cada zona tem **23 raias** ao longo de 32,0 m
+(passo de 1,39 m). A fila avança de baixo para cima; a cabeça de cada zona fica no
+topo, voltada para o Hall.
+
+**Apron.** Faixa pavimentada de **14,0 m** entre a cabeça das filas e a fachada sul
+do Hall 2. Espaço de travessia, sem raias.
+
+**Hall 2 — salão de votação.** Portas na fachada sul: **S4 = entrada A, S5 = entrada
+B, S6 = entrada C, S7 = preferencial**; **S2 e S8 são saídas**; S1, S3 e S9 ficam
+livres. As 28 mesas ficam encostadas nas paredes: **parede oeste = zona A (9 urnas),
+parede norte = zona B (9 urnas), parede leste = zona C (10 urnas)**. Sala de apoio no
+canto noroeste. Faixa livre de 3 m junto à parede leste para as saídas de emergência
+L1–L4. Portas O1 e N1 fechadas; O2, N2 e H1 livres. Serpentinas internas de 20
+pessoas nas três mesas maiores (3313, 3315, 3322).
+
+Correspondência que amarra tudo: **zona do Ring → porta do Hall → parede do salão**,
+com a mesma letra em toda a rota.
+
+| Zona | Ring 3 | Porta | Parede | Urnas | Aptos | Comparecimento esperado |
+|---|---|---|---|---|---|---|
+| A | oeste (12,23 m) | S4 | oeste | 9 | 5.695 | 3.860 |
+| B | centro (14,14 m) | S5 | norte | 9 | 5.600 | 3.755 |
+| C | leste (12,23 m) | S6 | leste | 10 | 5.499 | 3.802 |
+
+Spread de 2,8% entre a zona mais cheia e a mais vazia, com uma das três urnas
+grandes (3313, 3315, 3322) em cada zona. A distribuição está equilibrada; não mexer
+sem refazer a conta.
+
+O `RDS_Hall_2_Floorplan_(1).pdf` e o `PLANO COM FLUXOS MELHORADO.png` são anteriores
+a esta planta e descrevem duas entradas apenas — material histórico.
 
 ## Documentos do repositório
 

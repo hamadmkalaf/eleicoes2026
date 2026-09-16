@@ -1,0 +1,9 @@
+# Dependências do pipeline de dados.
+#   parse_dados.py e mapa_agregacoes.py precisam das duas;
+#   gera_pagina.py e zonas_balanceadas.py rodam só com a biblioteca padrão.
+#
+# Versões mínimas, não fixadas: o pipeline não usa API recente de nenhuma das
+# duas. Não foi possível verificar a execução no ambiente em que este arquivo
+# foi escrito, onde nenhuma das duas está instalada.
+pandas>=2.0
+openpyxl>=3.1

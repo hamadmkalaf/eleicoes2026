@@ -1,0 +1,18 @@
+titulo	url	atualizado	tema	gerador_no_repo	status	acao_na_transferencia
+Montagem do Ring 3	https://claude.ai/artifact/FcQs4H7fM3RcBxmyFywazV	2026-09-16	ring3	scripts/ring3_montagem.py	reproduzivel	migrar com gerador — versão final do Ring 3
+Urnas de Dublin	https://claude.ai/artifact/8YfHrRWvw7j8rZEZ2PgKiv	2026-08-13	secoes	scripts/mapa_agregacoes.py + scripts/gera_pagina.py	reproduzivel	migrar com gerador — versão final das agregações
+Prancheta pelas Seções	https://claude.ai/artifact/Szv5egKpHy3umh4udAybvr	2026-09-16	secoes	—	orfao	exportar HTML antes de migrar
+Rota do Eleitor RDS	https://claude.ai/artifact/1PQjgzstbiNorfJgagXhB5	2026-09-06	fluxo	—	orfao	exportar HTML antes de migrar
+Sinalização RDS Hall 2	https://claude.ai/artifact/BcT5yzxRkSaUsbbHQQgjWF	2026-09-15	sinalizacao	—	orfao	exportar HTML antes de migrar
+Prancheta do Hall 2	https://claude.ai/artifact/XTd4LLmW9Fyh3UDLtjoc2T	2026-09-14	salao	—	orfao	exportar HTML antes de migrar
+Posto de Dublin 2026	https://claude.ai/artifact/4VRSyeuFu8nSm1TFJ7xWXC	2026-09-15	panorama	—	orfao	exportar HTML — candidato a índice do novo repositório
+Filas sem o Ring 3	https://claude.ai/artifact/P3x8Hy3j8gnEYKdwwfCSTe	2026-09-15	filas	—	orfao	exportar HTML — contingência, verificar se ainda vale
+Fitas no piso do Hall 2	https://claude.ai/artifact/T77jvrJmLK1HxTT4qFRAGY	2026-09-12	salao	—	orfao	exportar HTML antes de migrar
+Simulador do Hall 2	https://claude.ai/artifact/X1MEdK3CosTCZH9486JesV	2026-09-08	simulacao	—	orfao	exportar HTML — tem JS, conferir se roda fora do claude.ai
+Barreiras do Hall 2	https://claude.ai/artifact/V1mFt2njTvD2VzntDK6Crt	2026-09-11	salao	—	orfao	exportar HTML — verificar se foi superado por Montagem do Ring 3
+Planta-base do Hall 2	https://claude.ai/artifact/9xHx31DwUUtEtgpsbxZHxf	2026-09-06	salao	—	orfao	exportar HTML — base geométrica de vários outros
+Ring 3, cenários de fila	https://claude.ai/artifact/QrLDxdnNexR5x5iPjLi51Y	2026-09-11	ring3	—	superado	NÃO migrar como versão final — superado por Montagem do Ring 3; guardar só se quiser o histórico da decisão
+As 28 Mesas nas Paredes	https://claude.ai/artifact/3AtxC7Qro6LvLwob25nK3d	2026-08-31	salao	—	provavelmente superado	decidir: superado pelas plantas de setembro?
+Quantas mesas cabem no Hall 2	https://claude.ai/artifact/Jci5uV3yxscF1Fw2teRfdX	2026-09-03	salao	—	provavelmente superado	decidir: superado pelas plantas de setembro?
+Fluxo do Posto de Dublin	https://claude.ai/artifact/QTbGi2qDxYy76BnSXmxJSD	2026-08-28	fluxo	—	provavelmente superado	decidir: superado por Rota do Eleitor RDS?
+Teses Temáticas — Arquivo de Pesquisa	https://claude.ai/artifact/6XBWS8yH2rFNMTZ4PhWXE9	2026-07-26	fora_de_escopo	—	nao_pertence	não migrar — outro projeto

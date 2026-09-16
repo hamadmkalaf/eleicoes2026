@@ -1,3 +1,11 @@
+> **Este repositório foi transferido.** As versões finais, os geradores e as
+> páginas exportadas do claude.ai estão em
+> [`hamadmkalaf/dublineleicoesfinal`](https://github.com/hamadmkalaf/dublineleicoesfinal).
+> Este repositório fica como arquivo: o conteúdo das 29 branches (10 PRs
+> abertos) foi consolidado numa árvore só lá, conforme
+> `transferencia/TRANSFERENCIA.md` e `transferencia/EXECUCAO_2026-09-16.md`
+> do repositório novo. Não desenvolva mais aqui.
+
 # Agregações de seções eleitorais — Dublin, Eleições 2026
 
 Análise do mapa de agregações que o TSE propôs para a zona eleitoral de Dublin

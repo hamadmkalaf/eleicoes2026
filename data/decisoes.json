@@ -1,0 +1,1017 @@
+{
+ "decididoEm": "2026-09-06",
+ "atualizadoEm": "2026-09-16",
+ "numeracao": "NUMERAÇÃO OFICIAL: MRV do DJE/TRE-DF, identidade da mesa de uso interno; não depende da posição.",
+ "numeracao_eleitor": "NUMERAÇÃO ELEITOR: 1 na mesa mais ao sul da parede oeste, sentido horário, 28 na mais ao sul da parede leste; voltada ao público.",
+ "cenario_trabalho": {
+  "id": "paredes-abc-20260915",
+  "nome": "Paredes_ABC",
+  "criadoEm": "2026-09-16T00:00:00.000Z",
+  "provisorio": false
+ },
+ "comparecimento": {
+  "base": "B",
+  "rotulo": "taxa de 2022 por domicílio de origem (base B, não oficial)",
+  "total": 11499,
+  "total_exato": 11497.7,
+  "aptos": 16794,
+  "taxas": {
+   "DUBLIN": {
+    "taxa": 0.74,
+    "qualidade": "direto"
+   },
+   "CORK": {
+    "taxa": 0.533,
+    "qualidade": "direto"
+   },
+   "OUTROS LOCAIS DA IRLANDA": {
+    "taxa": 0.6,
+    "qualidade": "direto"
+   },
+   "GALWAY": {
+    "taxa": 0.481,
+    "qualidade": "direto"
+   },
+   "LIMERICK": {
+    "taxa": 0.434,
+    "qualidade": "proxy"
+   },
+   "WESTMEATH": {
+    "taxa": 0.461,
+    "qualidade": "proxy"
+   },
+   "WATERFORD": {
+    "taxa": 0.461,
+    "qualidade": "proxy"
+   },
+   "ROSCOMMON": {
+    "taxa": 0.434,
+    "qualidade": "proxy"
+   },
+   "CLARE": {
+    "taxa": 0.649,
+    "qualidade": "direto"
+   },
+   "CAVAN": {
+    "taxa": 0.461,
+    "qualidade": "proxy"
+   },
+   "MAYO": {
+    "taxa": 0.544,
+    "qualidade": "proxy"
+   },
+   "LONGFORD": {
+    "taxa": 0.778,
+    "qualidade": "direto"
+   },
+   "DONEGAL": {
+    "taxa": 0.51,
+    "qualidade": "genérico (0,49 abst.)"
+   },
+   "KERRY": {
+    "taxa": 0.544,
+    "qualidade": "proxy"
+   },
+   "LEITRIM": {
+    "taxa": 0.51,
+    "qualidade": "genérico (0,49 abst.)"
+   }
+  }
+ },
+ "classes": {
+  "regra": "as 3 maiores = alta; esperado >= 450 = media; abaixo = baixa",
+  "n_alta": 3,
+  "limiar_media": 450,
+  "cores": {
+   "alta": {
+    "cor": "vermelho",
+    "hex": "#c0392b",
+    "rotulo": "alto comparecimento"
+   },
+   "media": {
+    "cor": "amarelo",
+    "hex": "#d4a017",
+    "rotulo": "médio comparecimento"
+   },
+   "baixa": {
+    "cor": "verde",
+    "hex": "#1e8449",
+    "rotulo": "baixo comparecimento"
+   }
+  },
+  "contagem": {
+   "alta": 3,
+   "media": 8,
+   "baixa": 17
+  }
+ },
+ "portas": {
+  "S4": {
+   "papel": "entrada",
+   "entrada": "A",
+   "cor": "#2a78d6",
+   "parede": "oeste"
+  },
+  "S5": {
+   "papel": "entrada",
+   "entrada": "B",
+   "cor": "#e08a00",
+   "parede": "norte"
+  },
+  "S6": {
+   "papel": "entrada",
+   "entrada": "C",
+   "cor": "#c2185b",
+   "parede": "leste"
+  },
+  "S2": {
+   "papel": "saida"
+  },
+  "S8": {
+   "papel": "saida"
+  }
+ },
+ "entradas": [
+  {
+   "id": "A",
+   "porta": "S4",
+   "cor": "azul",
+   "hex": "#2a78d6",
+   "parede": "oeste",
+   "mrvs": [
+    3,
+    6,
+    8,
+    10,
+    11,
+    12,
+    20,
+    21,
+    22
+   ],
+   "esperado": 3834,
+   "quota": 0.3334,
+   "metros_de_parede": 24.63,
+   "por_metro": 155.7,
+   "vao_dupla": 3.0
+  },
+  {
+   "id": "B",
+   "porta": "S5",
+   "cor": "âmbar",
+   "hex": "#e08a00",
+   "parede": "norte",
+   "mrvs": [
+    2,
+    5,
+    9,
+    16,
+    17,
+    18,
+    19,
+    23,
+    27
+   ],
+   "esperado": 3832,
+   "quota": 0.3332,
+   "metros_de_parede": 27.64,
+   "por_metro": 138.6,
+   "vao_dupla": 3.0
+  },
+  {
+   "id": "C",
+   "porta": "S6",
+   "cor": "magenta",
+   "hex": "#c2185b",
+   "parede": "leste",
+   "mrvs": [
+    1,
+    4,
+    7,
+    13,
+    14,
+    15,
+    24,
+    25,
+    26,
+    28
+   ],
+   "esperado": 3833,
+   "quota": 0.3333,
+   "metros_de_parede": 36.3,
+   "por_metro": 105.6,
+   "vao_dupla": 3.0
+  }
+ ],
+ "saidas": [
+  "S2",
+  "S8"
+ ],
+ "nomenclatura_portas": "letra",
+ "mesas": [
+  {
+   "mrv": 1,
+   "principal": 511,
+   "agregada": 1100,
+   "origem_agregada": "ROSCOMMON",
+   "aptos": 582,
+   "aptos_principal": 400,
+   "aptos_agregada": 182,
+   "aptos_dublin": 400,
+   "aptos_interior": 182,
+   "esperado": 375,
+   "esperado_exato": 374.99,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 19,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 2,
+   "principal": 512,
+   "agregada": 2855,
+   "origem_agregada": "LONGFORD",
+   "aptos": 476,
+   "aptos_principal": 400,
+   "aptos_agregada": 76,
+   "aptos_dublin": 400,
+   "aptos_interior": 76,
+   "esperado": 355,
+   "esperado_exato": 355.13,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 10,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 3,
+   "principal": 513,
+   "agregada": 1105,
+   "origem_agregada": "MAYO",
+   "aptos": 502,
+   "aptos_principal": 400,
+   "aptos_agregada": 102,
+   "aptos_dublin": 400,
+   "aptos_interior": 102,
+   "esperado": 351,
+   "esperado_exato": 351.49,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 6,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 4,
+   "principal": 517,
+   "agregada": 1292,
+   "origem_agregada": "CAVAN",
+   "aptos": 513,
+   "aptos_principal": 400,
+   "aptos_agregada": 113,
+   "aptos_dublin": 400,
+   "aptos_interior": 113,
+   "esperado": 348,
+   "esperado_exato": 348.09,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 20,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 5,
+   "principal": 1160,
+   "agregada": 3845,
+   "origem_agregada": "LIMERICK",
+   "aptos": 473,
+   "aptos_principal": 400,
+   "aptos_agregada": 73,
+   "aptos_dublin": 400,
+   "aptos_interior": 73,
+   "esperado": 328,
+   "esperado_exato": 327.68,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 11,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 6,
+   "principal": 1352,
+   "agregada": 522,
+   "origem_agregada": "DONEGAL",
+   "aptos": 462,
+   "aptos_principal": 400,
+   "aptos_agregada": 62,
+   "aptos_dublin": 400,
+   "aptos_interior": 62,
+   "esperado": 328,
+   "esperado_exato": 327.62,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 7,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 7,
+   "principal": 3054,
+   "agregada": 1099,
+   "origem_agregada": "KERRY",
+   "aptos": 454,
+   "aptos_principal": 400,
+   "aptos_agregada": 54,
+   "aptos_dublin": 400,
+   "aptos_interior": 54,
+   "esperado": 325,
+   "esperado_exato": 325.38,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 22,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 8,
+   "principal": 3078,
+   "agregada": 2847,
+   "origem_agregada": "LEITRIM",
+   "aptos": 429,
+   "aptos_principal": 400,
+   "aptos_agregada": 29,
+   "aptos_dublin": 400,
+   "aptos_interior": 29,
+   "esperado": 311,
+   "esperado_exato": 310.79,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 8,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 9,
+   "principal": 3108,
+   "agregada": 3422,
+   "origem_agregada": "GALWAY",
+   "aptos": 756,
+   "aptos_principal": 398,
+   "aptos_agregada": 358,
+   "aptos_dublin": 398,
+   "aptos_interior": 358,
+   "esperado": 467,
+   "esperado_exato": 466.72,
+   "classe": "media",
+   "cor": "#d4a017",
+   "eleitor": 13,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 10,
+   "principal": 3142,
+   "agregada": 1278,
+   "origem_agregada": "LIMERICK",
+   "aptos": 793,
+   "aptos_principal": 398,
+   "aptos_agregada": 395,
+   "aptos_dublin": 398,
+   "aptos_interior": 395,
+   "esperado": 466,
+   "esperado_exato": 465.95,
+   "classe": "media",
+   "cor": "#d4a017",
+   "eleitor": 2,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 11,
+   "principal": 3161,
+   "agregada": 3307,
+   "origem_agregada": "CORK",
+   "aptos": 791,
+   "aptos_principal": 397,
+   "aptos_agregada": 394,
+   "aptos_dublin": 397,
+   "aptos_interior": 394,
+   "esperado": 504,
+   "esperado_exato": 503.78,
+   "classe": "media",
+   "cor": "#d4a017",
+   "eleitor": 3,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 12,
+   "principal": 3179,
+   "agregada": 530,
+   "origem_agregada": "WESTMEATH",
+   "aptos": 676,
+   "aptos_principal": 398,
+   "aptos_agregada": 278,
+   "aptos_dublin": 398,
+   "aptos_interior": 278,
+   "esperado": 423,
+   "esperado_exato": 422.68,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 9,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 13,
+   "principal": 3216,
+   "agregada": 527,
+   "origem_agregada": "CLARE",
+   "aptos": 571,
+   "aptos_principal": 398,
+   "aptos_agregada": 173,
+   "aptos_dublin": 398,
+   "aptos_interior": 173,
+   "esperado": 407,
+   "esperado_exato": 406.8,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 23,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 14,
+   "principal": 3229,
+   "agregada": 3821,
+   "origem_agregada": "CORK",
+   "aptos": 606,
+   "aptos_principal": 398,
+   "aptos_agregada": 208,
+   "aptos_dublin": 398,
+   "aptos_interior": 208,
+   "esperado": 405,
+   "esperado_exato": 405.38,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 26,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 15,
+   "principal": 3245,
+   "agregada": 519,
+   "origem_agregada": "CORK",
+   "aptos": 781,
+   "aptos_principal": 397,
+   "aptos_agregada": 384,
+   "aptos_dublin": 397,
+   "aptos_interior": 384,
+   "esperado": 498,
+   "esperado_exato": 498.45,
+   "classe": "media",
+   "cor": "#d4a017",
+   "eleitor": 25,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 16,
+   "principal": 3302,
+   "agregada": 3181,
+   "origem_agregada": "OUTROS LOCAIS DA IRLANDA",
+   "aptos": 771,
+   "aptos_principal": 396,
+   "aptos_agregada": 375,
+   "aptos_dublin": 396,
+   "aptos_interior": 375,
+   "esperado": 518,
+   "esperado_exato": 518.04,
+   "classe": "media",
+   "cor": "#d4a017",
+   "eleitor": 14,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 17,
+   "principal": 3305,
+   "agregada": 521,
+   "origem_agregada": "GALWAY",
+   "aptos": 767,
+   "aptos_principal": 397,
+   "aptos_agregada": 370,
+   "aptos_dublin": 397,
+   "aptos_interior": 370,
+   "esperado": 472,
+   "esperado_exato": 471.75,
+   "classe": "media",
+   "cor": "#d4a017",
+   "eleitor": 15,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 18,
+   "principal": 3306,
+   "agregada": 518,
+   "origem_agregada": "OUTROS LOCAIS DA IRLANDA",
+   "aptos": 766,
+   "aptos_principal": 396,
+   "aptos_agregada": 370,
+   "aptos_dublin": 396,
+   "aptos_interior": 370,
+   "esperado": 515,
+   "esperado_exato": 515.04,
+   "classe": "media",
+   "cor": "#d4a017",
+   "eleitor": 16,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 19,
+   "principal": 3308,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 399,
+   "aptos_principal": 399,
+   "aptos_agregada": 0,
+   "aptos_dublin": 399,
+   "aptos_interior": 0,
+   "esperado": 295,
+   "esperado_exato": 295.26,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 17,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 20,
+   "principal": 3309,
+   "agregada": 1314,
+   "origem_agregada": "WATERFORD",
+   "aptos": 615,
+   "aptos_principal": 398,
+   "aptos_agregada": 217,
+   "aptos_dublin": 398,
+   "aptos_interior": 217,
+   "esperado": 395,
+   "esperado_exato": 394.56,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 1,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 21,
+   "principal": 3311,
+   "agregada": 3913,
+   "origem_agregada": "DUBLIN",
+   "aptos": 630,
+   "aptos_principal": 397,
+   "aptos_agregada": 233,
+   "aptos_dublin": 630,
+   "aptos_interior": 0,
+   "esperado": 466,
+   "esperado_exato": 466.2,
+   "classe": "media",
+   "cor": "#d4a017",
+   "eleitor": 4,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 22,
+   "principal": 3313,
+   "agregada": 3889,
+   "origem_agregada": "DUBLIN",
+   "aptos": 797,
+   "aptos_principal": 397,
+   "aptos_agregada": 400,
+   "aptos_dublin": 797,
+   "aptos_interior": 0,
+   "esperado": 590,
+   "esperado_exato": 589.78,
+   "classe": "alta",
+   "cor": "#c0392b",
+   "eleitor": 5,
+   "parede": "oeste",
+   "entrada": "A",
+   "porta": "S4"
+  },
+  {
+   "mrv": 23,
+   "principal": 3315,
+   "agregada": 3778,
+   "origem_agregada": "DUBLIN",
+   "aptos": 792,
+   "aptos_principal": 395,
+   "aptos_agregada": 397,
+   "aptos_dublin": 792,
+   "aptos_interior": 0,
+   "esperado": 586,
+   "esperado_exato": 586.08,
+   "classe": "alta",
+   "cor": "#c0392b",
+   "eleitor": 12,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 24,
+   "principal": 3322,
+   "agregada": 3752,
+   "origem_agregada": "DUBLIN",
+   "aptos": 794,
+   "aptos_principal": 398,
+   "aptos_agregada": 396,
+   "aptos_dublin": 794,
+   "aptos_interior": 0,
+   "esperado": 588,
+   "esperado_exato": 587.56,
+   "classe": "alta",
+   "cor": "#c0392b",
+   "eleitor": 21,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 25,
+   "principal": 3442,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 398,
+   "aptos_principal": 398,
+   "aptos_agregada": 0,
+   "aptos_dublin": 398,
+   "aptos_interior": 0,
+   "esperado": 295,
+   "esperado_exato": 294.52,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 28,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 26,
+   "principal": 3688,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 400,
+   "aptos_principal": 400,
+   "aptos_agregada": 0,
+   "aptos_dublin": 400,
+   "aptos_interior": 0,
+   "esperado": 296,
+   "esperado_exato": 296.0,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 27,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  },
+  {
+   "mrv": 27,
+   "principal": 3832,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 400,
+   "aptos_principal": 400,
+   "aptos_agregada": 0,
+   "aptos_dublin": 400,
+   "aptos_interior": 0,
+   "esperado": 296,
+   "esperado_exato": 296.0,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 18,
+   "parede": "norte",
+   "entrada": "B",
+   "porta": "S5"
+  },
+  {
+   "mrv": 28,
+   "principal": 3862,
+   "agregada": null,
+   "origem_agregada": null,
+   "aptos": 400,
+   "aptos_principal": 400,
+   "aptos_agregada": 0,
+   "aptos_dublin": 400,
+   "aptos_interior": 0,
+   "esperado": 296,
+   "esperado_exato": 296.0,
+   "classe": "baixa",
+   "cor": "#1e8449",
+   "eleitor": 24,
+   "parede": "leste",
+   "entrada": "C",
+   "porta": "S6"
+  }
+ ],
+ "ring3": {
+  "situacao": "abandonado em 15/09/2026 — o RDS proibiu fila no terreno e não houve autorização de Brasília; a fila passa a ser dimensionada dentro do Hall 2, uma por parede."
+ },
+ "entradas_por_parede": "Decisão do Posto de 15/09/2026: cada entrada serve uma parede inteira e só ela — A (S4) a oeste, B (S5) ao norte, C (S6) a leste. Equilibrar as entradas e equilibrar as paredes passaram a ser o mesmo problema. Substitui a atribuição por cota do Ring 3, que não existe mais.",
+ "sinalizacao_portas": {
+  "N1": {
+   "papel": "fechada",
+   "rotulo": "porta de serviço, fechada no dia",
+   "face": "norte",
+   "rds": "2.13",
+   "larg": 2.03
+  },
+  "N2": {
+   "papel": "livre",
+   "rotulo": "acesso de serviço — mantida desobstruída",
+   "face": "norte",
+   "rds": "2.14/2.15",
+   "larg": 3.56
+  },
+  "L1": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.16/2.17",
+   "larg": 3.06
+  },
+  "L2": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.18/2.19",
+   "larg": 3.06
+  },
+  "L3": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.20/2.21",
+   "larg": 3.07
+  },
+  "L4": {
+   "papel": "emergencia",
+   "rotulo": "saída de emergência",
+   "face": "leste",
+   "rds": "2.22/2.23",
+   "larg": 3.06
+  },
+  "S1": {
+   "papel": "livre",
+   "rotulo": "porta de carga, sem papel de eleitor",
+   "face": "sul",
+   "rds": "carga oeste",
+   "larg": 3.62
+  },
+  "S2": {
+   "papel": "saida",
+   "rotulo": "saída de eleitor",
+   "face": "sul",
+   "rds": "sem codigo RDS",
+   "larg": 1.2
+  },
+  "S3": {
+   "papel": "livre",
+   "rotulo": "recuo de emergência",
+   "face": "sul",
+   "rds": "2.7",
+   "larg": 1.25
+  },
+  "S4": {
+   "papel": "entrada",
+   "entrada": "A",
+   "parede": "oeste",
+   "rotulo": "entrada A — parede oeste",
+   "face": "sul",
+   "rds": "2.5/2.6",
+   "larg": 5.93
+  },
+  "S5": {
+   "papel": "entrada",
+   "entrada": "B",
+   "parede": "norte",
+   "rotulo": "entrada B — parede norte",
+   "face": "sul",
+   "rds": "2.4",
+   "larg": 5.93
+  },
+  "S6": {
+   "papel": "entrada",
+   "entrada": "C",
+   "parede": "leste",
+   "rotulo": "entrada C — parede leste",
+   "face": "sul",
+   "rds": "2.2/2.3",
+   "larg": 5.93
+  },
+  "S7": {
+   "papel": "preferencial",
+   "rotulo": "entrada preferencial — idoso, gestante, PcD, com acompanhante, sem fila",
+   "face": "sul",
+   "rds": "2.1",
+   "larg": 1.27
+  },
+  "S8": {
+   "papel": "saida",
+   "rotulo": "saída de eleitor",
+   "face": "sul",
+   "rds": "sem codigo RDS",
+   "larg": 1.2
+  },
+  "S9": {
+   "papel": "livre",
+   "rotulo": "porta de carga, sem papel de eleitor",
+   "face": "sul",
+   "rds": "carga leste",
+   "larg": 3.63
+  },
+  "O1": {
+   "papel": "fechada",
+   "rotulo": "acesso ao Hall 1, fechado no dia",
+   "face": "oeste",
+   "rds": "acesso Hall 1",
+   "larg": 1.7
+  },
+  "O2": {
+   "papel": "livre",
+   "rotulo": "acesso de serviço — mantida desobstruída",
+   "face": "oeste",
+   "rds": "2.10/2.11",
+   "larg": 3.07
+  },
+  "R1": {
+   "papel": "livre",
+   "rotulo": "recorte sudoeste — recuo de emergência",
+   "face": "recorte_v",
+   "rds": "2.8/2.9",
+   "larg": 3.5
+  }
+ },
+ "zonas_protegidas": [
+  {
+   "tipo": "faixa_emergencia",
+   "porta": "L1 a L4",
+   "rect": [
+    47.3,
+    0.0,
+    50.3,
+    44.4
+   ],
+   "rotulo": "fachada leste · faixa protegida de 3 m para as saídas de emergência"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "N2",
+   "rect": [
+    20.66,
+    41.4,
+    24.22,
+    44.4
+   ],
+   "rotulo": "N2 · recuo de 3 m, sem mesa e sem fila"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "O2",
+   "rect": [
+    0.0,
+    19.36,
+    3.0,
+    22.43
+   ],
+   "rotulo": "O2 · recuo de 3 m, sem mesa e sem fila"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "S7",
+   "rect": [
+    35.09,
+    0.0,
+    42.36,
+    3.0
+   ],
+   "rotulo": "S7 · recuo da entrada preferencial"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "R1",
+   "rect": [
+    7.8,
+    0.0,
+    10.8,
+    7.0
+   ],
+   "rotulo": "R1 · recuo de emergência"
+  },
+  {
+   "tipo": "recuo_porta",
+   "porta": "S3",
+   "rect": [
+    14.22,
+    0.0,
+    21.47,
+    3.0
+   ],
+   "rotulo": "S3 · recuo de emergência"
+  },
+  {
+   "tipo": "sala_apoio",
+   "porta": "O1",
+   "rect": [
+    0.0,
+    38.5,
+    7.8,
+    44.4
+   ],
+   "rotulo": "sala de apoio — vão entre O1 e a parede norte (profundidade a confirmar em campo)"
+  }
+ ],
+ "serpenteados": [
+  {
+   "tipo": "serpenteado",
+   "parede": "oeste",
+   "mrv": 22,
+   "rect": [
+    4.1,
+    21.72,
+    8.3,
+    24.52
+   ],
+   "raias": 2,
+   "passo_raia": 1.4,
+   "profundidade": 4.2,
+   "pessoas": 20,
+   "rotulo": "MRV 22 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"
+  },
+  {
+   "tipo": "serpenteado",
+   "parede": "norte",
+   "mrv": 23,
+   "rect": [
+    17.16,
+    36.1,
+    19.96,
+    40.3
+   ],
+   "raias": 2,
+   "passo_raia": 1.4,
+   "profundidade": 4.2,
+   "pessoas": 20,
+   "rotulo": "MRV 23 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"
+  },
+  {
+   "tipo": "serpenteado",
+   "parede": "leste",
+   "mrv": 24,
+   "rect": [
+    39.0,
+    27.45,
+    43.2,
+    30.25
+   ],
+   "raias": 2,
+   "passo_raia": 1.4,
+   "profundidade": 4.2,
+   "pessoas": 20,
+   "rotulo": "MRV 24 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"
+  }
+ ],
+ "vao_dupla_por_parede": {
+  "oeste": 3.0,
+  "norte": 3.0,
+  "leste": 3.0
+ }
+}

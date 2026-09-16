@@ -1,0 +1,767 @@
+<title>Prancheta pelas Seções</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  --papel:#efece4; --folha:#fffdf8; --piso:#f6f4ee;
+  --tinta:#16202b; --meio:#58616d; --fraco:#8b929c;
+  --regua:#d8d2c5; --regua2:#e7e2d7;
+  --alta:#c0392b; --media:#b5860f; --baixa:#1e8449;
+  --altaF:#c0392b; --mediaF:#c9a227; --baixaF:#1e8449;
+  --entA:#2a78d6; --entB:#c26a00; --entC:#c2185b;
+  --saida:#16867f; --realce:#1f6fb2;
+  --emerg:#0e8a74; --pref:#6d3fa0; --fechada:#9aa4b0; --servico:#4a7a9b;
+  --apoio:#8a5a2b; --serp:#c0392b;
+  --sombra:0 1px 2px rgba(22,32,43,.07), 0 8px 22px rgba(22,32,43,.07);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --papel:#10151a; --folha:#191f26; --piso:#141a20;
+  --tinta:#e6eaef; --meio:#a2aab4; --fraco:#767e88;
+  --regua:#2a3139; --regua2:#222830;
+  --alta:#e8806f; --media:#dda93f; --baixa:#4fb87e;
+  --altaF:#c0392b; --mediaF:#b58a1c; --baixaF:#1b7a40;
+  --entA:#63a6e0; --entB:#e0a257; --entC:#e2789f;
+  --saida:#3cb8ab; --realce:#63a6e0;
+  --emerg:#42c0a5; --pref:#b18ede; --fechada:#6a737d; --servico:#7fb0cc;
+  --apoio:#c08e56; --serp:#e8806f;
+  --sombra:0 1px 2px rgba(0,0,0,.45), 0 10px 26px rgba(0,0,0,.38);
+}}
+:root[data-theme="dark"]{
+  --papel:#10151a; --folha:#191f26; --piso:#141a20;
+  --tinta:#e6eaef; --meio:#a2aab4; --fraco:#767e88;
+  --regua:#2a3139; --regua2:#222830;
+  --alta:#e8806f; --media:#dda93f; --baixa:#4fb87e;
+  --altaF:#c0392b; --mediaF:#b58a1c; --baixaF:#1b7a40;
+  --entA:#63a6e0; --entB:#e0a257; --entC:#e2789f;
+  --saida:#3cb8ab; --realce:#63a6e0;
+  --emerg:#42c0a5; --pref:#b18ede; --fechada:#6a737d; --servico:#7fb0cc;
+  --apoio:#c08e56; --serp:#e8806f;
+  --sombra:0 1px 2px rgba(0,0,0,.45), 0 10px 26px rgba(0,0,0,.38);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--papel); color:var(--tinta);
+  font:15px/1.55 "IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding:0 16px 64px;
+}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+.env{max-width:1180px; margin:0 auto}
+:focus-visible{outline:2px solid var(--realce); outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+
+/* ---------- cabeçalho ---------- */
+header{padding-block:26px 18px; border-bottom:1px solid var(--regua)}
+h1{font-family:"Source Serif 4",Georgia,serif; font-weight:700; font-size:clamp(1.55rem,4.2vw,2.1rem);
+  line-height:1.12; letter-spacing:-.015em; margin:0 0 6px; text-wrap:balance}
+.sub{color:var(--meio); font-size:.94rem; margin:0; max-width:62ch}
+.sub strong{color:var(--tinta); font-weight:600}
+
+/* ---------- as três paredes ---------- */
+.paredes{padding-block:20px 0}
+.paredes ol{list-style:none; margin:0; padding:0; display:grid; gap:10px;
+  grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.paredes li{background:var(--folha); border:1px solid var(--regua);
+  border-top:4px solid var(--cor); padding:12px 14px 13px}
+.paredes .topo{display:flex; align-items:baseline; gap:8px; margin-bottom:7px}
+.paredes .letra{font-family:"IBM Plex Mono",monospace; font-size:1.6rem; font-weight:700;
+  line-height:1; color:var(--cor)}
+.paredes .onde{font-weight:600; font-size:.95rem}
+.paredes .porta{margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:.78rem;
+  color:var(--meio)}
+.paredes .carga{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+  font-size:1.35rem; font-weight:600; line-height:1.1}
+.paredes .detalhe{color:var(--meio); font-size:.8rem; margin:3px 0 0}
+.regra{color:var(--meio); font-size:.85rem; margin:12px 0 0; max-width:74ch}
+.regra strong{color:var(--tinta)}
+
+/* ---------- busca ---------- */
+.busca{padding-block:20px}
+.campo{display:flex; gap:8px; align-items:stretch; flex-wrap:wrap}
+.campo label{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+#q{
+  flex:1 1 15rem; min-width:0; font-family:"IBM Plex Mono",monospace; font-size:1.5rem;
+  font-weight:600; letter-spacing:.06em; padding:12px 16px; color:var(--tinta);
+  background:var(--folha); border:2px solid var(--regua); border-radius:2px;
+}
+#q:focus{border-color:var(--realce); outline:none}
+#q::placeholder{color:var(--fraco); font-weight:400; letter-spacing:.02em; font-size:1.05rem}
+.limpar{padding:0 18px; font:inherit; font-size:.9rem; color:var(--meio); cursor:pointer;
+  background:var(--folha); border:1px solid var(--regua); border-radius:2px}
+.limpar:hover{color:var(--tinta); border-color:var(--fraco)}
+.pista{color:var(--fraco); font-size:.82rem; margin:8px 0 0}
+
+/* ---------- ficha do resultado ---------- */
+.ficha{margin-top:14px; background:var(--folha); border:1px solid var(--regua);
+  border-left:5px solid var(--cor,var(--realce)); box-shadow:var(--sombra); padding:16px 18px}
+.ficha .qual{font-size:.78rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--meio); margin:0 0 4px}
+.ficha .mesa{font-family:"Source Serif 4",Georgia,serif; font-size:clamp(1.5rem,4.6vw,2rem);
+  font-weight:700; line-height:1.1; margin:0 0 10px; text-wrap:balance}
+.ficha .mesa b{color:var(--cor,var(--realce))}
+.ficha dl{display:grid; grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));
+  gap:12px 20px; margin:0}
+.ficha dt{font-size:.74rem; letter-spacing:.11em; text-transform:uppercase; color:var(--fraco);
+  margin-bottom:1px}
+.ficha dd{margin:0; font-size:.95rem; font-weight:500}
+.ficha .nada{color:var(--meio); margin:0; font-size:.95rem}
+
+/* ---------- controles da planta ---------- */
+.barra{display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  padding-block:22px 10px; border-top:1px solid var(--regua); margin-top:26px}
+.rot{font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--meio); margin:0}
+.grupo{display:flex; border:1px solid var(--regua); background:var(--folha); border-radius:2px}
+.grupo button{background:none; border:0; border-right:1px solid var(--regua); cursor:pointer;
+  font:inherit; font-size:.82rem; color:var(--meio); padding:6px 13px}
+.grupo button:last-child{border-right:0}
+.grupo button[aria-pressed="true"]{background:var(--tinta); color:var(--folha); font-weight:600}
+.barra .dir{margin-left:auto; display:flex; gap:6px}
+.zbtn{width:34px; height:32px; font:inherit; font-size:1rem; cursor:pointer; color:var(--meio);
+  background:var(--folha); border:1px solid var(--regua); border-radius:2px}
+.zbtn.larg{width:auto; padding:0 12px; font-size:.82rem}
+.zbtn:hover{color:var(--tinta); border-color:var(--fraco)}
+
+/* ---------- planta ---------- */
+.planta{position:relative; background:var(--folha); border:1px solid var(--regua);
+  box-shadow:var(--sombra); overflow:hidden; touch-action:none}
+.planta svg{display:block; width:100%; height:auto; cursor:grab}
+.planta svg.arrastando{cursor:grabbing}
+.mesa-g{cursor:pointer}
+.mesa-g .corpo{stroke:#1f2c3c; stroke-width:.8}
+.esmaecida{opacity:.28}
+.marcada .corpo{stroke:var(--realce); stroke-width:3}
+
+.usoPlanta{color:var(--fraco); font-size:.82rem; margin:10px 0 0; max-width:70ch}
+
+/* ---------- legenda ---------- */
+.legenda{display:flex; flex-wrap:wrap; gap:8px 22px; padding-block:14px; font-size:.83rem;
+  color:var(--meio)}
+.legenda span{display:inline-flex; align-items:center; gap:7px}
+.sw{width:13px; height:13px; border-radius:2px; flex:none}
+.sw.disco{border-radius:50%}
+
+/* ---------- índice ---------- */
+.indice{padding-block:30px 0; border-top:1px solid var(--regua); margin-top:26px}
+h2{font-family:"Source Serif 4",Georgia,serif; font-size:1.25rem; font-weight:700; margin:0 0 4px}
+.indice > p{color:var(--meio); font-size:.9rem; margin:0 0 16px; max-width:70ch}
+.tw{overflow-x:auto}
+table{border-collapse:collapse; width:100%; min-width:560px; font-size:.88rem}
+thead th{font-size:.7rem; letter-spacing:.11em; text-transform:uppercase; color:var(--meio);
+  font-weight:600; text-align:left; padding:0 10px 7px; border-bottom:1px solid var(--regua);
+  white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--regua2); cursor:pointer}
+tbody tr:hover{background:var(--piso)}
+tbody tr.marcada{background:var(--piso); box-shadow:inset 3px 0 0 var(--realce)}
+td{padding:6px 10px; vertical-align:baseline}
+td.num{text-align:right; font-variant-numeric:tabular-nums}
+.sec{font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:.98rem}
+.mesaN{font-family:"IBM Plex Mono",monospace; font-weight:600}
+.papel{font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:var(--fraco)}
+.pastilha{display:inline-flex; align-items:center; justify-content:center; width:1.35rem;
+  height:1.35rem; border-radius:50%; color:#fff; font-size:.72rem; font-weight:700;
+  font-family:"IBM Plex Mono",monospace}
+.vazio{color:var(--meio); font-size:.9rem; padding:14px 10px; margin:0}
+
+/* ---------- notas ---------- */
+.notas{padding-block:26px 0; border-top:1px solid var(--regua); margin-top:26px;
+  color:var(--meio); font-size:.84rem}
+.notas h2{font-size:1.05rem; color:var(--tinta); margin-bottom:8px}
+.notas p{margin:0 0 9px; max-width:74ch}
+.notas b{color:var(--tinta)}
+
+@media (max-width:560px){
+  header{padding-block:18px 14px}
+  .sub{font-size:.88rem}
+  #q{font-size:1.25rem; padding:10px 13px}
+  #q::placeholder{font-size:.95rem}
+  .ficha dl{grid-template-columns:1fr 1fr}
+  .barra .dir{margin-left:0; width:100%}
+}
+</style>
+
+<div class="env">
+
+<header>
+  <h1>Prancheta pelas Seções</h1>
+  <p class="sub">As 28 mesas receptoras do <strong>RDS Ballsbridge, Hall&nbsp;2</strong>, no arranjo
+  <strong id="hNome">—</strong>, rotuladas pela seção eleitoral que vota em cada uma.
+  <strong id="hSecoes">—</strong> seções, <strong id="hAptos">—</strong> eleitores aptos,
+  1º turno de 04/10/2026.</p>
+</header>
+
+<section class="paredes" aria-label="As três entradas e as paredes que elas servem">
+  <ol id="faixaParedes"></ol>
+  <p class="regra">Decisão do Posto de 15/09/2026: <strong>cada entrada serve uma parede
+  inteira e só ela</strong>. Quem entra pela porta vai direto à sua mesa sem atravessar o
+  salão, e a fila de cada porta é a fila daquela parede.</p>
+</section>
+
+<section class="busca" aria-labelledby="qlab">
+  <div class="campo">
+    <label for="q" id="qlab">Número da seção ou da mesa</label>
+    <input type="text" id="q" inputmode="numeric" autocomplete="off" spellcheck="false"
+           placeholder="sua seção: 3313, 0519…" aria-describedby="pista">
+    <button type="button" class="limpar" id="limpar">Limpar</button>
+  </div>
+  <p class="pista" id="pista">Três ou quatro dígitos procuram uma <strong>seção</strong>;
+  um ou dois procuram uma <strong>mesa</strong> pelo número que o eleitor vê. O número da seção
+  está no título de eleitor e no e-Título.</p>
+  <div class="ficha" id="ficha" hidden></div>
+</section>
+
+<div class="barra">
+  <p class="rot">Rótulo das mesas</p>
+  <div class="grupo" role="group" aria-label="O que aparece escrito em cada mesa">
+    <button type="button" id="rSecoes" aria-pressed="true">Seções</button>
+    <button type="button" id="rMesa" aria-pressed="false">Nº eleitor</button>
+    <button type="button" id="rMrv" aria-pressed="false">MRV</button>
+  </div>
+  <div class="dir">
+    <button type="button" class="zbtn" id="zMais" aria-label="Aproximar">+</button>
+    <button type="button" class="zbtn" id="zMenos" aria-label="Afastar">−</button>
+    <button type="button" class="zbtn larg" id="zTudo">Salão inteiro</button>
+  </div>
+</div>
+
+<figure class="planta" style="margin:0">
+  <svg id="sheet" aria-label="Planta em escala do Hall 2 com as 28 mesas receptoras rotuladas pelas seções eleitorais"></svg>
+</figure>
+
+<p class="usoPlanta">Arraste para deslocar e pince ou role para aproximar. Toque numa mesa
+para ver as seções dela. No celular, o índice abaixo costuma ser mais rápido que a planta.</p>
+
+<div class="legenda" id="legenda"></div>
+
+<section class="indice">
+  <h2>Cada seção e a sua mesa</h2>
+  <p>As <strong id="iSecoes">—</strong> seções da zona, em ordem. Clique numa linha para
+  achá-la na planta. <strong>Principal</strong> é a seção que dá nome à mesa;
+  <strong>agregada</strong> é a que foi juntada a ela pelo Cartório Eleitoral.</p>
+  <div class="tw">
+    <table>
+      <thead><tr>
+        <th>Seção</th><th>Papel</th><th>Origem do eleitor</th><th>Aptos</th>
+        <th>Mesa (nº eleitor)</th><th>MRV</th><th>Parede</th><th>Entrada</th>
+        <th class="num">Esperados na mesa</th>
+      </tr></thead>
+      <tbody id="corpoTabela"></tbody>
+    </table>
+  </div>
+  <p class="vazio" id="semLinhas" hidden>Nenhuma seção com esse número.</p>
+</section>
+
+<section class="notas">
+  <h2>Como ler esta peça</h2>
+  <p><b>Duas numerações convivem, de propósito.</b> O <b>MRV</b> é a identidade oficial da mesa
+  no DJE/TRE-DF — vale para caderno, convocação e rádio, e não muda se a mesa for movida. O
+  <b>número eleitor</b> é o que vai na sinalização: começa em 1 na mesa mais ao sul da parede
+  oeste e segue em sentido horário até 28. Esta página põe a <b>seção</b> em primeiro plano
+  porque é o número que o eleitor já tem na mão.</p>
+  <p><b>A cor é a carga esperada</b>, não a ordem de nada: vermelha para as três mesas de maior
+  comparecimento esperado, amarela a partir de <span id="nLimiar">—</span> esperados, verde para
+  as demais. A estimativa aplica a taxa de comparecimento de 2022 do condado onde o eleitor mora
+  aos aptos de 2026 — <span id="nBase">—</span>. Não é número oficial do TSE.</p>
+  <p><b>A letra na ponta da fila é a entrada</b> pela qual os eleitores daquela mesa chegam —
+  e agora ela é a mesma em toda a parede. A atribuição anterior repartia as mesas pela cota do
+  antigo Ring 3, que deixava a entrada B com 4.215 esperados contra 3.642 das outras duas e
+  espalhava cada entrada pelas três paredes. Com o Ring 3 abandonado, a regra passou a ser
+  geográfica, e o desequilíbrio entre as filas caiu de 573 para <span id="nAmpl">—</span>
+  eleitores.</p>
+  <p><b>As áreas tracejadas ficam livres</b> de mesa e de fila: a faixa de 3 m da fachada
+  leste, que serve as quatro saídas de emergência L1 a L4; o recuo de 3 m na frente de
+  <span class="mono">N2</span> e <span class="mono">O2</span>, que são acessos de serviço e
+  precisam abrir o dia inteiro; e os recuos de <span class="mono">S3</span>,
+  <span class="mono">S7</span> e <span class="mono">R1</span>.
+  Na parede oeste, o trecho entre a porta <span class="mono">O1</span> e a parede norte
+  virou a <b>sala de apoio</b> e não recebe mesa.
+  <span class="mono">S7</span> é a <b>entrada preferencial</b> — idoso, gestante, pessoa com
+  deficiência e acompanhante entram por ali, sem fila, para qualquer uma das três paredes.</p>
+  <p><b>À frente de cada mesa vermelha</b> fica reservado o retângulo de um serpenteado de
+  ~<span id="nSerp">—</span> pessoas — <span id="nRaias">—</span> raias de
+  <span id="nProf">—</span> m, na medida de raia que o projeto já usa (1,40 m de passo,
+  2,4 pessoas por metro). O serpenteado <b>não está desenhado</b>: o que a planta garante é
+  que o espaço existe, com 1,90 m de folga dos dois lados da mesa, sem tomar a frente da
+  fila vizinha.</p>
+  <p>Gerado por <span class="mono">scripts/gera_prancheta_por_secao.py</span> sobre o arranjo
+  <span id="nCenario" class="mono">—</span>. Fontes: os três PDFs do Cartório Eleitoral em
+  <span class="mono">data/oficiais/</span>, conferidos em
+  <span class="mono">CONFERENCIA_PRANCHETA_2026-09-15.md</span>.</p>
+</section>
+
+</div>
+
+<script>
+const D = {"cenario":{"id":"paredes-abc-20260915","nome":"Paredes_ABC"},"salao":{"largura":50.3,"altura":44.4,"recorte":[0.0,0.0,7.8,7.0],"contorno":[[7.8,0.0],[50.3,0.0],[50.3,44.4],[0.0,44.4],[0.0,7.0],[7.8,7.0]]},"modulo":{"prof":4.1,"larg":0.9,"urna":0.9,"mesa":[1.7,0.8],"eleitor":0.9,"passagem":0.6,"assento":0.75,"corredor":[2.5,3.0],"entre_pares":[1.0,1.5]},"portas":[{"id":"N1","rds":"2.13","face":"norte","estado":"fechada","x1":7.41,"y1":44.4,"x2":9.44,"y2":44.4,"larg":2.03},{"id":"N2","rds":"2.14/2.15","face":"norte","estado":"catering","x1":20.66,"y1":44.4,"x2":24.22,"y2":44.4,"larg":3.56},{"id":"L1","rds":"2.16/2.17","face":"leste","estado":"emergencia","x1":50.3,"y1":38.51,"x2":50.3,"y2":41.57,"larg":3.06},{"id":"L2","rds":"2.18/2.19","face":"leste","estado":"emergencia","x1":50.3,"y1":26.66,"x2":50.3,"y2":29.72,"larg":3.06},{"id":"L3","rds":"2.20/2.21","face":"leste","estado":"emergencia","x1":50.3,"y1":14.8,"x2":50.3,"y2":17.87,"larg":3.07},{"id":"L4","rds":"2.22/2.23","face":"leste","estado":"emergencia","x1":50.3,"y1":2.95,"x2":50.3,"y2":6.01,"larg":3.06},{"id":"S1","rds":"carga oeste","face":"sul","estado":"livre","x1":7.83,"y1":0.0,"x2":11.45,"y2":0.0,"larg":3.62},{"id":"S2","rds":"sem codigo RDS","face":"sul","estado":"saida","x1":13.25,"y1":0.0,"x2":14.45,"y2":0.0,"larg":1.2},{"id":"S3","rds":"2.7","face":"sul","estado":"livre","x1":17.22,"y1":0.0,"x2":18.47,"y2":0.0,"larg":1.25},{"id":"S4","rds":"2.5/2.6","face":"sul","estado":"entrada","x1":19.1,"y1":0.0,"x2":25.03,"y2":0.0,"larg":5.93},{"id":"S5","rds":"2.4","face":"sul","estado":"entrada","x1":25.32,"y1":0.0,"x2":31.25,"y2":0.0,"larg":5.93},{"id":"S6","rds":"2.2/2.3","face":"sul","estado":"entrada","x1":31.54,"y1":0.0,"x2":37.47,"y2":0.0,"larg":5.93},{"id":"S7","rds":"2.1","face":"sul","estado":"livre","x1":38.09,"y1":0.0,"x2":39.36,"y2":0.0,"larg":1.27},{"id":"S8","rds":"sem codigo RDS","face":"sul","estado":"saida","x1":42.12,"y1":0.0,"x2":43.32,"y2":0.0,"larg":1.2},{"id":"S9","rds":"carga leste","face":"sul","estado":"livre","x1":45.12,"y1":0.0,"x2":48.75,"y2":0.0,"larg":3.63},{"id":"O1","rds":"acesso Hall 1","face":"oeste","estado":"fechada","x1":0.0,"y1":36.8,"x2":0.0,"y2":38.5,"larg":1.7},{"id":"O2","rds":"2.10/2.11","face":"oeste","estado":"livre","x1":0.0,"y1":19.36,"x2":0.0,"y2":22.43,"larg":3.07},{"id":"R1","rds":"2.8/2.9","face":"recorte_v","estado":"livre","x1":7.8,"y1":3.0,"x2":7.8,"y2":6.5,"larg":3.5}],"entradas":[{"id":"A","porta":"S4","parede":"oeste","mesas":9,"esperado":3834,"quota":0.3334,"metros":24.63,"por_metro":155.7},{"id":"B","porta":"S5","parede":"norte","mesas":9,"esperado":3832,"quota":0.3332,"metros":27.64,"por_metro":138.6},{"id":"C","porta":"S6","parede":"leste","mesas":10,"esperado":3833,"quota":0.3333,"metros":36.3,"por_metro":105.6}],"saidas":["S2","S8"],"sinalizacao":{"N1":{"papel":"fechada","rotulo":"porta de serviço, fechada no dia","face":"norte","rds":"2.13","larg":2.03},"N2":{"papel":"livre","rotulo":"acesso de serviço — mantida desobstruída","face":"norte","rds":"2.14/2.15","larg":3.56},"L1":{"papel":"emergencia","rotulo":"saída de emergência","face":"leste","rds":"2.16/2.17","larg":3.06},"L2":{"papel":"emergencia","rotulo":"saída de emergência","face":"leste","rds":"2.18/2.19","larg":3.06},"L3":{"papel":"emergencia","rotulo":"saída de emergência","face":"leste","rds":"2.20/2.21","larg":3.07},"L4":{"papel":"emergencia","rotulo":"saída de emergência","face":"leste","rds":"2.22/2.23","larg":3.06},"S1":{"papel":"livre","rotulo":"porta de carga, sem papel de eleitor","face":"sul","rds":"carga oeste","larg":3.62},"S2":{"papel":"saida","rotulo":"saída de eleitor","face":"sul","rds":"sem codigo RDS","larg":1.2},"S3":{"papel":"livre","rotulo":"recuo de emergência","face":"sul","rds":"2.7","larg":1.25},"S4":{"papel":"entrada","entrada":"A","parede":"oeste","rotulo":"entrada A — parede oeste","face":"sul","rds":"2.5/2.6","larg":5.93},"S5":{"papel":"entrada","entrada":"B","parede":"norte","rotulo":"entrada B — parede norte","face":"sul","rds":"2.4","larg":5.93},"S6":{"papel":"entrada","entrada":"C","parede":"leste","rotulo":"entrada C — parede leste","face":"sul","rds":"2.2/2.3","larg":5.93},"S7":{"papel":"preferencial","rotulo":"entrada preferencial — idoso, gestante, PcD, com acompanhante, sem fila","face":"sul","rds":"2.1","larg":1.27},"S8":{"papel":"saida","rotulo":"saída de eleitor","face":"sul","rds":"sem codigo RDS","larg":1.2},"S9":{"papel":"livre","rotulo":"porta de carga, sem papel de eleitor","face":"sul","rds":"carga leste","larg":3.63},"O1":{"papel":"fechada","rotulo":"acesso ao Hall 1, fechado no dia","face":"oeste","rds":"acesso Hall 1","larg":1.7},"O2":{"papel":"livre","rotulo":"acesso de serviço — mantida desobstruída","face":"oeste","rds":"2.10/2.11","larg":3.07},"R1":{"papel":"livre","rotulo":"recorte sudoeste — recuo de emergência","face":"recorte_v","rds":"2.8/2.9","larg":3.5}},"zonas":[{"tipo":"faixa_emergencia","porta":"L1 a L4","rect":[47.3,0.0,50.3,44.4],"rotulo":"fachada leste · faixa protegida de 3 m para as saídas de emergência"},{"tipo":"recuo_porta","porta":"N2","rect":[20.66,41.4,24.22,44.4],"rotulo":"N2 · recuo de 3 m, sem mesa e sem fila"},{"tipo":"recuo_porta","porta":"O2","rect":[0.0,19.36,3.0,22.43],"rotulo":"O2 · recuo de 3 m, sem mesa e sem fila"},{"tipo":"recuo_porta","porta":"S7","rect":[35.09,0.0,42.36,3.0],"rotulo":"S7 · recuo da entrada preferencial"},{"tipo":"recuo_porta","porta":"R1","rect":[7.8,0.0,10.8,7.0],"rotulo":"R1 · recuo de emergência"},{"tipo":"recuo_porta","porta":"S3","rect":[14.22,0.0,21.47,3.0],"rotulo":"S3 · recuo de emergência"},{"tipo":"sala_apoio","porta":"O1","rect":[0.0,38.5,7.8,44.4],"rotulo":"sala de apoio — vão entre O1 e a parede norte (profundidade a confirmar em campo)"}],"serpenteados":[{"tipo":"serpenteado","parede":"oeste","mrv":22,"rect":[4.1,21.72,8.3,24.52],"raias":2,"passo_raia":1.4,"profundidade":4.2,"pessoas":20,"rotulo":"MRV 22 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"},{"tipo":"serpenteado","parede":"norte","mrv":23,"rect":[17.16,36.1,19.96,40.3],"raias":2,"passo_raia":1.4,"profundidade":4.2,"pessoas":20,"rotulo":"MRV 23 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"},{"tipo":"serpenteado","parede":"leste","mrv":24,"rect":[39.0,27.45,43.2,30.25],"raias":2,"passo_raia":1.4,"profundidade":4.2,"pessoas":20,"rotulo":"MRV 24 · espaço reservado para serpenteado de ~20 pessoas (2 raias de 4.20 m), à frente da mesa"}],"classes":{"n_alta":3,"limiar_media":450},"comparecimento":{"base":"B","rotulo":"taxa de 2022 por domicílio de origem (base B, não oficial)","total":11499,"aptos":16794},"mesas":[{"mrv":1,"eleitor":19,"principal":511,"agregada":1100,"aptos":582,"esperado":375,"classe":"baixa","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":35.55,"rot":180,"lado":1},{"mrv":2,"eleitor":10,"principal":512,"agregada":2855,"aptos":476,"esperado":355,"classe":"baixa","parede":"norte","entrada":"B","porta":"S5","x":11.86,"y":44.4,"rot":270,"lado":1},{"mrv":3,"eleitor":6,"principal":513,"agregada":1105,"aptos":502,"esperado":351,"classe":"baixa","parede":"oeste","entrada":"A","porta":"S4","x":0.0,"y":25.92,"rot":0,"lado":1},{"mrv":4,"eleitor":20,"principal":517,"agregada":1292,"aptos":513,"esperado":348,"classe":"baixa","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":31.65,"rot":180,"lado":-1},{"mrv":5,"eleitor":11,"principal":1160,"agregada":3845,"aptos":473,"esperado":328,"classe":"baixa","parede":"norte","entrada":"B","porta":"S5","x":15.76,"y":44.4,"rot":270,"lado":-1},{"mrv":6,"eleitor":7,"principal":1352,"agregada":522,"aptos":462,"esperado":328,"classe":"baixa","parede":"oeste","entrada":"A","porta":"S4","x":0.0,"y":29.82,"rot":0,"lado":-1},{"mrv":7,"eleitor":22,"principal":3054,"agregada":1099,"aptos":454,"esperado":325,"classe":"baixa","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":26.05,"rot":180,"lado":1},{"mrv":8,"eleitor":8,"principal":3078,"agregada":2847,"aptos":429,"esperado":311,"classe":"baixa","parede":"oeste","entrada":"A","porta":"S4","x":0.0,"y":32.22,"rot":0,"lado":1},{"mrv":9,"eleitor":13,"principal":3108,"agregada":3422,"aptos":756,"esperado":467,"classe":"media","parede":"norte","entrada":"B","porta":"S5","x":25.23,"y":44.4,"rot":270,"lado":1},{"mrv":10,"eleitor":2,"principal":3142,"agregada":1278,"aptos":793,"esperado":466,"classe":"media","parede":"oeste","entrada":"A","porta":"S4","x":0.0,"y":11.93,"rot":0,"lado":-1},{"mrv":11,"eleitor":3,"principal":3161,"agregada":3307,"aptos":791,"esperado":504,"classe":"media","parede":"oeste","entrada":"A","porta":"S4","x":0.0,"y":14.33,"rot":0,"lado":1},{"mrv":12,"eleitor":9,"principal":3179,"agregada":530,"aptos":676,"esperado":423,"classe":"baixa","parede":"oeste","entrada":"A","porta":"S4","x":0.0,"y":36.12,"rot":0,"lado":-1},{"mrv":13,"eleitor":23,"principal":3216,"agregada":527,"aptos":571,"esperado":407,"classe":"baixa","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":22.15,"rot":180,"lado":-1},{"mrv":14,"eleitor":26,"principal":3229,"agregada":3821,"aptos":606,"esperado":405,"classe":"baixa","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":13.45,"rot":180,"lado":1},{"mrv":15,"eleitor":25,"principal":3245,"agregada":519,"aptos":781,"esperado":498,"classe":"media","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":15.85,"rot":180,"lado":-1},{"mrv":16,"eleitor":14,"principal":3302,"agregada":3181,"aptos":771,"esperado":518,"classe":"media","parede":"norte","entrada":"B","porta":"S5","x":29.13,"y":44.4,"rot":270,"lado":-1},{"mrv":17,"eleitor":15,"principal":3305,"agregada":521,"aptos":767,"esperado":472,"classe":"media","parede":"norte","entrada":"B","porta":"S5","x":31.53,"y":44.4,"rot":270,"lado":1},{"mrv":18,"eleitor":16,"principal":3306,"agregada":518,"aptos":766,"esperado":515,"classe":"media","parede":"norte","entrada":"B","porta":"S5","x":35.43,"y":44.4,"rot":270,"lado":-1},{"mrv":19,"eleitor":17,"principal":3308,"agregada":null,"aptos":399,"esperado":295,"classe":"baixa","parede":"norte","entrada":"B","porta":"S5","x":37.83,"y":44.4,"rot":270,"lado":1},{"mrv":20,"eleitor":1,"principal":3309,"agregada":1314,"aptos":615,"esperado":395,"classe":"baixa","parede":"oeste","entrada":"A","porta":"S4","x":0.0,"y":8.03,"rot":0,"lado":1},{"mrv":21,"eleitor":4,"principal":3311,"agregada":3913,"aptos":630,"esperado":466,"classe":"media","parede":"oeste","entrada":"A","porta":"S4","x":0.0,"y":18.23,"rot":0,"lado":-1},{"mrv":22,"eleitor":5,"principal":3313,"agregada":3889,"aptos":797,"esperado":590,"classe":"alta","parede":"oeste","entrada":"A","porta":"S4","x":0.0,"y":23.12,"rot":0,"lado":1},{"mrv":23,"eleitor":12,"principal":3315,"agregada":3778,"aptos":792,"esperado":586,"classe":"alta","parede":"norte","entrada":"B","porta":"S5","x":18.56,"y":44.4,"rot":270,"lado":1},{"mrv":24,"eleitor":21,"principal":3322,"agregada":3752,"aptos":794,"esperado":588,"classe":"alta","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":28.85,"rot":180,"lado":1},{"mrv":25,"eleitor":28,"principal":3442,"agregada":null,"aptos":398,"esperado":295,"classe":"baixa","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":7.15,"rot":180,"lado":1},{"mrv":26,"eleitor":27,"principal":3688,"agregada":null,"aptos":400,"esperado":296,"classe":"baixa","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":9.55,"rot":180,"lado":-1},{"mrv":27,"eleitor":18,"principal":3832,"agregada":null,"aptos":400,"esperado":296,"classe":"baixa","parede":"norte","entrada":"B","porta":"S5","x":41.73,"y":44.4,"rot":270,"lado":-1},{"mrv":28,"eleitor":24,"principal":3862,"agregada":null,"aptos":400,"esperado":296,"classe":"baixa","parede":"leste","entrada":"C","porta":"S6","x":47.3,"y":19.75,"rot":180,"lado":1}],"secoes":[{"secao":511,"papel":"principal","mrv":1,"aptos":400,"origem":"Dublin"},{"secao":512,"papel":"principal","mrv":2,"aptos":400,"origem":"Dublin"},{"secao":513,"papel":"principal","mrv":3,"aptos":400,"origem":"Dublin"},{"secao":517,"papel":"principal","mrv":4,"aptos":400,"origem":"Dublin"},{"secao":518,"papel":"agregada","mrv":18,"aptos":370,"origem":"Outros Locais Da Irlanda"},{"secao":519,"papel":"agregada","mrv":15,"aptos":384,"origem":"Cork"},{"secao":521,"papel":"agregada","mrv":17,"aptos":370,"origem":"Galway"},{"secao":522,"papel":"agregada","mrv":6,"aptos":62,"origem":"Donegal"},{"secao":527,"papel":"agregada","mrv":13,"aptos":173,"origem":"Clare"},{"secao":530,"papel":"agregada","mrv":12,"aptos":278,"origem":"Westmeath"},{"secao":1099,"papel":"agregada","mrv":7,"aptos":54,"origem":"Kerry"},{"secao":1100,"papel":"agregada","mrv":1,"aptos":182,"origem":"Roscommon"},{"secao":1105,"papel":"agregada","mrv":3,"aptos":102,"origem":"Mayo"},{"secao":1160,"papel":"principal","mrv":5,"aptos":400,"origem":"Dublin"},{"secao":1278,"papel":"agregada","mrv":10,"aptos":395,"origem":"Limerick"},{"secao":1292,"papel":"agregada","mrv":4,"aptos":113,"origem":"Cavan"},{"secao":1314,"papel":"agregada","mrv":20,"aptos":217,"origem":"Waterford"},{"secao":1352,"papel":"principal","mrv":6,"aptos":400,"origem":"Dublin"},{"secao":2847,"papel":"agregada","mrv":8,"aptos":29,"origem":"Leitrim"},{"secao":2855,"papel":"agregada","mrv":2,"aptos":76,"origem":"Longford"},{"secao":3054,"papel":"principal","mrv":7,"aptos":400,"origem":"Dublin"},{"secao":3078,"papel":"principal","mrv":8,"aptos":400,"origem":"Dublin"},{"secao":3108,"papel":"principal","mrv":9,"aptos":398,"origem":"Dublin"},{"secao":3142,"papel":"principal","mrv":10,"aptos":398,"origem":"Dublin"},{"secao":3161,"papel":"principal","mrv":11,"aptos":397,"origem":"Dublin"},{"secao":3179,"papel":"principal","mrv":12,"aptos":398,"origem":"Dublin"},{"secao":3181,"papel":"agregada","mrv":16,"aptos":375,"origem":"Outros Locais Da Irlanda"},{"secao":3216,"papel":"principal","mrv":13,"aptos":398,"origem":"Dublin"},{"secao":3229,"papel":"principal","mrv":14,"aptos":398,"origem":"Dublin"},{"secao":3245,"papel":"principal","mrv":15,"aptos":397,"origem":"Dublin"},{"secao":3302,"papel":"principal","mrv":16,"aptos":396,"origem":"Dublin"},{"secao":3305,"papel":"principal","mrv":17,"aptos":397,"origem":"Dublin"},{"secao":3306,"papel":"principal","mrv":18,"aptos":396,"origem":"Dublin"},{"secao":3307,"papel":"agregada","mrv":11,"aptos":394,"origem":"Cork"},{"secao":3308,"papel":"principal","mrv":19,"aptos":399,"origem":"Dublin"},{"secao":3309,"papel":"principal","mrv":20,"aptos":398,"origem":"Dublin"},{"secao":3311,"papel":"principal","mrv":21,"aptos":397,"origem":"Dublin"},{"secao":3313,"papel":"principal","mrv":22,"aptos":397,"origem":"Dublin"},{"secao":3315,"papel":"principal","mrv":23,"aptos":395,"origem":"Dublin"},{"secao":3322,"papel":"principal","mrv":24,"aptos":398,"origem":"Dublin"},{"secao":3422,"papel":"agregada","mrv":9,"aptos":358,"origem":"Galway"},{"secao":3442,"papel":"principal","mrv":25,"aptos":398,"origem":"Dublin"},{"secao":3688,"papel":"principal","mrv":26,"aptos":400,"origem":"Dublin"},{"secao":3752,"papel":"agregada","mrv":24,"aptos":396,"origem":"Dublin"},{"secao":3778,"papel":"agregada","mrv":23,"aptos":397,"origem":"Dublin"},{"secao":3821,"papel":"agregada","mrv":14,"aptos":208,"origem":"Cork"},{"secao":3832,"papel":"principal","mrv":27,"aptos":400,"origem":"Dublin"},{"secao":3845,"papel":"agregada","mrv":5,"aptos":73,"origem":"Limerick"},{"secao":3862,"papel":"principal","mrv":28,"aptos":400,"origem":"Dublin"},{"secao":3889,"papel":"agregada","mrv":22,"aptos":400,"origem":"Dublin"},{"secao":3913,"papel":"agregada","mrv":21,"aptos":233,"origem":"Dublin"}]};
+
+/* ---------------------------------------------------------------- */
+/* Geometria: x para leste, y para norte, origem no canto sudoeste.  */
+/* O SVG desce em y, então py = (altura - y) * ESC.                  */
+/* ---------------------------------------------------------------- */
+const ESC = 24;                 // px por metro no espaço do desenho
+const MGE = 96, MGD = 132, MGT = 30, MGB = 74;  // margens; nelas cabem os nomes das portas
+const ALT = D.salao.altura, LARG = D.salao.largura;
+const LARGURA_PX = LARG * ESC + MGE + MGD, ALTURA_PX = ALT * ESC + MGT + MGB;
+const px = (x, y) => [MGE + x * ESC, MGT + (ALT - y) * ESC];
+const dir = rot => [Math.round(Math.cos(rot * Math.PI / 180)), Math.round(Math.sin(rot * Math.PI / 180))];
+const NS = "http://www.w3.org/2000/svg";
+
+const CORES = {alta: "--altaF", media: "--mediaF", baixa: "--baixaF"};
+const corClasse = c => getComputedStyle(document.documentElement).getPropertyValue(CORES[c]).trim();
+const corEntrada = id => getComputedStyle(document.documentElement).getPropertyValue("--ent" + id).trim();
+
+function el(nome, attrs, texto) {
+  const n = document.createElementNS(NS, nome);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (texto != null) n.textContent = texto;
+  return n;
+}
+
+/* O retângulo do módulo: encosta a parede em (x,y) e avança `prof`. */
+function corpo(m) {
+  const [dx, dy] = dir(m.rot), [px_, py_] = [-dy, dx], L = D.modulo.larg / 2, P = D.modulo.prof;
+  return [[0, -L], [P, -L], [P, L], [0, L]]
+    .map(([u, v]) => px(m.x + dx * u + px_ * v, m.y + dy * u + py_ * v))
+    .map(([a, b]) => `${a.toFixed(1)},${b.toFixed(1)}`).join(" ");
+}
+
+let rotulo = "secoes";
+const svg = document.getElementById("sheet");
+const grupos = {};
+
+function rotuloDe(m) {
+  if (rotulo === "mesa") return String(m.eleitor);
+  if (rotulo === "mrv") return "MRV " + m.mrv;
+  return m.agregada ? `${pad(m.principal)} · ${pad(m.agregada)}` : pad(m.principal);
+}
+const pad = n => String(n).padStart(4, "0");
+
+function desenha() {
+  svg.setAttribute("viewBox", `0 0 ${LARGURA_PX.toFixed(0)} ${ALTURA_PX.toFixed(0)}`);
+  svg.replaceChildren();
+
+  const tok = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const piso = getComputedStyle(document.documentElement).getPropertyValue("--piso").trim();
+  const tinta = getComputedStyle(document.documentElement).getPropertyValue("--tinta").trim();
+  const meio = getComputedStyle(document.documentElement).getPropertyValue("--meio").trim();
+  const fraco = getComputedStyle(document.documentElement).getPropertyValue("--fraco").trim();
+  const folha = getComputedStyle(document.documentElement).getPropertyValue("--folha").trim();
+  const saidaCor = getComputedStyle(document.documentElement).getPropertyValue("--saida").trim();
+
+  const mundo = el("g", {id: "mundo"});
+  svg.appendChild(mundo);
+
+  // salão
+  mundo.appendChild(el("polygon", {
+    points: D.salao.contorno.map(([x, y]) => px(x, y).map(v => v.toFixed(1)).join(",")).join(" "),
+    fill: piso, stroke: tinta, "stroke-width": 2.2, "stroke-linejoin": "round",
+  }));
+
+  // zonas que ficam livres de mesa e de fila, desenhadas antes das mesas
+  for (const z of D.zonas) {
+    const [zx0, zy0, zx1, zy1] = z.rect;
+    const [ax, ay] = px(zx0, zy1), [bx, by] = px(zx1, zy0);
+    const emerg = z.tipo === "faixa_emergencia";
+    const apoio = z.tipo === "sala_apoio";
+    const cor = emerg ? tok("--emerg") : (apoio ? tok("--apoio") : tok("--fraco"));
+    mundo.appendChild(el("rect", {
+      x: ax.toFixed(1), y: ay.toFixed(1),
+      width: (bx - ax).toFixed(1), height: (by - ay).toFixed(1),
+      fill: cor, "fill-opacity": apoio ? .13 : (emerg ? .09 : .07),
+      stroke: cor, "stroke-width": apoio ? 1.6 : 1.2, "stroke-dasharray": "5 4",
+    }));
+    if (apoio) {
+      const [tx, ty] = px((zx0 + zx1) / 2, (zy0 + zy1) / 2);
+      mundo.appendChild(el("text", {
+        x: tx.toFixed(1), y: ty.toFixed(1), "text-anchor": "middle", fill: cor,
+        "font-family": '"IBM Plex Sans",system-ui,sans-serif', "font-size": 12,
+        "font-weight": 700, "letter-spacing": "0.09em",
+      }, "SALA DE APOIO"));
+    }
+  }
+
+  // o espaço reservado ao serpenteado de cada mesa vermelha, à frente dela
+  for (const sp of D.serpenteados) {
+    const [px0, py0, px1, py1] = sp.rect;
+    const [ax, ay] = px(px0, py1), [bx, by] = px(px1, py0);
+    const cor = tok("--serp");
+    mundo.appendChild(el("rect", {
+      x: ax.toFixed(1), y: ay.toFixed(1),
+      width: (bx - ax).toFixed(1), height: (by - ay).toFixed(1),
+      fill: cor, "fill-opacity": .10, stroke: cor, "stroke-width": 1.4,
+      "stroke-dasharray": "3 3",
+    }));
+    const vertical = (by - ay) > (bx - ax);
+    const [tx, ty] = px((px0 + px1) / 2, (py0 + py1) / 2);
+    const t = el("text", {
+      x: tx.toFixed(1), y: (ty + 4).toFixed(1), "text-anchor": "middle", fill: cor,
+      "font-family": '"IBM Plex Sans",system-ui,sans-serif', "font-size": 10,
+      "font-weight": 700, "paint-order": "stroke", stroke: piso, "stroke-width": 3,
+    }, `serp. ~${sp.pessoas}`);
+    if (vertical) t.setAttribute("transform",
+      `rotate(-90 ${tx.toFixed(1)} ${(ty + 4).toFixed(1)})`);
+    mundo.appendChild(t);
+  }
+  // rótulo da faixa de emergência, ao longo dela
+  const faixa = D.zonas.find(z => z.tipo === "faixa_emergencia");
+  if (faixa) {
+    const [fx0, fy0, fx1, fy1] = faixa.rect;
+    const [fx, fy] = px((fx0 + fx1) / 2, (fy0 + fy1) / 2);
+    const t = el("text", {
+      x: fx.toFixed(1), y: fy.toFixed(1), "text-anchor": "middle", fill: tok("--emerg"),
+      "font-family": '"IBM Plex Sans",system-ui,sans-serif', "font-size": 11,
+      "font-weight": 700, "letter-spacing": "0.1em",
+      "paint-order": "stroke", stroke: piso, "stroke-width": 3.5,
+    }, `SAÍDA DE EMERGÊNCIA · FAIXA LIVRE DE ${(fx1 - fx0).toFixed(0)} m`);
+    t.setAttribute("transform", `rotate(90 ${fx.toFixed(1)} ${fy.toFixed(1)})`);
+    mundo.appendChild(t);
+  }
+
+  // portas: todas as faces ganham traço e rótulo
+  const CORES_PORTA = {entrada: null, saida: "--saida", emergencia: "--emerg",
+                       preferencial: "--pref", fechada: "--fechada", livre: "--servico"};
+  for (const p of D.portas) {
+    const sin = D.sinalizacao[p.id] || {papel: "livre", rotulo: ""};
+    const ent = D.entradas.find(e => e.porta === p.id);
+    const cor = ent ? corEntrada(ent.id) : tok(CORES_PORTA[sin.papel] || "--fraco");
+    const forte = ["entrada", "saida", "emergencia", "preferencial"].includes(sin.papel);
+    const [x1, y1] = px(p.x1, p.y1), [x2, y2] = px(p.x2, p.y2);
+    mundo.appendChild(el("line", {
+      x1: x1.toFixed(1), y1: y1.toFixed(1), x2: x2.toFixed(1), y2: y2.toFixed(1),
+      stroke: cor, "stroke-width": forte ? 7 : 4,
+      "stroke-linecap": "round",
+      "stroke-dasharray": sin.papel === "fechada" ? "3 3" : "",
+    }));
+
+    // o rótulo sai do salão, na direção da fachada
+    const linhaSul = {entrada: 17, preferencial: 31, livre: 31, saida: 45}[sin.papel] || 31;
+    const fora = {sul: [0, linhaSul], norte: [0, -12], leste: [14, 4],
+                  oeste: [-14, 4], recorte_v: [-14, 4]}[p.face] || [0, 0];
+    const ancora = p.face === "leste" ? "start" : (p.face === "sul" || p.face === "norte"
+      ? "middle" : "end");
+    const [cx, cy] = px((p.x1 + p.x2) / 2, (p.y1 + p.y2) / 2);
+    let texto = p.id;
+    if (ent) texto = `ENTRADA ${ent.id} · ${p.id}`;
+    else if (sin.papel === "saida") texto = `SAÍDA · ${p.id}`;
+    else if (sin.papel === "preferencial") texto = `PREFERENCIAL · ${p.id}`;
+    else if (sin.papel === "emergencia") texto = `${p.id} emergência`;
+    else if (sin.papel === "fechada") texto = `${p.id} fechada`;
+    else if (sin.papel === "livre") texto = `${p.id} livre`;
+    mundo.appendChild(el("text", {
+      x: (cx + fora[0]).toFixed(1), y: (cy + fora[1]).toFixed(1), "text-anchor": ancora,
+      "font-family": '"IBM Plex Sans",system-ui,sans-serif',
+      "font-size": forte ? 11 : 9.5, "font-weight": forte ? 700 : 400, fill: cor,
+      "paint-order": "stroke", stroke: folha, "stroke-width": 3,
+    }, texto));
+  }
+
+  // rótulos das paredes, bem apagados, só para orientar
+  const parede = (x, y, nome, giro) => {
+    const e = D.entradas.find(z => z.parede === nome);
+    const [a, b] = px(x, y);
+    const t = el("text", {
+      x: a.toFixed(1), y: b.toFixed(1), "text-anchor": "middle",
+      fill: e ? corEntrada(e.id) : meio, opacity: .55,
+      "font-family": '"IBM Plex Sans",system-ui,sans-serif', "font-size": 13, "font-weight": 700,
+      "letter-spacing": "0.16em",
+      "paint-order": "stroke", stroke: piso, "stroke-width": 4,
+    }, e ? `PAREDE ${nome.toUpperCase()} · ENTRADA ${e.id}` : nome.toUpperCase());
+    if (giro) t.setAttribute("transform", `rotate(${giro} ${a.toFixed(1)} ${b.toFixed(1)})`);
+    mundo.appendChild(t);
+  };
+  parede(LARG / 2, ALT - 12.5, "norte");
+  parede(13.0, ALT / 2 - 4, "oeste", -90);
+  parede(LARG - 16.5, ALT / 2 - 4, "leste", 90);
+
+  // mesas
+  for (const m of D.mesas) {
+    const g = el("g", {class: "mesa-g", tabindex: "0", role: "button",
+      "aria-label": `Mesa ${m.eleitor}, MRV ${m.mrv}, ${m.agregada ? "seções " + pad(m.principal) + " e " + pad(m.agregada) : "seção " + pad(m.principal)}`});
+    const cor = corClasse(m.classe);
+    g.appendChild(el("polygon", {points: corpo(m), fill: cor, class: "corpo"}));
+
+    const [dx, dy] = dir(m.rot);
+    const [cx, cy] = px(m.x + dx * D.modulo.prof / 2, m.y + dy * D.modulo.prof / 2);
+    const giro = m.rot === 270 ? -90 : (m.rot === 90 ? 90 : 0);
+    const t = el("text", {
+      x: cx.toFixed(1), y: (cy + 4).toFixed(1), "text-anchor": "middle", fill: "#fff",
+      "font-family": '"IBM Plex Mono",ui-monospace,monospace',
+      "font-size": rotulo === "secoes" ? 11 : 14, "font-weight": 700,
+      "letter-spacing": rotulo === "secoes" ? "0.02em" : "0.06em",
+      "paint-order": "stroke", stroke: "#16202b", "stroke-width": 2.4, "stroke-linejoin": "round",
+    }, rotuloDe(m));
+    if (giro) t.setAttribute("transform", `rotate(${giro} ${cx.toFixed(1)} ${(cy + 4).toFixed(1)})`);
+    g.appendChild(t);
+
+    g.addEventListener("click", () => seleciona(m.mrv, true));
+    g.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); seleciona(m.mrv, true); }
+    });
+    grupos[m.mrv] = g;
+    mundo.appendChild(g);
+  }
+  aplicaMarca();
+  aplicaVista();
+}
+
+/* ---------------------------------------------------------------- */
+/* Pan e zoom: uma transform no grupo `mundo`.                       */
+/* ---------------------------------------------------------------- */
+let vista = {k: 1, x: 0, y: 0};
+function aplicaVista() {
+  const g = svg.querySelector("#mundo");
+  if (g) g.setAttribute("transform", `translate(${vista.x.toFixed(2)} ${vista.y.toFixed(2)}) scale(${vista.k.toFixed(4)})`);
+}
+function zoom(fator, cx, cy) {
+  const k = Math.min(6, Math.max(1, vista.k * fator));
+  const f = k / vista.k;
+  if (cx == null) { cx = LARGURA_PX / 2; cy = ALTURA_PX / 2; }
+  vista.x = cx - (cx - vista.x) * f;
+  vista.y = cy - (cy - vista.y) * f;
+  vista.k = k;
+  limita();
+  aplicaVista();
+}
+function limita() {
+  const folgaX = LARGURA_PX * (vista.k - 1), folgaY = ALTURA_PX * (vista.k - 1);
+  vista.x = Math.min(0, Math.max(-folgaX, vista.x));
+  vista.y = Math.min(0, Math.max(-folgaY, vista.y));
+}
+/* Centra a vista num ponto do desenho, com o zoom pedido. */
+function enquadra(ax, ay, k) {
+  vista.k = Math.min(6, Math.max(1, k));
+  vista.x = LARGURA_PX / 2 - ax * vista.k;
+  vista.y = ALTURA_PX / 2 - ay * vista.k;
+  limita();
+  aplicaVista();
+}
+document.getElementById("zMais").onclick = () => zoom(1.4);
+document.getElementById("zMenos").onclick = () => zoom(1 / 1.4);
+document.getElementById("zTudo").onclick = () => { vista = {k: 1, x: 0, y: 0}; aplicaVista(); };
+
+svg.addEventListener("wheel", ev => {
+  ev.preventDefault();
+  const r = svg.getBoundingClientRect(), e = LARGURA_PX / r.width;
+  zoom(ev.deltaY < 0 ? 1.12 : 1 / 1.12, (ev.clientX - r.left) * e, (ev.clientY - r.top) * e);
+}, {passive: false});
+
+let arrasto = null;
+svg.addEventListener("pointerdown", ev => {
+  arrasto = {x: ev.clientX, y: ev.clientY, vx: vista.x, vy: vista.y, movida: false};
+  svg.setPointerCapture(ev.pointerId);
+});
+svg.addEventListener("pointermove", ev => {
+  if (!arrasto) return;
+  const r = svg.getBoundingClientRect(), e = LARGURA_PX / r.width;
+  const dx = (ev.clientX - arrasto.x) * e, dy = (ev.clientY - arrasto.y) * e;
+  if (Math.abs(dx) + Math.abs(dy) > 3) { arrasto.movida = true; svg.classList.add("arrastando"); }
+  vista.x = arrasto.vx + dx; vista.y = arrasto.vy + dy;
+  limita(); aplicaVista();
+});
+const solta = () => { arrasto = null; svg.classList.remove("arrastando"); };
+svg.addEventListener("pointerup", solta);
+svg.addEventListener("pointercancel", solta);
+
+/* ---------------------------------------------------------------- */
+/* Seleção: uma mesa marcada, na planta, na ficha e na tabela.       */
+/* ---------------------------------------------------------------- */
+let marcada = null, secaoMarcada = null;
+const porMrv = Object.fromEntries(D.mesas.map(m => [m.mrv, m]));
+const porEleitor = Object.fromEntries(D.mesas.map(m => [m.eleitor, m]));
+const porSecao = {};
+for (const s of D.secoes) porSecao[s.secao] = s;
+
+function aplicaMarca() {
+  for (const mrv in grupos) {
+    const g = grupos[mrv];
+    g.classList.toggle("marcada", String(marcada) === mrv);
+    g.classList.toggle("esmaecida", marcada != null && String(marcada) !== mrv);
+  }
+  for (const tr of document.querySelectorAll("#corpoTabela tr"))
+    tr.classList.toggle("marcada", secaoMarcada != null && +tr.dataset.secao === secaoMarcada);
+}
+
+function seleciona(mrv, aproxima, secao) {
+  marcada = mrv;
+  secaoMarcada = secao != null ? secao : (mrv != null ? porMrv[mrv].principal : null);
+  aplicaMarca();
+  mostraFicha(mrv, secao);
+  if (aproxima && mrv != null) {
+    const m = porMrv[mrv], [dx, dy] = dir(m.rot);
+    const [ax, ay] = px(m.x + dx * D.modulo.prof / 2, m.y + dy * D.modulo.prof / 2);
+    enquadra(ax, ay, 1.8);
+  }
+}
+
+function mostraFicha(mrv, secao) {
+  const f = document.getElementById("ficha");
+  if (mrv == null) { f.hidden = true; return; }
+  const m = porMrv[mrv];
+  const s = secao != null ? porSecao[secao] : null;
+  const cor = getComputedStyle(document.documentElement).getPropertyValue("--" + m.classe).trim();
+  f.style.setProperty("--cor", cor);
+  const qual = s
+    ? `Seção ${pad(s.secao)} · ${s.papel === "principal" ? "principal" : "agregada"} · ${s.aptos} aptos · eleitores de ${s.origem}`
+    : `Mesa ${m.eleitor}`;
+  const outra = m.agregada
+    ? `${pad(m.principal)} e ${pad(m.agregada)}`
+    : `${pad(m.principal)}, sozinha na urna`;
+  f.innerHTML = `
+    <p class="qual">${qual}</p>
+    <p class="mesa">Vota na <b>mesa ${m.eleitor}</b>, na parede ${m.parede}</p>
+    <dl>
+      <div><dt>Entrada</dt><dd>${m.entrada} — porta ${m.porta}</dd></div>
+      <div><dt>MRV oficial</dt><dd>MRV ${m.mrv}</dd></div>
+      <div><dt>Seções na mesa</dt><dd class="mono">${outra}</dd></div>
+      <div><dt>Aptos na mesa</dt><dd>${m.aptos}</dd></div>
+      <div><dt>Esperados na mesa</dt><dd>${m.esperado}</dd></div>
+    </dl>`;
+  f.hidden = false;
+}
+
+/* ---------------------------------------------------------------- */
+/* Busca: 3 ou 4 dígitos = seção; 1 ou 2 = mesa pelo número eleitor. */
+/* ---------------------------------------------------------------- */
+const q = document.getElementById("q");
+function busca() {
+  const bruto = q.value.replace(/\D/g, "");
+  filtraTabela(bruto);
+  if (!bruto) { seleciona(null); return; }
+  if (bruto.length <= 2) {
+    const m = porEleitor[+bruto];
+    seleciona(m ? m.mrv : null, !!m);
+    if (!m) semResultado(`Não há mesa ${+bruto}. As mesas vão de 1 a ${D.mesas.length}.`);
+    return;
+  }
+  const s = porSecao[+bruto];
+  if (!s) { seleciona(null); semResultado(`A seção ${bruto} não é de Dublin. Confira o número no título de eleitor.`); return; }
+  seleciona(s.mrv, true, s.secao);
+}
+function semResultado(msg) {
+  const f = document.getElementById("ficha");
+  f.style.setProperty("--cor", getComputedStyle(document.documentElement).getPropertyValue("--meio").trim());
+  f.innerHTML = `<p class="nada">${msg}</p>`;
+  f.hidden = false;
+}
+q.addEventListener("input", busca);
+document.getElementById("limpar").onclick = () => { q.value = ""; busca(); q.focus(); };
+
+/* ---------------------------------------------------------------- */
+/* Índice das 51 seções                                             */
+/* ---------------------------------------------------------------- */
+const corpoTabela = document.getElementById("corpoTabela");
+function montaTabela() {
+  const frag = document.createDocumentFragment();
+  for (const s of D.secoes) {
+    const m = porMrv[s.mrv];
+    const tr = document.createElement("tr");
+    tr.dataset.secao = s.secao;
+    tr.innerHTML = `
+      <td class="sec">${pad(s.secao)}</td>
+      <td class="papel">${s.papel}</td>
+      <td>${s.origem}</td>
+      <td class="num">${s.aptos}</td>
+      <td class="mesaN">${m.eleitor}</td>
+      <td class="mesaN">${m.mrv}</td>
+      <td>${m.parede}</td>
+      <td><span class="pastilha" style="background:${corEntrada(m.entrada)}">${m.entrada}</span></td>
+      <td class="num">${m.esperado}</td>`;
+    tr.addEventListener("click", () => {
+      q.value = pad(s.secao);
+      busca();
+      document.querySelector(".planta").scrollIntoView({behavior: "smooth", block: "center"});
+    });
+    frag.appendChild(tr);
+  }
+  corpoTabela.replaceChildren(frag);
+}
+/* Sem busca, a tabela inteira. Um ou dois dígitos deixam as seções daquela
+ * mesa; três ou quatro filtram pelo número da seção, casando também quem
+ * digitou sem o zero à esquerda. */
+function filtraTabela(bruto) {
+  const mrvBuscada = bruto && bruto.length <= 2 ? (porEleitor[+bruto] || {}).mrv : null;
+  let visiveis = 0;
+  for (const tr of corpoTabela.children) {
+    const secao = +tr.dataset.secao;
+    let mostra;
+    if (!bruto) mostra = true;
+    else if (bruto.length <= 2) mostra = mrvBuscada != null && porSecao[secao].mrv === mrvBuscada;
+    else mostra = pad(secao).includes(bruto.padStart(4, "0"));
+    tr.hidden = !mostra;
+    if (mostra) visiveis++;
+  }
+  document.getElementById("semLinhas").hidden = visiveis > 0;
+}
+
+/* ---------------------------------------------------------------- */
+/* Legenda e textos que saem dos dados                              */
+/* ---------------------------------------------------------------- */
+function montaLegenda() {
+  const L = document.getElementById("legenda");
+  const itens = [
+    ["--altaF", "quadrado", `vermelha · as ${D.classes.n_alta} de maior comparecimento`],
+    ["--mediaF", "quadrado", `amarela · ${D.classes.limiar_media} ou mais esperados`],
+    ["--baixaF", "quadrado", "verde · as demais"],
+  ];
+  for (const e of D.entradas) itens.push(["--ent" + e.id, "disco", `entrada ${e.id} · porta ${e.porta}`]);
+  itens.push(["--saida", "quadrado", "saídas · " + D.saidas.join(" e ")]);
+  const pref = Object.entries(D.sinalizacao).filter(([, s]) => s.papel === "preferencial");
+  if (pref.length) itens.push(["--pref", "quadrado",
+    "entrada preferencial · " + pref.map(([id]) => id).join(", ")]);
+  itens.push(["--emerg", "quadrado", "saída de emergência e faixa livre de 3 m"]);
+  itens.push(["--servico", "quadrado", "porta de serviço, mantida desobstruída"]);
+  itens.push(["--fechada", "quadrado", "porta fechada no dia"]);
+  itens.push(["--serp", "quadrado",
+    `espaço reservado ao serpenteado das vermelhas · ~${D.serpenteados[0].pessoas} pessoas`]);
+  itens.push(["--apoio", "quadrado", "sala de apoio · sem mesa"]);
+  L.replaceChildren(...itens.map(([tok, forma, texto]) => {
+    const s = document.createElement("span");
+    s.innerHTML = `<i class="sw${forma === "disco" ? " disco" : ""}" style="background:var(${tok})"></i>${texto}`;
+    return s;
+  }));
+}
+
+function montaParedes() {
+  const faixa = document.getElementById("faixaParedes");
+  faixa.replaceChildren(...D.entradas.map(e => {
+    const li = document.createElement("li");
+    li.style.setProperty("--cor", `var(--ent${e.id})`);
+    li.innerHTML = `
+      <p class="topo"><span class="letra">${e.id}</span>
+        <span class="onde">parede ${e.parede}</span>
+        <span class="porta">porta ${e.porta}</span></p>
+      <p class="carga">${e.esperado.toLocaleString("pt-BR")}</p>
+      <p class="detalhe">eleitores esperados · ${(100 * e.quota).toFixed(1)}% do total<br>
+      ${e.mesas} mesas em ${String(e.metros).replace(".", ",")} m de parede
+      · ${String(e.por_metro).replace(".", ",")} por metro</p>`;
+    return li;
+  }));
+}
+montaParedes();
+
+const cargas = D.entradas.map(e => e.esperado);
+document.getElementById("nAmpl").textContent = Math.max(...cargas) - Math.min(...cargas);
+document.getElementById("hNome").textContent = D.cenario.nome;
+document.getElementById("hSecoes").textContent = D.secoes.length;
+document.getElementById("hAptos").textContent = D.comparecimento.aptos.toLocaleString("pt-BR");
+document.getElementById("iSecoes").textContent = D.secoes.length;
+document.getElementById("nLimiar").textContent = D.classes.limiar_media;
+document.getElementById("nBase").textContent = D.comparecimento.rotulo;
+document.getElementById("nCenario").textContent = D.cenario.id;
+document.getElementById("nSerp").textContent = D.serpenteados[0].pessoas;
+document.getElementById("nRaias").textContent = D.serpenteados[0].raias;
+document.getElementById("nProf").textContent =
+  String(D.serpenteados[0].profundidade).replace(".", ",");
+
+montaTabela();
+montaLegenda();
+desenha();
+
+/* O tema muda os tokens de cor, e a planta é desenhada com valores
+ * resolvidos, então ela precisa ser redesenhada quando o tema vira. */
+const observaTema = () => { const v = vista; desenha(); vista = v; aplicaVista(); };
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", observaTema);
+new MutationObserver(observaTema).observe(document.documentElement, {attributes: true, attributeFilter: ["data-theme"]});
+</script>

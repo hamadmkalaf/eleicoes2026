@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1136" height="804" viewBox="0 0 1136 804" font-family="Inter, Helvetica, Arial, sans-serif">
 <rect width="1136" height="804" fill="#fbfaf8"/>
 <defs><pattern id="prot" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="7" stroke="#c0392b" stroke-width="1.1" stroke-opacity=".28"/></pattern><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
-<text x="52" y="34" font-size="21" font-weight="700" fill="#16202b">Opção 1 · As três avenidas</text>
-<text x="52" y="56" font-size="12.5" fill="#5b6470">104 unifilas em barreira (170 m de cinta esticada) de 100 orçadas · <tspan fill="#c0392b">não cabe: faltam 4 unidades</tspan></text>
-<text x="52" y="78" font-size="12.5" fill="#5b6470">Todo o resto em fita no chão: <tspan font-weight="700">645 m</tspan> — 709 m com o retoque do meio-dia, 16 rolos de 50 m repartidos em 6 cores</text>
+<text x="52" y="34" font-size="21" font-weight="700" fill="#16202b">Definitiva · Bocas, avenida B e as três vermelhas</text>
+<text x="52" y="56" font-size="12.5" fill="#5b6470">98 unifilas em barreira (133 m de cinta esticada) de 100 orçadas · 2 em reserva móvel</text>
+<text x="52" y="78" font-size="12.5" fill="#5b6470">Todo o resto em fita no chão: <tspan font-weight="700">682 m</tspan> — 750 m com o retoque do meio-dia, 18 rolos de 50 m repartidos em 6 cores</text>
 <polygon points="169.0,758.0 806.5,758.0 806.5,92.0 52.0,92.0 52.0,653.0 169.0,653.0" fill="#ffffff" stroke="#16202b" stroke-width="2"/>
 <rect x="761.5" y="92.0" width="45.0" height="666.0" fill="url(#prot)" fill-opacity="1" stroke="#c0392b" stroke-opacity=".35" stroke-dasharray="3 3"/>
 <rect x="361.9" y="92.0" width="53.4" height="45.0" fill="url(#prot)" fill-opacity="1" stroke="#c0392b" stroke-opacity=".35" stroke-dasharray="3 3"/>
@@ -16,8 +16,10 @@
 <rect x="52.0" y="92.0" width="754.5" height="135.0" fill="#16202b" fill-opacity=".035"/>
 <rect x="599.5" y="92.0" width="162.0" height="666.0" fill="#16202b" fill-opacity=".035"/>
 <polyline points="379.4,758.0 379.4,707.0 217.0,707.0 217.0,213.5" fill="none" stroke="#33507E" stroke-width="2.4" stroke-dasharray="9 6" stroke-opacity=".85" stroke-linejoin="round"/>
+<polyline points="427.5,758.0 427.5,662.0 262.0,662.0 262.0,213.5" fill="none" stroke="#33507E" stroke-width="2.4" stroke-dasharray="9 6" stroke-opacity=".85" stroke-linejoin="round"/>
 <line x1="239.5" y1="460.2" x2="239.5" y2="385.2" stroke="#33507E" stroke-width="3" marker-end="url(#seta)" opacity=".9"/>
 <line x1="476.5" y1="492.5" x2="476.5" y2="417.5" stroke="#E8C63A" stroke-width="3" marker-end="url(#seta)" opacity=".9"/>
+<polyline points="532.0,758.0 532.0,710.0 554.5,680.0 554.5,165.5" fill="none" stroke="#DE7343" stroke-width="2.4" stroke-dasharray="9 6" stroke-opacity=".85" stroke-linejoin="round"/>
 <polyline points="577.0,758.0 577.0,710.0 599.5,680.0 599.5,165.5" fill="none" stroke="#DE7343" stroke-width="2.4" stroke-dasharray="9 6" stroke-opacity=".85" stroke-linejoin="round"/>
 <line x1="577.0" y1="422.7" x2="577.0" y2="347.7" stroke="#DE7343" stroke-width="3" marker-end="url(#seta)" opacity=".9"/>
 <polyline points="205.0,227.0 686.5,227.0" fill="none" stroke="#e08a00" stroke-width="2.4" stroke-dasharray="9 6" stroke-opacity=".85"/>
@@ -244,6 +246,20 @@
 <circle cx="379.4" cy="713.0" r="3.1" fill="#16202b"/>
 <circle cx="362.9" cy="707.0" r="3.1" fill="#16202b"/>
 <circle cx="340.4" cy="707.0" r="3.1" fill="#16202b"/>
+<polyline points="427.5,758.0 427.5,668.0" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="427.5,758.0 427.5,668.0" fill="none" stroke="#33507E" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="427.5" cy="758.0" r="3.1" fill="#16202b"/>
+<circle cx="427.5" cy="735.5" r="3.1" fill="#16202b"/>
+<circle cx="427.5" cy="713.0" r="3.1" fill="#16202b"/>
+<circle cx="427.5" cy="690.5" r="3.1" fill="#16202b"/>
+<circle cx="427.5" cy="668.0" r="3.1" fill="#16202b"/>
+<polyline points="532.0,758.0 532.0,710.0 554.5,680.0 554.5,675.5" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="532.0,758.0 532.0,710.0 554.5,680.0 554.5,675.5" fill="none" stroke="#DE7343" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="532.0" cy="758.0" r="3.1" fill="#16202b"/>
+<circle cx="532.0" cy="735.5" r="3.1" fill="#16202b"/>
+<circle cx="532.0" cy="713.0" r="3.1" fill="#16202b"/>
+<circle cx="543.7" cy="694.4" r="3.1" fill="#16202b"/>
+<circle cx="554.5" cy="675.5" r="3.1" fill="#16202b"/>
 <polyline points="577.0,758.0 577.0,710.0 599.5,680.0 599.5,675.5" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
 <polyline points="577.0,758.0 577.0,710.0 599.5,680.0 599.5,675.5" fill="none" stroke="#DE7343" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
 <circle cx="577.0" cy="758.0" r="3.1" fill="#16202b"/>
@@ -251,36 +267,6 @@
 <circle cx="577.0" cy="713.0" r="3.1" fill="#16202b"/>
 <circle cx="588.7" cy="694.4" r="3.1" fill="#16202b"/>
 <circle cx="599.5" cy="675.5" r="3.1" fill="#16202b"/>
-<polyline points="427.5,758.0 427.5,662.0 262.0,662.0 262.0,213.5" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
-<polyline points="427.5,758.0 427.5,662.0 262.0,662.0 262.0,213.5" fill="none" stroke="#33507E" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
-<circle cx="427.5" cy="758.0" r="3.1" fill="#16202b"/>
-<circle cx="427.5" cy="731.7" r="3.1" fill="#16202b"/>
-<circle cx="427.5" cy="705.4" r="3.1" fill="#16202b"/>
-<circle cx="427.5" cy="679.1" r="3.1" fill="#16202b"/>
-<circle cx="418.3" cy="662.0" r="3.1" fill="#16202b"/>
-<circle cx="392.0" cy="662.0" r="3.1" fill="#16202b"/>
-<circle cx="365.7" cy="662.0" r="3.1" fill="#16202b"/>
-<circle cx="339.4" cy="662.0" r="3.1" fill="#16202b"/>
-<circle cx="313.1" cy="662.0" r="3.1" fill="#16202b"/>
-<circle cx="286.8" cy="662.0" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="660.5" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="634.2" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="607.9" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="581.6" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="555.3" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="529.0" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="502.7" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="476.4" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="450.2" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="423.9" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="397.6" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="371.3" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="345.0" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="318.7" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="292.4" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="266.1" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="239.8" r="3.1" fill="#16202b"/>
-<circle cx="262.0" cy="213.5" r="3.1" fill="#16202b"/>
 <polyline points="454.0,758.0 454.0,227.0" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
 <polyline points="454.0,758.0 454.0,227.0" fill="none" stroke="#E8C63A" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
 <circle cx="454.0" cy="758.0" r="3.1" fill="#16202b"/>
@@ -327,85 +313,127 @@
 <circle cx="499.0" cy="280.1" r="3.1" fill="#16202b"/>
 <circle cx="499.0" cy="253.6" r="3.1" fill="#16202b"/>
 <circle cx="499.0" cy="227.0" r="3.1" fill="#16202b"/>
-<polyline points="532.0,758.0 532.0,710.0 554.5,680.0 554.5,165.5" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
-<polyline points="532.0,758.0 532.0,710.0 554.5,680.0 554.5,165.5" fill="none" stroke="#DE7343" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
-<circle cx="532.0" cy="758.0" r="3.1" fill="#16202b"/>
-<circle cx="532.0" cy="731.9" r="3.1" fill="#16202b"/>
-<circle cx="534.5" cy="706.7" r="3.1" fill="#16202b"/>
-<circle cx="550.2" cy="685.8" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="661.2" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="635.1" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="609.0" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="582.9" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="556.8" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="530.7" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="504.6" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="478.5" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="452.5" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="426.4" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="400.3" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="374.2" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="348.1" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="322.0" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="295.9" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="269.8" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="243.8" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="217.7" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="191.6" r="3.1" fill="#16202b"/>
-<circle cx="554.5" cy="165.5" r="3.1" fill="#16202b"/>
+<polyline points="113.5,432.2 176.5,432.2" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="113.5,432.2 176.5,432.2" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="113.5" cy="432.2" r="3.1" fill="#16202b"/>
+<circle cx="134.5" cy="432.2" r="3.1" fill="#16202b"/>
+<circle cx="155.5" cy="432.2" r="3.1" fill="#16202b"/>
+<circle cx="176.5" cy="432.2" r="3.1" fill="#16202b"/>
+<polyline points="113.5,411.2 176.5,411.2" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="113.5,411.2 176.5,411.2" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="113.5" cy="411.2" r="3.1" fill="#16202b"/>
+<circle cx="134.5" cy="411.2" r="3.1" fill="#16202b"/>
+<circle cx="155.5" cy="411.2" r="3.1" fill="#16202b"/>
+<circle cx="176.5" cy="411.2" r="3.1" fill="#16202b"/>
+<polyline points="113.5,390.2 176.5,390.2" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="113.5,390.2 176.5,390.2" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="113.5" cy="390.2" r="3.1" fill="#16202b"/>
+<circle cx="134.5" cy="390.2" r="3.1" fill="#16202b"/>
+<circle cx="155.5" cy="390.2" r="3.1" fill="#16202b"/>
+<circle cx="176.5" cy="390.2" r="3.1" fill="#16202b"/>
+<polyline points="309.4,153.5 309.4,216.5" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="309.4,153.5 309.4,216.5" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="309.4" cy="153.5" r="3.1" fill="#16202b"/>
+<circle cx="309.4" cy="174.5" r="3.1" fill="#16202b"/>
+<circle cx="309.4" cy="195.5" r="3.1" fill="#16202b"/>
+<circle cx="309.4" cy="216.5" r="3.1" fill="#16202b"/>
+<polyline points="330.4,153.5 330.4,216.5" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="330.4,153.5 330.4,216.5" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="330.4" cy="153.5" r="3.1" fill="#16202b"/>
+<circle cx="330.4" cy="174.5" r="3.1" fill="#16202b"/>
+<circle cx="330.4" cy="195.5" r="3.1" fill="#16202b"/>
+<circle cx="330.4" cy="216.5" r="3.1" fill="#16202b"/>
+<polyline points="351.4,153.5 351.4,216.5" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="351.4,153.5 351.4,216.5" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="351.4" cy="153.5" r="3.1" fill="#16202b"/>
+<circle cx="351.4" cy="174.5" r="3.1" fill="#16202b"/>
+<circle cx="351.4" cy="195.5" r="3.1" fill="#16202b"/>
+<circle cx="351.4" cy="216.5" r="3.1" fill="#16202b"/>
+<polyline points="700.0,346.2 637.0,346.2" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="700.0,346.2 637.0,346.2" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="700.0" cy="346.2" r="3.1" fill="#16202b"/>
+<circle cx="679.0" cy="346.2" r="3.1" fill="#16202b"/>
+<circle cx="658.0" cy="346.2" r="3.1" fill="#16202b"/>
+<circle cx="637.0" cy="346.2" r="3.1" fill="#16202b"/>
+<polyline points="700.0,325.2 637.0,325.2" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="700.0,325.2 637.0,325.2" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="700.0" cy="325.2" r="3.1" fill="#16202b"/>
+<circle cx="679.0" cy="325.2" r="3.1" fill="#16202b"/>
+<circle cx="658.0" cy="325.2" r="3.1" fill="#16202b"/>
+<circle cx="637.0" cy="325.2" r="3.1" fill="#16202b"/>
+<polyline points="700.0,304.2 637.0,304.2" fill="none" stroke="#16202b" stroke-width="5.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="700.0,304.2 637.0,304.2" fill="none" stroke="#c0392b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="700.0" cy="304.2" r="3.1" fill="#16202b"/>
+<circle cx="679.0" cy="304.2" r="3.1" fill="#16202b"/>
+<circle cx="658.0" cy="304.2" r="3.1" fill="#16202b"/>
+<circle cx="637.0" cy="304.2" r="3.1" fill="#16202b"/>
 <text x="832.5" y="98" font-size="12" font-weight="700" fill="#16202b" letter-spacing=".08em">O QUE VAI NA BARREIRA</text>
 <line x1="832.5" y1="114" x2="852.5" y2="114" stroke="#16202b" stroke-width="5"/>
 <line x1="832.5" y1="114" x2="852.5" y2="114" stroke="#33507E" stroke-width="2.4"/>
 <text x="860.5" y="118" font-size="10.6" fill="#31404f">boca da avenida A (S4) · trilho interno</text>
 <text x="860.5" y="130" font-size="10" fill="#8a94a6">6.0 m · 5 unifilas</text>
 <line x1="832.5" y1="144" x2="852.5" y2="144" stroke="#16202b" stroke-width="5"/>
-<line x1="832.5" y1="144" x2="852.5" y2="144" stroke="#DE7343" stroke-width="2.4"/>
-<text x="860.5" y="148" font-size="10.6" fill="#31404f">boca da avenida C (S6) · trilho externo</text>
+<line x1="832.5" y1="144" x2="852.5" y2="144" stroke="#33507E" stroke-width="2.4"/>
+<text x="860.5" y="148" font-size="10.6" fill="#31404f">boca da avenida A (S4) · trilho externo</text>
 <text x="860.5" y="160" font-size="10" fill="#8a94a6">6.0 m · 5 unifilas</text>
 <line x1="832.5" y1="174" x2="852.5" y2="174" stroke="#16202b" stroke-width="5"/>
-<line x1="832.5" y1="174" x2="852.5" y2="174" stroke="#33507E" stroke-width="2.4"/>
-<text x="860.5" y="178" font-size="10.6" fill="#31404f">avenida A · trilho do lado do campo de retorno</text>
-<text x="860.5" y="190" font-size="10" fill="#8a94a6">47.3 m · 28 unifilas</text>
+<line x1="832.5" y1="174" x2="852.5" y2="174" stroke="#DE7343" stroke-width="2.4"/>
+<text x="860.5" y="178" font-size="10.6" fill="#31404f">boca da avenida C (S6) · trilho interno</text>
+<text x="860.5" y="190" font-size="10" fill="#8a94a6">6.0 m · 5 unifilas</text>
 <line x1="832.5" y1="204" x2="852.5" y2="204" stroke="#16202b" stroke-width="5"/>
-<line x1="832.5" y1="204" x2="852.5" y2="204" stroke="#E8C63A" stroke-width="2.4"/>
-<text x="860.5" y="208" font-size="10.6" fill="#31404f">avenida B · trilho do lado da parede</text>
-<text x="860.5" y="220" font-size="10" fill="#8a94a6">35.4 m · 21 unifilas</text>
+<line x1="832.5" y1="204" x2="852.5" y2="204" stroke="#DE7343" stroke-width="2.4"/>
+<text x="860.5" y="208" font-size="10.6" fill="#31404f">boca da avenida C (S6) · trilho externo</text>
+<text x="860.5" y="220" font-size="10" fill="#8a94a6">6.0 m · 5 unifilas</text>
 <line x1="832.5" y1="234" x2="852.5" y2="234" stroke="#16202b" stroke-width="5"/>
 <line x1="832.5" y1="234" x2="852.5" y2="234" stroke="#E8C63A" stroke-width="2.4"/>
-<text x="860.5" y="238" font-size="10.6" fill="#31404f">avenida B · trilho do lado do campo de retorno</text>
+<text x="860.5" y="238" font-size="10.6" fill="#31404f">avenida B · trilho do lado da parede</text>
 <text x="860.5" y="250" font-size="10" fill="#8a94a6">35.4 m · 21 unifilas</text>
 <line x1="832.5" y1="264" x2="852.5" y2="264" stroke="#16202b" stroke-width="5"/>
-<line x1="832.5" y1="264" x2="852.5" y2="264" stroke="#DE7343" stroke-width="2.4"/>
-<text x="860.5" y="268" font-size="10.6" fill="#31404f">avenida C · trilho do lado da parede</text>
-<text x="860.5" y="280" font-size="10" fill="#8a94a6">40.0 m · 24 unifilas</text>
-<line x1="832.5" y1="292" x2="1042.5" y2="292" stroke="#dcdde1"/>
-<text x="832.5" y="306" font-size="12" font-weight="700" fill="#16202b" letter-spacing=".08em">O QUE VAI NA FITA</text>
-<line x1="832.5" y1="320" x2="852.5" y2="320" stroke="#8a94a6" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="860.5" y="324" font-size="10.6" fill="#31404f">avenidas não barreiradas — 2 linhas a 3,00 m</text>
-<line x1="832.5" y1="339" x2="852.5" y2="339" stroke="#8a94a6" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="860.5" y="343" font-size="10.6" fill="#31404f">28 ramais de mesa — canal de 1,10 m</text>
-<line x1="832.5" y1="358" x2="852.5" y2="358" stroke="#16202b" stroke-width="3"/>
-<text x="860.5" y="362" font-size="10.6" fill="#31404f">linha de espera a 1,50 m — zebrado, nunca amarelo</text>
-<line x1="832.5" y1="377" x2="852.5" y2="377" stroke="#8a94a6" stroke-width="2" stroke-dasharray="6 4"/>
-<text x="860.5" y="381" font-size="10.6" fill="#31404f">papel da seção, colado fora da linha de pisada</text>
-<line x1="832.5" y1="396" x2="852.5" y2="396" stroke="#8a94a6" stroke-width="3"/>
-<text x="860.5" y="400" font-size="10.6" fill="#31404f">saída: campo livre, só sinalizado</text>
-<line x1="832.5" y1="419" x2="1042.5" y2="419" stroke="#dcdde1"/>
-<rect x="832.5" y="424" width="13" height="11" fill="#c0392b"/>
-<text x="852.5" y="433" font-size="10.6" fill="#31404f">alto comparecimento (3)</text>
-<rect x="832.5" y="442" width="13" height="11" fill="#d4a017"/>
-<text x="852.5" y="451" font-size="10.6" fill="#31404f">médio comparecimento (8)</text>
-<rect x="832.5" y="460" width="13" height="11" fill="#1e8449"/>
-<text x="852.5" y="469" font-size="10.6" fill="#31404f">baixo comparecimento (17)</text>
-<text x="832.5" y="497" font-size="10.2" fill="#8a94a6">A aposta</text>
-<text x="832.5" y="511" font-size="10.4" fill="#31404f">Um eleitor mal encaminhado custa mais do</text>
-<text x="832.5" y="524" font-size="10.4" fill="#31404f">que um eleitor mal enfileirado: quem chega</text>
-<text x="832.5" y="537" font-size="10.4" fill="#31404f">à parede errada volta atravessando o</text>
-<text x="832.5" y="550" font-size="10.4" fill="#31404f">salão, contra o fluxo.</text>
-<text x="832.5" y="571" font-size="10.2" fill="#8a94a6">O risco</text>
-<text x="832.5" y="585" font-size="10.4" fill="#c0392b">Nada segura as três vermelhas. Os 20 em pé</text>
-<text x="832.5" y="598" font-size="10.4" fill="#c0392b">à frente de cada uma ficam contidos só por</text>
-<text x="832.5" y="611" font-size="10.4" fill="#c0392b">fita, que é justamente onde a fita não</text>
-<text x="832.5" y="624" font-size="10.4" fill="#c0392b">segura.</text>
+<line x1="832.5" y1="264" x2="852.5" y2="264" stroke="#E8C63A" stroke-width="2.4"/>
+<text x="860.5" y="268" font-size="10.6" fill="#31404f">avenida B · trilho do lado do campo de retorno</text>
+<text x="860.5" y="280" font-size="10" fill="#8a94a6">35.4 m · 21 unifilas</text>
+<line x1="832.5" y1="294" x2="852.5" y2="294" stroke="#16202b" stroke-width="5"/>
+<line x1="832.5" y1="294" x2="852.5" y2="294" stroke="#c0392b" stroke-width="2.4"/>
+<text x="860.5" y="298" font-size="10.6" fill="#31404f">serpenteado do grupo A3 · seções 3313 · 3889 (20 pessoas)</text>
+<text x="860.5" y="310" font-size="10" fill="#8a94a6">12.6 m · 12 unifilas</text>
+<line x1="832.5" y1="324" x2="852.5" y2="324" stroke="#16202b" stroke-width="5"/>
+<line x1="832.5" y1="324" x2="852.5" y2="324" stroke="#c0392b" stroke-width="2.4"/>
+<text x="860.5" y="328" font-size="10.6" fill="#31404f">serpenteado do grupo B2 · seções 3315 · 3778 (20 pessoas)</text>
+<text x="860.5" y="340" font-size="10" fill="#8a94a6">12.6 m · 12 unifilas</text>
+<line x1="832.5" y1="354" x2="852.5" y2="354" stroke="#16202b" stroke-width="5"/>
+<line x1="832.5" y1="354" x2="852.5" y2="354" stroke="#c0392b" stroke-width="2.4"/>
+<text x="860.5" y="358" font-size="10.6" fill="#31404f">serpenteado do grupo C5 · seções 3322 · 3752 (20 pessoas)</text>
+<text x="860.5" y="370" font-size="10" fill="#8a94a6">12.6 m · 12 unifilas</text>
+<line x1="832.5" y1="382" x2="1042.5" y2="382" stroke="#dcdde1"/>
+<text x="832.5" y="396" font-size="12" font-weight="700" fill="#16202b" letter-spacing=".08em">O QUE VAI NA FITA</text>
+<line x1="832.5" y1="410" x2="852.5" y2="410" stroke="#8a94a6" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="860.5" y="414" font-size="10.6" fill="#31404f">avenidas não barreiradas — 2 linhas a 3,00 m</text>
+<line x1="832.5" y1="429" x2="852.5" y2="429" stroke="#8a94a6" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="860.5" y="433" font-size="10.6" fill="#31404f">28 ramais de mesa — canal de 1,10 m</text>
+<line x1="832.5" y1="448" x2="852.5" y2="448" stroke="#16202b" stroke-width="3"/>
+<text x="860.5" y="452" font-size="10.6" fill="#31404f">linha de espera a 1,50 m — zebrado, nunca amarelo</text>
+<line x1="832.5" y1="467" x2="852.5" y2="467" stroke="#8a94a6" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="860.5" y="471" font-size="10.6" fill="#31404f">papel da seção, colado fora da linha de pisada</text>
+<line x1="832.5" y1="486" x2="852.5" y2="486" stroke="#8a94a6" stroke-width="3"/>
+<text x="860.5" y="490" font-size="10.6" fill="#31404f">saída: campo livre, só sinalizado</text>
+<line x1="832.5" y1="509" x2="1042.5" y2="509" stroke="#dcdde1"/>
+<rect x="832.5" y="514" width="13" height="11" fill="#c0392b"/>
+<text x="852.5" y="523" font-size="10.6" fill="#31404f">alto comparecimento (3)</text>
+<rect x="832.5" y="532" width="13" height="11" fill="#d4a017"/>
+<text x="852.5" y="541" font-size="10.6" fill="#31404f">médio comparecimento (8)</text>
+<rect x="832.5" y="550" width="13" height="11" fill="#1e8449"/>
+<text x="852.5" y="559" font-size="10.6" fill="#31404f">baixo comparecimento (17)</text>
+<text x="832.5" y="587" font-size="10.2" fill="#8a94a6">A aposta</text>
+<text x="832.5" y="601" font-size="10.4" fill="#31404f">Fita é uma fronteira que se vê; barreira é</text>
+<text x="832.5" y="614" font-size="10.4" fill="#31404f">uma fronteira que custa atravessar.</text>
+<text x="832.5" y="627" font-size="10.4" fill="#31404f">Gasta-se barreira onde atravessar compensa</text>
+<text x="832.5" y="640" font-size="10.4" fill="#31404f">— na boca, no cruzamento e na cabeça da</text>
+<text x="832.5" y="653" font-size="10.4" fill="#31404f">fila cheia.</text>
+<text x="832.5" y="674" font-size="10.2" fill="#8a94a6">O risco</text>
+<text x="832.5" y="688" font-size="10.4" fill="#c0392b">Depois dos 6 m de boca, as avenidas A e C</text>
+<text x="832.5" y="701" font-size="10.4" fill="#c0392b">ficam na fita, e sobram 2 unifilas de</text>
+<text x="832.5" y="714" font-size="10.4" fill="#c0392b">reserva. Se o corte de caminho aparecer, 2</text>
+<text x="832.5" y="727" font-size="10.4" fill="#c0392b">postes não respondem: é por isso que as 15</text>
+<text x="832.5" y="740" font-size="10.4" fill="#c0392b">adicionais deixam de ser folga.</text>
 <text x="52" y="790" font-size="10" fill="#8a94a6">Hall 2 · RDS Ballsbridge · cenário Paredes_ABC · escala 1 m = 15 px · poste a 1.80 m (cinta de 2.00 m esticada a 90%)</text>
 </svg>

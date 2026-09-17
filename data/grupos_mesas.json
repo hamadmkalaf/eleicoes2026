@@ -1,0 +1,524 @@
+{
+ "origem": "saidas/sinalizacao_v2.json do branch claude/voter-route-signage-update-bjgbhp, conferido contra o artefato de sinalizacao Ek3FfeYnwvQLZEs4ZJ5Zzr",
+ "rotulos": "o artefato usa A1..A5, B1..B5, C1..C6; o JSON de origem usa BA1..BC6",
+ "grupos": [
+  {
+   "id": "A1",
+   "id_origem": "BA1",
+   "entrada": "A",
+   "parede": "oeste",
+   "porta": "S4",
+   "tipo": "par",
+   "mrvs": [
+    20,
+    10
+   ],
+   "coord": [
+    8.03,
+    11.93
+   ],
+   "secoes": [
+    1278,
+    1314,
+    3142,
+    3309
+   ],
+   "por_mesa": [
+    [
+     1314,
+     3309
+    ],
+    [
+     1278,
+     3142
+    ]
+   ],
+   "aptos": 1408,
+   "esperado": 861,
+   "classe": "media"
+  },
+  {
+   "id": "A2",
+   "id_origem": "BA2",
+   "entrada": "A",
+   "parede": "oeste",
+   "porta": "S4",
+   "tipo": "par",
+   "mrvs": [
+    11,
+    21
+   ],
+   "coord": [
+    14.33,
+    18.23
+   ],
+   "secoes": [
+    3161,
+    3307,
+    3311,
+    3913
+   ],
+   "por_mesa": [
+    [
+     3161,
+     3307
+    ],
+    [
+     3311,
+     3913
+    ]
+   ],
+   "aptos": 1421,
+   "esperado": 970,
+   "classe": "media"
+  },
+  {
+   "id": "A3",
+   "id_origem": "BA3",
+   "entrada": "A",
+   "parede": "oeste",
+   "porta": "S4",
+   "tipo": "isolada",
+   "mrvs": [
+    22
+   ],
+   "coord": [
+    23.12
+   ],
+   "secoes": [
+    3313,
+    3889
+   ],
+   "por_mesa": [
+    [
+     3313,
+     3889
+    ]
+   ],
+   "aptos": 797,
+   "esperado": 590,
+   "classe": "alta"
+  },
+  {
+   "id": "A4",
+   "id_origem": "BA4",
+   "entrada": "A",
+   "parede": "oeste",
+   "porta": "S4",
+   "tipo": "par",
+   "mrvs": [
+    3,
+    6
+   ],
+   "coord": [
+    25.92,
+    29.82
+   ],
+   "secoes": [
+    513,
+    522,
+    1105,
+    1352
+   ],
+   "por_mesa": [
+    [
+     513,
+     1105
+    ],
+    [
+     522,
+     1352
+    ]
+   ],
+   "aptos": 964,
+   "esperado": 679,
+   "classe": "baixa"
+  },
+  {
+   "id": "A5",
+   "id_origem": "BA5",
+   "entrada": "A",
+   "parede": "oeste",
+   "porta": "S4",
+   "tipo": "par",
+   "mrvs": [
+    8,
+    12
+   ],
+   "coord": [
+    32.22,
+    36.12
+   ],
+   "secoes": [
+    530,
+    2847,
+    3078,
+    3179
+   ],
+   "por_mesa": [
+    [
+     2847,
+     3078
+    ],
+    [
+     530,
+     3179
+    ]
+   ],
+   "aptos": 1105,
+   "esperado": 734,
+   "classe": "baixa"
+  },
+  {
+   "id": "B1",
+   "id_origem": "BB1",
+   "entrada": "B",
+   "parede": "norte",
+   "porta": "S5",
+   "tipo": "par",
+   "mrvs": [
+    2,
+    5
+   ],
+   "coord": [
+    11.86,
+    15.76
+   ],
+   "secoes": [
+    512,
+    1160,
+    2855,
+    3845
+   ],
+   "por_mesa": [
+    [
+     512,
+     2855
+    ],
+    [
+     1160,
+     3845
+    ]
+   ],
+   "aptos": 949,
+   "esperado": 683,
+   "classe": "baixa"
+  },
+  {
+   "id": "B2",
+   "id_origem": "BB2",
+   "entrada": "B",
+   "parede": "norte",
+   "porta": "S5",
+   "tipo": "isolada",
+   "mrvs": [
+    23
+   ],
+   "coord": [
+    18.56
+   ],
+   "secoes": [
+    3315,
+    3778
+   ],
+   "por_mesa": [
+    [
+     3315,
+     3778
+    ]
+   ],
+   "aptos": 792,
+   "esperado": 586,
+   "classe": "alta"
+  },
+  {
+   "id": "B3",
+   "id_origem": "BB3",
+   "entrada": "B",
+   "parede": "norte",
+   "porta": "S5",
+   "tipo": "par",
+   "mrvs": [
+    9,
+    16
+   ],
+   "coord": [
+    25.23,
+    29.13
+   ],
+   "secoes": [
+    3108,
+    3181,
+    3302,
+    3422
+   ],
+   "por_mesa": [
+    [
+     3108,
+     3422
+    ],
+    [
+     3181,
+     3302
+    ]
+   ],
+   "aptos": 1527,
+   "esperado": 985,
+   "classe": "media"
+  },
+  {
+   "id": "B4",
+   "id_origem": "BB4",
+   "entrada": "B",
+   "parede": "norte",
+   "porta": "S5",
+   "tipo": "par",
+   "mrvs": [
+    17,
+    18
+   ],
+   "coord": [
+    31.53,
+    35.43
+   ],
+   "secoes": [
+    518,
+    521,
+    3305,
+    3306
+   ],
+   "por_mesa": [
+    [
+     521,
+     3305
+    ],
+    [
+     518,
+     3306
+    ]
+   ],
+   "aptos": 1533,
+   "esperado": 987,
+   "classe": "media"
+  },
+  {
+   "id": "B5",
+   "id_origem": "BB5",
+   "entrada": "B",
+   "parede": "norte",
+   "porta": "S5",
+   "tipo": "par",
+   "mrvs": [
+    19,
+    27
+   ],
+   "coord": [
+    37.83,
+    41.73
+   ],
+   "secoes": [
+    3308,
+    3832
+   ],
+   "por_mesa": [
+    [
+     3308
+    ],
+    [
+     3832
+    ]
+   ],
+   "aptos": 799,
+   "esperado": 591,
+   "classe": "baixa"
+  },
+  {
+   "id": "C1",
+   "id_origem": "BC1",
+   "entrada": "C",
+   "parede": "leste",
+   "porta": "S6",
+   "tipo": "isolada",
+   "mrvs": [
+    25
+   ],
+   "coord": [
+    7.15
+   ],
+   "secoes": [
+    3442
+   ],
+   "por_mesa": [
+    [
+     3442
+    ]
+   ],
+   "aptos": 398,
+   "esperado": 295,
+   "classe": "baixa"
+  },
+  {
+   "id": "C2",
+   "id_origem": "BC2",
+   "entrada": "C",
+   "parede": "leste",
+   "porta": "S6",
+   "tipo": "par",
+   "mrvs": [
+    26,
+    14
+   ],
+   "coord": [
+    9.55,
+    13.45
+   ],
+   "secoes": [
+    3229,
+    3688,
+    3821
+   ],
+   "por_mesa": [
+    [
+     3688
+    ],
+    [
+     3229,
+     3821
+    ]
+   ],
+   "aptos": 1006,
+   "esperado": 701,
+   "classe": "baixa"
+  },
+  {
+   "id": "C3",
+   "id_origem": "BC3",
+   "entrada": "C",
+   "parede": "leste",
+   "porta": "S6",
+   "tipo": "par",
+   "mrvs": [
+    15,
+    28
+   ],
+   "coord": [
+    15.85,
+    19.75
+   ],
+   "secoes": [
+    519,
+    3245,
+    3862
+   ],
+   "por_mesa": [
+    [
+     519,
+     3245
+    ],
+    [
+     3862
+    ]
+   ],
+   "aptos": 1181,
+   "esperado": 794,
+   "classe": "media"
+  },
+  {
+   "id": "C4",
+   "id_origem": "BC4",
+   "entrada": "C",
+   "parede": "leste",
+   "porta": "S6",
+   "tipo": "par",
+   "mrvs": [
+    13,
+    7
+   ],
+   "coord": [
+    22.15,
+    26.05
+   ],
+   "secoes": [
+    527,
+    1099,
+    3054,
+    3216
+   ],
+   "por_mesa": [
+    [
+     527,
+     3216
+    ],
+    [
+     1099,
+     3054
+    ]
+   ],
+   "aptos": 1025,
+   "esperado": 732,
+   "classe": "baixa"
+  },
+  {
+   "id": "C5",
+   "id_origem": "BC5",
+   "entrada": "C",
+   "parede": "leste",
+   "porta": "S6",
+   "tipo": "isolada",
+   "mrvs": [
+    24
+   ],
+   "coord": [
+    28.85
+   ],
+   "secoes": [
+    3322,
+    3752
+   ],
+   "por_mesa": [
+    [
+     3322,
+     3752
+    ]
+   ],
+   "aptos": 794,
+   "esperado": 588,
+   "classe": "alta"
+  },
+  {
+   "id": "C6",
+   "id_origem": "BC6",
+   "entrada": "C",
+   "parede": "leste",
+   "porta": "S6",
+   "tipo": "par",
+   "mrvs": [
+    4,
+    1
+   ],
+   "coord": [
+    31.65,
+    35.55
+   ],
+   "secoes": [
+    511,
+    517,
+    1100,
+    1292
+   ],
+   "por_mesa": [
+    [
+     517,
+     1292
+    ],
+    [
+     511,
+     1100
+    ]
+   ],
+   "aptos": 1095,
+   "esperado": 723,
+   "classe": "baixa"
+  }
+ ]
+}

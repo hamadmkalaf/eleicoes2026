@@ -14,14 +14,38 @@
   "passo_galao_m": 5.0
  },
  "catalogo": {
-  "divisor_AB": {
-   "rotulo": "divisor das bocas A|B — prolonga a alvenaria 6 m",
+  "boca_A_int": {
+   "rotulo": "boca da avenida A (S4) · trilho interno",
    "grupo": "boca",
    "metros": 6.0,
    "postes": 5
   },
-  "divisor_BC": {
-   "rotulo": "divisor das bocas B|C — prolonga a alvenaria 6 m",
+  "boca_A_ext": {
+   "rotulo": "boca da avenida A (S4) · trilho externo",
+   "grupo": "boca",
+   "metros": 6.0,
+   "postes": 5
+  },
+  "boca_B_int": {
+   "rotulo": "boca da avenida B (S5) · trilho interno",
+   "grupo": "boca",
+   "metros": 6.0,
+   "postes": 5
+  },
+  "boca_B_ext": {
+   "rotulo": "boca da avenida B (S5) · trilho externo",
+   "grupo": "boca",
+   "metros": 6.0,
+   "postes": 5
+  },
+  "boca_C_int": {
+   "rotulo": "boca da avenida C (S6) · trilho interno",
+   "grupo": "boca",
+   "metros": 6.0,
+   "postes": 5
+  },
+  "boca_C_ext": {
+   "rotulo": "boca da avenida C (S6) · trilho externo",
    "grupo": "boca",
    "metros": 6.0,
    "postes": 5
@@ -29,14 +53,14 @@
   "avenida_A_int": {
    "rotulo": "avenida A · trilho do lado da parede",
    "grupo": "avenida",
-   "metros": 48.93,
-   "postes": 29
+   "metros": 47.13,
+   "postes": 28
   },
   "avenida_A_ext": {
    "rotulo": "avenida A · trilho do lado do campo de retorno",
    "grupo": "avenida",
-   "metros": 42.93,
-   "postes": 25
+   "metros": 47.33,
+   "postes": 28
   },
   "avenida_B_int": {
    "rotulo": "avenida B · trilho do lado da parede",
@@ -53,14 +77,14 @@
   "avenida_C_int": {
    "rotulo": "avenida C · trilho do lado da parede",
    "grupo": "avenida",
-   "metros": 41.81,
-   "postes": 25
+   "metros": 40.0,
+   "postes": 24
   },
   "avenida_C_ext": {
    "rotulo": "avenida C · trilho do lado do campo de retorno",
    "grupo": "avenida",
-   "metros": 41.55,
-   "postes": 25
+   "metros": 40.0,
+   "postes": 24
   },
   "distribuidor_norte": {
    "rotulo": "distribuidor da parede norte — o T em que a avenida B desemboca",
@@ -93,206 +117,206 @@
    "postes": 14
   },
   "serp_22": {
-   "rotulo": "serpenteado da vermelha · mesa 5 (MRV 22, 20 pessoas)",
+   "rotulo": "serpenteado do grupo A3 · seções 3313 · 3889 (20 pessoas)",
    "grupo": "vermelha",
    "metros": 12.6,
    "postes": 12
   },
   "serp_23": {
-   "rotulo": "serpenteado da vermelha · mesa 12 (MRV 23, 20 pessoas)",
+   "rotulo": "serpenteado do grupo B2 · seções 3315 · 3778 (20 pessoas)",
    "grupo": "vermelha",
    "metros": 12.6,
    "postes": 12
   },
   "serp_24": {
-   "rotulo": "serpenteado da vermelha · mesa 21 (MRV 24, 20 pessoas)",
+   "rotulo": "serpenteado do grupo C5 · seções 3322 · 3752 (20 pessoas)",
    "grupo": "vermelha",
    "metros": 12.6,
    "postes": 12
   },
   "cabeca_1": {
-   "rotulo": "cabeça de fila · mesa 1 (MRV 20, 395 esperados)",
+   "rotulo": "cabeça de fila · grupo A1 · seções 3309 · 1314 (395 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.9,
+   "postes": 5
   },
   "cabeca_2": {
-   "rotulo": "cabeça de fila · mesa 2 (MRV 10, 466 esperados)",
+   "rotulo": "cabeça de fila · grupo A1 · seções 3142 · 1278 (466 esperados)",
    "grupo": "cabeca_media",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.9,
+   "postes": 5
   },
   "cabeca_3": {
-   "rotulo": "cabeça de fila · mesa 3 (MRV 11, 504 esperados)",
+   "rotulo": "cabeça de fila · grupo A2 · seções 3161 · 3307 (504 esperados)",
    "grupo": "cabeca_media",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.9,
+   "postes": 5
   },
   "cabeca_4": {
-   "rotulo": "cabeça de fila · mesa 4 (MRV 21, 466 esperados)",
+   "rotulo": "cabeça de fila · grupo A2 · seções 3311 · 3913 (466 esperados)",
    "grupo": "cabeca_media",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.9,
+   "postes": 5
   },
   "cabeca_6": {
-   "rotulo": "cabeça de fila · mesa 6 (MRV 3, 351 esperados)",
+   "rotulo": "cabeça de fila · grupo A4 · seções 513 · 1105 (351 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.9,
+   "postes": 5
   },
   "cabeca_7": {
-   "rotulo": "cabeça de fila · mesa 7 (MRV 6, 328 esperados)",
+   "rotulo": "cabeça de fila · grupo A4 · seções 1352 · 522 (328 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.9,
+   "postes": 5
   },
   "cabeca_8": {
-   "rotulo": "cabeça de fila · mesa 8 (MRV 8, 311 esperados)",
+   "rotulo": "cabeça de fila · grupo A5 · seções 3078 · 2847 (311 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.9,
+   "postes": 5
   },
   "cabeca_9": {
-   "rotulo": "cabeça de fila · mesa 9 (MRV 12, 423 esperados)",
+   "rotulo": "cabeça de fila · grupo A5 · seções 3179 · 530 (423 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.9,
+   "postes": 5
   },
   "cabeca_10": {
-   "rotulo": "cabeça de fila · mesa 10 (MRV 2, 355 esperados)",
+   "rotulo": "cabeça de fila · grupo B1 · seções 512 · 2855 (355 esperados)",
    "grupo": "cabeca_baixa",
    "metros": 4.9,
    "postes": 4
   },
   "cabeca_11": {
-   "rotulo": "cabeça de fila · mesa 11 (MRV 5, 328 esperados)",
+   "rotulo": "cabeça de fila · grupo B1 · seções 1160 · 3845 (328 esperados)",
    "grupo": "cabeca_baixa",
    "metros": 4.9,
    "postes": 4
   },
   "cabeca_13": {
-   "rotulo": "cabeça de fila · mesa 13 (MRV 9, 467 esperados)",
+   "rotulo": "cabeça de fila · grupo B3 · seções 3108 · 3422 (467 esperados)",
    "grupo": "cabeca_media",
    "metros": 4.9,
    "postes": 4
   },
   "cabeca_14": {
-   "rotulo": "cabeça de fila · mesa 14 (MRV 16, 518 esperados)",
+   "rotulo": "cabeça de fila · grupo B3 · seções 3302 · 3181 (518 esperados)",
    "grupo": "cabeca_media",
    "metros": 4.9,
    "postes": 4
   },
   "cabeca_15": {
-   "rotulo": "cabeça de fila · mesa 15 (MRV 17, 472 esperados)",
+   "rotulo": "cabeça de fila · grupo B4 · seções 3305 · 521 (472 esperados)",
    "grupo": "cabeca_media",
    "metros": 4.9,
    "postes": 4
   },
   "cabeca_16": {
-   "rotulo": "cabeça de fila · mesa 16 (MRV 18, 515 esperados)",
+   "rotulo": "cabeça de fila · grupo B4 · seções 3306 · 518 (515 esperados)",
    "grupo": "cabeca_media",
    "metros": 4.9,
    "postes": 4
   },
   "cabeca_17": {
-   "rotulo": "cabeça de fila · mesa 17 (MRV 19, 295 esperados)",
+   "rotulo": "cabeça de fila · grupo B5 · seções 3308 (295 esperados)",
    "grupo": "cabeca_baixa",
    "metros": 4.9,
    "postes": 4
   },
   "cabeca_18": {
-   "rotulo": "cabeça de fila · mesa 18 (MRV 27, 296 esperados)",
+   "rotulo": "cabeça de fila · grupo B5 · seções 3832 (296 esperados)",
    "grupo": "cabeca_baixa",
    "metros": 4.9,
    "postes": 4
   },
   "cabeca_19": {
-   "rotulo": "cabeça de fila · mesa 19 (MRV 1, 375 esperados)",
+   "rotulo": "cabeça de fila · grupo C6 · seções 511 · 1100 (375 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.7,
+   "postes": 5
   },
   "cabeca_20": {
-   "rotulo": "cabeça de fila · mesa 20 (MRV 4, 348 esperados)",
+   "rotulo": "cabeça de fila · grupo C6 · seções 517 · 1292 (348 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.7,
+   "postes": 5
   },
   "cabeca_22": {
-   "rotulo": "cabeça de fila · mesa 22 (MRV 7, 325 esperados)",
+   "rotulo": "cabeça de fila · grupo C4 · seções 3054 · 1099 (325 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.7,
+   "postes": 5
   },
   "cabeca_23": {
-   "rotulo": "cabeça de fila · mesa 23 (MRV 13, 407 esperados)",
+   "rotulo": "cabeça de fila · grupo C4 · seções 3216 · 527 (407 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.7,
+   "postes": 5
   },
   "cabeca_24": {
-   "rotulo": "cabeça de fila · mesa 24 (MRV 28, 296 esperados)",
+   "rotulo": "cabeça de fila · grupo C3 · seções 3862 (296 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.7,
+   "postes": 5
   },
   "cabeca_25": {
-   "rotulo": "cabeça de fila · mesa 25 (MRV 15, 498 esperados)",
+   "rotulo": "cabeça de fila · grupo C3 · seções 3245 · 519 (498 esperados)",
    "grupo": "cabeca_media",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.7,
+   "postes": 5
   },
   "cabeca_26": {
-   "rotulo": "cabeça de fila · mesa 26 (MRV 14, 405 esperados)",
+   "rotulo": "cabeça de fila · grupo C2 · seções 3229 · 3821 (405 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.7,
+   "postes": 5
   },
   "cabeca_27": {
-   "rotulo": "cabeça de fila · mesa 27 (MRV 26, 296 esperados)",
+   "rotulo": "cabeça de fila · grupo C2 · seções 3688 (296 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.7,
+   "postes": 5
   },
   "cabeca_28": {
-   "rotulo": "cabeça de fila · mesa 28 (MRV 25, 295 esperados)",
+   "rotulo": "cabeça de fila · grupo C1 · seções 3442 (295 esperados)",
    "grupo": "cabeca_baixa",
-   "metros": 4.9,
-   "postes": 4
+   "metros": 6.7,
+   "postes": 5
   }
  },
- "catalogo_total_postes": 358,
+ "catalogo_total_postes": 395,
  "opcoes": [
   {
    "nome": "Opção 1",
    "subtitulo": "As três avenidas",
    "doutrina": "A barreira paga o trajeto: canaliza o caminho inteiro da porta até a banda da parede e deixa as cabeças de fila na fita.",
    "itens": [
-    "divisor_AB",
-    "divisor_BC",
+    "boca_A_int",
+    "boca_C_ext",
     "avenida_A_ext",
     "avenida_B_int",
     "avenida_B_ext",
     "avenida_C_int"
    ],
-   "postes": 102,
-   "reserva": -2,
-   "metros": 167.5,
+   "postes": 104,
+   "reserva": -4,
+   "metros": 170.1,
    "aposta": "Um eleitor mal encaminhado custa mais do que um eleitor mal enfileirado: quem chega à parede errada volta atravessando o salão, contra o fluxo.",
    "risco": "Nada segura as três vermelhas. Os 20 em pé à frente de cada uma ficam contidos só por fita, que é justamente onde a fita não segura.",
    "fita": {
     "por_cor": {
-     "A": 169.1,
-     "B": 150.4,
-     "C": 171.8,
+     "A": 173.3,
+     "B": 162.5,
+     "C": 176.3,
      "espera": 30.8,
      "pref": 20.0,
      "neutro": 82.0
     },
     "com_retoque": {
-     "A": 186.0,
-     "B": 165.4,
-     "C": 189.0,
+     "A": 190.6,
+     "B": 178.8,
+     "C": 193.9,
      "espera": 33.9,
      "pref": 22.0,
      "neutro": 90.2
@@ -305,8 +329,8 @@
      "pref": 1,
      "neutro": 2
     },
-    "total": 624.1,
-    "total_com_retoque": 686.5,
+    "total": 644.9,
+    "total_com_retoque": 709.4,
     "rolos_total": 16
    }
   },
@@ -335,76 +359,77 @@
     "cabeca_6",
     "cabeca_20"
    ],
-   "postes": 100,
-   "reserva": 0,
-   "metros": 116.2,
+   "postes": 111,
+   "reserva": -11,
+   "metros": 137.2,
    "aposta": "Pressão de multidão só existe onde a fila é estática. Corredor é fluxo andando, e fluxo andando obedece a linha pintada.",
    "risco": "A boca é o gargalo não paralelizável já identificado: 11,5 mil pessoas por 18,4 m de porta, com as três correntes separadas apenas por fita.",
    "fita": {
     "por_cor": {
-     "A": 170.0,
-     "B": 184.2,
-     "C": 176.6,
+     "A": 184.6,
+     "B": 196.2,
+     "C": 185.2,
      "espera": 30.8,
      "pref": 20.0,
-     "neutro": 94.0
+     "neutro": 82.0
     },
     "com_retoque": {
-     "A": 187.0,
-     "B": 202.6,
-     "C": 194.3,
+     "A": 203.1,
+     "B": 215.8,
+     "C": 203.7,
      "espera": 33.9,
      "pref": 22.0,
-     "neutro": 103.4
+     "neutro": 90.2
     },
     "rolos": {
-     "A": 4,
+     "A": 5,
      "B": 5,
-     "C": 4,
+     "C": 5,
      "espera": 1,
      "pref": 1,
-     "neutro": 3
+     "neutro": 2
     },
-    "total": 675.6,
-    "total_com_retoque": 743.2,
-    "rolos_total": 18
+    "total": 698.8,
+    "total_com_retoque": 768.7,
+    "rolos_total": 19
    }
   },
   {
-   "nome": "Opção 3",
-   "subtitulo": "Boca, avenida do meio e vermelhas — recomendada",
+   "nome": "Definitiva",
+   "subtitulo": "Bocas, avenida B e as três vermelhas",
    "doutrina": "A barreira paga só o que a fita comprovadamente não faz: separar correntes que se cruzam e conter multidão parada.",
    "itens": [
-    "divisor_AB",
-    "divisor_BC",
-    "trilho_sul_A",
+    "boca_A_int",
+    "boca_A_ext",
+    "boca_C_int",
+    "boca_C_ext",
     "avenida_B_int",
     "avenida_B_ext",
     "serp_22",
     "serp_23",
     "serp_24"
    ],
-   "postes": 97,
-   "reserva": 3,
-   "metros": 134.6,
+   "postes": 98,
+   "reserva": 2,
+   "metros": 132.6,
    "aposta": "Fita é uma fronteira que se vê; barreira é uma fronteira que custa atravessar. Gasta-se barreira onde atravessar compensa — na boca, no cruzamento e na cabeça da fila cheia.",
-   "risco": "As avenidas A e C ficam na fita. Se o corte de caminho aparecer nelas, é a reserva móvel que responde — e ela tem de existir.",
+   "risco": "Depois dos 6 m de boca, as avenidas A e C ficam na fita, e sobram 2 unifilas de reserva. Se o corte de caminho aparecer, 2 postes não respondem: é por isso que as 15 adicionais deixam de ser folga.",
    "fita": {
     "por_cor": {
-     "A": 199.4,
-     "B": 137.8,
-     "C": 201.1,
+     "A": 202.0,
+     "B": 149.8,
+     "C": 197.7,
      "espera": 30.8,
      "pref": 20.0,
-     "neutro": 68.0
+     "neutro": 82.0
     },
     "com_retoque": {
-     "A": 219.3,
-     "B": 151.6,
-     "C": 221.2,
+     "A": 222.2,
+     "B": 164.8,
+     "C": 217.5,
      "espera": 33.9,
      "pref": 22.0,
-     "neutro": 74.8
+     "neutro": 90.2
     },
     "rolos": {
      "A": 5,
@@ -414,8 +439,8 @@
      "pref": 1,
      "neutro": 2
     },
-    "total": 657.1,
-    "total_com_retoque": 722.8,
+    "total": 682.3,
+    "total_com_retoque": 750.5,
     "rolos_total": 18
    }
   }

@@ -9,6 +9,11 @@ O critério de equilíbrio é o comparecimento esperado, não o número de urnas
 urnas vão de 398 a 797 aptos. Taxas de 2022 (contexto_eleicoes_dublin_2026.md):
 74% para eleitores domiciliados em Dublin, 50% para os do interior.
 
+A estimativa oficial do projeto é a base B da prancheta (11.499 no total,
+3.834 / 3.832 / 3.833 por zona), que aplica a taxa do condado seção a seção. O
+estimador grosso deste script chega a 11.417 e 3.860 / 3.755 / 3.802 — 2% de
+diferença no pior caso, mesma conclusão sobre o equilíbrio.
+
 Uso: python3 scripts/zonas_balanceadas.py
 """
 

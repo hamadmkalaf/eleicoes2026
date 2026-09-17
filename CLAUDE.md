@@ -10,7 +10,7 @@ Organização logística do 1º turno (04/10/2026, 8h–17h) e do eventual 2º t
 | Eleitores aptos | 16.794 | `saidas/dados.json`, dos CSVs oficiais do TSE |
 | Seções / urnas | 51 seções agregadas em 28 urnas | idem |
 | Residentes em Dublin / interior | 12.581 / 4.213 | idem |
-| Comparecimento esperado | ~11.400 (74% Dublin, 50% interior — taxas de 2022) | `contexto_eleicoes_dublin_2026.md` |
+| Comparecimento esperado | **11.499** (base B: taxa de 2022 do condado de origem por seção) | prancheta `Paredes_ABC`, 15/09 |
 | Local | RDS, Merrion Road, Ballsbridge, Dublin 4 | contrato |
 | Segurança contratada | 20 pessoas, 7h30–17h30, + 1 na véspera | orçamento (EUR 6.774,84) |
 
@@ -44,13 +44,19 @@ com a mesma letra em toda a rota.
 
 | Zona | Ring 3 | Porta | Parede | Urnas | Aptos | Comparecimento esperado |
 |---|---|---|---|---|---|---|
-| A | oeste (12,23 m) | S4 | oeste | 9 | 5.695 | 3.860 |
-| B | centro (14,14 m) | S5 | norte | 9 | 5.600 | 3.755 |
-| C | leste (12,23 m) | S6 | leste | 10 | 5.499 | 3.802 |
+| A | oeste (12,23 m) | S4 | oeste | 9 | 5.695 | 3.834 |
+| B | centro (14,14 m) | S5 | norte | 9 | 5.600 | 3.832 |
+| C | leste (12,23 m) | S6 | leste | 10 | 5.499 | 3.833 |
 
-Spread de 2,8% entre a zona mais cheia e a mais vazia, com uma das três urnas
-grandes (3313, 3315, 3322) em cada zona. A distribuição está equilibrada; não mexer
-sem refazer a conta.
+Spread de 0,05% pela base B, com uma das três urnas grandes (3313, 3315, 3322) em
+cada zona. A distribuição está equilibrada; não mexer sem refazer a conta.
+`scripts/zonas_balanceadas.py` confere a composição com um estimador mais grosso
+(74%/50%), que chega a 3.860 / 3.755 / 3.802 — mesma conclusão, 2% de diferença.
+
+A rota também tem os pontos **P0 a P7** do plano de sinalização: **P0** é a mesa
+"descubra sua seção" na calçada da Merrion Road, **fora** do portão. Depois do
+portão toda peça pressupõe a seção conhecida, então P0 é o único ponto que resolve
+quem chega sem o número.
 
 O `RDS_Hall_2_Floorplan_(1).pdf` e o `PLANO COM FLUXOS MELHORADO.png` são anteriores
 a esta planta e descrevem duas entradas apenas — material histórico.
@@ -62,6 +68,9 @@ a esta planta e descrevem duas entradas apenas — material histórico.
   simulações de tempo de votação, argumentação com o TSE.
 - `lista_postos.md` — lista operacional dos postos de voluntários: onde cada um
   fica e o que faz. É a fonte única desses números e o documento do briefing.
+- `voluntarios_postos.html` — os postos marcados sobre a rota e sobre a planta do
+  salão, em três cenários de efetivo (9, 24 e 49). Publicado em
+  https://claude.ai/artifact/YaFNHUua2Hkqu7dtR7tf7A
 - `plano_voluntarios_apoio.md` — o raciocínio por trás da lista: taxas de chegada,
   dimensionamento, decisões do Posto e achados das plantas.
 - `PENDENCIAS` — lista de tarefas em aberto do Posto.

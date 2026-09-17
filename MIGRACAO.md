@@ -34,6 +34,7 @@ silêncio.
 |---|---|---|
 | `CLAUDE.md` | `CLAUDE.md` | Memória do projeto: fatos fixos, geometria do local, convenções. É o arquivo mais importante da transferência. |
 | `lista_postos.md` | `docs/lista_postos.md` | Lista operacional dos postos: onde cada voluntário fica e o que faz. É o documento do briefing e a fonte única do efetivo. |
+| `voluntarios_postos.html` | `mapa/voluntarios_postos.html` | Postos marcados sobre a rota e sobre a planta do salão, em três cenários de efetivo. Publicado em https://claude.ai/artifact/YaFNHUua2Hkqu7dtR7tf7A — guardar a URL no `mapa/README.md`. |
 | `plano_voluntarios_apoio.md` | `docs/plano_voluntarios.md` | O raciocínio por trás da lista: taxas de chegada, dimensionamento, decisões do Posto, achados das plantas. |
 | `contexto_eleicoes_dublin_2026.md` | `docs/contexto.md` | Contexto consolidado: orçamento, simulações de tempo de votação, argumentação com o TSE. |
 | `README.md` | `docs/agregacoes.md` | Análise das agregações de seções e como rodar o pipeline. |
@@ -130,7 +131,8 @@ Mover os arquivos quebra referências dentro do texto. São poucas e todas verif
 |---|---|---|---|
 | `CLAUDE.md` | `contexto_eleicoes_dublin_2026.md` | `docs/contexto.md` | 2 |
 | `CLAUDE.md` | `PENDENCIAS` | `docs/pendencias.md` | 2 |
-| `CLAUDE.md` | `plano_voluntarios_apoio.md` | `docs/plano_voluntarios.md` | 1 |
+| `CLAUDE.md` | `voluntarios_postos.html` | `mapa/voluntarios_postos.html` | Postos marcados sobre a rota e sobre a planta do salão, em três cenários de efetivo. Publicado em https://claude.ai/artifact/YaFNHUua2Hkqu7dtR7tf7A — guardar a URL no `mapa/README.md`. |
+| `plano_voluntarios_apoio.md` | `docs/plano_voluntarios.md` | 1 |
 | `CLAUDE.md` | `lista_postos.md` | `docs/lista_postos.md` | 1 |
 | `CLAUDE.md` | `README.md` (na lista de documentos) | `docs/agregacoes.md` | 1 |
 | `CLAUDE.md` | `RDS_Hall_2_Floorplan_(1).pdf` | `plantas/rds_hall2_oficial.pdf` | 1 |
@@ -138,7 +140,8 @@ Mover os arquivos quebra referências dentro do texto. São poucas e todas verif
 | `docs/plano_voluntarios.md` | `contexto_eleicoes_dublin_2026.md` | `docs/contexto.md` | 3 |
 | `docs/plano_voluntarios.md` | `PENDENCIAS` | `docs/pendencias.md` | 4 |
 | `docs/plano_voluntarios.md` | `lista_postos.md` | `docs/lista_postos.md` | 3 |
-| `docs/lista_postos.md` | `plano_voluntarios_apoio.md` | `docs/plano_voluntarios.md` | 1 |
+| `docs/lista_postos.md` | `voluntarios_postos.html` | `mapa/voluntarios_postos.html` | Postos marcados sobre a rota e sobre a planta do salão, em três cenários de efetivo. Publicado em https://claude.ai/artifact/YaFNHUua2Hkqu7dtR7tf7A — guardar a URL no `mapa/README.md`. |
+| `plano_voluntarios_apoio.md` | `docs/plano_voluntarios.md` | 1 |
 | `scripts/zonas_balanceadas.py` | `contexto_eleicoes_dublin_2026.md` (docstring) | `docs/contexto.md` | 1 |
 
 `docs/agregacoes.md` não precisa de ajuste: só cita `scripts/`, `saidas/` e
@@ -183,6 +186,7 @@ mkdir -p docs plantas referencias mapa data/raw scripts saidas
 
 # 4. o que vai direto
 cp ../origem/CLAUDE.md .
+cp ../origem/voluntarios_postos.html mapa/
 cp ../origem/lista_postos.md docs/lista_postos.md
 cp ../origem/plano_voluntarios_apoio.md docs/plano_voluntarios.md
 cp ../origem/contexto_eleicoes_dublin_2026.md docs/contexto.md
@@ -252,8 +256,9 @@ não estava escrito em dois lugares.
 - **Distribuição de urnas por zona está fechada** em 3.860 / 3.755 / 3.802 de
   comparecimento esperado, com uma urna grande por zona. Não mexer sem refazer a
   conta com `scripts/zonas_balanceadas.py`.
-- **Efetivo de voluntários:** 48 postos no pico, 36 fora dele, 60 escalados,
-  69 recrutados. Dezesseis postos, de RE1 a T2, listados em `docs/lista_postos.md`.
+- **Efetivo de voluntários:** 43 postos no pico mais 15% de reserva — 49 pessoas —,
+  61 escaladas e 70 recrutadas no cenário pleno. Com as 9 de hoje, o cenário de
+  contingência cobre 5 dos 17 postos. Ver `mapa/voluntarios_postos.html`.
 - **Decisões do Posto:** triagem preferencial com 1 pessoa; fluxo de saída opcional;
   encerramento das 17h acumulado pelo posto de cabeça de fila; contagem de fluxo
   descartada; coordenadores já contados (16/09). Três voluntários nas mesas mais

@@ -47,6 +47,14 @@ ele precisa reter, e é o que toda locução e toda sinalização devem repetir.
 
 ## 3. Quadro de postos
 
+> **Revisão de 17/09.** As plantas finais do Ring 3 e do Hall 2 e o plano de
+> sinalização reorganizaram os postos: os códigos passaram a seguir os pontos P0–P7
+> da sinalização, e o P0 — a mesa "descubra sua seção", na calçada — passou a ser o
+> posto crítico da rota. O quadro vigente, com os três cenários de efetivo, está em
+> `lista_postos.md` e em `voluntarios_postos.html`. As seções 5 a 11 deste documento
+> (regras de operação, achados das plantas, riscos) continuam válidas; as contagens
+> abaixo são as da revisão anterior.
+
 A lista operacional — onde cada posto fica, o que faz e o que não faz — está em
 **`lista_postos.md`**, que é a fonte única desses números e o documento que vai para
 o briefing. Resumo por trecho da rota:

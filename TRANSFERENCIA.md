@@ -46,6 +46,9 @@ Não é preciso mesclar nada antes de migrar.
 | `scripts/mapa_agregacoes.py` | análise → xlsx + json | sim |
 | `scripts/gera_pagina.py` | json → página das urnas | sim |
 | `scripts/ring3_montagem.py` | geometria, lista de materiais e planta do Ring 3 | sim |
+| `congelado/arranjo.json` · `atribuicao_secao_porta.csv` · `posicao_mesas.csv` · `CHECKSUMS.sha256` | **arranjo congelado** — seção→porta e posição das mesas | sim, **byte a byte** |
+| `CONGELAMENTO.md` | o que está congelado, como conferir, como mudar | sim |
+| `scripts/verifica_congelamento.py` | prova que o arranjo não se mexeu | sim |
 | `scripts/gera_pagina_ring3.py` | montagem da folha do Ring 3 | sim |
 | `scripts/ring3_montagem.tpl.html` | template da folha do Ring 3 | sim |
 | `saidas/Dublin_2026_agregacoes.xlsx` | 5 abas | sim (é saída, mas é o entregável) |
@@ -187,6 +190,12 @@ eleicoes-dublin-2026/            (privado)
 ├── artefatos/                   HTML exportado do claude.ai — ver passo 5
 │   ├── README.md                tabela título → URL → arquivo
 │   └── *.html
+├── congelado/                   ← ARRANJO CONGELADO, CÓPIA BYTE A BYTE
+│   ├── arranjo.json             fonte única de verdade
+│   ├── atribuicao_secao_porta.csv
+│   ├── posicao_mesas.csv
+│   └── CHECKSUMS.sha256
+├── CONGELAMENTO.md
 └── transferencia/
     └── manifesto-artefatos.tsv
 ```
@@ -244,7 +253,7 @@ Se a saída **não** for vazia, apareceu conteúdo novo na outra branch depois d
 ### Passo 2 — Montar a árvore nova
 
 ```bash
-mkdir -p destino/{data/raw,scripts,saidas,referencias,artefatos,transferencia}
+mkdir -p destino/{data/raw,scripts,saidas,referencias,artefatos,transferencia,congelado}
 cd destino
 
 cp ../origem/contexto_eleicoes_dublin_2026.md .
@@ -254,6 +263,9 @@ cp ../origem/scripts/{parse_dados.py,mapa_agregacoes.py,gera_pagina.py} scripts/
 cp ../origem/scripts/{ring3_montagem.py,gera_pagina_ring3.py,ring3_montagem.tpl.html} scripts/
 cp ../origem/saidas/* saidas/
 cp ../origem/transferencia/manifesto-artefatos.tsv transferencia/
+cp ../origem/CONGELAMENTO.md .
+cp -r ../origem/congelado congelado
+cp ../origem/scripts/verifica_congelamento.py scripts/
 
 cp "../origem/RDS_Hall_2_Floorplan_(1).pdf"                  referencias/rds-hall2-planta.pdf
 cp "../origem/MRV - DUBLIN.pdf"                              referencias/mrv-dublin.pdf
@@ -371,6 +383,8 @@ A migração está feita quando **todos** passam:
 | 6 | Nenhum nome de arquivo com espaço ou acento fora de `data/raw/` | `git ls-files \| grep -P '[ áàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ]'` — só as três linhas de `data/raw/` devem aparecer |
 | 7 | O repositório é privado | conferir no GitHub |
 | 8 | A branch padrão é `main` | conferir no GitHub |
+| 9 | O arranjo congelado sobreviveu | `python3 scripts/verifica_congelamento.py` sai 0 |
+| 10 | Os dois repositórios carregam o mesmo arranjo | `sha256sum -c congelado/CHECKSUMS.sha256` nos dois, com os mesmos hashes |
 
 O critério 2 é o que prova que a migração não corrompeu nada: se o HTML
 regenerado bate byte a byte com o que veio junto, a cadeia dado → script →
@@ -423,6 +437,11 @@ leitura.
 
 **Confiar na data para decidir o que está superado.** Vale para os três itens
 da decisão 3.3 — abra e confira.
+
+**Regenerar o congelado em vez de copiá-lo.** `congelado/` não tem gerador no
+repositório — o `scripts/gera_prancheta_por_secao.py` que produziu o arranjo nunca
+foi commitado. Copie os arquivos; não tente reconstruí-los. O `CHECKSUMS.sha256`
+existe para provar que a cópia foi cópia.
 
 **Encoding.** Os dois CSVs estão em `latin-1`, separados por `;`, e o
 `Filtrado_Dublin.csv` vem com a linha inteira entre aspas e as aspas internas

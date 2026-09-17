@@ -18,6 +18,13 @@ ESTOQUE = 200
 LAT_N = 8.0               # trecho norte das laterais que vira CCB
 
 # larguras proporcionais ao comparecimento esperado por porta
+#
+# SUPERADO, e mantido de proposito. Este 'esp' e a decisao do Posto de 06/09/2026,
+# quando as tres entradas alimentavam o Ring 3. A decisao de 15/09/2026 congelada em
+# congelado/arranjo.json abandonou o Ring 3 e passou a dar uma parede inteira a cada
+# entrada: A 3834 / B 3832 / C 3833. Nao edite estas constantes aqui — este script e o
+# gerador fiel de saidas/ring3_montagem.html e saidas/ring3_planta.svg, e mexer nelas
+# muda as saidas sem que ninguem tenha decidido isso. Ver CONGELAMENTO.md.
 esp = {'A': 3642, 'B': 4215, 'C': 3642}
 tot_esp = sum(esp.values())
 livre = UTIL - 2*VAO_ZONA
@@ -95,6 +102,7 @@ lane_m = LANES*sum(W.values())
 lot = LANES*sum(W.values())*DENS
 vao_fita = ((W['B']-TURN) - 2*CCB)/2
 
+# eixos das portas no apron, no arranjo do Ring 3 — superados junto com o 'esp' acima
 portas = {'A': 15.78, 'B': 22.00, 'C': 28.22}
 desvio = {}
 for k in portas:

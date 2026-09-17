@@ -15,6 +15,21 @@ D04 AK83).
 eleitores. As 23 urnas que somam duas seções vão de 429 a 797; as 5 restantes
 operam com uma seção só, perto de 400.
 
+## O que está congelado
+
+A **atribuição de seção/porta** e a **posição das mesas** não são mais
+recalculadas: são dado versionado em `congelado/`, no arranjo
+`paredes-abc-20260915`. Cada entrada serve uma parede inteira — A/S4 a oeste
+(9 mesas, 3.834 esperados), B/S5 ao norte (9 mesas, 3.832), C/S6 a leste
+(10 mesas, 3.833).
+
+```bash
+python3 scripts/verifica_congelamento.py
+```
+
+Os mesmos arquivos, byte a byte, estão em `hamadmkalaf/dublineleicoesfinal`.
+O que está congelado, como conferir e como mudar: **[CONGELAMENTO.md](CONGELAMENTO.md)**.
+
 ## Fontes
 
 Os três arquivos em `data/raw/` vieram da pasta do Google Drive do usuário:

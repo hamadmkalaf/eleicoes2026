@@ -47,66 +47,43 @@ ele precisa reter, e é o que toda locução e toda sinalização devem repetir.
 
 ## 3. Quadro de postos
 
-Pico = 10h–14h. Fora do pico = 8h–10h e 14h–17h.
+A lista operacional — onde cada posto fica, o que faz e o que não faz — está em
+**`lista_postos.md`**, que é a fonte única desses números e o documento que vai para
+o briefing. Resumo por trecho da rota:
 
-### 3.1 Rota do Eleitor
+| Trecho | Postos | Pico | Fora do pico |
+|---|---|---|---|
+| Rota do Eleitor | RE1 a RE5 | 13 | 8 |
+| Ring 3 | R1 a R4 | 11 | 8 |
+| Apron e portas | A1, A2 | 4 | 4 |
+| Hall 2 | H1, H2, H3 | 8 | 6 |
+| Transversais | T1, T2 | 6 | 5 |
+| **Subtotal** | | **42** | **31** |
+| Reserva flutuante (15%) | | 6 | 5 |
+| **Em operação** | | **48** | **36** |
 
-| Posto | Onde | O que faz | Pico | Fora |
-|---|---|---|---|---|
-| **RE1** | Portão da RDS, na via | Recebe quem chega a pé, de carro e de transporte público; aponta o caminho do Ring. Absorve a fila se ela transbordar do canto nordeste. | 3 | 2 |
-| **RE2** | Percurso interno da RDS, lateral do Hall 2 | Mantém o fluxo andando e manda ler os banners. Primeira exposição à letra da zona. | 3 | 2 |
-| **RE3** | Canto nordeste, boca do Ring | **Locução contínua**, sem parar ninguém: "zona A seções tal a tal, zona B…". Mais interceptação seletiva de quem parou, olha em volta ou mexe no celular. | 2 | 1 |
-| **RE4** | Recuado do canto nordeste, **fora** do corredor | Balcão "Onde eu voto?": consulta por nome, eleitor sem e-Título, mudança de endereço, justificativa. Condicionado à lista nominal (§7). | 4 | 2 |
-| **RE5** | Junto ao RE3 | Triagem preferencial: identifica idoso, PCD, gestante, lactante e criança de colo e encaminha à porta **S7**, fora do Ring. | 1 | 1 |
-
-### 3.2 Ring 3
-
-| Posto | Onde | O que faz | Pico | Fora |
-|---|---|---|---|---|
-| **R1** | Corredor de chegada, 3 m, lado leste | Mantém o corredor escoando. Ninguém para aqui — é o único ponto por onde passam 100% dos eleitores. | 2 | 1 |
-| **R2** | Trecho de fundo, uma por boca de zona | Confere visualmente a letra e entrega a raia. É o ponto onde o eleitor entra na fila certa. | 3 | 3 |
-| **R3** | Dentro das raias, um por zona | Raia errada, quem não aguenta a serpentina, passagem de mal-estar. | 3 | 1 |
-| **R4** | Cabeça de fila de cada zona, no topo | **Dosagem para o apron**: só libera quando a porta está andando. Também marca o fim da fila às 17h. | 3 | 3 |
-
-### 3.3 Apron e portas
-
-| Posto | Onde | O que faz | Pico | Fora |
-|---|---|---|---|---|
-| **A1** | Portas S4, S5 e S6, uma cada | Ritmo e sentido de entrada. **Não confere nada** — ver §5. | 3 | 3 |
-| **A2** | Porta S7, preferencial | Recebe o encaminhado por RE5 e o acompanha até a mesa. | 1 | 1 |
-
-### 3.4 Hall 2
-
-| Posto | Onde | O que faz | Pico | Fora |
-|---|---|---|---|---|
-| **H1** | Logo dentro de cada porta | Aponta a parede e a faixa de seções daquela zona. Última orientação antes do secretário de seção. | 3 | 2 |
-| **H2** | Salão, móvel | Eleitores errantes, quem entrou pela porta errada, quem não acha a mesa. | 2 | 1 |
-
-### 3.5 Transversais
-
-| Posto | Onde | O que faz | Pico | Fora |
-|---|---|---|---|---|
-| **T1** | Móvel | Coordenação: 1 geral + 3 setoriais (Rota+Ring / apron+portas / Hall 2). Rádio, não celular. | 4 | 4 |
-| **T2** | Sala de apoio, canto noroeste do Hall 2 | Credenciamento, coletes, água, almoço, rendição de pausas. | 2 | 1 |
-| — | — | **Reserva flutuante**, 15% | 6 | 4 |
-| | | **Total em operação** | **45** | **32** |
+O posto **H3** — uma pessoa em cada uma das três mesas mais movimentadas — é o mais
+recente e o único dentro do salão que fica parado numa mesa. Justifica-se pela
+distância entre a primeira e a quarta colocadas: 3313, 3315 e 3322 esperam 590, 588 e
+586 comparecentes, contra 492 da seguinte, e são as três com serpentina interna de 20
+prevista na planta. Uma em cada zona.
 
 ---
 
 ## 4. Efetivo
 
-Carga estimada: ~375 pessoas-hora.
+Carga estimada: ~410 pessoas-hora.
 
-**Recomendado: 57 escalados, 66 recrutados.**
+**Recomendado: 60 escalados, 69 recrutados.**
 
 | Bloco | Pessoas | Horário |
 |---|---|---|
-| Núcleo (inclui os 4 coordenadores, que não rodam) | 32 | 7h30–17h45 |
-| Reforço de pico | 13 | 9h30–14h30 |
+| Núcleo (inclui os 4 coordenadores, que não rodam) | 36 | 7h30–17h45 |
+| Reforço de pico | 12 | 9h30–14h30 |
 | Rendição da tarde | 12 | 12h30–17h45 |
 
-Cobre 45 no pico e 32 fora dele, com a rendição liberando pausas reais à tarde.
-Recrutar 66 absorve 10–15% de ausência no dia.
+Cobre 48 no pico e 36 fora dele, com a rendição liberando pausas reais à tarde.
+Recrutar 69 absorve 10–15% de ausência no dia.
 
 Briefing: 30 min on-line na semana anterior, com o mapa das zonas, e 45 min
 presenciais às 7h do dia 4, por setor, com o coordenador setorial.
@@ -187,6 +164,12 @@ do salão é o único abrigo de escala disponível.
 | Contagem de fluxo | **Descartada** | Fora do quadro. Se depois quiserem o dado para o 2º turno, qualquer coordenador anota o horário de hora em hora sem custo. |
 | Coordenação setorial | **Já contada** | T1 = 4, sem acréscimo. |
 
+Em 17/09 o Posto acrescentou **três voluntários para as mesas mais movimentadas** —
+posto H3, um por mesa em 3313, 3315 e 3322. Não contradiz a diretriz original de não
+colocar voluntário na frente das mesas: essas três têm serpentina própria de 20
+lugares na planta, e o H3 organiza essa fila ao lado do secretário de seção, não no
+lugar dele. Efetivo sobe de 57 para 60 escalados.
+
 ---
 
 ## 8. Efetivos que não entram nesta conta
@@ -194,9 +177,9 @@ do salão é o único abrigo de escala disponível.
 | Efetivo | Nº | Situação |
 |---|---|---|
 | Mesários | ~84 (28 × 3) + suplentes | Lista do TSE pendente (`PENDENCIAS` item 4) |
-| Secretários de seção | 28 | 1 por urna. Reforçar os das três mesas com serpentina interna de 20 (3313, 3315, 3322). |
+| Secretários de seção | 28 | 1 por urna. Os de 3313, 3315 e 3322 trabalham com o voluntário do posto H3 ao lado. |
 | Segurança contratada | 20 + 1 na véspera | Orçado, EUR 6.774,84 |
-| **Voluntários de fluxo** | **57** | Este documento |
+| **Voluntários de fluxo** | **60** | `lista_postos.md` |
 
 Total credenciado: ~190–200 pessoas.
 
@@ -208,11 +191,11 @@ Estimativa, não orçamento cotado — `PENDENCIAS` item 2.
 
 | Item | Cálculo | EUR |
 |---|---|---|
-| Coletes identificadores | 66 × 6 | 396 |
-| Água e almoço | 66 × 12 | 792 |
+| Coletes identificadores | 69 × 6 | 414 |
+| Água e almoço | 69 × 12 | 828 |
 | Rádios (aluguel, 12 aparelhos) | — | 250–400 |
 | Impressões: listas, mapas de zona, pranchetas, crachás | — | 200 |
-| **Total** | | **~1.650–1.800** |
+| **Total** | | **~1.700–1.850** |
 
 Não inclui a barreira de fila faltante (§6), que é item de outra ordem de grandeza.
 
@@ -246,6 +229,7 @@ Não inclui a barreira de fila faltante (§6), que é item de outra ordem de gra
 
 ## Fontes
 
+- Lista operacional dos postos: `lista_postos.md`.
 - Eleitorado e agregação: `saidas/dados.json`, dos CSVs oficiais do TSE.
 - Comparecimento, orçamento e histórico: `contexto_eleicoes_dublin_2026.md`.
 - Geometria: plantas do Ring 3 e do Hall 2 de 16/09/2026, resumidas em `CLAUDE.md`.

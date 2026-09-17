@@ -60,7 +60,10 @@ a esta planta e descrevem duas entradas apenas — material histórico.
 - `README.md` — análise das agregações de seções (o núcleo técnico e os dados).
 - `contexto_eleicoes_dublin_2026.md` — contexto consolidado: orçamento, layout,
   simulações de tempo de votação, argumentação com o TSE.
-- `plano_voluntarios_apoio.md` — funções e efetivo de voluntários de fluxo.
+- `lista_postos.md` — lista operacional dos postos de voluntários: onde cada um
+  fica e o que faz. É a fonte única desses números e o documento do briefing.
+- `plano_voluntarios_apoio.md` — o raciocínio por trás da lista: taxas de chegada,
+  dimensionamento, decisões do Posto e achados das plantas.
 - `PENDENCIAS` — lista de tarefas em aberto do Posto.
 - `scripts/`, `saidas/` — pipeline de dados; os scripts falham em vez de gravar
   saída errada quando alguma validação não passa.

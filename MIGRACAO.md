@@ -33,7 +33,8 @@ silêncio.
 | Origem | Destino | O que é |
 |---|---|---|
 | `CLAUDE.md` | `CLAUDE.md` | Memória do projeto: fatos fixos, geometria do local, convenções. É o arquivo mais importante da transferência. |
-| `plano_voluntarios_apoio.md` | `docs/plano_voluntarios.md` | Postos, efetivo e regras de operação dos voluntários. |
+| `lista_postos.md` | `docs/lista_postos.md` | Lista operacional dos postos: onde cada voluntário fica e o que faz. É o documento do briefing e a fonte única do efetivo. |
+| `plano_voluntarios_apoio.md` | `docs/plano_voluntarios.md` | O raciocínio por trás da lista: taxas de chegada, dimensionamento, decisões do Posto, achados das plantas. |
 | `contexto_eleicoes_dublin_2026.md` | `docs/contexto.md` | Contexto consolidado: orçamento, simulações de tempo de votação, argumentação com o TSE. |
 | `README.md` | `docs/agregacoes.md` | Análise das agregações de seções e como rodar o pipeline. |
 | `PENDENCIAS` | `docs/pendencias.md` | Lista de tarefas do Posto. Converter para markdown ao mover. |
@@ -130,11 +131,14 @@ Mover os arquivos quebra referências dentro do texto. São poucas e todas verif
 | `CLAUDE.md` | `contexto_eleicoes_dublin_2026.md` | `docs/contexto.md` | 2 |
 | `CLAUDE.md` | `PENDENCIAS` | `docs/pendencias.md` | 2 |
 | `CLAUDE.md` | `plano_voluntarios_apoio.md` | `docs/plano_voluntarios.md` | 1 |
+| `CLAUDE.md` | `lista_postos.md` | `docs/lista_postos.md` | 1 |
 | `CLAUDE.md` | `README.md` (na lista de documentos) | `docs/agregacoes.md` | 1 |
 | `CLAUDE.md` | `RDS_Hall_2_Floorplan_(1).pdf` | `plantas/rds_hall2_oficial.pdf` | 1 |
 | `CLAUDE.md` | parágrafo final da seção de geometria, que cita `PLANO COM FLUXOS MELHORADO.png` | reescrever apontando para `plantas/` e dizendo que o PNG antigo ficou no repositório de origem | 1 |
 | `docs/plano_voluntarios.md` | `contexto_eleicoes_dublin_2026.md` | `docs/contexto.md` | 3 |
 | `docs/plano_voluntarios.md` | `PENDENCIAS` | `docs/pendencias.md` | 4 |
+| `docs/plano_voluntarios.md` | `lista_postos.md` | `docs/lista_postos.md` | 3 |
+| `docs/lista_postos.md` | `plano_voluntarios_apoio.md` | `docs/plano_voluntarios.md` | 1 |
 | `scripts/zonas_balanceadas.py` | `contexto_eleicoes_dublin_2026.md` (docstring) | `docs/contexto.md` | 1 |
 
 `docs/agregacoes.md` não precisa de ajuste: só cita `scripts/`, `saidas/` e
@@ -179,6 +183,7 @@ mkdir -p docs plantas referencias mapa data/raw scripts saidas
 
 # 4. o que vai direto
 cp ../origem/CLAUDE.md .
+cp ../origem/lista_postos.md docs/lista_postos.md
 cp ../origem/plano_voluntarios_apoio.md docs/plano_voluntarios.md
 cp ../origem/contexto_eleicoes_dublin_2026.md docs/contexto.md
 cp ../origem/README.md docs/agregacoes.md
@@ -228,7 +233,7 @@ python3 scripts/zonas_balanceadas.py
    **Não vale para o `.xlsx`**: openpyxl grava a data de criação dentro do arquivo,
    então ele difere byte a byte a cada execução mesmo com os dados iguais. Para
    conferir o xlsx, compare o conteúdo das abas, não o arquivo.
-4. Nenhum link quebrado: `grep -rn "PENDENCIAS\|contexto_eleicoes_dublin_2026\|plano_voluntarios_apoio" .`
+4. Nenhum link quebrado: `grep -rn "PENDENCIAS\|contexto_eleicoes_dublin_2026\|plano_voluntarios_apoio\|lista_postos" .`
    não retorna nada.
 
 O item 3 é o que pega erro de cópia silencioso. Não pular.
@@ -247,11 +252,12 @@ não estava escrito em dois lugares.
 - **Distribuição de urnas por zona está fechada** em 3.860 / 3.755 / 3.802 de
   comparecimento esperado, com uma urna grande por zona. Não mexer sem refazer a
   conta com `scripts/zonas_balanceadas.py`.
-- **Efetivo de voluntários:** 45 postos no pico, 32 fora dele, 57 escalados,
-  66 recrutados.
-- **Decisões do Posto de 16/09:** triagem preferencial com 1 pessoa; fluxo de saída
-  opcional; encerramento das 17h acumulado pelo posto de cabeça de fila; contagem de
-  fluxo descartada; coordenadores já contados.
+- **Efetivo de voluntários:** 48 postos no pico, 36 fora dele, 60 escalados,
+  69 recrutados. Dezesseis postos, de RE1 a T2, listados em `docs/lista_postos.md`.
+- **Decisões do Posto:** triagem preferencial com 1 pessoa; fluxo de saída opcional;
+  encerramento das 17h acumulado pelo posto de cabeça de fila; contagem de fluxo
+  descartada; coordenadores já contados (16/09). Três voluntários nas mesas mais
+  movimentadas — 3313, 3315 e 3322, posto H3 (17/09).
 - **Regra que governa o desenho:** nenhum posto para o eleitor. Sinalização atende o
   caso padrão, voluntário atende a exceção.
 - **Três pendências abertas com número:** ~926 m de barreira necessários contra

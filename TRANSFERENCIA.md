@@ -326,6 +326,26 @@ git push -u origin main
 
 ### Passo 5 — Exportar os artefatos órfãos
 
+> **FEITO em 17/09/2026**, em `hamadmkalaf/dublineleicoesfinal`, pasta
+> `artefatos/`: 34 arquivos, byte a byte, com `CHECKSUMS.sha256`. Três correções
+> ao que esta seção supunha:
+>
+> 1. **O jeito certo de exportar não é `action: "read"` com o `url`.** Artefato
+>    grande volta salvo em disco, mas artefato menor volta **inline**, e aí
+>    reemitir pelo modelo é exatamente a perda que esta seção quer evitar. Use
+>    `action: "read"` com `path: "index.html"`: grava o arquivo publicado em
+>    disco, byte a byte, sem passar pelo modelo e sem custo de contexto.
+> 2. **`Posto de Dublin 2026` é um bundle de 17 arquivos**, não uma página.
+>    Confira sempre com `action: "list"`, `scope: "files"` antes de baixar —
+>    `Filas sem o Ring 3` também tem dois SVG separados. O bundle carrega o
+>    registro de decisões D1–D9 e as instruções de fluxo, que não existem como
+>    artefato solto.
+> 3. **A decisão 3.3 está resolvida para dois dos três.** `As 28 Mesas nas
+>    Paredes` e `Fluxo do Posto de Dublin` já estão dentro do bundle em
+>    `panorama/historico/` — o próprio panorama os tratava como histórico.
+>    Migram como histórico. Falta decidir só `Quantas mesas cabem no Hall 2`.
+
+
 **Este é o passo que não pode ser pulado.** Precisa rodar numa sessão logada na
 mesma conta que publicou os artefatos.
 
@@ -385,6 +405,7 @@ A migração está feita quando **todos** passam:
 | 8 | A branch padrão é `main` | conferir no GitHub |
 | 9 | O arranjo congelado sobreviveu | `python3 scripts/verifica_congelamento.py` sai 0 |
 | 10 | Os dois repositórios carregam o mesmo arranjo | `sha256sum -c congelado/CHECKSUMS.sha256` nos dois, com os mesmos hashes |
+| 11 | Os artefatos chegaram inteiros | `cd artefatos && sha256sum -c CHECKSUMS.sha256` — 34 arquivos OK |
 
 O critério 2 é o que prova que a migração não corrompeu nada: se o HTML
 regenerado bate byte a byte com o que veio junto, a cadeia dado → script →
@@ -414,7 +435,7 @@ saída sobreviveu à mudança de repositório.
 | Branch `claude/dublin-electoral-sections-3odh1w` | subconjunto estrito da outra |
 | Artefato "Ring 3, cenários de fila" | superado pela "Montagem do Ring 3"; migrar os dois como finais cria dois desenhos concorrentes do mesmo objeto |
 | Artefato "Teses Temáticas" | outro projeto |
-| `scripts/salao.py`, `scripts/ring3.py` | não existem — nunca foram commitados e não são recuperáveis |
+| `scripts/salao.py`, `scripts/ring3.py` | não existem — nunca foram commitados e não são recuperáveis. São **onze**, não dois: a lista completa está em `artefatos/README.md` do repositório final |
 
 ---
 

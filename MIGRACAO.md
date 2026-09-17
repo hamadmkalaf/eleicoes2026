@@ -256,9 +256,10 @@ não estava escrito em dois lugares.
 - **Distribuição de urnas por zona está fechada** em 3.860 / 3.755 / 3.802 de
   comparecimento esperado, com uma urna grande por zona. Não mexer sem refazer a
   conta com `scripts/zonas_balanceadas.py`.
-- **Efetivo de voluntários:** 43 postos no pico mais 15% de reserva — 49 pessoas —,
-  61 escaladas e 70 recrutadas no cenário pleno. Com as 9 de hoje, o cenário de
-  contingência cobre 5 dos 17 postos. Ver `mapa/voluntarios_postos.html`.
+- **Efetivo de voluntários:** quatro cenários — C1 com 9 (hoje, 5 dos 17 postos),
+  C2 com 15, C3 com 24 e C4 com 49 no pico. C4 é referência de teto, não meta de
+  recrutamento. O preenchimento é uma fila contínua da posição 10 à 49, em
+  `docs/lista_postos.md` e `mapa/voluntarios_postos.html`.
 - **Decisões do Posto:** triagem preferencial com 1 pessoa; fluxo de saída opcional;
   encerramento das 17h acumulado pelo posto de cabeça de fila; contagem de fluxo
   descartada; coordenadores já contados (16/09). Três voluntários nas mesas mais

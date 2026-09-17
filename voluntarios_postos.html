@@ -73,7 +73,7 @@ h3{font-size:.95rem; font-weight:600; margin:26px 0 8px}
 .switch .rot{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase;
   color:var(--meio); margin:0 0 8px}
 .tabs{display:flex; gap:8px; flex-wrap:wrap}
-.tabs button{flex:1 1 13rem; text-align:left; cursor:pointer; font:inherit;
+.tabs button{flex:1 1 10.5rem; text-align:left; cursor:pointer; font:inherit;
   background:var(--folha); border:1px solid var(--regua); border-left:4px solid var(--vago);
   border-radius:2px; padding:10px 13px; color:var(--meio)}
 .tabs button b{display:block; font-family:"IBM Plex Sans",sans-serif; font-size:.95rem;
@@ -172,10 +172,10 @@ footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--regua);
   <dl class="facts">
     <div class="fact"><dt>Disponíveis hoje</dt><dd>9<small>eram 25</small></dd></div>
     <div class="fact"><dt>Cedidos a mesários</dt><dd>14<small>dispensas</small></dd></div>
-    <div class="fact"><dt>Plano cheio, no pico</dt><dd>49<small>43 postos + reserva</small></dd></div>
+    <div class="fact"><dt>Próximo degrau</dt><dd>15<small>C2 · faltam 6</small></dd></div>
+    <div class="fact"><dt>Operacional</dt><dd>24<small>C3</small></dd></div>
+    <div class="fact"><dt>Pleno, no pico</dt><dd>49<small>C4 · referência</small></dd></div>
     <div class="fact"><dt>Comparecimento esperado</dt><dd>11.499</dd></div>
-    <div class="fact"><dt>Peças de sinalização</dt><dd>37<small>16 externas, 21 internas</small></dd></div>
-    <div class="fact"><dt>Pico de chegada</dt><dd>40<small>pessoas/min, 10h–14h</small></dd></div>
   </dl>
 </header>
 
@@ -197,11 +197,13 @@ footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--regua);
   <p class="rot">Cenário</p>
   <div class="tabs" role="group" aria-label="Cenário de efetivo">
     <button type="button" id="c1" aria-pressed="true"><span class="q">9</span>
-      <b>Contingência</b><small>o efetivo de hoje. Só os pontos em que a ausência quebra alguma coisa.</small></button>
-    <button type="button" id="c2" aria-pressed="false"><span class="q">24</span>
-      <b>Operacional</b><small>todos os pontos cobertos, um por posto, sem reserva e sem turnos.</small></button>
-    <button type="button" id="c3" aria-pressed="false"><span class="q">49</span>
-      <b>Pleno</b><small>o plano dimensionado: 43 postos no pico mais 15% de reserva, em turnos.</small></button>
+      <b>C1 · Contingência</b><small>o efetivo de hoje. Só os pontos em que a ausência quebra alguma coisa.</small></button>
+    <button type="button" id="c2" aria-pressed="false"><span class="q">15</span>
+      <b>C2 · Próximo degrau</b><small>seis pessoas a mais: a vazão volta a ter controle e a consulta ganha fôlego.</small></button>
+    <button type="button" id="c3" aria-pressed="false"><span class="q">24</span>
+      <b>C3 · Operacional</b><small>todos os pontos que importam cobertos, um por posto, sem reserva e sem turnos.</small></button>
+    <button type="button" id="c4" aria-pressed="false"><span class="q">49</span>
+      <b>C4 · Pleno</b><small>o plano dimensionado, com turnos e reserva. Referência de teto, não meta de recrutamento.</small></button>
   </div>
 </div>
 <p class="resumo" id="resumo"></p>
@@ -265,30 +267,30 @@ footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--regua);
 <text x="79" y="737" text-anchor="middle" font-size="9" fill="var(--meio)">20 m</text>
 <line x1="408" y1="118" x2="408" y2="92" stroke="currentColor" stroke-width="1.3" marker-end="url(#seta)"/>
 <text x="408" y="132" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--meio)">N</text>
-<g class="posto" data-p="P0" data-n="3,4,4"><circle cx="300" cy="31" r="9"/><text class="n" x="300" y="34.5">3</text></g><text class="rot" x="300" y="15">P0</text>
-<g class="posto" data-p="P1" data-n="0,1,2"><circle cx="352" cy="66" r="9"/><text class="n" x="352" y="69.5">0</text></g><text class="rot" x="352" y="86">P1</text>
-<g class="posto" data-p="P2" data-n="0,1,2"><circle cx="352" cy="230" r="9"/><text class="n" x="352" y="233.5">0</text></g><text class="rot" x="352" y="215">P2</text>
-<g class="posto" data-p="P3" data-n="0,0,2"><circle cx="321" cy="512" r="9"/><text class="n" x="321" y="515.5">0</text></g><text class="rot" x="348" y="515">P3</text>
-<g class="posto" data-p="R1" data-n="0,1,2"><circle cx="321" cy="600" r="9"/><text class="n" x="321" y="603.5">0</text></g><text class="rot" x="348" y="603">R1</text>
-<g class="posto" data-p="R5" data-n="0,1,1"><circle cx="106" cy="508" r="9"/><text class="n" x="106" y="511.5">0</text></g>
-<g class="posto" data-p="R5" data-n="0,1,1"><circle cx="190" cy="508" r="9"/><text class="n" x="190" y="511.5">0</text></g>
-<g class="posto" data-p="R5" data-n="0,1,1"><circle cx="275" cy="508" r="9"/><text class="n" x="275" y="511.5">0</text></g>
+<g class="posto" data-p="P0" data-n="3,4,4,4"><circle cx="300" cy="31" r="9"/><text class="n" x="300" y="34.5">3</text></g><text class="rot" x="300" y="15">P0</text>
+<g class="posto" data-p="P1" data-n="0,0,1,2"><circle cx="352" cy="66" r="9"/><text class="n" x="352" y="69.5">0</text></g><text class="rot" x="352" y="86">P1</text>
+<g class="posto" data-p="P2" data-n="0,0,1,2"><circle cx="352" cy="230" r="9"/><text class="n" x="352" y="233.5">0</text></g><text class="rot" x="352" y="215">P2</text>
+<g class="posto" data-p="P3" data-n="0,0,0,2"><circle cx="321" cy="512" r="9"/><text class="n" x="321" y="515.5">0</text></g><text class="rot" x="348" y="515">P3</text>
+<g class="posto" data-p="R1" data-n="0,0,1,2"><circle cx="321" cy="600" r="9"/><text class="n" x="321" y="603.5">0</text></g><text class="rot" x="348" y="603">R1</text>
+<g class="posto" data-p="R5" data-n="0,1,1,1"><circle cx="106" cy="508" r="9"/><text class="n" x="106" y="511.5">0</text></g>
+<g class="posto" data-p="R5" data-n="0,1,1,1"><circle cx="190" cy="508" r="9"/><text class="n" x="190" y="511.5">0</text></g>
+<g class="posto" data-p="R5" data-n="0,1,1,1"><circle cx="275" cy="508" r="9"/><text class="n" x="275" y="511.5">0</text></g>
 <text class="rot" x="127" y="511">R5</text><text class="rot" x="211" y="511">R5</text><text class="rot" x="296" y="511">R5</text>
-<g class="posto" data-p="R4" data-n="0,0,1"><circle cx="106" cy="603" r="9"/><text class="n" x="106" y="606.5">0</text></g>
-<g class="posto" data-p="R4" data-n="0,0,1"><circle cx="190" cy="603" r="9"/><text class="n" x="190" y="606.5">0</text></g>
-<g class="posto" data-p="R4" data-n="0,0,1"><circle cx="275" cy="603" r="9"/><text class="n" x="275" y="606.5">0</text></g>
+<g class="posto" data-p="R4" data-n="0,0,0,1"><circle cx="106" cy="603" r="9"/><text class="n" x="106" y="606.5">0</text></g>
+<g class="posto" data-p="R4" data-n="0,0,0,1"><circle cx="190" cy="603" r="9"/><text class="n" x="190" y="606.5">0</text></g>
+<g class="posto" data-p="R4" data-n="0,0,0,1"><circle cx="275" cy="603" r="9"/><text class="n" x="275" y="606.5">0</text></g>
 <text class="rot" x="127" y="606">R4</text><text class="rot" x="211" y="606">R4</text><text class="rot" x="296" y="606">R4</text>
-<g class="posto" data-p="R2" data-n="0,1,1"><circle cx="106" cy="672" r="9"/><text class="n" x="106" y="675.5">0</text></g>
-<g class="posto" data-p="R2" data-n="0,1,1"><circle cx="190" cy="672" r="9"/><text class="n" x="190" y="675.5">0</text></g>
-<g class="posto" data-p="R2" data-n="0,1,1"><circle cx="275" cy="672" r="9"/><text class="n" x="275" y="675.5">0</text></g>
+<g class="posto" data-p="R2" data-n="0,1,1,1"><circle cx="106" cy="672" r="9"/><text class="n" x="106" y="675.5">0</text></g>
+<g class="posto" data-p="R2" data-n="0,0,1,1"><circle cx="190" cy="672" r="9"/><text class="n" x="190" y="675.5">0</text></g>
+<g class="posto" data-p="R2" data-n="0,1,1,1"><circle cx="275" cy="672" r="9"/><text class="n" x="275" y="675.5">0</text></g>
 <text class="rot" x="127" y="675">R2</text><text class="rot" x="211" y="675">R2</text><text class="rot" x="296" y="675">R2</text>
-<g class="posto" data-p="R3" data-n="1,1,1"><circle cx="148" cy="693" r="9"/><text class="n" x="148" y="696.5">1</text></g><text class="rot" x="148" y="676">R3</text>
-<g class="posto" data-p="A1" data-n="0,1,2"><circle cx="300" cy="452" r="9"/><text class="n" x="300" y="455.5">0</text></g><text class="rot" x="300" y="437">A1</text>
-<g class="posto" data-p="A2" data-n="0,0,1"><circle cx="170" cy="426" r="9"/><text class="n" x="170" y="429.5">0</text></g>
-<g class="posto" data-p="A2" data-n="0,0,1"><circle cx="206" cy="426" r="9"/><text class="n" x="206" y="429.5">0</text></g>
-<g class="posto" data-p="A2" data-n="0,0,1"><circle cx="243" cy="426" r="9"/><text class="n" x="243" y="429.5">0</text></g>
+<g class="posto" data-p="R3" data-n="1,1,1,1"><circle cx="148" cy="693" r="9"/><text class="n" x="148" y="696.5">1</text></g><text class="rot" x="148" y="676">R3</text>
+<g class="posto" data-p="A1" data-n="0,0,1,2"><circle cx="300" cy="452" r="9"/><text class="n" x="300" y="455.5">0</text></g><text class="rot" x="300" y="437">A1</text>
+<g class="posto" data-p="A2" data-n="0,0,0,1"><circle cx="170" cy="426" r="9"/><text class="n" x="170" y="429.5">0</text></g>
+<g class="posto" data-p="A2" data-n="0,0,0,1"><circle cx="206" cy="426" r="9"/><text class="n" x="206" y="429.5">0</text></g>
+<g class="posto" data-p="A2" data-n="0,0,0,1"><circle cx="243" cy="426" r="9"/><text class="n" x="243" y="429.5">0</text></g>
 <text class="rot" x="152" y="429">A2</text><text class="rot" x="188" y="429">A2</text><text class="rot" x="225" y="429">A2</text>
-<g class="posto pref" data-p="A3" data-n="1,1,2"><circle cx="268" cy="447" r="9"/><text class="n" x="268" y="450.5">1</text></g><text class="rot pref" x="268" y="466">A3</text>
+<g class="posto pref" data-p="A3" data-n="1,1,1,2"><circle cx="268" cy="447" r="9"/><text class="n" x="268" y="450.5">1</text></g><text class="rot pref" x="268" y="466">A3</text>
     </svg></div>
     <figcaption>Em escala sobre a prancheta do Hall 2 (50,3 × 44,4 m) e a montagem adotada do
     Ring 3 (44 × 35 m). O eleitor desce a lateral leste, entra no Ring pelo canto nordeste, percorre
@@ -368,15 +370,15 @@ footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--regua);
 <text x="311.0" y="87.2" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--zB)" opacity=".7" letter-spacing=".1em">PAREDE NORTE · ZONA B</text>
 <text x="378.5" y="290.6" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--zC)" opacity=".7" letter-spacing=".1em" transform="rotate(90 378.5 290.6)">PAREDE LESTE · ZONA C</text>
 <line x1="32.0" y1="436.4" x2="122.0" y2="436.4" stroke="currentColor" stroke-width="1.2"/><text x="77.0" y="432.4" text-anchor="middle" font-size="9" fill="var(--meio)">10 m</text>
-<g class="posto" data-p="H1" data-n="0,1,1"><circle cx="230.5" cy="396.8" r="9"/><text class="n" x="230.5" y="400.3">0</text></g>
-<g class="posto" data-p="H1" data-n="0,1,1"><circle cx="286.5" cy="396.8" r="9"/><text class="n" x="286.5" y="400.3">0</text></g>
-<g class="posto" data-p="H1" data-n="0,1,1"><circle cx="342.5" cy="396.8" r="9"/><text class="n" x="342.5" y="400.3">0</text></g>
-<g class="posto alta" data-p="H3" data-n="1,1,1"><circle cx="87.8" cy="217.5" r="9"/><text class="n" x="87.8" y="221.0">1</text></g>
-<g class="posto alta" data-p="H3" data-n="1,1,1"><circle cx="199.0" cy="81.8" r="9"/><text class="n" x="199.0" y="85.3">1</text></g>
-<g class="posto alta" data-p="H3" data-n="1,1,1"><circle cx="401.9" cy="165.9" r="9"/><text class="n" x="401.9" y="169.4">1</text></g>
-<g class="posto" data-p="H2" data-n="0,1,2"><circle cx="266.0" cy="245.6" r="9"/><text class="n" x="266.0" y="249.1">0</text></g>
-<g class="posto" data-p="T2" data-n="0,0,2"><circle cx="67.1" cy="74.6" r="9"/><text class="n" x="67.1" y="78.1">0</text></g>
-<g class="posto pref" data-p="A3" data-n="1,1,2"><circle cx="380.3" cy="405.8" r="9"/><text class="n" x="380.3" y="409.3">1</text></g>
+<g class="posto" data-p="H1" data-n="0,0,1,1"><circle cx="230.5" cy="396.8" r="9"/><text class="n" x="230.5" y="400.3">0</text></g>
+<g class="posto" data-p="H1" data-n="0,0,1,1"><circle cx="286.5" cy="396.8" r="9"/><text class="n" x="286.5" y="400.3">0</text></g>
+<g class="posto" data-p="H1" data-n="0,0,1,1"><circle cx="342.5" cy="396.8" r="9"/><text class="n" x="342.5" y="400.3">0</text></g>
+<g class="posto alta" data-p="H3" data-n="1,1,1,1"><circle cx="87.8" cy="217.5" r="9"/><text class="n" x="87.8" y="221.0">1</text></g>
+<g class="posto alta" data-p="H3" data-n="1,1,1,1"><circle cx="199.0" cy="81.8" r="9"/><text class="n" x="199.0" y="85.3">1</text></g>
+<g class="posto alta" data-p="H3" data-n="1,1,1,1"><circle cx="401.9" cy="165.9" r="9"/><text class="n" x="401.9" y="169.4">1</text></g>
+<g class="posto" data-p="H2" data-n="0,0,1,2"><circle cx="266.0" cy="245.6" r="9"/><text class="n" x="266.0" y="249.1">0</text></g>
+<g class="posto" data-p="T2" data-n="0,0,0,2"><circle cx="67.1" cy="74.6" r="9"/><text class="n" x="67.1" y="78.1">0</text></g>
+<g class="posto pref" data-p="A3" data-n="1,1,1,2"><circle cx="380.3" cy="405.8" r="9"/><text class="n" x="380.3" y="409.3">1</text></g>
 <text class="rot" x="230.5" y="382">H1</text><text class="rot" x="286.5" y="382">H1</text><text class="rot" x="342.5" y="382">H1</text>
 <text class="rot alta" x="87.8" y="203">H3</text><text class="rot alta" x="199.0" y="67">H3</text><text class="rot alta" x="401.9" y="151.5">H3</text>
 <text class="rot" x="266.0" y="231">H2</text><text class="rot" x="67.1" y="59.9">T2</text><text class="rot pref" x="380.3" y="424">A3</text>
@@ -400,33 +402,33 @@ footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--regua);
   simultaneamente no pico, das 10h às 14h.</p>
   <div class="tw"><table>
     <thead><tr><th>Posto</th><th>Onde fica e o que faz</th>
-      <th class="num" id="h1c">9</th><th class="num" id="h2c">24</th><th class="num" id="h3c">49</th></tr></thead>
+      <th class="num" id="h1c">C1 · 9</th><th class="num" id="h2c">C2 · 15</th><th class="num" id="h3c">C3 · 24</th><th class="num" id="h4c">C4 · 49</th></tr></thead>
     <tbody>
-      <tr><td class="cod">P0</td><td>Calçada da Merrion Road, 20–30 m antes do portão<small>“Descubra sua seção”: caderno impresso e e-Título. É o único ponto da rota que resolve quem chega sem o número — depois do portão, toda peça pressupõe a seção conhecida.</small></td><td class="num" data-c="1">3</td><td class="num" data-c="2">4</td><td class="num" data-c="3">4</td></tr>
-      <tr><td class="cod">P1</td><td>Portão de eleitores do RDS<small>Recebe quem chega e absorve a fila se ela transbordar para a calçada.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">1</td><td class="num" data-c="3">2</td></tr>
-      <tr><td class="cod">P2</td><td>Lateral leste do Hall 2, ao longo dos 44 m de fila<small>Mantém a fila andando e junto às três tabelas mestras penduradas nas portas de serviço.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">1</td><td class="num" data-c="3">2</td></tr>
-      <tr><td class="cod">P3</td><td>Canto nordeste, entrada do Ring 3<small>Locução contínua para o fluxo em movimento. Não para ninguém.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">2</td></tr>
-      <tr><td class="cod">R1</td><td>Corredor de chegada, 3 m, lateral leste do Ring<small>Único ponto por onde passam 100% dos eleitores. A função é impedir que alguém pare ali.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">1</td><td class="num" data-c="3">2</td></tr>
-      <tr><td class="cod">R2</td><td>Bocas das zonas C, B e A, uma pessoa cada<small>Confere a letra e entrega a raia. Último ponto em que errar custa pouco: depois são 23 raias até a porta.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">3</td><td class="num" data-c="3">3</td></tr>
-      <tr><td class="cod">R3</td><td>Trecho de fundo, entre as bocas B e A<small>Reencaminha quem passou da sua zona. O plano de sinalização já prevê este operador como indispensável.</small></td><td class="num" data-c="1">1</td><td class="num" data-c="2">1</td><td class="num" data-c="3">1</td></tr>
-      <tr><td class="cod">R4</td><td>Dentro das raias, uma pessoa por zona<small>Raia errada, quem não aguenta a serpentina em pé, passagem de mal-estar.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">3</td></tr>
-      <tr><td class="cod">R5</td><td>Cabeça de fila de cada zona, no topo<small>Dosagem para o apron: só libera quando a porta está andando. Às 17h00 marca o fim da fila.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">3</td><td class="num" data-c="3">3</td></tr>
-      <tr><td class="cod">A1</td><td>Apron, no cruzamento da chegada com a saída S8<small>Separa quem entra de quem já votou. Uma CCB de separação substitui esta pessoa o dia inteiro.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">1</td><td class="num" data-c="3">2</td></tr>
-      <tr><td class="cod">A2</td><td>Portas S4, S5 e S6, uma pessoa cada<small>Ritmo e sentido. Não confere nada: uma pergunta no batente trava a zona inteira.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">3</td></tr>
-      <tr><td class="cod">A3</td><td>Porta preferencial S7<small>Recebe idoso, gestante, PcD e acompanhante e leva até a mesa, em qualquer parede. Sem ninguém, é uma porta aberta e desguarnecida.</small></td><td class="num" data-c="1">1</td><td class="num" data-c="2">1</td><td class="num" data-c="3">2</td></tr>
-      <tr><td class="cod">H1</td><td>Logo dentro de cada porta, uma pessoa cada<small>Aponta a parede e o bloco. Última orientação antes do secretário de seção.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">3</td><td class="num" data-c="3">3</td></tr>
-      <tr><td class="cod">H2</td><td>Salão, móvel<small>Quem entrou pela porta errada e quem não acha o bloco.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">1</td><td class="num" data-c="3">2</td></tr>
-      <tr><td class="cod">H3</td><td>Mesas 3313, 3315 e 3322, uma pessoa cada<small>As três de maior comparecimento — 590, 586 e 588 — e as únicas com serpenteado de 20 desenhado à frente. Uma em cada parede.</small></td><td class="num" data-c="1">3</td><td class="num" data-c="2">3</td><td class="num" data-c="3">3</td></tr>
-      <tr><td class="cod">T1</td><td>Coordenação, móvel<small>No cenário de 9, é uma pessoa com rádio que cobre pausas e tapa buraco. No pleno, 1 geral e 3 setoriais.</small></td><td class="num" data-c="1">1</td><td class="num" data-c="2">1</td><td class="num" data-c="3">4</td></tr>
-      <tr><td class="cod">T2</td><td>Sala de apoio, canto noroeste<small>Credenciamento, coletes, água, rendição de pausas.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">2</td></tr>
-      <tr><td class="cod">—</td><td>Reserva flutuante<small>15% sobre os postos. Cobre ausência do dia, pausa e reforço onde apertar.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">6</td></tr>
+      <tr><td class="cod">P0</td><td>Calçada da Merrion Road, 20–30 m antes do portão<small>“Descubra sua seção”: caderno impresso e e-Título. É o único ponto da rota que resolve quem chega sem o número — depois do portão, toda peça pressupõe a seção conhecida.</small></td><td class="num" data-c="1">3</td><td class="num" data-c="2">4</td><td class="num" data-c="3">4</td><td class="num" data-c="4">4</td></tr>
+      <tr><td class="cod">P1</td><td>Portão de eleitores do RDS<small>Recebe quem chega e absorve a fila se ela transbordar para a calçada.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">P2</td><td>Lateral leste do Hall 2, ao longo dos 44 m de fila<small>Mantém a fila andando e junto às três tabelas mestras penduradas nas portas de serviço.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">P3</td><td>Canto nordeste, entrada do Ring 3<small>Locução contínua para o fluxo em movimento. Não para ninguém.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">R1</td><td>Corredor de chegada, 3 m, lateral leste do Ring<small>Único ponto por onde passam 100% dos eleitores. A função é impedir que alguém pare ali.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">R2</td><td>Bocas das zonas C, B e A<small>Confere a letra e entrega a raia. Último ponto em que errar custa pouco: depois são 23 raias até a porta. Em C2, só C e A.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">2</td><td class="num" data-c="3">3</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">R3</td><td>Trecho de fundo, entre as bocas B e A<small>Reencaminha quem passou da sua zona. O plano de sinalização já prevê este operador como indispensável.</small></td><td class="num" data-c="1">1</td><td class="num" data-c="2">1</td><td class="num" data-c="3">1</td><td class="num" data-c="4">1</td></tr>
+      <tr><td class="cod">R4</td><td>Dentro das raias, uma pessoa por zona<small>Raia errada, quem não aguenta a serpentina em pé, passagem de mal-estar.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">R5</td><td>Cabeça de fila de cada zona, no topo<small>Dosagem para o apron: só libera quando a porta está andando. Às 17h00 marca o fim da fila. Nenhuma peça de sinalização faz isso.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">3</td><td class="num" data-c="3">3</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">A1</td><td>Apron, no cruzamento da chegada com a saída S8<small>Separa quem entra de quem já votou. Uma CCB de separação substitui esta pessoa o dia inteiro.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">A2</td><td>Portas S4, S5 e S6, uma pessoa cada<small>Ritmo e sentido. Não confere nada: uma pergunta no batente trava a zona inteira.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">A3</td><td>Porta preferencial S7<small>Recebe idoso, gestante, PcD e acompanhante e leva até a mesa, em qualquer parede. Sem ninguém, é uma porta aberta e desguarnecida.</small></td><td class="num" data-c="1">1</td><td class="num" data-c="2">1</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">H1</td><td>Logo dentro de cada porta, uma pessoa cada<small>Aponta a parede e o bloco. Última orientação antes do secretário de seção.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">3</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">H2</td><td>Salão, móvel<small>Quem entrou pela porta errada e quem não acha o bloco.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">H3</td><td>Mesas 3313, 3315 e 3322, uma pessoa cada<small>As três de maior comparecimento — 590, 586 e 588 — e as únicas com serpenteado de 20 à frente. Uma em cada parede: o salão tem presença nas três desde o C1.</small></td><td class="num" data-c="1">3</td><td class="num" data-c="2">3</td><td class="num" data-c="3">3</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">T1</td><td>Coordenação, móvel<small>Em C1 e C2, uma pessoa com rádio que cobre pausas e tapa buraco. No pleno, 1 geral e 3 setoriais.</small></td><td class="num" data-c="1">1</td><td class="num" data-c="2">1</td><td class="num" data-c="3">1</td><td class="num" data-c="4">4</td></tr>
+      <tr><td class="cod">T2</td><td>Sala de apoio, canto noroeste<small>Credenciamento, coletes, água, rendição de pausas.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">—</td><td>Reserva flutuante<small>15% sobre os postos. Cobre ausência do dia, pausa e reforço onde apertar.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">6</td></tr>
     </tbody>
     <tfoot><tr><td colspan="2">Total simultâneo no pico</td>
-      <td class="num" data-c="1">9</td><td class="num" data-c="2">24</td><td class="num" data-c="3">49</td></tr>
+      <td class="num" data-c="1">9</td><td class="num" data-c="2">15</td><td class="num" data-c="3">24</td><td class="num" data-c="4">49</td></tr>
       <tr><td colspan="2">Pessoas a escalar no dia</td>
-      <td class="num" data-c="1">9</td><td class="num" data-c="2">24</td><td class="num" data-c="3">61</td></tr>
+      <td class="num" data-c="1">9</td><td class="num" data-c="2">15</td><td class="num" data-c="3">24</td><td class="num" data-c="4">61</td></tr>
       <tr><td colspan="2">Pessoas a recrutar</td>
-      <td class="num" data-c="1">9</td><td class="num" data-c="2">28</td><td class="num" data-c="3">70</td></tr>
+      <td class="num" data-c="1">9</td><td class="num" data-c="2">17</td><td class="num" data-c="3">28</td><td class="num" data-c="4">70</td></tr>
     </tfoot>
   </table></div>
   <p class="resumo" style="border:0"><span>Nos cenários 1 e 2 não há turnos: as mesmas pessoas
@@ -435,27 +437,65 @@ footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--regua);
 </section>
 
 <section>
-  <h2>Para onde vai cada voluntário novo</h2>
-  <p class="lede">A campanha de reserva tem um alvo concreto: esta é a ordem em que os postos
-  se preenchem, do décimo voluntário ao vigésimo quarto. Cada linha diz o que aquela pessoa compra.</p>
-  <ol class="escada">
-    <li><span class="ord">10–12</span><span><b>H1 · dentro de cada porta</b><small>Fecha o único trecho em que o eleitor já passou por toda a sinalização externa e ainda pode errar de parede. Três pessoas, uma por porta.</small></span></li>
-    <li><span class="ord">13–15</span><span><b>R5 · cabeça de fila de cada zona</b><small>Devolve o controle de vazão: o Ring passa a liberar em lote, e o apron deixa de ser um depósito de gente ao ar livre. Também é quem marca o fim da fila às 17h.</small></span></li>
-    <li><span class="ord">16</span><span><b>A1 · apron</b><small>Separa a corrente que entra da que sai pela S8. Enquanto não houver essa pessoa, o cruzamento precisa de uma CCB no lugar.</small></span></li>
-    <li><span class="ord">17–19</span><span><b>R2 · bocas C, A e B</b><small>Nessa ordem: C é a primeira que todos passam, A é a última e concentra os enganos. B é a de menor retorno, porque o R3 está ao lado.</small></span></li>
-    <li><span class="ord">20</span><span><b>P1 · portão do RDS</b><small>Recebe a chegada e organiza o transbordo para a calçada quando o Ring encher.</small></span></li>
-    <li><span class="ord">21</span><span><b>P0 · quarto operador na calçada</b><small>Reforço do gargalo de consulta durante as quatro horas de pico.</small></span></li>
-    <li><span class="ord">22</span><span><b>R1 · corredor de chegada</b><small>Mantém escoando o trecho por onde passam 100% dos eleitores.</small></span></li>
-    <li><span class="ord">23</span><span><b>P2 · lateral leste</b><small>Os 44 m em que o eleitor mais tempo passa parado, junto às tabelas mestras.</small></span></li>
-    <li><span class="ord">24</span><span><b>H2 · errante no salão</b><small>A partir daqui o ganho por pessoa cai, e o próximo salto útil é montar turnos.</small></span></li>
+  <h2>Plano de preenchimento</h2>
+  <p class="lede">Uma fila única, do décimo voluntário ao quadragésimo nono. Não é preciso
+  atingir um cenário inteiro para usá-la: com 13 pessoas, preencha até a posição 13; com 17,
+  até a 17. Os cenários são só as marcas de quilometragem dessa fila.</p>
+
+  <h3>C1 → C2 · do nono ao décimo quinto</h3>
+  <ol class="escada" start="10">
+    <li><span class="ord">10</span><span><b>P0 · quarto operador na calçada</b><small>O gargalo que cascateia. Três operadores atendem algo como 1.200 consultas no dia; quem chega sem saber a seção não pode ser triado em nenhum outro ponto da rota. O quarto operador é a pessoa de maior retorno do conjunto.</small></span></li>
+    <li><span class="ord">11</span><span><b>R5 · cabeça de fila da zona A</b><small>A parede oeste é a mais comprimida das três: 155,7 esperados por metro, contra 138,6 da norte e 105,6 da leste. Começa por ela.</small></span></li>
+    <li><span class="ord">12</span><span><b>R5 · cabeça de fila da zona B</b><small>138,6 por metro.</small></span></li>
+    <li><span class="ord">13</span><span><b>R5 · cabeça de fila da zona C</b><small>Com as três, o Ring passa a liberar em lote e o apron deixa de ser depósito de gente ao ar livre. É também quem marca o fim da fila às 17h00 — ato com consequência legal, hoje sem dono.</small></span></li>
+    <li><span class="ord">14</span><span><b>R2 · boca da zona C</b><small>A primeira boca do trecho de fundo: todo eleitor passa por ela.</small></span></li>
+    <li><span class="ord">15</span><span><b>R2 · boca da zona A</b><small>A última, onde se acumula quem não se reconheceu em C nem em B. Fecha o <b>C2</b>.</small></span></li>
   </ol>
+
+  <h3>C2 → C3 · do décimo sexto ao vigésimo quarto</h3>
+  <ol class="escada" start="16">
+    <li><span class="ord">16–18</span><span><b>H1 · dentro das portas A, B e C</b><small>Nessa ordem, pela compressão da parede. Fecha o trecho em que o eleitor já passou por toda a sinalização externa e ainda pode errar de bloco.</small></span></li>
+    <li><span class="ord">19</span><span><b>A1 · apron</b><small>Separa a corrente que entra da que sai pela S8 e dispensa a CCB de separação.</small></span></li>
+    <li><span class="ord">20</span><span><b>R2 · boca da zona B</b><small>Completa as três. É a de menor retorno porque o R3 está ao lado dela.</small></span></li>
+    <li><span class="ord">21</span><span><b>P1 · portão do RDS</b><small>Organiza o transbordo para a calçada quando o Ring encher.</small></span></li>
+    <li><span class="ord">22</span><span><b>R1 · corredor de chegada</b><small>Mantém escoando o trecho por onde passam 100% dos eleitores.</small></span></li>
+    <li><span class="ord">23</span><span><b>P2 · lateral leste</b><small>Os 44 m em que o eleitor mais tempo passa parado.</small></span></li>
+    <li><span class="ord">24</span><span><b>H2 · errante no salão</b><small>Fecha o <b>C3</b>. A partir daqui o ganho por pessoa cai, e o próximo salto útil é montar turnos.</small></span></li>
+  </ol>
+
+  <h3>C3 → C4 · do vigésimo quinto ao quadragésimo nono</h3>
+  <ol class="escada" start="25">
+    <li><span class="ord">25–27</span><span><b>A2 · portas S4, S5 e S6</b><small>Ritmo de entrada nas três portas.</small></span></li>
+    <li><span class="ord">28–30</span><span><b>R4 · dentro das raias</b><small>Uma por zona: raia errada, quem não aguenta ficar em pé, mal-estar.</small></span></li>
+    <li><span class="ord">31–33</span><span><b>T1 · coordenadores setoriais</b><small>Rota + Ring, apron + portas, salão. Abaixo de 30 pessoas um coordenador geral dá conta.</small></span></li>
+    <li><span class="ord">34–41</span><span><b>Segunda pessoa nos postos de pico</b><small>A3, P3 (dois), P1, P2, R1, A1 e H2 — os pontos que dobram entre 10h e 14h.</small></span></li>
+    <li><span class="ord">42–43</span><span><b>T2 · base de voluntários</b><small>Credenciamento, água, rendição de pausas. Só faz sentido com efetivo grande.</small></span></li>
+    <li><span class="ord">44–49</span><span><b>Reserva flutuante</b><small>15% sobre os postos. É o que transforma a escala em algo que sobrevive a seis faltas no dia.</small></span></li>
+  </ol>
+
+  <h3>Se o número não for redondo</h3>
+  <div class="tw"><table style="min-width:520px">
+    <thead><tr><th class="num">Voluntários</th><th>Preencha até</th><th>O primeiro furo que sobra</th></tr></thead>
+    <tbody>
+      <tr><td class="num">9</td><td><b>C1</b> — como está hoje</td><td>vazão sem controle nenhum</td></tr>
+      <tr><td class="num">11</td><td>posição 11 · P0 e a cabeça de fila da zona A</td><td>cabeças de B e C</td></tr>
+      <tr><td class="num">13</td><td>posição 13 · as três cabeças de fila</td><td>as bocas do trecho de fundo</td></tr>
+      <tr><td class="num">15</td><td><b>C2</b></td><td>ninguém dentro do salão além das mesas vermelhas</td></tr>
+      <tr><td class="num">17</td><td>posição 17 · H1 nas portas A e B</td><td>H1 da porta C e o apron</td></tr>
+      <tr><td class="num">20</td><td>posição 20 · as três portas, o apron e as três bocas</td><td>portão, corredor e lateral leste</td></tr>
+      <tr><td class="num">24</td><td><b>C3</b></td><td>sem reserva e sem turnos: uma falta é um posto vazio</td></tr>
+      <tr><td class="num">30</td><td>posição 30 · portas e raias com gente</td><td>coordenação setorial</td></tr>
+      <tr><td class="num">49</td><td><b>C4</b></td><td>—</td></tr>
+    </tbody>
+  </table></div>
+
   <div class="nota">
     <span class="tag">Onde procurar as pessoas</span>
     <p>Três fontes que não competem com a de mesários: acompanhantes de mesários que já vêm ao
     local e ficam o dia inteiro; estudantes brasileiros em Dublin, para quem o turno de meio dia é
     viável; e as próprias associações que divulgam a eleição. Vale pedir por
-    <strong>meio período</strong> — o cenário 3 precisa de 61 pessoas escaladas justamente porque
-    supõe turnos, e um voluntário de cinco horas vale quase tanto quanto um de dez.</p>
+    <strong>meio período</strong> — de C1 a C3 não há turnos, mas dois voluntários de cinco horas
+    cobrem um posto inteiro, e é mais fácil conseguir dois de cinco horas que um de dez.</p>
   </div>
 </section>
 
@@ -476,6 +516,14 @@ footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--regua);
     número é um que não para na calçada. Com três operadores e quatro horas de pico, o P0 atende
     algo como 400 a 700 consultas — se a demanda passar disso, a fila da calçada vira o problema do
     dia, e ela está fora do recinto do RDS.</p>
+  </div>
+  <div class="nota">
+    <span class="tag">E no cenário de 15</span>
+    <p>As compensações 1 e 2 continuam valendo inteiras: portão, lateral leste, apron e portas
+    seguem sem voluntário, então a presença de fila continua sendo dos seguranças e a CCB do apron
+    continua sendo necessária. O que muda é a terceira — com quatro operadores no P0, a margem da
+    consulta sobe de algo como 1.200 para 1.600 atendimentos no dia, e a campanha
+    “descubra sua seção antes de sair de casa” deixa de ser o único anteparo.</p>
   </div>
   <div class="nota">
     <span class="tag">O que continua fora desta conta</span>
@@ -500,31 +548,34 @@ footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--regua);
 (function(){
   var cen = 1;
   var postos = document.querySelectorAll('.posto');
-  var btns = [document.getElementById('c1'), document.getElementById('c2'), document.getElementById('c3')];
+  var btns = [document.getElementById('c1'), document.getElementById('c2'),
+              document.getElementById('c3'), document.getElementById('c4')];
   var resumo = document.getElementById('resumo');
   var textos = [
-    ['9 pessoas', '9 postos ocupados', '12 dos 17 postos ficam vagos', 'sem turnos, sem reserva'],
-    ['24 pessoas', '24 postos ocupados', '4 dos 17 postos ficam vagos', 'sem turnos, sem reserva'],
-    ['49 no pico', '43 postos + 6 de reserva', 'nenhum posto vago', '61 escaladas, 70 recrutadas']
+    ['C1 · 9 pessoas', '5 dos 17 postos ocupados', '12 vagos', 'sem turnos, sem reserva'],
+    ['C2 · 15 pessoas', '7 dos 17 postos ocupados', '10 vagos', 'sem turnos, sem reserva'],
+    ['C3 · 24 pessoas', '13 dos 17 postos ocupados', '4 vagos', 'sem turnos, sem reserva'],
+    ['C4 · 49 no pico', '43 postos + 6 de reserva', 'nenhum vago', '61 escaladas, 70 recrutadas']
   ];
+  var cabs = ['h1c','h2c','h3c','h4c'];
   function pinta(){
     postos.forEach(function(g){
-      var n = (g.dataset.n || '0,0,0').split(',')[cen-1];
+      var n = (g.dataset.n || '0,0,0,0').split(',')[cen-1];
       var t = g.querySelector('.n');
       if (t) t.textContent = n;
       g.classList.toggle('vago', n === '0');
     });
-    btns.forEach(function(b,i){ b.setAttribute('aria-pressed', String(i+1 === cen)); });
+    btns.forEach(function(b,i){ if (b) b.setAttribute('aria-pressed', String(i+1 === cen)); });
     document.querySelectorAll('td.num, th.num').forEach(function(c){ c.classList.remove('on'); });
     document.querySelectorAll('td.num[data-c="'+cen+'"]').forEach(function(c){ c.classList.add('on'); });
-    var th = document.getElementById(['h1c','h2c','h3c'][cen-1]);
+    var th = document.getElementById(cabs[cen-1]);
     if (th) th.classList.add('on');
     document.querySelectorAll('td.num').forEach(function(c){
       c.classList.toggle('zero', c.textContent.trim() === '0');
     });
     resumo.innerHTML = textos[cen-1].map(function(s){ return '<span>' + s + '</span>'; }).join('');
   }
-  btns.forEach(function(b,i){ b.addEventListener('click', function(){ cen = i+1; pinta(); }); });
+  btns.forEach(function(b,i){ if (b) b.addEventListener('click', function(){ cen = i+1; pinta(); }); });
   pinta();
 })();
 </script>

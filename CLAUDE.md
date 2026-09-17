@@ -77,6 +77,36 @@ a esta planta e descrevem duas entradas apenas — material histórico.
 - `scripts/`, `saidas/` — pipeline de dados; os scripts falham em vez de gravar
   saída errada quando alguma validação não passa.
 
+## Cenários de efetivo de voluntários (decisão de 17/09/2026)
+
+Quatro cenários, numerados por quantas pessoas de apoio existem. **C4 é referência de
+teto, não meta de recrutamento** — o Posto não o considera realista para 2026.
+
+| | Pessoas no pico | Postos ocupados (de 17) | Turnos e reserva |
+|---|---|---|---|
+| **C1 · Contingência** | 9 — o efetivo de hoje | 5 | não |
+| **C2 · Próximo degrau** | 15 | 7 | não |
+| **C3 · Operacional** | 24 | 13 | não |
+| **C4 · Pleno** | 49 (43 postos + 15% de reserva) | 17 | sim, 61 escaladas |
+
+Histórico do efetivo: eram 25 voluntários; 14 foram cedidos para cobrir dispensas de
+mesário e **não voltam** — mesário é função nomeada, com treinamento próprio. Campanha
+de reserva em curso.
+
+**C1 (9):** 3 no P0 da calçada, 1 no trecho de fundo do Ring (R3), 1 na porta
+preferencial S7 (A3), 3 nas mesas vermelhas (H3) e 1 na coordenação (T1).
+
+**C2 (15)** acrescenta o quarto operador do P0, as três cabeças de fila (R5, uma por
+zona) e duas bocas do trecho de fundo (R2, zonas C e A).
+
+O preenchimento é uma **fila contínua da posição 10 à 49**, para funcionar com
+qualquer número intermediário — com 13 pessoas preenche-se até a posição 13, com 17 até
+a 17. A fila está em `lista_postos.md` e em `voluntarios_postos.html`.
+
+C1 e C2 só fecham com três compensações contratadas: os 20 seguranças assumindo
+presença de fila por escrito no briefing, uma CCB de separação no apron no lugar do
+posto A1, e a campanha "descubra sua seção antes de sair de casa".
+
 ## Convenções
 
 - Números de eleitorado vêm sempre de `saidas/dados.json` (CSV oficial), nunca do

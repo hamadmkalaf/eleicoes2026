@@ -1,0 +1,333 @@
+{
+ "premissas": {
+  "cinta_m": 2.0,
+  "vao_poste_m": 1.8,
+  "unifilas_orcadas": 100,
+  "preco_unitario_eur": 13.03,
+  "banda_secao_m": 9.0,
+  "largura_avenida_m": 3.0,
+  "largura_canal_m": 1.1,
+  "passo_fila_m": 0.65,
+  "linha_espera_m": 1.5
+ },
+ "catalogo": {
+  "divisor_AB": {
+   "rotulo": "divisor das bocas A|B — prolonga a alvenaria 6 m",
+   "grupo": "boca",
+   "metros": 6.0,
+   "postes": 5
+  },
+  "divisor_BC": {
+   "rotulo": "divisor das bocas B|C — prolonga a alvenaria 6 m",
+   "grupo": "boca",
+   "metros": 6.0,
+   "postes": 5
+  },
+  "avenida_A_int": {
+   "rotulo": "avenida A · trilho do lado da parede",
+   "grupo": "avenida",
+   "metros": 48.93,
+   "postes": 29
+  },
+  "avenida_A_ext": {
+   "rotulo": "avenida A · trilho do lado do campo de retorno",
+   "grupo": "avenida",
+   "metros": 42.93,
+   "postes": 25
+  },
+  "avenida_B_int": {
+   "rotulo": "avenida B · trilho do lado da parede",
+   "grupo": "avenida",
+   "metros": 35.4,
+   "postes": 21
+  },
+  "avenida_B_ext": {
+   "rotulo": "avenida B · trilho do lado do campo de retorno",
+   "grupo": "avenida",
+   "metros": 35.4,
+   "postes": 21
+  },
+  "avenida_C_int": {
+   "rotulo": "avenida C · trilho do lado da parede",
+   "grupo": "avenida",
+   "metros": 41.81,
+   "postes": 25
+  },
+  "avenida_C_ext": {
+   "rotulo": "avenida C · trilho do lado do campo de retorno",
+   "grupo": "avenida",
+   "metros": 41.55,
+   "postes": 25
+  },
+  "distribuidor_norte": {
+   "rotulo": "distribuidor da parede norte — o T em que a avenida B desemboca",
+   "grupo": "cruzamento",
+   "metros": 32.1,
+   "postes": 19
+  },
+  "trilho_sul_A": {
+   "rotulo": "trilho sul da perna A — separa a entrada da saída S2 e do recuo S3",
+   "grupo": "cruzamento",
+   "metros": 14.03,
+   "postes": 9
+  },
+  "boca_saida_S2": {
+   "rotulo": "boca da saída S2 — protege quem sai de quem entra",
+   "grupo": "cruzamento",
+   "metros": 16.0,
+   "postes": 12
+  },
+  "boca_saida_S8": {
+   "rotulo": "boca da saída S8 — protege quem sai de quem entra",
+   "grupo": "cruzamento",
+   "metros": 16.0,
+   "postes": 12
+  },
+  "canal_S7": {
+   "rotulo": "canal da entrada preferencial S7",
+   "grupo": "cruzamento",
+   "metros": 20.0,
+   "postes": 14
+  },
+  "serp_22": {
+   "rotulo": "serpenteado da vermelha · mesa 5 (MRV 22, 20 pessoas)",
+   "grupo": "vermelha",
+   "metros": 12.6,
+   "postes": 12
+  },
+  "serp_23": {
+   "rotulo": "serpenteado da vermelha · mesa 12 (MRV 23, 20 pessoas)",
+   "grupo": "vermelha",
+   "metros": 12.6,
+   "postes": 12
+  },
+  "serp_24": {
+   "rotulo": "serpenteado da vermelha · mesa 21 (MRV 24, 20 pessoas)",
+   "grupo": "vermelha",
+   "metros": 12.6,
+   "postes": 12
+  },
+  "cabeca_1": {
+   "rotulo": "cabeça de fila · mesa 1 (MRV 20, 395 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_2": {
+   "rotulo": "cabeça de fila · mesa 2 (MRV 10, 466 esperados)",
+   "grupo": "cabeca_media",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_3": {
+   "rotulo": "cabeça de fila · mesa 3 (MRV 11, 504 esperados)",
+   "grupo": "cabeca_media",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_4": {
+   "rotulo": "cabeça de fila · mesa 4 (MRV 21, 466 esperados)",
+   "grupo": "cabeca_media",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_6": {
+   "rotulo": "cabeça de fila · mesa 6 (MRV 3, 351 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_7": {
+   "rotulo": "cabeça de fila · mesa 7 (MRV 6, 328 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_8": {
+   "rotulo": "cabeça de fila · mesa 8 (MRV 8, 311 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_9": {
+   "rotulo": "cabeça de fila · mesa 9 (MRV 12, 423 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_10": {
+   "rotulo": "cabeça de fila · mesa 10 (MRV 2, 355 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_11": {
+   "rotulo": "cabeça de fila · mesa 11 (MRV 5, 328 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_13": {
+   "rotulo": "cabeça de fila · mesa 13 (MRV 9, 467 esperados)",
+   "grupo": "cabeca_media",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_14": {
+   "rotulo": "cabeça de fila · mesa 14 (MRV 16, 518 esperados)",
+   "grupo": "cabeca_media",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_15": {
+   "rotulo": "cabeça de fila · mesa 15 (MRV 17, 472 esperados)",
+   "grupo": "cabeca_media",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_16": {
+   "rotulo": "cabeça de fila · mesa 16 (MRV 18, 515 esperados)",
+   "grupo": "cabeca_media",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_17": {
+   "rotulo": "cabeça de fila · mesa 17 (MRV 19, 295 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_18": {
+   "rotulo": "cabeça de fila · mesa 18 (MRV 27, 296 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_19": {
+   "rotulo": "cabeça de fila · mesa 19 (MRV 1, 375 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_20": {
+   "rotulo": "cabeça de fila · mesa 20 (MRV 4, 348 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_22": {
+   "rotulo": "cabeça de fila · mesa 22 (MRV 7, 325 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_23": {
+   "rotulo": "cabeça de fila · mesa 23 (MRV 13, 407 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_24": {
+   "rotulo": "cabeça de fila · mesa 24 (MRV 28, 296 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_25": {
+   "rotulo": "cabeça de fila · mesa 25 (MRV 15, 498 esperados)",
+   "grupo": "cabeca_media",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_26": {
+   "rotulo": "cabeça de fila · mesa 26 (MRV 14, 405 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_27": {
+   "rotulo": "cabeça de fila · mesa 27 (MRV 26, 296 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  },
+  "cabeca_28": {
+   "rotulo": "cabeça de fila · mesa 28 (MRV 25, 295 esperados)",
+   "grupo": "cabeca_baixa",
+   "metros": 4.9,
+   "postes": 4
+  }
+ },
+ "catalogo_total_postes": 358,
+ "opcoes": [
+  {
+   "nome": "Opção 1",
+   "subtitulo": "As três avenidas",
+   "doutrina": "A barreira paga o trajeto: canaliza o caminho inteiro da porta até a banda da parede e deixa as cabeças de fila na fita.",
+   "itens": [
+    "divisor_AB",
+    "divisor_BC",
+    "avenida_A_ext",
+    "avenida_B_int",
+    "avenida_B_ext",
+    "avenida_C_int"
+   ],
+   "postes": 102,
+   "reserva": -2,
+   "metros": 167.5,
+   "aposta": "Um eleitor mal encaminhado custa mais do que um eleitor mal enfileirado: quem chega à parede errada volta atravessando o salão, contra o fluxo.",
+   "risco": "Nada segura as três vermelhas. Os 20 em pé à frente de cada uma ficam contidos só por fita, que é justamente onde a fita não segura."
+  },
+  {
+   "nome": "Opção 2",
+   "subtitulo": "As cabeças de fila",
+   "doutrina": "A barreira paga a contenção: vai onde as pessoas param de andar — as três vermelhas e as mesas de maior carga — e o trajeto inteiro fica na fita.",
+   "itens": [
+    "serp_22",
+    "serp_23",
+    "serp_24",
+    "cabeca_2",
+    "cabeca_3",
+    "cabeca_4",
+    "cabeca_13",
+    "cabeca_14",
+    "cabeca_15",
+    "cabeca_16",
+    "cabeca_25",
+    "cabeca_9",
+    "cabeca_23",
+    "cabeca_26",
+    "cabeca_1",
+    "cabeca_19",
+    "cabeca_10",
+    "cabeca_6",
+    "cabeca_20"
+   ],
+   "postes": 100,
+   "reserva": 0,
+   "metros": 116.2,
+   "aposta": "Pressão de multidão só existe onde a fila é estática. Corredor é fluxo andando, e fluxo andando obedece a linha pintada.",
+   "risco": "A boca é o gargalo não paralelizável já identificado: 11,5 mil pessoas por 18,4 m de porta, com as três correntes separadas apenas por fita."
+  },
+  {
+   "nome": "Opção 3",
+   "subtitulo": "Boca, avenida do meio e vermelhas — recomendada",
+   "doutrina": "A barreira paga só o que a fita comprovadamente não faz: separar correntes que se cruzam e conter multidão parada.",
+   "itens": [
+    "divisor_AB",
+    "divisor_BC",
+    "trilho_sul_A",
+    "avenida_B_int",
+    "avenida_B_ext",
+    "serp_22",
+    "serp_23",
+    "serp_24"
+   ],
+   "postes": 97,
+   "reserva": 3,
+   "metros": 134.6,
+   "aposta": "Fita é uma fronteira que se vê; barreira é uma fronteira que custa atravessar. Gasta-se barreira onde atravessar compensa — na boca, no cruzamento e na cabeça da fila cheia.",
+   "risco": "As avenidas A e C ficam na fita. Se o corte de caminho aparecer nelas, é a reserva móvel que responde — e ela tem de existir."
+  }
+ ]
+}

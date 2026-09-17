@@ -19,6 +19,9 @@ e `saidas/separadores_detalhe.svg`. Geometria lida do cenário fechado
 | Unifilas | **102 — não cabe** | 100 | **97** |
 | Metros de cinta | 168 | 116 | 135 |
 | Reserva móvel | −2 | 0 | **3** |
+| **Fita no chão** | 624 m | 676 m | 657 m |
+| Fita com retoque | 686 m | 743 m | 723 m |
+| Rolos de 50 m | 16 | 18 | 18 |
 | As três vermelhas | na fita | na barreira | na barreira |
 | A boca das três portas | divisores | na fita | divisores |
 | O T da parede norte | na barreira | na fita | na barreira |
@@ -196,15 +199,61 @@ eleitor recebe uma instrução só: *siga a linha azul*.
 | Pegadas | duas, depois da linha: posição de identificação e posição da urna |
 | Saída | cor que **não** é de nenhuma entrada; nunca reutilizar azul/âmbar/magenta |
 
+São seis cores de rolo ao todo: as três das entradas, mais amarelo-preto para a
+linha de espera, verde para a preferencial e branco-preto para saída e
+divisores.
+
 As marcas de 0,65 m não são enfeite: 0,65 m é o passo de projeto do
 `plano_filas_confinado_hall2.md`. Materializadas no chão, dão ao mesário e ao
 pessoal de fluxo uma leitura instantânea do tamanho da fila — *12 marcas
 ocupadas são 12 pessoas* — sem contar cabeças.
 
-**Metragem.** 618 m de fita no traçado, mais ~20% para setas, saída e retoque:
-**~740 m**, ou **15 rolos de 50 m**. Compre 20 — o retoque do meio-dia é
-certo. Preço de fita de marcação de piso não foi cotado; é ordem de EUR 250–400
-e some no orçamento (**estimativa minha, a cotar**).
+### Metragem de fita, opção a opção
+
+Fita é o **complemento** da barreira: todo trecho do traçado existe no chão de
+um jeito ou de outro, e o que a unifila não cobre, a fita cobre. Somam-se os
+elementos que são sempre fita — o lado livre de cada ramal, a linha de espera,
+as marcas de 0,65 m, os galões das avenidas e a sinalização de saída — e
+acrescenta-se 10% para o retoque do meio-dia e as perdas de corte.
+
+| Cor do rolo | Onde | Opção 1 | Opção 2 | **Opção 3** |
+|---|---|---:|---:|---:|
+| Azul | avenida A, 9 ramais oeste, marcas, galões | 169,1 m | 170,0 m | **199,4 m** |
+| Âmbar | avenida B, distribuidor norte, 9 ramais, marcas | 150,4 m | 184,2 m | **137,8 m** |
+| Magenta | avenida C, 10 ramais leste, marcas, galões | 171,8 m | 176,6 m | **201,1 m** |
+| Amarelo-preto | as 28 linhas de espera | 30,8 m | 30,8 m | **30,8 m** |
+| Verde | canal da preferencial S7 | 20,0 m | 20,0 m | **20,0 m** |
+| Branco-preto | bocas de saída, divisores, setas do campo livre | 82,0 m | 94,0 m | **68,0 m** |
+| **Total** | | **624,1 m** | **675,6 m** | **657,1 m** |
+| **Com 10% de retoque** | | **686,5 m** | **743,2 m** | **722,8 m** |
+
+**Em rolos de 50 m** (é assim que se compra, e sobra é melhor do que falta):
+
+| | Azul | Âmbar | Magenta | Amarelo-preto | Verde | Branco-preto | **Total** |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Opção 1 | 4 | 4 | 4 | 1 | 1 | 2 | **16** |
+| Opção 2 | 4 | 5 | 4 | 1 | 1 | 3 | **18** |
+| **Opção 3** | **5** | **4** | **5** | **1** | **1** | **2** | **18** |
+
+**A leitura que importa: a escolha da opção quase não mexe na conta da fita.**
+Os três desenhos ficam entre 624 e 676 m — 8% de diferença, dois rolos. O que
+muda é **qual cor** se compra mais: a Opção 3, por deixar as avenidas A e C
+inteiramente na fita, precisa de 5 rolos de azul e 5 de magenta contra 4 e 4
+das outras. Ou seja: **a decisão entre as três opções é uma decisão sobre as
+unifilas, não sobre a fita.** Para o orçamento, pode-se comprar o pacote maior
+(18 rolos, com 5 de azul e 5 de magenta) e ficar coberto em qualquer das três
+— a diferença entre o pacote mínimo e o máximo são dois rolos.
+
+**Custo.** Não cotei fita de marcação de piso; 18 rolos de 50 mm × 50 m são
+ordem de **EUR 220–360** (**estimativa minha, a cotar** — e a cotação tem de
+especificar resíduo zero, ver §6). É ruído no orçamento de EUR 15.703,32 e não
+é por aí que a decisão passa.
+
+**O que a metragem não diz:** fita se aplica no chão, curva a curva, com o
+salão vazio. 657 m de fita colada, mais 28 papéis e 18 rolos trocados de cor,
+é trabalho de equipe na véspera, não de meia hora antes da abertura. Vale
+dimensionar isso junto com o único segurança já contratado para o dia anterior
+(item a do orçamento).
 
 ---
 
@@ -280,25 +329,31 @@ metro de fita sem barreira.
 
 1. Qual das três opções — recomendo a 3.
 2. As 15 unifilas adicionais (EUR 195,45) para a reserva móvel.
-3. Papel plastificado fora da linha de pisada, com o número de decisão no
+3. Comprar o pacote de fita maior — 18 rolos de 50 m em 6 cores, 5 de azul e 5
+   de magenta — que cobre qualquer das três opções. A diferença entre o pacote
+   mínimo e o máximo são dois rolos, e assim a compra da fita não fica travada
+   pela decisão da opção.
+4. Papel plastificado fora da linha de pisada, com o número de decisão no
    banner e não no chão.
+5. Quem cola os 657 m de fita, e quando. É trabalho de véspera com o salão
+   vazio, não de meia hora antes da abertura.
 
 **Perguntas ao RDS, esta semana**
 
-4. Fita adesiva no piso do Hall 2 é permitida? Qual tipo, e qual a exigência de
+6. Fita adesiva no piso do Hall 2 é permitida? Qual tipo, e qual a exigência de
    remoção? (**bloqueante**)
-5. Submissão do layout de barreira ao responsável de incêndio.
+7. Submissão do layout de barreira ao responsável de incêndio.
 
 **A aferir em campo, antes de imprimir**
 
-6. A banda de 9,00 m pressupõe o módulo de 4,10 m da planta medida e o
+8. A banda de 9,00 m pressupõe o módulo de 4,10 m da planta medida e o
    serpenteado de 4,20 m de 16/09. Confirmar com a mesa, a cabine e a urna reais.
-7. A perna oeste da avenida A passa entre o recuo R1 (até y = 7,00) e as mesas
+9. A perna oeste da avenida A passa entre o recuo R1 (até y = 7,00) e as mesas
    da parede oeste (a partir de y = 7,45): sobram 45 cm de margem. Medir.
-8. A avenida C sai pela metade oeste de S6 porque o recuo de S7 começa em
+10. A avenida C sai pela metade oeste de S6 porque o recuo de S7 começa em
    x = 35,09. Se o recuo de S7 for menor do que o desenhado, a avenida C ganha
    1,5 m de largura de boca.
-9. O T da parede norte é o ponto mais frágil do traçado. Se houver folga de
+11. O T da parede norte é o ponto mais frágil do traçado. Se houver folga de
    espaço, vale estudar uma segunda perna para a avenida B — mas isso mexe na
    atribuição mesa → entrada, que está fechada desde 15/09.
 

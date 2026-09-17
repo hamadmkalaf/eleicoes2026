@@ -292,11 +292,87 @@ def opcoes(itens, mesas):
     ]
 
 
+
+# --------------------------------------------------------------------------
+# A fita: tudo o que o tracado pede e a barreira nao cobre
+# --------------------------------------------------------------------------
+# A fita e comprada em rolo, e rolo tem cor. Por isso a conta util nao e
+# "metros de fita", e "metros de cada cor" -- e quem compra precisa do segundo.
+CORES_FITA = {
+    "A": {"rotulo": "azul · entrada A / parede oeste", "hex": "#2a78d6"},
+    "B": {"rotulo": "âmbar · entrada B / parede norte", "hex": "#e08a00"},
+    "C": {"rotulo": "magenta · entrada C / parede leste", "hex": "#c2185b"},
+    "espera": {"rotulo": "amarelo-preto · linha de espera", "hex": "#d4a017"},
+    "pref": {"rotulo": "verde · preferencial S7", "hex": "#1e8449"},
+    "neutro": {"rotulo": "branco-preto · saída e divisores", "hex": "#5b6470"},
+}
+ROLO = 50.0           # metros por rolo de fita de marcacao de piso
+RETOQUE = 0.10        # margem para o retoque do meio-dia e perdas de corte
+GALAO = 0.90          # fita por galao (chevron) pintado no eixo da avenida
+PASSO_GALAO = 5.00    # um galao a cada 5 m
+SETAS_SAIDA = 40      # galoes de saida espalhados pelo campo livre
+
+
+def cor_do_item(chave, itens, mesas):
+    """A cor de rolo em que cada trecho do tracado e pintado, se for fita."""
+    it = itens[chave]
+    if chave.startswith(("divisor_", "trilho_sul", "boca_saida")):
+        return "neutro"
+    if chave == "canal_S7":
+        return "pref"
+    return it["entrada"] or "neutro"
+
+
+def fita(op, itens, mesas, planta):
+    """Metros de fita por cor, para uma opcao. Fita e o complemento da barreira.
+
+    Todo trecho do tracado existe no chao de um jeito ou de outro: o que a
+    barreira nao cobre, a fita cobre. Somam-se depois os elementos que sao
+    sempre fita -- o lado livre de cada ramal, a linha de espera, as marcas de
+    0,65 m, os galoes e a sinalizacao de saida.
+    """
+    por_cor = {c: 0.0 for c in CORES_FITA}
+    ativos = set(op["itens"])
+
+    # 1. o que a barreira nao levou
+    for chave, it in itens.items():
+        if chave in ativos:
+            continue
+        if chave.startswith("cabeca_"):
+            continue            # tratado no bloco dos ramais, abaixo
+        por_cor[cor_do_item(chave, itens, mesas)] += it["metros"]
+
+    # 2. os ramais das 28 mesas: canal de 1,10 m, dois lados de BANDA - prof
+    lado = BANDA - planta["modulo"]["prof"]
+    for m in mesas:
+        chave = f"cabeca_{m['eleitor']}"
+        # um lado vira barreira so quando aquela cabeca esta na opcao
+        lados = 1 if chave in ativos else 2
+        por_cor[m["entrada"]] += lados * lado
+
+    # 3. sempre fita: linha de espera, marcas de fila, galoes, setas de saida
+    n_marcas = int(round((lado - RECUO_MESA) / PASSO_FILA))
+    for m in mesas:
+        por_cor["espera"] += LARG_CANAL
+        por_cor[m["entrada"]] += n_marcas * 0.25
+    for aid, av in AVENIDAS.items():
+        eixo = (comp(av["trilho_interno"]) + comp(av["trilho_externo"])) / 2
+        por_cor[aid] += int(eixo / PASSO_GALAO) * GALAO
+    por_cor["neutro"] += SETAS_SAIDA * GALAO
+
+    por_cor = {c: round(v, 1) for c, v in por_cor.items()}
+    total = round(sum(por_cor.values()), 1)
+    com_retoque = {c: round(v * (1 + RETOQUE), 1) for c, v in por_cor.items()}
+    rolos = {c: math.ceil(v / ROLO) for c, v in com_retoque.items()}
+    return {"por_cor": por_cor, "com_retoque": com_retoque, "rolos": rolos,
+            "total": total, "total_com_retoque": round(total * (1 + RETOQUE), 1),
+            "rolos_total": sum(rolos.values())}
+
 # --------------------------------------------------------------------------
 # Desenho
 # --------------------------------------------------------------------------
 S = 15.0          # px por metro
-MARG_E, MARG_T = 52, 74
+MARG_E, MARG_T = 52, 92
 LEGENDA = 278
 
 
@@ -326,8 +402,13 @@ def svg_plano(planta, dec, mesas, itens, op, titulo_extra=""):
              else f'<tspan fill="#c0392b">não cabe: faltam {-op["reserva"]} unidades</tspan>')
     add(f'<text x="{MARG_E}" y="56" font-size="12.5" fill="#5b6470">'
         f'{op["postes"]} unifilas em barreira ({op["metros"]:.0f} m de cinta esticada) '
-        f'de {UNIFILAS} orçadas · {saldo} · todo o resto em fita no chão'
-        f'{titulo_extra}</text>')
+        f'de {UNIFILAS} orçadas · {saldo}{titulo_extra}</text>')
+    fi = op.get("fita")
+    if fi:
+        add(f'<text x="{MARG_E}" y="78" font-size="12.5" fill="#5b6470">'
+            f'Todo o resto em fita no chão: <tspan font-weight="700">{fi["total"]:.0f} m</tspan>'
+            f' — {fi["total_com_retoque"]:.0f} m com o retoque do meio-dia, '
+            f'{fi["rolos_total"]} rolos de 50 m repartidos em 6 cores</text>')
 
     # salao
     cont = " ".join(f"{px(x, y)[0]:.1f},{px(x, y)[1]:.1f}" for x, y in planta["salao"]["contorno"])
@@ -481,7 +562,10 @@ def svg_plano(planta, dec, mesas, itens, op, titulo_extra=""):
         it = itens[k]
         g = it["grupo"]
         irmaos = [j for j in op["itens"] if itens[j]["grupo"] == g]
-        if len(irmaos) <= 3:
+        # So as cabecas de fila colapsam: sao dezenas de trechos iguais. Os
+        # trilhos de avenida nao, porque e justamente *quais* deles entram que
+        # distingue uma opcao da outra.
+        if not g.startswith("cabeca_") or len(irmaos) <= 3:
             entradas_leg.append((it["hex"], it["rotulo"], it["metros"], it["postes"]))
             continue
         if g in vistos:
@@ -704,6 +788,8 @@ def main():
     mesas = monta_mesas(planta, dec, cen)
     itens = catalogo(planta, dec, mesas)
     ops = opcoes(itens, mesas)
+    for op in ops:
+        op["fita"] = fita(op, itens, mesas, planta)
 
     total_desejado = sum(i["postes"] for i in itens.values())
     print(f"\nCatálogo completo do desenho: {total_desejado} unifilas "
@@ -713,8 +799,13 @@ def main():
           f"EUR {UNIFILAS*PRECO_UNIFILA:,.2f})\n")
     for op in ops:
         print(f"  {op['nome']} — {op['subtitulo']}")
-        print(f"    {op['postes']} unifilas em {op['metros']:.0f} m · "
+        fi = op["fita"]
+        print(f"    barreira: {op['postes']} unifilas em {op['metros']:.0f} m · "
               f"reserva móvel {op['reserva']}")
+        print(f"    fita:     {fi['total']:.0f} m ({fi['total_com_retoque']:.0f} m com "
+              f"retoque) · {fi['rolos_total']} rolos de {ROLO:.0f} m")
+        for c, v in fi["por_cor"].items():
+            print(f"      {v:6.1f} m  {fi['rolos'][c]} rolo(s)  {CORES_FITA[c]['rotulo']}")
         for k in op["itens"]:
             print(f"      {itens[k]['postes']:>3}  {itens[k]['rotulo']}")
         print()
@@ -739,7 +830,8 @@ def main():
                       "unifilas_orcadas": UNIFILAS, "preco_unitario_eur": PRECO_UNIFILA,
                       "banda_secao_m": BANDA, "largura_avenida_m": LARG_AVENIDA,
                       "largura_canal_m": LARG_CANAL, "passo_fila_m": PASSO_FILA,
-                      "linha_espera_m": RECUO_MESA},
+                      "linha_espera_m": RECUO_MESA, "rolo_fita_m": ROLO,
+                      "retoque_fita": RETOQUE, "passo_galao_m": PASSO_GALAO},
         "catalogo": {k: {"rotulo": v["rotulo"], "grupo": v["grupo"],
                          "metros": v["metros"], "postes": v["postes"]}
                      for k, v in itens.items()},

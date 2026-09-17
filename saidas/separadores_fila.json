@@ -8,7 +8,10 @@
   "largura_avenida_m": 3.0,
   "largura_canal_m": 1.1,
   "passo_fila_m": 0.65,
-  "linha_espera_m": 1.5
+  "linha_espera_m": 1.5,
+  "rolo_fita_m": 50.0,
+  "retoque_fita": 0.1,
+  "passo_galao_m": 5.0
  },
  "catalogo": {
   "divisor_AB": {
@@ -276,7 +279,36 @@
    "reserva": -2,
    "metros": 167.5,
    "aposta": "Um eleitor mal encaminhado custa mais do que um eleitor mal enfileirado: quem chega à parede errada volta atravessando o salão, contra o fluxo.",
-   "risco": "Nada segura as três vermelhas. Os 20 em pé à frente de cada uma ficam contidos só por fita, que é justamente onde a fita não segura."
+   "risco": "Nada segura as três vermelhas. Os 20 em pé à frente de cada uma ficam contidos só por fita, que é justamente onde a fita não segura.",
+   "fita": {
+    "por_cor": {
+     "A": 169.1,
+     "B": 150.4,
+     "C": 171.8,
+     "espera": 30.8,
+     "pref": 20.0,
+     "neutro": 82.0
+    },
+    "com_retoque": {
+     "A": 186.0,
+     "B": 165.4,
+     "C": 189.0,
+     "espera": 33.9,
+     "pref": 22.0,
+     "neutro": 90.2
+    },
+    "rolos": {
+     "A": 4,
+     "B": 4,
+     "C": 4,
+     "espera": 1,
+     "pref": 1,
+     "neutro": 2
+    },
+    "total": 624.1,
+    "total_com_retoque": 686.5,
+    "rolos_total": 16
+   }
   },
   {
    "nome": "Opção 2",
@@ -307,7 +339,36 @@
    "reserva": 0,
    "metros": 116.2,
    "aposta": "Pressão de multidão só existe onde a fila é estática. Corredor é fluxo andando, e fluxo andando obedece a linha pintada.",
-   "risco": "A boca é o gargalo não paralelizável já identificado: 11,5 mil pessoas por 18,4 m de porta, com as três correntes separadas apenas por fita."
+   "risco": "A boca é o gargalo não paralelizável já identificado: 11,5 mil pessoas por 18,4 m de porta, com as três correntes separadas apenas por fita.",
+   "fita": {
+    "por_cor": {
+     "A": 170.0,
+     "B": 184.2,
+     "C": 176.6,
+     "espera": 30.8,
+     "pref": 20.0,
+     "neutro": 94.0
+    },
+    "com_retoque": {
+     "A": 187.0,
+     "B": 202.6,
+     "C": 194.3,
+     "espera": 33.9,
+     "pref": 22.0,
+     "neutro": 103.4
+    },
+    "rolos": {
+     "A": 4,
+     "B": 5,
+     "C": 4,
+     "espera": 1,
+     "pref": 1,
+     "neutro": 3
+    },
+    "total": 675.6,
+    "total_com_retoque": 743.2,
+    "rolos_total": 18
+   }
   },
   {
    "nome": "Opção 3",
@@ -327,7 +388,36 @@
    "reserva": 3,
    "metros": 134.6,
    "aposta": "Fita é uma fronteira que se vê; barreira é uma fronteira que custa atravessar. Gasta-se barreira onde atravessar compensa — na boca, no cruzamento e na cabeça da fila cheia.",
-   "risco": "As avenidas A e C ficam na fita. Se o corte de caminho aparecer nelas, é a reserva móvel que responde — e ela tem de existir."
+   "risco": "As avenidas A e C ficam na fita. Se o corte de caminho aparecer nelas, é a reserva móvel que responde — e ela tem de existir.",
+   "fita": {
+    "por_cor": {
+     "A": 199.4,
+     "B": 137.8,
+     "C": 201.1,
+     "espera": 30.8,
+     "pref": 20.0,
+     "neutro": 68.0
+    },
+    "com_retoque": {
+     "A": 219.3,
+     "B": 151.6,
+     "C": 221.2,
+     "espera": 33.9,
+     "pref": 22.0,
+     "neutro": 74.8
+    },
+    "rolos": {
+     "A": 5,
+     "B": 4,
+     "C": 5,
+     "espera": 1,
+     "pref": 1,
+     "neutro": 2
+    },
+    "total": 657.1,
+    "total_com_retoque": 722.8,
+    "rolos_total": 18
+   }
   }
  ]
 }

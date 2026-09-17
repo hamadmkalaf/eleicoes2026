@@ -1,0 +1,312 @@
+<title>Sinalização RDS Hall 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --paper:#F5F7F4; --card:#FFFFFF; --ink:#161B18; --mid:#4C554F; --muted:#6B7570;
+  --rule:#D6DDD7; --rule-soft:#E6EBE6; --warn:#9B2860; --emerg:#0e8a74; --apoio:#8a5a2b; --serp:#c0392b;
+  --ground:var(--paper); --surface:var(--card); --surface-2:var(--rule-soft); --alert:var(--warn);
+  --disp:"Archivo","Helvetica Neue",Arial,sans-serif; --sans:var(--disp);
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --measure:64ch;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0F1412; --card:#171E1A; --ink:#E7EDE8; --mid:#B4BEB7; --muted:#8B958E;
+  --rule:#2A332D; --rule-soft:#222A25; --warn:#EE85B2; --emerg:#42c0a5; --apoio:#c08e56; --serp:#e8806f; } }
+:root[data-theme="dark"]{
+  --paper:#0F1412; --card:#171E1A; --ink:#E7EDE8; --mid:#B4BEB7; --muted:#8B958E;
+  --rule:#2A332D; --rule-soft:#222A25; --warn:#EE85B2; --emerg:#42c0a5; --apoio:#c08e56; --serp:#e8806f; }
+
+  :root{ --a:#1f5fa8; --b:#b8760a; --c:#8b3a8e;
+    --a-soft:#e2edf8; --b-soft:#f8eed9; --c-soft:#f2e4f3; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --a:#79b0ea; --b:#e8b354; --c:#cb8ace;
+    --a-soft:#1a2c40; --b-soft:#33290f; --c-soft:#332034; } }
+  :root[data-theme="dark"]{
+    --a:#79b0ea; --b:#e8b354; --c:#cb8ace;
+    --a-soft:#1a2c40; --b-soft:#33290f; --c-soft:#332034; }
+  .t-a{--k:var(--a);--k-soft:var(--a-soft)} .t-b{--k:var(--b);--k-soft:var(--b-soft)} .t-c{--k:var(--c);--k-soft:var(--c-soft)}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.62;-webkit-text-size-adjust:100%}
+.page{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
+.col{max-width:var(--measure)}
+h1,h2,h3,h4,.tile-k,.eyebrow,.letra,th{font-family:var(--disp)}
+h1{font-size:clamp(2rem,5.4vw,3.15rem);line-height:1.04;font-weight:800;letter-spacing:-.022em;margin:0;text-wrap:balance}
+h2{font-size:clamp(1.3rem,2.9vw,1.72rem);font-weight:700;letter-spacing:-.014em;line-height:1.16;margin:0;text-wrap:balance}
+h3{font-size:1.05rem;font-weight:600;margin:0} h4{font-size:.95rem;font-weight:600;margin:0} p{margin:0}
+.eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin:0}
+strong{font-weight:600} code,.sec,.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header.masthead{display:flex;flex-direction:column;gap:18px;padding-block:56px 30px;border-bottom:2px solid var(--ink)}
+.lede{font-size:1.09rem;color:var(--mid);max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--mono);font-size:.74rem;color:var(--muted);letter-spacing:.02em;padding-top:4px}
+section.band{display:flex;flex-direction:column;gap:20px;padding-block:44px;border-bottom:1px solid var(--rule-soft)}
+section.band:last-of-type{border-bottom:0}
+.band > p, .band > ul, .band > ol{max-width:var(--measure)}
+.hd{display:flex;flex-direction:column;gap:7px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.tile{background:var(--card);border:1px solid var(--rule);border-top:5px solid var(--k);padding:18px 18px 14px;display:flex;flex-direction:column;gap:12px}
+.tile-k{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;color:var(--k);margin:0;line-height:1}
+.tile-w{font-size:.78rem;color:var(--muted);margin:0;letter-spacing:.04em;text-transform:uppercase;font-family:var(--disp);font-weight:500}
+.tile dl{margin:0;display:flex;flex-direction:column}
+.tile dl div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:5px 0;border-top:1px solid var(--rule-soft)}
+.tile dl dt{color:var(--muted);font-size:.8rem} .tile dl dd{margin:0;font-family:var(--mono);font-size:.93rem;font-variant-numeric:tabular-nums}
+.tile dl .hi dd{font-weight:600;color:var(--k)}
+figure.plan{margin:0;display:flex;flex-direction:column;gap:12px}
+.plan-wrap{background:var(--card);border:1px solid var(--rule);padding:12px}
+svg.planta{display:block;width:100%;height:auto;max-width:100%}
+.planta .salao{fill:none;stroke:var(--ink);stroke-width:.34}
+.planta .bloco{fill:var(--k);opacity:.12;stroke:none} .planta .mesa{fill:var(--k);stroke:none}
+.planta .rot{font-family:var(--mono);font-size:1.25px;fill:var(--k);paint-order:stroke fill;stroke:var(--card);stroke-width:.5px;stroke-linejoin:round}
+.planta .porta{fill:var(--k)} .planta .porta-saida{fill:var(--muted)} .planta .porta-pref{fill:var(--emerg)}
+.planta .peca{fill:var(--k);stroke:var(--card);stroke-width:.3}
+.planta .tagpeca{font-family:var(--disp);font-weight:700;font-size:2px;fill:var(--k);paint-order:stroke fill;stroke:var(--card);stroke-width:.6px}
+.planta .letra{font-family:var(--disp);font-weight:800;font-size:4.2px;fill:var(--k)}
+.planta .mini{font-family:var(--disp);font-size:1.6px;fill:var(--muted)}
+.planta .fluxo{fill:none;stroke:var(--k);stroke-width:.4;stroke-dasharray:1.5 1.2;opacity:.7;stroke-linejoin:round}
+.planta .zona-emerg{fill:var(--emerg);fill-opacity:.08;stroke:var(--emerg);stroke-width:.15;stroke-dasharray:.8 .6}
+.planta .zona-recuo{fill:var(--muted);fill-opacity:.07;stroke:var(--muted);stroke-width:.15;stroke-dasharray:.8 .6}
+.planta .zona-apoio{fill:var(--apoio);fill-opacity:.12;stroke:var(--apoio);stroke-width:.2;stroke-dasharray:.8 .6}
+.planta .serp{fill:var(--serp);fill-opacity:.10;stroke:var(--serp);stroke-width:.2;stroke-dasharray:.6 .6}
+.planta .centro{font-family:var(--disp);font-weight:600;font-size:1.75px;fill:var(--muted);letter-spacing:.11em}
+.planta .rosa text{font-family:var(--disp);font-weight:600;font-size:2.7px;fill:var(--muted)}
+figcaption{font-size:.86rem;color:var(--muted);max-width:var(--measure)}
+ol.journey{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;max-width:none}
+ol.journey li{display:grid;grid-template-columns:62px 1fr;gap:18px;padding:16px 0;border-top:1px solid var(--rule)}
+ol.journey li:last-child{border-bottom:1px solid var(--rule)}
+.lvl{font-family:var(--mono);font-size:.76rem;font-weight:600;color:var(--muted);letter-spacing:.06em;padding-top:4px}
+.j-b{display:flex;flex-direction:column;gap:5px} .j-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px} .j-h h4{font-size:1rem}
+.qty{font-family:var(--mono);font-size:.75rem;color:var(--muted);border:1px solid var(--rule);padding:1px 7px;border-radius:99px;white-space:nowrap}
+.j-b p{font-size:.95rem;color:var(--mid);max-width:60ch}
+.wall{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.wall h3{color:var(--k);display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+.wall h3 span{font-family:var(--mono);font-size:.74rem;color:var(--muted);font-weight:400}
+.scroll,.tscroll{overflow-x:auto;background:var(--card);border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:.88rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule-soft)}
+thead th{font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--rule);white-space:nowrap}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+tbody th{font-family:var(--mono);font-weight:600;color:var(--k);white-space:nowrap}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--mid);text-align:right}
+td.pt{font-family:var(--mono);font-weight:600;white-space:nowrap}
+td.secs{min-width:210px}
+.sec{display:inline-block;font-size:.85rem;font-weight:600;letter-spacing:.01em;margin:1px 9px 1px 0}
+.tag{font-family:var(--disp);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:2px;white-space:nowrap}
+.tag-par{background:var(--k);color:var(--card)} .tag-isolada{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--rule)}
+.listas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.lista{background:var(--card);border:1px solid var(--rule);border-left:5px solid var(--k);padding:16px;display:flex;flex-direction:column;gap:10px}
+.lista h4{color:var(--k);font-size:1rem} .lista .sub{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.grupo{display:grid;grid-template-columns:34px 1fr;gap:8px;align-items:start;padding-top:6px;border-top:1px solid var(--rule-soft)}
+.gn{font-family:var(--mono);font-size:.7rem;color:var(--muted);padding-top:3px}
+.grid-sec{display:grid;grid-template-columns:repeat(2,1fr);gap:2px 10px} .grid-sec .sec{margin:0;color:var(--ink)}
+.rodape{font-size:.8rem;color:var(--muted);font-style:italic;padding-top:6px;border-top:1px solid var(--rule-soft)}
+.finds{display:flex;flex-direction:column}
+.find{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--rule)}
+.finds .find:last-child{border-bottom:1px solid var(--rule)}
+.find .k{font-family:var(--disp);font-size:1.6rem;font-weight:800;color:var(--rule);line-height:1;padding-top:2px}
+.find-b{display:flex;flex-direction:column;gap:6px;max-width:62ch} .find h4{font-size:1.02rem} .find p{font-size:.95rem;color:var(--mid)}
+.find.alert h4{color:var(--warn)}
+.note{border-left:3px solid var(--warn);padding:2px 0 2px 16px;font-size:.95rem;color:var(--mid);max-width:var(--measure)}
+.note b{color:var(--warn);font-weight:600}
+ul.plain{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+ul.plain li{display:grid;grid-template-columns:auto 1fr;gap:12px;font-size:.95rem;color:var(--mid);padding-bottom:9px;border-bottom:1px solid var(--rule-soft)}
+ul.plain li:last-child{border-bottom:0;padding-bottom:0}
+ul.plain .n{font-family:var(--mono);font-size:.78rem;color:var(--muted);padding-top:3px} ul.plain b{color:var(--ink);font-weight:600}
+.legenda{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.83rem;color:var(--muted)}
+.legenda span{display:inline-flex;align-items:center;gap:7px} .sw{width:13px;height:13px;border-radius:2px;flex:none}
+footer{padding-block:34px 0;border-top:2px solid var(--ink);margin-top:44px;font-size:.82rem;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+footer code{font-size:.78rem}
+@media (max-width:560px){ body{font-size:16px} ol.journey li{grid-template-columns:1fr;gap:6px} .find{grid-template-columns:1fr;gap:6px} .find .k{font-size:1.1rem} }
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:focus-visible{outline:2px solid var(--a);outline-offset:3px}
+
+  .orc .modelos{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
+    background:var(--rule);border:1px solid var(--rule);margin:22px 0}
+  .orc .modelo{background:var(--surface);padding:14px 15px;display:flex;flex-direction:column;gap:10px}
+  .orc .modelo label{display:flex;flex-direction:column;gap:5px;font-family:var(--sans);font-size:13.5px;
+    line-height:1.45}
+  .orc .modelo label b{font-weight:600;font-size:14px}
+  .orc .modelo label span{color:var(--muted)}
+  .orc .modelo label small{color:var(--muted);font-size:11.5px;line-height:1.4}
+  .orc .preco{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:15px;margin-top:auto}
+  .orc .preco input{width:6.5em;font:600 16px var(--mono);padding:6px 8px;border:1.5px solid var(--rule);
+    border-radius:3px;background:var(--ground);color:var(--ink);text-align:right}
+  .orc .preco input:focus{border-color:var(--a);outline:none}
+  .orctab tfoot td{font-family:var(--sans);font-weight:600;padding:10px 14px;border-top:1px solid var(--rule);
+    background:var(--surface-2)}
+  .orctab tfoot .faixa td{font-weight:400;color:var(--muted);background:var(--surface)}
+  .orc[data-estado="acima"] .delta td{color:var(--alert)}
+  .orc[data-estado="sob"] .delta td{color:var(--muted)}
+  .orcnota{font-size:14.5px;color:var(--muted);max-width:74ch}
+  .reset{font:600 13px var(--sans);padding:7px 12px;border:1px solid var(--rule);background:var(--surface);
+    color:var(--ink);border-radius:3px;cursor:pointer}
+  .reset:hover{border-color:var(--muted)}
+  .mestra{display:grid;grid-template-columns:repeat(3,1fr);gap:0 28px;margin:20px 0 0;
+    font-family:var(--mono);font-size:14px}
+  @media (max-width:640px){.mestra{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:420px){.mestra{grid-template-columns:1fr}}
+  .mrow{display:flex;align-items:center;gap:8px;padding:4.5px 0;border-bottom:1px solid var(--rule-soft)}
+  .mrow .sec{font-weight:600;font-variant-numeric:tabular-nums}
+  .mrow .dots{flex:1;border-bottom:1px dotted var(--rule);height:.7em}
+  .chip{display:inline-block;min-width:22px;text-align:center;font-family:var(--sans);font-weight:700;
+    font-size:12px;line-height:19px;border-radius:2px;padding:0 5px;background:var(--k-soft);color:var(--k);
+    box-shadow:inset 0 0 0 1px var(--k)}
+
+.orc .modelo label{font-family:var(--disp)} .orctab{font-size:.88rem}
+</style>
+
+<div class="page">
+<header class="masthead">
+  <p class="eyebrow">Posto de Dublin · 1º turno · 04 out 2026 · revisão de 16/09</p>
+  <h1>Sinalização interna do RDS&nbsp;Hall&nbsp;2</h1>
+  <p class="lede">Três portas, três paredes, 28 mesas sem número em 16 blocos. O eleitor entra sabendo a seção e a letra da porta; lá dentro, só reencontra a seção — primeiro no painel da porta, depois no banner do bloco.</p>
+  <div class="meta">
+    <span>prancheta Paredes_ABC · paredes-abc-20260915</span>
+    <span>16.794 aptos</span>
+    <span>11.499 comparecimento esperado</span>
+    <span>51 seções</span>
+  </div>
+</header>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">A regra que organiza tudo</p><h2>Porta A leva ao oeste, B ao norte, C ao leste — e as mesas não têm número</h2></div>
+  <p class="col">O salão está em orientação L-O e as três portas ficam na parede sul, a única livre na prancheta. Cada porta atende uma parede e nenhuma outra. A prancheta Paredes_ABC de 15/09 redistribuiu as mesas para equilibrar a carga por porta: a amplitude entre as três caiu para <strong>2 eleitores esperados</strong>. E a numeração das mesas saiu de toda peça: o eleitor procura a seção, e a seção é o único texto das listas.</p>
+  <div class="tiles"><article class="tile t-a"><p class="tile-k">Porta A</p><p class="tile-w">S4 → parede oeste</p><dl><div><dt>mesas</dt><dd>9</dd></div><div><dt>blocos</dt><dd>5</dd></div><div><dt>seções</dt><dd>18</dd></div><div><dt>aptos</dt><dd>5.695</dd></div><div class="hi"><dt>esperados</dt><dd>3.834</dd></div></dl></article><article class="tile t-b"><p class="tile-k">Porta B</p><p class="tile-w">S5 → parede norte</p><dl><div><dt>mesas</dt><dd>9</dd></div><div><dt>blocos</dt><dd>5</dd></div><div><dt>seções</dt><dd>16</dd></div><div><dt>aptos</dt><dd>5.600</dd></div><div class="hi"><dt>esperados</dt><dd>3.832</dd></div></dl></article><article class="tile t-c"><p class="tile-k">Porta C</p><p class="tile-w">S6 → parede leste</p><dl><div><dt>mesas</dt><dd>10</dd></div><div><dt>blocos</dt><dd>6</dd></div><div><dt>seções</dt><dd>17</dd></div><div><dt>aptos</dt><dd>5.499</dd></div><div class="hi"><dt>esperados</dt><dd>3.833</dd></div></dl></article></div>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">Planta em escala · 50,3 × 44,4 m</p><h2>Onde cada peça fica e o que ela diz</h2></div>
+  <figure class="plan"><div class="plan-wrap"><svg class="planta" viewBox="-11 -12 72.3 66.4" role="img" aria-label="Planta do Hall 2 com as 28 mesas agrupadas em 16 blocos, coloridas pela porta que as atende, e a posição dos painéis de porta e dos banners de bloco."><path class="salao" d="M 7.8 44.4 L 50.3 44.4 L 50.3 0.0 L 0 0.0 L 0 37.4 L 7.8 37.4 Z"/><g class="rosa"><text x="25.15" y="-8.4" text-anchor="middle">N</text></g><rect class="zona-emerg" x="47.3" y="0.0" width="3.00" height="44.40"/><rect class="zona-recuo" x="20.66" y="0.0" width="3.56" height="3.00"/><rect class="zona-recuo" x="0.0" y="21.97" width="3.00" height="3.07"/><rect class="zona-recuo" x="35.09" y="41.4" width="7.27" height="3.00"/><rect class="zona-recuo" x="7.8" y="37.4" width="3.00" height="7.00"/><rect class="zona-recuo" x="14.22" y="41.4" width="7.25" height="3.00"/><rect class="zona-apoio" x="0.0" y="0.0" width="7.80" height="5.90"/><rect class="serp" x="4.1" y="19.88" width="4.20" height="2.80"/><rect class="serp" x="17.16" y="4.1" width="2.80" height="4.20"/><rect class="serp" x="39.0" y="14.15" width="4.20" height="2.80"/><rect class="bloco t-a" x="-0.4" y="31.27" width="5.00" height="6.30" rx=".5"/><rect class="mesa t-a" x="0" y="35.92" width="4.1" height="0.9"/><rect class="mesa t-a" x="0" y="32.02" width="4.1" height="0.9"/><text class="rot t-a" x="5.40" y="34.12" text-anchor="start"><tspan x="5.40" dy="0">1278 1314</tspan><tspan x="5.40" dy="1.5">3142 3309</tspan></text><rect class="peca t-a" x="3.80" y="34.12" width="1.6" height=".6"/><rect class="bloco t-a" x="-0.4" y="24.97" width="5.00" height="6.30" rx=".5"/><rect class="mesa t-a" x="0" y="29.62" width="4.1" height="0.9"/><rect class="mesa t-a" x="0" y="25.72" width="4.1" height="0.9"/><text class="rot t-a" x="5.40" y="27.82" text-anchor="start"><tspan x="5.40" dy="0">3161 3307</tspan><tspan x="5.40" dy="1.5">3311 3913</tspan></text><rect class="peca t-a" x="3.80" y="27.82" width="1.6" height=".6"/><rect class="bloco t-a" x="-0.4" y="20.08" width="5.00" height="2.40" rx=".5"/><rect class="mesa t-a" x="0" y="20.83" width="4.1" height="0.9"/><text class="rot t-a" x="5.40" y="21.73" text-anchor="start"><tspan x="5.40" dy="0">3313 3889</tspan></text><rect class="peca t-a" x="3.80" y="20.98" width="1.6" height=".6"/><rect class="bloco t-a" x="-0.4" y="13.38" width="5.00" height="6.30" rx=".5"/><rect class="mesa t-a" x="0" y="18.03" width="4.1" height="0.9"/><rect class="mesa t-a" x="0" y="14.13" width="4.1" height="0.9"/><text class="rot t-a" x="5.40" y="16.23" text-anchor="start"><tspan x="5.40" dy="0">0513 0522</tspan><tspan x="5.40" dy="1.5">1105 1352</tspan></text><rect class="peca t-a" x="3.80" y="16.23" width="1.6" height=".6"/><rect class="bloco t-a" x="-0.4" y="7.08" width="5.00" height="6.30" rx=".5"/><rect class="mesa t-a" x="0" y="11.73" width="4.1" height="0.9"/><rect class="mesa t-a" x="0" y="7.83" width="4.1" height="0.9"/><text class="rot t-a" x="5.40" y="9.93" text-anchor="start"><tspan x="5.40" dy="0">0530 2847</tspan><tspan x="5.40" dy="1.5">3078 3179</tspan></text><rect class="peca t-a" x="3.80" y="9.93" width="1.6" height=".6"/><rect class="bloco t-b" x="10.66" y="-0.4" width="6.30" height="5.00" rx=".5"/><rect class="mesa t-b" x="11.41" y="0" width="0.9" height="4.1"/><rect class="mesa t-b" x="15.31" y="0" width="0.9" height="4.1"/><text class="rot t-b" x="13.81" y="-3.85" text-anchor="middle"><tspan x="13.81" dy="0">0512</tspan><tspan x="13.81" dy="1.5">1160</tspan><tspan x="13.81" dy="1.5">2855</tspan><tspan x="13.81" dy="1.5">3845</tspan></text><rect class="peca t-b" x="13.01" y="4.30" width="1.6" height=".6"/><rect class="bloco t-b" x="17.36" y="-0.4" width="2.40" height="5.00" rx=".5"/><rect class="mesa t-b" x="18.11" y="0" width="0.9" height="4.1"/><text class="rot t-b" x="18.56" y="-2.35" text-anchor="middle"><tspan x="18.56" dy="0">3315</tspan><tspan x="18.56" dy="1.5">3778</tspan></text><rect class="peca t-b" x="17.76" y="4.30" width="1.6" height=".6"/><rect class="bloco t-b" x="24.03" y="-0.4" width="6.30" height="5.00" rx=".5"/><rect class="mesa t-b" x="24.78" y="0" width="0.9" height="4.1"/><rect class="mesa t-b" x="28.68" y="0" width="0.9" height="4.1"/><text class="rot t-b" x="27.18" y="-3.85" text-anchor="middle"><tspan x="27.18" dy="0">3108</tspan><tspan x="27.18" dy="1.5">3181</tspan><tspan x="27.18" dy="1.5">3302</tspan><tspan x="27.18" dy="1.5">3422</tspan></text><rect class="peca t-b" x="26.38" y="4.30" width="1.6" height=".6"/><rect class="bloco t-b" x="30.33" y="-0.4" width="6.30" height="5.00" rx=".5"/><rect class="mesa t-b" x="31.08" y="0" width="0.9" height="4.1"/><rect class="mesa t-b" x="34.98" y="0" width="0.9" height="4.1"/><text class="rot t-b" x="33.48" y="-3.85" text-anchor="middle"><tspan x="33.48" dy="0">0518</tspan><tspan x="33.48" dy="1.5">0521</tspan><tspan x="33.48" dy="1.5">3305</tspan><tspan x="33.48" dy="1.5">3306</tspan></text><rect class="peca t-b" x="32.68" y="4.30" width="1.6" height=".6"/><rect class="bloco t-b" x="36.63" y="-0.4" width="6.30" height="5.00" rx=".5"/><rect class="mesa t-b" x="37.38" y="0" width="0.9" height="4.1"/><rect class="mesa t-b" x="41.28" y="0" width="0.9" height="4.1"/><text class="rot t-b" x="39.78" y="-2.35" text-anchor="middle"><tspan x="39.78" dy="0">3308</tspan><tspan x="39.78" dy="1.5">3832</tspan></text><rect class="peca t-b" x="38.98" y="4.30" width="1.6" height=".6"/><rect class="bloco t-c" x="45.70" y="36.05" width="5.00" height="2.40" rx=".5"/><rect class="mesa t-c" x="46.20" y="36.80" width="4.1" height="0.9"/><text class="rot t-c" x="44.90" y="37.70" text-anchor="end"><tspan x="44.90" dy="0">3442</tspan></text><rect class="peca t-c" x="44.90" y="36.95" width="1.6" height=".6"/><rect class="bloco t-c" x="45.70" y="29.75" width="5.00" height="6.30" rx=".5"/><rect class="mesa t-c" x="46.20" y="34.40" width="4.1" height="0.9"/><rect class="mesa t-c" x="46.20" y="30.50" width="4.1" height="0.9"/><text class="rot t-c" x="44.90" y="32.60" text-anchor="end"><tspan x="44.90" dy="0">3229 3688</tspan><tspan x="44.90" dy="1.5">3821</tspan></text><rect class="peca t-c" x="44.90" y="32.60" width="1.6" height=".6"/><rect class="bloco t-c" x="45.70" y="23.45" width="5.00" height="6.30" rx=".5"/><rect class="mesa t-c" x="46.20" y="28.10" width="4.1" height="0.9"/><rect class="mesa t-c" x="46.20" y="24.20" width="4.1" height="0.9"/><text class="rot t-c" x="44.90" y="26.30" text-anchor="end"><tspan x="44.90" dy="0">0519 3245</tspan><tspan x="44.90" dy="1.5">3862</tspan></text><rect class="peca t-c" x="44.90" y="26.30" width="1.6" height=".6"/><rect class="bloco t-c" x="45.70" y="17.15" width="5.00" height="6.30" rx=".5"/><rect class="mesa t-c" x="46.20" y="21.80" width="4.1" height="0.9"/><rect class="mesa t-c" x="46.20" y="17.90" width="4.1" height="0.9"/><text class="rot t-c" x="44.90" y="20.00" text-anchor="end"><tspan x="44.90" dy="0">0527 1099</tspan><tspan x="44.90" dy="1.5">3054 3216</tspan></text><rect class="peca t-c" x="44.90" y="20.00" width="1.6" height=".6"/><rect class="bloco t-c" x="45.70" y="14.35" width="5.00" height="2.40" rx=".5"/><rect class="mesa t-c" x="46.20" y="15.10" width="4.1" height="0.9"/><text class="rot t-c" x="44.90" y="16.00" text-anchor="end"><tspan x="44.90" dy="0">3322 3752</tspan></text><rect class="peca t-c" x="44.90" y="15.25" width="1.6" height=".6"/><rect class="bloco t-c" x="45.70" y="7.65" width="5.00" height="6.30" rx=".5"/><rect class="mesa t-c" x="46.20" y="12.30" width="4.1" height="0.9"/><rect class="mesa t-c" x="46.20" y="8.40" width="4.1" height="0.9"/><text class="rot t-c" x="44.90" y="10.50" text-anchor="end"><tspan x="44.90" dy="0">0511 0517</tspan><tspan x="44.90" dy="1.5">1100 1292</tspan></text><rect class="peca t-c" x="44.90" y="10.50" width="1.6" height=".6"/><rect class="porta-saida" x="13.25" y="43.95" width="1.20" height=".9"/><text class="mini" x="13.85" y="46.80" text-anchor="middle">S2 saída</text><rect class="porta t-a" x="19.1" y="43.95" width="5.93" height=".9"/><text class="letra t-a" x="22.07" y="48.80" text-anchor="middle">A</text><rect class="porta t-b" x="25.32" y="43.95" width="5.93" height=".9"/><text class="letra t-b" x="28.29" y="48.80" text-anchor="middle">B</text><rect class="porta t-c" x="31.54" y="43.95" width="5.93" height=".9"/><text class="letra t-c" x="34.50" y="48.80" text-anchor="middle">C</text><rect class="porta-pref" x="38.09" y="43.95" width="1.27" height=".9"/><text class="mini" x="38.73" y="46.80" text-anchor="middle">S7 prefer.</text><rect class="porta-saida" x="42.12" y="43.95" width="1.20" height=".9"/><text class="mini" x="42.72" y="46.80" text-anchor="middle">S8 saída</text><circle class="peca t-a" cx="25.46" cy="41.20" r=".85"/><text class="tagpeca t-a" x="26.77" y="41.80" text-anchor="start">painel A</text><path class="fluxo t-a" d="M 22.065 44.4 L 22.065 38.4 L 6.5 38.4 L 6.5 7.0"/><circle class="peca t-b" cx="31.68" cy="41.20" r=".85"/><text class="tagpeca t-b" x="32.98" y="41.80" text-anchor="start">painel B</text><path class="fluxo t-b" d="M 28.285 44.4 L 28.285 6.0"/><circle class="peca t-c" cx="31.10" cy="41.20" r=".85"/><text class="tagpeca t-c" x="29.80" y="41.80" text-anchor="end">painel C</text><path class="fluxo t-c" d="M 34.504999999999995 44.4 L 34.504999999999995 38.4 L 43.8 38.4 L 43.8 7.0"/><text class="centro" x="25.15" y="24.2" text-anchor="middle">MIOLO LIVRE · circulação</text></svg></div>
+  <figcaption>Cada retângulo cheio é uma mesa, na coordenada da prancheta; o bloco sombreado é o par que compartilha o corredor de 3,0 m e, portanto, o banner. Os números ao lado de cada bloco são o que vai impresso no banner daquele bloco. Círculo: painel da porta (pull-up). Retângulo pequeno na boca do corredor: banner de bloco (X-banner). Tracejado: o percurso da porta até a parede. Áreas tracejadas: faixa de 3 m das saídas de emergência L1–L4, recuos de N2, O2, S3, S7 e R1, sala de apoio; em vermelho, o espaço reservado ao serpenteado das três mesas mais carregadas.</figcaption></figure>
+  <div class="legenda">
+    <span><i class="sw" style="background:var(--a)"></i>porta A · parede oeste</span>
+    <span><i class="sw" style="background:var(--b)"></i>porta B · parede norte</span>
+    <span><i class="sw" style="background:var(--c)"></i>porta C · parede leste</span>
+    <span><i class="sw" style="background:var(--emerg)"></i>S7 preferencial · faixa de emergência</span>
+    <span><i class="sw" style="background:var(--muted)"></i>S2 · S8 saídas</span>
+    <span><i class="sw" style="background:var(--serp)"></i>serpenteado reservado</span>
+  </div>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">O percurso do eleitor · 21 peças internas</p><h2>Três níveis, na ordem em que são lidos</h2></div>
+  <ol class="journey">
+    <li><span class="lvl">N0</span><div class="j-b"><div class="j-h"><h4>Antes da porta: a boca da zona no Ring 3</h4><span class="qty">3 un · plano externo</span></div>
+      <p>Não é peça interna, mas é a premissa de todas elas: o eleitor só chega à porta A porque entrou na zona A do Ring 3, cuja boca lista as 18 seções da parede oeste. A lista da boca e a lista do painel da porta são a mesma, na mesma cor. Ver a Rota do Eleitor.</p></div></li>
+    <li><span class="lvl">N1</span><div class="j-b"><div class="j-h"><h4>Painel da porta</h4><span class="qty">3 un · pull-up 850 × 2000</span></div>
+      <p>Logo depois da porta, do lado oposto à curva que o eleitor faz (A vira a oeste, C vira a leste, B segue reto), para que quem para de ler não represe a entrada. Letra da porta em 300 mm no alto, cor da porta no fundo, e as seções da parede em 60 mm <strong>agrupadas por bloco e na ordem física</strong> em que o eleitor vai encontrá-las — o painel espelha a parede. É a única confirmação até o bloco, e para a porta B resolve a travessia de 40 m até a parede norte. Substitui o totem e a lista da revisão anterior numa peça só.</p></div></li>
+    <li><span class="lvl">N2</span><div class="j-b"><div class="j-h"><h4>Banner de bloco</h4><span class="qty">16 un · X-banner 600 × 1600 · peça crítica</span></div>
+      <p>Na boca do corredor de cada par, a 4,6 m da parede, lido de dentro da fila em movimento: só as seções do bloco (duas a quatro), em 120 mm, quatro dígitos. <strong>Nenhum número de mesa.</strong> Dentro do par, cada mesa se distingue pelas suas seções — o eleitor da 3313 entra na via da 3313, não “na mesa da esquerda”.</p></div></li>
+    <li><span class="lvl">N3</span><div class="j-b"><div class="j-h"><h4>Saídas</h4><span class="qty">2 un · correx A2</span></div>
+      <p>SAÍDA / WAY OUT sobre S2 e S8, que ficam nos flancos, fora do vão das entradas: os fluxos se separam sozinhos.</p></div></li>
+  </ol>
+  <p class="col">Em todas as peças: seção com <strong>4 dígitos</strong>, como no e-Título (<code>0511</code>, não <code>511</code>); ordem crescente dentro de cada bloco; a cor da porta constante do gradil da Merrion Road ao banner do bloco — A azul, B âmbar, C magenta, a mesma paleta da prancheta e da montagem do Ring 3.</p>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">N2 · conteúdo literal</p><h2>Os 16 banners de bloco</h2></div>
+  <p class="col">A coluna de posição é para a equipe de montagem — não vai impressa. Nada aqui carrega número de mesa; os MRVs ficam em <code>saidas/sinalizacao_v2.json</code> para o Cartório.</p>
+  <section class="wall t-a"><h3>Porta A <span>parede oeste · 4 pares + 1 isolada(s)</span></h3><div class="scroll"><table><thead><tr><th scope="col">Peça</th><th scope="col">Tipo</th><th scope="col">Posição na parede</th><th scope="col">Seções impressas</th><th scope="col">Aptos</th><th scope="col">Esperados</th></tr></thead><tbody><tr><th scope="row">BA1</th><td><span class="tag tag-par">par</span></td><td class="num">8,03 – 11,93 m</td><td class="secs"><span class="sec">1278</span><span class="sec">1314</span><span class="sec">3142</span><span class="sec">3309</span></td><td class="num">1.408</td><td class="num">861</td></tr><tr><th scope="row">BA2</th><td><span class="tag tag-par">par</span></td><td class="num">14,33 – 18,23 m</td><td class="secs"><span class="sec">3161</span><span class="sec">3307</span><span class="sec">3311</span><span class="sec">3913</span></td><td class="num">1.421</td><td class="num">970</td></tr><tr><th scope="row">BA3</th><td><span class="tag tag-isolada">isolada</span></td><td class="num">23,12 m</td><td class="secs"><span class="sec">3313</span><span class="sec">3889</span></td><td class="num">797</td><td class="num">590</td></tr><tr><th scope="row">BA4</th><td><span class="tag tag-par">par</span></td><td class="num">25,92 – 29,82 m</td><td class="secs"><span class="sec">0513</span><span class="sec">0522</span><span class="sec">1105</span><span class="sec">1352</span></td><td class="num">964</td><td class="num">679</td></tr><tr><th scope="row">BA5</th><td><span class="tag tag-par">par</span></td><td class="num">32,22 – 36,12 m</td><td class="secs"><span class="sec">0530</span><span class="sec">2847</span><span class="sec">3078</span><span class="sec">3179</span></td><td class="num">1.105</td><td class="num">734</td></tr></tbody></table></div></section><section class="wall t-b"><h3>Porta B <span>parede norte · 4 pares + 1 isolada(s)</span></h3><div class="scroll"><table><thead><tr><th scope="col">Peça</th><th scope="col">Tipo</th><th scope="col">Posição na parede</th><th scope="col">Seções impressas</th><th scope="col">Aptos</th><th scope="col">Esperados</th></tr></thead><tbody><tr><th scope="row">BB1</th><td><span class="tag tag-par">par</span></td><td class="num">11,86 – 15,76 m</td><td class="secs"><span class="sec">0512</span><span class="sec">1160</span><span class="sec">2855</span><span class="sec">3845</span></td><td class="num">949</td><td class="num">683</td></tr><tr><th scope="row">BB2</th><td><span class="tag tag-isolada">isolada</span></td><td class="num">18,56 m</td><td class="secs"><span class="sec">3315</span><span class="sec">3778</span></td><td class="num">792</td><td class="num">586</td></tr><tr><th scope="row">BB3</th><td><span class="tag tag-par">par</span></td><td class="num">25,23 – 29,13 m</td><td class="secs"><span class="sec">3108</span><span class="sec">3181</span><span class="sec">3302</span><span class="sec">3422</span></td><td class="num">1.527</td><td class="num">985</td></tr><tr><th scope="row">BB4</th><td><span class="tag tag-par">par</span></td><td class="num">31,53 – 35,43 m</td><td class="secs"><span class="sec">0518</span><span class="sec">0521</span><span class="sec">3305</span><span class="sec">3306</span></td><td class="num">1.533</td><td class="num">987</td></tr><tr><th scope="row">BB5</th><td><span class="tag tag-par">par</span></td><td class="num">37,83 – 41,73 m</td><td class="secs"><span class="sec">3308</span><span class="sec">3832</span></td><td class="num">799</td><td class="num">591</td></tr></tbody></table></div></section><section class="wall t-c"><h3>Porta C <span>parede leste · 4 pares + 2 isolada(s)</span></h3><div class="scroll"><table><thead><tr><th scope="col">Peça</th><th scope="col">Tipo</th><th scope="col">Posição na parede</th><th scope="col">Seções impressas</th><th scope="col">Aptos</th><th scope="col">Esperados</th></tr></thead><tbody><tr><th scope="row">BC1</th><td><span class="tag tag-isolada">isolada</span></td><td class="num">7,15 m</td><td class="secs"><span class="sec">3442</span></td><td class="num">398</td><td class="num">295</td></tr><tr><th scope="row">BC2</th><td><span class="tag tag-par">par</span></td><td class="num">9,55 – 13,45 m</td><td class="secs"><span class="sec">3229</span><span class="sec">3688</span><span class="sec">3821</span></td><td class="num">1.006</td><td class="num">701</td></tr><tr><th scope="row">BC3</th><td><span class="tag tag-par">par</span></td><td class="num">15,85 – 19,75 m</td><td class="secs"><span class="sec">0519</span><span class="sec">3245</span><span class="sec">3862</span></td><td class="num">1.181</td><td class="num">794</td></tr><tr><th scope="row">BC4</th><td><span class="tag tag-par">par</span></td><td class="num">22,15 – 26,05 m</td><td class="secs"><span class="sec">0527</span><span class="sec">1099</span><span class="sec">3054</span><span class="sec">3216</span></td><td class="num">1.025</td><td class="num">732</td></tr><tr><th scope="row">BC5</th><td><span class="tag tag-isolada">isolada</span></td><td class="num">28,85 m</td><td class="secs"><span class="sec">3322</span><span class="sec">3752</span></td><td class="num">794</td><td class="num">588</td></tr><tr><th scope="row">BC6</th><td><span class="tag tag-par">par</span></td><td class="num">31,65 – 35,55 m</td><td class="secs"><span class="sec">0511</span><span class="sec">0517</span><span class="sec">1100</span><span class="sec">1292</span></td><td class="num">1.095</td><td class="num">723</td></tr></tbody></table></div></section>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">N1 · conteúdo literal</p><h2>Os 3 painéis de porta</h2></div>
+  <p class="col">Blocos na ordem física da parede, do ponto em que o eleitor chega. Na arte, quatro dígitos e o rodapé obrigatório.</p>
+  <div class="listas"><article class="lista t-a"><h4>Porta A · parede oeste</h4><p class="sub">18 seções · na ordem em que o eleitor as encontra</p><div class="grupo"><span class="gn">BA1</span><div class="grid-sec"><span class="sec">1278</span><span class="sec">1314</span><span class="sec">3142</span><span class="sec">3309</span></div></div><div class="grupo"><span class="gn">BA2</span><div class="grid-sec"><span class="sec">3161</span><span class="sec">3307</span><span class="sec">3311</span><span class="sec">3913</span></div></div><div class="grupo"><span class="gn">BA3</span><div class="grid-sec"><span class="sec">3313</span><span class="sec">3889</span></div></div><div class="grupo"><span class="gn">BA4</span><div class="grid-sec"><span class="sec">0513</span><span class="sec">0522</span><span class="sec">1105</span><span class="sec">1352</span></div></div><div class="grupo"><span class="gn">BA5</span><div class="grid-sec"><span class="sec">0530</span><span class="sec">2847</span><span class="sec">3078</span><span class="sec">3179</span></div></div><p class="rodape">não encontrou a sua? procure um mesário — sua seção está em outra porta</p></article><article class="lista t-b"><h4>Porta B · parede norte</h4><p class="sub">16 seções · na ordem em que o eleitor as encontra</p><div class="grupo"><span class="gn">BB1</span><div class="grid-sec"><span class="sec">0512</span><span class="sec">1160</span><span class="sec">2855</span><span class="sec">3845</span></div></div><div class="grupo"><span class="gn">BB2</span><div class="grid-sec"><span class="sec">3315</span><span class="sec">3778</span></div></div><div class="grupo"><span class="gn">BB3</span><div class="grid-sec"><span class="sec">3108</span><span class="sec">3181</span><span class="sec">3302</span><span class="sec">3422</span></div></div><div class="grupo"><span class="gn">BB4</span><div class="grid-sec"><span class="sec">0518</span><span class="sec">0521</span><span class="sec">3305</span><span class="sec">3306</span></div></div><div class="grupo"><span class="gn">BB5</span><div class="grid-sec"><span class="sec">3308</span><span class="sec">3832</span></div></div><p class="rodape">não encontrou a sua? procure um mesário — sua seção está em outra porta</p></article><article class="lista t-c"><h4>Porta C · parede leste</h4><p class="sub">17 seções · na ordem em que o eleitor as encontra</p><div class="grupo"><span class="gn">BC1</span><div class="grid-sec"><span class="sec">3442</span></div></div><div class="grupo"><span class="gn">BC2</span><div class="grid-sec"><span class="sec">3229</span><span class="sec">3688</span><span class="sec">3821</span></div></div><div class="grupo"><span class="gn">BC3</span><div class="grid-sec"><span class="sec">0519</span><span class="sec">3245</span><span class="sec">3862</span></div></div><div class="grupo"><span class="gn">BC4</span><div class="grid-sec"><span class="sec">0527</span><span class="sec">1099</span><span class="sec">3054</span><span class="sec">3216</span></div></div><div class="grupo"><span class="gn">BC5</span><div class="grid-sec"><span class="sec">3322</span><span class="sec">3752</span></div></div><div class="grupo"><span class="gn">BC6</span><div class="grid-sec"><span class="sec">0511</span><span class="sec">0517</span><span class="sec">1100</span><span class="sec">1292</span></div></div><p class="rodape">não encontrou a sua? procure um mesário — sua seção está em outra porta</p></article></div>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">Filas no piso</p><h2>Uma via por mesa, nenhuma cruza outra</h2></div>
+  <p class="col"><strong>A fila é por mesa, não por par.</strong> Cada mesa guarda o caderno das suas próprias seções; o eleitor da 3313 não pode ser atendido na mesa ao lado. São 28 filas em 16 blocos: o banner é do bloco, a fita no chão desce ao nível da mesa e se bifurca dentro do corredor de 3,0 m do par, um ramo por conjunto de seções, com o decalque da seção na cauda.</p>
+  <p class="col">A regra que garante o não cruzamento continua geométrica: cada mesa é dona da faixa de piso à sua frente, tão larga quanto o vão até a vizinha, e essa faixa avança perpendicular à própria parede. Toda a circulação acontece no miolo livre; o eleitor entra na via pela cauda. A prancheta já reserva, à frente das três mesas de maior carga (3313·3889, 3315·3778, 3322·3752), o retângulo de um serpenteado de ~20 pessoas em duas raias de 4,2 m, com 1,90 m de folga dos dois lados.</p>
+  <p class="note"><b>O dimensionamento mesa a mesa das vias saiu desta revisão.</b> Ele foi calculado sobre a prancheta anterior (Hamad_Final) e as posições mudaram; a simulação a 60 s por voto precisa ser refeita sobre a Paredes_ABC antes de qualquer colagem. O que não muda: a 90 s por voto o piso não comporta a fila, qualquer que seja a prancheta.</p>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">Achados que condicionam o plano</p><h2>Quatro coisas que não dá para contornar com design</h2></div>
+  <div class="finds">
+    <div class="find alert"><span class="k">01</span><div class="find-b"><h4>Não existe regra numérica que leve o eleitor à porta certa</h4>
+      <p>As seções 33xx de Dublin continuam espalhadas pelas três portas. Nenhuma peça pode usar faixa de numeração; toda peça de triagem carrega a lista completa.</p></div></div>
+    <div class="find alert"><span class="k">02</span><div class="find-b"><h4>Nem o condado serve de atalho</h4>
+      <p>Cork, Limerick caem em duas portas cada. O eleitor do interior só pode ser triado pelo número da seção — e quem não o sabe precisa do ponto de consulta fora do RDS, não de um mesário na porta.</p></div></div>
+    <div class="find"><span class="k">03</span><div class="find-b"><h4>Sem número de mesa, o bloco é a menor unidade nomeável</h4>
+      <p>O eleitor não pode ser mandado “à mesa 12”: é mandado à parede, depois ao bloco, depois à via da sua seção. Por isso o painel da porta precisa espelhar a ordem física dos blocos, e por isso o banner de bloco é a peça crítica.</p></div></div>
+    <div class="find"><span class="k">04</span><div class="find-b"><h4>A porta B é a única cujo destino não se vê da entrada</h4>
+      <p>São ~40 m de travessia pelo miolo até a parede norte. Se sobrar orçamento, o primeiro reforço é um segundo painel da porta B no meio do salão.</p></div></div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">Separadores físicos · item (d) do orçamento</p><h2>A fita muda a conta</h2></div>
+  <p class="col">Com o miolo livre fazendo o papel de corredor-tronco, o separador físico (unifila, 100 un / 200 m) deixa de acompanhar as três paredes. Sobram três usos em que a fita no chão não basta: a <strong>bifurcação dentro do corredor de 3,0 m de cada par</strong>, onde duas vias se separam a menos de dois metros uma da outra; o <strong>recuo das três mesas de maior carga</strong>, cujo serpenteado de duas raias precisa de ponta rígida; e a <strong>separação no apron</strong> entre a corrente que chega ao Ring 3 e a saída S8. A fila externa inteira agora é do Ring 3 (180 CCBs do estoque de 200) e não sai deste item.</p>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">Tabela mestra · 51 seções</p><h2>Seção → porta</h2></div>
+  <p class="col">A peça mais reaproveitável do plano: é o conteúdo literal das sete tabelas externas, do Instagram e do site, do roteiro dos orientadores e do cartão de bolso dos mesários. Ordem crescente de seção, porque é assim que o eleitor procura.</p>
+  <div class="mestra"><div class="mcol"><div class="mrow"><span class="sec">0511</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">0512</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">0513</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">0517</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">0518</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">0519</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">0521</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">0522</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">0527</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">0530</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">1099</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">1100</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">1105</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">1160</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">1278</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">1292</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">1314</span><span class="dots"></span><span class="chip t-a">A</span></div></div><div class="mcol"><div class="mrow"><span class="sec">1352</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">2847</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">2855</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3054</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3078</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">3108</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3142</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">3161</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">3179</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">3181</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3216</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3229</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3245</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3302</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3305</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3306</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3307</span><span class="dots"></span><span class="chip t-a">A</span></div></div><div class="mcol"><div class="mrow"><span class="sec">3308</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3309</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">3311</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">3313</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">3315</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3322</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3422</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3442</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3688</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3752</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3778</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3821</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3832</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3845</span><span class="dots"></span><span class="chip t-b">B</span></div><div class="mrow"><span class="sec">3862</span><span class="dots"></span><span class="chip t-c">C</span></div><div class="mrow"><span class="sec">3889</span><span class="dots"></span><span class="chip t-a">A</span></div><div class="mrow"><span class="sec">3913</span><span class="dots"></span><span class="chip t-a">A</span></div></div></div>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">Orçamento · peças internas e externas</p><h2>Onde os € 1.700–€ 1.900 vão</h2></div>
+  <p class="col">A mesma tabela da Rota do Eleitor, para fechar as duas listas de uma vez. As peças internas não precisam de fixação: pull-up e X-banner são autoportantes. Os preços unitários são editáveis.</p>
+  
+<div class="orc" id="orc-hall">
+  <div class="modelos"><div class="modelo"><label for="orc-hall-mesh"><b>Banner em mesh 2,0 × 1,0 m</b><span>Poliéster perfurado (70/30), bainha e ilhós a cada 50 cm. Deixa o vento passar; é a única peça admissível em grade, gradil e CCB.</span><small>Fonte: mesh &#x27;from €20 + VAT&#x27; (Kaizen Print, Printroom); PVC 2×4 ft €25–45 (PrintNPack). Valor de 2×1 m é extrapolação.</small></label><div class="preco"><span>€</span><input type="number" min="0" step="1" id="orc-hall-mesh" data-modelo="mesh" value="60" inputmode="decimal"></div></div><div class="modelo"><label for="orc-hall-pvc"><b>Banner PVC 440 g 1,8 × 1,2 m</b><span>Lona fechada com ilhós, só onde a parede abriga do vento (lateral leste do Hall 2).</span><small>Fonte: banners maiores €60–150 (PrintNPack); £15/m² no Reino Unido (Synegraphics).</small></label><div class="preco"><span>€</span><input type="number" min="0" step="1" id="orc-hall-pvc" data-modelo="pvc" value="55" inputmode="decimal"></div></div><div class="modelo"><label for="orc-hall-pullup"><b>Pull-up 850 × 2000 mm</b><span>Cassete com base própria; interno. Letra da porta em 300 mm e as seções da parede em 60 mm.</span><small>Fonte: €80 (PrintNPack) a €90 (Bannerz.ie), inc. IVA.</small></label><div class="preco"><span>€</span><input type="number" min="0" step="1" id="orc-hall-pullup" data-modelo="pullup" value="85" inputmode="decimal"></div></div><div class="modelo"><label for="orc-hall-xbanner"><b>X-banner 600 × 1600 mm</b><span>Tripé em X com lona tensionada; o formato autoportante mais barato. Interno, um por bloco de mesas.</span><small>Fonte: PREMISSA — não verificado em fonte irlandesa; ordem de grandeza de pull-up de entrada menos a cassete.</small></label><div class="preco"><span>€</span><input type="number" min="0" step="1" id="orc-hall-xbanner" data-modelo="xbanner" value="40" inputmode="decimal"></div></div><div class="modelo"><label for="orc-hall-correx"><b>Placa correx 4 mm A2</b><span>Placa rígida leve, furada nos cantos para abraçadeira.</span><small>Fonte: correx &#x27;from €5&#x27; (Printco Dublin); A1 £35 + VAT no Reino Unido.</small></label><div class="preco"><span>€</span><input type="number" min="0" step="1" id="orc-hall-correx" data-modelo="correx" value="15" inputmode="decimal"></div></div><div class="modelo"><label for="orc-hall-vinil"><b>Vinil recortado por porta</b><span>Letra da porta em 300 mm + ENTRADA, colado por dentro do vidro da fachada sul. Sem estrutura.</span><small>Fonte: PREMISSA — recorte simples de 4–8 caracteres.</small></label><div class="preco"><span>€</span><input type="number" min="0" step="1" id="orc-hall-vinil" data-modelo="vinil" value="30" inputmode="decimal"></div></div><div class="modelo"><label for="orc-hall-fixacao"><b>Fixação (abraçadeiras, ímãs, fita)</b><span>200 abraçadeiras de nylon 300 mm, 12 ganchos magnéticos para as portas de aço, fita dupla-face para o vinil.</span><small>Fonte: PREMISSA — itens de ferragem.</small></label><div class="preco"><span>€</span><input type="number" min="0" step="1" id="orc-hall-fixacao" data-modelo="fixacao" value="40" inputmode="decimal"></div></div></div>
+  <div class="tscroll"><table class="orctab"><thead><tr><th>Ponto</th><th>Peça</th><th>Modelo</th>
+    <th class="num">Qtd</th><th class="num">Unit.</th><th class="num">Total</th></tr></thead>
+    <tbody><tr data-modelo="mesh" data-qtd="1"><td class="pt">P0</td><td>Ponto “descubra sua seção”</td><td>Banner em mesh 2,0 × 1,0 m</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="mesh" data-qtd="2"><td class="pt">P0</td><td>Tabela mestra na calçada</td><td>Banner em mesh 2,0 × 1,0 m</td><td class="num">2</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="mesh" data-qtd="1"><td class="pt">P1</td><td>Portão de entrada do RDS</td><td>Banner em mesh 2,0 × 1,0 m</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="mesh" data-qtd="1"><td class="pt">P1</td><td>Tabela mestra no portão</td><td>Banner em mesh 2,0 × 1,0 m</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="pvc" data-qtd="3"><td class="pt">P2</td><td>Tabela mestra na parede leste do Hall 2</td><td>Banner PVC 440 g 1,8 × 1,2 m</td><td class="num">3</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="mesh" data-qtd="1"><td class="pt">P3</td><td>Entrada do Ring 3</td><td>Banner em mesh 2,0 × 1,0 m</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="mesh" data-qtd="1"><td class="pt">P4</td><td>Boca da zona A</td><td>Banner em mesh 2,0 × 1,0 m</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="mesh" data-qtd="1"><td class="pt">P4</td><td>Boca da zona B</td><td>Banner em mesh 2,0 × 1,0 m</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="mesh" data-qtd="1"><td class="pt">P4</td><td>Boca da zona C</td><td>Banner em mesh 2,0 × 1,0 m</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="vinil" data-qtd="3"><td class="pt">P5</td><td>Letra da porta no vidro</td><td>Vinil recortado por porta</td><td class="num">3</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="mesh" data-qtd="1"><td class="pt">P5</td><td>Entrada preferencial</td><td>Banner em mesh 2,0 × 1,0 m</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="pullup" data-qtd="1"><td class="pt">P6</td><td>Painel da porta A</td><td>Pull-up 850 × 2000 mm</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="pullup" data-qtd="1"><td class="pt">P6</td><td>Painel da porta B</td><td>Pull-up 850 × 2000 mm</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="pullup" data-qtd="1"><td class="pt">P6</td><td>Painel da porta C</td><td>Pull-up 850 × 2000 mm</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="xbanner" data-qtd="5"><td class="pt">P6</td><td>Banners de bloco — porta A</td><td>X-banner 600 × 1600 mm</td><td class="num">5</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="xbanner" data-qtd="5"><td class="pt">P6</td><td>Banners de bloco — porta B</td><td>X-banner 600 × 1600 mm</td><td class="num">5</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="xbanner" data-qtd="6"><td class="pt">P6</td><td>Banners de bloco — porta C</td><td>X-banner 600 × 1600 mm</td><td class="num">6</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="correx" data-qtd="2"><td class="pt">P7</td><td>Saídas S2 e S8</td><td>Placa correx 4 mm A2</td><td class="num">2</td><td class="num unit"></td><td class="num tot"></td></tr><tr data-modelo="fixacao" data-qtd="1"><td class="pt">—</td><td>Fixação</td><td>Fixação (abraçadeiras, ímãs, fita)</td><td class="num">1</td><td class="num unit"></td><td class="num tot"></td></tr></tbody>
+    <tfoot><tr><td colspan="5">Total, inc. IVA</td><td class="num" id="orc-hall-total"></td></tr>
+    <tr class="faixa"><td colspan="5">Faixa do Posto</td><td class="num">€ 1.700 – € 1.900</td></tr>
+    <tr class="delta"><td colspan="5" id="orc-hall-veredito"></td><td class="num" id="orc-hall-delta"></td></tr></tfoot>
+  </table></div>
+  <p class="orcnota">Os preços unitários são <strong>premissa</strong> (tabela pública de gráficas irlandesas em 16/09/2026, inc. IVA de 23%), não o anexo do Posto, que não chegou a esta revisão. Edite os campos acima com os preços do anexo: a tabela recalcula na hora e guarda os valores só neste navegador.</p>
+  <p class="orcnota"><button type="button" class="reset" id="orc-hall-reset">Voltar aos preços de referência</button></p>
+</div>
+<script>
+(function(){
+  const raiz=document.getElementById("orc-hall");
+  const chave="orc-orc-hall-v2", lo=1700, hi=1900;
+  const inputs=[...raiz.querySelectorAll("input[data-modelo]")];
+  const base={}; inputs.forEach(i=>base[i.dataset.modelo]=+i.value);
+  const fmt=v=>"€ "+Math.round(v).toLocaleString("pt-BR");
+  function precos(){const p={};inputs.forEach(i=>p[i.dataset.modelo]=Math.max(0,+i.value||0));return p;}
+  function calc(){
+    const p=precos(); let total=0;
+    raiz.querySelectorAll("tbody tr").forEach(tr=>{
+      const q=+tr.dataset.qtd, u=p[tr.dataset.modelo]||0, t=q*u; total+=t;
+      tr.querySelector(".unit").textContent=fmt(u); tr.querySelector(".tot").textContent=fmt(t);
+    });
+    document.getElementById("orc-hall-total").textContent=fmt(total);
+    const v=document.getElementById("orc-hall-veredito"), d=document.getElementById("orc-hall-delta");
+    if(total<lo){v.textContent="Abaixo da faixa — sobra para reforço";d.textContent="+"+fmt(lo-total);raiz.dataset.estado="sob";}
+    else if(total>hi){v.textContent="Acima da faixa — aplicar a ordem de cortes";d.textContent="−"+fmt(total-hi);raiz.dataset.estado="acima";}
+    else{v.textContent="Dentro da faixa";d.textContent="";raiz.dataset.estado="ok";}
+    try{localStorage.setItem(chave,JSON.stringify(p));}catch(e){}
+  }
+  try{const s=JSON.parse(localStorage.getItem(chave)||"null");if(s)inputs.forEach(i=>{if(s[i.dataset.modelo]!=null)i.value=s[i.dataset.modelo];});}catch(e){}
+  inputs.forEach(i=>i.addEventListener("input",calc));
+  document.getElementById("orc-hall-reset").addEventListener("click",()=>{inputs.forEach(i=>i.value=base[i.dataset.modelo]);calc();});
+  calc();
+})();
+</script>
+</section>
+
+<section class="band">
+  <div class="hd"><p class="eyebrow">Antes de fechar a arte</p><h2>Cinco pendências</h2></div>
+  <ul class="plain">
+    <li><span class="n">01</span><span><b>Congelar a prancheta Paredes_ABC.</b> Qualquer troca de mesa entre paredes muda três painéis de porta, as bocas do Ring 3 e sete tabelas mestras.</span></li>
+    <li><span class="n">02</span><span><b>Confirmar a posição real das portas S4 · S5 · S6 e S7</b> na parede sul, contra a planta cotada do RDS.</span></li>
+    <li><span class="n">03</span><span><b>Refazer a simulação das vias de fila</b> sobre a nova prancheta antes de comprar fita e decalque.</span></li>
+    <li><span class="n">04</span><span><b>Colar os preços do anexo do Posto</b> na tabela e conferir a faixa.</span></li>
+    <li><span class="n">05</span><span><b>Medir o contraste do âmbar da porta B sobre branco</b> antes de imprimir; no plano anterior o âmbar era da porta C.</span></li>
+  </ul>
+</section>
+
+<footer>
+  <p>Gerado por <code>scripts/sinalizacao_v2.py</code>, a partir de <code>data/prancheta_paredes_abc.json</code> (prancheta Paredes_ABC, 15/09/2026) e <code>saidas/dados.json</code>.</p>
+  <p>Validação automática: as 51 seções aparecem exatamente uma vez, os aptos somam 16.794 e as 28 mesas fecham — o script falha em vez de gravar um plano que não bata com a base do TSE.</p>
+</footer>
+</div>

@@ -1,0 +1,715 @@
+<title>Montagem do Ring 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --papel:#efece4; --folha:#fbf9f4; --tinta:#161f29; --meio:#57616d; --fraco:#8b919a;
+  --regua:#d7d1c3; --regua2:#e7e2d6; --apron:#e5e8ec;
+  --za:#1a6bb0; --zb:#9c5d0f; --zc:#a72452;
+  --verde:#146f66; --circ:rgba(20,111,102,.10);
+  --rigido:#3c4653; --novo:#1a6bb0; --fita:#9c5d0f;
+  --alerta:#ab3a2c; --ok:#17786a; --realce:rgba(26,107,176,.09);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --papel:#0e1216; --folha:#161b21; --tinta:#e4e8ed; --meio:#9ea6b0; --fraco:#727b85;
+  --regua:#293038; --regua2:#1e242b; --apron:#1a2027;
+  --za:#6aa9e2; --zb:#d9a054; --zc:#e779a3;
+  --verde:#4ec0a8; --circ:rgba(78,192,168,.13);
+  --rigido:#a9b2bc; --novo:#6aa9e2; --fita:#d9a054;
+  --alerta:#e0796a; --ok:#4ec0a8; --realce:rgba(106,169,226,.13);
+}}
+:root[data-theme="dark"]{
+  --papel:#0e1216; --folha:#161b21; --tinta:#e4e8ed; --meio:#9ea6b0; --fraco:#727b85;
+  --regua:#293038; --regua2:#1e242b; --apron:#1a2027;
+  --za:#6aa9e2; --zb:#d9a054; --zc:#e779a3;
+  --verde:#4ec0a8; --circ:rgba(78,192,168,.13);
+  --rigido:#a9b2bc; --novo:#6aa9e2; --fita:#d9a054;
+  --alerta:#e0796a; --ok:#4ec0a8; --realce:rgba(106,169,226,.13);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font-family:"IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased}
+.folha{max-width:1060px; margin:0 auto; padding-block:0 96px; padding-left:22px; padding-right:22px}
+.prosa{max-width:66ch}
+h1,h2,h3{font-family:Archivo,ui-sans-serif,system-ui,Helvetica,Arial,sans-serif; margin:0;
+  letter-spacing:-.018em; text-wrap:balance}
+h1{font-size:clamp(2.2rem,5.2vw,3.35rem); line-height:1.03; font-weight:700}
+h2{font-size:clamp(1.35rem,2.5vw,1.8rem); line-height:1.16; font-weight:700}
+h3{font-size:1rem; font-weight:600; letter-spacing:-.005em}
+p{margin:0 0 1.05em}
+strong{font-weight:600}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-variant-numeric:tabular-nums}
+a{color:var(--za)}
+.olho{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 16px}
+
+header{padding-top:66px}
+.chamada{font-size:clamp(1.02rem,1.9vw,1.18rem); line-height:1.55; color:var(--meio);
+  max-width:60ch; margin:20px 0 0}
+.chamada b{color:var(--tinta); font-weight:600}
+
+/* carimbo: bloco de identificação da folha */
+.carimbo{display:grid; grid-template-columns:repeat(auto-fit,minmax(138px,1fr));
+  gap:1px; background:var(--regua); border:1px solid var(--regua); margin:38px 0 0}
+.carimbo>div{background:var(--papel); padding:13px 14px}
+.carimbo dt{font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--meio); margin:0 0 5px}
+.carimbo dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.36rem;
+  font-weight:500; font-variant-numeric:tabular-nums; line-height:1.14}
+.carimbo dd small{display:block; font-family:"IBM Plex Sans",sans-serif; font-size:.72rem;
+  font-weight:400; color:var(--fraco); letter-spacing:0; margin-top:4px}
+.carimbo dd.ok{color:var(--ok)}
+
+section{margin:70px 0 0}
+.rotulo{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--meio); margin:0 0 10px; padding-bottom:9px;
+  border-bottom:1px solid var(--regua)}
+section>h2{margin-bottom:16px}
+
+figure{margin:26px 0 0}
+.prancha{background:var(--folha); border:1px solid var(--regua); padding:10px; overflow-x:auto}
+svg.planta{display:block; width:100%; height:auto; min-width:560px}
+svg.detalhe{display:block; width:100%; height:auto; min-width:520px}
+figcaption{font-size:.85rem; color:var(--meio); margin-top:12px; max-width:70ch}
+figcaption b{color:var(--tinta); font-weight:600}
+
+.chaves{display:grid; gap:10px 26px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  margin:18px 0 0; padding:0; list-style:none; font-size:.87rem; color:var(--meio)}
+.chaves li{display:grid; grid-template-columns:38px 1fr; gap:11px; align-items:center}
+.chaves i{display:block; height:0; border-top-width:3px; border-top-style:solid}
+.chaves i.rig{border-color:var(--rigido)}
+.chaves i.nov{border-color:var(--novo); border-top-width:3.6px}
+.chaves i.fit{border-color:var(--fita); border-top-style:dashed; border-top-width:2px}
+.chaves i.gra{border-color:var(--fraco); border-top-style:dashed; border-top-width:2px}
+.chaves i.cir{border-color:var(--verde); border-top-width:9px; opacity:.28}
+
+.rolagem{overflow-x:auto; border:1px solid var(--regua); background:var(--folha); margin:24px 0 0}
+table{border-collapse:collapse; width:100%; font-size:.86rem}
+th,td{text-align:left; padding:9px 13px; border-bottom:1px solid var(--regua2); white-space:nowrap}
+thead th{font-size:.67rem; letter-spacing:.09em; text-transform:uppercase; color:var(--meio);
+  font-weight:500; border-bottom:1px solid var(--regua); background:var(--folha)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+tr.total td{border-top:1.5px solid var(--regua); font-weight:600}
+tr.marcada td{background:var(--realce)}
+td.ganho{color:var(--ok); font-weight:600}
+td.perda{color:var(--alerta); font-weight:600}
+caption{caption-side:bottom; text-align:left; font-size:.8rem; color:var(--fraco); padding:9px 13px}
+td.wrap,th.wrap{white-space:normal; min-width:230px}
+
+.marca{display:inline-block; width:10px; height:10px; margin-right:7px; vertical-align:baseline}
+.marca.nov{background:var(--novo)} .marca.rig{background:var(--rigido)}
+
+.nota{border-left:2px solid var(--zb); padding:2px 0 2px 18px; margin:26px 0 0;
+  color:var(--meio); font-size:.94rem; max-width:70ch}
+.nota strong{color:var(--tinta)}
+.nota.alerta{border-color:var(--alerta)}
+
+ol.pend{counter-reset:p; list-style:none; padding:0; margin:26px 0 0; display:grid; gap:16px}
+ol.pend li{counter-increment:p; display:grid; grid-template-columns:30px 1fr; gap:15px;
+  align-items:start; max-width:72ch}
+ol.pend li::before{content:counter(p); font-family:"IBM Plex Mono",monospace; font-size:.76rem;
+  color:var(--meio); border:1px solid var(--regua); width:30px; height:30px; display:grid;
+  place-items:center; margin-top:1px}
+ol.pend p{margin:5px 0 0; color:var(--meio); font-size:.92rem}
+
+footer{margin:84px 0 0; padding-top:20px; border-top:1px solid var(--regua);
+  font-size:.82rem; color:var(--fraco)}
+footer p{margin:0 0 .55em; max-width:74ch}
+:focus-visible{outline:2px solid var(--za); outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:640px){ .folha{padding-left:16px; padding-right:16px} header{padding-top:42px} }
+</style>
+
+<div class="folha">
+<header>
+  <p class="olho">Eleições 2026 · 1º turno · 4 de outubro · RDS Ballsbridge · fila externa do Ring 3</p>
+  <h1>Montagem do Ring 3</h1>
+  <p class="chamada">O cenário 3 deixou de ser hipótese: as CCBs que a organizadora entrega são de
+  fita grossa, e fita grossa só funciona em <b>raias leste-oeste</b>. Esta folha fixa o desenho
+  adotado, com três adaptações sobre a versão discutida — <b>vão entre zonas de 1,20 m</b>,
+  <b>apoio intermediário em cada divisória</b> e <b>bordas rígidas onde a fila empurra</b>.
+  Fecha em 180 CCBs, dentro dos 200 do estoque, sem compra.</p>
+  <dl class="carimbo">
+    <div><dt>CCBs</dt><dd>180<small>360,0 m de barreira rígida</small></dd></div>
+    <div><dt>A comprar</dt><dd class="ok">0<small>estoque de 200 · sobra 20</small></dd></div>
+    <div><dt>Lotação</dt><dd>2.118<small>+154 sobre o cenário 3 original</small></dd></div>
+    <div><dt>Fita grossa</dt><dd>506 m<small>outro item, outro fornecedor</small></dd></div>
+    <div><dt>Vão entre zonas</dt><dd>1,20 m<small>era 2,60 m</small></dd></div>
+  </dl>
+</header>
+
+<section>
+  <p class="rotulo">A revisão</p>
+  <h2>Três mudanças sobre o cenário 3</h2>
+  <div class="prosa">
+  <p>O cenário 3 original resolvia o material — CCB só na ponta livre de cada divisória, fita
+  grossa no resto — e deixava três coisas abertas: a fita cedia no vão livre, o contorno das zonas
+  era fita em toda a volta, e os 2,60 m entre zonas eram herança do desenho anterior, não uma cota
+  justificada. As três se resolvem dentro do estoque.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th class="wrap">O que mudou</th><th class="num">Cenário 3</th><th class="num">Adotado</th><th class="wrap">Por quê</th></tr></thead>
+    <tbody>
+      <tr><td class="wrap">Vão entre zonas</td><td class="mono num">2,60 m</td><td class="mono num">1,20 m</td>
+        <td class="wrap">2,60 m não vinha de cota nenhuma. 1,20 m é o piso para passar maca e fiscal contra o fluxo; o resto vira raia.</td></tr>
+      <tr><td class="wrap">Apoio da fita</td><td class="mono num">nenhum</td><td class="mono num">1 CCB por divisória</td>
+        <td class="wrap">Sem apoio, a fita corria 9 a 11 m de vão livre e cedia sob fila encostada — a raia deixava de existir no pico.</td></tr>
+      <tr><td class="wrap">Borda das zonas</td><td class="mono num">fita</td><td class="mono num">CCB nos 8 m ao norte</td>
+        <td class="wrap">A cabeça de fila é ao norte, junto às portas. É ali que a pressão lateral aparece, e só ali.</td></tr>
+      <tr><td class="wrap">Boca do fundo</td><td class="mono num">aberta</td><td class="mono num">CCB com entrada</td>
+        <td class="wrap">Dá ponto de medição da vazão de entrada e impede a zona de encher pelo flanco.</td></tr>
+      <tr class="total"><td class="wrap">CCBs</td><td class="mono num">82</td><td class="mono num">180</td>
+        <td class="wrap">Ainda 20 abaixo do estoque de 200.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="nota"><strong>O que não mudou.</strong> A orientação das raias, o módulo de 1,40 m, a
+  densidade de 2,0 p/m², o corredor em L de 3,0 m, a entrada pelo canto nordeste e a parede rígida
+  entre a zona C e a corrente que desce. Tudo isso vem do cenário 3 como discutido.</p>
+</section>
+
+<section>
+  <p class="rotulo">A planta</p>
+  <h2>Onde cada CCB encosta</h2>
+  <div class="prosa">
+  <p>O desenho é gerado dos mesmos segmentos que somam a lista de materiais: cada traço azul e
+  cada traço grafite abaixo é uma CCB de 2,00 m que está na conta, e o script não emite a planta
+  se os dois números não fecharem. Azul é o que esta revisão acrescenta.</p>
+  </div>
+  <figure>
+    <div class="prancha"><svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 776 853" role="img" aria-label="Planta do Ring 3 no cenario 3 adaptado: tres zonas de raias leste-oeste separadas por corredores de 1,2 m, divisorias de fita grossa ancoradas por dois CCB cada, fechamento de fundo com boca de entrada e laterais rigidas nos 8 m ao norte.">
+<defs><marker id="pta" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<rect x="58.0" y="44.0" width="660.0" height="210.0" fill="var(--apron)"/>
+<line x1="44.0" y1="44.0" x2="732.0" y2="44.0" stroke="var(--tinta)" stroke-width="2.6"/>
+<text x="388.0" y="31.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--meio)" letter-spacing="1.4">FACHADA SUL DO HALL 2</text>
+<text x="728.0" y="149.0" text-anchor="middle" font-size="10.5" fill="var(--fraco)" transform="rotate(-90 728.0 149.0)">apron pavimentado · 14,0 m</text>
+<line x1="250.3" y1="44.0" x2="339.1" y2="44.0" stroke="var(--za)" stroke-width="6"/>
+<text x="294.7" y="61.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--za)">S4 · A</text>
+<line x1="343.6" y1="44.0" x2="432.4" y2="44.0" stroke="var(--zb)" stroke-width="6"/>
+<text x="388.0" y="61.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--zb)">S5 · B</text>
+<line x1="436.9" y1="44.0" x2="525.7" y2="44.0" stroke="var(--zc)" stroke-width="6"/>
+<text x="481.3" y="61.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--zc)">S6 · C</text>
+<line x1="162.4" y1="44.0" x2="180.4" y2="44.0" stroke="var(--fraco)" stroke-width="6"/>
+<text x="171.4" y="61.0" text-anchor="middle" font-size="9.5" fill="var(--fraco)">S2 saída</text>
+<line x1="595.6" y1="44.0" x2="613.6" y2="44.0" stroke="var(--fraco)" stroke-width="6"/>
+<text x="604.6" y="61.0" text-anchor="middle" font-size="9.5" fill="var(--fraco)">S8 saída</text>
+<rect x="58.0" y="254.0" width="660.0" height="525.0" fill="var(--folha)" stroke="var(--fraco)" stroke-width="2" stroke-dasharray="8 5"/>
+<rect x="673.0" y="254.0" width="45.0" height="525.0" fill="var(--circ)"/>
+<rect x="58.0" y="734.0" width="615.0" height="45.0" fill="var(--circ)"/>
+<text x="695.5" y="419.0" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--verde)" transform="rotate(-90 695.5 419.0)">CORREDOR DE CHEGADA · 3,0 m</text>
+<text x="365.5" y="762.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--verde)">TRECHO DE FUNDO · 3,0 m</text>
+<line x1="695.5" y1="208.0" x2="695.5" y2="275.0" stroke="var(--verde)" stroke-width="2.4" marker-end="url(#pta)"/>
+<text x="686.5" y="220.0" text-anchor="end" font-size="10" fill="var(--verde)">entrada · canto nordeste</text>
+<rect x="58.0" y="254.0" width="183.5" height="480.0" fill="var(--za)" fill-opacity=".07"/>
+<rect x="259.4" y="254.0" width="212.1" height="480.0" fill="var(--zb)" fill-opacity=".07"/>
+<rect x="489.6" y="254.0" width="183.5" height="480.0" fill="var(--zc)" fill-opacity=".07"/>
+<rect x="241.5" y="254.0" width="18.0" height="480.0" fill="var(--circ)"/>
+<rect x="471.6" y="254.0" width="18.0" height="480.0" fill="var(--circ)"/>
+<line x1="58.0" y1="274.9" x2="110.7" y2="274.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="274.9" x2="193.5" y2="274.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="295.7" x2="158.7" y2="295.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="295.7" x2="241.5" y2="295.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="316.6" x2="110.7" y2="316.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="316.6" x2="193.5" y2="316.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="337.5" x2="158.7" y2="337.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="337.5" x2="241.5" y2="337.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="358.3" x2="110.7" y2="358.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="358.3" x2="193.5" y2="358.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="379.2" x2="158.7" y2="379.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="379.2" x2="241.5" y2="379.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="400.1" x2="110.7" y2="400.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="400.1" x2="193.5" y2="400.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="421.0" x2="158.7" y2="421.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="421.0" x2="241.5" y2="421.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="441.8" x2="110.7" y2="441.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="441.8" x2="193.5" y2="441.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="462.7" x2="158.7" y2="462.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="462.7" x2="241.5" y2="462.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="483.6" x2="110.7" y2="483.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="483.6" x2="193.5" y2="483.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="504.4" x2="158.7" y2="504.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="504.4" x2="241.5" y2="504.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="525.3" x2="110.7" y2="525.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="525.3" x2="193.5" y2="525.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="546.2" x2="158.7" y2="546.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="546.2" x2="241.5" y2="546.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="567.0" x2="110.7" y2="567.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="567.0" x2="193.5" y2="567.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="587.9" x2="158.7" y2="587.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="587.9" x2="241.5" y2="587.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="608.8" x2="110.7" y2="608.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="608.8" x2="193.5" y2="608.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="629.7" x2="158.7" y2="629.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="629.7" x2="241.5" y2="629.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="650.5" x2="110.7" y2="650.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="650.5" x2="193.5" y2="650.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="671.4" x2="158.7" y2="671.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="671.4" x2="241.5" y2="671.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="58.0" y1="692.3" x2="110.7" y2="692.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="140.7" y1="692.3" x2="193.5" y2="692.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="106.0" y1="713.1" x2="158.7" y2="713.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="188.7" y1="713.1" x2="241.5" y2="713.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="274.9" x2="326.5" y2="274.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="274.9" x2="423.6" y2="274.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="295.7" x2="374.5" y2="295.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="295.7" x2="471.6" y2="295.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="316.6" x2="326.5" y2="316.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="316.6" x2="423.6" y2="316.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="337.5" x2="374.5" y2="337.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="337.5" x2="471.6" y2="337.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="358.3" x2="326.5" y2="358.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="358.3" x2="423.6" y2="358.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="379.2" x2="374.5" y2="379.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="379.2" x2="471.6" y2="379.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="400.1" x2="326.5" y2="400.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="400.1" x2="423.6" y2="400.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="421.0" x2="374.5" y2="421.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="421.0" x2="471.6" y2="421.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="441.8" x2="326.5" y2="441.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="441.8" x2="423.6" y2="441.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="462.7" x2="374.5" y2="462.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="462.7" x2="471.6" y2="462.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="483.6" x2="326.5" y2="483.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="483.6" x2="423.6" y2="483.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="504.4" x2="374.5" y2="504.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="504.4" x2="471.6" y2="504.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="525.3" x2="326.5" y2="525.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="525.3" x2="423.6" y2="525.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="546.2" x2="374.5" y2="546.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="546.2" x2="471.6" y2="546.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="567.0" x2="326.5" y2="567.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="567.0" x2="423.6" y2="567.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="587.9" x2="374.5" y2="587.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="587.9" x2="471.6" y2="587.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="608.8" x2="326.5" y2="608.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="608.8" x2="423.6" y2="608.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="629.7" x2="374.5" y2="629.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="629.7" x2="471.6" y2="629.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="650.5" x2="326.5" y2="650.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="650.5" x2="423.6" y2="650.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="671.4" x2="374.5" y2="671.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="671.4" x2="471.6" y2="671.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="259.4" y1="692.3" x2="326.5" y2="692.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="356.5" y1="692.3" x2="423.6" y2="692.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="307.4" y1="713.1" x2="374.5" y2="713.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="404.5" y1="713.1" x2="471.6" y2="713.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="274.9" x2="542.3" y2="274.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="274.9" x2="625.0" y2="274.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="295.7" x2="590.3" y2="295.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="295.7" x2="673.0" y2="295.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="316.6" x2="542.3" y2="316.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="316.6" x2="625.0" y2="316.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="337.5" x2="590.3" y2="337.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="337.5" x2="673.0" y2="337.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="358.3" x2="542.3" y2="358.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="358.3" x2="625.0" y2="358.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="379.2" x2="590.3" y2="379.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="379.2" x2="673.0" y2="379.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="400.1" x2="542.3" y2="400.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="400.1" x2="625.0" y2="400.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="421.0" x2="590.3" y2="421.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="421.0" x2="673.0" y2="421.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="441.8" x2="542.3" y2="441.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="441.8" x2="625.0" y2="441.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="462.7" x2="590.3" y2="462.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="462.7" x2="673.0" y2="462.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="483.6" x2="542.3" y2="483.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="483.6" x2="625.0" y2="483.6" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="504.4" x2="590.3" y2="504.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="504.4" x2="673.0" y2="504.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="525.3" x2="542.3" y2="525.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="525.3" x2="625.0" y2="525.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="546.2" x2="590.3" y2="546.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="546.2" x2="673.0" y2="546.2" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="567.0" x2="542.3" y2="567.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="567.0" x2="625.0" y2="567.0" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="587.9" x2="590.3" y2="587.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="587.9" x2="673.0" y2="587.9" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="608.8" x2="542.3" y2="608.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="608.8" x2="625.0" y2="608.8" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="629.7" x2="590.3" y2="629.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="629.7" x2="673.0" y2="629.7" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="650.5" x2="542.3" y2="650.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="650.5" x2="625.0" y2="650.5" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="671.4" x2="590.3" y2="671.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="671.4" x2="673.0" y2="671.4" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="489.6" y1="692.3" x2="542.3" y2="692.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="572.3" y1="692.3" x2="625.0" y2="692.3" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="537.5" y1="713.1" x2="590.3" y2="713.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="620.3" y1="713.1" x2="673.0" y2="713.1" stroke="var(--fita)" stroke-width="1.7" stroke-dasharray="3 2.4"/>
+<line x1="193.5" y1="274.9" x2="223.5" y2="274.9" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="295.7" x2="106.0" y2="295.7" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="316.6" x2="223.5" y2="316.6" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="337.5" x2="106.0" y2="337.5" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="358.3" x2="223.5" y2="358.3" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="379.2" x2="106.0" y2="379.2" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="400.1" x2="223.5" y2="400.1" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="421.0" x2="106.0" y2="421.0" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="441.8" x2="223.5" y2="441.8" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="462.7" x2="106.0" y2="462.7" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="483.6" x2="223.5" y2="483.6" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="504.4" x2="106.0" y2="504.4" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="525.3" x2="223.5" y2="525.3" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="546.2" x2="106.0" y2="546.2" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="567.0" x2="223.5" y2="567.0" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="587.9" x2="106.0" y2="587.9" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="608.8" x2="223.5" y2="608.8" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="629.7" x2="106.0" y2="629.7" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="650.5" x2="223.5" y2="650.5" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="671.4" x2="106.0" y2="671.4" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="193.5" y1="692.3" x2="223.5" y2="692.3" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="76.0" y1="713.1" x2="106.0" y2="713.1" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="274.9" x2="453.6" y2="274.9" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="295.7" x2="307.4" y2="295.7" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="316.6" x2="453.6" y2="316.6" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="337.5" x2="307.4" y2="337.5" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="358.3" x2="453.6" y2="358.3" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="379.2" x2="307.4" y2="379.2" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="400.1" x2="453.6" y2="400.1" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="421.0" x2="307.4" y2="421.0" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="441.8" x2="453.6" y2="441.8" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="462.7" x2="307.4" y2="462.7" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="483.6" x2="453.6" y2="483.6" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="504.4" x2="307.4" y2="504.4" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="525.3" x2="453.6" y2="525.3" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="546.2" x2="307.4" y2="546.2" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="567.0" x2="453.6" y2="567.0" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="587.9" x2="307.4" y2="587.9" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="608.8" x2="453.6" y2="608.8" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="629.7" x2="307.4" y2="629.7" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="650.5" x2="453.6" y2="650.5" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="671.4" x2="307.4" y2="671.4" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="423.6" y1="692.3" x2="453.6" y2="692.3" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="277.4" y1="713.1" x2="307.4" y2="713.1" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="274.9" x2="655.0" y2="274.9" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="295.7" x2="537.5" y2="295.7" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="316.6" x2="655.0" y2="316.6" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="337.5" x2="537.5" y2="337.5" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="358.3" x2="655.0" y2="358.3" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="379.2" x2="537.5" y2="379.2" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="400.1" x2="655.0" y2="400.1" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="421.0" x2="537.5" y2="421.0" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="441.8" x2="655.0" y2="441.8" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="462.7" x2="537.5" y2="462.7" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="483.6" x2="655.0" y2="483.6" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="504.4" x2="537.5" y2="504.4" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="525.3" x2="655.0" y2="525.3" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="546.2" x2="537.5" y2="546.2" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="567.0" x2="655.0" y2="567.0" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="587.9" x2="537.5" y2="587.9" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="608.8" x2="655.0" y2="608.8" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="629.7" x2="537.5" y2="629.7" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="650.5" x2="655.0" y2="650.5" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="671.4" x2="537.5" y2="671.4" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="625.0" y1="692.3" x2="655.0" y2="692.3" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="507.5" y1="713.1" x2="537.5" y2="713.1" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="673.0" y1="254.0" x2="673.0" y2="734.0" stroke="var(--rigido)" stroke-width="3" stroke-linecap="butt"/>
+<line x1="110.7" y1="274.9" x2="140.7" y2="274.9" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="295.7" x2="188.7" y2="295.7" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="316.6" x2="140.7" y2="316.6" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="337.5" x2="188.7" y2="337.5" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="358.3" x2="140.7" y2="358.3" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="379.2" x2="188.7" y2="379.2" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="400.1" x2="140.7" y2="400.1" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="421.0" x2="188.7" y2="421.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="441.8" x2="140.7" y2="441.8" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="462.7" x2="188.7" y2="462.7" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="483.6" x2="140.7" y2="483.6" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="504.4" x2="188.7" y2="504.4" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="525.3" x2="140.7" y2="525.3" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="546.2" x2="188.7" y2="546.2" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="567.0" x2="140.7" y2="567.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="587.9" x2="188.7" y2="587.9" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="608.8" x2="140.7" y2="608.8" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="629.7" x2="188.7" y2="629.7" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="650.5" x2="140.7" y2="650.5" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="671.4" x2="188.7" y2="671.4" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="110.7" y1="692.3" x2="140.7" y2="692.3" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="158.7" y1="713.1" x2="188.7" y2="713.1" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="274.9" x2="356.5" y2="274.9" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="295.7" x2="404.5" y2="295.7" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="316.6" x2="356.5" y2="316.6" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="337.5" x2="404.5" y2="337.5" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="358.3" x2="356.5" y2="358.3" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="379.2" x2="404.5" y2="379.2" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="400.1" x2="356.5" y2="400.1" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="421.0" x2="404.5" y2="421.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="441.8" x2="356.5" y2="441.8" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="462.7" x2="404.5" y2="462.7" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="483.6" x2="356.5" y2="483.6" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="504.4" x2="404.5" y2="504.4" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="525.3" x2="356.5" y2="525.3" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="546.2" x2="404.5" y2="546.2" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="567.0" x2="356.5" y2="567.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="587.9" x2="404.5" y2="587.9" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="608.8" x2="356.5" y2="608.8" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="629.7" x2="404.5" y2="629.7" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="650.5" x2="356.5" y2="650.5" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="671.4" x2="404.5" y2="671.4" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="326.5" y1="692.3" x2="356.5" y2="692.3" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="374.5" y1="713.1" x2="404.5" y2="713.1" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="274.9" x2="572.3" y2="274.9" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="295.7" x2="620.3" y2="295.7" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="316.6" x2="572.3" y2="316.6" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="337.5" x2="620.3" y2="337.5" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="358.3" x2="572.3" y2="358.3" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="379.2" x2="620.3" y2="379.2" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="400.1" x2="572.3" y2="400.1" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="421.0" x2="620.3" y2="421.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="441.8" x2="572.3" y2="441.8" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="462.7" x2="620.3" y2="462.7" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="483.6" x2="572.3" y2="483.6" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="504.4" x2="620.3" y2="504.4" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="525.3" x2="572.3" y2="525.3" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="546.2" x2="620.3" y2="546.2" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="567.0" x2="572.3" y2="567.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="587.9" x2="620.3" y2="587.9" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="608.8" x2="572.3" y2="608.8" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="629.7" x2="620.3" y2="629.7" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="650.5" x2="572.3" y2="650.5" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="671.4" x2="620.3" y2="671.4" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="542.3" y1="692.3" x2="572.3" y2="692.3" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="590.3" y1="713.1" x2="620.3" y2="713.1" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="58.0" y1="734.0" x2="208.0" y2="734.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="259.4" y1="734.0" x2="439.4" y2="734.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="489.6" y1="734.0" x2="639.5" y2="734.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="241.5" y1="254.0" x2="241.5" y2="374.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="259.4" y1="254.0" x2="259.4" y2="374.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="471.6" y1="254.0" x2="471.6" y2="374.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<line x1="489.6" y1="254.0" x2="489.6" y2="374.0" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>
+<text x="149.7" y="269.8" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--za)" paint-order="stroke" stroke="var(--folha)" stroke-width="4.5" stroke-linejoin="round">zona A · 12,23 m</text>
+<text x="365.5" y="269.8" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--zb)" paint-order="stroke" stroke="var(--folha)" stroke-width="4.5" stroke-linejoin="round">zona B · 14,14 m</text>
+<text x="581.3" y="269.8" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--zc)" paint-order="stroke" stroke="var(--folha)" stroke-width="4.5" stroke-linejoin="round">zona C · 12,23 m</text>
+<text x="250.4" y="539.0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--verde)" transform="rotate(-90 250.4 539.0)">1,20 m</text>
+<text x="480.6" y="539.0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--verde)" transform="rotate(-90 480.6 539.0)">1,20 m</text>
+<line x1="226.5" y1="250.0" x2="294.7" y2="53.0" stroke="var(--za)" stroke-width="1.8" marker-end="url(#pta)"/>
+<line x1="388.0" y1="250.0" x2="388.0" y2="53.0" stroke="var(--zb)" stroke-width="1.8" marker-end="url(#pta)"/>
+<line x1="504.6" y1="250.0" x2="481.3" y2="53.0" stroke="var(--zc)" stroke-width="1.8" marker-end="url(#pta)"/>
+<line x1="58.0" y1="805.0" x2="718.0" y2="805.0" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="58.0" y1="801.0" x2="58.0" y2="809.0" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="718.0" y1="801.0" x2="718.0" y2="809.0" stroke="var(--fraco)" stroke-width="1"/>
+<text x="388.0" y="821.0" text-anchor="middle" font-size="10" fill="var(--fraco)">gradil permanente do Ring 3 · 44,0 × 35,0 m</text>
+<line x1="58.0" y1="839.0" x2="208.0" y2="839.0" stroke="var(--tinta)" stroke-width="2.4"/>
+<line x1="58.0" y1="835.0" x2="58.0" y2="843.0" stroke="var(--tinta)" stroke-width="1.4"/>
+<line x1="133.0" y1="835.0" x2="133.0" y2="843.0" stroke="var(--tinta)" stroke-width="1.4"/>
+<line x1="208.0" y1="835.0" x2="208.0" y2="843.0" stroke="var(--tinta)" stroke-width="1.4"/>
+<text x="216.0" y="843.0" font-size="10" fill="var(--meio)">10 m</text>
+<line x1="42.0" y1="254.0" x2="42.0" y2="734.0" stroke="var(--fraco)" stroke-width="1"/>
+<text x="37.0" y="494.0" text-anchor="middle" font-size="10" fill="var(--fraco)" transform="rotate(-90 37.0 494.0)">32,0 m · 23 raias</text>
+</svg></div>
+    <ul class="chaves">
+      <li><i class="rig"></i><span>CCB já no cenário 3 — ponta livre da divisória e parede da zona C</span></li>
+      <li><i class="nov"></i><span>CCB acrescentada nesta revisão — apoio, fundo, laterais</span></li>
+      <li><i class="fit"></i><span>fita grossa — 506 m, outro fornecedor</span></li>
+      <li><i class="cir"></i><span>circulação — corredor em L e vãos de 1,20 m</span></li>
+      <li><i class="gra"></i><span>gradil permanente do Ring — já existe</span></li>
+    </ul>
+    <figcaption><b>Planta em escala, 1 m = 15 px.</b> 23 raias leste-oeste por zona, 22 divisórias
+    cada. A fila entra pelo canto nordeste, desce pelo corredor de 3,0 m, vira no trecho de fundo e
+    entra pela boca de cada zona; descarrega ao norte, no eixo da porta correspondente.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">Lista de materiais</p>
+  <h2>180 CCBs, item a item</h2>
+  <div class="rolagem"><table>
+    <thead><tr><th class="wrap">Item</th><th class="wrap">Função</th><th class="num">Metros</th><th class="num">CCBs</th></tr></thead>
+    <tbody>
+      <tr><td class="wrap"><span class="marca rig"></span>Divisórias — CCB de ponta livre</td>
+        <td class="wrap">Ancora a fita no vão de meia-volta, que é onde se passa e onde a fila empurra</td>
+        <td class="mono num">132,0 m</td><td class="mono num">66</td></tr>
+      <tr><td class="wrap"><span class="marca nov"></span>Divisórias — CCB de apoio intermediário</td>
+        <td class="wrap">Parte a fita em dois vãos e devolve rigidez ao meio da divisória</td>
+        <td class="mono num">132,0 m</td><td class="mono num">66</td></tr>
+      <tr><td class="wrap"><span class="marca rig"></span>Parede zona C / corredor de chegada</td>
+        <td class="wrap">Dois fluxos encostados em sentidos opostos — fita não segura</td>
+        <td class="mono num">32,0 m</td><td class="mono num">16</td></tr>
+      <tr><td class="wrap"><span class="marca nov"></span>Fechamento contra o trecho de fundo</td>
+        <td class="wrap">Boca única por zona, com ponto de medição da vazão de entrada</td>
+        <td class="mono num">32,0 m</td><td class="mono num">16</td></tr>
+      <tr><td class="wrap"><span class="marca nov"></span>Laterais A|B e B|C, 8 m ao norte</td>
+        <td class="wrap">Segura a pressão lateral junto às cabeças de fila; o resto continua fita</td>
+        <td class="mono num">32,0 m</td><td class="mono num">16</td></tr>
+      <tr class="total"><td class="wrap">Total</td><td class="wrap"></td><td class="mono num">360,0 m</td><td class="mono num">180</td></tr>
+      <tr><td class="wrap">Estoque da organizadora</td><td class="wrap"></td><td class="mono num">400,0 m</td><td class="mono num">200</td></tr>
+      <tr class="marcada"><td class="wrap">A comprar</td><td class="wrap">Sobra de 20 unidades para reposição e ajuste em campo</td><td class="mono num">—</td><td class="mono num ganho">0</td></tr>
+    </tbody>
+    <caption>CCB de 2,00 m, item d do orçamento, EUR 13,02 a unidade. A fita grossa — 506,0 m — é
+    item separado e não sai deste estoque.</caption>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Detalhe de montagem</p>
+  <h2>Por que o apoio é uma CCB, e não um poste</h2>
+  <div class="prosa">
+  <p>O apoio intermediário podia ser um poste leve com base — mais barato, mais rápido de montar,
+  e foi assim que a hipótese apareceu. Mas o poste é um ponto: ele segura a fita num lugar e deixa
+  o resto do vão livre. A CCB é <strong>dois metros de linha rígida</strong>, e é isso que muda a
+  conta: ela não só divide o vão em dois como consome 2,00 m dele.</p>
+  <p>Numa divisória da zona B — a mais longa —, a linha tem 12,94 m. Com a CCB da ponta e a CCB de
+  apoio, sobram 8,94 m de fita repartidos em <strong>dois vãos de 4,47 m</strong>. Fica abaixo do
+  limite conservador de 5 m com um único apoio. Com poste, o mesmo limite pediria dois por
+  divisória na zona B — 88 apoios em vez de 66, e mais um item de orçamento.</p>
+  </div>
+  <figure>
+    <div class="prancha"><svg class="detalhe" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 214" role="img" aria-label="Corte de uma divisória da zona B: fita grossa de 4,47 m, um CCB de 2 m como apoio intermediário, mais 4,47 m de fita e um CCB de 2 m na ponta livre, seguido do vão de meia-volta de 1,20 m.">
+<defs><marker id="pt2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<rect x="50.0" y="51.0" width="537.3" height="53" fill="var(--zb)" fill-opacity=".07"/>
+<rect x="50.0" y="104.0" width="537.3" height="53" fill="var(--zb)" fill-opacity=".07"/>
+<text x="58.0" y="74.0" font-size="10.5" fill="var(--meio)">raia n · 1,20 m livre</text>
+<text x="58.0" y="138.0" font-size="10.5" fill="var(--meio)">raia n+1</text>
+<line x1="50.0" y1="104.0" x2="219.9" y2="104.0" stroke="var(--fita)" stroke-width="2.6" stroke-dasharray="6 5"/>
+<rect x="219.9" y="99.5" width="76.0" height="9" fill="var(--novo)"/>
+<line x1="295.9" y1="104.0" x2="465.7" y2="104.0" stroke="var(--fita)" stroke-width="2.6" stroke-dasharray="6 5"/>
+<rect x="465.7" y="99.5" width="76.0" height="9" fill="var(--novo)"/>
+<path d="M 564.5 78.0 q 19.2 26 0 52" fill="none" stroke="var(--zb)" stroke-width="1.8" marker-end="url(#pt2)"/>
+<line x1="541.7" y1="51.0" x2="541.7" y2="157.0" stroke="var(--fraco)" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="587.3" y1="51.0" x2="587.3" y2="157.0" stroke="var(--fraco)" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="564.5" y="176.0" text-anchor="middle" font-size="10" fill="var(--meio)">1,20 m</text>
+<text x="564.5" y="189.0" text-anchor="middle" font-size="9.5" fill="var(--fraco)">meia-volta</text>
+<line x1="50.0" y1="144.0" x2="219.9" y2="144.0" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="50.0" y1="140.5" x2="50.0" y2="147.5" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="219.9" y1="140.5" x2="219.9" y2="147.5" stroke="var(--fraco)" stroke-width="1"/>
+<text x="134.9" y="160.0" text-anchor="middle" font-size="9.5" fill="var(--fita)" font-weight="600">fita grossa · 4,47 m</text>
+<line x1="219.9" y1="144.0" x2="295.9" y2="144.0" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="219.9" y1="140.5" x2="219.9" y2="147.5" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="295.9" y1="140.5" x2="295.9" y2="147.5" stroke="var(--fraco)" stroke-width="1"/>
+<text x="257.9" y="160.0" text-anchor="middle" font-size="9.5" fill="var(--novo)" font-weight="600">CCB · 2,00 m</text>
+<line x1="295.9" y1="144.0" x2="465.7" y2="144.0" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="295.9" y1="140.5" x2="295.9" y2="147.5" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="465.7" y1="140.5" x2="465.7" y2="147.5" stroke="var(--fraco)" stroke-width="1"/>
+<text x="380.8" y="160.0" text-anchor="middle" font-size="9.5" fill="var(--fita)" font-weight="600">fita grossa · 4,47 m</text>
+<line x1="465.7" y1="144.0" x2="541.7" y2="144.0" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="465.7" y1="140.5" x2="465.7" y2="147.5" stroke="var(--fraco)" stroke-width="1"/>
+<line x1="541.7" y1="140.5" x2="541.7" y2="147.5" stroke="var(--fraco)" stroke-width="1"/>
+<text x="503.7" y="160.0" text-anchor="middle" font-size="9.5" fill="var(--novo)" font-weight="600">CCB · 2,00 m</text>
+<text x="257.9" y="88.0" text-anchor="middle" font-size="9.5" fill="var(--novo)" font-weight="600">apoio</text>
+<text x="503.7" y="88.0" text-anchor="middle" font-size="9.5" fill="var(--novo)" font-weight="600">ponta livre</text>
+<text x="50.0" y="34.0" font-size="10.5" font-weight="700" fill="var(--meio)" letter-spacing="1.2">DIVISÓRIA DA ZONA B · 12,94 m</text>
+<line x1="50.0" y1="51.0" x2="50.0" y2="157.0" stroke="var(--rigido)" stroke-width="2.4"/>
+<text x="44.0" y="108.0" text-anchor="end" font-size="9.5" fill="var(--meio)">contorno</text>
+</svg></div>
+    <figcaption><b>Uma divisória da zona B, em planta.</b> O vão de meia-volta de 1,20 m fica
+    protegido pela CCB de ponta; a fita nunca corre mais de 4,47 m sem encostar em algo rígido.
+    Nas zonas A e C a divisória tem 11,03 m e os vãos caem para 3,51 m.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <p class="rotulo">Consequências</p>
+  <h2>O que o metro e meio devolvido comprou</h2>
+  <div class="prosa">
+  <p>Reduzir o vão entre zonas de 2,60 para 1,20 m devolve 2,80 m de largura, que em raias
+  leste-oeste viram comprimento de raia — e comprimento de raia vira gente. A 2,386 pessoas por
+  metro de raia, são 154 lugares a mais sem mexer em mais nada.</p>
+  </div>
+  <div class="rolagem"><table>
+    <thead><tr><th class="wrap"></th><th class="num">Cenário 3</th><th class="num">Adotado</th><th class="num">Δ</th></tr></thead>
+    <tbody>
+      <tr><td class="wrap">Largura útil das zonas</td><td class="mono num">35,80 m</td><td class="mono num">38,60 m</td><td class="mono num ganho">+2,80 m</td></tr>
+      <tr><td class="wrap">Lotação</td><td class="mono num">1.964</td><td class="mono num">2.118</td><td class="mono num ganho">+154</td></tr>
+      <tr><td class="wrap">Percurso máximo (zona B)</td><td class="mono num">302 m</td><td class="mono num">325 m</td><td class="mono num perda">+23 m</td></tr>
+      <tr><td class="wrap">Desvio da descarga · A → S4</td><td class="mono num">4,44 m</td><td class="mono num">3,55 m</td><td class="mono num ganho">−0,89 m</td></tr>
+      <tr><td class="wrap">Desvio da descarga · B → S5</td><td class="mono num">0,00 m</td><td class="mono num">0,00 m</td><td class="mono num">—</td></tr>
+      <tr><td class="wrap">Desvio da descarga · C → S6</td><td class="mono num">1,44 m</td><td class="mono num">0,55 m</td><td class="mono num ganho">−0,89 m</td></tr>
+    </tbody>
+    <caption>Desvio é a distância lateral entre a borda da zona e o eixo da sua porta, no apron.
+    Zonas mais largas alcançam melhor o eixo das portas — a única coisa que piora é a caminhada. Percurso contado aqui como 23 raias × largura da zona; a página anterior publicou 297 m para o cenário 3, por arredondamento ligeiramente diferente do mesmo percurso.</caption>
+  </table></div>
+  <p class="nota"><strong>A troca.</strong> 154 lugares a mais custam 23 m de caminhada a quem
+  entrar por último na zona B. Vale, porque a fila é dimensionada pelo pico de chegada e não pelo
+  tempo do último; mas é a razão para não zerar os vãos de vez, que renderia mais 132 lugares e
+  outros 28 m de percurso — além de tirar a única via de extração lateral.</p>
+</section>
+
+<section>
+  <p class="rotulo">O que o vão de 1,20 m faz</p>
+  <h2>Ele não é decoração, e não é raia</h2>
+  <div class="prosa">
+  <p>Vale registrar por que o vão sobrevive, já que cada metro dele custa 55 lugares. Dentro de um
+  bloco de 32 m de profundidade, quem passa mal no meio de uma raia não tem por onde sair: à frente
+  há 20 raias de serpenteado, atrás há outras tantas. O vão é a única saída lateral, e é por ele
+  que entram fiscal e maca.</p>
+  <p>1,20 m passa maca com dois portadores e passa fiscal contra o fluxo. Não passa maca cruzando
+  com gente andando — para isso seriam 2,00 m, e a conta de lugares não paga. Abaixo de 1,20 m o
+  vão deixa de servir para qualquer das duas coisas e vira só desenho: aí é melhor zerar de vez e
+  ficar com os 2.250 lugares.</p>
+  <p>Há um segundo motivo, e é o que sustenta a decisão de manter as laterais em fita fora dos 8 m
+  ao norte: <strong>fita falha de modo seguro</strong>. Num pico, ela é abaixada, cortada ou
+  rompida e o bloco inteiro vira superfície atravessável. Cercar as três zonas com CCB rígida de
+  ponta a ponta transformaria cada uma num curral de até 780 pessoas com uma boca de dois metros — o
+  contrário do que se quer numa emergência.</p>
+  </div>
+</section>
+
+<section>
+  <p class="rotulo">Premissas</p>
+  <h2>De onde vem cada número</h2>
+  <div class="rolagem"><table>
+    <thead><tr><th class="wrap">Premissa</th><th class="num">Valor</th><th class="wrap">Origem</th></tr></thead>
+    <tbody>
+      <tr><td class="wrap">Ring 3</td><td class="mono num">44,0 × 35,0 m</td><td class="wrap">medida oficial</td></tr>
+      <tr><td class="wrap">Corredor de chegada, em L</td><td class="mono num">3,0 m</td><td class="wrap">decisão do Posto</td></tr>
+      <tr><td class="wrap">Profundidade das zonas</td><td class="mono num">32,0 m</td><td class="wrap">Ring menos o trecho de fundo</td></tr>
+      <tr><td class="wrap">Módulo da raia</td><td class="mono num">1,40 m</td><td class="wrap">reconstruído dos blocos de 4,2 e 12,6 m</td></tr>
+      <tr><td class="wrap">Largura livre da raia</td><td class="mono num">1,20 m</td><td class="wrap">reconstruído</td></tr>
+      <tr><td class="wrap">Densidade em raia</td><td class="mono num">2,0 p/m²</td><td class="wrap">reconstruído · 2,386 p por metro de raia</td></tr>
+      <tr><td class="wrap">Vão de meia-volta</td><td class="mono num">1,20 m</td><td class="wrap">premissa</td></tr>
+      <tr><td class="wrap">Vão máximo de fita sem apoio</td><td class="mono num">5,0 m</td><td class="wrap"><strong>premissa</strong> — não confirmada com o fornecedor</td></tr>
+      <tr><td class="wrap">Largura mínima de via de extração</td><td class="mono num">1,20 m</td><td class="wrap"><strong>premissa</strong> — orientação britânica e irlandesa de meios de escape, não verificada na fonte primária</td></tr>
+      <tr><td class="wrap">CCB / separador de fila</td><td class="mono num">2,00 m · EUR 13,02</td><td class="wrap">item d do orçamento</td></tr>
+      <tr><td class="wrap">Estoque da organizadora</td><td class="mono num">200 un.</td><td class="wrap">informado pelo Posto</td></tr>
+      <tr><td class="wrap">Comparecimento esperado</td><td class="mono num">3.642 / 4.215 / 3.642</td><td class="wrap">decisões do Posto de 06/09/2026 · define a largura de cada zona</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <p class="rotulo">Antes de contratar</p>
+  <h2>Quatro coisas para fechar</h2>
+  <ol class="pend">
+    <li><div><h3>A ponta fixa da divisória ainda amarra em fita</h3>
+    <p>Cada divisória tem uma ponta livre, com CCB, e uma ponta fixa, que encosta no contorno da
+    zona. Na zona A esse contorno é o gradil do Ring de um lado; na C, a parede do corredor.
+    Mas a face que dá para o vão de 1,20 m é fita fora dos 8 m ao norte — ou seja, em boa parte das
+    divisórias a fita tensiona contra outra fita. Ancorar o contorno a cada 8 m custa
+    <span class="mono">12 CCBs</span> (total 192, ainda dentro do estoque); a cada 4 m custa
+    <span class="mono">28</span> (total 208, compra de 8 · EUR 104). É a decisão que falta, e é a
+    única que pode estourar o estoque.</p></div></li>
+    <li><div><h3>Meça uma CCB na entrega</h3>
+    <p>Todo o modelo assume módulo de 2,00 m, do item d do orçamento. Painel de CCB no mercado
+    irlandês é comumente de 2,20 m. Se vierem de 2,20 m, cada corrida de 32 m fecha com 15 painéis
+    em vez de 16 e todas as bocas do fundo mudam de largura. Meça antes de mandar o layout para a
+    produção.</p></div></li>
+    <li><div><h3>A boca real não dá 1,00 m</h3>
+    <p>Com módulo rígido de 2,00 m, a abertura é o resto da divisão: <span class="mono">2,23 m</span>
+    nas zonas A e C, <span class="mono">2,14 m</span> na B. Para cravar 1,00 m é preciso um elemento
+    não-modular — portão, corrente ou um mesário fazendo o estrangulamento. O mesário é melhor:
+    a boca é justamente onde se mede a vazão de entrada.</p></div></li>
+    <li><div><h3>Confirme as duas premissas marcadas</h3>
+    <p>O vão máximo de fita sem apoio (5,0 m) vem de premissa, não do fornecedor — e é o número de
+    que depende o item de 66 apoios. A largura mínima de via de extração (1,20 m) vem de orientação
+    britânica e irlandesa de meios de escape que não foi verificada na fonte primária. Ambas
+    precisam passar pelo safety officer do RDS antes de virarem cota no desenho.</p></div></li>
+  </ol>
+  <p class="nota alerta"><strong>Fora do escopo desta folha, mas ainda aberto.</strong> A corrente
+  que entra pelo canto nordeste cruza o apron a leste, que é por onde S8 despeja quem já votou —
+  resolver com sinalização, fiscal ou separação no tempo. E a pré-triagem continua sem endereço
+  dentro do Ring: o corredor em L é de passagem, não de parada, então a entrega do cartão de
+  roteamento tem de acontecer a montante, no portão da Merrion Road ou no corredor da lateral leste
+  do Hall.</p>
+</section>
+
+<footer>
+  <p>Geometria do salão e das portas medida sobre o contorno do Hall 2 (50,3 × 44,4 m) e o retângulo
+  do Ring 3 (44,0 × 35,0 m, apron de 14 m). Comparecimento esperado e papéis das portas das decisões
+  do Posto de 06/09/2026. Planta e lista de materiais geradas dos mesmos segmentos: a planta não é
+  emitida se a soma dos traços não bater com a conta.</p>
+  <p>Números de lotação são estimativa de dimensionamento, não limite de segurança homologado.</p>
+</footer>
+</div>

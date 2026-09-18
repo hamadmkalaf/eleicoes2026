@@ -69,8 +69,11 @@ a esta planta e descrevem duas entradas apenas — material histórico.
 - `lista_postos.md` — lista operacional dos postos de voluntários: onde cada um
   fica e o que faz. É a fonte única desses números e o documento do briefing.
 - `voluntarios_postos.html` — os postos marcados sobre a rota e sobre a planta do
-  salão, em três cenários de efetivo (9, 24 e 49). Publicado em
+  salão, nos quatro cenários de efetivo (9, 15, 24 e 49). Publicado em
   https://claude.ai/artifact/YaFNHUua2Hkqu7dtR7tf7A
+- `contexto_voluntarios_fluxo.md` — contexto consolidado do tema voluntários e fluxo:
+  princípio de projeto, achados com a conta, correções feitas no caminho, premissas.
+- `transferencia_voluntarios_fluxo.md` — como levar esse tema a outro repositório.
 - `plano_voluntarios_apoio.md` — o raciocínio por trás da lista: taxas de chegada,
   dimensionamento, decisões do Posto e achados das plantas.
 - `PENDENCIAS` — lista de tarefas em aberto do Posto.

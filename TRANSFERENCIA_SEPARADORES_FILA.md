@@ -145,9 +145,11 @@ Herde a lista inteira; a primeira é bloqueante.
 1. **O RDS permite fita adesiva no piso do Hall 2?** Se não, o desenho inteiro
    cai. Pergunta para esta semana.
 2. Submeter o layout de barreira ao responsável de incêndio do RDS.
-3. Comprar **15 unifilas** (EUR 195,45) e **8 rolos de fita** (2 azul, 2
-   laranja, 1 zebrado, 1 verde, 2 branco).
-4. Confirmar se os 165 m de fita em estoque são **por cor** ou no total.
+3. Comprar **15 unifilas** (EUR 195,45) e **11 rolos de fita** (3 azul, 3
+   laranja, 1 amarelo, 1 zebrado, 1 verde, 2 branco).
+4. Confirmar duas coisas sobre os 165 m em estoque: se são **por cor** ou no
+   total, e se são fita de **marcação de piso** ou de embalagem. Se forem de
+   embalagem, não servem, e a compra vai a 17 rolos.
 5. Aferir em campo as bandas de 11,00 / 9,00 / 10,80 m e a folga de **36 cm**
    entre a boca da avenida A e o recuo S3.
 6. Levar ao tema de sinalização os dois achados: o x-banner da parede leste está

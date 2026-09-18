@@ -147,19 +147,24 @@ vermelhas**, os únicos lugares com multidão parada declarada.
 
 ### A fita, por cor
 
-| Cor | Necessário | Em estoque | Saldo |
-|---|---:|---:|---:|
-| Azul (zona A) | 244,8 m | 165 m | **−79,8 m** |
-| Amarelo (zona B) | 149,8 m | 165 m | +15,2 m |
-| Laranja (zona C) | 241,2 m | 165 m | **−76,2 m** |
-| Zebrado preto-e-branco (linha de espera) | 30,8 m | — | comprar |
-| Verde (preferencial S7) | 20,0 m | — | comprar |
-| Branco (rota de saída) | 82,0 m | — | comprar |
-| **Total** | **769 m** | | |
-| **Com 10% de retoque** | **846 m** | | |
+| Cor | Precisa (com retoque) | Em estoque | Falta | Rolos |
+|---|---:|---:|---:|---:|
+| Azul (zona A) | 269,3 m | 165 m | 104,3 m | **3** |
+| Amarelo (zona B) | 164,8 m | 165 m | 0 m | 0 — mas 20 cm de folga não é folga |
+| Laranja (zona C) | 265,3 m | 165 m | 100,3 m | **3** |
+| Zebrado preto-e-branco (linha de espera) | 33,9 m | 0 | 33,9 m | **1** |
+| Verde (preferencial S7) | 22,0 m | 0 | 22,0 m | **1** |
+| Branco (rota de saída) | 90,2 m | 0 | 90,2 m | **2** |
+| **Total** | **846 m** | 495 m | **351 m** | **10** |
 
-**Faltam 8 rolos de 50 m**: 2 azul, 2 laranja, 1 zebrado, 1 verde, 2 branco.
-Ordem de EUR 100–160 (*estimativa, a cotar*).
+A necessidade crua, sem retoque, é de 769 m. **A falta se mede contra a
+necessidade já com o retoque**, não contra a crua — medir contra a crua daria 8
+rolos onde são 10. Somando 1 rolo de amarelo por prudência: **11 rolos**, ordem
+de EUR 140–220 (*estimativa, a cotar*).
+
+**Dúvida a resolver antes de contar com o estoque:** os rolos da foto parecem
+fita de PVC de embalagem. Se for embalagem e não marcação de piso, não serve —
+rasga sob tráfego de pé e deixa resíduo. Nesse caso a compra vai a 17 rolos.
 
 Azul e laranja passam tanto do amarelo porque as bandas oeste e leste são bem
 mais fundas que a norte, então os seus ramais são mais compridos. **A parede

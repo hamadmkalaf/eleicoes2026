@@ -130,7 +130,11 @@ def boca_avenida(m, planta):
 # A azul, B amarelo, C laranja. Amarelo passa a ser da zona B, entao a linha de
 # espera **nao pode mais ser amarela** -- vira zebrado preto-e-branco.
 CORES_ZONA = {"A": "#33507E", "B": "#E8C63A", "C": "#DE7343"}
-ESTOQUE_FITA = 165.0   # metros por cor ja em estoque (a confirmar: cada ou total)
+# O que o Posto ja tem: 165 m de cada uma das tres cores de zona (foto de
+# 17/09; a confirmar se e 165 m POR COR ou no total). As outras tres cores nao
+# existem em estoque.
+ESTOQUE_FITA = {"A": 165.0, "B": 165.0, "C": 165.0,
+                "espera": 0.0, "pref": 0.0, "neutro": 0.0}
 
 # Regra de 17/09: **as avenidas nunca se cruzam.** Cada uma sai da sua porta e
 # chega a sua parede sem tocar no envelope das outras -- A fica toda a oeste de
@@ -418,9 +422,20 @@ def fita(op, itens, mesas, planta):
     por_cor = {c: round(v, 1) for c, v in por_cor.items()}
     total = round(sum(por_cor.values()), 1)
     com_retoque = {c: round(v * (1 + RETOQUE), 1) for c, v in por_cor.items()}
-    rolos = {c: math.ceil(v / ROLO) for c, v in com_retoque.items()}
-    return {"por_cor": por_cor, "com_retoque": com_retoque, "rolos": rolos,
+    # A compra sai da FALTA, e a falta se mede contra a necessidade JA com
+    # retoque -- nao contra a necessidade crua. Medir contra a crua foi o erro
+    # da primeira versao: dava 8 rolos onde sao 10.
+    falta = {c: round(max(0.0, v - ESTOQUE_FITA.get(c, 0.0)), 1)
+             for c, v in com_retoque.items()}
+    rolos = {c: math.ceil(v / ROLO) if v > 0 else 0 for c, v in falta.items()}
+    sobra = {c: round(rolos[c] * ROLO - falta[c], 1) if rolos[c] else
+             round(ESTOQUE_FITA.get(c, 0.0) - com_retoque[c], 1)
+             for c in por_cor}
+    return {"por_cor": por_cor, "com_retoque": com_retoque,
+            "estoque": {c: ESTOQUE_FITA.get(c, 0.0) for c in por_cor},
+            "falta": falta, "rolos": rolos, "sobra": sobra,
             "total": total, "total_com_retoque": round(total * (1 + RETOQUE), 1),
+            "falta_total": round(sum(falta.values()), 1),
             "rolos_total": sum(rolos.values())}
 
 # --------------------------------------------------------------------------
@@ -497,7 +512,8 @@ def svg_plano(planta, dec, mesas, itens, op, grupos, titulo_extra=""):
         add(f'<text x="{MARG_E}" y="78" font-size="12.5" fill="#5b6470">'
             f'Todo o resto em fita no chão: <tspan font-weight="700">{fi["total"]:.0f} m</tspan>'
             f' — {fi["total_com_retoque"]:.0f} m com o retoque do meio-dia, '
-            f'{fi["rolos_total"]} rolos de 50 m repartidos em 6 cores</text>')
+            f'em 6 cores · faltam {fi["falta_total"]:.0f} m, '
+            f'{fi["rolos_total"]} rolos de 50 m a comprar</text>')
 
     # salao
     cont = " ".join(f"{px(x, y)[0]:.1f},{px(x, y)[1]:.1f}" for x, y in planta["salao"]["contorno"])
@@ -944,9 +960,13 @@ def main():
         print(f"    barreira: {op['postes']} unifilas em {op['metros']:.0f} m · "
               f"reserva móvel {op['reserva']}")
         print(f"    fita:     {fi['total']:.0f} m ({fi['total_com_retoque']:.0f} m com "
-              f"retoque) · {fi['rolos_total']} rolos de {ROLO:.0f} m")
-        for c, v in fi["por_cor"].items():
-            print(f"      {v:6.1f} m  {fi['rolos'][c]} rolo(s)  {CORES_FITA[c]['rotulo']}")
+              f"retoque) · faltam {fi['falta_total']:.0f} m = "
+              f"{fi['rolos_total']} rolos de {ROLO:.0f} m a comprar")
+        print(f"      {'cor':38s} {'precisa':>8s} {'estoque':>8s} {'falta':>7s} {'rolos':>6s}")
+        for c in fi["por_cor"]:
+            print(f"      {CORES_FITA[c]['rotulo']:38s} "
+                  f"{fi['com_retoque'][c]:7.1f}m {fi['estoque'][c]:7.1f}m "
+                  f"{fi['falta'][c]:6.1f}m {fi['rolos'][c]:6d}")
         for k in op["itens"]:
             print(f"      {itens[k]['postes']:>3}  {itens[k]['rotulo']}")
         print()
@@ -974,7 +994,8 @@ def main():
                       "banda_por_parede_m": BANDA_PAREDE, "largura_avenida_m": LARG_AVENIDA,
                       "largura_canal_m": LARG_CANAL, "passo_fila_m": PASSO_FILA,
                       "linha_espera_m": RECUO_MESA, "rolo_fita_m": ROLO,
-                      "retoque_fita": RETOQUE, "passo_galao_m": PASSO_GALAO},
+                      "retoque_fita": RETOQUE, "passo_galao_m": PASSO_GALAO,
+                      "estoque_fita_m": ESTOQUE_FITA},
         "catalogo": {k: {"rotulo": v["rotulo"], "grupo": v["grupo"],
                          "metros": v["metros"], "postes": v["postes"]}
                      for k, v in itens.items()},

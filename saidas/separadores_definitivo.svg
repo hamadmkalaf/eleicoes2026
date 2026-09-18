@@ -3,7 +3,7 @@
 <defs><pattern id="prot" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="7" stroke="#c0392b" stroke-width="1.1" stroke-opacity=".28"/></pattern><marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
 <text x="52" y="34" font-size="21" font-weight="700" fill="#16202b">Definitiva · Bocas, avenida B e as três vermelhas</text>
 <text x="52" y="56" font-size="12.5" fill="#5b6470">98 unifilas em barreira (133 m de cinta esticada) de 100 orçadas · 2 em reserva móvel</text>
-<text x="52" y="78" font-size="12.5" fill="#5b6470">Todo o resto em fita no chão: <tspan font-weight="700">769 m</tspan> — 846 m com o retoque do meio-dia, 20 rolos de 50 m repartidos em 6 cores</text>
+<text x="52" y="78" font-size="12.5" fill="#5b6470">Todo o resto em fita no chão: <tspan font-weight="700">769 m</tspan> — 846 m com o retoque do meio-dia, em 6 cores · faltam 351 m, 10 rolos de 50 m a comprar</text>
 <polygon points="169.0,758.0 806.5,758.0 806.5,92.0 52.0,92.0 52.0,653.0 169.0,653.0" fill="#ffffff" stroke="#16202b" stroke-width="2"/>
 <rect x="761.5" y="92.0" width="45.0" height="666.0" fill="url(#prot)" fill-opacity="1" stroke="#c0392b" stroke-opacity=".35" stroke-dasharray="3 3"/>
 <rect x="361.9" y="92.0" width="53.4" height="45.0" fill="url(#prot)" fill-opacity="1" stroke="#c0392b" stroke-opacity=".35" stroke-dasharray="3 3"/>

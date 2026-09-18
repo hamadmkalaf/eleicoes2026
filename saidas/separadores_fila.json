@@ -15,7 +15,15 @@
   "linha_espera_m": 1.5,
   "rolo_fita_m": 50.0,
   "retoque_fita": 0.1,
-  "passo_galao_m": 5.0
+  "passo_galao_m": 5.0,
+  "estoque_fita_m": {
+   "A": 165.0,
+   "B": 165.0,
+   "C": 165.0,
+   "espera": 0.0,
+   "pref": 0.0,
+   "neutro": 0.0
+  }
  },
  "catalogo": {
   "boca_A_int": {
@@ -325,17 +333,42 @@
      "pref": 22.0,
      "neutro": 90.2
     },
+    "estoque": {
+     "A": 165.0,
+     "B": 165.0,
+     "C": 165.0,
+     "espera": 0.0,
+     "pref": 0.0,
+     "neutro": 0.0
+    },
+    "falta": {
+     "A": 72.6,
+     "B": 13.8,
+     "C": 76.8,
+     "espera": 33.9,
+     "pref": 22.0,
+     "neutro": 90.2
+    },
     "rolos": {
-     "A": 5,
-     "B": 4,
-     "C": 5,
+     "A": 2,
+     "B": 1,
+     "C": 2,
      "espera": 1,
      "pref": 1,
      "neutro": 2
     },
+    "sobra": {
+     "A": 27.4,
+     "B": 36.2,
+     "C": 23.2,
+     "espera": 16.1,
+     "pref": 28.0,
+     "neutro": 9.8
+    },
     "total": 731.1,
     "total_com_retoque": 804.2,
-    "rolos_total": 18
+    "falta_total": 309.3,
+    "rolos_total": 9
    }
   },
   {
@@ -385,17 +418,42 @@
      "pref": 22.0,
      "neutro": 90.2
     },
+    "estoque": {
+     "A": 165.0,
+     "B": 165.0,
+     "C": 165.0,
+     "espera": 0.0,
+     "pref": 0.0,
+     "neutro": 0.0
+    },
+    "falta": {
+     "A": 71.9,
+     "B": 50.8,
+     "C": 76.7,
+     "espera": 33.9,
+     "pref": 22.0,
+     "neutro": 90.2
+    },
     "rolos": {
-     "A": 5,
-     "B": 5,
-     "C": 5,
+     "A": 2,
+     "B": 2,
+     "C": 2,
      "espera": 1,
      "pref": 1,
      "neutro": 2
     },
+    "sobra": {
+     "A": 28.1,
+     "B": 49.2,
+     "C": 23.3,
+     "espera": 16.1,
+     "pref": 28.0,
+     "neutro": 9.8
+    },
     "total": 764.1,
     "total_com_retoque": 840.5,
-    "rolos_total": 19
+    "falta_total": 345.5,
+    "rolos_total": 10
    }
   },
   {
@@ -435,17 +493,42 @@
      "pref": 22.0,
      "neutro": 90.2
     },
+    "estoque": {
+     "A": 165.0,
+     "B": 165.0,
+     "C": 165.0,
+     "espera": 0.0,
+     "pref": 0.0,
+     "neutro": 0.0
+    },
+    "falta": {
+     "A": 104.3,
+     "B": 0.0,
+     "C": 100.3,
+     "espera": 33.9,
+     "pref": 22.0,
+     "neutro": 90.2
+    },
     "rolos": {
-     "A": 6,
-     "B": 4,
-     "C": 6,
+     "A": 3,
+     "B": 0,
+     "C": 3,
      "espera": 1,
      "pref": 1,
      "neutro": 2
     },
+    "sobra": {
+     "A": 45.7,
+     "B": 0.2,
+     "C": 49.7,
+     "espera": 16.1,
+     "pref": 28.0,
+     "neutro": 9.8
+    },
     "total": 768.6,
     "total_com_retoque": 845.5,
-    "rolos_total": 20
+    "falta_total": 350.7,
+    "rolos_total": 10
    }
   }
  ]

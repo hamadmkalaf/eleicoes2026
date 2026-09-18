@@ -141,22 +141,31 @@ canal preferencial — pediria **395 unifilas em 572 m**. As 100 orçadas são
 
 ## 4. A fita: metragem e estoque
 
-| Cor | Onde | Necessário | Em estoque | Saldo |
-|---|---|---:|---:|---:|
-| **Azul** | avenida A, 9 ramais oeste, marcas, galões | **244,8 m** | 165 m | **−79,8 m** |
-| **Amarelo** | avenida B, distribuidor norte, 9 ramais, marcas | **149,8 m** | 165 m | +15,2 m |
-| **Laranja** | avenida C, 10 ramais leste, marcas, galões | **241,2 m** | 165 m | **−76,2 m** |
-| Zebrado preto-e-branco | as 28 linhas de espera | 30,8 m | — | comprar |
-| Verde | canal da preferencial S7 | 20,0 m | — | comprar |
-| Branco | rota de saída, setas do campo livre | 82,0 m | — | comprar |
-| **Total** | | **769 m** | | |
-| **Com 10% de retoque** | | **846 m** | | |
+| Cor | Onde | Precisa (com retoque) | Em estoque | **Falta** | **Rolos a comprar** |
+|---|---|---:|---:|---:|---:|
+| **Azul** | avenida A, 9 ramais oeste, marcas, galões | 269,3 m | 165 m | **104,3 m** | **3** |
+| **Amarelo** | avenida B, distribuidor norte, 9 ramais, marcas | 164,8 m | 165 m | 0 m | 0 (ver abaixo) |
+| **Laranja** | avenida C, 10 ramais leste, marcas, galões | 265,3 m | 165 m | **100,3 m** | **3** |
+| Zebrado preto-e-branco | as 28 linhas de espera | 33,9 m | 0 | 33,9 m | **1** |
+| Verde | canal da preferencial S7 | 22,0 m | 0 | 22,0 m | **1** |
+| Branco | rota de saída, setas do campo livre | 90,2 m | 0 | 90,2 m | **2** |
+| **Total** | | **846 m** | 495 m | **351 m** | **10 rolos** |
 
-**Falta bastante fita azul e laranja.** Assumindo 165 m **por cor** em estoque
-(a confirmar — se for 165 m no total, a falta triplica), faltam **80 m de azul e
-76 m de laranja**, mais as três cores que ainda não existem. Em rolos de 50 m:
-**2 azul + 2 laranja + 1 zebrado + 1 verde + 2 branco = 8 rolos a comprar**,
-ordem de **EUR 100–160** (*estimativa minha, a cotar*).
+A necessidade crua, sem o retoque, é de **769 m**: azul 244,8 · amarelo 149,8 ·
+laranja 241,2 · zebrado 30,8 · verde 20,0 · branco 82,0.
+
+**A falta se mede contra a necessidade já com o retoque de 10%**, não contra a
+crua — medir contra a crua daria 8 rolos onde são 10. O retoque do meio-dia não
+é opcional: 11,5 mil pares de pés destroem trecho de fita em plena operação, e
+é exatamente aí que não há tempo de ir comprar.
+
+**O amarelo fecha com 20 cm de folga.** 164,8 m de necessidade contra 165 m de
+estoque não é folga, é coincidência. **Compre 1 rolo de amarelo também** — são
+11 rolos, e o custo de um rolo é desprezível contra o de ficar sem fita na
+parede norte às 10h.
+
+**Custo estimado:** 11 rolos de 50 mm × 50 m, ordem de **EUR 140–220**
+(*estimativa minha, a cotar*). É ruído no orçamento de EUR 15.703,32.
 
 Por que azul e laranja passam tanto do amarelo: as bandas oeste (11,00 m) e
 leste (10,80 m) são bem mais fundas que a norte (9,00 m), então os 9 ramais de A
@@ -164,6 +173,16 @@ e os 10 de C são mais compridos — 6,90 e 6,70 m contra 4,90 m — e a avenida
 ainda tem a perna que vira para oeste. **A parede norte é barata em fita
 justamente porque a avenida B chega perpendicular**: o T que é a fragilidade do
 traçado é também o que encurta os seus ramais.
+
+### Uma dúvida sobre a fita em estoque
+
+Os rolos da foto parecem fita de PVC de embalagem, de ~48–50 mm. **Se for fita
+de empacotamento e não fita de marcação de piso, ela não serve**: a de
+embalagem tem filme fino, rasga sob tráfego de pé em poucas horas e tende a
+deixar resíduo — que é justamente o que o RDS pode cobrar na devolução. Fita de
+marcação de piso é bem mais espessa e feita para isso. **Confirmar a
+especificação dos 165 m antes de contar com eles**; se não servirem, a compra
+passa de 11 rolos para 17 (846 m).
 
 **O que a metragem não diz:** 769 m de fita colada, curva a curva, com 6 cores e
 16 marcadores de grupo, é trabalho de véspera com o salão vazio — não meia hora
@@ -256,8 +275,10 @@ foi arranjado: foi consequência de pôr as avenidas em faixas disjuntas.
 **Compras**
 
 3. As **15 unifilas adicionais** (EUR 195,45) para a reserva móvel.
-4. **8 rolos de fita**: 2 azul, 2 laranja, 1 zebrado preto-e-branco, 1 verde,
-   2 branco.
+4. **11 rolos de fita**: 3 azul, 3 laranja, 1 amarelo (a folga de 20 cm não
+   conta), 1 zebrado preto-e-branco, 1 verde, 2 branco. E confirmar se os 165 m
+   em estoque são fita de **marcação de piso** — se forem fita de embalagem,
+   são 17 rolos.
 5. Confirmar se os 165 m em estoque são **por cor** ou no total.
 
 **A aferir em campo, antes de imprimir**

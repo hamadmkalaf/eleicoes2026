@@ -55,8 +55,10 @@ linha útil**.
 "metros de cada cor" — é isso que quem compra precisa. Rolo de referência: 50 m.
 Margem de 10% para o retoque do meio-dia e perdas de corte.
 
-**As fitas em estoque** (foto de 17/09): azul, amarelo e laranja, **165 m** —
-está por confirmar se são 165 m por cor ou no total.
+**As fitas em estoque**: azul, amarelo e laranja, **165 m de cada** —
+confirmado pelo Posto em 18/09. Segue em aberto a **especificação**: se os
+rolos forem fita de embalagem e não de marcação de piso, não servem, e o
+estoque vale zero.
 
 ## 4. O traçado
 
@@ -150,7 +152,7 @@ vermelhas**, os únicos lugares com multidão parada declarada.
 | Cor | Precisa (com retoque) | Em estoque | Falta | Rolos |
 |---|---:|---:|---:|---:|
 | Azul (zona A) | 269,3 m | 165 m | 104,3 m | **3** |
-| Amarelo (zona B) | 164,8 m | 165 m | 0 m | 0 — mas 20 cm de folga não é folga |
+| Amarelo (zona B) | 164,8 m | 165 m | 0 m | 0 — mas 20 cm de folga não é folga: **compre 1** |
 | Laranja (zona C) | 265,3 m | 165 m | 100,3 m | **3** |
 | Zebrado preto-e-branco (linha de espera) | 33,9 m | 0 | 33,9 m | **1** |
 | Verde (preferencial S7) | 22,0 m | 0 | 22,0 m | **1** |
@@ -244,7 +246,8 @@ sozinhas um trabalho de 395.
    zona de egresso muda o cálculo de evacuação, e isso se submete, não se
    comunica.
 2. As 15 unifilas adicionais e os 8 rolos de fita.
-3. Se os 165 m em estoque são por cor ou no total.
+3. A **especificação** dos 165 m por cor: marcação de piso ou embalagem? Se
+   for embalagem, o estoque vale zero e a compra vai a 17 rolos.
 4. As bandas de 11,00 / 9,00 / 10,80 m pressupõem o módulo de 4,10 m da planta
    medida e o serpenteado de 4,20 m. Conferir com a mesa, a cabine e a urna
    reais.

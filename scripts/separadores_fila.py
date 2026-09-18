@@ -130,9 +130,10 @@ def boca_avenida(m, planta):
 # A azul, B amarelo, C laranja. Amarelo passa a ser da zona B, entao a linha de
 # espera **nao pode mais ser amarela** -- vira zebrado preto-e-branco.
 CORES_ZONA = {"A": "#33507E", "B": "#E8C63A", "C": "#DE7343"}
-# O que o Posto ja tem: 165 m de cada uma das tres cores de zona (foto de
-# 17/09; a confirmar se e 165 m POR COR ou no total). As outras tres cores nao
-# existem em estoque.
+# O que o Posto ja tem: 165 m de cada uma das tres cores de zona -- confirmado
+# pelo Posto em 18/09, e POR COR. As outras tres cores nao existem em estoque.
+# O que segue em aberto e a ESPECIFICACAO: se os rolos forem fita de embalagem
+# e nao de marcacao de piso, nao servem, e o estoque vale zero.
 ESTOQUE_FITA = {"A": 165.0, "B": 165.0, "C": 165.0,
                 "espera": 0.0, "pref": 0.0, "neutro": 0.0}
 

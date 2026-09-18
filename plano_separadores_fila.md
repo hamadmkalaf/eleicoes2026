@@ -279,7 +279,9 @@ foi arranjado: foi consequência de pôr as avenidas em faixas disjuntas.
    conta), 1 zebrado preto-e-branco, 1 verde, 2 branco. E confirmar se os 165 m
    em estoque são fita de **marcação de piso** — se forem fita de embalagem,
    são 17 rolos.
-5. Confirmar se os 165 m em estoque são **por cor** ou no total.
+5. Confirmar a **especificação** dos 165 m: fita de marcação de piso ou de
+   embalagem? Se for de embalagem, o estoque vale zero e a compra vai a 17
+   rolos. *(A quantidade já está confirmada: 165 m por cor, 18/09.)*
 
 **A aferir em campo, antes de imprimir**
 

@@ -4,7 +4,11 @@
   "vao_poste_m": 1.8,
   "unifilas_orcadas": 100,
   "preco_unitario_eur": 13.03,
-  "banda_secao_m": 9.0,
+  "banda_por_parede_m": {
+   "oeste": 11.0,
+   "norte": 9.0,
+   "leste": 10.8
+  },
   "largura_avenida_m": 3.0,
   "largura_canal_m": 1.1,
   "passo_fila_m": 0.65,
@@ -306,32 +310,32 @@
    "risco": "Nada segura as três vermelhas. Os 20 em pé à frente de cada uma ficam contidos só por fita, que é justamente onde a fita não segura.",
    "fita": {
     "por_cor": {
-     "A": 173.3,
+     "A": 216.0,
      "B": 162.5,
-     "C": 176.3,
+     "C": 219.8,
      "espera": 30.8,
      "pref": 20.0,
      "neutro": 82.0
     },
     "com_retoque": {
-     "A": 190.6,
+     "A": 237.6,
      "B": 178.8,
-     "C": 193.9,
+     "C": 241.8,
      "espera": 33.9,
      "pref": 22.0,
      "neutro": 90.2
     },
     "rolos": {
-     "A": 4,
+     "A": 5,
      "B": 4,
-     "C": 4,
+     "C": 5,
      "espera": 1,
      "pref": 1,
      "neutro": 2
     },
-    "total": 644.9,
-    "total_com_retoque": 709.4,
-    "rolos_total": 16
+    "total": 731.1,
+    "total_com_retoque": 804.2,
+    "rolos_total": 18
    }
   },
   {
@@ -366,17 +370,17 @@
    "risco": "A boca é o gargalo não paralelizável já identificado: 11,5 mil pessoas por 18,4 m de porta, com as três correntes separadas apenas por fita.",
    "fita": {
     "por_cor": {
-     "A": 184.6,
+     "A": 215.4,
      "B": 196.2,
-     "C": 185.2,
+     "C": 219.7,
      "espera": 30.8,
      "pref": 20.0,
      "neutro": 82.0
     },
     "com_retoque": {
-     "A": 203.1,
+     "A": 236.9,
      "B": 215.8,
-     "C": 203.7,
+     "C": 241.7,
      "espera": 33.9,
      "pref": 22.0,
      "neutro": 90.2
@@ -389,8 +393,8 @@
      "pref": 1,
      "neutro": 2
     },
-    "total": 698.8,
-    "total_com_retoque": 768.7,
+    "total": 764.1,
+    "total_com_retoque": 840.5,
     "rolos_total": 19
    }
   },
@@ -416,32 +420,32 @@
    "risco": "Depois dos 6 m de boca, as avenidas A e C ficam na fita, e sobram 2 unifilas de reserva. Se o corte de caminho aparecer, 2 postes não respondem: é por isso que as 15 adicionais deixam de ser folga.",
    "fita": {
     "por_cor": {
-     "A": 202.0,
+     "A": 244.8,
      "B": 149.8,
-     "C": 197.7,
+     "C": 241.2,
      "espera": 30.8,
      "pref": 20.0,
      "neutro": 82.0
     },
     "com_retoque": {
-     "A": 222.2,
+     "A": 269.3,
      "B": 164.8,
-     "C": 217.5,
+     "C": 265.3,
      "espera": 33.9,
      "pref": 22.0,
      "neutro": 90.2
     },
     "rolos": {
-     "A": 5,
+     "A": 6,
      "B": 4,
-     "C": 5,
+     "C": 6,
      "espera": 1,
      "pref": 1,
      "neutro": 2
     },
-    "total": 682.3,
-    "total_com_retoque": 750.5,
-    "rolos_total": 18
+    "total": 768.6,
+    "total_com_retoque": 845.5,
+    "rolos_total": 20
    }
   }
  ]

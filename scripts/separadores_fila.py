@@ -50,8 +50,6 @@ VAO_POSTE = 1.80      # 90% da cinta: o vao que deixa a cinta esticada
 UNIFILAS = 100        # o que o orcamento aprovou
 PRECO_UNIFILA = 13.03 # EUR, item (d) do orcamento / 100
 
-# Faixa reservada a cada parede: modulo (4,10) + serpenteado (4,20) + folga.
-BANDA = 9.00
 LARG_AVENIDA = 3.00   # largura livre de cada avenida de entrada
 LARG_CANAL = 1.10     # canal de micro-fila na frente da mesa
 PASSO_FILA = 0.65     # metro de canal por pessoa, projeto (plano de filas)
@@ -397,17 +395,19 @@ def fita(op, itens, mesas, planta):
             continue            # tratado no bloco dos ramais, abaixo
         por_cor[cor_do_item(chave, itens, mesas)] += it["metros"]
 
-    # 2. os ramais das 28 mesas: canal de 1,10 m, dois lados de BANDA - prof
-    lado = BANDA - planta["modulo"]["prof"]
+    # 2. os ramais das 28 mesas: canal de 1,10 m, dois lados. O comprimento do
+    # ramal e a banda DAQUELA parede menos o modulo -- 6,90 na oeste, 4,90 na
+    # norte, 6,70 na leste --, nao um valor unico.
+    ramal = {p_: BANDA_PAREDE[p_] - planta["modulo"]["prof"] for p_ in BANDA_PAREDE}
     for m in mesas:
         chave = f"cabeca_{m['eleitor']}"
         # um lado vira barreira so quando aquela cabeca esta na opcao
         lados = 1 if chave in ativos else 2
-        por_cor[m["entrada"]] += lados * lado
+        por_cor[m["entrada"]] += lados * ramal[m["parede"]]
 
     # 3. sempre fita: linha de espera, marcas de fila, galoes, setas de saida
-    n_marcas = int(round((lado - RECUO_MESA) / PASSO_FILA))
     for m in mesas:
+        n_marcas = int(round((ramal[m["parede"]] - RECUO_MESA) / PASSO_FILA))
         por_cor["espera"] += LARG_CANAL
         por_cor[m["entrada"]] += n_marcas * 0.25
     for aid, av in AVENIDAS.items():
@@ -971,7 +971,7 @@ def main():
     resumo = {
         "premissas": {"cinta_m": CINTA, "vao_poste_m": VAO_POSTE,
                       "unifilas_orcadas": UNIFILAS, "preco_unitario_eur": PRECO_UNIFILA,
-                      "banda_secao_m": BANDA, "largura_avenida_m": LARG_AVENIDA,
+                      "banda_por_parede_m": BANDA_PAREDE, "largura_avenida_m": LARG_AVENIDA,
                       "largura_canal_m": LARG_CANAL, "passo_fila_m": PASSO_FILA,
                       "linha_espera_m": RECUO_MESA, "rolo_fita_m": ROLO,
                       "retoque_fita": RETOQUE, "passo_galao_m": PASSO_GALAO},

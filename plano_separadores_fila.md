@@ -143,26 +143,29 @@ canal preferencial — pediria **395 unifilas em 572 m**. As 100 orçadas são
 
 | Cor | Onde | Necessário | Em estoque | Saldo |
 |---|---|---:|---:|---:|
-| **Azul** | avenida A, 9 ramais oeste, marcas, galões | **202,0 m** | 165 m | **−37,0 m** |
+| **Azul** | avenida A, 9 ramais oeste, marcas, galões | **244,8 m** | 165 m | **−79,8 m** |
 | **Amarelo** | avenida B, distribuidor norte, 9 ramais, marcas | **149,8 m** | 165 m | +15,2 m |
-| **Laranja** | avenida C, 10 ramais leste, marcas, galões | **197,7 m** | 165 m | **−32,7 m** |
+| **Laranja** | avenida C, 10 ramais leste, marcas, galões | **241,2 m** | 165 m | **−76,2 m** |
 | Zebrado preto-e-branco | as 28 linhas de espera | 30,8 m | — | comprar |
 | Verde | canal da preferencial S7 | 20,0 m | — | comprar |
 | Branco | rota de saída, setas do campo livre | 82,0 m | — | comprar |
-| **Total** | | **682 m** | | |
-| **Com 10% de retoque** | | **750 m** | | |
+| **Total** | | **769 m** | | |
+| **Com 10% de retoque** | | **846 m** | | |
 
-**Falta fita azul e laranja.** Assumindo 165 m **por cor** em estoque (a
-confirmar — pode ser 165 m no total, e aí a falta triplica), faltam **37 m de
-azul e 33 m de laranja**, mais as três cores que ainda não existem. Em rolos de
-50 m: **1 azul + 1 laranja + 1 zebrado + 1 verde + 2 branco = 6 rolos a
-comprar**, ordem de **EUR 75–120** (*estimativa minha, a cotar*).
+**Falta bastante fita azul e laranja.** Assumindo 165 m **por cor** em estoque
+(a confirmar — se for 165 m no total, a falta triplica), faltam **80 m de azul e
+76 m de laranja**, mais as três cores que ainda não existem. Em rolos de 50 m:
+**2 azul + 2 laranja + 1 zebrado + 1 verde + 2 branco = 8 rolos a comprar**,
+ordem de **EUR 100–160** (*estimativa minha, a cotar*).
 
-Por que azul e laranja passam do amarelo: as bandas oeste (11,00 m) e leste
-(10,80 m) são mais fundas que a norte (9,00 m), então os ramais de A e C são
-mais compridos — e a avenida A tem uma perna a mais, a que vira para oeste.
+Por que azul e laranja passam tanto do amarelo: as bandas oeste (11,00 m) e
+leste (10,80 m) são bem mais fundas que a norte (9,00 m), então os 9 ramais de A
+e os 10 de C são mais compridos — 6,90 e 6,70 m contra 4,90 m — e a avenida A
+ainda tem a perna que vira para oeste. **A parede norte é barata em fita
+justamente porque a avenida B chega perpendicular**: o T que é a fragilidade do
+traçado é também o que encurta os seus ramais.
 
-**O que a metragem não diz:** 682 m de fita colada, curva a curva, com 6 cores e
+**O que a metragem não diz:** 769 m de fita colada, curva a curva, com 6 cores e
 16 marcadores de grupo, é trabalho de véspera com o salão vazio — não meia hora
 antes da abertura.
 
@@ -221,14 +224,19 @@ do porquê.
 **Opção 1 — As três avenidas.** Toda a barreira nos flancos das avenidas,
 nenhuma nas cabeças de fila. Aposta: o eleitor mal encaminhado custa mais que o
 mal enfileirado. Descartada porque deixa as três vermelhas contidas só por fita
-— e fila parada é exatamente onde a fita não segura. Além disso não cabe nas
-100 unidades.
+— e fila parada é exatamente onde a fita não segura. E, com a geometria
+definitiva, custa **104 unifilas**: não cabe.
 
 **Opção 2 — As cabeças de fila.** Toda a barreira nas 19 mesas de maior carga,
 boca e avenidas na fita. Aposta: pressão só existe onde a fila é estática.
 Descartada porque deixa a boca — o gargalo não paralelizável, 11,5 mil pessoas
 por 18,4 m de porta — separada apenas por fita, e porque deixa 9 mesas sem
-canal, o que é difícil de explicar ao mesário dessas mesas.
+canal, o que é difícil de explicar ao mesário dessas mesas. Com a geometria
+definitiva custa **111 unifilas** — também não cabe.
+
+As duas deixaram de caber quando as bandas oeste e leste se aprofundaram para
+11,00 e 10,80 m. **A definitiva é a única das três que cabe nas 100**, e isso não
+foi arranjado: foi consequência de pôr as avenidas em faixas disjuntas.
 
 ---
 
@@ -248,7 +256,7 @@ canal, o que é difícil de explicar ao mesário dessas mesas.
 **Compras**
 
 3. As **15 unifilas adicionais** (EUR 195,45) para a reserva móvel.
-4. **6 rolos de fita**: 1 azul, 1 laranja, 1 zebrado preto-e-branco, 1 verde,
+4. **8 rolos de fita**: 2 azul, 2 laranja, 1 zebrado preto-e-branco, 1 verde,
    2 branco.
 5. Confirmar se os 165 m em estoque são **por cor** ou no total.
 
@@ -262,7 +270,7 @@ canal, o que é difícil de explicar ao mesário dessas mesas.
 8. O **T da parede norte** é o ponto mais frágil. Se houver folga, vale estudar
    uma segunda perna para a avenida B — mas isso mexe na atribuição
    mesa → entrada, fechada desde 15/09.
-9. Quem cola os 682 m de fita, e quando.
+9. Quem cola os 769 m de fita, e quando.
 
 ---
 

@@ -7,7 +7,7 @@
 ## 1. Dados gerais do pleito
 
 - **1º turno:** 4/10/2026, 8h–17h, local: **RDS Ballsbridge, Hall 2** (Dublin).
-- **2º turno (se necessário):** 25/10/2026, mesmo local e horário.
+- **2º turno (se necessário):** 25/10/2026, mesmo local e horário. **Coincide com a Maratona de Dublin**, cujo percurso passa pela Merrion Road, em frente ao RDS (fechada a partir das 10h). Plano de trânsito da Garda em `docs/acesso_2turno/informacoes_policia_2026-09.md`; plano de acesso no repositório final.
 - **Eleitores registrados:** ~16.000 (conforme nota verbal); outra fonte (planilha TSE) trabalha com **14.626 aptos** distribuídos em **51 seções** e **15 localidades** (32 seções em Dublin + 19 no interior da Irlanda: Cork, Galway, Donegal, Limerick, Kerry, Mayo, Cavan, Clare, Leitrim, Longford, Roscommon, Waterford, Westmeath, "outros locais" etc.).
 - **Comparecimento esperado:** ~12.000 (base histórica), com taxa de comparecimento de 2022 de **74%** em seções domiciliadas em Dublin (próxima à taxa doméstica) e **~50%** em seções do interior.
 - **Contexto especial 2026:** coincide com a presidência irlandesa do Conselho da UE, o que reduziu a oferta de espaços disponíveis para locação (o local usado no 2º turno de 2022, mais barato, estava indisponível).

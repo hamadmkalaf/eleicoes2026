@@ -25,6 +25,9 @@ B = S5 = parede norte, C = S6 = parede leste.
 | B | S5 | norte | amarelo | `#E8C63A` |
 | C | S6 | leste | laranja | `#DE7343` |
 
+**Essa tabela não se repete em lugar nenhum.** Ela vive em `data/zonas.json`, a
+fonte única da identidade das zonas, e todo o resto deriva dela — ver §1b.
+
 > **Consequência que isso força:** amarelo virou cor de zona, então a **linha de
 > espera não pode mais ser amarela** — viraria a cor da zona B no chão da zona
 > A. Passa a **zebrado preto-e-branco**, que não colide com nenhuma zona e lê
@@ -53,6 +56,64 @@ código 1** se alguma avenida cruzar outra ou invadir zona protegida. Ela já
 pegou um erro real: a primeira boca da avenida A ficava sobre o **recuo de
 emergência S3** (x 14,22–21,47). A boca foi para a metade **leste** de S4, com o
 trilho externo encostado na alvenaria de 0,29 m que separa S4 de S5.
+
+---
+
+## 1b. A vinculação com o plano de sinalização
+
+Em 21/09 havia **quatro** definições divergentes de cor de zona no projeto —
+`arranjo_paredes.py`, `separadores_fila.py`, o `sinalizacao_v2.json` e o
+artefato de sinalização — e **duas delas dentro do mesmo arquivo**. O eleitor
+que segue a linha azul até a porta azul não perdoa isso.
+
+A correção não é combinar de manter as duas iguais. É tirar a cor de todos os
+lugares e deixá-la num só:
+
+**`data/zonas.json` é a fonte única.** Ela declara, por zona, o quarteto que
+anda junto: **zona = porta = parede = cor**. Mais as três cores auxiliares
+(linha de espera, preferencial, saída) e o estoque de fita por cor.
+
+**Ninguém mais declara cor.** `scripts/zonas.py` lê a fonte e serve os atalhos;
+`arranjo_paredes.py` e `separadores_fila.py` importam-no. Por construção, esses
+dois **não podem divergir** — a cor deles é a da fonte.
+
+**O que pode divergir é conferido.** `scripts/confere_zonas.py` caminha por
+todos os consumidores e **sai com código 1** se algum ficou para trás:
+
+| Consumidor | O que é conferido |
+|---|---|
+| `scripts/arranjo_paredes.py` | `CORES`, `ENTRADA`, `PORTA` |
+| `scripts/separadores_fila.py` | `CORES_ZONA`, `ESTOQUE_FITA`, `CORES_FITA` |
+| `data/decisoes.json` | `portas[].cor`, `entradas[].hex/cor/porta/parede` |
+| `data/prancheta_hall2.json` | o espelho legado do bloco de decisões |
+| `data/grupos_mesas.json` | entrada, porta e parede de cada um dos 16 grupos |
+| `saidas/separadores_*.svg` | os hex efetivamente desenhados |
+| `saidas/sinalizacao_v2.json` | o plano de sinalização, quando presente |
+| o repositório inteiro | que **nenhuma paleta superada** sobreviveu |
+
+A última linha é a que pega o modo de falha real: alguém regenerar um arquivo a
+partir de um gerador antigo. As seis cores das duas paletas superadas estão numa
+lista negra e não podem reaparecer em nenhum `.py`, `.json`, `.md` ou `.svg`.
+
+**A prova.** Trocando a zona A para roxo em `data/zonas.json`, a conferência
+nomeia 9 divergências e sai com código 1 — `decisoes.json`, o espelho da
+prancheta e os três SVG. Os dois scripts não aparecem porque derivam da fonte e
+não têm como divergir. Desfeita a troca, volta a passar.
+
+```bash
+python3 scripts/confere_zonas.py               # confere; código 1 se quebrou
+python3 scripts/confere_zonas.py --sincroniza  # reescreve o espelho legado
+```
+
+**O plano de sinalização ainda não está vinculado**, e isso é honesto dizer: o
+seu gerador (`scripts/sinalizacao_v2.py`, no branch
+`claude/voter-route-signage-update-bjgbhp`) declara a própria paleta e depende
+de entradas que não estão neste branch. A conferência imprime o patch exato de
+quatro linhas que falta nele, e passa a conferi-lo automaticamente assim que
+`saidas/sinalizacao_v2.json` existir aqui. **Enquanto isso não for feito, uma
+mudança de cor tem de ser levada a ele à mão** — e o artefato impresso
+(`Ek3FfeYnwvQLZEs4ZJ5Zzr`) sempre terá de ser republicado à mão, porque peça
+impressa nenhum script confere.
 
 ---
 

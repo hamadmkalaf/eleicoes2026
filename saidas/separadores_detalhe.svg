@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1180" height="590" viewBox="0 0 1180 590" font-family="Inter, Helvetica, Arial, sans-serif">
 <rect width="1180" height="590" fill="#fbfaf8"/>
-<defs><marker id="s2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#33507E"/></marker></defs>
+<defs><marker id="s2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="{CORES_ZONA["A"]}"/></marker></defs>
 <text x="104" y="46" font-size="22" font-weight="700" fill="#16202b">Do fim da barreira até a mesa — o ramal, em escala</text>
 <text x="104" y="72" font-size="13" fill="#5b6470">Vale igual nas três paredes. Aqui a parede oeste: a mesa à esquerda, a avenida à direita, 11,00 m entre uma e outra.</text>
 <text x="104" y="94" font-size="13" fill="#5b6470">A barreira pára na boca do ramal. Da boca até a mesa, quem manda é a fita — e é por isso que a linha de espera tem de ser inconfundível.</text>

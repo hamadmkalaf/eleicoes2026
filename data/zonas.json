@@ -1,0 +1,88 @@
+{
+ "decididoEm": "2026-09-17",
+ "atualizadoEm": "2026-09-21",
+ "regra": "FONTE ÚNICA da identidade das zonas. Zona = porta = parede = cor, e os quatro andam juntos. Nenhum script, desenho ou peça de sinalização pode declarar cor de zona por conta própria: todos leem daqui. Quem mudar uma cor muda neste arquivo e roda scripts/confere_zonas.py, que sai com código 1 se algum consumidor tiver ficado para trás.",
+ "porque": "Em 21/09/2026 havia quatro definições divergentes de cor de zona no projeto — arranjo_paredes.py, separadores_fila.py, o sinalizacao_v2.json e o artefato de sinalização — e duas delas dentro do mesmo arquivo. O eleitor que segue a linha azul até a porta azul não perdoa essa divergência.",
+ "zonas": [
+  {
+   "id": "A",
+   "porta": "S4",
+   "parede": "oeste",
+   "cor": "azul",
+   "hex": "#33507E",
+   "estoque_fita_m": 165.0
+  },
+  {
+   "id": "B",
+   "porta": "S5",
+   "parede": "norte",
+   "cor": "amarelo",
+   "hex": "#E8C63A",
+   "estoque_fita_m": 165.0
+  },
+  {
+   "id": "C",
+   "porta": "S6",
+   "parede": "leste",
+   "cor": "laranja",
+   "hex": "#DE7343",
+   "estoque_fita_m": 165.0
+  }
+ ],
+ "auxiliares": {
+  "espera": {
+   "rotulo": "linha de espera, a 1,50 m da mesa",
+   "cor": "zebrado preto-e-branco",
+   "hex": "#16202B",
+   "nota": "NÃO pode ser amarela: amarelo é a cor da zona B."
+  },
+  "pref": {
+   "rotulo": "canal da entrada preferencial S7",
+   "cor": "verde",
+   "hex": "#1E8449"
+  },
+  "saida": {
+   "rotulo": "rota de saída e setas do campo livre",
+   "cor": "branco",
+   "hex": "#8A94A6",
+   "nota": "O hex é o substituto de desenho; a fita no chão é branca. Nunca reutilizar cor de zona na saída."
+  }
+ },
+ "consumidores": [
+  {
+   "arquivo": "scripts/arranjo_paredes.py",
+   "como": "importa scripts/zonas.py; CORES e ENTRADA derivam daqui",
+   "escreve": "data/decisoes.json (entradas[].cor/hex e portas[].cor)"
+  },
+  {
+   "arquivo": "scripts/separadores_fila.py",
+   "como": "importa scripts/zonas.py; CORES_ZONA e ESTOQUE_FITA derivam daqui",
+   "escreve": "saidas/separadores_*.svg e saidas/separadores_fila.json"
+  },
+  {
+   "arquivo": "data/decisoes.json",
+   "como": "gerado por arranjo_paredes.py --grava; conferido contra este arquivo",
+   "escreve": null
+  },
+  {
+   "arquivo": "data/prancheta_hall2.json",
+   "como": "fonte medida, mas carrega um espelho legado do bloco de decisões; conferido contra este arquivo",
+   "escreve": null
+  },
+  {
+   "arquivo": "data/grupos_mesas.json",
+   "como": "cada grupo declara entrada/parede; conferido contra este arquivo",
+   "escreve": null
+  },
+  {
+   "arquivo": "saidas/sinalizacao_v2.json",
+   "como": "plano de sinalização; o seu gerador deve ler daqui. Conferido quando presente.",
+   "escreve": null
+  },
+  {
+   "arquivo": "artefato de sinalização Ek3FfeYnwvQLZEs4ZJ5Zzr",
+   "como": "peças impressas (painéis de porta, x-banners). Não é conferível por script: republicar sempre que este arquivo mudar.",
+   "escreve": null
+  }
+ ]
+}

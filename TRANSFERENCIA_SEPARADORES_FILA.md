@@ -16,21 +16,29 @@
 |---|---|
 | Origem | `hamadmkalaf/eleicoes2026`, branch `claude/line-separator-layout-j61pe9` (PR #28) |
 | Commits do tema | `5f1eb87` → `7e3e202` → `84d5e36` → `8af6b12` (+ este) |
-| O que levar | **12 arquivos** — 2 de código e dados, 3 documentos, 4 SVG, 1 JSON de saída, 2 PNG |
+| O que levar | **15 arquivos** — 5 de código e dados, 3 documentos, 4 SVG, 1 JSON de saída, 2 PNG |
 | Do que depende | 3 arquivos que **não** são deste tema e têm de existir no destino |
-| Prova de que deu certo | `python3 scripts/separadores_fila.py --grava` sai com **código 0** e regenera os 4 SVG idênticos aos copiados |
+| Prova de que deu certo | `separadores_fila.py --grava` **e** `confere_zonas.py` saem com **código 0**, e os 4 SVG saem idênticos aos copiados |
 | Estado | **fechado.** Desenho definitivo decidido em 17/09; o que falta é resposta de terceiros (§7) |
 
 ---
 
 ## 2. O que levar
 
-### Código e dados próprios (2)
+### Código e dados próprios (5)
 
 | Arquivo | O que é |
 |---|---|
+| `data/zonas.json` | **a fonte única** da identidade das zonas: zona = porta = parede = cor, mais as cores auxiliares e o estoque de fita |
+| `scripts/zonas.py` | lê a fonte e serve os atalhos; é o que os outros importam |
+| `scripts/confere_zonas.py` | a vinculação em si: confere todos os consumidores contra a fonte e sai com código 1 |
 | `scripts/separadores_fila.py` | monta o catálogo de barreira, precifica em postes, calcula a fita por cor, confere a regra das avenidas e desenha tudo |
 | `data/grupos_mesas.json` | os 16 grupos de mesas (A1–A5, B1–B5, C1–C6) com MRVs, coordenadas e seções |
+
+**`data/zonas.json` e `scripts/zonas.py` são compartilhados com o tema de
+sinalização.** Se os dois temas forem para repositórios diferentes, os dois
+arquivos vão para os dois — e aí a vinculação se perde. O certo é os dois temas
+ficarem no mesmo repositório.
 
 ### Documentos (3)
 
@@ -62,9 +70,10 @@ e **não escreve em nenhum**. Sem eles, nada roda:
 
 | Arquivo | De quem é | O que o tema tira dele |
 |---|---|---|
-| `data/prancheta_hall2.json` | arranjo do Hall 2 | contorno do salão, as 18 portas, o módulo (4,10 × 0,90 m), o cenário base |
+| `data/prancheta_hall2.json` | arranjo do Hall 2 | contorno do salão, as 18 portas, o módulo (4,10 × 0,90 m), o cenário base. **Carrega um espelho legado do bloco de decisões** — `confere_zonas.py --sincroniza` o reescreve a partir da fonte |
 | `data/decisoes.json` | arranjo do Hall 2 | as 28 mesas com parede/entrada/classe, as zonas protegidas, os 3 serpenteados, a sinalização das portas |
 | `cenarios/paredes-abc-20260915.json` | arranjo do Hall 2 | a posição e a rotação de cada uma das 28 mesas |
+| `scripts/arranjo_paredes.py` | arranjo do Hall 2 | não é lido por este tema, mas **também importa `zonas.py`** e escreve as cores em `decisoes.json`; se ficar para trás, `confere_zonas.py` o acusa |
 
 **Consequência prática:** este tema não viaja sozinho. Ou o repositório de
 destino já tem o arranjo do Hall 2, ou os três arquivos acima vão junto. Se
@@ -76,6 +85,7 @@ de origem.
 ## 4. Como rodar, e como provar
 
 ```bash
+python3 scripts/confere_zonas.py              # a vinculação: código 1 se quebrou
 python3 scripts/separadores_fila.py           # conferência + relatório, sem gravar
 python3 scripts/separadores_fila.py --grava   # + os 4 SVG e o JSON
 ```
@@ -83,7 +93,12 @@ python3 scripts/separadores_fila.py --grava   # + os 4 SVG e o JSON
 Sem dependências externas: só `json`, `math`, `os` e `sys` da biblioteca padrão.
 Não acessa a rede.
 
-**A prova tem três partes, e as três têm de passar:**
+**A prova tem quatro partes, e as quatro têm de passar:**
+
+0. **A vinculação das zonas.** `confere_zonas.py` sai com **código 0** e imprime
+   `as zonas batem em todos os consumidores`. Teste real: troque a cor da zona A
+   em `data/zonas.json` — devem aparecer 9 divergências e código 1. Desfaça.
+
 
 1. **A conferência das avenidas.** O script imprime as faixas de x e sai com
    **código 1** se alguma avenida cruzar outra ou invadir zona protegida. No
@@ -129,9 +144,12 @@ Se qualquer uma das três falhar, **a transferência não terminou.**
   `paredes-abc`** a partir deste tema — eles são lidos, não escritos;
 - **a conferência das avenidas sai com código 1**; rodá-la antes de qualquer
   commit que toque em `AVENIDAS`, `BANDA_PAREDE` ou nas zonas protegidas;
+- **cor de zona só se muda em `data/zonas.json`**, nunca num script — e depois
+  se roda `confere_zonas.py`, `arranjo_paredes.py --grava` e
+  `separadores_fila.py --grava`, nessa ordem;
 - as constantes que mudam tudo estão no topo de `separadores_fila.py`:
-  `VAO_POSTE`, `BANDA_PAREDE`, `LARG_CANAL`, `PASSO_FILA`, `CORES_ZONA`,
-  `ESTOQUE_FITA`.
+  `VAO_POSTE`, `BANDA_PAREDE`, `LARG_CANAL`, `PASSO_FILA`. `CORES_ZONA` e
+  `ESTOQUE_FITA` já **não** são constantes: derivam de `zonas.py`.
 
 **Integração contínua**, se houver: `separadores_fila.py` sem `--grava` é um
 teste pronto — não escreve nada e já sai com código 1 quando a geometria quebra.
@@ -157,6 +175,11 @@ Herde a lista inteira; a primeira é bloqueante.
    em 45,70 e devia estar em 42,70; e nos grupos vermelhos os 4,60 m caem dentro
    do serpenteado.
 7. Definir quem cola os 769 m de fita, e quando.
+8. **Vincular o gerador do plano de sinalização.** `scripts/sinalizacao_v2.py`
+   (branch `claude/voter-route-signage-update-bjgbhp`) ainda declara a própria
+   paleta. `confere_zonas.py` imprime o patch de quatro linhas que falta. E o
+   artefato impresso `Ek3FfeYnwvQLZEs4ZJ5Zzr` terá de ser republicado à mão
+   sempre que `data/zonas.json` mudar — peça impressa nenhum script confere.
 
 ---
 
@@ -171,6 +194,12 @@ cada. Se mexer na banda, confira a tabela de fita por cor.
 **A segunda: contar a boca duas vezes.** A avenida B entra inteira na alocação
 definitiva, então **não** leva item de boca separado. Somar os dois conta os
 primeiros 6 m duas vezes e estoura o orçamento em 10 unifilas.
+
+**A quarta: declarar uma cor fora da fonte.** Foi assim que o projeto chegou a
+ter quatro paletas divergentes, duas delas no mesmo arquivo. Se aparecer um
+`#RRGGBB` de zona em qualquer script, está errado por construção — a cor vem de
+`zonas.py`. A lista negra de `confere_zonas.py` pega as paletas antigas, mas não
+pega uma paleta nova inventada: essa só a revisão pega.
 
 **A terceira: rotular por número de mesa.** O eleitor sabe a sua **seção**, não
 a sua mesa. Toda peça voltada ao público — fita, papel, banner — é rotulada por

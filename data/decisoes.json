@@ -109,19 +109,19 @@
   "S4": {
    "papel": "entrada",
    "entrada": "A",
-   "cor": "#2a78d6",
+   "cor": "#33507E",
    "parede": "oeste"
   },
   "S5": {
    "papel": "entrada",
    "entrada": "B",
-   "cor": "#e08a00",
+   "cor": "#E8C63A",
    "parede": "norte"
   },
   "S6": {
    "papel": "entrada",
    "entrada": "C",
-   "cor": "#c2185b",
+   "cor": "#DE7343",
    "parede": "leste"
   },
   "S2": {
@@ -136,7 +136,7 @@
    "id": "A",
    "porta": "S4",
    "cor": "azul",
-   "hex": "#2a78d6",
+   "hex": "#33507E",
    "parede": "oeste",
    "mrvs": [
     3,
@@ -158,8 +158,8 @@
   {
    "id": "B",
    "porta": "S5",
-   "cor": "âmbar",
-   "hex": "#e08a00",
+   "cor": "amarelo",
+   "hex": "#E8C63A",
    "parede": "norte",
    "mrvs": [
     2,
@@ -181,8 +181,8 @@
   {
    "id": "C",
    "porta": "S6",
-   "cor": "magenta",
-   "hex": "#c2185b",
+   "cor": "laranja",
+   "hex": "#DE7343",
    "parede": "leste",
    "mrvs": [
     1,

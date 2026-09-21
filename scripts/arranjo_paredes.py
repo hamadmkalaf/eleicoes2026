@@ -42,6 +42,8 @@ import os
 import sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import zonas   # noqa: E402  -- a fonte unica de zona/porta/parede/cor
 
 LARG_MODULO = 0.90      # largura do corpo do modulo
 PROF_MODULO = 4.10      # profundidade do modulo; a fila comeca depois dela
@@ -98,8 +100,8 @@ MIN_VERDES = 2
 # Zerar a amplitude custa mover 16 das 28 mesas de parede; 20 eleitores sao
 # 0,5% do terco, abaixo do que qualquer mesario notaria num dia de nove horas.
 TOLERANCIA_AMPLITUDE = 20
-ENTRADA = {"oeste": "A", "norte": "B", "leste": "C"}   # a decisao de 15/09
-PORTA = {"A": "S4", "B": "S5", "C": "S6"}
+ENTRADA = dict(zonas.ENTRADA_DE_PAREDE)   # a decisao de 15/09, lida da fonte
+PORTA = dict(zonas.PORTA)
 
 comprimento = lambda p: sum(b - a for a, b in PAREDES[p]["trechos"])
 
@@ -737,7 +739,9 @@ def main(argv):
 # --------------------------------------------------------------------------
 ID_CENARIO = "paredes-abc-20260915"
 NOME_CENARIO = "Paredes_ABC"
-CORES = {"A": ("azul", "#2a78d6"), "B": ("âmbar", "#e08a00"), "C": ("magenta", "#c2185b")}
+# As cores NAO se declaram aqui: vem de data/zonas.json, a fonte unica da
+# identidade das zonas (zona = porta = parede = cor). Ver scripts/zonas.py.
+CORES = zonas.CORES
 
 RECUO_PORTA = 3.00        # desobstrucao na frente de N2 e O2 (decisao de 16/09)
 FAIXA_LESTE = 3.00        # faixa protegida da fachada leste, das saidas L1 a L4

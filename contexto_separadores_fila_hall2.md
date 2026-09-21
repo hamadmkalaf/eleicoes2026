@@ -99,7 +99,8 @@ canalizar a saída dobraria a fita e criaria 28 cruzamentos com os ramais.
 
 **1. As cores são as das fitas em estoque.** A azul `#33507E`, B amarelo
 `#E8C63A`, C laranja `#DE7343` — as mesmas do artefato de sinalização
-(`Ek3FfeYnwvQLZEs4ZJ5Zzr`), que já as usa nos painéis de porta. *Consequência
+(`Ek3FfeYnwvQLZEs4ZJ5Zzr`), que já as usa nos painéis de porta. **Desde 21/09
+essa tabela vive num lugar só, `data/zonas.json`** (ver §5b). *Consequência
 que isso força:* amarelo virou cor de zona, então a **linha de espera não pode
 mais ser amarela** — passa a **zebrado preto-e-branco**. Saída em branco,
 preferencial em verde. São **seis cores de rolo** ao todo.
@@ -125,6 +126,29 @@ central deixa de ser circulação — vira reserva de fila, que é o que ele pre
 ser. O preço, dito com todas as letras: a saída atravessa os **ramais** da sua
 própria parede. É um cruzamento entre um fluxo contínuo e um intermitente, numa
 banda larga — o mais barato dos disponíveis.
+
+### 21/09 — a vinculação (§5b)
+
+Havia **quatro** definições divergentes de cor de zona no projeto, duas delas
+dentro do mesmo arquivo. A correção foi tirar a cor de todos os lugares:
+
+- **`data/zonas.json`** é a fonte única. Declara, por zona, o quarteto que anda
+  junto — **zona = porta = parede = cor** — mais as três cores auxiliares e o
+  estoque de fita.
+- **`scripts/zonas.py`** lê a fonte. `arranjo_paredes.py` e `separadores_fila.py`
+  importam-no e, por construção, não podem divergir.
+- **`scripts/confere_zonas.py`** confere o que pode divergir — os JSON gerados,
+  o espelho legado dentro do `prancheta_hall2.json`, os grupos, os SVG e o plano
+  de sinalização quando presente — e **sai com código 1**. Também mantém uma
+  lista negra das seis cores das duas paletas superadas, que não podem
+  reaparecer em arquivo nenhum.
+- `confere_zonas.py --sincroniza` reescreve o espelho legado a partir da fonte,
+  em vez de alguém editá-lo à mão.
+
+Duas coisas continuam manuais, e é preciso saber: o gerador do plano de
+sinalização (noutro branch) ainda declara a própria paleta — a conferência
+imprime o patch de quatro linhas que falta nele —, e o artefato impresso tem de
+ser republicado à mão, porque peça impressa nenhum script confere.
 
 ### A alocação definitiva
 

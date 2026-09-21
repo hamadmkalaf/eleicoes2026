@@ -41,6 +41,8 @@ import sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SAIDAS = os.path.join(RAIZ, "saidas")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import zonas   # noqa: E402  -- a fonte unica de zona/porta/parede/cor
 
 # --------------------------------------------------------------------------
 # Premissas do material
@@ -129,13 +131,12 @@ def boca_avenida(m, planta):
 # artefato de sinalizacao Ek3FfeYnwvQLZEs4ZJ5Zzr ja usa nos paineis de porta:
 # A azul, B amarelo, C laranja. Amarelo passa a ser da zona B, entao a linha de
 # espera **nao pode mais ser amarela** -- vira zebrado preto-e-branco.
-CORES_ZONA = {"A": "#33507E", "B": "#E8C63A", "C": "#DE7343"}
+CORES_ZONA = dict(zonas.HEX)
 # O que o Posto ja tem: 165 m de cada uma das tres cores de zona -- confirmado
 # pelo Posto em 18/09, e POR COR. As outras tres cores nao existem em estoque.
 # O que segue em aberto e a ESPECIFICACAO: se os rolos forem fita de embalagem
 # e nao de marcacao de piso, nao servem, e o estoque vale zero.
-ESTOQUE_FITA = {"A": 165.0, "B": 165.0, "C": 165.0,
-                "espera": 0.0, "pref": 0.0, "neutro": 0.0}
+ESTOQUE_FITA = dict(zonas.ESTOQUE, espera=0.0, pref=0.0, neutro=0.0)
 
 # Regra de 17/09: **as avenidas nunca se cruzam.** Cada uma sai da sua porta e
 # chega a sua parede sem tocar no envelope das outras -- A fica toda a oeste de
@@ -237,13 +238,13 @@ def catalogo(planta, dec, mesas):
             "trilhos": [av["trilho_externo"]],
         }
     itens["distribuidor_norte"] = {
-        "grupo": "cruzamento", "entrada": "B", "hex": "#e08a00",
+        "grupo": "cruzamento", "entrada": "B", "hex": CORES_ZONA["B"],
         "rotulo": "distribuidor da parede norte — o T em que a avenida B desemboca",
         "trilhos": [DISTRIBUIDOR_NORTE],
     }
 
     itens["trilho_sul_A"] = {
-        "grupo": "cruzamento", "entrada": "A", "hex": "#2a78d6",
+        "grupo": "cruzamento", "entrada": "A", "hex": CORES_ZONA["A"],
         "rotulo": "trilho sul da perna A — separa a entrada da saída S2 e do recuo S3",
         "trilhos": [[(11.00, 3.40), (25.03, 3.40)]],
     }
@@ -356,13 +357,16 @@ def opcoes(itens, mesas):
 # A fita e comprada em rolo, e rolo tem cor. Por isso a conta util nao e
 # "metros de fita", e "metros de cada cor" -- e quem compra precisa do segundo.
 CORES_FITA = {
-    "A": {"rotulo": "azul · zona A / parede oeste (em estoque)", "hex": CORES_ZONA["A"]},
-    "B": {"rotulo": "amarelo · zona B / parede norte (em estoque)", "hex": CORES_ZONA["B"]},
-    "C": {"rotulo": "laranja · zona C / parede leste (em estoque)", "hex": CORES_ZONA["C"]},
+    **{i: {"rotulo": f"{zonas.NOME_COR[i]} · zona {i} / parede "
+                     f"{zonas.PAREDE[i]} (em estoque)", "hex": zonas.HEX[i]}
+       for i in zonas.IDS},
     # Amarelo virou cor de zona: a linha de espera NAO pode mais ser amarela.
-    "espera": {"rotulo": "zebrado preto-e-branco · linha de espera", "hex": "#16202b"},
-    "pref": {"rotulo": "verde · preferencial S7", "hex": "#1e8449"},
-    "neutro": {"rotulo": "branco · rota de saída", "hex": "#8a94a6"},
+    "espera": {"rotulo": "zebrado preto-e-branco · linha de espera",
+               "hex": zonas.AUXILIARES["espera"]["hex"]},
+    "pref": {"rotulo": "verde · preferencial S7",
+             "hex": zonas.AUXILIARES["pref"]["hex"]},
+    "neutro": {"rotulo": "branco · rota de saída",
+               "hex": zonas.AUXILIARES["saida"]["hex"]},
 }
 ROLO = 50.0           # metros por rolo de fita de marcacao de piso
 RETOQUE = 0.10        # margem para o retoque do meio-dia e perdas de corte
@@ -563,7 +567,7 @@ def svg_plano(planta, dec, mesas, itens, op, grupos, titulo_extra=""):
     # distribuidor da parede norte (fita, quando nao esta na barreira)
     if "distribuidor_norte" not in ativos:
         pts = " ".join(f"{px(*p)[0]:.1f},{px(*p)[1]:.1f}" for p in DISTRIBUIDOR_NORTE)
-        add(f'<polyline points="{pts}" fill="none" stroke="#e08a00" stroke-width="2.4" '
+        add(f'<polyline points="{pts}" fill="none" stroke="{CORES_ZONA["B"]}" stroke-width="2.4" '
             f'stroke-dasharray="9 6" stroke-opacity=".85"/>')
 
     # saidas: campo livre, so sinalizado. Setas cinza convergindo em S2 e S8.
@@ -808,7 +812,7 @@ def svg_detalhe(mesas, dec):
         f'viewBox="0 0 {W} {H}" font-family="Inter, Helvetica, Arial, sans-serif">')
     add(f'<rect width="{W}" height="{H}" fill="#fbfaf8"/>')
     add('<defs><marker id="s2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" '
-        'markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#33507E"/>'
+        'markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="{CORES_ZONA["A"]}"/>'
         '</marker></defs>')
     add(f'<text x="{ox}" y="46" font-size="22" font-weight="700" fill="#16202b">'
         f'Do fim da barreira até a mesa — o ramal, em escala</text>')

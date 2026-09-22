@@ -76,7 +76,7 @@ for marca, valor in (('<!--PLANTA-->', planta), ('<!--DETALHE-->', detalhe), ('<
     html = html.replace(marca, valor)
 # os numeros que o template cita e que saem do JSON
 trocas = {
-    '@CCB@': str(M['ccb']['total']), '@SOBRA@': str(M['ccb']['sobra']),
+    '@CCB@': str(M['ccb']['total']), '@COMPRA@': str(M['ccb']['compra']),
     '@LOT@': f"{M['lotacao']:,}".replace(',', '.'), '@FITA@': str(int(round(M['fita_m']))),
     '@VAO_B@': br(vao), '@DIV_B@': br(L_div), '@VAO_A@': br(M['vao_fita']['A']),
     '@DIV_A@': br(round(M['larguras']['A'] - TURN, 2)),

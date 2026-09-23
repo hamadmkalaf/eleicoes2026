@@ -1,0 +1,581 @@
+<title>Escala de Voluntários</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  --papel:#efece4; --folha:#fffdf8; --piso:#f6f4ee;
+  --tinta:#16202b; --meio:#58616d; --fraco:#8b929c;
+  --regua:#d8d2c5; --regua2:#e7e2d7;
+  --zA:#2a78d6; --zB:#c26a00; --zC:#c2185b;
+  --alta:#c0392b; --media:#b5860f; --baixa:#1e8449;
+  --emerg:#0e8a74; --pref:#6d3fa0; --saida:#16867f; --apoio:#8a5a2b;
+  --vago:#a9b0b8; --realce:#1f6fb2;
+  --sombra:0 1px 2px rgba(22,32,43,.06), 0 8px 22px rgba(22,32,43,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --papel:#10151a; --folha:#191f26; --piso:#141a20;
+  --tinta:#e6eaef; --meio:#a2aab4; --fraco:#767e88;
+  --regua:#2a3139; --regua2:#222830;
+  --zA:#63a6e0; --zB:#e0a257; --zC:#e2789f;
+  --alta:#e8806f; --media:#dda93f; --baixa:#4fb87e;
+  --emerg:#42c0a5; --pref:#b18ede; --saida:#3cb8ab; --apoio:#c08e56;
+  --vago:#5c646d; --realce:#63a6e0;
+  --sombra:0 1px 2px rgba(0,0,0,.45), 0 10px 26px rgba(0,0,0,.38);
+}}
+:root[data-theme="dark"]{
+  --papel:#10151a; --folha:#191f26; --piso:#141a20;
+  --tinta:#e6eaef; --meio:#a2aab4; --fraco:#767e88;
+  --regua:#2a3139; --regua2:#222830;
+  --zA:#63a6e0; --zB:#e0a257; --zC:#e2789f;
+  --alta:#e8806f; --media:#dda93f; --baixa:#4fb87e;
+  --emerg:#42c0a5; --pref:#b18ede; --saida:#3cb8ab; --apoio:#c08e56;
+  --vago:#5c646d; --realce:#63a6e0;
+  --sombra:0 1px 2px rgba(0,0,0,.45), 0 10px 26px rgba(0,0,0,.38);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--papel); color:var(--tinta);
+  font:16px/1.6 "IBM Plex Sans",ui-sans-serif,system-ui,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; padding-inline:20px; padding-block:0 72px}
+.env{max-width:1060px; margin:0 auto}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--realce); outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+p{margin:0 0 1em; max-width:70ch}
+
+header{padding-block:34px 20px; border-bottom:2px solid var(--tinta)}
+.eyebrow{font-size:11px; font-weight:600; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--meio); margin:0 0 12px}
+h1{font-family:"Source Serif 4",Georgia,serif; font-weight:700;
+  font-size:clamp(2rem,5.2vw,3rem); line-height:1.05; letter-spacing:-.02em;
+  margin:0 0 12px; text-wrap:balance}
+.stand{color:var(--meio); font-size:1.1rem; max-width:62ch; margin:0}
+.facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(122px,1fr)); gap:1px;
+  background:var(--regua); border:1px solid var(--regua); margin-top:24px}
+.fact{background:var(--papel); padding:12px 13px}
+.fact dt{font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--meio); margin:0 0 4px}
+.fact dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:1.5rem; font-weight:700;
+  font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+.fact dd small{font-family:"IBM Plex Sans",sans-serif; font-size:.72rem; font-weight:500;
+  color:var(--meio); display:block; letter-spacing:0}
+
+section{padding-block:40px 0}
+h2{font-family:"Source Serif 4",Georgia,serif; font-size:1.5rem; font-weight:700;
+  margin:0 0 4px; letter-spacing:-.01em; text-wrap:balance}
+.lede{color:var(--meio); font-size:1.02rem; max-width:64ch; margin:0 0 22px}
+h3{font-size:.95rem; font-weight:600; margin:26px 0 8px}
+
+/* seletor de cenário */
+.switch{position:sticky; top:env(safe-area-inset-top,0px); z-index:5;
+  background:var(--papel); padding-block:12px; border-bottom:1px solid var(--regua);
+  margin-top:34px}
+.switch .rot{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--meio); margin:0 0 8px}
+.tabs{display:flex; gap:8px; flex-wrap:wrap}
+.tabs button{flex:1 1 10.5rem; text-align:left; cursor:pointer; font:inherit;
+  background:var(--folha); border:1px solid var(--regua); border-left:4px solid var(--vago);
+  border-radius:2px; padding:10px 13px; color:var(--meio)}
+.tabs button b{display:block; font-family:"IBM Plex Sans",sans-serif; font-size:.95rem;
+  font-weight:600; color:var(--tinta)}
+.tabs button .q{font-family:"IBM Plex Mono",monospace; font-size:1.35rem; font-weight:700;
+  color:var(--tinta); line-height:1.15}
+.tabs button small{display:block; font-size:.78rem; line-height:1.4; margin-top:3px}
+.tabs button[aria-pressed="true"]{border-left-color:var(--realce); background:var(--piso);
+  box-shadow:var(--sombra)}
+.tabs button:hover{border-color:var(--fraco)}
+
+.resumo{display:flex; flex-wrap:wrap; gap:8px 26px; padding-block:14px; font-size:.9rem;
+  color:var(--meio); border-bottom:1px solid var(--regua2)}
+.resumo b{color:var(--tinta); font-family:"IBM Plex Mono",monospace; font-weight:700}
+
+/* figuras */
+figure{margin:26px 0 0}
+.figbox{background:var(--folha); border:1px solid var(--regua); padding:16px 14px 10px;
+  overflow-x:auto; box-shadow:var(--sombra)}
+svg.mapa{display:block; width:100%; height:auto; color:var(--tinta)}
+#d1{min-width:420px; max-width:585px; margin:0 auto}
+#d2{min-width:520px}
+figcaption{font-size:.87rem; color:var(--meio); margin-top:10px; max-width:76ch}
+
+.posto circle{fill:var(--folha); stroke:var(--tinta); stroke-width:2.2}
+.posto .n{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:700;
+  text-anchor:middle; fill:var(--tinta)}
+.posto.vago circle{fill:none; stroke:var(--vago); stroke-width:1.4; stroke-dasharray:3 2.5}
+.posto.vago .n{fill:var(--vago)}
+.posto.alta circle{stroke:var(--alta)} .posto.alta .n{fill:var(--alta)}
+.posto.pref circle{stroke:var(--pref)} .posto.pref .n{fill:var(--pref)}
+.posto.vago.alta circle,.posto.vago.pref circle{stroke:var(--vago)}
+.posto.vago.alta .n,.posto.vago.pref .n{fill:var(--vago)}
+text.rot{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:700;
+  text-anchor:middle; fill:var(--meio)}
+text.rot.alta{fill:var(--alta)} text.rot.pref{fill:var(--pref)}
+
+.legenda{display:flex; flex-wrap:wrap; gap:7px 20px; padding-block:12px; font-size:.82rem;
+  color:var(--meio)}
+.legenda span{display:inline-flex; align-items:center; gap:7px}
+.sw{width:12px; height:12px; flex:none; border-radius:2px}
+.sw.d{border-radius:50%; background:var(--folha); border:2px solid var(--tinta)}
+.sw.v{border-radius:50%; background:none; border:1.5px dashed var(--vago)}
+
+/* escada de prioridade */
+.escada{list-style:none; margin:16px 0 0; padding:0; display:grid; gap:0;
+  border:1px solid var(--regua); background:var(--folha)}
+.escada li{display:grid; grid-template-columns:3.4rem 1fr; gap:14px; align-items:baseline;
+  padding:10px 14px; border-bottom:1px solid var(--regua2)}
+.escada li:last-child{border-bottom:0}
+.escada .nº{font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:.92rem;
+  color:var(--realce)}
+.escada b{font-weight:600}
+.escada small{color:var(--meio); display:block; font-size:.84rem; line-height:1.45}
+
+/* tabela */
+.tw{overflow-x:auto; border:1px solid var(--regua); background:var(--folha); margin-top:18px}
+table{border-collapse:collapse; width:100%; min-width:700px; font-size:.89rem}
+thead th{font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--meio);
+  font-weight:600; text-align:left; padding:10px 12px; border-bottom:1px solid var(--regua);
+  background:var(--piso); white-space:nowrap; vertical-align:bottom}
+td{padding:9px 12px; border-bottom:1px solid var(--regua2); vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+th.num,td.num{text-align:right; font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums; white-space:nowrap; width:5.2rem}
+td.cod{font-family:"IBM Plex Mono",monospace; font-weight:700; white-space:nowrap}
+td small{display:block; color:var(--meio); font-size:.8rem; line-height:1.45; margin-top:2px}
+tfoot td{font-weight:700; background:var(--piso); border-top:1px solid var(--regua)}
+tfoot td.num{font-size:1rem}
+.on{background:rgba(31,111,178,.09)}
+tfoot td.on{background:rgba(31,111,178,.16)}
+.zero{color:var(--vago)}
+
+.nota{border-left:3px solid var(--realce); background:var(--folha); padding:14px 18px;
+  margin:22px 0 0; font-size:.95rem}
+.nota.aviso{border-left-color:var(--alta)}
+.nota .tag{font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--meio); display:block; margin-bottom:6px}
+.nota.aviso .tag{color:var(--alta)}
+.nota p:last-child{margin-bottom:0}
+
+footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--regua);
+  font-size:.83rem; color:var(--meio)}
+@media (max-width:560px){
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .escada li{grid-template-columns:2.8rem 1fr; gap:10px}
+}
+</style>
+<div class="env">
+
+<header>
+  <p class="eyebrow">Eleições 2026 · 1º turno · 4 de outubro · Posto de Dublin</p>
+  <h1>Escala de Voluntários</h1>
+  <p class="stand">Onde cada voluntário fica, quantos são necessários em cada ponto da rota, e o
+  que muda entre as nove pessoas que existem hoje e as quarenta e nove do plano cheio.</p>
+  <dl class="facts">
+    <div class="fact"><dt>Disponíveis hoje</dt><dd>9<small>eram 25</small></dd></div>
+    <div class="fact"><dt>Cedidos a mesários</dt><dd>14<small>dispensas</small></dd></div>
+    <div class="fact"><dt>Próximo degrau</dt><dd>15<small>C2 · faltam 6</small></dd></div>
+    <div class="fact"><dt>Operacional</dt><dd>24<small>C3</small></dd></div>
+    <div class="fact"><dt>Pleno, no pico</dt><dd>49<small>C4 · referência</small></dd></div>
+    <div class="fact"><dt>Comparecimento esperado</dt><dd>11.499</dd></div>
+  </dl>
+</header>
+
+<section>
+  <h2>O que a sinalização já resolve</h2>
+  <p class="lede">O plano de sinalização mudou a conta do voluntariado. Com 37 peças e uma
+  consulta só — seção → porta —, a maior parte da orientação deixou de precisar de gente.</p>
+  <p>A tabela mestra aparece sete vezes entre a calçada e o Ring; cada boca de zona tem a lista
+  das suas seções em letra de 80 mm; cada porta tem a letra no vidro e um painel logo dentro; cada
+  bloco de mesas tem o seu banner. O eleitor que sabe o número da seção é conduzido do gradil à
+  urna sem falar com ninguém.</p>
+  <p>Sobra, para pessoa, o que nenhuma peça faz: <strong>resolver quem não sabe a seção</strong>,
+  <strong>dosar fluxo</strong>, <strong>separar correntes que se cruzam</strong> e
+  <strong>cuidar de quem não pode esperar em pé</strong>. Os postos abaixo são só isso — e é por
+  isso que nove pessoas, bem colocadas, produzem uma votação que funciona.</p>
+</section>
+
+<div class="switch">
+  <p class="rot">Cenário</p>
+  <div class="tabs" role="group" aria-label="Cenário de efetivo">
+    <button type="button" id="c1" aria-pressed="true"><span class="q">9</span>
+      <b>C1 · Contingência</b><small>o efetivo de hoje. Só os pontos em que a ausência quebra alguma coisa.</small></button>
+    <button type="button" id="c2" aria-pressed="false"><span class="q">15</span>
+      <b>C2 · Próximo degrau</b><small>seis pessoas a mais: a vazão volta a ter controle e a consulta ganha fôlego.</small></button>
+    <button type="button" id="c3" aria-pressed="false"><span class="q">24</span>
+      <b>C3 · Operacional</b><small>todos os pontos que importam cobertos, um por posto, sem reserva e sem turnos.</small></button>
+    <button type="button" id="c4" aria-pressed="false"><span class="q">49</span>
+      <b>C4 · Pleno</b><small>o plano dimensionado, com turnos e reserva. Referência de teto, não meta de recrutamento.</small></button>
+  </div>
+</div>
+<p class="resumo" id="resumo"></p>
+
+<section>
+  <h2>A rota, do gradil à porta</h2>
+  <p class="lede">Cada círculo é um posto; o número dentro é quanta gente fica ali no cenário
+  escolhido. Círculo tracejado é posto vago.</p>
+  <figure>
+    <div class="figbox"><svg class="mapa" id="d1" viewBox="0 0 430 755" role="img" aria-label="Percurso do eleitor da calçada da Merrion Road ao Hall 2, com os postos de voluntário marcados: consulta de seção na calçada, portão, lateral leste, apron, e dentro do Ring 3 o corredor de chegada, o trecho de fundo, as bocas e as cabeças das três zonas.">
+<defs><marker id="seta" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+<rect x="0" y="20" width="430" height="22" fill="var(--piso)"/>
+<text x="10" y="34.5" font-size="10" font-weight="600" letter-spacing="1.3" fill="var(--meio)">MERRION ROAD · calçada</text>
+<line x1="8" y1="48" x2="338" y2="48" stroke="currentColor" stroke-width="1.8" opacity=".45"/>
+<line x1="366" y1="48" x2="422" y2="48" stroke="currentColor" stroke-width="1.8" opacity=".45"/>
+<line x1="338" y1="41" x2="338" y2="55" stroke="currentColor" stroke-width="2.4"/>
+<line x1="366" y1="41" x2="366" y2="55" stroke="currentColor" stroke-width="2.4"/>
+<text x="424" y="78" text-anchor="end" font-size="9.5" font-weight="600" fill="currentColor">portão de eleitores</text>
+<rect x="40" y="150" width="297" height="262" fill="var(--folha)" stroke="currentColor" stroke-width="1.6"/>
+<rect x="40" y="172" width="11" height="218" fill="var(--zA)" opacity=".55"/>
+<rect x="62" y="150" width="253" height="11" fill="var(--zB)" opacity=".55"/>
+<rect x="326" y="172" width="11" height="218" fill="var(--zC)" opacity=".55"/>
+<text x="188" y="272" text-anchor="middle" font-family="Source Serif 4,Georgia,serif" font-size="15" font-weight="700" fill="currentColor">HALL 2 · salão de votação</text>
+<text x="188" y="289" text-anchor="middle" font-size="9.5" fill="var(--meio)">Shelbourne Hall · 50,3 × 44,4 m · 28 mesas nas três paredes</text>
+<line x1="118" y1="412" x2="125" y2="412" stroke="var(--saida)" stroke-width="5"/>
+<text x="121" y="405" text-anchor="middle" font-size="8" fill="var(--saida)">S2</text>
+<line x1="153" y1="412" x2="188" y2="412" stroke="var(--zA)" stroke-width="6"/>
+<text x="170" y="405" text-anchor="middle" font-size="10" font-weight="700" fill="var(--zA)">S4·A</text>
+<line x1="189" y1="412" x2="224" y2="412" stroke="var(--zB)" stroke-width="6"/>
+<text x="206" y="405" text-anchor="middle" font-size="10" font-weight="700" fill="var(--zB)">S5·B</text>
+<line x1="226" y1="412" x2="261" y2="412" stroke="var(--zC)" stroke-width="6"/>
+<text x="243" y="405" text-anchor="middle" font-size="10" font-weight="700" fill="var(--zC)">S6·C</text>
+<line x1="265" y1="412" x2="272" y2="412" stroke="var(--pref)" stroke-width="5"/>
+<text x="268" y="405" text-anchor="middle" font-size="8" fill="var(--pref)">S7</text>
+<line x1="288" y1="412" x2="296" y2="412" stroke="var(--saida)" stroke-width="5"/>
+<text x="292" y="405" text-anchor="middle" font-size="8" fill="var(--saida)">S8</text>
+<rect x="55" y="412" width="290" height="83" fill="var(--piso)" opacity=".75"/>
+<text x="64" y="468" font-size="9" fill="var(--meio)">apron pavimentado · 14 m</text>
+<rect x="70" y="495" width="260" height="206" fill="none" stroke="var(--meio)" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="74" y="491" font-size="10" font-weight="600" fill="var(--meio)">RING 3 · pátio de fila · 44 × 35 m</text>
+<rect x="311" y="495" width="19" height="206" fill="var(--piso)"/>
+<text x="325" y="600" text-anchor="middle" font-size="8.5" fill="var(--meio)" transform="rotate(90 325 600)">corredor de chegada · 3 m</text>
+<rect x="70" y="495" width="72" height="189" fill="var(--zA)" fill-opacity=".13" stroke="var(--zA)" stroke-width=".9"/>
+<rect x="149" y="495" width="83" height="189" fill="var(--zB)" fill-opacity=".13" stroke="var(--zB)" stroke-width=".9"/>
+<rect x="239" y="495" width="72" height="189" fill="var(--zC)" fill-opacity=".13" stroke="var(--zC)" stroke-width=".9"/>
+<g stroke-width=".55" opacity=".5"><line x1="72" y1="522" x2="140" y2="522" stroke="var(--zA)"/><line x1="72" y1="549" x2="140" y2="549" stroke="var(--zA)"/><line x1="72" y1="576" x2="140" y2="576" stroke="var(--zA)"/><line x1="72" y1="630" x2="140" y2="630" stroke="var(--zA)"/><line x1="72" y1="657" x2="140" y2="657" stroke="var(--zA)"/><line x1="151" y1="522" x2="230" y2="522" stroke="var(--zB)"/><line x1="151" y1="549" x2="230" y2="549" stroke="var(--zB)"/><line x1="151" y1="576" x2="230" y2="576" stroke="var(--zB)"/><line x1="151" y1="630" x2="230" y2="630" stroke="var(--zB)"/><line x1="151" y1="657" x2="230" y2="657" stroke="var(--zB)"/><line x1="241" y1="522" x2="309" y2="522" stroke="var(--zC)"/><line x1="241" y1="549" x2="309" y2="549" stroke="var(--zC)"/><line x1="241" y1="576" x2="309" y2="576" stroke="var(--zC)"/><line x1="241" y1="630" x2="309" y2="630" stroke="var(--zC)"/><line x1="241" y1="657" x2="309" y2="657" stroke="var(--zC)"/></g>
+<text x="106" y="548" text-anchor="middle" font-size="17" font-weight="700" fill="var(--zA)">A</text>
+<text x="190" y="548" text-anchor="middle" font-size="17" font-weight="700" fill="var(--zB)">B</text>
+<text x="275" y="548" text-anchor="middle" font-size="17" font-weight="700" fill="var(--zC)">C</text>
+<text x="106" y="562" text-anchor="middle" font-size="8" fill="var(--zA)">23 raias</text>
+<text x="190" y="562" text-anchor="middle" font-size="8" fill="var(--zB)">23 raias</text>
+<text x="275" y="562" text-anchor="middle" font-size="8" fill="var(--zC)">23 raias</text>
+<rect x="70" y="684" width="260" height="17" fill="var(--piso)"/>
+<text x="200" y="715" text-anchor="middle" font-size="9" font-weight="600" fill="var(--meio)">trecho de fundo · 3 m · passa por C, depois B, depois A</text>
+<polyline points="352,52 352,405 344,418 344,490 322,498 322,688 96,692" fill="none" stroke="currentColor" stroke-width="2.6" marker-end="url(#seta)"/>
+<text x="368" y="280" font-size="9.5" font-weight="600" fill="currentColor" transform="rotate(90 368 280)">≈ 44 m de fila na lateral leste</text>
+<line x1="106" y1="493" x2="166" y2="418" stroke="var(--zA)" stroke-width="1.8" marker-end="url(#seta)"/>
+<line x1="190" y1="493" x2="204" y2="418" stroke="var(--zB)" stroke-width="1.8" marker-end="url(#seta)"/>
+<line x1="275" y1="493" x2="245" y2="418" stroke="var(--zC)" stroke-width="1.8" marker-end="url(#seta)"/>
+<line x1="20" y1="742" x2="138" y2="742" stroke="currentColor" stroke-width="1.2"/>
+<text x="79" y="737" text-anchor="middle" font-size="9" fill="var(--meio)">20 m</text>
+<line x1="408" y1="118" x2="408" y2="92" stroke="currentColor" stroke-width="1.3" marker-end="url(#seta)"/>
+<text x="408" y="132" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--meio)">N</text>
+<g class="posto" data-p="P0" data-n="3,4,4,4"><circle cx="300" cy="31" r="9"/><text class="n" x="300" y="34.5">3</text></g><text class="rot" x="300" y="15">P0</text>
+<g class="posto" data-p="P1" data-n="0,0,1,2"><circle cx="352" cy="66" r="9"/><text class="n" x="352" y="69.5">0</text></g><text class="rot" x="352" y="86">P1</text>
+<g class="posto" data-p="P2" data-n="0,0,1,2"><circle cx="352" cy="230" r="9"/><text class="n" x="352" y="233.5">0</text></g><text class="rot" x="352" y="215">P2</text>
+<g class="posto" data-p="P3" data-n="0,0,0,2"><circle cx="321" cy="512" r="9"/><text class="n" x="321" y="515.5">0</text></g><text class="rot" x="348" y="515">P3</text>
+<g class="posto" data-p="R1" data-n="0,0,1,2"><circle cx="321" cy="600" r="9"/><text class="n" x="321" y="603.5">0</text></g><text class="rot" x="348" y="603">R1</text>
+<g class="posto" data-p="R5" data-n="0,1,1,1"><circle cx="106" cy="508" r="9"/><text class="n" x="106" y="511.5">0</text></g>
+<g class="posto" data-p="R5" data-n="0,1,1,1"><circle cx="190" cy="508" r="9"/><text class="n" x="190" y="511.5">0</text></g>
+<g class="posto" data-p="R5" data-n="0,1,1,1"><circle cx="275" cy="508" r="9"/><text class="n" x="275" y="511.5">0</text></g>
+<text class="rot" x="127" y="511">R5</text><text class="rot" x="211" y="511">R5</text><text class="rot" x="296" y="511">R5</text>
+<g class="posto" data-p="R4" data-n="0,0,0,1"><circle cx="106" cy="603" r="9"/><text class="n" x="106" y="606.5">0</text></g>
+<g class="posto" data-p="R4" data-n="0,0,0,1"><circle cx="190" cy="603" r="9"/><text class="n" x="190" y="606.5">0</text></g>
+<g class="posto" data-p="R4" data-n="0,0,0,1"><circle cx="275" cy="603" r="9"/><text class="n" x="275" y="606.5">0</text></g>
+<text class="rot" x="127" y="606">R4</text><text class="rot" x="211" y="606">R4</text><text class="rot" x="296" y="606">R4</text>
+<g class="posto" data-p="R2" data-n="0,1,1,1"><circle cx="106" cy="672" r="9"/><text class="n" x="106" y="675.5">0</text></g>
+<g class="posto" data-p="R2" data-n="0,0,1,1"><circle cx="190" cy="672" r="9"/><text class="n" x="190" y="675.5">0</text></g>
+<g class="posto" data-p="R2" data-n="0,1,1,1"><circle cx="275" cy="672" r="9"/><text class="n" x="275" y="675.5">0</text></g>
+<text class="rot" x="127" y="675">R2</text><text class="rot" x="211" y="675">R2</text><text class="rot" x="296" y="675">R2</text>
+<g class="posto" data-p="R3" data-n="1,1,1,1"><circle cx="148" cy="693" r="9"/><text class="n" x="148" y="696.5">1</text></g><text class="rot" x="148" y="676">R3</text>
+<g class="posto" data-p="A1" data-n="0,0,1,2"><circle cx="300" cy="452" r="9"/><text class="n" x="300" y="455.5">0</text></g><text class="rot" x="300" y="437">A1</text>
+<g class="posto" data-p="A2" data-n="0,0,0,1"><circle cx="170" cy="426" r="9"/><text class="n" x="170" y="429.5">0</text></g>
+<g class="posto" data-p="A2" data-n="0,0,0,1"><circle cx="206" cy="426" r="9"/><text class="n" x="206" y="429.5">0</text></g>
+<g class="posto" data-p="A2" data-n="0,0,0,1"><circle cx="243" cy="426" r="9"/><text class="n" x="243" y="429.5">0</text></g>
+<text class="rot" x="152" y="429">A2</text><text class="rot" x="188" y="429">A2</text><text class="rot" x="225" y="429">A2</text>
+<g class="posto pref" data-p="A3" data-n="1,1,1,2"><circle cx="268" cy="447" r="9"/><text class="n" x="268" y="450.5">1</text></g><text class="rot pref" x="268" y="466">A3</text>
+    </svg></div>
+    <figcaption>Em escala sobre a prancheta do Hall 2 (50,3 × 44,4 m) e a montagem adotada do
+    Ring 3 (44 × 35 m). O eleitor desce a lateral leste, entra no Ring pelo canto nordeste, percorre
+    o corredor de chegada e o trecho de fundo passando por C, B e A, sobe as 23 raias da sua zona e
+    volta ao Hall pela porta da mesma letra.</figcaption>
+  </figure>
+  <div class="legenda">
+    <span><i class="sw d"></i> posto ocupado</span>
+    <span><i class="sw v"></i> posto vago neste cenário</span>
+    <span><i class="sw" style="background:var(--zA)"></i> zona A · porta S4 · parede oeste</span>
+    <span><i class="sw" style="background:var(--zB)"></i> zona B · porta S5 · parede norte</span>
+    <span><i class="sw" style="background:var(--zC)"></i> zona C · porta S6 · parede leste</span>
+    <span><i class="sw" style="background:var(--pref)"></i> preferencial S7</span>
+    <span><i class="sw" style="background:var(--saida)"></i> saídas S2 e S8</span>
+  </div>
+</section>
+
+<section>
+  <h2>Dentro do salão</h2>
+  <p class="lede">As 28 mesas encostadas nas três paredes, cada uma servida pela porta da sua
+  letra. Vermelhas são as três de maior comparecimento, com o serpenteado de 20 pessoas reservado
+  à frente.</p>
+  <figure>
+    <div class="figbox"><svg class="mapa" id="d2" viewBox="0 0 517 460" role="img" aria-label="Planta do Hall 2 com as 28 mesas nas paredes oeste, norte e leste, as portas da fachada sul, a sala de apoio e os postos de voluntário dentro do salão.">
+<polygon points="102.2,425.6 484.7,425.6 484.7,26.0 32.0,26.0 32.0,362.6 102.2,362.6" fill="var(--piso)" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="457.7" y="26.0" width="27.0" height="399.6" fill="var(--emerg)" fill-opacity=".10" stroke="var(--emerg)" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="32.0" y="26.0" width="70.2" height="53.1" fill="var(--apoio)" fill-opacity=".14" stroke="var(--apoio)" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="67.1" y="40.6" text-anchor="middle" font-size="9" font-weight="700" fill="var(--apoio)" letter-spacing=".08em">SALA DE APOIO</text>
+<rect x="68.9" y="204.9" width="37.8" height="25.2" fill="var(--alta)" fill-opacity=".13" stroke="var(--alta)" stroke-width="1.2" stroke-dasharray="3 3"/>
+<rect x="186.4" y="62.9" width="25.2" height="37.8" fill="var(--alta)" fill-opacity=".13" stroke="var(--alta)" stroke-width="1.2" stroke-dasharray="3 3"/>
+<rect x="383.0" y="153.3" width="37.8" height="25.2" fill="var(--alta)" fill-opacity=".13" stroke="var(--alta)" stroke-width="1.2" stroke-dasharray="3 3"/>
+<polygon points="457.7,101.6 420.8,101.6 420.8,109.7 457.7,109.7" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="134.7,26.0 134.7,62.9 142.8,62.9 142.8,26.0" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="32.0,196.4 68.9,196.4 68.9,188.3 32.0,188.3" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="457.7,136.7 420.8,136.7 420.8,144.8 457.7,144.8" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="169.8,26.0 169.8,62.9 177.9,62.9 177.9,26.0" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="32.0,161.3 68.9,161.3 68.9,153.2 32.0,153.2" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="457.7,187.1 420.8,187.1 420.8,195.2 457.7,195.2" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="32.0,139.7 68.9,139.7 68.9,131.6 32.0,131.6" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="255.0,26.0 255.0,62.9 263.1,62.9 263.1,26.0" fill="var(--media)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="32.0,322.3 68.9,322.3 68.9,314.2 32.0,314.2" fill="var(--media)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="32.0,300.7 68.9,300.7 68.9,292.6 32.0,292.6" fill="var(--media)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="32.0,104.6 68.9,104.6 68.9,96.5 32.0,96.5" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="457.7,222.2 420.8,222.2 420.8,230.3 457.7,230.3" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="457.7,300.5 420.8,300.5 420.8,308.6 457.7,308.6" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="457.7,278.9 420.8,278.9 420.8,287.0 457.7,287.0" fill="var(--media)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="290.1,26.0 290.1,62.9 298.2,62.9 298.2,26.0" fill="var(--media)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="311.7,26.0 311.7,62.9 319.8,62.9 319.8,26.0" fill="var(--media)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="346.8,26.0 346.8,62.9 354.9,62.9 354.9,26.0" fill="var(--media)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="368.4,26.0 368.4,62.9 376.5,62.9 376.5,26.0" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="32.0,357.4 68.9,357.4 68.9,349.3 32.0,349.3" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="32.0,265.6 68.9,265.6 68.9,257.5 32.0,257.5" fill="var(--media)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="32.0,221.6 68.9,221.6 68.9,213.5 32.0,213.5" fill="var(--alta)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="195.0,26.0 195.0,62.9 203.1,62.9 203.1,26.0" fill="var(--alta)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="457.7,161.9 420.8,161.9 420.8,170.0 457.7,170.0" fill="var(--alta)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="457.7,357.2 420.8,357.2 420.8,365.3 457.7,365.3" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="457.7,335.6 420.8,335.6 420.8,343.7 457.7,343.7" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="403.5,26.0 403.5,62.9 411.6,62.9 411.6,26.0" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<polygon points="457.7,243.8 420.8,243.8 420.8,251.9 457.7,251.9" fill="var(--baixa)" fill-opacity=".85" stroke="var(--tinta)" stroke-width=".5"/>
+<line x1="151.2" y1="425.6" x2="162.0" y2="425.6" stroke="var(--saida)" stroke-width="5.5" stroke-linecap="round"/>
+<text x="156.6" y="438.6" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--saida)">S2</text>
+<line x1="203.9" y1="425.6" x2="257.3" y2="425.6" stroke="var(--zA)" stroke-width="5.5" stroke-linecap="round"/>
+<text x="230.6" y="438.6" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--zA)">S4 · A</text>
+<line x1="259.9" y1="425.6" x2="313.2" y2="425.6" stroke="var(--zB)" stroke-width="5.5" stroke-linecap="round"/>
+<text x="286.6" y="438.6" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--zB)">S5 · B</text>
+<line x1="315.9" y1="425.6" x2="369.2" y2="425.6" stroke="var(--zC)" stroke-width="5.5" stroke-linecap="round"/>
+<text x="342.5" y="438.6" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--zC)">S6 · C</text>
+<line x1="374.8" y1="425.6" x2="386.2" y2="425.6" stroke="var(--pref)" stroke-width="5.5" stroke-linecap="round"/>
+<text x="380.5" y="438.6" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--pref)">S7 pref.</text>
+<line x1="411.1" y1="425.6" x2="421.9" y2="425.6" stroke="var(--saida)" stroke-width="5.5" stroke-linecap="round"/>
+<text x="416.5" y="438.6" text-anchor="middle" font-size="9.5" font-weight="400" fill="var(--saida)">S8</text>
+<line x1="484.7" y1="79.0" x2="484.7" y2="51.5" stroke="var(--emerg)" stroke-width="5.5" stroke-linecap="round"/>
+<line x1="484.7" y1="185.7" x2="484.7" y2="158.1" stroke="var(--emerg)" stroke-width="5.5" stroke-linecap="round"/>
+<line x1="484.7" y1="292.4" x2="484.7" y2="264.8" stroke="var(--emerg)" stroke-width="5.5" stroke-linecap="round"/>
+<line x1="484.7" y1="399.0" x2="484.7" y2="371.5" stroke="var(--emerg)" stroke-width="5.5" stroke-linecap="round"/>
+<text x="131.0" y="245.6" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--zA)" opacity=".7" letter-spacing=".1em" transform="rotate(-90 131.0 245.6)">PAREDE OESTE · ZONA A</text>
+<text x="311.0" y="87.2" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--zB)" opacity=".7" letter-spacing=".1em">PAREDE NORTE · ZONA B</text>
+<text x="378.5" y="290.6" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--zC)" opacity=".7" letter-spacing=".1em" transform="rotate(90 378.5 290.6)">PAREDE LESTE · ZONA C</text>
+<line x1="32.0" y1="436.4" x2="122.0" y2="436.4" stroke="currentColor" stroke-width="1.2"/><text x="77.0" y="432.4" text-anchor="middle" font-size="9" fill="var(--meio)">10 m</text>
+<g class="posto" data-p="H1" data-n="0,0,1,1"><circle cx="230.5" cy="396.8" r="9"/><text class="n" x="230.5" y="400.3">0</text></g>
+<g class="posto" data-p="H1" data-n="0,0,1,1"><circle cx="286.5" cy="396.8" r="9"/><text class="n" x="286.5" y="400.3">0</text></g>
+<g class="posto" data-p="H1" data-n="0,0,1,1"><circle cx="342.5" cy="396.8" r="9"/><text class="n" x="342.5" y="400.3">0</text></g>
+<g class="posto alta" data-p="H3" data-n="1,1,1,1"><circle cx="87.8" cy="217.5" r="9"/><text class="n" x="87.8" y="221.0">1</text></g>
+<g class="posto alta" data-p="H3" data-n="1,1,1,1"><circle cx="199.0" cy="81.8" r="9"/><text class="n" x="199.0" y="85.3">1</text></g>
+<g class="posto alta" data-p="H3" data-n="1,1,1,1"><circle cx="401.9" cy="165.9" r="9"/><text class="n" x="401.9" y="169.4">1</text></g>
+<g class="posto" data-p="H2" data-n="0,0,1,2"><circle cx="266.0" cy="245.6" r="9"/><text class="n" x="266.0" y="249.1">0</text></g>
+<g class="posto" data-p="T2" data-n="0,0,0,2"><circle cx="67.1" cy="74.6" r="9"/><text class="n" x="67.1" y="78.1">0</text></g>
+<g class="posto pref" data-p="A3" data-n="1,1,1,2"><circle cx="380.3" cy="405.8" r="9"/><text class="n" x="380.3" y="409.3">1</text></g>
+<text class="rot" x="230.5" y="382">H1</text><text class="rot" x="286.5" y="382">H1</text><text class="rot" x="342.5" y="382">H1</text>
+<text class="rot alta" x="87.8" y="203">H3</text><text class="rot alta" x="199.0" y="67">H3</text><text class="rot alta" x="401.9" y="151.5">H3</text>
+<text class="rot" x="266.0" y="231">H2</text><text class="rot" x="67.1" y="59.9">T2</text><text class="rot pref" x="380.3" y="424">A3</text>
+    </svg></div>
+    <figcaption>Cada entrada serve uma parede inteira e só ela — decisão do Posto de 15/09. O
+    voluntário do H1 fica logo depois da porta, apontando a parede; o do H3 organiza o serpenteado
+    de uma das três mesas vermelhas, ao lado do secretário de seção, não no lugar dele.</figcaption>
+  </figure>
+  <div class="legenda">
+    <span><i class="sw" style="background:var(--alta)"></i> mesa de carga alta (≥586 esperados)</span>
+    <span><i class="sw" style="background:var(--media)"></i> carga média (≥450)</span>
+    <span><i class="sw" style="background:var(--baixa)"></i> carga baixa</span>
+    <span><i class="sw" style="background:var(--emerg)"></i> faixa de emergência, 3 m</span>
+    <span><i class="sw" style="background:var(--apoio)"></i> sala de apoio</span>
+  </div>
+</section>
+
+<section>
+  <h2>Necessidade de cada posição</h2>
+  <p class="lede">A coluna do cenário escolhido fica destacada. Os números são postos ocupados
+  simultaneamente no pico, das 10h às 14h.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Posto</th><th>Onde fica e o que faz</th>
+      <th class="num" id="h1c">C1 · 9</th><th class="num" id="h2c">C2 · 15</th><th class="num" id="h3c">C3 · 24</th><th class="num" id="h4c">C4 · 49</th></tr></thead>
+    <tbody>
+      <tr><td class="cod">P0</td><td>Calçada da Merrion Road, 20–30 m antes do portão<small>“Descubra sua seção”: caderno impresso e e-Título. É o único ponto da rota que resolve quem chega sem o número — depois do portão, toda peça pressupõe a seção conhecida.</small></td><td class="num" data-c="1">3</td><td class="num" data-c="2">4</td><td class="num" data-c="3">4</td><td class="num" data-c="4">4</td></tr>
+      <tr><td class="cod">P1</td><td>Portão de eleitores do RDS<small>Recebe quem chega e absorve a fila se ela transbordar para a calçada.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">P2</td><td>Lateral leste do Hall 2, ao longo dos 44 m de fila<small>Mantém a fila andando e junto às três tabelas mestras penduradas nas portas de serviço.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">P3</td><td>Canto nordeste, entrada do Ring 3<small>Locução contínua para o fluxo em movimento. Não para ninguém.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">R1</td><td>Corredor de chegada, 3 m, lateral leste do Ring<small>Único ponto por onde passam 100% dos eleitores. A função é impedir que alguém pare ali.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">R2</td><td>Bocas das zonas C, B e A<small>Confere a letra e entrega a raia. Último ponto em que errar custa pouco: depois são 23 raias até a porta. Em C2, só C e A.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">2</td><td class="num" data-c="3">3</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">R3</td><td>Trecho de fundo, entre as bocas B e A<small>Reencaminha quem passou da sua zona. O plano de sinalização já prevê este operador como indispensável.</small></td><td class="num" data-c="1">1</td><td class="num" data-c="2">1</td><td class="num" data-c="3">1</td><td class="num" data-c="4">1</td></tr>
+      <tr><td class="cod">R4</td><td>Dentro das raias, uma pessoa por zona<small>Raia errada, quem não aguenta a serpentina em pé, passagem de mal-estar.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">R5</td><td>Cabeça de fila de cada zona, no topo<small>Dosagem para o apron: só libera quando a porta está andando. Às 17h00 marca o fim da fila. Nenhuma peça de sinalização faz isso.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">3</td><td class="num" data-c="3">3</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">A1</td><td>Apron, no cruzamento da chegada com a saída S8<small>Separa quem entra de quem já votou. Uma CCB de separação substitui esta pessoa o dia inteiro.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">A2</td><td>Portas S4, S5 e S6, uma pessoa cada<small>Ritmo e sentido. Não confere nada: uma pergunta no batente trava a zona inteira.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">A3</td><td>Porta preferencial S7<small>Recebe idoso, gestante, PcD e acompanhante e leva até a mesa, em qualquer parede. Sem ninguém, é uma porta aberta e desguarnecida.</small></td><td class="num" data-c="1">1</td><td class="num" data-c="2">1</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">H1</td><td>Logo dentro de cada porta, uma pessoa cada<small>Aponta a parede e o bloco. Última orientação antes do secretário de seção.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">3</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">H2</td><td>Salão, móvel<small>Quem entrou pela porta errada e quem não acha o bloco.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">1</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">H3</td><td>Mesas 3313, 3315 e 3322, uma pessoa cada<small>As três de maior comparecimento — 590, 586 e 588 — e as únicas com serpenteado de 20 à frente. Uma em cada parede: o salão tem presença nas três desde o C1.</small></td><td class="num" data-c="1">3</td><td class="num" data-c="2">3</td><td class="num" data-c="3">3</td><td class="num" data-c="4">3</td></tr>
+      <tr><td class="cod">T1</td><td>Coordenação, móvel<small>Em C1 e C2, uma pessoa com rádio que cobre pausas e tapa buraco. No pleno, 1 geral e 3 setoriais.</small></td><td class="num" data-c="1">1</td><td class="num" data-c="2">1</td><td class="num" data-c="3">1</td><td class="num" data-c="4">4</td></tr>
+      <tr><td class="cod">T2</td><td>Sala de apoio, canto noroeste<small>Credenciamento, coletes, água, rendição de pausas.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">2</td></tr>
+      <tr><td class="cod">—</td><td>Reserva flutuante<small>15% sobre os postos. Cobre ausência do dia, pausa e reforço onde apertar.</small></td><td class="num" data-c="1">0</td><td class="num" data-c="2">0</td><td class="num" data-c="3">0</td><td class="num" data-c="4">6</td></tr>
+    </tbody>
+    <tfoot><tr><td colspan="2">Total simultâneo no pico</td>
+      <td class="num" data-c="1">9</td><td class="num" data-c="2">15</td><td class="num" data-c="3">24</td><td class="num" data-c="4">49</td></tr>
+      <tr><td colspan="2">Pessoas a escalar no dia</td>
+      <td class="num" data-c="1">9</td><td class="num" data-c="2">15</td><td class="num" data-c="3">24</td><td class="num" data-c="4">61</td></tr>
+      <tr><td colspan="2">Pessoas a recrutar</td>
+      <td class="num" data-c="1">9</td><td class="num" data-c="2">17</td><td class="num" data-c="3">28</td><td class="num" data-c="4">70</td></tr>
+    </tfoot>
+  </table></div>
+  <p class="resumo" style="border:0"><span>Nos cenários 1 e 2 não há turnos: as mesmas pessoas
+  cobrem 7h30 às 17h45, com pausas rodadas pela coordenação. Só o cenário 3 tem turnos e
+  reserva.</span></p>
+</section>
+
+<section>
+  <h2>Plano de preenchimento</h2>
+  <p class="lede">Uma fila única, do décimo voluntário ao quadragésimo nono. Não é preciso
+  atingir um cenário inteiro para usá-la: com 13 pessoas, preencha até a posição 13; com 17,
+  até a 17. Os cenários são só as marcas de quilometragem dessa fila.</p>
+
+  <h3>C1 → C2 · do nono ao décimo quinto</h3>
+  <ol class="escada" start="10">
+    <li><span class="ord">10</span><span><b>P0 · quarto operador na calçada</b><small>O gargalo que cascateia. Três operadores atendem algo como 1.200 consultas no dia; quem chega sem saber a seção não pode ser triado em nenhum outro ponto da rota. O quarto operador é a pessoa de maior retorno do conjunto.</small></span></li>
+    <li><span class="ord">11</span><span><b>R5 · cabeça de fila da zona A</b><small>A parede oeste é a mais comprimida das três: 155,7 esperados por metro, contra 138,6 da norte e 105,6 da leste. Começa por ela.</small></span></li>
+    <li><span class="ord">12</span><span><b>R5 · cabeça de fila da zona B</b><small>138,6 por metro.</small></span></li>
+    <li><span class="ord">13</span><span><b>R5 · cabeça de fila da zona C</b><small>Com as três, o Ring passa a liberar em lote e o apron deixa de ser depósito de gente ao ar livre. É também quem marca o fim da fila às 17h00 — ato com consequência legal, hoje sem dono.</small></span></li>
+    <li><span class="ord">14</span><span><b>R2 · boca da zona C</b><small>A primeira boca do trecho de fundo: todo eleitor passa por ela.</small></span></li>
+    <li><span class="ord">15</span><span><b>R2 · boca da zona A</b><small>A última, onde se acumula quem não se reconheceu em C nem em B. Fecha o <b>C2</b>.</small></span></li>
+  </ol>
+
+  <h3>C2 → C3 · do décimo sexto ao vigésimo quarto</h3>
+  <ol class="escada" start="16">
+    <li><span class="ord">16–18</span><span><b>H1 · dentro das portas A, B e C</b><small>Nessa ordem, pela compressão da parede. Fecha o trecho em que o eleitor já passou por toda a sinalização externa e ainda pode errar de bloco.</small></span></li>
+    <li><span class="ord">19</span><span><b>A1 · apron</b><small>Separa a corrente que entra da que sai pela S8 e dispensa a CCB de separação.</small></span></li>
+    <li><span class="ord">20</span><span><b>R2 · boca da zona B</b><small>Completa as três. É a de menor retorno porque o R3 está ao lado dela.</small></span></li>
+    <li><span class="ord">21</span><span><b>P1 · portão do RDS</b><small>Organiza o transbordo para a calçada quando o Ring encher.</small></span></li>
+    <li><span class="ord">22</span><span><b>R1 · corredor de chegada</b><small>Mantém escoando o trecho por onde passam 100% dos eleitores.</small></span></li>
+    <li><span class="ord">23</span><span><b>P2 · lateral leste</b><small>Os 44 m em que o eleitor mais tempo passa parado.</small></span></li>
+    <li><span class="ord">24</span><span><b>H2 · errante no salão</b><small>Fecha o <b>C3</b>. A partir daqui o ganho por pessoa cai, e o próximo salto útil é montar turnos.</small></span></li>
+  </ol>
+
+  <h3>C3 → C4 · do vigésimo quinto ao quadragésimo nono</h3>
+  <ol class="escada" start="25">
+    <li><span class="ord">25–27</span><span><b>A2 · portas S4, S5 e S6</b><small>Ritmo de entrada nas três portas.</small></span></li>
+    <li><span class="ord">28–30</span><span><b>R4 · dentro das raias</b><small>Uma por zona: raia errada, quem não aguenta ficar em pé, mal-estar.</small></span></li>
+    <li><span class="ord">31–33</span><span><b>T1 · coordenadores setoriais</b><small>Rota + Ring, apron + portas, salão. Abaixo de 30 pessoas um coordenador geral dá conta.</small></span></li>
+    <li><span class="ord">34–41</span><span><b>Segunda pessoa nos postos de pico</b><small>A3, P3 (dois), P1, P2, R1, A1 e H2 — os pontos que dobram entre 10h e 14h.</small></span></li>
+    <li><span class="ord">42–43</span><span><b>T2 · base de voluntários</b><small>Credenciamento, água, rendição de pausas. Só faz sentido com efetivo grande.</small></span></li>
+    <li><span class="ord">44–49</span><span><b>Reserva flutuante</b><small>15% sobre os postos. É o que transforma a escala em algo que sobrevive a seis faltas no dia.</small></span></li>
+  </ol>
+
+  <h3>Se o número não for redondo</h3>
+  <div class="tw"><table style="min-width:520px">
+    <thead><tr><th class="num">Voluntários</th><th>Preencha até</th><th>O primeiro furo que sobra</th></tr></thead>
+    <tbody>
+      <tr><td class="num">9</td><td><b>C1</b> — como está hoje</td><td>vazão sem controle nenhum</td></tr>
+      <tr><td class="num">11</td><td>posição 11 · P0 e a cabeça de fila da zona A</td><td>cabeças de B e C</td></tr>
+      <tr><td class="num">13</td><td>posição 13 · as três cabeças de fila</td><td>as bocas do trecho de fundo</td></tr>
+      <tr><td class="num">15</td><td><b>C2</b></td><td>ninguém dentro do salão além das mesas vermelhas</td></tr>
+      <tr><td class="num">17</td><td>posição 17 · H1 nas portas A e B</td><td>H1 da porta C e o apron</td></tr>
+      <tr><td class="num">20</td><td>posição 20 · as três portas, o apron e as três bocas</td><td>portão, corredor e lateral leste</td></tr>
+      <tr><td class="num">24</td><td><b>C3</b></td><td>sem reserva e sem turnos: uma falta é um posto vazio</td></tr>
+      <tr><td class="num">30</td><td>posição 30 · portas e raias com gente</td><td>coordenação setorial</td></tr>
+      <tr><td class="num">49</td><td><b>C4</b></td><td>—</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="nota">
+    <span class="tag">Onde procurar as pessoas</span>
+    <p>Três fontes que não competem com a de mesários: acompanhantes de mesários que já vêm ao
+    local e ficam o dia inteiro; estudantes brasileiros em Dublin, para quem o turno de meio dia é
+    viável; e as próprias associações que divulgam a eleição. Vale pedir por
+    <strong>meio período</strong> — de C1 a C3 não há turnos, mas dois voluntários de cinco horas
+    cobrem um posto inteiro, e é mais fácil conseguir dois de cinco horas que um de dez.</p>
+  </div>
+</section>
+
+<section>
+  <h2>O que o cenário de nove exige em troca</h2>
+  <p class="lede">Nove pessoas não são uma versão menor do plano. São uma aposta em três
+  compensações que precisam estar contratadas antes do dia 4.</p>
+  <div class="nota aviso">
+    <span class="tag">Sem isso, o cenário 1 não fecha</span>
+    <p><strong>1. Os 20 seguranças contratados assumem presença de fila.</strong> Portão, lateral
+    leste, apron e portas ficam sem voluntário. Manter fila andando e porta desimpedida é
+    <em>stewarding</em> — o trabalho que a empresa já foi contratada para fazer, das 7h30 às 17h30.
+    Precisa entrar no briefing dela, por escrito, com o mapa das três letras.</p>
+    <p><strong>2. Uma CCB de separação no apron.</strong> Substitui o posto A1 o dia inteiro, por
+    um custo que é fração de uma pessoa.</p>
+    <p><strong>3. “Descubra sua seção antes de sair de casa” vira a chamada dominante da
+    comunicação.</strong> O P0 é o gargalo de todo o desenho: cada eleitor que chega já sabendo o
+    número é um que não para na calçada. Com três operadores e quatro horas de pico, o P0 atende
+    algo como 400 a 700 consultas — se a demanda passar disso, a fila da calçada vira o problema do
+    dia, e ela está fora do recinto do RDS.</p>
+  </div>
+  <div class="nota">
+    <span class="tag">E no cenário de 15</span>
+    <p>As compensações 1 e 2 continuam valendo inteiras: portão, lateral leste, apron e portas
+    seguem sem voluntário, então a presença de fila continua sendo dos seguranças e a CCB do apron
+    continua sendo necessária. O que muda é a terceira — com quatro operadores no P0, a margem da
+    consulta sobe de algo como 1.200 para 1.600 atendimentos no dia, e a campanha
+    “descubra sua seção antes de sair de casa” deixa de ser o único anteparo.</p>
+  </div>
+  <div class="nota">
+    <span class="tag">O que continua fora desta conta</span>
+    <p>Mesários e seus suplentes, os 28 secretários de seção, os 20 seguranças e a equipe do Posto.
+    Os 14 voluntários que foram cobrir dispensas de mesário estão contados lá, não aqui — e não
+    voltam: mesário é função nomeada, com treinamento próprio.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Postos e efetivo: <span class="mono">lista_postos.md</span> e
+  <span class="mono">plano_voluntarios_apoio.md</span>. Geometria e cargas: prancheta
+  <span class="mono">Paredes_ABC</span> de 15/09 e plano da Rota do Eleitor de 16/09.
+  Comparecimento esperado pela base B — taxa de 2022 do condado de origem aplicada aos aptos de
+  2026, não é número oficial do TSE. O pico de 40 chegadas por minuto é premissa
+  (fator de 1,7–2,0× sobre a média), não observação.</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var cen = 1;
+  var postos = document.querySelectorAll('.posto');
+  var btns = [document.getElementById('c1'), document.getElementById('c2'),
+              document.getElementById('c3'), document.getElementById('c4')];
+  var resumo = document.getElementById('resumo');
+  var textos = [
+    ['C1 · 9 pessoas', '5 dos 17 postos ocupados', '12 vagos', 'sem turnos, sem reserva'],
+    ['C2 · 15 pessoas', '7 dos 17 postos ocupados', '10 vagos', 'sem turnos, sem reserva'],
+    ['C3 · 24 pessoas', '13 dos 17 postos ocupados', '4 vagos', 'sem turnos, sem reserva'],
+    ['C4 · 49 no pico', '43 postos + 6 de reserva', 'nenhum vago', '61 escaladas, 70 recrutadas']
+  ];
+  var cabs = ['h1c','h2c','h3c','h4c'];
+  function pinta(){
+    postos.forEach(function(g){
+      var n = (g.dataset.n || '0,0,0,0').split(',')[cen-1];
+      var t = g.querySelector('.n');
+      if (t) t.textContent = n;
+      g.classList.toggle('vago', n === '0');
+    });
+    btns.forEach(function(b,i){ if (b) b.setAttribute('aria-pressed', String(i+1 === cen)); });
+    document.querySelectorAll('td.num, th.num').forEach(function(c){ c.classList.remove('on'); });
+    document.querySelectorAll('td.num[data-c="'+cen+'"]').forEach(function(c){ c.classList.add('on'); });
+    var th = document.getElementById(cabs[cen-1]);
+    if (th) th.classList.add('on');
+    document.querySelectorAll('td.num').forEach(function(c){
+      c.classList.toggle('zero', c.textContent.trim() === '0');
+    });
+    resumo.innerHTML = textos[cen-1].map(function(s){ return '<span>' + s + '</span>'; }).join('');
+  }
+  btns.forEach(function(b,i){ if (b) b.addEventListener('click', function(){ cen = i+1; pinta(); }); });
+  pinta();
+})();
+</script>

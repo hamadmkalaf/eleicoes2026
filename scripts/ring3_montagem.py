@@ -15,7 +15,7 @@ Revisao de 23/09/2026:
     um ponto fixo dos dois lados. Cada zona ganha a SUA linha, nas duas faces
     de cada vao, e o corredor de 1,20 m entre elas continua livre -- e por ele
     que entram maca e fiscal. Custou 28 CCBs acima do estoque.
-Revisao de 24/09/2026 -- economia de CCB (pedido do Posto):
+Revisao de 23/09/2026, v2 -- economia de CCB (pedido do Posto):
   * a lateral deixa de ser parede continua. **CCB so onde a fita amarra**, fita
     no resto. Numa linha de lateral nao amarram as 22 divisorias da zona: a
     ponta fixa de cada divisoria alterna de lado a cada raia, entao cada linha
@@ -49,7 +49,7 @@ PRECO_CCB = 13.02         # EUR por CCB, item d do orcamento
 
 # Como a lateral de cada zona e fechada. Tres modos, e a folha desenha o
 # primeiro:
-#   'amarracao' -- 24/09. CCB de 2,00 m centrada em cada ponto onde a fita da
+#   'amarracao' -- 23/09 (v2). CCB de 2,00 m centrada em cada ponto onde a fita da
 #                  divisoria amarra, fita entre elas. Sao 11 pontos por linha,
 #                  porque a ponta fixa alterna de lado a cada raia, e eles
 #                  ficam a 2,78 m: um painel nao pega dois. 44 CCBs de lateral.
@@ -128,7 +128,7 @@ def add(t, a, b, c, d): segs.append((t, a, b, c, d))
 # que lado fica o vao de meia-volta dela -- e, por consequencia, de que lado
 # fica a ponta FIXA: no lado oposto. Como `leste` alterna com a paridade de i,
 # **cada linha de lateral recebe so metade das divisorias da zona vizinha**, e
-# e essa alternancia que faz a economia de 24/09 caber.
+# e essa alternancia que faz a economia de 23/09 (v2) caber.
 amarras = {}              # x da linha -> lista de y onde a fita amarra
 for k in ('A', 'B', 'C'):
     a, b = x0[k], x0[k] + W[k]
@@ -193,7 +193,7 @@ else:
     pan, _ = linha_amarrada(UTIL, amarras[round(UTIL, 2)], tipo='ccb')
     n_par = len(pan)
 
-# fechamento contra o trecho de fundo, com boca de entrada. Desde 24/09 ele
+# fechamento contra o trecho de fundo, com boca de entrada. Desde 23/09 (v2) ele
 # alterna CCB e fita, e o ultimo painel de cada zona encosta na boca: e a
 # PORTA DA BOCA, o batente rigido em que a corrente de entrada se apoia.
 bocas = {}          # largura real da boca
@@ -227,7 +227,7 @@ for k in ('A', 'B', 'C'):
     boca_x[k] = (round(a, 2), round(p, 2)) if BOCA_OESTE[k] else (round(p, 2), round(b, 2))
     assert abs((boca_x[k][1] - boca_x[k][0]) - bocas[k]) < 1e-6, (k, boca_x[k], bocas[k])
 
-# laterais: as duas faces de cada vao interno, amarracao por amarracao (24/09)
+# laterais: as duas faces de cada vao interno, amarracao por amarracao (23/09 (v2))
 laterais_x = []
 if LATERAL in ('amarracao', 'faces'):
     for k in ('A', 'B'):
@@ -289,7 +289,7 @@ it_bat   = CCB*len(SAIDA_MEIO)
 assert abs(it_ponta + it_apoio + it_par + it_fundo + it_lat + it_bat - (m_ccb+m_novo)) < 1e-6
 
 # fita por destino, para a compra: a divisoria e o que sempre existiu; a
-# lateral e o fechamento do fundo sao o que a economia de 24/09 acrescenta.
+# lateral e o fechamento do fundo sao o que a economia de 23/09 (v2) acrescenta.
 f_div   = DIV*3*2*0.0   # preenchido abaixo
 f_div   = sum(comp(s) for s in segs if s[0] == 'fita' and abs(s[2]-s[4]) < 1e-9
               and s[2] not in (PROF,))
@@ -347,7 +347,7 @@ print(f"variante: com a parede da C tambem amarrada, {n_com_par} CCBs "
       f"({max(0, n_com_par-ESTOQUE)} a comprar, sobra {max(0, ESTOQUE-n_com_par)})")
 
 json.dump({
-    'revisao': '2026-09-24', 'ring': [RING_W, RING_D], 'corredor': COR, 'vao_zona': VAO_ZONA,
+    'revisao': '23926v2', 'ring': [RING_W, RING_D], 'corredor': COR, 'vao_zona': VAO_ZONA,
     'raias': LANES, 'modulo': round(MOD, 3), 'larguras': W, 'x0': x0,
     'boca_oeste': BOCA_OESTE, 'saida_meio': SAIDA_MEIO,
     'bocas_fundo': {k: {'largura': bocas[k], 'x': boca_x[k], 'paineis': n_fundo//3,

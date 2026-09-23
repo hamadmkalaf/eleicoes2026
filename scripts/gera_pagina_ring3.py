@@ -76,7 +76,7 @@ for marca, valor in (('<!--PLANTA-->', planta), ('<!--DETALHE-->', detalhe), ('<
     assert html.count(marca) == 1, marca
     html = html.replace(marca, valor)
 # os numeros que o template cita e que saem do JSON. Nada e digitado aqui: a
-# revisao de 24/09 acrescentou a conta da amarracao (lateral e fundo) e a
+# revisao de 23/09 (v2) acrescentou a conta da amarracao (lateral e fundo) e a
 # comparacao com 23/09, e as tres saem do mesmo JSON.
 lat, fun, pc, ccb = M['laterais'], M['fundo'], M['parede_c'], M['ccb']
 eur = lambda v: f"{v:,.2f}".replace(',', '\u00a0').replace('.', ',').replace('\u00a0', '.')
@@ -89,7 +89,7 @@ trocas = {
     '@FUNDO_M@': br1(ccb['fundo']*CCB), '@FUNDO_N@': str(ccb['fundo']),
     '@METROS@': br1(ccb['metros']), '@PERC@': str(M['percurso_max']),
     '@MORTA@': br(M['raia_morta_b']),
-    # 24/09 — a amarracao
+    # 23/09 (v2) — a amarracao
     '@ECON@': str(ccb['economia']), '@ECONEUR@': eur(ccb['economia_eur']),
     '@N2309@': str(ccb['total_2309']),
     '@COMPRA2309@': str(max(0, ccb['total_2309'] - ccb['estoque'])),

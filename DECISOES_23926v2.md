@@ -1,11 +1,15 @@
-# Decisões de 24/09/2026 — o que toca este repositório
+# Decisões 23926v2 — o que toca este repositório
 
-Rodada de economia. Do pedido do Posto, o **Ring 3** vive aqui; a pequena avenida
-do Hall 2 e o mapa simplificado de apresentação estão em
-`hamadmkalaf/dublineleicoesfinal`, branch `v2392026`.
+**Segunda rodada de 23/09/2026**, e é isso que o nome quer dizer: `23926` é a data,
+`v2` é a rodada. A primeira está em `DECISOES_2026-09-23.md`; as duas são do mesmo
+dia, e o branch desta é `23926v2` nos dois repositórios.
 
-Supera a conta de `DECISOES_2026-09-23.md`: os números de CCB daquele documento
-(228 no total, 28 a contratar) são história.
+Rodada de economia. Do pedido do Posto, o **Ring 3** vive aqui; a pequena avenida do
+Hall 2 e o mapa simplificado de apresentação estão em
+`hamadmkalaf/dublineleicoesfinal`, no mesmo branch.
+
+Supera a conta da v1: os números de CCB daquele documento (228 no total, 28 a
+contratar) são história.
 
 ## CCB só onde a fita amarra
 
@@ -32,7 +36,7 @@ duas pontas: o de fora encosta na lateral da zona e o de dentro é a **porta da 
 como o pedido exige. São **3 painéis por zona em vez de 5**, com vãos de fita de
 2,00 m — abaixo dos 3,84 m que o desenho já aceita na divisória da zona B.
 
-| | 23/09 | **24/09** |
+| | v1 | **v2** |
 |---|---:|---:|
 | CCBs, total | 228 | **202** |
 | das quais laterais | 64 | **44** |

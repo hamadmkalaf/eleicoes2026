@@ -14,8 +14,20 @@ Revisao de 23/09/2026:
     8 m ao norte: a divisoria de cada raia termina em fita, e fita precisa de
     um ponto fixo dos dois lados. Cada zona ganha a SUA linha, nas duas faces
     de cada vao, e o corredor de 1,20 m entre elas continua livre -- e por ele
-    que entram maca e fiscal. Custa 28 CCBs acima do estoque; a variante de
-    uma linha so, no eixo do vao, cabe no estoque e esta em LATERAL_VARIANTE.
+    que entram maca e fiscal. Custou 28 CCBs acima do estoque.
+Revisao de 24/09/2026 -- economia de CCB (pedido do Posto):
+  * a lateral deixa de ser parede continua. **CCB so onde a fita amarra**, fita
+    no resto. Numa linha de lateral nao amarram as 22 divisorias da zona: a
+    ponta fixa de cada divisoria alterna de lado a cada raia, entao cada linha
+    recebe so as de indice par (ou so as de indice impar) -- 11 pontos, a
+    2,78 m um do outro. Um painel de 2,00 m nao alcanca dois pontos vizinhos,
+    logo e 1 painel por ponto: **11 CCBs por linha em vez de 16**;
+  * o fechamento contra o trecho de fundo passa a alternar CCB e fita do mesmo
+    jeito, com CCB nas DUAS pontas -- a de fora encosta na lateral da zona e a
+    de dentro e a **porta da boca**, que e o que o pedido exige. Sao 3 paineis
+    por zona em vez de 5, com vaos de fita de 2,00 m;
+  * o portao a cada 8 m sai de cena: os vaos de fita da propria lateral sao a
+    passagem, e sao 12 por linha em vez de 4 portoes.
 Escreve saidas/ring3_planta.svg e saidas/ring3_montagem.json.
 """
 import json, math, os
@@ -33,33 +45,41 @@ TURN = 1.20               # vao de meia-volta
 CCB = 2.00
 DENS = 2.386              # p por metro de raia (calibrado no artefato anterior)
 ESTOQUE = 200
-# Ate 22/09 a lateral de cada zona era parcial: 8,0 m ao norte, nas duas faces
-# de cada vao -- 4 trechos, 16 CCBs. Em 23/09 ela passou a fechar os 32,0 m
-# inteiros, porque a ponta fixa de cada divisoria e fita e nao tem onde amarrar:
-# sem lateral a fita da raia morre no ar, e o vao de 1,20 m vira o caminho mais
-# curto entre duas zonas justamente onde a fila esta mais comprimida.
-#
-# Duas formas de fechar, e a folha desenha a primeira:
-#   'faces' -- uma linha em CADA face do vao, 4 trechos de 32,0 m = 64 CCBs.
-#              Cada zona amarra a fita na sua propria linha, e o corredor de
-#              1,20 m entre as duas linhas continua livre: e o unico acesso de
-#              maca e de fiscal ao meio da fila, e foi por isso que o vao de
-#              1,20 m foi cotado em 18/09. Total 228 CCBs: 28 a contratar.
-#   'eixo'   -- uma linha so, no meio do vao, 2 trechos = 32 CCBs. Cabe no
-#              estoque (196 de 200) e custa zero, mas sobra 0,60 m de cada lado
-#              da linha: nao passa maca, e o vao deixa de ter funcao. A fita de
-#              cada divisoria ainda cresce 0,60 m para alcancar a linha comum
-#              (+26,4 m de fita grossa).
-LATERAL = 'faces'
-LATERAL_VARIANTE = 'eixo'
-# Uma lateral rigida de ponta a ponta fecharia a zona num curral de ~700 pessoas
-# com uma boca de 2,00 m, que e o contrario do que a propria folha defendia
-# ("fita falha de modo seguro"). A resposta e o corredor de servico de 1,20 m
-# entre as duas linhas, mais PORTAO: um painel a cada PASSO_PORTAO metros de
-# cada linha NAO leva grampo e abre para dentro do corredor. Nao custa CCB
-# nenhuma -- muda so como o painel e preso --, e devolve a saida lateral que a
-# fita dava de graca.
-PASSO_PORTAO = 8.0
+PRECO_CCB = 13.02         # EUR por CCB, item d do orcamento
+
+# Como a lateral de cada zona e fechada. Tres modos, e a folha desenha o
+# primeiro:
+#   'amarracao' -- 24/09. CCB de 2,00 m centrada em cada ponto onde a fita da
+#                  divisoria amarra, fita entre elas. Sao 11 pontos por linha,
+#                  porque a ponta fixa alterna de lado a cada raia, e eles
+#                  ficam a 2,78 m: um painel nao pega dois. 44 CCBs de lateral.
+#   'faces'     -- 23/09. Uma parede continua em CADA face do vao, 4 trechos de
+#                  32,0 m = 64 CCBs. Fecha o corte lateral inteiro, e por isso
+#                  custava 28 CCBs acima do estoque.
+#   'eixo'      -- uma linha so, no meio do vao, 2 trechos = 32 CCBs. Cabe no
+#                  estoque mas sobra 0,60 m de cada lado: nao passa maca, e o
+#                  vao deixa de ter funcao.
+LATERAL = 'amarracao'
+LATERAL_VARIANTE = 'faces'
+# O fechamento contra o trecho de fundo. 'amarracao' alterna CCB e fita com CCB
+# nas duas pontas; 'solido' e a parede continua de 5 paineis de ate 23/09.
+FUNDO = 'amarracao'
+# A parede que separa a zona C do corredor de chegada continua CONTINUA, e nao
+# entra na economia. Nao e simetrica as laterais: a lateral A|B da para a zona
+# vizinha, onde ninguem pode votar, e o vao de servico entre as duas linhas e
+# patrulhado; a parede da C da para o corredor por onde passam os 16,8 mil que
+# entram, e um vao ali e um atalho para o meio da fila da propria zona -- vale
+# ~150 m de percurso. 'amarracao' aqui economizaria 5 CCBs e fecharia a compra
+# em zero; e decisao do Posto, e esta como variante no relatorio.
+PAREDE_C = 'solida'
+# Vao maximo de fita que o desenho aceita sem um apoio rigido no meio. Sai da
+# divisoria da zona B, que e o vao mais longo que o Posto ja aprovou (3,84 m).
+VAO_FITA_MAX = 4.00
+# Vao de fita que uma pessoa atravessa de lado -- e o que faz de um vao uma
+# PASSAGEM para o corredor de servico, e nao uma folga de montagem. Sobra de
+# extremidade menor do que isto e desperdicio: o painel da ponta e encostado no
+# fim da linha e a sobra vai para o vao seguinte, que ganha 0,39 m.
+VAO_PASSAGEM = 0.75
 ABERTURA = 2.00           # largura de cada saida na face norte (um painel)
 
 # Zonas iguais (18/09). A e C levam 12,87; B absorve o arredondamento (12,86).
@@ -87,11 +107,11 @@ BOCA_OESTE = {'A': True, 'B': False, 'C': False}
 SAIDA_MEIO = {'B': True}
 
 # Onde a ponta FIXA da divisoria amarra, por zona. A oeste da A e o gradil
-# permanente do Ring e a leste da C e a parede de CCB do corredor de chegada:
-# esses dois ja existiam. Os dois vaos internos passam a ter a linha de CCB no
-# seu eixo, 0,60 m fora da borda nominal de cada zona.
+# permanente do Ring e a leste da C e a parede do corredor de chegada: esses
+# dois ja existiam. Os dois vaos internos levam a linha de cada zona na sua
+# propria face.
 meio_vao = {k: round(x0[k] + W[k] + VAO_ZONA/2, 2) for k in ('A', 'B')}
-if LATERAL == 'faces':
+if LATERAL in ('amarracao', 'faces'):
     anc_o = {k: x0[k] for k in W}
     anc_l = {k: round(x0[k] + W[k], 2) for k in W}
 else:
@@ -105,7 +125,11 @@ def add(t, a, b, c, d): segs.append((t, a, b, c, d))
 
 # divisorias: CCB na ponta livre + fita + CCB de apoio no meio da fita + fita.
 # Divisoria i separa a raia i-1 (ao norte) da raia i (ao sul). `leste` diz de
-# que lado fica o vao de meia-volta dela.
+# que lado fica o vao de meia-volta dela -- e, por consequencia, de que lado
+# fica a ponta FIXA: no lado oposto. Como `leste` alterna com a paridade de i,
+# **cada linha de lateral recebe so metade das divisorias da zona vizinha**, e
+# e essa alternancia que faz a economia de 24/09 caber.
+amarras = {}              # x da linha -> lista de y onde a fita amarra
 for k in ('A', 'B', 'C'):
     a, b = x0[k], x0[k] + W[k]
     for i in range(1, LANES):
@@ -114,6 +138,7 @@ for k in ('A', 'B', 'C'):
         # a ponta LIVRE fica do lado do vao de meia-volta; a ponta FIXA vai ate
         # a linha de CCB da lateral daquele lado
         p0, p1 = (anc_o[k], b - TURN) if leste else (a + TURN, anc_l[k])
+        amarras.setdefault(round(p0 if leste else p1, 2), []).append(y)
         if leste:
             add('ccb', p1 - CCB, y, p1, y)          # ponta livre (leste)
             f0, f1 = p0, p1 - CCB
@@ -126,39 +151,104 @@ for k in ('A', 'B', 'C'):
         add('ccb_novo', f0 + s, y, f0 + s + CCB, y)  # apoio intermediario
         add('fita', f0 + s + CCB, y, f1, y)
 
-# parede zona C / corredor de chegada
-add('ccb', UTIL, 0.0, UTIL, PROF)
 
-# fechamento contra o trecho de fundo, com boca de entrada
+def linha_amarrada(x, ys, y0=0.0, y1=PROF, tipo='ccb_novo'):
+    """Linha vertical com um CCB centrado em cada amarracao e fita no resto.
+
+    Devolve (paineis, vaos): os intervalos de y de cada painel e os vaos de
+    fita entre eles, incluindo as duas pontas. E o vao que importa na operacao:
+    e por ele que se entra no corredor de servico.
+    """
+    paineis = []
+    for y in sorted(ys):
+        c0, c1 = y - CCB/2, y + CCB/2
+        if c0 < y0:  c0, c1 = y0, y0 + CCB          # encosta na ponta norte
+        if c1 > y1:  c0, c1 = y1 - CCB, y1          # encosta na ponta sul
+        assert not paineis or c0 >= paineis[-1][1] - 1e-9, (x, y, paineis[-1])
+        paineis.append((c0, c1))
+    ys_ord = sorted(ys)
+    # encosta o painel da ponta quando a sobra ali nao passa ninguem
+    if paineis and paineis[0][0] - y0 < VAO_PASSAGEM and y0 + CCB >= ys_ord[0] - 1e-9:
+        paineis[0] = (y0, y0 + CCB)
+    if paineis and y1 - paineis[-1][1] < VAO_PASSAGEM and y1 - CCB <= ys_ord[-1] + 1e-9:
+        paineis[-1] = (y1 - CCB, y1)
+    vaos, cur_y = [], y0
+    for c0, c1 in paineis:
+        if c0 - cur_y > 1e-9:
+            add('fita', x, cur_y, x, c0)
+            vaos.append(round(c0 - cur_y, 2))
+        add(tipo, x, c0, x, c1)
+        cur_y = c1
+    if y1 - cur_y > 1e-9:
+        add('fita', x, cur_y, x, y1)
+        vaos.append(round(y1 - cur_y, 2))
+    return paineis, vaos
+
+
+# parede zona C / corredor de chegada
+if PAREDE_C == 'solida':
+    add('ccb', UTIL, 0.0, UTIL, PROF)
+    n_par = int(round(PROF/CCB))
+else:
+    pan, _ = linha_amarrada(UTIL, amarras[round(UTIL, 2)], tipo='ccb')
+    n_par = len(pan)
+
+# fechamento contra o trecho de fundo, com boca de entrada. Desde 24/09 ele
+# alterna CCB e fita, e o ultimo painel de cada zona encosta na boca: e a
+# PORTA DA BOCA, o batente rigido em que a corrente de entrada se apoia.
 bocas = {}          # largura real da boca
 boca_x = {}         # (x1, x2) da boca do fundo
+vao_fundo = {}      # vao de fita entre dois paineis do fechamento
+n_fundo = 0
 for k in ('A', 'B', 'C'):
     a, b = x0[k], x0[k] + W[k]
     n = math.floor((W[k] - 1.0)/CCB)
-    bocas[k] = round(W[k] - n*CCB, 2)
-    if BOCA_OESTE[k]:
-        add('ccb_novo', b - n*CCB, PROF, b, PROF)   # boca no lado oeste
-        boca_x[k] = (round(a, 2), round(b - n*CCB, 2))
+    L = n*CCB                                   # trecho fechado, 10,00 m
+    bocas[k] = round(W[k] - L, 2)
+    if FUNDO == 'amarracao':
+        c = 2
+        while (L - c*CCB)/(c - 1) > VAO_FITA_MAX:
+            c += 1
+        vao = (L - c*CCB)/(c - 1)
     else:
-        add('ccb_novo', a, PROF, a + n*CCB, PROF)   # boca no lado leste
-        boca_x[k] = (round(a + n*CCB, 2), round(b, 2))
+        c, vao = n, 0.0
+    assert c <= n, (k, c, n)
+    vao_fundo[k] = round(vao, 2)
+    n_fundo += c
+    p, s = (b, -1.0) if BOCA_OESTE[k] else (a, +1.0)   # da borda da zona para dentro
+    for j in range(c):
+        q = p + s*CCB
+        add('ccb_novo', min(p, q), PROF, max(p, q), PROF)
+        p = q
+        if j < c - 1 and vao > 1e-9:
+            q = p + s*vao
+            add('fita', min(p, q), PROF, max(p, q), PROF)
+            p = q
+    boca_x[k] = (round(a, 2), round(p, 2)) if BOCA_OESTE[k] else (round(p, 2), round(b, 2))
+    assert abs((boca_x[k][1] - boca_x[k][0]) - bocas[k]) < 1e-6, (k, boca_x[k], bocas[k])
 
-# laterais: os 32,0 m inteiros de cada vao interno (23/09)
+# laterais: as duas faces de cada vao interno, amarracao por amarracao (24/09)
 laterais_x = []
-if LATERAL == 'faces':
+if LATERAL in ('amarracao', 'faces'):
     for k in ('A', 'B'):
         xr = x0[k] + W[k]
         laterais_x += [round(xr, 2), round(xr + VAO_ZONA, 2)]
 else:
     laterais_x = [meio_vao[k] for k in ('A', 'B')]
-for xl in laterais_x:
-    add('ccb_novo', xl, 0.0, xl, PROF)
 
-# portoes: o painel cujo inicio cai em cada multiplo de PASSO_PORTAO
-portoes = [(xl, round(y, 2), round(y + CCB, 2))
-           for xl in laterais_x
-           for y in [i*PASSO_PORTAO for i in range(1, int(PROF//PASSO_PORTAO) + 1)]
-           if y + CCB <= PROF]
+n_lat, vaos_lat, pts_lat, linha_paineis = 0, [], {}, {}
+for xl in laterais_x:
+    if LATERAL == 'amarracao':
+        pan, vaos = linha_amarrada(xl, amarras[xl])
+        n_lat += len(pan)
+        pts_lat[xl] = len(pan)
+        linha_paineis[xl] = pan
+        vaos_lat.append({'x': xl, 'vaos': vaos})
+    else:
+        add('ccb_novo', xl, 0.0, xl, PROF)
+        n_lat += int(round(PROF/CCB))
+        pts_lat[xl] = 0
+        linha_paineis[xl] = [(0.0, PROF)]
 
 # saidas na face norte: uma abertura de 2,00 m no gradil por zona
 saidas = {}
@@ -192,15 +282,33 @@ assert abs((m_ccb+m_novo)/CCB - n_ccb) < 1e-6, (m_ccb+m_novo)
 # quebra por item
 it_ponta = DIV*3*CCB
 it_apoio = DIV*3*CCB
-it_par   = PROF
-it_fundo = sum(math.floor((W[k]-1.0)/CCB)*CCB for k in W)
-it_lat   = (4 if LATERAL == 'faces' else 2)*PROF
+it_par   = n_par*CCB
+it_fundo = n_fundo*CCB
+it_lat   = n_lat*CCB
 it_bat   = CCB*len(SAIDA_MEIO)
 assert abs(it_ponta + it_apoio + it_par + it_fundo + it_lat + it_bat - (m_ccb+m_novo)) < 1e-6
+
+# fita por destino, para a compra: a divisoria e o que sempre existiu; a
+# lateral e o fechamento do fundo sao o que a economia de 24/09 acrescenta.
+f_div   = DIV*3*2*0.0   # preenchido abaixo
+f_div   = sum(comp(s) for s in segs if s[0] == 'fita' and abs(s[2]-s[4]) < 1e-9
+              and s[2] not in (PROF,))
+f_lat   = sum(comp(s) for s in segs if s[0] == 'fita' and abs(s[1]-s[3]) < 1e-9)
+f_fundo = sum(comp(s) for s in segs if s[0] == 'fita' and s[2] == PROF and s[4] == PROF)
+assert abs(f_div + f_lat + f_fundo - m_fita) < 1e-6, (f_div, f_lat, f_fundo, m_fita)
 
 lane_m = LANES*sum(W.values()) - morta
 lot = lane_m*DENS
 vao_fita = {k: round(((W[k]-TURN) - 2*CCB)/2, 2) for k in W}
+vaos_planos = sorted(v for l in vaos_lat for v in l['vaos'])
+
+# comparacao com a revisao de 23/09, que fechava lateral e fundo em parede
+n_23 = int(it_ponta/CCB) + int(it_apoio/CCB) + int(round(PROF/CCB)) \
+       + sum(math.floor((W[k]-1.0)/CCB) for k in W) + 4*int(round(PROF/CCB)) \
+       + int(it_bat/CCB)
+# variante: a mesma amarracao aplicada a parede da zona C
+n_par_amarr = len(amarras[round(UTIL, 2)])
+n_com_par = n_ccb - n_par + n_par_amarr
 
 # desvio: do centro da abertura ao eixo da porta (negativo = a oeste do eixo)
 desvio = {k: round((saidas[k][0]+saidas[k][1])/2 - portas[k], 2) for k in saidas}
@@ -216,41 +324,63 @@ tabela_aberturas = [{
     'largura': round(b - a, 2)} for nome, a, b in aberturas]
 
 print(f"larguras {W}  x0 {x0}")
-print(f"bocas do fundo {bocas} em x {boca_x}")
+print(f"bocas do fundo {bocas} em x {boca_x} | vao de fita do fechamento {vao_fundo}")
 print(f"saidas na face norte {saidas}")
 for t in tabela_aberturas:
     print(f"  {t['abertura']:<20} x {t['x_oeste'][0]:6.2f}-{t['x_oeste'][1]:6.2f} m"
           f"  | do canto NE {t['do_canto_ne'][0]:6.2f}-{t['do_canto_ne'][1]:6.2f} m")
 print(f"CCB: {n_ccb}  ({m_ccb:.1f} m ja na conta + {m_novo:.1f} m novos = {m_ccb+m_novo:.1f} m)")
-print(f"  divisorias ponta {int(it_ponta/CCB)} | apoios {int(it_apoio/CCB)} | parede C {int(it_par/CCB)} "
-      f"| fundo {int(it_fundo/CCB)} | laterais {int(it_lat/CCB)} | batente B {int(it_bat/CCB)}")
-print(f"fita grossa {m_fita:.1f} m | vao maximo de fita {vao_fita}")
+print(f"  divisorias ponta {int(it_ponta/CCB)} | apoios {int(it_apoio/CCB)} | parede C {n_par} "
+      f"| fundo {n_fundo} | laterais {n_lat} | batente B {int(it_bat/CCB)}")
+print(f"fita grossa {m_fita:.1f} m  (divisorias {f_div:.1f} + laterais {f_lat:.1f} + fundo {f_fundo:.1f})"
+      f" | vao maximo de fita da divisoria {vao_fita}")
 print(f"raia-metros {lane_m:.1f} (menos {morta:.2f} m mortos na B) | lotacao {lot:.0f} | percurso max {LANES*W['A']:.0f} m")
 print(f"desvios ao eixo da porta {desvio} | dentro do vao {dentro_do_vao}")
-print(f"laterais: modo {LATERAL} em x {laterais_x} | {len(portoes)} portoes a cada {PASSO_PORTAO:.0f} m")
-print(f"compra {max(0, n_ccb-ESTOQUE)} | sobra {max(0, ESTOQUE-n_ccb)}")
+print(f"laterais: modo {LATERAL} em x {laterais_x} | {pts_lat} pontos de amarracao por linha")
+from collections import Counter
+dist_vaos = sorted(Counter(vaos_planos).items())
+print(f"  {len(vaos_planos)} vaos de fita nas laterais, {f_lat:.1f} m no total: "
+      + " · ".join(f"{n}x {v:.2f} m" for v, n in dist_vaos))
+print(f"compra {max(0, n_ccb-ESTOQUE)} | sobra {max(0, ESTOQUE-n_ccb)} | "
+      f"economia sobre 23/09: {n_23 - n_ccb} CCBs (EUR {(n_23-n_ccb)*PRECO_CCB:,.2f})")
+print(f"variante: com a parede da C tambem amarrada, {n_com_par} CCBs "
+      f"({max(0, n_com_par-ESTOQUE)} a comprar, sobra {max(0, ESTOQUE-n_com_par)})")
 
 json.dump({
-    'revisao': '2026-09-22', 'ring': [RING_W, RING_D], 'corredor': COR, 'vao_zona': VAO_ZONA,
+    'revisao': '2026-09-24', 'ring': [RING_W, RING_D], 'corredor': COR, 'vao_zona': VAO_ZONA,
     'raias': LANES, 'modulo': round(MOD, 3), 'larguras': W, 'x0': x0,
     'boca_oeste': BOCA_OESTE, 'saida_meio': SAIDA_MEIO,
-    'bocas_fundo': {k: {'largura': bocas[k], 'x': boca_x[k]} for k in bocas},
+    'bocas_fundo': {k: {'largura': bocas[k], 'x': boca_x[k], 'paineis': n_fundo//3,
+                        'vao_fita': vao_fundo[k]} for k in bocas},
     'saidas_norte': {k: list(saidas[k]) for k in saidas},
     'aberturas_face_norte': tabela_aberturas,
     'portas_eixo': portas, 'desvio_ao_eixo': desvio, 'dentro_do_vao': dentro_do_vao,
     'ccb': {'total': n_ccb, 'ponta': int(it_ponta/CCB), 'apoio': int(it_apoio/CCB),
-            'parede_c': int(it_par/CCB), 'fundo': int(it_fundo/CCB), 'laterais': int(it_lat/CCB),
+            'parede_c': n_par, 'fundo': n_fundo, 'laterais': n_lat,
             'batente_b': int(it_bat/CCB), 'metros': round(m_ccb+m_novo, 1),
-            'estoque': ESTOQUE, 'compra': max(0, n_ccb-ESTOQUE), 'sobra': max(0, ESTOQUE-n_ccb)},
+            'estoque': ESTOQUE, 'compra': max(0, n_ccb-ESTOQUE), 'sobra': max(0, ESTOQUE-n_ccb),
+            'preco_unitario_eur': PRECO_CCB,
+            'total_2309': n_23, 'economia': n_23 - n_ccb,
+            'economia_eur': round((n_23 - n_ccb)*PRECO_CCB, 2)},
     'laterais': {'modo': LATERAL, 'variante': LATERAL_VARIANTE, 'x': laterais_x,
-                 'passo_portao': PASSO_PORTAO,
-                 'portoes': [{'x': a, 'y': [b, c]} for a, b, c in portoes]},
-    'fita_m': round(m_fita, 1), 'vao_fita': vao_fita,
+                 'pontos_por_linha': pts_lat, 'ccb': n_lat,
+                 'amarras_por_linha': (min(pts_lat.values()) if pts_lat else 0),
+                 'vaos': vaos_lat, 'vao_min': vaos_planos[0], 'vao_max': vaos_planos[-1],
+                 'n_vaos': len(vaos_planos), 'vaos_por_linha': len(vaos_planos)//4,
+                 'distribuicao_vaos': [[v, n] for v, n in dist_vaos],
+                 'vao_passagem': VAO_PASSAGEM, 'fita_m': round(f_lat, 1)},
+    'fundo': {'modo': FUNDO, 'paineis_por_zona': n_fundo//3, 'ccb': n_fundo,
+              'vao_fita': vao_fundo, 'fita_m': round(f_fundo, 1)},
+    'parede_c': {'modo': PAREDE_C, 'ccb': n_par,
+                 'variante_amarrada': n_par_amarr, 'total_com_variante': n_com_par,
+                 'compra_com_variante': max(0, n_com_par-ESTOQUE),
+                 'sobra_com_variante': max(0, ESTOQUE-n_com_par)},
+    'fita_m': round(m_fita, 1), 'fita_divisorias_m': round(f_div, 1),
+    'vao_fita': vao_fita,
     'raia_metros': round(lane_m, 1), 'raia_morta_b': round(morta, 2), 'lotacao': round(lot),
     'percurso_max': round(LANES*max(W.values())),
 }, open(os.path.join(RAIZ, 'saidas', 'ring3_montagem.json'), 'w', encoding='utf-8'),
     ensure_ascii=False, indent=1)
-
 # ---------- SVG ----------
 S = 15.0
 MX, MT, MB = 58, 44, 74
@@ -264,8 +394,9 @@ o = []
 def e(s): o.append(s)
 e(f'<svg class="planta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {Wpx:.0f} {Hpx:.0f}" role="img" '
   f'aria-label="Planta do Ring 3 no cenario 3 adaptado: tres zonas iguais de raias leste-oeste separadas por vaos de 1,2 m, '
-  f'divisorias de fita grossa ancoradas por dois CCB cada, fechamento de fundo com boca de entrada (a oeste na zona A), '
-  f'laterais rigidas fechando os dois vaos internos de ponta a ponta e quatro aberturas na face norte do gradil: corredor de chegada e as saidas C, B e A.">')
+  f'divisorias de fita grossa ancoradas por dois CCB cada, fechamento de fundo alternando CCB e fita com boca de entrada (a oeste na zona A), '
+  f'laterais dos dois vaos internos com um CCB em cada ponto de amarracao de fita e fita entre eles, '
+  f'e quatro aberturas na face norte do gradil: corredor de chegada e as saidas C, B e A.">')
 e('<defs><marker id="pta" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>')
 
 # apron
@@ -322,9 +453,17 @@ for t, a, b, c, d in segs:
     if t == 'ccb_novo':
         e(f'<line x1="{X(a):.1f}" y1="{Y(b):.1f}" x2="{X(c):.1f}" y2="{Y(d):.1f}" stroke="var(--novo)" stroke-width="3.6" stroke-linecap="butt"/>')
 
-# portoes: o painel sem grampo, que abre para o corredor de servico
-for xl, ya, yb in portoes:
-    e(f'<line x1="{X(xl):.1f}" y1="{Y(ya):.1f}" x2="{X(xl):.1f}" y2="{Y(yb):.1f}" stroke="var(--verde)" stroke-width="3.6" stroke-linecap="butt"/>')
+# os vaos de fita das laterais sao a passagem para o corredor de servico: um
+# tracinho verde marca cada um, para o montador saber que ali nao vai painel
+for l in vaos_lat:
+    xl = l['x']
+    cur_v = 0.0
+    for c0, c1 in linha_paineis[xl]:
+        if c0 - cur_v > 1e-9:
+            e(f'<line x1="{X(xl)-3:.1f}" y1="{Y((cur_v+c0)/2):.1f}" x2="{X(xl)+3:.1f}" y2="{Y((cur_v+c0)/2):.1f}" stroke="var(--verde)" stroke-width="2.2"/>')
+        cur_v = c1
+    if PROF - cur_v > 1e-9:
+        e(f'<line x1="{X(xl)-3:.1f}" y1="{Y((cur_v+PROF)/2):.1f}" x2="{X(xl)+3:.1f}" y2="{Y((cur_v+PROF)/2):.1f}" stroke="var(--verde)" stroke-width="2.2"/>')
 
 # rotulos das zonas
 for k in ('A', 'B', 'C'):
@@ -337,7 +476,7 @@ for k in ('A', 'B'):
     xr = x0[k] + W[k]
     e(f'<text x="{X(xr+VAO_ZONA/2):.1f}" y="{Y(19):.1f}" text-anchor="middle" font-size="10" font-weight="600" fill="var(--verde)" '
       f'paint-order="stroke" stroke="var(--folha)" stroke-width="3.5" '
-      f'transform="rotate(-90 {X(xr+VAO_ZONA/2):.1f} {Y(19):.1f})">1,20 m · maca e fiscal</text>')
+      f'transform="rotate(-90 {X(xr+VAO_ZONA/2):.1f} {Y(19):.1f})">1,20 m · maca e fiscal · 12 vãos por face</text>')
 
 # bocas do fundo: seta de entrada
 for k in ('A', 'B', 'C'):

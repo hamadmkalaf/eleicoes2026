@@ -9,6 +9,7 @@ M = json.load(open(os.path.join(RAIZ, 'saidas', 'ring3_montagem.json'), encoding
 
 CCB, TURN = 2.00, 1.20
 br = lambda v: ('%.2f' % v).replace('.', ',')
+br1 = lambda v: ('%.1f' % v).replace('.', ',')
 
 # ---- detalhe da divisoria (zona B, a que absorve o arredondamento) ----
 WB = M['larguras']['B']
@@ -74,20 +75,41 @@ html = open(os.path.join(RAIZ, 'scripts', 'ring3_montagem.tpl.html'), encoding='
 for marca, valor in (('<!--PLANTA-->', planta), ('<!--DETALHE-->', detalhe), ('<!--SAIDAS-->', tabela)):
     assert html.count(marca) == 1, marca
     html = html.replace(marca, valor)
-# os numeros que o template cita e que saem do JSON
+# os numeros que o template cita e que saem do JSON. Nada e digitado aqui: a
+# revisao de 24/09 acrescentou a conta da amarracao (lateral e fundo) e a
+# comparacao com 23/09, e as tres saem do mesmo JSON.
+lat, fun, pc, ccb = M['laterais'], M['fundo'], M['parede_c'], M['ccb']
+eur = lambda v: f"{v:,.2f}".replace(',', '\u00a0').replace('.', ',').replace('\u00a0', '.')
 trocas = {
-    '@CCB@': str(M['ccb']['total']), '@COMPRA@': str(M['ccb']['compra']),
-    '@LOT@': f"{M['lotacao']:,}".replace(',', '.'), '@FITA@': str(int(round(M['fita_m']))),
+    '@CCB@': str(ccb['total']), '@COMPRA@': str(ccb['compra']),
+    '@LOT@': f"{M['lotacao']:,}".replace(',', '.'), '@FITA@': br1(M['fita_m']),
     '@VAO_B@': br(vao), '@DIV_B@': br(L_div), '@VAO_A@': br(M['vao_fita']['A']),
     '@DIV_A@': br(round(M['larguras']['A'] - TURN, 2)),
     '@BOCA_A@': br(M['bocas_fundo']['A']['largura']), '@BOCA_B@': br(M['bocas_fundo']['B']['largura']),
-    '@FUNDO_M@': br(M['ccb']['fundo']*CCB), '@FUNDO_N@': str(M['ccb']['fundo']),
-    '@METROS@': br(M['ccb']['metros']), '@PERC@': str(M['percurso_max']),
+    '@FUNDO_M@': br1(ccb['fundo']*CCB), '@FUNDO_N@': str(ccb['fundo']),
+    '@METROS@': br1(ccb['metros']), '@PERC@': str(M['percurso_max']),
     '@MORTA@': br(M['raia_morta_b']),
+    # 24/09 — a amarracao
+    '@ECON@': str(ccb['economia']), '@ECONEUR@': eur(ccb['economia_eur']),
+    '@N2309@': str(ccb['total_2309']),
+    '@COMPRA2309@': str(max(0, ccb['total_2309'] - ccb['estoque'])),
+    '@COMPRAEUR@': eur(round(ccb['compra']*ccb['preco_unitario_eur'], 2)),
+    '@COMPRAM@': br1(ccb['compra']*CCB),
+    '@LATN@': str(lat['ccb']), '@LATM@': br1(lat['ccb']*CCB),
+    '@PTSLIN@': str(lat['amarras_por_linha']), '@LATFITA@': br1(lat['fita_m']),
+    '@PASSO_AMARRA@': br(round(2*M['modulo'], 2)),
+    '@VAOSLAT@': str(lat['n_vaos']), '@VAOSLIN@': str(lat['vaos_por_linha']),
+    '@VAOMIN@': br(lat['vao_min']), '@VAOMAX@': br(lat['vao_max']),
+    '@FUNDON@': str(fun['ccb']), '@FUNDOZ@': str(fun['paineis_por_zona']),
+    '@FUNDOVAO@': br(fun['vao_fita']['A']), '@FUNDOFITA@': br1(fun['fita_m']),
+    '@FITA_MAIS@': br1(lat['fita_m'] + fun['fita_m']),
+    '@PAREDEC_VAR@': str(pc['variante_amarrada']), '@NVARC@': str(pc['total_com_variante']),
 }
 for k, v in trocas.items():
     assert k in html, k
     html = html.replace(k, v)
-assert '@' not in html.split('</header>')[0] or True
+import re
+sobrou = re.findall(r'@[A-Z_0-9]+@', html)
+assert not sobrou, sobrou
 open(os.path.join(RAIZ, 'saidas', 'ring3_montagem.html'), 'w', encoding='utf-8').write(html)
 print('ok', len(html))

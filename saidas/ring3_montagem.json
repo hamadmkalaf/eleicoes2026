@@ -1,0 +1,288 @@
+{
+ "revisao": "2026-09-24",
+ "ring": [
+  44.0,
+  35.0
+ ],
+ "corredor": 3.0,
+ "vao_zona": 1.2,
+ "raias": 23,
+ "modulo": 1.391,
+ "larguras": {
+  "A": 12.87,
+  "B": 12.86,
+  "C": 12.87
+ },
+ "x0": {
+  "A": 0.0,
+  "B": 14.07,
+  "C": 28.13
+ },
+ "boca_oeste": {
+  "A": true,
+  "B": false,
+  "C": false
+ },
+ "saida_meio": {
+  "B": true
+ },
+ "bocas_fundo": {
+  "A": {
+   "largura": 2.87,
+   "x": [
+    0.0,
+    2.87
+   ],
+   "paineis": 3,
+   "vao_fita": 2.0
+  },
+  "B": {
+   "largura": 2.86,
+   "x": [
+    24.07,
+    26.93
+   ],
+   "paineis": 3,
+   "vao_fita": 2.0
+  },
+  "C": {
+   "largura": 2.87,
+   "x": [
+    38.13,
+    41.0
+   ],
+   "paineis": 3,
+   "vao_fita": 2.0
+  }
+ },
+ "saidas_norte": {
+  "A": [
+   10.87,
+   12.87
+  ],
+  "B": [
+   19.5,
+   21.5
+  ],
+  "C": [
+   28.13,
+   30.13
+  ]
+ },
+ "aberturas_face_norte": [
+  {
+   "abertura": "corredor de chegada",
+   "x_oeste": [
+    41.0,
+    44.0
+   ],
+   "do_canto_ne": [
+    0.0,
+    3.0
+   ],
+   "largura": 3.0
+  },
+  {
+   "abertura": "saída da zona C",
+   "x_oeste": [
+    28.13,
+    30.13
+   ],
+   "do_canto_ne": [
+    13.87,
+    15.87
+   ],
+   "largura": 2.0
+  },
+  {
+   "abertura": "saída da zona B",
+   "x_oeste": [
+    19.5,
+    21.5
+   ],
+   "do_canto_ne": [
+    22.5,
+    24.5
+   ],
+   "largura": 2.0
+  },
+  {
+   "abertura": "saída da zona A",
+   "x_oeste": [
+    10.87,
+    12.87
+   ],
+   "do_canto_ne": [
+    31.13,
+    33.13
+   ],
+   "largura": 2.0
+  }
+ ],
+ "portas_eixo": {
+  "A": 15.78,
+  "B": 22.0,
+  "C": 28.22
+ },
+ "desvio_ao_eixo": {
+  "A": -3.91,
+  "B": -1.5,
+  "C": 0.91
+ },
+ "dentro_do_vao": {
+  "A": false,
+  "B": true,
+  "C": true
+ },
+ "ccb": {
+  "total": 202,
+  "ponta": 66,
+  "apoio": 66,
+  "parede_c": 16,
+  "fundo": 9,
+  "laterais": 44,
+  "batente_b": 1,
+  "metros": 404.0,
+  "estoque": 200,
+  "compra": 2,
+  "sobra": 0,
+  "preco_unitario_eur": 13.02,
+  "total_2309": 228,
+  "economia": 26,
+  "economia_eur": 338.52
+ },
+ "laterais": {
+  "modo": "amarracao",
+  "variante": "faces",
+  "x": [
+   12.87,
+   14.07,
+   26.93,
+   28.13
+  ],
+  "pontos_por_linha": {
+   "12.87": 11,
+   "14.07": 11,
+   "26.93": 11,
+   "28.13": 11
+  },
+  "ccb": 44,
+  "amarras_por_linha": 11,
+  "vaos": [
+   {
+    "x": 12.87,
+    "vaos": [
+     1.17,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     1.78
+    ]
+   },
+   {
+    "x": 14.07,
+    "vaos": [
+     1.17,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     1.78
+    ]
+   },
+   {
+    "x": 26.93,
+    "vaos": [
+     1.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     1.17
+    ]
+   },
+   {
+    "x": 28.13,
+    "vaos": [
+     1.17,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     0.78,
+     1.78
+    ]
+   }
+  ],
+  "vao_min": 0.78,
+  "vao_max": 1.78,
+  "n_vaos": 44,
+  "vaos_por_linha": 11,
+  "distribuicao_vaos": [
+   [
+    0.78,
+    36
+   ],
+   [
+    1.17,
+    4
+   ],
+   [
+    1.78,
+    4
+   ]
+  ],
+  "vao_passagem": 0.75,
+  "fita_m": 40.0
+ },
+ "fundo": {
+  "modo": "amarracao",
+  "paineis_por_zona": 3,
+  "ccb": 9,
+  "vao_fita": {
+   "A": 2.0,
+   "B": 2.0,
+   "C": 2.0
+  },
+  "fita_m": 12.0
+ },
+ "parede_c": {
+  "modo": "solida",
+  "ccb": 16,
+  "variante_amarrada": 11,
+  "total_com_variante": 197,
+  "compra_com_variante": 0,
+  "sobra_com_variante": 3
+ },
+ "fita_m": 558.0,
+ "fita_divisorias_m": 506.0,
+ "vao_fita": {
+  "A": 3.83,
+  "B": 3.83,
+  "C": 3.83
+ },
+ "raia_metros": 882.4,
+ "raia_morta_b": 5.43,
+ "lotacao": 2105,
+ "percurso_max": 296
+}

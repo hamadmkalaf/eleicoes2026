@@ -337,7 +337,8 @@ O README atual descreve só a análise de agregações. O do repositório novo �
 índice do projeto inteiro. Deve responder, nesta ordem:
 
 1. **O que está decidido** — as agregações (16.794 eleitores, 51 seções, 28
-   urnas) e o desenho da fila do Ring 3 (cenário 3 adaptado, 180 CCBs), com
+   urnas) e o desenho da fila do Ring 3 (cenário 3 adaptado, 228 CCBs desde a
+   revisão de 23/09 — eram 180 antes do fechamento das laterais), com
    link para a folha e para a página das urnas.
 2. **O que está aberto** — apontar para `PENDENCIAS.md` e para as quatro
    pendências técnicas registradas na folha do Ring 3 (ancoragem da ponta fixa

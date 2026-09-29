@@ -63,13 +63,13 @@ arquivos saem dele por `scripts/render_arte.py`:
 |---|---|
 | `P6-Painel_FimAvenidaB.dc.html` | fonte da peça (roll-up 1000 × 2000 mm, revisão de 24/09) |
 | `P6-Painel_FimAvenidaB.html` | a mesma arte como página autônoma, abre em qualquer navegador |
-| `P6-Painel_FimAvenidaB.jpg` | 4000 × 8000 px, sem margem, ~1,1 MB, 102 dpi na medida final |
+| `P6-Painel_FimAvenidaB.jpg` | 8000 × 16000 px, sem margem, 3,1 MB, 203 dpi na medida final |
 | `P6-Painel_FimAvenidaB.pdf` | 1000 × 2000 mm, vetorial, fontes embutidas — o arquivo para impressão |
 
 ```bash
 pip install pillow
 python3 scripts/render_arte.py saidas/artes_sinalizacao/P6-Painel_FimAvenidaB.dc.html
-# opções: --escala 8 (resolução do JPG) · --alvo-mb 1.1 (tamanho do JPG) · --largura-mm/--altura-mm
+# opções: --escala 16 (resolução do JPG) · --qualidade 92 · --alvo-mb 1.1 (mira um tamanho de arquivo) · --largura-mm/--altura-mm
 ```
 
 O script usa o Chromium do Playwright (ou o `chromium` do sistema), baixa a

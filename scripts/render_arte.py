@@ -3,16 +3,16 @@
 
 Uso:
     python3 scripts/render_arte.py saidas/artes_sinalizacao/P6-Painel_FimAvenidaB.dc.html \
-        --largura-mm 1000 --altura-mm 2000 --escala 8 --alvo-mb 1.1
+        --largura-mm 1000 --altura-mm 2000 --escala 16 --qualidade 92
 
 O que faz, na ordem:
 1. Extrai o miolo do `.dc.html` (o conteúdo de `<x-dc>`, sem o runtime do tipo Design)
    e grava um `.html` autônomo ao lado, que abre em qualquer navegador.
 2. Baixa a Montserrat (Google Fonts) para um cache local e a declara por
    `@font-face`, para que o Chromium headless não caia na fonte substituta.
-3. Renderiza com o Chromium do Playwright em `--escala`× (8× → 4000 × 8000 px para
+3. Renderiza com o Chromium do Playwright em `--escala`× (16× → 8000 × 16000 px para
    uma arte de 500 × 1000 px), recorta exatamente a arte (sem margem) e grava o
-   JPG com a qualidade que mais se aproxima de `--alvo-mb`.
+   JPG na `--qualidade` pedida (ou na que mais se aproxima de `--alvo-mb`, se dado).
 4. Imprime o mesmo HTML em PDF na medida física da peça (`--largura-mm` × `--altura-mm`),
    com o texto vetorial e as fontes embutidas.
 
@@ -28,6 +28,8 @@ import sys
 import tempfile
 
 from PIL import Image, ImageChops
+
+Image.MAX_IMAGE_PIXELS = None  # a arte em 16× passa de 180 Mpx; não é bomba de descompressão
 
 RAIZ = pathlib.Path(__file__).resolve().parents[1]
 CACHE_FONTES = RAIZ / "saidas" / "artes_sinalizacao" / ".fontes"  # ao lado do HTML gerado; não versionado
@@ -147,8 +149,9 @@ def main():
     ap.add_argument("--altura-px", type=float, default=1000)
     ap.add_argument("--largura-mm", type=float, default=1000)
     ap.add_argument("--altura-mm", type=float, default=2000)
-    ap.add_argument("--escala", type=int, default=8, help="fator de resolução do JPG (8 → 4000 × 8000 px)")
-    ap.add_argument("--alvo-mb", type=float, default=1.1, help="tamanho de arquivo desejado do JPG, em MB")
+    ap.add_argument("--escala", type=int, default=16, help="fator de resolução do JPG (16 → 8000 × 16000 px)")
+    ap.add_argument("--alvo-mb", type=float, default=0, help="tamanho de arquivo desejado do JPG, em MB (0 = usar --qualidade)")
+    ap.add_argument("--qualidade", type=int, default=92, help="qualidade JPEG fixa, quando --alvo-mb é 0")
     a = ap.parse_args()
 
     origem = a.dc_html.resolve()
@@ -173,7 +176,12 @@ def main():
         im = im.crop((0, 0, w, h))
 
     dpi = w / (a.largura_mm / 25.4)
-    q, dados = jpg_no_alvo(im, int(a.alvo_mb * 1024 * 1024), dpi)
+    if a.alvo_mb > 0:
+        q, dados = jpg_no_alvo(im, int(a.alvo_mb * 1024 * 1024), dpi)
+    else:
+        buf = io.BytesIO()
+        im.save(buf, "JPEG", quality=a.qualidade, subsampling=0, optimize=True, dpi=(dpi, dpi))
+        q, dados = a.qualidade, buf.getvalue()
     jpg_path = base.with_suffix(".jpg")
     jpg_path.write_bytes(dados)
 

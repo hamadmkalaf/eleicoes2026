@@ -52,6 +52,31 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
 
+## Artes de sinalização em tamanho real
+
+`saidas/artes_sinalizacao/` guarda as artes prontas para a gráfica. A peça é
+descrita pelo `.dc.html` (a fonte, no formato do artefato *Design* — o mesmo
+arquivo de `hamadmkalaf/dublineleicoesfinal`, `mapa/sinalizacao/`); os demais
+arquivos saem dele por `scripts/render_arte.py`:
+
+| Arquivo | O que é |
+|---|---|
+| `P6-Painel_FimAvenidaB.dc.html` | fonte da peça (roll-up 1000 × 2000 mm, revisão de 24/09) |
+| `P6-Painel_FimAvenidaB.html` | a mesma arte como página autônoma, abre em qualquer navegador |
+| `P6-Painel_FimAvenidaB.jpg` | 4000 × 8000 px, sem margem, ~1,1 MB, 102 dpi na medida final |
+| `P6-Painel_FimAvenidaB.pdf` | 1000 × 2000 mm, vetorial, fontes embutidas — o arquivo para impressão |
+
+```bash
+pip install pillow
+python3 scripts/render_arte.py saidas/artes_sinalizacao/P6-Painel_FimAvenidaB.dc.html
+# opções: --escala 8 (resolução do JPG) · --alvo-mb 1.1 (tamanho do JPG) · --largura-mm/--altura-mm
+```
+
+O script usa o Chromium do Playwright (ou o `chromium` do sistema), baixa a
+Montserrat do Google Fonts para `saidas/artes_sinalizacao/.fontes/` (não
+versionado) e falha se o JPG sair com qualquer margem branca. Um JPG é sempre
+raster: a versão vetorial é o PDF.
+
 ## Validações
 
 `mapa_agregacoes.py` falha em vez de gravar saída errada se alguma destas não

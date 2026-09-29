@@ -14,7 +14,8 @@ O que faz, na ordem:
    uma arte de 500 × 1000 px), recorta exatamente a arte (sem margem) e grava o
    JPG na `--qualidade` pedida (ou na que mais se aproxima de `--alvo-mb`, se dado).
 4. Imprime o mesmo HTML em PDF na medida física da peça (`--largura-mm` × `--altura-mm`),
-   com o texto vetorial e as fontes embutidas.
+   com o texto vetorial e a Montserrat embutida como TrueType (instâncias estáticas
+   geradas da fonte variável com o fontTools).
 
 Sem parâmetros, o script trata a arte como 500 × 1000 px e 1000 × 2000 mm.
 """
@@ -53,6 +54,38 @@ def acha_chromium():
     sys.exit("Chromium não encontrado; instale-o ou ajuste CANDIDATOS_CHROMIUM")
 
 
+def instancia_estatica(woff2: pathlib.Path, peso: str) -> pathlib.Path:
+    """Gera uma instância estática (TTF) do peso pedido a partir da Montserrat variável.
+
+    O Google Fonts serve a Montserrat como fonte variável (eixo wght). O Chromium
+    imprime fontes variáveis em PDF como Type3 (contornos, mas sem nome de fonte e
+    mal aceitas por alguns RIPs de gráfica); com instâncias estáticas o PDF sai com
+    a Montserrat embutida como TrueType (CIDFontType2), que é o que se espera.
+    """
+    destino = woff2.with_name(woff2.stem + "-static.ttf")
+    if destino.exists():
+        return destino
+    from fontTools.ttLib import TTFont
+    from fontTools.varLib import instancer
+    fonte = TTFont(woff2)
+    if "fvar" in fonte:
+        try:
+            fonte = instancer.instantiateVariableFont(fonte, {"wght": int(peso)}, updateFontNames=True)
+        except Exception:  # sem STAT utilizável: instancia sem renomear e corrige o nome à mão
+            fonte = instancer.instantiateVariableFont(fonte, {"wght": int(peso)})
+        estilo = {"400": "Regular", "500": "Medium", "600": "SemiBold", "700": "Bold", "800": "ExtraBold", "900": "Black"}.get(peso, peso)
+        nomes = fonte["name"]
+        for rec in nomes.names:
+            if rec.nameID in (1, 4, 6):
+                rec.string = {1: "Montserrat", 4: f"Montserrat {estilo}", 6: f"Montserrat-{estilo}"}[rec.nameID]
+            elif rec.nameID == 2:
+                rec.string = estilo
+        fonte["OS/2"].usWeightClass = int(peso)
+    fonte.flavor = None
+    fonte.save(destino)
+    return destino
+
+
 def baixa_fontes():
     """Baixa as faces latin/latin-ext da Montserrat; devolve as regras @font-face locais."""
     CACHE_FONTES.mkdir(parents=True, exist_ok=True)
@@ -76,10 +109,11 @@ def baixa_fontes():
         if chave in vistos:
             continue
         vistos.add(chave)
+        estatica = instancia_estatica(destino, peso)
         regras.append(
             "@font-face { font-family: 'Montserrat'; font-style: normal; "
             f"font-weight: {peso}; font-display: block; "
-            f"src: url('{CACHE_FONTES.name}/{nome}') format('woff2'); unicode-range: {faixa}; }}"
+            f"src: url('{CACHE_FONTES.name}/{estatica.name}') format('truetype'); unicode-range: {faixa}; }}"
         )
     # O @import fica na frente para quem abrir o HTML numa máquina sem o cache `.fontes/`.
     return f"@import url('{CSS_FONTES}');\n" + "\n".join(regras)
@@ -152,6 +186,7 @@ def main():
     ap.add_argument("--escala", type=int, default=16, help="fator de resolução do JPG (16 → 8000 × 16000 px)")
     ap.add_argument("--alvo-mb", type=float, default=0, help="tamanho de arquivo desejado do JPG, em MB (0 = usar --qualidade)")
     ap.add_argument("--qualidade", type=int, default=92, help="qualidade JPEG fixa, quando --alvo-mb é 0")
+    ap.add_argument("--so-pdf", action="store_true", help="regenera só o HTML e o PDF, sem tocar no JPG")
     a = ap.parse_args()
 
     origem = a.dc_html.resolve()
@@ -164,6 +199,13 @@ def main():
                       baixa_fontes(), f"{base.name} · {a.largura_mm:g} × {a.altura_mm:g} mm")
     html_path = base.with_suffix(".html")
     html_path.write_text(html, encoding="utf-8")
+
+    pdf_path = base.with_suffix(".pdf")
+    chromium(["--no-pdf-header-footer", f"--print-to-pdf={pdf_path}", html_path.as_uri()], chrome)
+    if a.so_pdf:
+        print(f"{html_path.relative_to(RAIZ)}  HTML autônomo")
+        print(f"{pdf_path.relative_to(RAIZ)}  {a.largura_mm:g} × {a.altura_mm:g} mm · vetorial · {pdf_path.stat().st_size/1024:.0f} KB")
+        return
 
     with tempfile.TemporaryDirectory() as tmp:
         # O `--window-size` do headless novo desconta uma barra invisível (~87 px) da
@@ -184,9 +226,6 @@ def main():
         q, dados = a.qualidade, buf.getvalue()
     jpg_path = base.with_suffix(".jpg")
     jpg_path.write_bytes(dados)
-
-    pdf_path = base.with_suffix(".pdf")
-    chromium(["--no-pdf-header-footer", f"--print-to-pdf={pdf_path}", html_path.as_uri()], chrome)
 
     # Conferência: nenhuma coluna ou linha inteiramente branca na borda do JPG.
     j = Image.open(jpg_path).convert("RGB")

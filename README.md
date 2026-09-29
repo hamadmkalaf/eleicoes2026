@@ -64,18 +64,20 @@ arquivos saem dele por `scripts/render_arte.py`:
 | `P6-Painel_FimAvenidaB.dc.html` | fonte da peça (roll-up 1000 × 2000 mm, revisão de 24/09) |
 | `P6-Painel_FimAvenidaB.html` | a mesma arte como página autônoma, abre em qualquer navegador |
 | `P6-Painel_FimAvenidaB.jpg` | 8000 × 16000 px, sem margem, 3,1 MB, 203 dpi na medida final |
-| `P6-Painel_FimAvenidaB.pdf` | 1000 × 2000 mm, vetorial, fontes embutidas — o arquivo para impressão |
+| `P6-Painel_FimAvenidaB.pdf` | 1000 × 2000 mm, vetorial, Montserrat embutida como TrueType — o arquivo para impressão |
 
 ```bash
-pip install pillow
+pip install pillow fonttools brotli
 python3 scripts/render_arte.py saidas/artes_sinalizacao/P6-Painel_FimAvenidaB.dc.html
-# opções: --escala 16 (resolução do JPG) · --qualidade 92 · --alvo-mb 1.1 (mira um tamanho de arquivo) · --largura-mm/--altura-mm
+# opções: --escala 16 (resolução do JPG) · --qualidade 92 · --alvo-mb 1.1 (mira um tamanho de arquivo) · --so-pdf · --largura-mm/--altura-mm
 ```
 
 O script usa o Chromium do Playwright (ou o `chromium` do sistema), baixa a
 Montserrat do Google Fonts para `saidas/artes_sinalizacao/.fontes/` (não
-versionado) e falha se o JPG sair com qualquer margem branca. Um JPG é sempre
-raster: a versão vetorial é o PDF.
+versionado), gera dela instâncias estáticas por peso (a fonte variável sairia
+no PDF como Type3, que alguns RIPs de gráfica rejeitam) e falha se o JPG sair
+com qualquer margem branca. Um JPG é sempre raster: a versão vetorial é o PDF,
+que não tem resolução — escala sem perda a qualquer tamanho.
 
 ## Validações
 

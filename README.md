@@ -52,6 +52,33 @@ python3 gera_pagina.py       # gera saidas/dublin_agregacoes.html
 - **`saidas/dublin_agregacoes.html`** — a mesma análise em página visual.
 - **`saidas/dados.json`** — os dados estruturados que alimentam a página.
 
+## Artes de sinalização em tamanho real
+
+`saidas/artes_sinalizacao/` guarda as artes prontas para a gráfica. A peça é
+descrita pelo `.dc.html` (a fonte, no formato do artefato *Design* — o mesmo
+arquivo de `hamadmkalaf/dublineleicoesfinal`, `mapa/sinalizacao/`); os demais
+arquivos saem dele por `scripts/render_arte.py`:
+
+| Arquivo | O que é |
+|---|---|
+| `P6-Painel_FimAvenidaB.dc.html` | fonte da peça (roll-up 1000 × 2000 mm, revisão de 24/09) |
+| `P6-Painel_FimAvenidaB.html` | a mesma arte como página autônoma, abre em qualquer navegador |
+| `P6-Painel_FimAvenidaB.jpg` | 8000 × 16000 px, sem margem, 3,1 MB, 203 dpi na medida final |
+| `P6-Painel_FimAvenidaB.pdf` | 1000 × 2000 mm, vetorial, Montserrat embutida como TrueType — o arquivo para impressão |
+
+```bash
+pip install pillow fonttools brotli
+python3 scripts/render_arte.py saidas/artes_sinalizacao/P6-Painel_FimAvenidaB.dc.html
+# opções: --escala 16 (resolução do JPG) · --qualidade 92 · --alvo-mb 1.1 (mira um tamanho de arquivo) · --so-pdf · --largura-mm/--altura-mm
+```
+
+O script usa o Chromium do Playwright (ou o `chromium` do sistema), baixa a
+Montserrat do Google Fonts para `saidas/artes_sinalizacao/.fontes/` (não
+versionado), gera dela instâncias estáticas por peso (a fonte variável sairia
+no PDF como Type3, que alguns RIPs de gráfica rejeitam) e falha se o JPG sair
+com qualquer margem branca. Um JPG é sempre raster: a versão vetorial é o PDF,
+que não tem resolução — escala sem perda a qualquer tamanho.
+
 ## Validações
 
 `mapa_agregacoes.py` falha em vez de gravar saída errada se alguma destas não
